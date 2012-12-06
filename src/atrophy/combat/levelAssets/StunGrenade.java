@@ -1,0 +1,68 @@
+/*
+ * All code unless credited otherwise is copyright 2012 Charles Sherman, all rights reserved
+ */
+package atrophy.combat.levelAssets;
+
+import atrophy.combat.ai.Ai;
+import atrophy.combat.ai.PathFinder;
+import atrophy.combat.display.AiCrowd;
+
+// TODO: Auto-generated Javadoc
+/**
+ * The Class StunGrenade.
+ */
+public class StunGrenade extends Grenade{
+	
+	/**
+	 * The Constant FUSE_TIME.
+	 */
+	public static final byte FUSE_TIME = 2;
+
+	/**
+	 * The Constant STUN_TURNS.
+	 */
+	private static final int STUN_TURNS = 5;
+	
+	/**
+	 * The skill level.
+	 */
+	private int skillLevel;
+	
+	/**
+	 * Instantiates a new stun grenade.
+	 *
+	 * @param originator the originator
+	 * @param location the location
+	 * @param angleHeading the angle heading
+	 * @param momentum the momentum
+	 * @param skillLevel the skill level
+	 */
+	public StunGrenade(Ai originator, double[] location, double angleHeading, double momentum, int skillLevel){
+		super(originator,location,angleHeading,momentum,FUSE_TIME);
+		this.skillLevel = skillLevel;
+	}
+	
+	/* (non-Javadoc)
+	 * @see atrophy.combat.levelAssets.Grenade#explode()
+	 */
+	@Override
+	protected void explode(){
+		
+		for(int i = 0; i < aiCrowd.getActorCount(); i++){
+			if(aiCrowd.getActor(i).getLevelBlock() == this.getRoom() &&
+			   PathFinder.isInFiringSight(this.getLocation()[0], this.getLocation()[1], aiCrowd.getActor(i).getLocation()[0], aiCrowd.getActor(i).getLocation()[1], this.room)){
+				aiCrowd.getActor(i).setStunnedTurns(STUN_TURNS + skillLevel);
+			}
+		}
+		
+		this.setExpired(true);
+	}
+	
+	/* (non-Javadoc)
+	 * @see atrophy.combat.levelAssets.LevelAsset#getImageName()
+	 */
+	public String getImageName(){
+		return LevelAssetImageNames.STUNGRENADE;
+	}
+
+}
