@@ -238,6 +238,7 @@ public class Missions{
 	
 	public void setMemCodes(Set<String> memCodes) {
 		this.memCodes = memCodes;
+		memCodes.add(DEFAULT_MEM_CODE);
 	}
 	
 	public Set<String> getMemCodes() {

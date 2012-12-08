@@ -9,7 +9,7 @@ import javax.imageio.ImageIO;
 
 import watoydoEngine.designObjects.display.ImageSingle;
 import watoydoEngine.io.ReadWriter;
-import atrophy.actions.MouseAbilityHandler;
+import atrophy.combat.actions.MouseAbilityHandler;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.LineDrawer;
 import atrophy.combat.display.ui.ActionTextBox;

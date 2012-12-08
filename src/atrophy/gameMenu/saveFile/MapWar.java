@@ -7,8 +7,10 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Random;
+import java.util.Set;
 
 import watoydoEngine.io.ReadWriter;
 import atrophy.combat.ai.AiGenerator;
@@ -155,9 +157,10 @@ public class MapWar {
 	/**
 	 * Update ownership.
 	 */
-	public void updateOwnership(){
+	public void updateSectors(){
 		for(int i = 0 ; i < this.sectors.size(); i++){
 			sectors.get(i).updateOwnership();
+			sectors.get(i).updateUnlockedMaps();
 		}
 	}
 	
@@ -190,6 +193,8 @@ public class MapWar {
 		 * The science chance.
 		 */
 		private int engineeringChance,medicalChance,weaponChance,scienceChance;
+
+		private Set<String> unlockedMaps;
 		
 		/**
 		 * Instantiates a new sector.
@@ -206,6 +211,7 @@ public class MapWar {
 			this.medicalChance = m;
 			this.weaponChance = w;
 			this.scienceChance = s;
+			this.unlockedMaps = new HashSet<>();
 		}
 		
 		/**
@@ -229,19 +235,28 @@ public class MapWar {
 		/**
 		 * Gets the map.
 		 *
-		 * @param i the i
+		 * @param mapIndex the i
 		 * @return the map
 		 */
-		public String getMap(int i){
+		public String getMap(int mapIndex){
 			
-			while(this.maps.length > i && i >= 0 && !Missions.getInstance().hasMemCode(this.maps[1][i])){
+			int i = 0;
+			
+			for(String mapName : unlockedMaps) {
+				if(i == mapIndex)
+					return mapName;
+					
 				i++;
 			}
 			
-			if(this.maps.length > i && i >= 0 && Missions.getInstance().hasMemCode(this.maps[1][i]))
-				return this.maps[0][i];
-			
 			return "";
+		}
+
+		public void updateUnlockedMaps() {
+			for(int i = 0; i < maps.length; i++) {
+				if(Missions.getInstance().hasMemCode(this.maps[1][i]))
+					unlockedMaps.add(this.maps[0][i]);
+			}
 		}
 		
 		/**
@@ -250,14 +265,16 @@ public class MapWar {
 		 * @param i the i
 		 * @return the owner
 		 */
-		public String getOwner(int i){
+		public String getOwner(int mapIndex){
 			
-			while(this.maps.length > i && i >= 0 && !Missions.getInstance().hasMemCode(this.maps[1][i])){
+			int i = 0;
+			
+			for(@SuppressWarnings("unused") String mapName : unlockedMaps) {
+				if(i == mapIndex)
+					return this.owner[i];
+					
 				i++;
 			}
-			
-			if(this.owner.length > i && i >= 0 && Missions.getInstance().hasMemCode(this.maps[1][i]))
-				return this.owner[i];
 			
 			return "";
 		}
@@ -385,6 +402,10 @@ public class MapWar {
 		 */
 		public void setScienceChance(int scienceChance) {
 			this.scienceChance = scienceChance;
+		}
+
+		public int getUnlockedMapCount() {
+			return this.unlockedMaps.size();
 		}
 
 	}

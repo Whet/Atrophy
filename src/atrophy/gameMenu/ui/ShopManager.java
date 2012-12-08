@@ -6,9 +6,9 @@ package atrophy.gameMenu.ui;
 import java.util.ArrayList;
 import java.util.Random;
 
-import atrophy.combat.items.resources.EngineeringSupply;
-import atrophy.combat.items.resources.ScienceSupply;
-import atrophy.combat.items.resources.WeaponSupply;
+import atrophy.combat.items.EngineeringSupply;
+import atrophy.combat.items.ScienceSupply;
+import atrophy.combat.items.WeaponSupply;
 import atrophy.gameMenu.saveFile.ItemMarket;
 import atrophy.gameMenu.saveFile.Squad.Squaddie;
 

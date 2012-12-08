@@ -225,31 +225,31 @@ public class FloatingIcons extends Crowd{
 	 *
 	 * @param drawShape the draw shape
 	 */
-	private void drawAllDoors(Graphics2D drawShape){
-		// draw all locked doors
-		for(int i = 0; i < levelManager.getCurrentLevel().getBlockCount(); i++){
-			for(int j = 0; j < levelManager.getCurrentLevel().getBlock(i).getPortalCount(); j++){
-				if(levelManager.getCurrentLevel().getBlock(i).getPortal(j).canUse()){
-					this.setLocation(levelManager.getCurrentLevel().getBlock(i).getPortal(j).getLocation()[0] +
-									 panningManager.getOffset()[0] - this.getBankedImage("openDoor").getWidth() * 0.5, 
-							  
-									 levelManager.getCurrentLevel().getBlock(i).getPortal(j).getLocation()[1] +
-									 panningManager.getOffset()[1] - this.getBankedImage("openDoor").getHeight() * 0.5);
-	
-					drawShape.drawImage(this.getBankedImage("openDoor"),this.getTransformationForDrawing(),null);
-				}
-				else{
-					this.setLocation(levelManager.getCurrentLevel().getBlock(i).getPortal(j).getLocation()[0] +
-							 panningManager.getOffset()[0] - this.getBankedImage("blockedDoor").getWidth() * 0.5, 
-					  
-							 levelManager.getCurrentLevel().getBlock(i).getPortal(j).getLocation()[1] +
-							 panningManager.getOffset()[1] - this.getBankedImage("blockedDoor").getHeight() * 0.5);
-
-					drawShape.drawImage(this.getBankedImage("blockedDoor"),this.getTransformationForDrawing(),null);
-				}
-			}
-		}
-	}
+//	private void drawAllDoors(Graphics2D drawShape){
+//		// draw all locked doors
+//		for(int i = 0; i < levelManager.getCurrentLevel().getBlockCount(); i++){
+//			for(int j = 0; j < levelManager.getCurrentLevel().getBlock(i).getPortalCount(); j++){
+//				if(levelManager.getCurrentLevel().getBlock(i).getPortal(j).canUse()){
+//					this.setLocation(levelManager.getCurrentLevel().getBlock(i).getPortal(j).getLocation()[0] +
+//									 panningManager.getOffset()[0] - this.getBankedImage("openDoor").getWidth() * 0.5, 
+//							  
+//									 levelManager.getCurrentLevel().getBlock(i).getPortal(j).getLocation()[1] +
+//									 panningManager.getOffset()[1] - this.getBankedImage("openDoor").getHeight() * 0.5);
+//	
+//					drawShape.drawImage(this.getBankedImage("openDoor"),this.getTransformationForDrawing(),null);
+//				}
+//				else{
+//					this.setLocation(levelManager.getCurrentLevel().getBlock(i).getPortal(j).getLocation()[0] +
+//							 panningManager.getOffset()[0] - this.getBankedImage("blockedDoor").getWidth() * 0.5, 
+//					  
+//							 levelManager.getCurrentLevel().getBlock(i).getPortal(j).getLocation()[1] +
+//							 panningManager.getOffset()[1] - this.getBankedImage("blockedDoor").getHeight() * 0.5);
+//
+//					drawShape.drawImage(this.getBankedImage("blockedDoor"),this.getTransformationForDrawing(),null);
+//				}
+//			}
+//		}
+//	}
 	
 	/**
 	 * Draw assets.

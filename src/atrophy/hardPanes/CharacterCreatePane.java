@@ -3,8 +3,11 @@
  */
 package atrophy.hardPanes;
 
+import java.util.HashSet;
+
 import watoydoEngine.designObjects.display.Crowd;
 import watoydoEngine.hardPanes.ModdableHardPane;
+import atrophy.gameMenu.saveFile.Missions;
 import atrophy.gameMenu.ui.Menu;
 import atrophy.splash.CharacterCreateMenu;
 
@@ -39,6 +42,7 @@ public class CharacterCreatePane extends ModdableHardPane{
 	 */
 	public static void clearOld() {
 		Menu.windowZ = 0;
+		Missions.getInstance().setMemCodes(new HashSet<String>());
 	}
 	
 }

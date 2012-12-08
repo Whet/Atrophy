@@ -6,6 +6,8 @@ package atrophy.combat.levelAssets;
 import atrophy.combat.ai.Ai;
 import atrophy.combat.ai.PathFinder;
 import atrophy.combat.display.AiCrowd;
+import atrophy.combat.display.ui.FloatingIcons;
+import atrophy.combat.level.LevelManager;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -37,8 +39,8 @@ public class StunGrenade extends Grenade{
 	 * @param momentum the momentum
 	 * @param skillLevel the skill level
 	 */
-	public StunGrenade(Ai originator, double[] location, double angleHeading, double momentum, int skillLevel){
-		super(originator,location,angleHeading,momentum,FUSE_TIME);
+	public StunGrenade(AiCrowd aiCrowd, FloatingIcons floatingIcons, LevelManager levelManager, Ai originator, double[] location, double angleHeading, double momentum, int skillLevel){
+		super(aiCrowd, floatingIcons, levelManager, originator,location,angleHeading,momentum,FUSE_TIME);
 		this.skillLevel = skillLevel;
 	}
 	

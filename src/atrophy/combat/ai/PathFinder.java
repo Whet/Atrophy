@@ -10,7 +10,6 @@ import java.util.Stack;
 import watoydoEngine.gubbinz.Maths;
 import atrophy.combat.level.LevelBlock;
 import atrophy.combat.level.Portal;
-import atrophy.exceptions.PathNotFoundException;
 
 // TODO: Auto-generated Javadoc
 /**

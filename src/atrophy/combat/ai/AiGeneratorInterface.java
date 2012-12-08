@@ -6,7 +6,7 @@ package atrophy.combat.ai;
 import java.util.ArrayList;
 import java.util.Random;
 
-import atrophy.combat.ai.thinkingAi.ThinkingAi.AiNode;
+import atrophy.combat.ai.ThinkingAi.AiNode;
 import atrophy.gameMenu.saveFile.Squad.Squaddie;
 
 /**

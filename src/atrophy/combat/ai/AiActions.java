@@ -1,24 +1,22 @@
 package atrophy.combat.ai;
 
 import watoydoEngine.gubbinz.Maths;
-import atrophy.actions.MouseAbilityHandler;
 import atrophy.combat.CombatInorganicManager;
 import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
-import atrophy.combat.ai.thinkingAi.ThinkingTeamObject;
+import atrophy.combat.actions.MouseAbilityHandler;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.ui.FloatingIcons;
 import atrophy.combat.display.ui.loot.LootBox;
 import atrophy.combat.display.ui.loot.LootBox.Lootable;
-import atrophy.combat.items.resources.ScienceSupply;
+import atrophy.combat.items.ScienceSupply;
 import atrophy.combat.level.LevelManager;
 import atrophy.combat.level.Portal;
 import atrophy.combat.levelAssets.Grenade;
 import atrophy.combat.levelAssets.StunGrenade;
 import atrophy.combat.mechanics.Abilities;
-import atrophy.exceptions.PathNotFoundException;
 
 public class AiActions {
 
@@ -403,11 +401,12 @@ public class AiActions {
 	 * @param skillLevel the skill level
 	 */
 	public void throwGrenadeAction(Ai invoker, int skillLevel){
-		combatInorganicManager.addLevelAsset(new Grenade(aiCrowd, floatingIcons, invoker,
-																	   invoker.getLocation().clone(), 
-																	   Maths.getRads(invoker.getLocation(), this.actionLocation), 
-																	   Maths.getDistance(invoker.getLocation(), this.actionLocation) / Grenade.FUSE_TIME,
-																	   skillLevel, levelManager));
+		combatInorganicManager.addLevelAsset(new Grenade(aiCrowd, floatingIcons, levelManager, 
+														invoker,
+													   invoker.getLocation().clone(), 
+													   Maths.getRads(invoker.getLocation(), this.actionLocation), 
+													   Maths.getDistance(invoker.getLocation(), this.actionLocation) / Grenade.FUSE_TIME,
+													   skillLevel));
 		invoker.aiData.removeGrenade();
 		invoker.assignAbilities();
 		invoker.removeOrdersWithoutUpdate(mouseAbilityHandler);
@@ -433,11 +432,12 @@ public class AiActions {
 	 * @param skillLevel the skill level
 	 */
 	public void throwStunGrenadeTurnAction(Ai invoker, int skillLevel){
-		combatInorganicManager.addLevelAsset(new StunGrenade(invoker,
-																		   invoker.getLocation().clone(), 
-																		   Maths.getRads(invoker.getLocation(), this.actionLocation), 
-																		   Maths.getDistance(invoker.getLocation(), this.actionLocation) / StunGrenade.FUSE_TIME,
-																		   skillLevel));
+		combatInorganicManager.addLevelAsset(new StunGrenade(aiCrowd, floatingIcons, levelManager,
+															invoker,
+														   invoker.getLocation().clone(), 
+														   Maths.getRads(invoker.getLocation(), this.actionLocation), 
+														   Maths.getDistance(invoker.getLocation(), this.actionLocation) / StunGrenade.FUSE_TIME,
+														   skillLevel));
 		invoker.aiData.removeStunGrenade();
 		invoker.assignAbilities();
 		invoker.removeOrdersWithoutUpdate(mouseAbilityHandler);

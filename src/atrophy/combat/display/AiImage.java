@@ -10,12 +10,12 @@ import java.util.ArrayList;
 
 import watoydoEngine.display.tweens.MotionTween;
 import watoydoEngine.gubbinz.Maths;
-import atrophy.actions.CombatKeyboardHandler;
-import atrophy.actions.MouseAbilityHandler;
 import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
+import atrophy.combat.actions.CombatKeyboardHandler;
+import atrophy.combat.actions.MouseAbilityHandler;
 import atrophy.combat.display.ui.InfoTextDisplayable;
 
 // TODO: Auto-generated Javadoc
@@ -41,14 +41,16 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 	 * @param tag the tag
 	 * @param x the x
 	 * @param y the y
+	 * @param mouseAbilityHandler 
 	 */
-	public AiImage(AiCrowd aiCrowd, CombatMembersManager combatMembersManager, CombatUiManager combatUiManager, CombatVisualManager combatVisualManager, PanningManager panningManager, String tag, double x, double y){
+	public AiImage(AiCrowd aiCrowd, CombatMembersManager combatMembersManager, CombatUiManager combatUiManager, CombatVisualManager combatVisualManager, PanningManager panningManager, String tag, double x, double y, MouseAbilityHandler mouseAbilityHandler){
 		super(aiCrowd, combatMembersManager, tag, null, x, y);
 		this.setZ(2);
 		this.panningManager = panningManager;
 		this.aiCrowd = aiCrowd;
 		this.combatUiManager = combatUiManager;
 		this.combatVisualManager = combatVisualManager;
+		this.mouseAbilityHandler = mouseAbilityHandler;
 	}
 	
 	// The Void

@@ -13,10 +13,10 @@ import java.util.Set;
 
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.display.ui.loot.LootBox.Lootable;
-import atrophy.combat.items.resources.EngineeringSupply;
-import atrophy.combat.items.resources.MedicalSupply;
-import atrophy.combat.items.resources.ScienceSupply;
-import atrophy.combat.items.resources.WeaponSupply;
+import atrophy.combat.items.EngineeringSupply;
+import atrophy.combat.items.MedicalSupply;
+import atrophy.combat.items.ScienceSupply;
+import atrophy.combat.items.WeaponSupply;
 
 
 // TODO: Auto-generated Javadoc
@@ -59,6 +59,8 @@ public class Level {
 	private Set<String> allowedSpawns;
 
 	private LevelManager levelManager;
+
+	private Set<LevelBlock> safeRooms;
 	
 	/**
 	 * Instantiates a new level.
@@ -81,6 +83,8 @@ public class Level {
 		allowedSpawns.add(AiGenerator.BANDITS);
 		allowedSpawns.add(AiGenerator.WHITE_VISTA);
 		allowedSpawns.add(AiGenerator.LONER);
+		
+		safeRooms = new HashSet<>();
 		
 	}
 	
@@ -406,6 +410,14 @@ public class Level {
 
 	public boolean allowedSpawn(String faction) {
 		return this.allowedSpawns.contains(faction);
+	}
+	
+	public void addSaferoom(LevelBlock safeRoom){
+		this.safeRooms.add(safeRoom);
+	}
+
+	public boolean isInSaferoom(LevelBlock levelBlock) {
+		return this.safeRooms.contains(levelBlock);
 	}
 	
 }

@@ -4,14 +4,15 @@ import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
+import atrophy.combat.actions.MouseAbilityHandler;
 import watoydoEngine.gubbinz.Maths;
 
 public class VehicleImage extends AiImage {
 
 	private double[] previousLocation;
 	
-	public VehicleImage(AiCrowd aiCrowd, CombatMembersManager combatMembersManager, CombatUiManager combatUiManager, CombatVisualManager combatVisualManager, PanningManager panningManager, String tag, double x, double y) {
-		super(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, tag, x, y);
+	public VehicleImage(AiCrowd aiCrowd, CombatMembersManager combatMembersManager, CombatUiManager combatUiManager, CombatVisualManager combatVisualManager, PanningManager panningManager, String tag, double x, double y, MouseAbilityHandler mouseAbilityHandler) {
+		super(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, tag, x, y, mouseAbilityHandler);
 		
 		this.previousLocation = new double[]{x,y};
 	}

@@ -9,7 +9,7 @@ import java.util.Set;
 
 import watoydoEngine.gubbinz.Maths;
 import atrophy.combat.ai.PathFinder;
-import atrophy.exceptions.PathNotFoundException;
+import atrophy.combat.ai.PathNotFoundException;
 
 // TODO: Auto-generated Javadoc
 // holds details about the current level
@@ -301,6 +301,10 @@ public class LevelManager {
 	 */
 	public LevelBlock getTargetBlock(String faction) {
 		return this.currentLevel.getTargetBlock(faction);
+	}
+
+	public boolean isInSaferoom(LevelBlock levelBlock) {
+		return this.currentLevel.isInSaferoom(levelBlock);
 	}
 	
 }

@@ -15,9 +15,9 @@ import watoydoEngine.designObjects.display.Displayable;
 import watoydoEngine.designObjects.display.ImageSingle;
 import watoydoEngine.io.ReadWriter;
 import watoydoEngine.workings.DisplayManager;
-import atrophy.actions.MouseAbilityHandler;
 import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatUiManager;
+import atrophy.combat.actions.MouseAbilityHandler;
 import atrophy.combat.mechanics.Abilities;
 
 // TODO: Auto-generated Javadoc

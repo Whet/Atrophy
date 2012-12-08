@@ -10,10 +10,10 @@ import java.util.Stack;
 
 import watoydoEngine.gubbinz.Maths;
 import atrophy.combat.ai.Ai;
-import atrophy.combat.ai.thinkingAi.ThinkingAi.AiNode;
+import atrophy.combat.ai.PathNotFoundException;
+import atrophy.combat.ai.ThinkingAi.AiNode;
 import atrophy.combat.display.ui.loot.LootBox.Lootable;
 import atrophy.combat.display.ui.loot.LootContainer;
-import atrophy.exceptions.PathNotFoundException;
 
 /**
  * The Class LevelBlock.

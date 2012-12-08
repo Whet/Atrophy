@@ -142,7 +142,6 @@ public class MiniMap implements Displayable {
 	public void init() {
 		visible = true;
 		z = 0;
-		this.tag = tag;
 		
 		this.defaultScale = WIDTH / (float)(levelManager.getCurrentLevel().getSize()[0] -levelManager.getCurrentLevel().getSize()[1]);
 		

@@ -19,7 +19,7 @@ import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.ai.AiGeneratorInterface;
 import atrophy.combat.ai.AiGeneratorInterface.SoloGenerateCommand;
 import atrophy.combat.ai.AiGeneratorInterface.TurretGenerateCommand;
-import atrophy.combat.ai.thinkingAi.ThinkingAi.AiNode;
+import atrophy.combat.ai.ThinkingAi.AiNode;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.ui.MessageBox;
 import atrophy.combat.display.ui.MessageBox.Dialogue;
@@ -329,6 +329,14 @@ public class LevelIO {
 					level.addBannedBlock(factions, blocksList.peek());
 				
 			}
+			else if(lineString.startsWith("SAFEROOM")) {
+				
+				if(blocksList.size() == 0){
+					throw new LevelFormatException(lineNumber,"A saferoom is applied before any rooms have been made!");
+				}
+				
+				level.addSaferoom(blocksList.peek());
+			}
 			else if(lineString.startsWith("LOCKEDNODE")){
 				double vertexX;
 				double vertexY;
@@ -341,7 +349,7 @@ public class LevelIO {
 					throw new LevelFormatException(lineNumber,"Room " + blockNumber + " has a lockedNode co-ordinate that is not a number!");
 				}
 				
-				AiNode aiNode = new AiNode(aiCrowd, messageBox, turnProcess, combatVisualManager, vertexX,vertexY);
+				AiNode aiNode = new AiNode(aiCrowd, messageBox, turnProcess, vertexX,vertexY);
 				
 				SoloGenerateCommand command = (SoloGenerateCommand) AiGeneratorInterface.getInstance().getCommands().get(AiGeneratorInterface.getInstance().getCommands().size() - 1);
 				
@@ -372,7 +380,7 @@ public class LevelIO {
 					factions[i] = ReadWriter.readFromArray(lineString, i + 2);
 				}
 				
-				lastNode = new AiNode(aiCrowd, messageBox, turnProcess, combatVisualManager, vertexX,vertexY);
+				lastNode = new AiNode(aiCrowd, messageBox, turnProcess, vertexX,vertexY);
 				
 				blocksList.peek().addNode(lastNode);
 				

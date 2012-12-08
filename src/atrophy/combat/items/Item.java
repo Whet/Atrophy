@@ -73,6 +73,14 @@ public abstract class Item {
 				return WeldingTorch.getInstance();
 			case KillTags.NAME:
 				return KillTags.getInstance();
+			case WeaponSupply.NAME:
+				return WeaponSupply.getInstance();
+			case EngineeringSupply.NAME:
+				return EngineeringSupply.getInstance();
+			case MedicalSupply.NAME:
+				return MedicalSupply.getInstance();
+			case ScienceSupply.NAME:
+				return ScienceSupply.getInstance();
 		}
 		return null;
 	}

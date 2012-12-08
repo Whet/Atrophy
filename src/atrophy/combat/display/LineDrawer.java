@@ -12,6 +12,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Random;
 
@@ -448,14 +449,14 @@ public class LineDrawer implements Displayable{
 			}
 		}
 		
-		// Room Vertex
 		for(int i = 0; i < ai.getLevelBlock().getHitBox().npoints; i++){
-			Polygon cover = ai.getLevelBlock().getHitBox();
-			if(cover != ai.getLevelBlock().getCoverObject(ai.getLocation()) && 
-					CombatVisualManager.spotNoRadiusFov(ai, ai.getEditLookAngle(), new double[]{cover.xpoints[i], cover.ypoints[i]})){
+			Polygon roomPoly = ai.getLevelBlock().getHitBox();
+			if(roomPoly != ai.getLevelBlock().getCoverObject(ai.getLocation()) && 
+					CombatVisualManager.spotNoRadiusFov(ai, ai.getEditLookAngle(), new double[]{roomPoly.xpoints[i], roomPoly.ypoints[i]})){
 
-			points.add(new int[]{cover.xpoints[i],
-								 cover.ypoints[i]});
+				points.add(new int[]{roomPoly.xpoints[i],
+									 roomPoly.ypoints[i]});
+			
 			}
 		}
 		
@@ -469,9 +470,12 @@ public class LineDrawer implements Displayable{
 		
 		cover.remove(ai.getCoverObject());
 		
+		List<int[]> nonVisibleRoomNodes = new ArrayList<>();
+		
 		while(pointsIt.hasNext()){
 			int[] point = pointsIt.next();
 			if(!PathFinder.isVertexSight(cover, ai.getLocation()[0], ai.getLocation()[1], point[0], point[1], ai.getLevelBlock())){
+				nonVisibleRoomNodes.add(point);
 				pointsIt.remove();
 			}
 		}
@@ -496,7 +500,7 @@ public class LineDrawer implements Displayable{
 			int[] lastPoint = PathFinder.getLastPoint(points.get(i), Maths.getRads(ai.getLocation(), points.get(i)), ai.getLevelBlock(),5);
 			
 			if(Maths.getDistance(lastPoint, points.get(i)) > 1)
-				points2.put( points.get(i), lastPoint);
+				points2.put(points.get(i), lastPoint);
 		}
 		
 		drawShape.setColor(colour);
@@ -509,10 +513,12 @@ public class LineDrawer implements Displayable{
 							   points2.get(startLoc)[1] + (int)panningManager.getOffset()[1]);
 		}
 		
-		drawShape.setColor(Color.red);
-		drawShape.setComposite(GraphicsFunctions.makeComposite(0.6f));
 		//TODO Shadow/Light effect
 		// Debug draw points
+		
+//		drawShape.setColor(Color.red);
+//		drawShape.setComposite(GraphicsFunctions.makeComposite(0.6f));
+//		
 //		for(int i = 0; i < points.size(); i++){
 //			drawShape.fillOval(points.get(i)[0] - 3 + (int)panningManager.getOffset()[0],
 //							   points.get(i)[1] - 3 + (int)panningManager.getOffset()[1],
@@ -529,8 +535,49 @@ public class LineDrawer implements Displayable{
 //							   6);
 //		}
 //		
+//		drawShape.setColor(Color.pink);
+//		for(int[] point : nonVisibleRoomNodes){
+//			drawShape.fillOval(point[0] - 3 + (int)panningManager.getOffset()[0],
+//							   point[1] - 3 + (int)panningManager.getOffset()[1],
+//							   6,
+//							   6);
+//		}
+//		
+//		List<Polygon> shadowPolygons = new ArrayList<>();
+//		
+//		// Go from RED to its casting YELLOW, navigate to the RED and create a poly as you go
+//		// Navigate round going from the YELLOW to the nearest node that is a nonvisible ROOM vertex
+//		
+//		if(nonVisibleRoomNodes.size() > 0) {
+//			for(int[] RED : points2.keySet()) {
+//				
+//				if(RED == points.get(0) || RED == points.get(1))
+//					continue;
+//				
+//				Polygon shadow = new Polygon();
+//				
+//				shadow.addPoint(RED[0] + (int)panningManager.getOffset()[0],
+//								RED[1] + (int)panningManager.getOffset()[1]);
+//				
+//				int[] YELLOW = points2.get(RED);
+//				
+//				shadow.addPoint(YELLOW[0] + (int)panningManager.getOffset()[0],
+//								YELLOW[1] + (int)panningManager.getOffset()[1]);
+//				
+//				shadowPolygons.add(shadow);
+//				
+//			}
+//		}
+//		
+//		drawShape.setComposite(GraphicsFunctions.makeComposite(0.8f));
+//		drawShape.setColor(Color.black);
+//		
+//		for(Polygon shadow : shadowPolygons) {
+//			drawShape.fillPolygon(shadow);
+//		}
 		
 		drawShape.setComposite(GraphicsFunctions.makeComposite(1.0f));
+		
 	}
 	
 	/*

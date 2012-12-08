@@ -1,8 +1,8 @@
 package atrophy.combat.display;
 
-import atrophy.actions.MouseAbilityHandler;
 import atrophy.combat.CombatInorganicManager;
 import atrophy.combat.CombatMembersManager;
+import atrophy.combat.actions.MouseAbilityHandler;
 import atrophy.combat.display.ui.UiUpdaterSuite;
 import atrophy.combat.level.LevelManager;
 import atrophy.combat.mechanics.TurnProcess;

@@ -10,32 +10,32 @@ import java.util.Set;
 
 import atrophy.combat.items.ArmourPlates1;
 import atrophy.combat.items.ArmourPlates2;
+import atrophy.combat.items.EngineeringSupply;
 import atrophy.combat.items.GrenadeItem;
+import atrophy.combat.items.Harpoon1;
+import atrophy.combat.items.Harpoon2;
 import atrophy.combat.items.KillTags;
 import atrophy.combat.items.LightStealthField;
+import atrophy.combat.items.MedicalSupply;
 import atrophy.combat.items.MediumStealthField;
+import atrophy.combat.items.MeleeWeapon1;
+import atrophy.combat.items.MeleeWeapon2;
+import atrophy.combat.items.Pistol1;
+import atrophy.combat.items.Pistol2;
+import atrophy.combat.items.Pistol3;
+import atrophy.combat.items.Pistol4;
+import atrophy.combat.items.Plasma1;
+import atrophy.combat.items.Plasma2;
+import atrophy.combat.items.Railgun;
 import atrophy.combat.items.ScienceScanner;
+import atrophy.combat.items.ScienceSupply;
 import atrophy.combat.items.SensorSuite;
+import atrophy.combat.items.Shotgun1;
 import atrophy.combat.items.SpeedBooster;
 import atrophy.combat.items.StunGrenadeItem;
 import atrophy.combat.items.UnitDetector;
+import atrophy.combat.items.WeaponSupply;
 import atrophy.combat.items.WeldingTorch;
-import atrophy.combat.items.resources.EngineeringSupply;
-import atrophy.combat.items.resources.MedicalSupply;
-import atrophy.combat.items.resources.ScienceSupply;
-import atrophy.combat.items.resources.WeaponSupply;
-import atrophy.combat.items.weapons.Harpoon1;
-import atrophy.combat.items.weapons.Harpoon2;
-import atrophy.combat.items.weapons.MeleeWeapon1;
-import atrophy.combat.items.weapons.MeleeWeapon2;
-import atrophy.combat.items.weapons.Pistol1;
-import atrophy.combat.items.weapons.Pistol2;
-import atrophy.combat.items.weapons.Pistol3;
-import atrophy.combat.items.weapons.Pistol4;
-import atrophy.combat.items.weapons.Plasma1;
-import atrophy.combat.items.weapons.Plasma2;
-import atrophy.combat.items.weapons.Railgun;
-import atrophy.combat.items.weapons.Shotgun1;
 
 public class ItemMarket {
 

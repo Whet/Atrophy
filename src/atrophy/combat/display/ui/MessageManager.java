@@ -7,7 +7,7 @@ import java.util.Iterator;
 import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.ai.Ai;
-import atrophy.combat.ai.thinkingAi.ThinkingAi;
+import atrophy.combat.ai.ThinkingAi;
 import atrophy.combat.display.ui.MessageBox.ChatterBox;
 import atrophy.combat.display.ui.MessageBox.Dialogue;
 import atrophy.combat.display.ui.MessageBox.SpeechOption;

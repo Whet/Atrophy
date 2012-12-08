@@ -33,7 +33,7 @@ import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.ai.Ai;
 import atrophy.combat.items.Item;
-import atrophy.combat.items.weapons.Weapon;
+import atrophy.combat.items.Weapon;
 import atrophy.combat.mechanics.TurnProcess;
 import atrophy.combat.missions.MissionManager;
 import atrophy.gameMenu.saveFile.Missions;
@@ -118,7 +118,6 @@ public class MessageBox extends Crowd{
 	 * The mouse drag region.
 	 */
 	private ActionRegion mouseDragRegion;
-
 	private CombatUiManager combatUiManager;
 	private TurnProcess turnProcess;
 	private Cartographer cartographer;
@@ -1126,7 +1125,7 @@ public class MessageBox extends Crowd{
 					double[] location = MissionManager.getInstance().spawnItem(itemName); 
 					
 					// mark the location as a stash
-//					cartographer.addNewMarker(location, Color.white, messageBox.getConversers()[1].getName() + "'s Stash");
+					messageBox.cartographer.addNewMarker(location, Color.white, messageBox.getConversers()[1].getName() + "'s Stash");
 				}
 				else{
 					if(Weapon.isWeapon(swapItems[0])){

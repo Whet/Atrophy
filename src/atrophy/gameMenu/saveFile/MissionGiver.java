@@ -7,10 +7,10 @@ import java.io.Serializable;
 import java.util.Random;
 
 import atrophy.combat.ai.AiGenerator;
-import atrophy.combat.items.resources.EngineeringSupply;
-import atrophy.combat.items.resources.MedicalSupply;
-import atrophy.combat.items.resources.ScienceSupply;
-import atrophy.combat.items.resources.WeaponSupply;
+import atrophy.combat.items.EngineeringSupply;
+import atrophy.combat.items.MedicalSupply;
+import atrophy.combat.items.ScienceSupply;
+import atrophy.combat.items.WeaponSupply;
 import atrophy.gameMenu.saveFile.Missions.GatherMission;
 import atrophy.gameMenu.saveFile.Missions.KillMission;
 import atrophy.gameMenu.saveFile.Missions.Mission;

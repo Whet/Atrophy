@@ -12,13 +12,12 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import watoydoEngine.gubbinz.Maths;
-import atrophy.actions.MouseAbilityHandler;
 import atrophy.combat.CombatInorganicManager;
 import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
-import atrophy.combat.ai.thinkingAi.ThinkingAi;
+import atrophy.combat.actions.MouseAbilityHandler;
 import atrophy.combat.combatEffects.Effect;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.MapPainter;
@@ -27,14 +26,13 @@ import atrophy.combat.display.ui.loot.LootBox;
 import atrophy.combat.display.ui.loot.LootBox.Lootable;
 import atrophy.combat.items.Inventory;
 import atrophy.combat.items.Item;
-import atrophy.combat.items.weapons.MeleeWeapon1;
-import atrophy.combat.items.weapons.Weapon;
+import atrophy.combat.items.MeleeWeapon1;
+import atrophy.combat.items.Weapon;
 import atrophy.combat.level.LevelBlock;
 import atrophy.combat.level.LevelManager;
 import atrophy.combat.level.Portal;
 import atrophy.combat.mechanics.Abilities;
 import atrophy.combat.mechanics.TurnProcess;
-import atrophy.exceptions.PathNotFoundException;
 
 // TODO: Auto-generated Javadoc
 // Contains vars and functions for Ai game mechanics

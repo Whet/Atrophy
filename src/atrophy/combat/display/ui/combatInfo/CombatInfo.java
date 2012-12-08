@@ -20,7 +20,7 @@ import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.display.ui.FloatingIcons;
-import atrophy.combat.items.weapons.Weapon;
+import atrophy.combat.items.Weapon;
 
 
 // TODO: Auto-generated Javadoc

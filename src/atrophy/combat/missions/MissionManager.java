@@ -8,19 +8,19 @@ import java.util.HashMap;
 import atrophy.combat.display.ui.loot.LootBox.Lootable;
 import atrophy.combat.items.ArmourPlates1;
 import atrophy.combat.items.ArmourPlates2;
+import atrophy.combat.items.EngineeringSupply;
 import atrophy.combat.items.GrenadeItem;
 import atrophy.combat.items.Item;
 import atrophy.combat.items.LightStealthField;
+import atrophy.combat.items.MedicalSupply;
 import atrophy.combat.items.MediumStealthField;
 import atrophy.combat.items.ScienceScanner;
 import atrophy.combat.items.SensorSuite;
 import atrophy.combat.items.SpeedBooster;
 import atrophy.combat.items.StunGrenadeItem;
 import atrophy.combat.items.UnitDetector;
+import atrophy.combat.items.WeaponSupply;
 import atrophy.combat.items.WeldingTorch;
-import atrophy.combat.items.resources.EngineeringSupply;
-import atrophy.combat.items.resources.MedicalSupply;
-import atrophy.combat.items.resources.WeaponSupply;
 
 // TODO: Auto-generated Javadoc
 /**

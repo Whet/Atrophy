@@ -6,7 +6,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import watoydoEngine.gubbinz.Maths;
-import atrophy.actions.MouseAbilityHandler;
+import atrophy.combat.actions.MouseAbilityHandler;
 import atrophy.combat.combatEffects.Effect;
 import atrophy.combat.items.ArmourPlates1;
 import atrophy.combat.items.ArmourPlates2;
@@ -16,15 +16,15 @@ import atrophy.combat.items.Item;
 import atrophy.combat.items.KillTags;
 import atrophy.combat.items.LightStealthField;
 import atrophy.combat.items.MediumStealthField;
+import atrophy.combat.items.MeleeWeapon1;
+import atrophy.combat.items.MeleeWeapon2;
 import atrophy.combat.items.ScienceScanner;
 import atrophy.combat.items.SensorSuite;
 import atrophy.combat.items.SpeedBooster;
 import atrophy.combat.items.StunGrenadeItem;
 import atrophy.combat.items.UnitDetector;
+import atrophy.combat.items.Weapon;
 import atrophy.combat.items.WeldingTorch;
-import atrophy.combat.items.weapons.MeleeWeapon1;
-import atrophy.combat.items.weapons.MeleeWeapon2;
-import atrophy.combat.items.weapons.Weapon;
 import atrophy.combat.mechanics.Abilities;
 
 public class AiData {

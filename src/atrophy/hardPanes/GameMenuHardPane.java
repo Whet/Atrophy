@@ -38,7 +38,7 @@ public class GameMenuHardPane extends ModdableHardPane{
 		crowd.addCrowd(MenuBar.getInstance());
 		crowd.addCrowd(WindowManager.getInstance());
 		
-		MapWar.getInstance().updateOwnership();
+		MapWar.getInstance().updateSectors();
 		ShopManager.getInstance().randomItems();
 		Missions.getInstance().updateMissions();
 		

@@ -4,9 +4,9 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
-import atrophy.actions.MouseAbilityHandler;
 import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatUiManager;
+import atrophy.combat.actions.MouseAbilityHandler;
 
 import watoydoEngine.designObjects.display.ButtonSingle;
 import watoydoEngine.sounds.SoundBoard;

@@ -8,7 +8,6 @@ import watoydoEngine.gubbinz.Maths;
 import atrophy.combat.level.LevelBlock;
 import atrophy.combat.level.LevelManager;
 import atrophy.combat.level.Portal;
-import atrophy.exceptions.PathNotFoundException;
 
 public class AiPathing {
 

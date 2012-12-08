@@ -57,13 +57,13 @@ public class CartographerBox extends Crowd{
 	
 	/**
 	 * Instantiates a new cartographer box.
+	 * @param cartographer 
 	 */
-	public CartographerBox(final PanningManager panningManager){
+	public CartographerBox(final PanningManager panningManager, final Cartographer cartographer){
 		super("CartBox", false);
 		
-		this.cartographer = new Cartographer();
-		
 		this.panningManager = panningManager;
+		this.cartographer = cartographer;
 		
 		this.setLocation(ActivePane.getInstance().getWidth() - 340, 30);
 		

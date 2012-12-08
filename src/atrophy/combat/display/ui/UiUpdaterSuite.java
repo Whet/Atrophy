@@ -1,10 +1,10 @@
 package atrophy.combat.display.ui;
 
-import atrophy.actions.MouseAbilityHandler;
 import atrophy.combat.CombatInorganicManager;
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
+import atrophy.combat.actions.MouseAbilityHandler;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.AiManagementSuite;
 import atrophy.combat.display.ui.loot.LootBox;
@@ -29,7 +29,7 @@ public class UiUpdaterSuite {
 		this.combatUiManager = new CombatUiManager(cartographer, aiManagementSuite.getCombatMembersManager(), panningManager, aiManagementSuite.getAiCrowd(), turnProcess, levelManager);
 		this.combatVisualManager = new CombatVisualManager(aiManagementSuite.getAiCrowd(), combatUiManager, aiManagementSuite.getCombatMembersManager(), levelManager);
 		this.messageBox = new MessageBox(combatUiManager, turnProcess, aiManagementSuite.getCombatMembersManager(), combatVisualManager, cartographer);
-		this.cartographerBox = new CartographerBox(panningManager);
+		this.cartographerBox = new CartographerBox(panningManager, cartographer);
 		this.lootBox = new LootBox(combatUiManager, messageBox, cartographerBox);
 		this.floatingIcons = new FloatingIcons(aiManagementSuite.getCombatMembersManager(), panningManager, aiManagementSuite.getAiCrowd(), combatVisualManager, combatInorganicManager, levelManager);
 		

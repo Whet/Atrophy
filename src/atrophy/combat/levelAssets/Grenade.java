@@ -77,9 +77,9 @@ public class Grenade implements LevelAsset{
 	 * @param skillLevel the skill level
 	 * @param levelManager 
 	 */
-	public Grenade(AiCrowd aiCrowd, FloatingIcons floatingIcons, Ai originator, double[] location, double angleHeading, double momentum, int skillLevel, LevelManager levelManager){
+	public Grenade(AiCrowd aiCrowd, FloatingIcons floatingIcons, LevelManager levelManager, Ai originator, double[] location, double angleHeading, double momentum, int skillLevel){
 
-		this.levelManager = levelManager;
+		
 		
 		this.originator = originator;
 		this.location = location;
@@ -96,6 +96,7 @@ public class Grenade implements LevelAsset{
 		
 		this.aiCrowd = aiCrowd;
 		this.floatingIcons = floatingIcons;
+		this.levelManager = levelManager;
 	}
 
 	/**
@@ -107,7 +108,7 @@ public class Grenade implements LevelAsset{
 	 * @param momentum the momentum
 	 * @param fuseTime the fuse time
 	 */
-	protected Grenade(Ai originator, double[] location, double angleHeading, double momentum, byte fuseTime) {
+	protected Grenade(AiCrowd aiCrowd, FloatingIcons floatingIcons, LevelManager levelManager, Ai originator, double[] location, double angleHeading, double momentum, byte fuseTime) {
 		
 		this.location = location;
 		this.angleHeading = angleHeading;
@@ -120,6 +121,11 @@ public class Grenade implements LevelAsset{
 		counter = fuseTime;
 		
 		expired = false;
+		
+
+		this.aiCrowd = aiCrowd;
+		this.floatingIcons = floatingIcons;
+		this.levelManager = levelManager;
 	}
 
 	/**

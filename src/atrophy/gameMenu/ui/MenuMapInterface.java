@@ -10,12 +10,12 @@ import java.util.Random;
 
 import watoydoEngine.designObjects.display.Crowd;
 import watoydoEngine.workings.displayActivity.ActivePane;
-import atrophy.actions.ActionSuite;
 import atrophy.combat.CombatInorganicManager;
+import atrophy.combat.actions.ActionSuite;
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.ai.AiGeneratorInterface;
+import atrophy.combat.ai.TurretAi;
 import atrophy.combat.ai.AiGeneratorInterface.GenerateCommand;
-import atrophy.combat.ai.thinkingAi.loner.TurretAi;
 import atrophy.combat.display.AiManagementSuite;
 import atrophy.combat.display.ui.UiUpdaterSuite;
 import atrophy.combat.level.LevelIO;

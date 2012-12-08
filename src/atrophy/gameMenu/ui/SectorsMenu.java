@@ -14,6 +14,7 @@ import watoydoEngine.designObjects.display.TextButton;
 import watoydoEngine.gubbinz.GraphicsFunctions;
 import watoydoEngine.sounds.SoundBoard;
 import atrophy.gameMenu.saveFile.MapWar;
+import atrophy.gameMenu.saveFile.MapWar.Sector;
 
 /**
  * The Class SectorsMenu.
@@ -114,10 +115,11 @@ public class SectorsMenu extends Menu{
 	private void updateText() {
 		for(int i = 0; i < buttons.size(); i++){
 			
-			String name = MapWar.getInstance().getSector(i).getName();
+			Sector sector = MapWar.getInstance().getSector(i);
+			String name = sector.getName();
 			
 			// remove .txt
-			if(!name.isEmpty())
+			if(!name.isEmpty() && sector.getUnlockedMapCount() > 0)
 				buttons.get(i).setText(name);
 			else
 				buttons.get(i).setText("");

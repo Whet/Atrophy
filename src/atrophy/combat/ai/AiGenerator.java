@@ -15,21 +15,13 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import watoydoEngine.designObjects.display.Crowd;
-import atrophy.actions.MouseAbilityHandler;
 import atrophy.combat.CombatInorganicManager;
 import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
+import atrophy.combat.actions.MouseAbilityHandler;
 import atrophy.combat.ai.AiGeneratorInterface.SoloGenerateCommand;
-import atrophy.combat.ai.thinkingAi.BanditTeamObject;
-import atrophy.combat.ai.thinkingAi.TeamObject;
-import atrophy.combat.ai.thinkingAi.ThinkingAi;
-import atrophy.combat.ai.thinkingAi.ThinkingTeamObject;
-import atrophy.combat.ai.thinkingAi.WhiteVistaTeamObject;
-import atrophy.combat.ai.thinkingAi.loner.LonerAi;
-import atrophy.combat.ai.thinkingAi.loner.LonerTeamObject;
-import atrophy.combat.ai.thinkingAi.loner.TurretAi;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.AiImage;
 import atrophy.combat.display.VehicleImage;
@@ -38,7 +30,7 @@ import atrophy.combat.display.ui.loot.LootBox;
 import atrophy.combat.items.GrenadeItem;
 import atrophy.combat.items.Item;
 import atrophy.combat.items.StunGrenadeItem;
-import atrophy.combat.items.weapons.Weapon;
+import atrophy.combat.items.Weapon;
 import atrophy.combat.level.LevelBlock;
 import atrophy.combat.level.LevelManager;
 import atrophy.combat.mechanics.TurnProcess;
@@ -215,7 +207,7 @@ public class AiGenerator{
 		
 		// Test Ai image
 			
-		AiImage aiImg = new AiImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, "Thinker"+"Loner",0,0);
+		AiImage aiImg = new AiImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, "Thinker"+"Loner",0,0, mouseAbilityHandler);
 		ThinkingAi ai = null;
 		
 		switch(command.getFaction()){
@@ -280,7 +272,7 @@ public class AiGenerator{
 			AiImage aiImg = null;
 			
 			if(squad.get(i).isVehicle()){
-				aiImg = new VehicleImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, "AiImg"+i,100,100);
+				aiImg = new VehicleImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, "AiImg"+i,100,100, mouseAbilityHandler);
 				
 				switch(squad.get(i).getVehicleType()){
 					case MuleAi.MULE:
@@ -292,7 +284,7 @@ public class AiGenerator{
 				ai.setTeam("1Player");
 			}
 			else{
-				aiImg = new AiImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, "AiImg"+i,100,100);
+				aiImg = new AiImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, "AiImg"+i,100,100, mouseAbilityHandler);
 				
 				ai = new Ai(floatingIcons, mouseAbilityHandler, squad.get(i).getName(),randomLocation[0],randomLocation[1], combatInorganicManager, levelManager, lootbox, combatMembersManager, combatUiManager, combatVisualManager, aiCrowd, panningManager);
 				ai.setImage(squad.get(i).getImage());
@@ -362,7 +354,7 @@ public class AiGenerator{
 		
 		// Test Ai image
 			
-		AiImage aiImg = new AiImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, "Thinker"+"Loner",0,0);
+		AiImage aiImg = new AiImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, "Thinker"+"Loner",0,0, mouseAbilityHandler);
 		ThinkingAi ai;
 		
 //		switch(new Random().nextInt(5)){
@@ -395,7 +387,7 @@ public class AiGenerator{
 	
 	private void generateTurrets(String team, Crowd crowd, double x, double y){
 		
-		AiImage aiImg = new AiImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, "Thinker"+"Loner",0,0);
+		AiImage aiImg = new AiImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, "Thinker"+"Loner",0,0, mouseAbilityHandler);
 		ThinkingAi ai;
 		
 		ai = new TurretAi(panningManager, aiCrowd, combatVisualManager, turnProcess, floatingIcons, mouseAbilityHandler, combatMembersManager, x,y, levelManager, combatInorganicManager, combatUiManager, lootbox);
@@ -438,7 +430,7 @@ public class AiGenerator{
 		for(int i = 0; i < members; i++){
 			// Test Ai image
 			
-			AiImage aiImg = new AiImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, "Thinker"+faction+i,0,0);
+			AiImage aiImg = new AiImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, "Thinker"+faction+i,0,0, mouseAbilityHandler);
 			
 			ThinkingAi ai = new ThinkingAi(panningManager, combatVisualManager, turnProcess, floatingIcons, mouseAbilityHandler, aiCrowd, combatMembersManager, randomName(),randomLocation[0],randomLocation[1], levelManager, combatInorganicManager, combatUiManager, lootbox);
 			

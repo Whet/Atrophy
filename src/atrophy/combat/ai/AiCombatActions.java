@@ -1,11 +1,9 @@
 package atrophy.combat.ai;
 
-import atrophy.actions.MouseAbilityHandler;
 import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
-import atrophy.combat.ai.thinkingAi.ThinkingAi;
-import atrophy.combat.ai.thinkingAi.ThinkingTeamObject;
+import atrophy.combat.actions.MouseAbilityHandler;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.ui.FloatingIcons;
 import atrophy.combat.mechanics.ScoringMechanics;

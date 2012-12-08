@@ -7,7 +7,7 @@ import java.util.Random;
 
 import atrophy.combat.CombatMembersManager;
 import atrophy.combat.ai.Ai;
-import atrophy.combat.items.weapons.Weapon;
+import atrophy.combat.items.Weapon;
 
 /**
  * The Class ScoringMechanics.

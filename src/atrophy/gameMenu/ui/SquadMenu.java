@@ -14,8 +14,8 @@ import watoydoEngine.gubbinz.GraphicsFunctions;
 import watoydoEngine.sounds.SoundBoard;
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.ai.MuleAi;
-import atrophy.combat.items.weapons.MeleeWeapon1;
-import atrophy.combat.items.weapons.UnarmedWeapon;
+import atrophy.combat.items.MeleeWeapon1;
+import atrophy.combat.items.UnarmedWeapon;
 import atrophy.gameMenu.saveFile.Squad;
 import atrophy.gameMenu.saveFile.Squad.Squaddie;
 

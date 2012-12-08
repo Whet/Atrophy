@@ -6,7 +6,7 @@ package atrophy.combat.display.ui.loot;
 import atrophy.combat.display.ui.loot.LootBox.Lootable;
 import atrophy.combat.items.Inventory;
 import atrophy.combat.items.Item;
-import atrophy.combat.items.weapons.Weapon;
+import atrophy.combat.items.Weapon;
 
 /**
  * The Class LootContainer.

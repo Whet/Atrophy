@@ -57,7 +57,7 @@ public class Cartographer {
 	 */
 	public void addNewMarker(double[] location, Color colour, String description) {
 		if(markers.size() < CartographerBox.MAX_MARKERS)
-		this.markers.add(new Marker(location, colour, description));
+			this.markers.add(new Marker(location, colour, description));
 	}
 	
 	/**
@@ -69,7 +69,7 @@ public class Cartographer {
 	 */
 	public void addNewMarker(LevelBlock levelBlock, Color colour, String description) {
 		if(markers.size() < CartographerBox.MAX_MARKERS)
-		this.markers.add(new Marker(levelBlock.getCentre(), colour, description));
+			this.markers.add(new Marker(levelBlock.getCentre(), colour, description));
 	}
 	
 

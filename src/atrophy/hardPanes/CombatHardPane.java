@@ -5,13 +5,11 @@ package atrophy.hardPanes;
 
 import watoydoEngine.designObjects.display.Crowd;
 import watoydoEngine.hardPanes.ModdableHardPane;
-import atrophy.actions.ActionSuite;
 import atrophy.combat.CombatInorganicManager;
-import atrophy.combat.CombatVisualManager;
+import atrophy.combat.actions.ActionSuite;
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.AiManagementSuite;
-import atrophy.combat.display.LineDrawer;
 import atrophy.combat.display.MapPainter;
 import atrophy.combat.display.ui.UiUpdaterSuite;
 import atrophy.combat.level.LevelManager;

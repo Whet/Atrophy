@@ -12,7 +12,7 @@ import watoydoEngine.gubbinz.Maths;
 import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.PanningManager;
-import atrophy.exceptions.PathNotFoundException;
+import atrophy.combat.ai.PathNotFoundException;
 
 // TODO: Auto-generated Javadoc
 /**

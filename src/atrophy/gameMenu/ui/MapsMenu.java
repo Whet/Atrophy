@@ -78,7 +78,7 @@ public class MapsMenu extends Menu {
 				public boolean mD(Point mousePosition, MouseEvent e) {;
 					try {
 						setPriorityMode(false);
-						MenuMapInterface.loadLevel(ReadWriter.getRootFile("Maps\\" + sector.getMaps()[ind + (page * MAX_ITEMS)]), sector.getOwner(ind + (page * MAX_ITEMS)),
+						MenuMapInterface.loadLevel(ReadWriter.getRootFile("Maps\\" + sector.getMap(ind + (page * MAX_ITEMS))), sector.getOwner(ind + (page * MAX_ITEMS)),
 																		  sector.getEngineeringChance(),sector.getMedicalChance(),sector.getWeaponChance(),sector.getScienceChance());
 						SquadMenu.getSquad().resetKills();
 					} 
