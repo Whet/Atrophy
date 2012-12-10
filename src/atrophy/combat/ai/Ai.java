@@ -801,5 +801,9 @@ public class Ai implements Lootable{
 	public void clearSkills(){
 		this.aiData.clearSkills();
 	}
+
+	public int getAccuracyBoost() {
+		return this.aiData.getAccuracyBoost();
+	}
 	
 }

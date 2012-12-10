@@ -78,7 +78,7 @@ public abstract class Formation {
 	 * @param ai the ai
 	 * @return the heading
 	 */
-	public double getHeading(ThinkingAi ai){
+	public double getHeading(@SuppressWarnings("unused") ThinkingAi ai){
 		return 0;
 	}
 	
@@ -88,7 +88,7 @@ public abstract class Formation {
 	 * @param ai the ai
 	 * @return the location
 	 */
-	public double[] getLocation(ThinkingAi ai){
+	public double[] getLocation(@SuppressWarnings("unused") ThinkingAi ai){
 		return null;
 	}
 	

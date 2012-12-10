@@ -31,8 +31,7 @@ public abstract class ButtonSingle extends AbstractButton implements ImageDispla
 	 * @param tag the tag
 	 * @param image the image
 	 */
-	public ButtonSingle(String tag, BufferedImage image){
-		super(tag);
+	public ButtonSingle(BufferedImage image){
 		this.image = image;
 	}
 	
@@ -44,8 +43,8 @@ public abstract class ButtonSingle extends AbstractButton implements ImageDispla
 	 * @param x the x
 	 * @param y the y
 	 */
-	public ButtonSingle(String tag, BufferedImage image, double x, double y){
-		super(tag,x,y);
+	public ButtonSingle(BufferedImage image, double x, double y){
+		super(x,y);
 		this.image = image;
 	}
 	
@@ -56,8 +55,8 @@ public abstract class ButtonSingle extends AbstractButton implements ImageDispla
 	 * @param image the image
 	 * @param visible the visible
 	 */
-	public ButtonSingle(String tag, BufferedImage image, boolean visible){
-		super(tag,visible);
+	public ButtonSingle(BufferedImage image, boolean visible){
+		super(visible);
 		this.image = image;
 	}
 	
@@ -69,8 +68,8 @@ public abstract class ButtonSingle extends AbstractButton implements ImageDispla
 	 * @param visible the visible
 	 * @param active the active
 	 */
-	public ButtonSingle(String tag, BufferedImage image, boolean visible, boolean active){
-		super(tag,visible,active);
+	public ButtonSingle(BufferedImage image, boolean visible, boolean active){
+		super(visible,active);
 		this.image = image;
 	}
 	
@@ -83,8 +82,8 @@ public abstract class ButtonSingle extends AbstractButton implements ImageDispla
 	 * @param y the y
 	 * @param visible the visible
 	 */
-	public ButtonSingle(String tag, BufferedImage image, double x, double y, boolean visible){
-		super(tag,x,y,visible);
+	public ButtonSingle(BufferedImage image, double x, double y, boolean visible){
+		super(x,y,visible);
 		this.image = image;
 	}
 	
@@ -99,8 +98,8 @@ public abstract class ButtonSingle extends AbstractButton implements ImageDispla
 	 * @param active the active
 	 * @param z the z
 	 */
-	public ButtonSingle(String tag, BufferedImage image, double x, double y, boolean visible, boolean active, int z){
-		super(tag,x,y,visible,active,z);
+	public ButtonSingle(BufferedImage image, double x, double y, boolean visible, boolean active, int z){
+		super(x,y,visible,active,z);
 		this.image = image;
 	}
 	

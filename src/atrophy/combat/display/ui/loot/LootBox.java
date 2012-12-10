@@ -144,7 +144,7 @@ public class LootBox extends Crowd{
 	 * Instantiates a new loot box.
 	 */
 	public LootBox(CombatUiManager combatUiManager, MessageBox messageBox, CartographerBox cartographerBox){
-		super("LootBox", true);
+		super(true);
 		
 		this.setVisible(false);
 		
@@ -158,10 +158,10 @@ public class LootBox extends Crowd{
 			
 			weaponLootButtons = new LootButton[2];
 			
-			weaponLootButtons[0] = new LootButton(this, combatUiManager, "Weapon1",null,10);
+			weaponLootButtons[0] = new LootButton(this, combatUiManager, null,10);
 			this.weaponLootButtons[0].setVisible(false);
 			
-			weaponLootButtons[1] = new LootButton(this, combatUiManager, "Weapon2",null,11);
+			weaponLootButtons[1] = new LootButton(this, combatUiManager, null,11);
 			this.weaponLootButtons[1].setVisible(false);
 			
 			this.addButton(this.weaponLootButtons[0]);
@@ -177,24 +177,24 @@ public class LootBox extends Crowd{
 			LootButton lootButton;
 			
 			for(int i = 0; i < 5; i++){
-				lootButton = new LootButton(this, combatUiManager, "LooterButton"+i,null,i);
+				lootButton = new LootButton(this, combatUiManager, null,i);
 				lootButton.setVisible(false);
 				this.looterButtons.add(lootButton);
 				this.addButton(lootButton);
 			}
 			
 			for(int i = 0; i < 5; i++){
-				lootButton = new LootButton(this, combatUiManager, "LootedButton"+i,null,i + 5);
+				lootButton = new LootButton(this, combatUiManager, null,i + 5);
 				lootButton.setVisible(false);
 				this.lootedButtons.add(lootButton);
 				this.addButton(lootButton);
 			}
 			
 			lootText = new Text[2];
-			lootText[0] = new Text("LooterName");
-			lootText[1] = new Text("LootedName");
+			lootText[0] = new Text();
+			lootText[1] = new Text();
 			
-			skillText = new Text("SkillText");
+			skillText = new Text();
 			this.addDisplayItem(skillText);
 			
 			lootText[0].setColour(Color.yellow.darker());
@@ -261,7 +261,7 @@ public class LootBox extends Crowd{
 			System.exit(-1);
 		}
 		
-		mouseDragRegion = new ActionRegion(this.getLocation()[0], this.getLocation()[1], size[0], size[1], false) {
+		mouseDragRegion = new ActionRegion(this.getLocation()[0], this.getLocation()[1], size[0], size[1]) {
 			
 			private boolean mouseDown = false;
 			

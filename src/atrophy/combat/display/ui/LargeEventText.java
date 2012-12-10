@@ -32,7 +32,7 @@ public class LargeEventText extends Text {
 	 * Instantiates a new large event text.
 	 */
 	public LargeEventText() {
-		super("LargeEventText",0,DisplayManager.getInstance().getResolution()[1] * 0.5);
+		super(0,DisplayManager.getInstance().getResolution()[1] * 0.5);
 		this.setFont(FontList.AUD24);
 		// initialise just to avoid if(null)
 		flashTimer = new Timer();

@@ -5,6 +5,8 @@ package atrophy.combat.display.ui.abilities;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 
@@ -53,13 +55,17 @@ public class ActionsBar extends Crowd{
 	
 	private CombatMembersManager combatMembersManager;
 	
+	private Map<String, AbilityButton> actionButtonMap;
+	
+	private ImageSingle abilityBack; 
+	
 	/**
 	 * Instantiates a new actions bar.
 	 */
-	public ActionsBar(CombatMembersManager combatMembersManager, CombatUiManager combatUiManager) {
-		super("ActionsBar", true);
+	public ActionsBar(CombatMembersManager combatMembersManager) {
+		super(true);
 		
-		ImageSingle abilityBack = null;
+		actionButtonMap = new HashMap<>();
 		
 		this.combatMembersManager = combatMembersManager;
 		
@@ -69,60 +75,60 @@ public class ActionsBar extends Crowd{
 			
 			this.addDisplayItem(abilityBack);
 			
-			BlockDoorAction blockDoor = new BlockDoorAction("blockDoor",ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/blockDoor.png")));
-			
+			BlockDoorAction blockDoor = new BlockDoorAction(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/blockDoor.png")));
+			actionButtonMap.put("blockDoor", blockDoor);
 			this.addButton(blockDoor);
 			
-			ThrowGrenadeAction throwGrenade = new ThrowGrenadeAction("throwGrenade",ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/throwGrenade.png")));
-			
+			ThrowGrenadeAction throwGrenade = new ThrowGrenadeAction(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/throwGrenade.png")));
+			actionButtonMap.put("throwGrenade", throwGrenade);
 			this.addButton(throwGrenade);
 			
-			ThrowStunGrenadeAction throwStunGrenade = new ThrowStunGrenadeAction("throwStunGrenade",ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/throwStunGrenade.png")));
-			
+			ThrowStunGrenadeAction throwStunGrenade = new ThrowStunGrenadeAction(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/throwStunGrenade.png")));
+			actionButtonMap.put("throwStunGrenade", throwStunGrenade);
 			this.addButton(throwStunGrenade);
 			
-			ScanRoomAction scanRoom = new ScanRoomAction("scanRoom",ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/scanRoom.png")));
-			
+			ScanRoomAction scanRoom = new ScanRoomAction(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/scanRoom.png")));
+			actionButtonMap.put("scanRoom", scanRoom);
 			this.addButton(scanRoom);
 			
-			UnitDetectorAction unitDetector = new UnitDetectorAction("unitDetector",ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/scanRoom.png")));
-			
+			UnitDetectorAction unitDetector = new UnitDetectorAction(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/scanRoom.png")));
+			actionButtonMap.put("unitDetector", unitDetector);
 			this.addButton(unitDetector);
 			
-			KillTagAction killTag = new KillTagAction("killTag",ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/scanRoom.png")));
-			
+			KillTagAction killTag = new KillTagAction(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/scanRoom.png")));
+			actionButtonMap.put("killTag", killTag);
 			this.addButton(killTag);
 			
-			ScienceScanRoom scanObjectiveRoom = new ScienceScanRoom("scanObjectiveRoom",ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/scanRoom.png")));
-			
+			ScienceScanRoom scanObjectiveRoom = new ScienceScanRoom(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/scanRoom.png")));
+			actionButtonMap.put("scanObjectiveRoom", scanObjectiveRoom);
 			this.addButton(scanObjectiveRoom);
 			
-			LightStealthAction stealth1 = new LightStealthAction("stealth1",ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/stealthed.png")));
-			
+			LightStealthAction stealth1 = new LightStealthAction(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/stealthed.png")));
+			actionButtonMap.put("stealth1", stealth1);
 			this.addButton(stealth1);
 			
-			MediumStealthAction stealth2 = new MediumStealthAction("stealth2",ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/stealthed.png")));
-			
+			MediumStealthAction stealth2 = new MediumStealthAction(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/stealthed.png")));
+			actionButtonMap.put("stealth2", stealth2);
 			this.addButton(stealth2);
 			
-			SpeedBoosterAction speedBoost = new SpeedBoosterAction("speedBoost",ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/speedBoost.png")));
-			
+			SpeedBoosterAction speedBoost = new SpeedBoosterAction(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/speedBoost.png")));
+			actionButtonMap.put("speedBoost", speedBoost);
 			this.addButton(speedBoost);
 			
-			SpeechAction speech = new SpeechAction("speech",ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/speechIcon.png")));
-			
+			SpeechAction speech = new SpeechAction(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/speechIcon.png")));
+			actionButtonMap.put("blockDoor", speech);
 			this.addButton(speech);
 			
-			StashSearchAction stashSearch = new StashSearchAction("stashSearch",ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/stashSearch.png")));
-			
+			StashSearchAction stashSearch = new StashSearchAction(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/stashSearch.png")));
+			actionButtonMap.put("stashSearch", stashSearch);
 			this.addButton(stashSearch);
 			
-			StunAction stunMelee = new StunAction("stunMelee",ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/stun.png")));
-			
+			StunAction stunMelee = new StunAction(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/stun.png")));
+			actionButtonMap.put("stunMelee", stunMelee);
 			this.addButton(stunMelee);
 			
-			BackstabAction backstab = new BackstabAction("backstab",ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/backstab.png")));
-			
+			BackstabAction backstab = new BackstabAction(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/backstab.png")));
+			actionButtonMap.put("backstab", backstab);
 			this.addButton(backstab);
 		}
 		catch(IOException ioExcept){
@@ -149,46 +155,46 @@ public class ActionsBar extends Crowd{
 			for(int i = 0; i < combatMembersManager.getCurrentAi().getAbilities().size(); i++){
 				switch(combatMembersManager.getCurrentAi().getAbilities().get(i)){
 					case Abilities.SCAN_SCIENCE:
-						this.visibleButtons.add(this.getItem("scanObjectiveRoom"));
+						this.visibleButtons.add(actionButtonMap.get("scanObjectiveRoom"));
 					break;
 					case Abilities.WELDING:
-						this.visibleButtons.add(this.getItem("blockDoor"));
+						this.visibleButtons.add(actionButtonMap.get("blockDoor"));
 					break;
 					case Abilities.GRENADETHROWER:
-						this.visibleButtons.add(this.getItem("throwGrenade"));
+						this.visibleButtons.add(actionButtonMap.get("throwGrenade"));
 					break;
 					case Abilities.STUNGRENADETHROWER:
-						this.visibleButtons.add(this.getItem("throwStunGrenade"));
+						this.visibleButtons.add(actionButtonMap.get("throwStunGrenade"));
 					break;
 					case Abilities.XRAY_SCAN:
-						this.visibleButtons.add(this.getItem("scanRoom"));
+						this.visibleButtons.add(actionButtonMap.get("scanRoom"));
 					break;
 					case Abilities.STEALTH1:
-						this.visibleButtons.add(this.getItem("stealth1"));
+						this.visibleButtons.add(actionButtonMap.get("stealth1"));
 					break;
 					case Abilities.STEALTH2:
-						this.visibleButtons.add(this.getItem("stealth2"));
+						this.visibleButtons.add(actionButtonMap.get("stealth2"));
 					break;
 					case Abilities.SPEED_BOOSTER:
-						this.visibleButtons.add(this.getItem("speedBoost"));
+						this.visibleButtons.add(actionButtonMap.get("speedBoost"));
 					break;
 					case Abilities.UNIT_DETECTOR:
-						this.visibleButtons.add(this.getItem("unitDetector"));
+						this.visibleButtons.add(actionButtonMap.get("unitDetector"));
 					break;
 					case Abilities.KILL_TAGS:
-						this.visibleButtons.add(this.getItem("killTag"));
+						this.visibleButtons.add(actionButtonMap.get("killTag"));
 					break;
 					case Abilities.STASH_SEARCH:
-						this.visibleButtons.add(this.getItem("stashSearch"));
+						this.visibleButtons.add(actionButtonMap.get("stashSearch"));
 					break;
 					case Abilities.SLIT_MELEE:
-						this.visibleButtons.add(this.getItem("backstab"));
+						this.visibleButtons.add(actionButtonMap.get("backstab"));
 					break;
 					case Abilities.STUN_MELEE:
-						this.visibleButtons.add(this.getItem("stunMelee"));
+						this.visibleButtons.add(actionButtonMap.get("stunMelee"));
 					break;
 					case Abilities.SPEECH:
-						this.visibleButtons.add(this.getItem("speech"));
+						this.visibleButtons.add(actionButtonMap.get("speech"));
 					break;
 				}
 			}
@@ -204,8 +210,7 @@ public class ActionsBar extends Crowd{
 			}
 		}
 		
-		// make background visible
-		super.getItem("abilityBarBackground").setVisible(true);
+		abilityBack.setVisible(true);
 		
 		placeButtons();
 	}
@@ -223,28 +228,12 @@ public class ActionsBar extends Crowd{
 				yCounter++;
 			}
 			
-			this.visibleButtons.get(i).setLocation(BUTTON_X + (xCounter * BUTTON_SPACING_X), 
-					                               DisplayManager.getInstance().getResolution()[1] - BUTTON_Y_START + BUTTON_SPACING_Y * yCounter);
+			if(this.visibleButtons.get(i) != null)
+				this.visibleButtons.get(i).setLocation(BUTTON_X + (xCounter * BUTTON_SPACING_X), 
+						                               DisplayManager.getInstance().getResolution()[1] - BUTTON_Y_START + BUTTON_SPACING_Y * yCounter);
 			
 			xCounter++;
 		}
-	}
-	
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Crowd#getItem(java.lang.String)
-	 */
-	@Override
-	// changed to return a button
-	public ButtonSingle getItem(String tag){
-		return (ButtonSingle) super.getItem(tag);
-	}
-	
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Crowd#getSize()
-	 */
-	@Override
-	public double[] getSize(){
-		return super.getItem("abilityBarBackground").getSize();
 	}
 	
 	/**
@@ -282,6 +271,11 @@ public class ActionsBar extends Crowd{
 				((AbilityButton) button).setCombatUiManager(combatUiManager);
 			}
 		}
+	}
+	
+	@Override
+	public double[] getSize() {
+		return new double[]{0,this.abilityBack.getSize()[1]};
 	}
 	
 }

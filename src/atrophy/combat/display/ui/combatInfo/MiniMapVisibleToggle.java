@@ -25,7 +25,7 @@ public class MiniMapVisibleToggle extends ButtonMulti implements InfoTextDisplay
 	 * @param image the image
 	 */
 	public MiniMapVisibleToggle(CombatUiManager combatUiManagers, BufferedImage[] image) {
-		super("MiniMapToggle", image);
+		super(image);
 		this.combatUiManager = combatUiManagers;
 	}
 	

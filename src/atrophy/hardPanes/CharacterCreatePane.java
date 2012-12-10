@@ -3,11 +3,8 @@
  */
 package atrophy.hardPanes;
 
-import java.util.HashSet;
-
 import watoydoEngine.designObjects.display.Crowd;
-import watoydoEngine.hardPanes.ModdableHardPane;
-import atrophy.gameMenu.saveFile.Missions;
+import watoydoEngine.hardPanes.HardPaneDefineable;
 import atrophy.gameMenu.ui.Menu;
 import atrophy.splash.CharacterCreateMenu;
 
@@ -16,25 +13,17 @@ import atrophy.splash.CharacterCreateMenu;
 /**
  * The Class CharacterCreatePane.
  */
-public class CharacterCreatePane extends ModdableHardPane{
-	
-	/**
-	 * The Constant NAME.
-	 */
-	public static final String NAME = "SplashPane";
+public class CharacterCreatePane implements HardPaneDefineable{
 
 	/* (non-Javadoc)
 	 * @see watoydoEngine.hardPanes.ModdableHardPane#load(java.lang.String, watoydoEngine.designObjects.display.Crowd)
 	 */
-	public void load(String tag, Crowd crowd){
+	public void load(Crowd crowd){
 		
 		clearOld();
 		
-		crowd.setTemplate(NAME);
-		
 		crowd.addCrowd(new CharacterCreateMenu());
 		
-		loadSoftPane(tag,crowd);
 	}
 
 	/**
@@ -42,7 +31,6 @@ public class CharacterCreatePane extends ModdableHardPane{
 	 */
 	public static void clearOld() {
 		Menu.windowZ = 0;
-		Missions.getInstance().setMemCodes(new HashSet<String>());
 	}
-	
+
 }

@@ -1,7 +1,8 @@
 package atrophy.combat.ai;
 
-import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Random;
+import java.util.Set;
 
 import watoydoEngine.gubbinz.Maths;
 import atrophy.combat.CombatInorganicManager;
@@ -23,14 +24,15 @@ import atrophy.combat.mechanics.TurnProcess;
 
 public class TurretAi extends LonerAi {
 
-	private static ArrayList<String> TARGET_FACTIONS;
+	private Set<String> targetFactions;
 	
 	private int lookTurnCounter;
 	
-	private String faction;
+	private boolean hacked;
 	
-	private CombatMembersManager combatMembersManager;
+	private String faction;
 	private AiCrowd aiCrowd;
+	private TeamsCommander commander;
 	
 	public TurretAi(PanningManager panningManager, AiCrowd aiCrowd, CombatVisualManager combatVisualManager, TurnProcess turnProcess, FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, CombatMembersManager combatMembersManager, double x, double y, LevelManager levelManager, CombatInorganicManager combatInorganicManager, CombatUiManager combatUiManager, LootBox lootBox) {
 		super(panningManager, aiCrowd, combatVisualManager, turnProcess, floatingIcons, mouseAbilityHandler, combatMembersManager, AiGenerator.TURRET, x, y, levelManager, combatInorganicManager, combatUiManager, lootBox);
@@ -51,9 +53,14 @@ public class TurretAi extends LonerAi {
 		this.faction = levelManager.getCurrentLevel().getMapOwner();
 		
 		this.aiCrowd = aiCrowd;
-		this.combatMembersManager = combatMembersManager;
+		this.targetFactions = new HashSet<>();
+		this.hacked = false;
 	}
 	
+	public void setCommander(TeamsCommander commander) {
+		this.commander = commander;
+	}
+
 	private void equipTurret() {
 		// Choose weapon from set list
 		this.setWeapon(new Railgun());
@@ -128,17 +135,21 @@ public class TurretAi extends LonerAi {
 
 	@Override
 	public boolean isTargetHostile(Ai target) {
-		if(combatMembersManager.getCommander(this.getFaction()).isAiHated(target)
-		   || (target != this && TARGET_FACTIONS.contains(target.getFaction())) && !target.isDead())
-			return true;
+		
+		if(!hacked) {
+			if(!target.isDead() &&
+			  (!this.getFaction().equals(target.getFaction())) &&
+               !this.commander.isAlliedWith(target.getFaction()))
+				return true;
+		}
+		else {
+			if(target != this && targetFactions.contains(target.getFaction()) && !target.isDead())
+				return true;
+		}
 		
 		return false;
 	}
 	
-	public static void setTargetFaction(ArrayList<String> targetFactions) {
-		TARGET_FACTIONS = targetFactions;
-	}
-
 	@Override
 	public boolean willJoinPlayer(Ai player) {
 		return false;
@@ -174,8 +185,16 @@ public class TurretAi extends LonerAi {
 		}
 	}
 
-	public static void addTargetFaction(String faction) {
-		TARGET_FACTIONS.add(faction);
+	public void addTargetFaction(String faction) {
+		targetFactions.add(faction);
+	}
+	
+	public void removeTargetFaction(String faction) {
+		targetFactions.remove(faction);
+	}
+	
+	public void setTargetFaction(Set<String> targetFactions) {
+		this.targetFactions = targetFactions;
 	}
 	
 //	public static void applyHaywire(){
@@ -195,6 +214,16 @@ public class TurretAi extends LonerAi {
 	@Override
 	public boolean isStealthed() {
 		return false;
+	}
+	
+	public void hack(Set<String> targetFactions) {
+		this.hacked = true;
+		this.targetFactions = targetFactions;
+	}
+	
+	public void hack(String targetFaction) {
+		this.hacked = true;
+		this.targetFactions.add(targetFaction);
 	}
 	
 }

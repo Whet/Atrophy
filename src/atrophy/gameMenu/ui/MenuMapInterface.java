@@ -6,6 +6,7 @@ package atrophy.gameMenu.ui;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import watoydoEngine.designObjects.display.Crowd;
@@ -14,7 +15,6 @@ import atrophy.combat.CombatInorganicManager;
 import atrophy.combat.actions.ActionSuite;
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.ai.AiGeneratorInterface;
-import atrophy.combat.ai.TurretAi;
 import atrophy.combat.ai.AiGeneratorInterface.GenerateCommand;
 import atrophy.combat.display.AiManagementSuite;
 import atrophy.combat.display.ui.UiUpdaterSuite;
@@ -22,7 +22,11 @@ import atrophy.combat.level.LevelIO;
 import atrophy.combat.level.LevelIO.LevelFormatException;
 import atrophy.combat.level.LevelManager;
 import atrophy.combat.mechanics.TurnProcess;
+import atrophy.combat.missions.MissionManager;
 import atrophy.gameMenu.saveFile.ItemMarket;
+import atrophy.gameMenu.saveFile.Missions;
+import atrophy.gameMenu.saveFile.Squad;
+import atrophy.gameMenu.saveFile.TechTree;
 import atrophy.hardPanes.CombatHardPane;
 
 /**
@@ -39,6 +43,11 @@ public class MenuMapInterface {
 	 * @param medicalChance the medical chance
 	 * @param weaponChance the weapon chance
 	 * @param scienceChance the science chance
+	 * @param missions 
+	 * @param itemMarket 
+	 * @param techTree 
+	 * @param stashManager 
+	 * @param missionManager 
 	 * @param levelManager 
 	 * @param panningManager 
 	 * @param aiCrowd 
@@ -46,23 +55,23 @@ public class MenuMapInterface {
 	 * @param combatVisualManager 
 	 * @param messageBox 
 	 */
-	public static void loadLevel(File chosenLevel, String owner, int engineeringChance, int medicalChance, int weaponChance, int scienceChance){
-		
-		// Clear spawns before levelio so turrets aren't also cleared
-		AiGeneratorInterface.getInstance().getCommands().clear();
+	public static void loadLevel(File chosenLevel, String owner, Squad squad, int engineeringChance, int medicalChance, int weaponChance, int scienceChance, Missions missions, ItemMarket itemMarket, TechTree techTree, StashManager stashManager){
+
+		List<AiGeneratorInterface.GenerateCommand> generationCommands = new ArrayList<AiGeneratorInterface.GenerateCommand>();
 		
 		TurnProcess turnProcess = new TurnProcess();
 		LevelManager levelManager = new LevelManager();
 		CombatInorganicManager combatInorganicManager = new CombatInorganicManager(levelManager);
-		AiManagementSuite aiManagementSuite = new AiManagementSuite(turnProcess, combatInorganicManager, levelManager);
+		AiManagementSuite aiManagementSuite = new AiManagementSuite(turnProcess, combatInorganicManager, levelManager, squad);
 		UiUpdaterSuite uiUpdaterSuite = new UiUpdaterSuite(aiManagementSuite, turnProcess, levelManager, combatInorganicManager);
-		ActionSuite actionSuite = new ActionSuite(aiManagementSuite, uiUpdaterSuite, turnProcess, levelManager);
+		ActionSuite actionSuite = new ActionSuite(aiManagementSuite, uiUpdaterSuite, turnProcess, levelManager, squad, techTree, stashManager, missions);
+		MissionManager missionManager = new MissionManager(missions);
 		
 		try {
-			levelManager.setCurrentLevel(LevelIO.loadLevel(chosenLevel, owner, engineeringChance, medicalChance, weaponChance, scienceChance, uiUpdaterSuite.getPanningManager(), uiUpdaterSuite.getCombatVisualManager(), turnProcess, uiUpdaterSuite.getMessageBox(), aiManagementSuite.getAiCrowd(), levelManager));
+			levelManager.setCurrentLevel(LevelIO.loadLevel(chosenLevel, owner, engineeringChance, medicalChance, weaponChance, scienceChance, uiUpdaterSuite.getPanningManager(), turnProcess, uiUpdaterSuite.getMessageBox(), aiManagementSuite.getAiCrowd(), levelManager, missions, missionManager, generationCommands));
 			aiManagementSuite.lazyLoad(uiUpdaterSuite, actionSuite.getMouseAbilityHandler());
 			uiUpdaterSuite.lazyLoad(actionSuite.getMouseAbilityHandler(), aiManagementSuite.getAiCrowd(), levelManager);
-			setSpawns(owner, levelManager);
+			setSpawns(owner, levelManager, squad, itemMarket, generationCommands);
 			turnProcess.lazyLoad(aiManagementSuite, uiUpdaterSuite, combatInorganicManager, actionSuite);
 		} 
 		catch (IOException e) {
@@ -76,7 +85,7 @@ public class MenuMapInterface {
 			return;
 		}
 		
-		ActivePane.getInstance().changePane(new Crowd("CurrentPane",false,new CombatHardPane(turnProcess, aiManagementSuite, uiUpdaterSuite, actionSuite, levelManager, aiManagementSuite.getAiCrowd(), combatInorganicManager)));
+		ActivePane.getInstance().changePane(new Crowd(new CombatHardPane(turnProcess, aiManagementSuite, uiUpdaterSuite, actionSuite, levelManager, aiManagementSuite.getAiCrowd(), combatInorganicManager, itemMarket, generationCommands)));
 	}
 
 	/**
@@ -84,8 +93,11 @@ public class MenuMapInterface {
 	 *
 	 * @param owner the new spawns
 	 * @param levelManager 
+	 * @param squad 
+	 * @param itemMarket 
+	 * @param generationCommands 
 	 */
-	private static void setSpawns(String owner, LevelManager levelManager) {
+	private static void setSpawns(String owner, LevelManager levelManager, Squad squad, ItemMarket itemMarket, List<AiGeneratorInterface.GenerateCommand> generationCommands) {
 		
 		int banditTeamSpawn = new Random().nextInt((levelManager.getBlocks().length / 5) + 1);
 		
@@ -112,9 +124,6 @@ public class MenuMapInterface {
 			targetFactions.add(AiGenerator.BANDITS);
 		}
 		
-		// Update security targets
-		TurretAi.setTargetFaction(targetFactions);
-
 		// Cancel spawns if not specified
 		if(!levelManager.getCurrentLevel().allowedSpawn(AiGenerator.BANDITS))
 			banditTeamSpawn = 0;
@@ -126,13 +135,13 @@ public class MenuMapInterface {
 			AiGeneratorInterface.LONER_SPAWN_AMOUNT = 0;
 		
 		for(int i = 0; i < banditTeamSpawn; i++){
-			AiGeneratorInterface.getInstance().getCommands().add(new GenerateCommand(2, 4, ItemMarket.getInstance().getBanditsAllowedItems(), ItemMarket.getInstance().getBanditsAllowedWeapons(), AiGenerator.BANDITS));
+			generationCommands.add(new GenerateCommand(2, 4, itemMarket.getBanditsAllowedItems(), itemMarket.getBanditsAllowedWeapons(), AiGenerator.BANDITS));
 		}
 		for(int i = 0; i <whiteVistaTeamSpawn; i++){
-			AiGeneratorInterface.getInstance().getCommands().add(new GenerateCommand(2, 4, ItemMarket.getInstance().getWhiteVistaAllowedItems(), ItemMarket.getInstance().getWhiteVistaAllowedWeapons(), AiGenerator.WHITE_VISTA));
+			generationCommands.add(new GenerateCommand(2, 4, itemMarket.getWhiteVistaAllowedItems(), itemMarket.getWhiteVistaAllowedWeapons(), AiGenerator.WHITE_VISTA));
 		}
 
-		AiGeneratorInterface.getInstance().getCommands().add(new GenerateCommand(SquadMenu.getSquad().getSquad(), AiGenerator.PLAYER));
+		generationCommands.add(new GenerateCommand(squad.getSquad(), AiGenerator.PLAYER));
 		
 		AiGeneratorInterface.DAEMON_SPAWN_AMOUNT = 0;
 		

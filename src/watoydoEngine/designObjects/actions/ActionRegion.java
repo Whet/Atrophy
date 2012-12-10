@@ -39,9 +39,8 @@ public abstract class ActionRegion implements MouseRespondable{
 	 * @param y the y
 	 * @param width the width
 	 * @param height the height
-	 * @param active the active
 	 */
-	public ActionRegion(double x, double y, double width, double height, boolean active){
+	public ActionRegion(double x, double y, double width, double height){
 		this.active = true;
 		
 		location = new double[2];

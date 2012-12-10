@@ -4,7 +4,7 @@
 package atrophy.hardPanes;
 
 import watoydoEngine.designObjects.display.Crowd;
-import watoydoEngine.hardPanes.ModdableHardPane;
+import watoydoEngine.hardPanes.HardPaneDefineable;
 import watoydoEngine.sounds.SoundBoard;
 import atrophy.gameMenu.ui.Menu;
 import atrophy.splash.SplashMenu;
@@ -14,26 +14,19 @@ import atrophy.splash.SplashMenu;
 /**
  * The Class SplashPane.
  */
-public class SplashPane extends ModdableHardPane{
+public class SplashPane implements HardPaneDefineable{
 	
-	/**
-	 * The Constant NAME.
-	 */
-	public static final String NAME = "SplashPane";
-
 	/* (non-Javadoc)
 	 * @see watoydoEngine.hardPanes.ModdableHardPane#load(java.lang.String, watoydoEngine.designObjects.display.Crowd)
 	 */
-	public void load(String tag, Crowd crowd){
+	public void load(Crowd crowd){
 		
 		SoundBoard.getInstance().startMusic();
 		
 		clearOld();
-		crowd.setTemplate(NAME);
 		
 		crowd.addCrowd(new SplashMenu());
 		
-		loadSoftPane(tag,crowd);
 	}
 
 	/**

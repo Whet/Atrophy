@@ -822,15 +822,15 @@ public class PathFinder {
 		int closestPointIndex = findClosestPoint(moveLocation, room);
 		
 		// work backwards and forwards and try to find shortest path through the points
-		ArrayList<double[]> path1Points = computeRoughPoints(closestPointIndex, 1, mover.getLocation(), moveLocation, room, radius);
-		ArrayList<double[]> path2Points = computeRoughPoints(closestPointIndex, -1, mover.getLocation(), moveLocation, room, radius);
+		ArrayList<double[]> path1Points = computeRoughPoints(closestPointIndex, 1, mover.getLocation(), room, radius);
+		ArrayList<double[]> path2Points = computeRoughPoints(closestPointIndex, -1, mover.getLocation(), room, radius);
 		
 		// the final double[] in the arraylist of pathPoints contains the distance for the route, pick the shortest one
 		if(path1Points.get(path1Points.size() - 1)[0] < path2Points.get(path2Points.size() - 1)[0]){
-			points = trimPathway(path1Points, room, mover.getLocation(), moveLocation);
+			points = trimPathway(path1Points, mover.getLocation());
 		}
 		else{
-			points = trimPathway(path2Points, room, mover.getLocation(), moveLocation);
+			points = trimPathway(path2Points, mover.getLocation());
 		}
 		
 		return points;
@@ -845,7 +845,7 @@ public class PathFinder {
 	 * @param moveLocation the move location
 	 * @return the array list
 	 */
-	private static ArrayList<double[]> trimPathway(ArrayList<double[]> pathPoints, Polygon room, double[] moverLocation, double[] moveLocation) {
+	private static ArrayList<double[]> trimPathway(ArrayList<double[]> pathPoints, double[] moveLocation) {
 		
 		// the optimal path *
 		ArrayList<double[]> optPathPoints = new ArrayList<double[]>(pathPoints.size());
@@ -868,12 +868,11 @@ public class PathFinder {
 	 * @param startIndex the start index
 	 * @param modifier the modifier
 	 * @param moverLocation the mover location
-	 * @param targetLocation the target location
 	 * @param room the room
 	 * @param radius the radius
 	 * @return the array list
 	 */
-	private static ArrayList<double[]> computeRoughPoints(int startIndex, int modifier, double[] moverLocation, double targetLocation[], Polygon room, int radius) {
+	private static ArrayList<double[]> computeRoughPoints(int startIndex, int modifier, double[] moverLocation, Polygon room, int radius) {
 		
 		ArrayList<double[]> points = new ArrayList<double[]>(4);
 		

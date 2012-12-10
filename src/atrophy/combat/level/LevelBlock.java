@@ -14,6 +14,7 @@ import atrophy.combat.ai.PathNotFoundException;
 import atrophy.combat.ai.ThinkingAi.AiNode;
 import atrophy.combat.display.ui.loot.LootBox.Lootable;
 import atrophy.combat.display.ui.loot.LootContainer;
+import atrophy.combat.missions.MissionManager;
 
 /**
  * The Class LevelBlock.
@@ -74,13 +75,16 @@ public class LevelBlock {
 	 * The contains science.
 	 */
 	private boolean containsScience;
+
+	private MissionManager missionManager;
 	
 	/**
 	 * Instantiates a new level block.
 	 *
 	 * @param code the code
+	 * @param missionManager 
 	 */
-	public LevelBlock(int code){
+	public LevelBlock(int code, MissionManager missionManager){
 		
 		portals = new ArrayList<Portal>(1);
 		
@@ -99,6 +103,8 @@ public class LevelBlock {
 		this.textureCode = 0;
 		
 		this.containsScience = false;
+		
+		this.missionManager = missionManager;
 	}
 	
 	// The Void
@@ -234,10 +240,9 @@ public class LevelBlock {
 	 * Rank closest portals in room.
 	 *
 	 * @param targetLocation the target location
-	 * @param currentBlock the current block
 	 * @return the portal[]
 	 */
-	public Portal[] rankClosestPortalsInRoom(double[] targetLocation, LevelBlock currentBlock){
+	public Portal[] rankClosestPortalsInRoom(double[] targetLocation){
 		
 		Portal[] rankedPortal = new Portal[this.portals.size()];
 		
@@ -527,8 +532,10 @@ public class LevelBlock {
 		Polygon region = this.getStealthRegionObject(location);
 		
 		for(int i = 0; i < this.stashPolygons.size(); i++){
-			if(region == this.stashPolygons.get(i))
+			if(region == this.stashPolygons.get(i)) {
+				missionManager.triggerLootEvent(this.stashes.get(i));
 				return this.stashes.get(i);
+			}
 		}
 		
 		return null;

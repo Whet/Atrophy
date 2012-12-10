@@ -32,24 +32,6 @@ public class TechTree implements Serializable{
 	public static final String BASIC_EXPLOSIVES = 			"Basic Explosives";
 	public static final String SPACE_WALKING = 				"Space Walking";
 	
-	private static TechTree instance;
-	
-	public static TechTree getInstance(){
-		
-		if(instance == null)
-			instance = new TechTree();
-		
-		return instance;
-	}
-	
-	public static void setInstance(TechTree techTree) {
-		instance = techTree;
-	}
-	
-	public static void newInstance() {
-		instance = new TechTree();
-	}
-	
 	private Map<String, TechnologyNode> techTree;
 	
 	public TechTree(Map<String, TechnologyNode> techTree){
@@ -174,14 +156,17 @@ public class TechTree implements Serializable{
 			this.isResearched = false;
 		}
 
+		@SuppressWarnings("unused")
 		public TechnologyNode[] getParentNodes() {
 			return parentNodes;
 		}
 
+		@SuppressWarnings("unused")
 		public String getTech() {
 			return tech;
 		}
 
+		@SuppressWarnings("unused")
 		public int[] getResearchRequirements() {
 			return researchRequirements;
 		}

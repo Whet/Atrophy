@@ -23,8 +23,8 @@ public class SpeechAction extends AbilityButton implements InfoTextDisplayable{
 	 * @param tag the tag
 	 * @param image the image
 	 */
-	public SpeechAction(String tag, BufferedImage image) {
-		super(tag, image);
+	public SpeechAction(BufferedImage image) {
+		super(image);
 	}
 	
 	/* (non-Javadoc)

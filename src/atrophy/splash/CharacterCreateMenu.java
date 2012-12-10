@@ -27,13 +27,11 @@ import atrophy.combat.items.SensorSuite;
 import atrophy.combat.items.UnitDetector;
 import atrophy.combat.items.WeldingTorch;
 import atrophy.combat.mechanics.Abilities;
+import atrophy.gameMenu.saveFile.Missions;
 import atrophy.gameMenu.saveFile.Squad;
-import atrophy.gameMenu.saveFile.TechTree;
 import atrophy.gameMenu.saveFile.Squad.Squaddie;
-import atrophy.gameMenu.ui.ShopManager;
-import atrophy.gameMenu.ui.SquadMenu;
+import atrophy.gameMenu.saveFile.TechTree;
 import atrophy.gameMenu.ui.StashManager;
-import atrophy.gameMenu.ui.WindowManager;
 import atrophy.hardPanes.GameMenuHardPane;
 
 /**
@@ -55,9 +53,11 @@ public class CharacterCreateMenu extends Crowd{
 	
 	/**
 	 * Instantiates a new character create menu.
+	 * @param windowManager 
+	 * @param stashManager 
 	 */
 	public CharacterCreateMenu() {
-		super("",true);
+		super(true);
 		addComponents();
 	}
 
@@ -76,10 +76,10 @@ public class CharacterCreateMenu extends Crowd{
 		}
 		this.addButton(image);
 		
-		Text nameTag = new Text("", this.getLocation()[0] + 30, this.getLocation()[1] + 50, "Name: ");
+		Text nameTag = new Text(this.getLocation()[0] + 30, this.getLocation()[1] + 50, "Name: ");
 		this.addDisplayItem(nameTag);
 		
-		name = new TextInput("name", this.getLocation()[0] + 66, this.getLocation()[1] + 50,"Barry"){
+		name = new TextInput(this.getLocation()[0] + 66, this.getLocation()[1] + 50,"Barry"){
 			@Override
 			public void setFocus(boolean focus) {
 				super.setFocus(focus);
@@ -100,7 +100,7 @@ public class CharacterCreateMenu extends Crowd{
 			
 			final int ind = i;
 			
-			TextButton newGame = new TextButton("Start Game", Color.yellow, Color.red) {
+			TextButton newGame = new TextButton(Color.yellow, Color.red) {
 				
 				{
 					this.setText(getTypeName(ind));
@@ -118,7 +118,7 @@ public class CharacterCreateMenu extends Crowd{
 			this.addMouseActionItem(newGame);
 			this.addDisplayItem(newGame);
 			
-			Text startDescription = new Text("",this.getLocation()[0] + 30, this.getLocation()[1] + 178 + 80 * i, getDescription(ind));
+			Text startDescription = new Text(this.getLocation()[0] + 30, this.getLocation()[1] + 178 + 80 * i, getDescription(ind));
 			this.addDisplayItem(startDescription);
 		}
 	}
@@ -174,37 +174,42 @@ public class CharacterCreateMenu extends Crowd{
 	 * @param name the name
 	 */
 	private void startgame(int startType, String name){
-		ActivePane.getInstance().changePane(new Crowd("CurrentPane",false,new GameMenuHardPane()));
-
-		SquadMenu.squad = new Squad();
-		SquadMenu.squad.setAdvance(START_ADVANCE);
+		Squad squad = new Squad();
+		squad.setAdvance(START_ADVANCE);
 		
-		SquadMenu.squad.addSquaddie(new Squaddie(specialNames(name),this.image.getImageName(),MeleeWeapon2.NAME, ""));
+		squad.addSquaddie(new Squaddie(specialNames(name),this.image.getImageName(),MeleeWeapon2.NAME, ""));
 		
-		ShopManager.getInstance().randomShopItems();
-		TechTree.newInstance();
-		StashManager.getInstance().defaultStash();
+//		ShopManager shopManager = new ShopManager(windowManager, stashManager, squad);
 		
-		WindowManager.purge();
-		WindowManager.getInstance().updateWindows();
+//		shopManager.randomShopItems();
+//		TechTree.newInstance();
+//		stashManager.defaultStash();
+		
+//		windowManager.updateWindows();
 		
 		switch(startType){
 			case 1:
-				SquadMenu.squad.getSquadMember(0).addItem(WeldingTorch.NAME);
-				SquadMenu.squad.getSquadMember(0).setSkillLevel(Abilities.WELDING, 1);
+				squad.getSquadMember(0).addItem(WeldingTorch.NAME);
+				squad.getSquadMember(0).setSkillLevel(Abilities.WELDING, 1);
 			break;
 			case 2:
-				SquadMenu.squad.getSquadMember(0).addItem(UnitDetector.NAME);
-				SquadMenu.squad.getSquadMember(0).addItem(KillTags.NAME);
+				squad.getSquadMember(0).addItem(UnitDetector.NAME);
+				squad.getSquadMember(0).addItem(KillTags.NAME);
 			break;
 			case 3:
-				SquadMenu.squad.getSquadMember(0).addItem(SensorSuite.NAME);
-				SquadMenu.squad.getSquadMember(0).addItem(ScienceScanner.NAME);
+				squad.getSquadMember(0).addItem(SensorSuite.NAME);
+				squad.getSquadMember(0).addItem(ScienceScanner.NAME);
 			break;
 			case 4:
-				SquadMenu.squad.getSquadMember(0).setWeapon(Pistol1.NAME);
+				squad.getSquadMember(0).setWeapon(Pistol1.NAME);
 			break;
 		}
+		
+		TechTree techTree = new TechTree();
+		StashManager stashManager = new StashManager(null);
+		Missions missions = new Missions();
+		
+		ActivePane.getInstance().changePane(new Crowd(new GameMenuHardPane(squad, techTree, stashManager, missions)));
 	}
 	
 	/**
@@ -244,7 +249,7 @@ public class CharacterCreateMenu extends Crowd{
 		 * @throws IOException Signals that an I/O exception has occurred.
 		 */
 		public ImageSelect() throws FileNotFoundException, IOException {
-			super("", new BufferedImage[]{
+			super(new BufferedImage[]{
 					ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/heads/plainHead.png")),
 					ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/heads/messyHead.png")),
 					ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/heads/nazcaHead.png")),
@@ -280,7 +285,7 @@ public class CharacterCreateMenu extends Crowd{
 		public String getImageName(){
 			return this.names[this.getFrame()];
 		}
-		
+
 	}
 
 }

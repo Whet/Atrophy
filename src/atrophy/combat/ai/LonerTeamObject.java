@@ -10,7 +10,6 @@ import java.util.Set;
 
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.level.LevelBlock;
-import atrophy.combat.level.LevelManager;
 
 /**
  * The Class LonerTeamObject.
@@ -38,8 +37,8 @@ public class LonerTeamObject extends ThinkingTeamObject{
 	 * @param team the team
 	 * @param levelManager 
 	 */
-	public LonerTeamObject(CombatVisualManager combatVisualManager, String team, LevelManager levelManager){
-		super(combatVisualManager, levelManager, team, Color.gray);
+	public LonerTeamObject(CombatVisualManager combatVisualManager, String team){
+		super(combatVisualManager, team, Color.gray);
 		alliances = new HashSet<String>();
 		dangerRooms = new HashSet<LevelBlock>();
 		lootedAi = new HashSet<Ai>();

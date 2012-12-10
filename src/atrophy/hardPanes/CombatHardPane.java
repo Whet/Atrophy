@@ -3,29 +3,33 @@
  */
 package atrophy.hardPanes;
 
+import java.util.List;
+
 import watoydoEngine.designObjects.display.Crowd;
-import watoydoEngine.hardPanes.ModdableHardPane;
+import watoydoEngine.hardPanes.HardPaneDefineable;
 import atrophy.combat.CombatInorganicManager;
 import atrophy.combat.actions.ActionSuite;
 import atrophy.combat.ai.AiGenerator;
+import atrophy.combat.ai.AiGeneratorInterface;
+import atrophy.combat.ai.AiGeneratorInterface.GenerateCommand;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.AiManagementSuite;
 import atrophy.combat.display.MapPainter;
 import atrophy.combat.display.ui.UiUpdaterSuite;
 import atrophy.combat.level.LevelManager;
 import atrophy.combat.mechanics.TurnProcess;
+import atrophy.gameMenu.saveFile.ItemMarket;
 
 
 // TODO: Auto-generated Javadoc
 /**
  * The Class CombatHardPane.
  */
-public class CombatHardPane extends ModdableHardPane{
+public class CombatHardPane implements HardPaneDefineable{
 	
 	/**
 	 * The Constant NAME.
 	 */
-	public static final String NAME = "CombatHardPane";
 	private TurnProcess turnProcess;
 	private AiManagementSuite aiManagementSuite;
 	private UiUpdaterSuite uiUpdaterSuite;
@@ -33,8 +37,10 @@ public class CombatHardPane extends ModdableHardPane{
 	private LevelManager levelManager;
 	private AiCrowd aiCrowd;
 	private CombatInorganicManager combatInorganicManager;
+	private ItemMarket itemMarket;
+	private List<AiGeneratorInterface.GenerateCommand> generationCommands;
 	
-	public CombatHardPane(TurnProcess turnProcess, AiManagementSuite aiManagementSuite, UiUpdaterSuite uiUpdaterSuite, ActionSuite actionSuite, LevelManager levelManager, AiCrowd aiCrowd, CombatInorganicManager combatInorganicManager) {
+	public CombatHardPane(TurnProcess turnProcess, AiManagementSuite aiManagementSuite, UiUpdaterSuite uiUpdaterSuite, ActionSuite actionSuite, LevelManager levelManager, AiCrowd aiCrowd, CombatInorganicManager combatInorganicManager, ItemMarket itemMarket, List<GenerateCommand> generationCommands) {
 		this.turnProcess = turnProcess;
 		this.aiManagementSuite = aiManagementSuite;
 		this.uiUpdaterSuite = uiUpdaterSuite;
@@ -42,20 +48,20 @@ public class CombatHardPane extends ModdableHardPane{
 		this.levelManager = levelManager;
 		this.aiCrowd = aiCrowd;
 		this.combatInorganicManager = combatInorganicManager;
+		this.itemMarket = itemMarket;
+		this.generationCommands = generationCommands;
 	}
 
 	/* (non-Javadoc)
 	 * @see watoydoEngine.hardPanes.ModdableHardPane#load(java.lang.String, watoydoEngine.designObjects.display.Crowd)
 	 */
-	public void load(String tag, Crowd crowd){
-		
-		crowd.setTemplate(NAME);
+	public void load(Crowd crowd){
 		
 		//Load images
 		MapPainter.loadTextures();
 		
 		AiGenerator aiGenerator = new AiGenerator(aiManagementSuite.getAiCrowd(), aiManagementSuite.getCombatMembersManager(), uiUpdaterSuite.getCombatUiManager(), uiUpdaterSuite.getCombatVisualManager(), levelManager, uiUpdaterSuite.getPanningManager(), actionSuite.getMouseAbilityHandler(), turnProcess, uiUpdaterSuite.getFloatingIcons(), combatInorganicManager, uiUpdaterSuite.getLootBox());
-		aiGenerator.generateAi(crowd);
+		aiGenerator.generateAi(crowd, itemMarket, generationCommands);
 		aiCrowd.getShuffledStack();
 		
 		crowd.addCrowd(aiManagementSuite.getAiCrowd());
@@ -138,14 +144,6 @@ public class CombatHardPane extends ModdableHardPane{
 		
 		uiUpdaterSuite.getCombatUiManager().getLineSurface().updateAlphas();
 		
-		loadSoftPane(tag,crowd);
-	}
-
-	/**
-	 * Clear old.
-	 */
-	public static void clearOld() {
-//		SoundBoard.getInstance().stopMusic();
 	}
 	
 }

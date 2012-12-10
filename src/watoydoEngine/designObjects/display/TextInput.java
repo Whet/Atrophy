@@ -52,12 +52,8 @@ public class TextInput extends Text implements MouseRespondable,KeyboardResponda
 	
 	/**
 	 * Instantiates a new text input.
-	 *
-	 * @param tag the tag
 	 */
-	public TextInput(String tag){
-		super(tag);
-		
+	public TextInput(){
 		active = true;
 		focus = false;
 	}
@@ -65,12 +61,11 @@ public class TextInput extends Text implements MouseRespondable,KeyboardResponda
 	/**
 	 * Instantiates a new text input.
 	 *
-	 * @param tag the tag
 	 * @param x the x
 	 * @param y the y
 	 */
-	public TextInput(String tag, double x, double y){
-		super(tag,x,y,"");
+	public TextInput(double x, double y){
+		super(x,y,"");
 		
 		active = true;
 		focus = false;
@@ -79,13 +74,12 @@ public class TextInput extends Text implements MouseRespondable,KeyboardResponda
 	/**
 	 * Instantiates a new text input.
 	 *
-	 * @param tag the tag
 	 * @param x the x
 	 * @param y the y
 	 * @param message the message
 	 */
-	public TextInput(String tag, double x, double y, String message) {
-		super(tag,x,y,message);
+	public TextInput(double x, double y, String message) {
+		super(x,y,message);
 		
 		active = true;
 		focus = false;

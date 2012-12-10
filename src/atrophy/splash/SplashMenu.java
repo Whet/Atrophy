@@ -14,7 +14,15 @@ import javax.swing.JFrame;
 import watoydoEngine.designObjects.display.Crowd;
 import watoydoEngine.designObjects.display.TextButton;
 import watoydoEngine.workings.displayActivity.ActivePane;
+import atrophy.gameMenu.saveFile.ItemMarket;
+import atrophy.gameMenu.saveFile.MapWar;
+import atrophy.gameMenu.saveFile.Missions;
 import atrophy.gameMenu.saveFile.SaveFile;
+import atrophy.gameMenu.saveFile.Squad;
+import atrophy.gameMenu.saveFile.TechTree;
+import atrophy.gameMenu.ui.MenuBar;
+import atrophy.gameMenu.ui.ShopManager;
+import atrophy.gameMenu.ui.StashManager;
 import atrophy.gameMenu.ui.WindowManager;
 import atrophy.hardPanes.CharacterCreatePane;
 import atrophy.hardPanes.GameMenuHardPane;
@@ -28,7 +36,7 @@ public class SplashMenu extends Crowd {
 	 * Instantiates a new splash menu.
 	 */
 	public SplashMenu() {
-		super("Splash", true);
+		super(true);
 		addButtons();
 	}
 
@@ -37,7 +45,7 @@ public class SplashMenu extends Crowd {
 	 */
 	private void addButtons() {
 		
-		TextButton newGame = new TextButton("New Game", Color.yellow, Color.red) {
+		TextButton newGame = new TextButton(Color.yellow, Color.red) {
 			
 			{
 				this.setText("New Game");
@@ -46,7 +54,7 @@ public class SplashMenu extends Crowd {
 			
 			@Override
 			public boolean mD(Point mousePosition, MouseEvent e) {
-				ActivePane.getInstance().changePane(new Crowd("CurrentPane",false,new CharacterCreatePane()));
+				ActivePane.getInstance().changePane(new Crowd(new CharacterCreatePane()));
 				return true;
 			}
 		};
@@ -55,7 +63,7 @@ public class SplashMenu extends Crowd {
 		this.addMouseActionItem(newGame);
 		this.addDisplayItem(newGame);
 		
-		TextButton loadGame = new TextButton("Load", Color.yellow, Color.red) {
+		TextButton loadGame = new TextButton(Color.yellow, Color.red) {
 			
 			{
 				this.setText("Load");
@@ -63,7 +71,7 @@ public class SplashMenu extends Crowd {
 			}
 			
 			@Override
-			public boolean mD(Point mousePosition, MouseEvent e) {
+			public boolean mU(Point mousePosition, MouseEvent e) {
 				
 				ActivePane.getInstance().setVisible(false);
 				
@@ -71,12 +79,27 @@ public class SplashMenu extends Crowd {
 				int returnValue = chooser.showOpenDialog(new JFrame());
 				
 				if(returnValue == JFileChooser.APPROVE_OPTION){
-					ActivePane.getInstance().changePane(new Crowd("CurrentPane",false,new GameMenuHardPane()));
-					SaveFile.loadGame(chooser.getSelectedFile());
+					
+					MenuBar menuBar = new MenuBar();
+					WindowManager windowManager = new WindowManager(menuBar);
+					StashManager stashManager = new StashManager(windowManager);
+					TechTree techTree = new TechTree();
+					ItemMarket itemMarket = new ItemMarket(techTree);
+					Missions missions = new Missions();
+					MapWar mapWar = new MapWar(missions);
+					ShopManager shopManager = new ShopManager(windowManager, stashManager, itemMarket);
+					Squad squad = SaveFile.loadGame(chooser.getSelectedFile(), stashManager, mapWar, shopManager, missions, windowManager);
+					
+					shopManager.lazyLoad(squad);
+					menuBar.lazyLoad(windowManager, mapWar, missions, squad, shopManager, stashManager, techTree, itemMarket);
+					stashManager.lazyLoad(shopManager);
+					missions.lazyLoad(squad, stashManager, itemMarket);
+					
+					ActivePane.getInstance().changePane(new Crowd(new GameMenuHardPane(squad, techTree, stashManager, missions)));
 				}
 				
 				ActivePane.getInstance().setVisible(true);
-				WindowManager.getInstance().updateWindows();
+//				windowManager.updateWindows();
 				return true;
 			}
 		};

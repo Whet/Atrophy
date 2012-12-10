@@ -95,11 +95,6 @@ public class MiniMap implements Displayable {
 	private int z;
 	
 	/**
-	 * The tag.
-	 */
-	private String tag;
-	
-	/**
 	 * The draw ai.
 	 */
 	private ArrayList<Ai> drawAi;
@@ -116,10 +111,8 @@ public class MiniMap implements Displayable {
 	
 	/**
 	 * Instantiates a new mini map.
-	 *
-	 * @param tag the tag
 	 */
-	public MiniMap(Cartographer cartographer, AiCrowd aiCrowd, PanningManager panningManager, LevelManager levelManager, String tag){
+	public MiniMap(Cartographer cartographer, AiCrowd aiCrowd, PanningManager panningManager, LevelManager levelManager){
 		
 		this.aiCrowd = aiCrowd;
 		this.panningManager = panningManager;
@@ -322,22 +315,6 @@ public class MiniMap implements Displayable {
 	@Override
 	public double[] getSize() {
 		return this.size;
-	}
-
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Displayable#isEqual(java.lang.String)
-	 */
-	@Override
-	public boolean isEqual(String tag1) {
-		return tag1.equals(this.tag);
-	}
-
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Displayable#getTag()
-	 */
-	@Override
-	public String getTag() {
-		return this.tag;
 	}
 
 	/* (non-Javadoc)

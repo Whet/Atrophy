@@ -127,7 +127,7 @@ public class MessageBox extends Crowd{
 	 */
 	public MessageBox(CombatUiManager combatUiManager, TurnProcess turnProcess, CombatMembersManager combatMembersManager, CombatVisualManager combatVisualManager, Cartographer cartographer){
 		
-		super("MessageBox",false);
+		super(false);
 		
 		this.combatUiManager = combatUiManager;
 		this.turnProcess = turnProcess;
@@ -137,7 +137,7 @@ public class MessageBox extends Crowd{
 		
 		this.setLocation(30, 120);
 		
-		messageBoard = new Text("MessageBoard");
+		messageBoard = new Text();
 		messageBoard.setFont(FontList.AUD14);
 		messageBoard.setLocation(this.getLocation().clone());
 		messageBoard.move(30, 48);
@@ -152,7 +152,7 @@ public class MessageBox extends Crowd{
 		
 		conversers = new Ai[2];
 		
-		conversersText = new Text("ConverTag");
+		conversersText = new Text();
 		conversersText.setFont(FontList.AUD14);
 		conversersText.setLocation(this.getLocation().clone());
 		conversersText.setColour(Color.yellow.darker());
@@ -171,7 +171,7 @@ public class MessageBox extends Crowd{
 			this.addMouseActionItem(textOptions[i]);
 		}
 		
-		mouseDragRegion = new ActionRegion(this.getLocation()[0], this.getLocation()[1], size[0], size[1], false) {
+		mouseDragRegion = new ActionRegion(this.getLocation()[0], this.getLocation()[1], size[0], size[1]) {
 			
 			private boolean mouseDown = false;
 			
@@ -249,7 +249,7 @@ public class MessageBox extends Crowd{
 		
 		navigationButtons = new ButtonSingle[4];
 		
-		navigationButtons[0] =  new ButtonSingle("OldestMessage",this.getBankedImage("TOP")) {
+		navigationButtons[0] =  new ButtonSingle(this.getBankedImage("TOP")) {
 			@Override
 			public boolean mU(Point mousePosition, MouseEvent e) {
 				MessageBox.this.oldestMessage();
@@ -261,7 +261,7 @@ public class MessageBox extends Crowd{
 				return true;
 			}
 		};
-		navigationButtons[1] = new ButtonSingle("OlderMessage",this.getBankedImage("UP")) {
+		navigationButtons[1] = new ButtonSingle(this.getBankedImage("UP")) {
 			@Override
 			public boolean mU(Point mousePosition, MouseEvent e) {
 				MessageBox.this.decrementLeastMessage();
@@ -273,7 +273,7 @@ public class MessageBox extends Crowd{
 				return true;
 			}
 		};
-		navigationButtons[2] = new ButtonSingle("NewerMessage",this.getBankedImage("DOWN")) {
+		navigationButtons[2] = new ButtonSingle(this.getBankedImage("DOWN")) {
 			@Override
 			public boolean mU(Point mousePosition, MouseEvent e) {
 				MessageBox.this.incrementLeastMessage();
@@ -285,7 +285,7 @@ public class MessageBox extends Crowd{
 				return true;
 			}
 		};
-		navigationButtons[3] = new ButtonSingle("NewestMessage",this.getBankedImage("BOTTOM")) {
+		navigationButtons[3] = new ButtonSingle(this.getBankedImage("BOTTOM")) {
 			@Override
 			public boolean mU(Point mousePosition, MouseEvent e) {
 				MessageBox.this.latestMessage();
@@ -603,7 +603,7 @@ public class MessageBox extends Crowd{
 		conversers[0] = currentAi;
 		conversers[1] = speechAi;
 		this.conversersText.setText(currentAi.getName() + " speaking to " + conversers[1].getName());
-		messageManager.loadDialogue(dialogue, currentAi);
+		messageManager.loadDialogue(dialogue);
 	}
 	
 	/* (non-Javadoc)
@@ -636,7 +636,7 @@ public class MessageBox extends Crowd{
 		 * @param topicNumber the topic number
 		 */
 		public SpeechOption(MessageBox messageBox, int topicNumber) {
-			super("Topic"+topicNumber, Color.yellow.darker(), Color.red.darker());
+			super(Color.yellow.darker(), Color.red.darker());
 			this.messageBox = messageBox;
 			this.topicNumber = topicNumber;
 			this.setActive(false);
@@ -1061,6 +1061,9 @@ public class MessageBox extends Crowd{
 		 */
 		public Set<Ai> talkedTo;
 		
+		private Missions missions;
+		private MissionManager missionManager;
+		
 		/**
 		 * Instantiates a new dialogue.
 		 * @param i 
@@ -1068,10 +1071,12 @@ public class MessageBox extends Crowd{
 		 * @param openingLine the opening line
 		 * @param options the options
 		 */
-		public Dialogue(int tone, String openingLine, String[] options){
+		public Dialogue(Missions missions, MissionManager missionManager, int tone, String openingLine, String[] options){
+			this.missions = missions;
 			this.tone = tone;
 			this.openingLine = openingLine;
 			this.options = options;
+			this.missionManager = missionManager;
 			longSpeechPoint = 0;
 			this.longSpeeches = new HashMap<String,String[][]>(2);
 			talkedTo = new HashSet<Ai>();
@@ -1080,7 +1085,7 @@ public class MessageBox extends Crowd{
 		public boolean requirementsMet(String[] requirements, Ai currentAi) {
 			
 			for(int i = 0; i < requirements.length; i++){
-				if(!currentAi.getInventory().hasItemByName(requirements[i]) && !Missions.getInstance().hasMemCode(requirements[i]))
+				if(!currentAi.getInventory().hasItemByName(requirements[i]) && !missions.hasMemCode(requirements[i]))
 					return false;
 			}
 			
@@ -1105,16 +1110,16 @@ public class MessageBox extends Crowd{
 				if(itemName.startsWith("#")){
 					
 					// id already included so exit
-					if(Missions.getInstance().hasMemCode(itemName.substring(1, 5)))
+					if(missions.hasMemCode(itemName.substring(1, 5)))
 						return true;
 					
-					Missions.getInstance().addMemCode(itemName.substring(1, 5));
+					missions.addMemCode(itemName.substring(1, 5));
 					
 					itemName = itemName.substring(5);
 				}
 				// Event code
 				else if(itemName.startsWith("$")){
-					Missions.getInstance().addMemCode(itemName.substring(1, 5));
+					missions.addMemCode(itemName.substring(1, 5));
 					return true;
 				}
 				
@@ -1122,7 +1127,7 @@ public class MessageBox extends Crowd{
 				String[] swapItems = itemName.split("#");
 				
 				if(swapItems.length == 1){
-					double[] location = MissionManager.getInstance().spawnItem(itemName); 
+					double[] location = missionManager.spawnItem(itemName); 
 					
 					// mark the location as a stash
 					messageBox.cartographer.addNewMarker(location, Color.white, messageBox.getConversers()[1].getName() + "'s Stash");

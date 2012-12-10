@@ -70,21 +70,7 @@ public interface Displayable extends Comparable<Displayable>{
 	 * @return the size
 	 */
 	public double[] getSize();
-	// Used to identify objects in arraylists
-	/**
-	 * Checks if is equal.
-	 *
-	 * @param tag1 the tag1
-	 * @return true, if is equal
-	 */
-	public boolean isEqual(String tag1);
 	
-	/**
-	 * Gets the tag.
-	 *
-	 * @return the tag
-	 */
-	public String getTag();
 	// Used to order displaylist by .z
 	/* (non-Javadoc)
 	 * @see java.lang.Comparable#compareTo(java.lang.Object)

@@ -60,7 +60,7 @@ public class CartographerBox extends Crowd{
 	 * @param cartographer 
 	 */
 	public CartographerBox(final PanningManager panningManager, final Cartographer cartographer){
-		super("CartBox", false);
+		super(false);
 		
 		this.panningManager = panningManager;
 		this.cartographer = cartographer;
@@ -70,7 +70,7 @@ public class CartographerBox extends Crowd{
 		addMarkerButtons = new AddMarkerText[3];
 		
 		for(int i = 0; i < 3; i++){
-			addMarkerButtons[i] = new AddMarkerText("Marker1",this.getLocation()[0] + 12, this.getLocation()[1] + 22 + i * 18);
+			addMarkerButtons[i] = new AddMarkerText(this.getLocation()[0] + 12, this.getLocation()[1] + 22 + i * 18);
 			this.addInputText(addMarkerButtons[i]);
 			addMarkerButtons[i].setActionZ(-1);
 		}
@@ -108,7 +108,7 @@ public class CartographerBox extends Crowd{
 			mapMarkers[i].setActionZ(-1);
 		}
 		
-		mouseDragRegion = new ActionRegion(this.getLocation()[0], this.getLocation()[1], size[0], size[1], false) {
+		mouseDragRegion = new ActionRegion(this.getLocation()[0], this.getLocation()[1], size[0], size[1]) {
 			
 			private boolean mouseDown = false;
 			
@@ -261,7 +261,7 @@ public class CartographerBox extends Crowd{
 		 * @param index the index
 		 */
 		public MarkerText(int index) {
-			super("", Color.red, Color.yellow);
+			super(Color.red, Color.yellow);
 			this.index = index;
 		}
 
@@ -292,8 +292,8 @@ public class CartographerBox extends Crowd{
 		 * @param x the x
 		 * @param y the y
 		 */
-		public AddMarkerText(String tag, double x, double y){
-			super(tag,x,y,"Generate Marker: ");
+		public AddMarkerText(double x, double y){
+			super(x,y,"Generate Marker: ");
 			this.markerColour = Color.red.darker();
 			this.setMaxLetters("Generate Marker: ".length() + 24);
 			this.setMinLetters("Generate Marker: ".length());

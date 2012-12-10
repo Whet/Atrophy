@@ -28,7 +28,7 @@ public class AiCombatActions {
 	private FloatingIcons floatingIcons;
 	private AiCrowd aiCrowd;
 	private PanningManager panningManager;
-
+	
 	public AiCombatActions(CombatMembersManager combatMembersManager, CombatVisualManager combatVisualManager, MouseAbilityHandler mouseAbilityHandler, FloatingIcons floatingIcons, AiCrowd aiCrowd, PanningManager panningManager){
 		this.swing = 0;
 		this.oldTargetSwing = 0;

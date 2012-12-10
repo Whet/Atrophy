@@ -357,7 +357,7 @@ public class ThinkingAi extends Ai{
 						throw new PathNotFoundException(pnfe.getLevelBlock());
 					}
 					
-					tryToClearPath(pnfe);
+					tryToClearPath();
 				}
 				else{
 					idle();
@@ -385,10 +385,8 @@ public class ThinkingAi extends Ai{
 	
 	/**
 	 * Try to clear path.
-	 *
-	 * @param pnfe the pnfe
 	 */
-	private void tryToClearPath(PathNotFoundException pnfe) {
+	private void tryToClearPath() {
 		// if the path is blocked by a portal then open it
 		if(this.getAbilities().contains(Abilities.WELDING)){
 			for(int i = 0; i < this.getLevelBlock().getPortalCount(); i++){
@@ -1567,7 +1565,7 @@ public class ThinkingAi extends Ai{
 	 * @param player the player
 	 * @return true, if successful
 	 */
-	public boolean willJoinPlayer(Ai player){
+	public boolean willJoinPlayer(@SuppressWarnings("unused") Ai player){
 		return false;
 	}
 

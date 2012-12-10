@@ -24,8 +24,8 @@ public class MediumStealthAction extends AbilityButton implements InfoTextDispla
 	 * @param tag the tag
 	 * @param image the image
 	 */
-	public MediumStealthAction(String tag, BufferedImage image) {
-		super(tag, image);
+	public MediumStealthAction(BufferedImage image) {
+		super(image);
 	}
 	
 	/* (non-Javadoc)

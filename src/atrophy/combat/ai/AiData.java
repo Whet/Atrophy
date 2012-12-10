@@ -43,6 +43,8 @@ public class AiData {
 	
 	private int armour;
 	
+	private int accuracyBoost;
+	
 	private int defaultArmour;
 	
 	private int defaultFov;
@@ -61,6 +63,9 @@ public class AiData {
 		
 		this.defaultArmour = 15;
 		this.armour = 15;
+		this.accuracyBoost = 0;
+		
+		
 		this.fov = DEFAULT_FOV;
 		this.defaultFov = fov;
 		
@@ -98,6 +103,9 @@ public class AiData {
 		
 		this.abilities.clear();
 		
+		this.abilities.add(Abilities.SPEECH);
+		
+		// Ability Items
 		if(this.inventory.hasItem(GrenadeItem.getInstance())){
 			this.abilities.add(Abilities.GRENADETHROWER);
 		}
@@ -129,6 +137,7 @@ public class AiData {
 			this.abilities.add(Abilities.KILL_TAGS);
 		}
 		
+		// Melee
 		if(this.getWeapon() instanceof MeleeWeapon1){
 			this.abilities.add(Abilities.STUN_MELEE);
 		}
@@ -136,6 +145,7 @@ public class AiData {
 			this.abilities.add(Abilities.SLIT_MELEE);
 		}
 		
+		// Armour
 		if(this.inventory.hasItem(ArmourPlates2.getInstance())){
 			this.setArmour(ArmourPlates2.ARMOUR_VALUE);
 		}
@@ -145,6 +155,12 @@ public class AiData {
 		else{
 			this.setArmour(this.getDefaultArmour());
 		}
+		
+		// Accuracy Mods
+		if(true) {
+			this.accuracyBoost = 0;
+		}
+		
 		
 		if(invoker.getLevelBlock() == null){
 			return;
@@ -157,7 +173,6 @@ public class AiData {
 			this.stealthed = true;
 		}
 		
-		this.abilities.add(Abilities.SPEECH);
 	}
 	
 	public void clearAbilities(){
@@ -265,6 +280,10 @@ public class AiData {
 
 	public void setFov(int fov) {
 		this.fov = fov;
+	}
+	
+	public int getAccuracyBoost() {
+		return accuracyBoost;
 	}
 
 	public int getDefaultArmour() {

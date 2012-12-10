@@ -13,10 +13,10 @@ import java.util.List;
 import java.util.Stack;
 
 import watoydoEngine.io.ReadWriter;
-import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.ai.AiGeneratorInterface;
+import atrophy.combat.ai.AiGeneratorInterface.GenerateCommand;
 import atrophy.combat.ai.AiGeneratorInterface.SoloGenerateCommand;
 import atrophy.combat.ai.AiGeneratorInterface.TurretGenerateCommand;
 import atrophy.combat.ai.ThinkingAi.AiNode;
@@ -26,6 +26,7 @@ import atrophy.combat.display.ui.MessageBox.Dialogue;
 import atrophy.combat.display.ui.loot.LootBox.Lootable;
 import atrophy.combat.mechanics.TurnProcess;
 import atrophy.combat.missions.MissionManager;
+import atrophy.gameMenu.saveFile.Missions;
 
 /**
  * The Class LevelIO.
@@ -111,16 +112,18 @@ public class LevelIO {
 	 * @param weaponChance the weapon chance
 	 * @param scienceChance the science chance
 	 * @param panningManager 
-	 * @param combatVisualManager 
 	 * @param turnProcess 
 	 * @param messageBox 
 	 * @param aiCrowd 
 	 * @param levelManager 
+	 * @param missions 
+	 * @param missionsManager 
+	 * @param generationCommands 
 	 * @return the level
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 * @throws LevelFormatException the level format exception
 	 */
-	public static Level loadLevel(File levelFile, String owner, int engineeringChance, int medicalChance, int weaponChance, int scienceChance, PanningManager panningManager, CombatVisualManager combatVisualManager, TurnProcess turnProcess, MessageBox messageBox, AiCrowd aiCrowd, LevelManager levelManager) throws IOException, LevelFormatException{
+	public static Level loadLevel(File levelFile, String owner, int engineeringChance, int medicalChance, int weaponChance, int scienceChance, PanningManager panningManager, TurnProcess turnProcess, MessageBox messageBox, AiCrowd aiCrowd, LevelManager levelManager, Missions missions, MissionManager missionsManager, List<GenerateCommand> generationCommands) throws IOException, LevelFormatException{
 		Level level = new Level(owner, levelManager);
 		
 		Stack<LevelBlock> blocksList = new Stack<LevelBlock>();
@@ -140,7 +143,7 @@ public class LevelIO {
 			throw new LevelFormatException(0,"The size line is not correctly defined! It should be on line 0 and as '[width Min, -width Max, height Min, -height Max]' ");
 		}
 		
-		readBlocks(levelFile, level, blocksList, aiCrowd, messageBox, turnProcess, combatVisualManager);
+		readBlocks(levelFile, level, blocksList, aiCrowd, messageBox, turnProcess, missions, missionsManager, generationCommands);
 		
 		readPortals(levelFile, portalData, portalSecurity);
 		// Place components into level object
@@ -171,11 +174,13 @@ public class LevelIO {
 	 * @param messageBox 
 	 * @param messageBox 
 	 * @param turnProcess 
-	 * @param combatVisualManager 
+	 * @param missions 
+	 * @param missionsManager 
+	 * @param generationCommands 
 	 * @throws IOException Signals that an I/O exception has occurred.
 	 * @throws LevelFormatException the level format exception
 	 */
-	private static void readBlocks(File levelFile, Level level, Stack<LevelBlock> blocksList, AiCrowd aiCrowd, MessageBox messageBox, TurnProcess turnProcess, CombatVisualManager combatVisualManager) throws IOException, LevelFormatException {
+	private static void readBlocks(File levelFile, Level level, Stack<LevelBlock> blocksList, AiCrowd aiCrowd, MessageBox messageBox, TurnProcess turnProcess, Missions missions, MissionManager missionsManager, List<AiGeneratorInterface.GenerateCommand> generationCommands) throws IOException, LevelFormatException {
 		
 		int blockNumber = 0;
 		
@@ -188,7 +193,7 @@ public class LevelIO {
 		while(lineString != null){
 			
 			if(lineString.startsWith("BLOCK")){
-				LevelBlock block = new LevelBlock(blockNumber);
+				LevelBlock block = new LevelBlock(blockNumber, missionsManager);
 				
 				blocksList.add(block);
 				
@@ -263,10 +268,16 @@ public class LevelIO {
 						blocksList.peek().getLocation()[0],
 						blocksList.peek().getStealthRegion().get(blocksList.peek().getStealthRegion().size() - 1).getBounds2D().getCenterY() +
 						blocksList.peek().getLocation()[1]};
-				
-				boolean spawnOnce = Boolean.parseBoolean(ReadWriter.readFromArray(lineString, 2));
-				
-				MissionManager.getInstance().addSpawnStash(ReadWriter.readFromArray(lineString, 0),stash,location,ReadWriter.readFromArray(lineString, 1),spawnOnce);
+				 
+				// SPAWN[tag,itemName,#TAGV]
+				if(ReadWriter.readFromArray(lineString, 2).startsWith("#")) {
+					missionsManager.addSpawnStash(ReadWriter.readFromArray(lineString, 0), stash,location,ReadWriter.readFromArray(lineString, 1),ReadWriter.readFromArray(lineString, 2));
+				}
+				// SPAWN[tag,itemName,spawnOnce_Bool]
+				else{
+					boolean spawnOnce = Boolean.parseBoolean(ReadWriter.readFromArray(lineString, 2));
+					missionsManager.addSpawnStash(ReadWriter.readFromArray(lineString, 0),stash,location,ReadWriter.readFromArray(lineString, 1),spawnOnce);
+				}
 			}
 			else if(lineString.startsWith("TEXTUREBLOCK")){
 				
@@ -351,7 +362,7 @@ public class LevelIO {
 				
 				AiNode aiNode = new AiNode(aiCrowd, messageBox, turnProcess, vertexX,vertexY);
 				
-				SoloGenerateCommand command = (SoloGenerateCommand) AiGeneratorInterface.getInstance().getCommands().get(AiGeneratorInterface.getInstance().getCommands().size() - 1);
+				SoloGenerateCommand command = (SoloGenerateCommand) generationCommands.get(generationCommands.size() - 1);
 				
 				command.addAiNode(aiNode);
 				
@@ -474,7 +485,7 @@ public class LevelIO {
 					options[i] = ReadWriter.readFromArray(lineString, i + 3);
 				}
 				
-				Dialogue dialogue = new Dialogue(0, openingLine, options);
+				Dialogue dialogue = new Dialogue(missions, missionsManager, 0, openingLine, options);
 				lastNode.setDialogue(dialogue);
 				lastNode.getDialogue().setTargetFaction(AiGenerator.PLAYER);
 			}
@@ -505,7 +516,7 @@ public class LevelIO {
 					options[i] = ReadWriter.readFromArray(lineString, i);
 				}
 				
-				lastNode.setTopics(new Dialogue(0, "", options));
+				lastNode.setTopics(new Dialogue(missions, missionsManager, 0, "", options));
 			}
 			else if(lineString.startsWith("TOPIC")){
 
@@ -540,7 +551,7 @@ public class LevelIO {
 				}
 				
 				
-				AiGeneratorInterface.getInstance().getCommands().add(new TurretGenerateCommand(vertexX + blocksList.peek().getLocation()[0],
+				generationCommands.add(new TurretGenerateCommand(vertexX + blocksList.peek().getLocation()[0],
 																							   vertexY + blocksList.peek().getLocation()[1]));
 				
 			}
@@ -581,7 +592,7 @@ public class LevelIO {
 					items[i] = ReadWriter.readFromArray(lineString, i + 5);
 				}
 				
-				AiGeneratorInterface.getInstance().getCommands().add(new SoloGenerateCommand(vertexX + blocksList.peek().getLocation()[0],
+				generationCommands.add(new SoloGenerateCommand(vertexX + blocksList.peek().getLocation()[0],
 																							 vertexY + blocksList.peek().getLocation()[1],
 																							 faction, name, weapon, items));
 			}
@@ -668,5 +679,5 @@ public class LevelIO {
 			this.message = "Error Line: " + lineNumber + " " + message;
 		}
 	}
-	
+
 }

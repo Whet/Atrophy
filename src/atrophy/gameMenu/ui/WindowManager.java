@@ -17,23 +17,6 @@ import atrophy.gameMenu.ui.popups.Popup;
 public class WindowManager extends Crowd{
 
 	/**
-	 * The instance.
-	 */
-	private static WindowManager instance;
-	
-	/**
-	 * Gets the single instance of WindowManager.
-	 *
-	 * @return single instance of WindowManager
-	 */
-	public static WindowManager getInstance(){
-		if(instance == null){
-			instance = new WindowManager();
-		}
-		return instance;
-	}
-
-	/**
 	 * The popup open.
 	 */
 	private boolean popupOpen;
@@ -42,15 +25,16 @@ public class WindowManager extends Crowd{
 	 * The popup.
 	 */
 	private Menu popup;
-	
 	private Menu selectedMenu;
+	private MenuBar menuBar;
 	
 	/**
 	 * Instantiates a new window manager.
 	 */
-	private WindowManager(){
-		super("Windows", true);
+	public WindowManager(MenuBar menuBar){
+		super(true);
 		popupOpen = false;
+		this.menuBar = menuBar;
 	}
 	
 	/**
@@ -70,11 +54,11 @@ public class WindowManager extends Crowd{
 	 * @param menu the menu
 	 */
 	public void addWindow(Menu menu){
-		WindowManager.getInstance().addDisplayItem(menu);
-		WindowManager.getInstance().addMouseActionItem(menu);
+		this.addDisplayItem(menu);
+		this.addMouseActionItem(menu);
 		menu.setVisible(true);
 		menu.moveAll(100, 200);
-		WindowManager.getInstance().computeZOrder();
+		this.computeZOrder();
 	}
 	
 	/**
@@ -89,12 +73,12 @@ public class WindowManager extends Crowd{
 		}
 		
 		this.setPopupOpen(true);
-		WindowManager.getInstance().addDisplayItem(popup);
-		WindowManager.getInstance().addMouseActionItem(popup);
+		this.addDisplayItem(popup);
+		this.addMouseActionItem(popup);
 		popup.setVisible(true);
 		popup.moveAll(DisplayManager.getInstance().getResolution()[0] / 2 - popup.getSize()[0] / 2,
 					  DisplayManager.getInstance().getResolution()[1] / 2 - popup.getSize()[1] / 2);
-		MenuBar.getInstance().setVisible(false);
+		menuBar.setVisible(false);
 		this.popup = popup;
 		
 		// move mouse to popup
@@ -156,18 +140,7 @@ public class WindowManager extends Crowd{
 				}
 			}
 			
-			MenuBar.getInstance().setVisible(true);
-		}
-	}
-	
-	/**
-	 * Purge.
-	 */
-	public static void purge(){
-		if(instance != null){
-			instance.getDisplayList().clear();
-			instance.getMouseActionList().clear();
-			instance.getKeyboardActionList().clear();
+			menuBar.setVisible(true);
 		}
 	}
 

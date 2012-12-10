@@ -15,7 +15,6 @@ import java.util.Set;
 
 import atrophy.gameMenu.saveFile.MapWar.Sector;
 import atrophy.gameMenu.ui.ShopManager;
-import atrophy.gameMenu.ui.SquadMenu;
 import atrophy.gameMenu.ui.StashManager;
 import atrophy.gameMenu.ui.WindowManager;
 
@@ -24,11 +23,13 @@ import atrophy.gameMenu.ui.WindowManager;
  */
 public class SaveFile implements Serializable{
 
+	public static String saveLocation = "";
+	
 	/**
 	 * The Constant serialVersionUID.
 	 */
 	private static final long serialVersionUID = -9063488604100773309L;
-
+	
 	/**
 	 * The squad.
 	 */
@@ -66,6 +67,8 @@ public class SaveFile implements Serializable{
 	
 	public Set<String> spawnCodes;
 	
+	public String saveURL;
+	
 	/**
 	 * Instantiates a new save file.
 	 *
@@ -73,14 +76,13 @@ public class SaveFile implements Serializable{
 	 * @param sectors the sectors
 	 * @param stash the stash
 	 */
-	public SaveFile(Squad squad, ArrayList<Sector> sectors, ArrayList<String> stash, TechTree techTree, Set<String> spawnCodes) {
+	public SaveFile(Squad squad, Missions missions, ArrayList<Sector> sectors, ArrayList<String> stash, TechTree techTree, Set<String> spawnCodes) {
 		this.advance = squad.getAdvance();
 		this.squad = squad;
 		this.sectors = sectors;
 		this.stash = stash;
-		this.quests = Missions.getInstance().getMissionGivers();
-		this.economyEffects = Missions.getInstance().getEconomyEffects();
-		this.techTree = TechTree.getInstance();
+		this.economyEffects = missions.getEconomyEffects();
+		this.techTree = techTree;
 		this.spawnCodes = spawnCodes;
 	}
 
@@ -92,9 +94,11 @@ public class SaveFile implements Serializable{
 	 * @param sectors the sectors
 	 * @param stash the stash
 	 */
-	public static void saveGame(File file, Squad squad, ArrayList<Sector> sectors, ArrayList<String> stash, TechTree techTree, Set<String> spawnCodes){
-		SaveFile save = new SaveFile(squad,sectors,stash,techTree,spawnCodes);
-			
+	public static void saveGame(File file, Squad squad, Missions missions, ArrayList<Sector> sectors, ArrayList<String> stash, TechTree techTree, Set<String> spawnCodes){
+		SaveFile save = new SaveFile(squad,missions,sectors,stash,techTree,spawnCodes);
+		
+		save.saveURL = file.getAbsolutePath();
+		
 		ObjectOutputStream stream = null;
 		
 		try {
@@ -119,8 +123,15 @@ public class SaveFile implements Serializable{
 	 * Load game.
 	 *
 	 * @param file the file
+	 * @param stashManager 
+	 * @param mapWar 
+	 * @param squadMenu 
+	 * @param shopManager 
+	 * @param missions 
+	 * @param windowManager 
+	 * @return 
 	 */
-	public static void loadGame(File file) {
+	public static Squad loadGame(File file, StashManager stashManager, MapWar mapWar, ShopManager shopManager, Missions missions, WindowManager windowManager) {
 		
 		SaveFile save = null;
 		
@@ -131,7 +142,7 @@ public class SaveFile implements Serializable{
 			save = (SaveFile) stream.readObject();
 		}
 		catch (IOException | ClassCastException | ClassNotFoundException e) {
-			return;
+			return null;
 		}
 		finally{
 			try {
@@ -143,21 +154,25 @@ public class SaveFile implements Serializable{
 		}
 		
 		if(save != null){
-			StashManager.getInstance().setItems(save.stash);
-			MapWar.getInstance().setSectors(save.sectors);
-			SquadMenu.setSquad(save.squad);
-			ShopManager.getInstance().randomItems();
-			Missions.getInstance().setMissionGivers(save.quests);
-			Missions.getInstance().setEconomyEffects(save.economyEffects);
-			TechTree.setInstance(save.techTree);
-			WindowManager.getInstance().updateWindows();
-			Missions.getInstance().setMemCodes(save.spawnCodes);
+			
+			//Delete save file
+			file.delete();
+			
+			stashManager.setItems(save.stash);
+			mapWar.setSectors(save.sectors);
+			shopManager.randomItems();
+			missions.setEconomyEffects(save.economyEffects);
+//			TechTree.setInstance(save.techTree);
+			windowManager.updateWindows();
+			missions.setMemCodes(save.spawnCodes);
 			
 			// set advance to true value
 			save.squad.setAdvance(save.advance);
+			
+			SaveFile.saveLocation = save.saveURL;
 		}
 		
-		save = null;
+		return save.squad;
 	}
 	
 }

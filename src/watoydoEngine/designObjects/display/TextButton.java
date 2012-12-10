@@ -46,12 +46,10 @@ public abstract class TextButton extends Text implements MouseRespondable{
 	/**
 	 * Instantiates a new text button.
 	 *
-	 * @param tag the tag
 	 * @param onColour the on colour
 	 * @param offColour the off colour
 	 */
-	public TextButton(String tag, Color onColour, Color offColour) {
-		super(tag);
+	public TextButton(Color onColour, Color offColour) {
 		this.active = true;
 		this.setColour(offColour);
 		this.onColour = onColour;

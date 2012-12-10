@@ -10,6 +10,7 @@ import java.awt.event.MouseEvent;
 
 import watoydoEngine.designObjects.display.Text;
 import watoydoEngine.designObjects.display.TextButton;
+import watoydoEngine.fonts.FontList;
 import watoydoEngine.gubbinz.GraphicsFunctions;
 import watoydoEngine.sounds.SoundBoard;
 import atrophy.combat.ai.AiGenerator;
@@ -29,24 +30,33 @@ public class SquadMenu extends Menu{
 	/**
 	 * The squad.
 	 */
-	public static Squad squad;
+	private Squad squad;
+	private ShopManager shopManager;
+	private StashManager stashManager;
 	
 	/**
 	 * Instantiates a new squad menu.
+	 * @param squad 
+	 * @param shopManager 
 	 */
-	public SquadMenu(){
-		super(new double[]{300,460});
-		createSquadComponents();
+	public SquadMenu(WindowManager windowManager, ShopManager shopManager, StashManager stashManager, Squad squad){
+		super(windowManager, new double[]{300,460});
+		
+		this.squad = squad;
+		this.shopManager = shopManager;
+		this.stashManager = stashManager;
+		
+		createSquadComponents(shopManager, stashManager);
 	}
 
 	/**
 	 * Creates the squad components.
 	 */
-	private void createSquadComponents() {
+	private void createSquadComponents(final ShopManager shopManager, final StashManager stashManager) {
 		final int[] windowLocation = new int[]{(int) (this.getLocation()[0]),(int) (this.getLocation()[1])};
 		final int spacing = 20;
 		
-		TextButton stashOpen = new TextButton("Stash", Color.yellow, Color.red) {
+		TextButton stashOpen = new TextButton(Color.yellow, Color.red) {
 			{
 				this.setText("Open Stash");
 				this.setLocation(windowLocation[0] + 21, windowLocation[1] + 40);
@@ -54,8 +64,8 @@ public class SquadMenu extends Menu{
 			
 			@Override
 			public boolean mD(Point mousePosition, MouseEvent e) {
-				StashMenu menu = new StashMenu();
-				WindowManager.getInstance().addWindow(menu);
+				StashMenu menu = new StashMenu(windowManager, stashManager);
+				windowManager.addWindow(menu);
 				SoundBoard.getInstance().playEffect("invOpen");
 				return true;
 			}
@@ -63,7 +73,7 @@ public class SquadMenu extends Menu{
 		this.addDisplayItem(stashOpen);
 		this.addMouseActionItem(stashOpen);
 		
-		TextButton openShop = new TextButton("OpenShop", Color.yellow, Color.red) {
+		TextButton openShop = new TextButton(Color.yellow, Color.red) {
 			{
 				this.setText("Open Shop");
 				this.setLocation(windowLocation[0] + 21, windowLocation[1] + 60);
@@ -71,8 +81,8 @@ public class SquadMenu extends Menu{
 			
 			@Override
 			public boolean mD(Point mousePosition, MouseEvent e) {
-				ShopMenu menu = new ShopMenu();
-				WindowManager.getInstance().addWindow(menu);
+				ShopMenu menu = new ShopMenu(windowManager, shopManager, stashManager);
+				windowManager.addWindow(menu);
 				SoundBoard.getInstance().playEffect("invOpen");
 				return true;
 			}
@@ -80,10 +90,10 @@ public class SquadMenu extends Menu{
 		this.addDisplayItem(openShop);
 		this.addMouseActionItem(openShop);
 		
-		TextButton buySquaddie = new TextButton("SquadBuy", Color.yellow, Color.red) {
+		TextButton buySquaddie = new TextButton(Color.yellow, Color.red) {
 			{
 				int BUY_MEMBER_COST = 1400;
-				this.setText("Hire Squaddie " + squad.getAdvance() + " / " + BUY_MEMBER_COST);
+				this.setText(FontList.digitString(5, squad.getAdvance()) + " *" + FontList.digitString(5, BUY_MEMBER_COST) + "   " + "Hire Squaddie");
 				this.setLocation(windowLocation[0] + 21, windowLocation[1] + 80);
 			}
 			
@@ -93,7 +103,7 @@ public class SquadMenu extends Menu{
 				if(squad.getSquadCount() < MAX_SQUAD_COUNT && squad.payAdvance(BUY_MEMBER_COST))
 					squad.addSquaddie(new Squaddie(AiGenerator.randomName(), AiGenerator.randomImage(), MeleeWeapon1.NAME, ""));
 				
-				WindowManager.getInstance().updateWindows();
+				windowManager.updateWindows();
 				return true;
 			}
 		};
@@ -102,10 +112,10 @@ public class SquadMenu extends Menu{
 		
 //		if(ShopManager.getInstance().getScienceLootLevel() > 1){
 		
-			TextButton buyMule = new TextButton("MuleBuy", Color.yellow, Color.red) {
+			TextButton buyMule = new TextButton(Color.yellow, Color.red) {
 				{
 					int BUY_MEMBER_COST = 800;
-					this.setText("Buy Mule " + squad.getAdvance() + " / " + BUY_MEMBER_COST);
+					this.setText(FontList.digitString(5, squad.getAdvance()) + " *" + FontList.digitString(5, BUY_MEMBER_COST) + "   " + "Buy Mule");
 					this.setLocation(windowLocation[0] + 21, windowLocation[1] + 100);
 				}
 				
@@ -115,7 +125,7 @@ public class SquadMenu extends Menu{
 					if(squad.getSquadCount() < MAX_SQUAD_COUNT && squad.payAdvance(BUY_MEMBER_COST))
 						squad.addSquaddie(new Squaddie(MuleAi.MULE, "Mule", UnarmedWeapon.NAME, MuleAi.MULE));
 					
-					WindowManager.getInstance().updateWindows();
+					windowManager.updateWindows();
 					return true;
 				}
 			};
@@ -124,7 +134,7 @@ public class SquadMenu extends Menu{
 		
 //		}
 		
-		Text squadListTag = new Text("title2", windowLocation[0] + 21, windowLocation[1] + 121, "Squad Members");
+		Text squadListTag = new Text(windowLocation[0] + 21, windowLocation[1] + 121, "Squad Members");
 		this.addDisplayItem(squadListTag);
 		
 		for(int i = 0; i < squad.getSquad().size(); i++){
@@ -147,7 +157,7 @@ public class SquadMenu extends Menu{
 //					};
 //				}
 //				else{
-					squaddieName = new TextButton(squad.getSquad().get(i).getName(), Color.yellow, Color.red) {
+					squaddieName = new TextButton(Color.yellow, Color.red) {
 						
 						private int squadIndex = index;
 						
@@ -159,8 +169,8 @@ public class SquadMenu extends Menu{
 						
 						@Override
 						public boolean mD(Point mousePosition, MouseEvent e) {
-							SquadMemberMenu menu = new SquadMemberMenu(index);
-							WindowManager.getInstance().addWindow(menu);
+							SquadMemberMenu menu = new SquadMemberMenu(windowManager, squad, stashManager, index);
+							windowManager.addWindow(menu);
 							SoundBoard.getInstance().playEffect("invOpen");
 							return true;
 						}
@@ -170,29 +180,6 @@ public class SquadMenu extends Menu{
 				this.addMouseActionItem(squaddieName);
 			
 		}
-	}
-	
-	/**
-	 * Gets the squad.
-	 *
-	 * @return the squad
-	 */
-	public static Squad getSquad() {
-		return squad;
-	}
-
-	/**
-	 * Sets the squad.
-	 *
-	 * @param squad2 the new squad
-	 */
-	public static void setSquad(Squad squad2) {
-		
-		// update advance for squads returning from missions
-		if(squad != null)
-			squad2.setAdvance(squad.getAdvance());
-		
-		squad = squad2;
 	}
 	
 	@Override
@@ -217,7 +204,7 @@ public class SquadMenu extends Menu{
 		this.getDisplayList().clear();
 		this.getMouseActionList().clear();
 		
-		this.createSquadComponents();
+		this.createSquadComponents(shopManager, stashManager);
 	}
 	
 }

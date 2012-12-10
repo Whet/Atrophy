@@ -125,9 +125,8 @@ public class MessageManager{
 	 * Load dialogue.
 	 *
 	 * @param dialogue the dialogue
-	 * @param currentAi 
 	 */
-	public void loadDialogue(Dialogue dialogue, Ai currentAi) {
+	public void loadDialogue(Dialogue dialogue) {
 		resetTopics();
 		
 		intimidated = false;
@@ -182,7 +181,7 @@ public class MessageManager{
 	/**
 	 * Reload dialogue.
 	 */
-	private void reloadDialogue(Ai currentAi){
+	private void reloadDialogue(){
 		Dialogue dialogue = ((ThinkingAi) messageBox.getConversers()[1]).getAiNode().getDialogue();
 		
 		// Add long speech setters
@@ -210,7 +209,7 @@ public class MessageManager{
 		resetTopics();
 		
 		if(thinkingAiInitiated && dialogueSpeechTopic(topic)){
-			reloadDialogue(messageBox.getConversers()[0]);
+			reloadDialogue();
 			return;
 		}
 		
@@ -247,7 +246,7 @@ public class MessageManager{
 			case "INCAP":
 			case "JOIN":
 				if(thinkingAiInitiated){
-					reloadDialogue(messageBox.getConversers()[0]);
+					reloadDialogue();
 					return;
 				}
 				baseTopics();

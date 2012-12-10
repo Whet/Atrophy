@@ -14,6 +14,7 @@ import atrophy.combat.items.WeaponSupply;
 import atrophy.gameMenu.saveFile.Missions.GatherMission;
 import atrophy.gameMenu.saveFile.Missions.KillMission;
 import atrophy.gameMenu.saveFile.Missions.Mission;
+import atrophy.gameMenu.ui.StashManager;
 
 /**
  * The Class MissionGiver.
@@ -44,6 +45,11 @@ public abstract class MissionGiver implements Serializable{
 	 * The reputation.
 	 */
 	private int reputation;
+	
+	protected Squad squad;
+	protected Missions missions;
+	protected StashManager stashManager;
+	protected ItemMarket itemMarket;
 
 	/**
 	 * Instantiates a new mission giver.
@@ -51,10 +57,16 @@ public abstract class MissionGiver implements Serializable{
 	 * @param name the name
 	 * @param faction the faction
 	 */
-	protected MissionGiver(String name, String faction){
+	protected MissionGiver(Squad squad, Missions missions, StashManager stashManager, ItemMarket itemMarket, String name, String faction){
 		this.name = name;
 		this.faction = faction;
 		this.reputation = 0;
+		
+		this.squad = squad;
+		this.missions = missions;
+		this.stashManager = stashManager;
+		this.itemMarket = itemMarket;
+		
 		computeMission();
 	}
 
@@ -130,22 +142,27 @@ public abstract class MissionGiver implements Serializable{
 	 * Gather mission.
 	 *
 	 * @param item the item
+	 * @param missions 
+	 * @param stashManager 
 	 */
-	protected void gatherMission(String item){
+	protected void gatherMission(String item, Squad squad, Missions missions, StashManager stashManager){
 		Object reward = randomReward();
 		
-		this.mission = new GatherMission(item, reward instanceof String, reward);
+		this.mission = new GatherMission(missions, squad, stashManager, item, reward instanceof String, reward);
 	}
 	
 	/**
 	 * Kill mission.
 	 *
 	 * @param faction the faction
+	 * @param squad 
+	 * @param missions 
+	 * @param stashManager 
 	 */
-	protected void killMission(String faction){
+	protected void killMission(String faction, Squad squad, Missions missions, StashManager stashManager){
 		Object reward = randomReward();
 		
-		this.mission = new KillMission(faction, new Random().nextInt(4) + 1, reward instanceof String, reward);
+		this.mission = new KillMission(missions, squad, stashManager, faction, new Random().nextInt(4) + 1, reward instanceof String, reward);
 	}
 
 	/**
@@ -190,7 +207,7 @@ public abstract class MissionGiver implements Serializable{
 	 * @return the object
 	 */
 	private Object randomReward() {
-		return ItemMarket.getInstance().getRandomMarketItem();
+		return itemMarket.getRandomMarketItem();
 	}
 	
 	/**
@@ -206,8 +223,8 @@ public abstract class MissionGiver implements Serializable{
 		/**
 		 * Instantiates a new wV giver1.
 		 */
-		protected WVGiver1() {
-			super("Commander Deaton",AiGenerator.WHITE_VISTA);
+		protected WVGiver1(Squad squad, Missions missions, StashManager stashManager, ItemMarket itemMarket) {
+			super(squad, missions, stashManager, itemMarket, "Commander Deaton",AiGenerator.WHITE_VISTA);
 		}
 
 		/* (non-Javadoc)
@@ -215,7 +232,7 @@ public abstract class MissionGiver implements Serializable{
 		 */
 		@Override
 		public void computeMission() {
-			killMission(AiGenerator.BANDITS);
+			killMission(AiGenerator.BANDITS, squad, missions, stashManager);
 		}
 		
 	}
@@ -233,8 +250,8 @@ public abstract class MissionGiver implements Serializable{
 		/**
 		 * Instantiates a new wV giver2.
 		 */
-		protected WVGiver2() {
-			super("Johan",AiGenerator.WHITE_VISTA);
+		protected WVGiver2(Squad squad, Missions missions, StashManager stashManager, ItemMarket itemMarket) {
+			super(squad, missions, stashManager, itemMarket, "Johan",AiGenerator.WHITE_VISTA);
 		}
 
 		/* (non-Javadoc)
@@ -242,7 +259,7 @@ public abstract class MissionGiver implements Serializable{
 		 */
 		@Override
 		public void computeMission() {
-			gatherMission(ScienceSupply.NAME);
+			gatherMission(ScienceSupply.NAME, squad, missions, stashManager);
 		}
 
 	}
@@ -260,8 +277,8 @@ public abstract class MissionGiver implements Serializable{
 		/**
 		 * Instantiates a new bandit giver1.
 		 */
-		protected BanditGiver1() {
-			super("Queen",AiGenerator.BANDITS);
+		protected BanditGiver1(Squad squad, Missions missions, StashManager stashManager, ItemMarket itemMarket) {
+			super(squad, missions, stashManager, itemMarket, "Queen",AiGenerator.BANDITS);
 		}
 
 		/* (non-Javadoc)
@@ -269,7 +286,7 @@ public abstract class MissionGiver implements Serializable{
 		 */
 		@Override
 		public void computeMission() {
-			gatherMission(MedicalSupply.NAME);
+			gatherMission(MedicalSupply.NAME, squad, missions, stashManager);
 		}
 
 	}
@@ -287,8 +304,8 @@ public abstract class MissionGiver implements Serializable{
 		/**
 		 * Instantiates a new bandit giver2.
 		 */
-		protected BanditGiver2() {
-			super("Omar",AiGenerator.BANDITS);
+		protected BanditGiver2(Squad squad, Missions missions, StashManager stashManager, ItemMarket itemMarket) {
+			super(squad, missions, stashManager, itemMarket, "Omar",AiGenerator.BANDITS);
 		}
 
 		/* (non-Javadoc)
@@ -296,7 +313,7 @@ public abstract class MissionGiver implements Serializable{
 		 */
 		@Override
 		public void computeMission() {
-			gatherMission(MedicalSupply.NAME);
+			gatherMission(MedicalSupply.NAME, squad, missions, stashManager);
 		}
 
 	}
@@ -314,8 +331,8 @@ public abstract class MissionGiver implements Serializable{
 		/**
 		 * Instantiates a new loner giver1.
 		 */
-		protected LonerGiver1() {
-			super("Jacob and Dave",AiGenerator.LONER);
+		protected LonerGiver1(Squad squad, Missions missions, StashManager stashManager, ItemMarket itemMarket) {
+			super(squad, missions, stashManager, itemMarket, "Jacob and Dave",AiGenerator.LONER);
 		}
 
 		/* (non-Javadoc)
@@ -323,7 +340,7 @@ public abstract class MissionGiver implements Serializable{
 		 */
 		@Override
 		public void computeMission() {
-			gatherMission(randomSupply());
+			gatherMission(randomSupply(), squad, missions, stashManager);
 		}
 
 	}
@@ -341,8 +358,8 @@ public abstract class MissionGiver implements Serializable{
 		/**
 		 * Instantiates a new loner giver2.
 		 */
-		protected LonerGiver2() {
-			super("Hannah", AiGenerator.LONER);
+		protected LonerGiver2(Squad squad, Missions missions, StashManager stashManager, ItemMarket itemMarket) {
+			super(squad, missions, stashManager, itemMarket, "Hannah", AiGenerator.LONER);
 		}
 
 		/* (non-Javadoc)
@@ -350,7 +367,7 @@ public abstract class MissionGiver implements Serializable{
 		 */
 		@Override
 		public void computeMission() {
-			gatherMission(randomSupply());
+			gatherMission(randomSupply(), squad, missions, stashManager);
 		}
 
 	}

@@ -53,26 +53,19 @@ public abstract class Menu extends Crowd{
 	 */
 	protected boolean drawLess;
 	
+	protected WindowManager windowManager;
+	
 	/**
 	 * Instantiates a new menu.
 	 *
 	 * @param size the size
 	 */
-	public Menu(double[] size) {
-		super("", true);
+	public Menu(WindowManager windowManager, double[] size) {
+		super(true);
 		mouseDown = false;
-		
-		
 		this.defaultSize = size;
 		this.size = size;
-		
 		smallSize = new double[2];
-		
-//		if(defaultSize[0] <= TARGET_SMALL_X)
-//			smallSize[0] = defaultSize[0];
-//		else
-//			smallSize[0] = TARGET_SMALL_X;
-		
 		smallSize[0] = defaultSize[0];
 		
 		if(defaultSize[1] <= TARGET_SMALL_Y)
@@ -86,6 +79,8 @@ public abstract class Menu extends Crowd{
 		this.setActionZ(-windowZ);
 		
 		windowZ++;
+		
+		this.windowManager = windowManager;
 		
 	}
 	
@@ -126,7 +121,7 @@ public abstract class Menu extends Crowd{
 			this.move(move[0], move[1]);
 		}
 		
-		setPriorityMode(WindowManager.getInstance().requestWindowKey(this));
+		setPriorityMode(windowManager.requestWindowKey(this));
 	}
 	
 	/* (non-Javadoc)
@@ -149,10 +144,10 @@ public abstract class Menu extends Crowd{
 			
 			this.setZ(windowZ + 5);
 			this.setActionZ(-windowZ - 5);
-			WindowManager.getInstance().computeZOrder();
+			windowManager.computeZOrder();
 		}
 		else{
-			WindowManager.getInstance().releaseWindowKey(this);
+			windowManager.releaseWindowKey(this);
 			this.setDrawLess(true);
 			this.setSize(smallSize);
 			
@@ -229,8 +224,8 @@ public abstract class Menu extends Crowd{
 	@Override
 	public boolean rMU(Point mousePosition, MouseEvent e) {
 		this.setVisible(false);
-		WindowManager.getInstance().releaseWindowKey(this);
-		WindowManager.getInstance().removeItem(this);
+		windowManager.releaseWindowKey(this);
+		windowManager.removeItem(this);
 		SoundBoard.getInstance().playEffect("cancel");
 		return true;
 	}

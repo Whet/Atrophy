@@ -34,23 +34,28 @@ public class MissionsMenu extends Menu{
 	 */
 	private ArrayList<TextButton> buttons;
 
+	private Missions missions;
+
 	/**
 	 * Instantiates a new missions menu.
+	 * @param stashManager 
 	 */
-	public MissionsMenu() {
-		super(new double[]{300,270});
+	public MissionsMenu(WindowManager windowManager, Missions missions, StashManager stashManager) {
+		super(windowManager, new double[]{300,270});
 		page = 0;
-		addComponents();
+		addComponents(missions, stashManager);
+		
+		this.missions = missions;
 	}
 	
 	/**
 	 * Adds the components.
 	 */
-	private void addComponents() {
+	private void addComponents(final Missions missions, final StashManager stashManager) {
 		buttons = new ArrayList<TextButton>(MAX_ITEMS);
 		for(int i = 0; i < MAX_ITEMS; i++){
 			final int ind = i;
-			TextButton tb = new TextButton("missionIndex"+ind, Color.yellow, Color.red) {
+			TextButton tb = new TextButton(Color.yellow, Color.red) {
 				
 				{
 					this.setLocation((int)this.getLocation()[0] + 11, (int)this.getLocation()[1] + 41 + 20 * ind);
@@ -61,7 +66,7 @@ public class MissionsMenu extends Menu{
 				public boolean mD(Point mousePosition, MouseEvent e) {;
 				
 					if(!this.getText().isEmpty()){
-						WindowManager.getInstance().addWindow(new MissionMenu(ind + MAX_ITEMS * page));
+						windowManager.addWindow(new MissionMenu(windowManager, missions, stashManager, ind + MAX_ITEMS * page));
 						SoundBoard.getInstance().playEffect("tick");
 					}
 					return true;
@@ -73,7 +78,7 @@ public class MissionsMenu extends Menu{
 			buttons.add(tb);
 		}
 		
-		TextButton previous = new TextButton("next",Color.yellow,Color.red) {
+		TextButton previous = new TextButton(Color.yellow,Color.red) {
 			
 			{
 				this.setText("Next");
@@ -89,7 +94,7 @@ public class MissionsMenu extends Menu{
 		this.addDisplayItem(previous);
 		this.addMouseActionItem(previous);
 		
-		TextButton next = new TextButton("previous",Color.yellow,Color.red) {
+		TextButton next = new TextButton(Color.yellow,Color.red) {
 			
 			{
 				this.setText("Previous");
@@ -113,9 +118,9 @@ public class MissionsMenu extends Menu{
 	 */
 	private void changePage(int change){
 		if(change == -1 && page == 0){
-			page = (int)Math.ceil(Missions.getInstance().getMissionCount() / MAX_ITEMS);
+			page = (int)Math.ceil(missions.getMissionCount() / MAX_ITEMS);
 		}
-		else if(change == 1 && page == (int)Math.ceil(Missions.getInstance().getMissionCount() / MAX_ITEMS)){
+		else if(change == 1 && page == (int)Math.ceil(missions.getMissionCount() / MAX_ITEMS)){
 			page = 0;
 		}
 		else{
@@ -163,7 +168,7 @@ public class MissionsMenu extends Menu{
 	 *
 	 * @param drawShape the draw shape
 	 */
-	private void drawComponents(Graphics2D drawShape) {
+	private void drawComponents(@SuppressWarnings("unused") Graphics2D drawShape) {
 	}
 	
 	/* (non-Javadoc)
@@ -189,8 +194,8 @@ public class MissionsMenu extends Menu{
 	 */
 	private void updateText() {
 		for(int i = 0; i < buttons.size(); i++){
-			buttons.get(i).setText(Missions.getInstance().getGiverShortFaction(Missions.getInstance().getMission(i + (page * MAX_ITEMS))) + "  " +
-					               Missions.getInstance().getMissionName(i + (page * MAX_ITEMS)));
+			buttons.get(i).setText(missions.getGiverShortFaction(missions.getMission(i + (page * MAX_ITEMS))) + "  " +
+					               missions.getMissionName(i + (page * MAX_ITEMS)));
 		}
 	}
 

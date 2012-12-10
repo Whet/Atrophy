@@ -9,9 +9,9 @@ import java.awt.event.MouseEvent;
 
 import watoydoEngine.designObjects.display.Text;
 import watoydoEngine.designObjects.display.TextButton;
+import atrophy.gameMenu.saveFile.Squad;
 import atrophy.gameMenu.saveFile.Squad.Squaddie;
 import atrophy.gameMenu.ui.ShopManager;
-import atrophy.gameMenu.ui.SquadMenu;
 import atrophy.gameMenu.ui.WindowManager;
 
 /**
@@ -24,9 +24,11 @@ public class SkillPopup extends Popup {
 	 *
 	 * @param squadMember the squad member
 	 * @param skill the skill
+	 * @param windowManager 
+	 * @param squadMenu 
 	 */
-	public SkillPopup(Squaddie squadMember, String skill) {
-		super(new Text("", 0, 0, "Are you sure you want to increase " + skill + " for " + ShopManager.getInstance().abilityCost(squadMember,skill) + "?"),getOptions(squadMember,skill));
+	public SkillPopup(Squaddie squadMember, String skill, WindowManager windowManager, Squad squad) {
+		super(windowManager, new Text(0, 0, "Are you sure you want to increase " + skill + " for " + ShopManager.abilityCost(squadMember,skill) + "?"),getOptions(squad, windowManager,squadMember,skill));
 	}
 
 	/**
@@ -36,10 +38,10 @@ public class SkillPopup extends Popup {
 	 * @param skill the skill
 	 * @return the options
 	 */
-	private static TextButton[] getOptions(final Squaddie squadMember, final String skill) {
+	private static TextButton[] getOptions(final Squad squad, final WindowManager windowManager, final Squaddie squadMember, final String skill) {
 		TextButton[] options = new TextButton[2];
 		
-		options[0] = new TextButton("",Color.green,Color.green.darker()) {
+		options[0] = new TextButton(Color.green,Color.green.darker()) {
 			
 			{
 				this.setText("Increase Skill");
@@ -47,15 +49,15 @@ public class SkillPopup extends Popup {
 			
 			@Override
 			public boolean mD(Point mousePosition, MouseEvent e) {
-				SquadMenu.getSquad().payAdvance(ShopManager.getInstance().abilityCost(squadMember,skill));
+				squad.payAdvance(ShopManager.abilityCost(squadMember,skill));
 				squadMember.setSkillLevel(skill, squadMember.getSkillLevel(skill) + 1);	
-				WindowManager.getInstance().setPopupOpen(false);
+				windowManager.setPopupOpen(false);
 				return true;
 			}
 			
 		};
 		
-		options[1] = new TextButton("",Color.yellow,Color.red) {
+		options[1] = new TextButton(Color.yellow,Color.red) {
 			
 			{
 				this.setText("Cancel");
@@ -63,7 +65,7 @@ public class SkillPopup extends Popup {
 			
 			@Override
 			public boolean mD(Point mousePosition, MouseEvent e) {
-				WindowManager.getInstance().setPopupOpen(false);
+				windowManager.setPopupOpen(false);
 				return true;
 			}
 			

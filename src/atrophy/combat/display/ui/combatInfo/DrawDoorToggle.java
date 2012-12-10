@@ -27,7 +27,7 @@ public class DrawDoorToggle extends ButtonMulti implements InfoTextDisplayable{
 	 * @param image the image
 	 */
 	public DrawDoorToggle(FloatingIcons floatingIcons, CombatUiManager combatUiManagers, BufferedImage[] image) {
-		super("DrawFovToggle", image);
+		super(image);
 		this.floatingIcons = floatingIcons;
 		this.combatUiManager = combatUiManagers;
 	}

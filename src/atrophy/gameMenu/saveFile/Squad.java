@@ -6,10 +6,9 @@ package atrophy.gameMenu.saveFile;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map;
 
-import atrophy.combat.ai.Ai;
 import atrophy.combat.ai.MuleAi;
 import atrophy.combat.mechanics.Abilities;
 
@@ -23,11 +22,6 @@ public class Squad implements Serializable{
 	 */
 	private static final long serialVersionUID = 1922138873692593530L;
 	
-	/**
-	 * The kills.
-	 */
-	private HashSet<Ai> kills;
-	
 	// currency used to buy things and skill up
 	/**
 	 * The advance.
@@ -39,42 +33,16 @@ public class Squad implements Serializable{
 	 */
 	private ArrayList<Squaddie> squadMembers;
 	
+	private Map<String, Integer> kills;
+	
 	/**
 	 * Instantiates a new squad.
 	 */
 	public Squad(){
 		this.squadMembers = new ArrayList<Squaddie>(5);
-		this.kills = new HashSet<Ai>();
+		this.kills = new HashMap<>();
 	}
 	
-	/**
-	 * Adds the kill.
-	 *
-	 * @param ai the ai
-	 */
-	public void addKill(Ai ai){
-		this.kills.add(ai);
-	}
-	
-	/**
-	 * Gets the faction kills.
-	 *
-	 * @param faction the faction
-	 * @return the faction kills
-	 */
-	public int getFactionKills(String faction){
-		Iterator<Ai> killIt = this.kills.iterator();
-		
-		int kills = 0;
-		
-		while(killIt.hasNext()){
-			if(killIt.next().getFaction().equals(faction))
-				kills++;
-		}
-		
-		return kills;
-	}
-
 	/**
 	 * Gets the squad.
 	 *
@@ -375,29 +343,27 @@ public class Squad implements Serializable{
 		return this.squadMembers.size();
 	}
 
-	/**
-	 * Gets the squad kills.
-	 *
-	 * @return the squad kills
-	 */
-	public HashSet<Ai> getSquadKills() {
+	public void addKill(String faction) {
+		if(this.kills.get(faction) != null)
+			this.kills.put(faction, this.kills.get(faction) + 1);
+		else
+			this.kills.put(faction, 1);
+	}
+
+	public Map<String, Integer> getSquadKills() {
 		return this.kills;
 	}
-	
-	/**
-	 * Reset kills.
-	 */
-	public void resetKills(){
+
+	public void setKills(Map<String, Integer> kills) {
+		this.kills = kills;
+	}
+
+	public int getFactionKills(String faction) {
+		return this.kills.get(faction);
+	}
+
+	public void resetKills() {
 		this.kills.clear();
 	}
 
-	/**
-	 * Sets the kills.
-	 *
-	 * @param squadKills the new kills
-	 */
-	public void setKills(HashSet<Ai> squadKills) {
-		this.kills = squadKills;
-	}
-	
 }

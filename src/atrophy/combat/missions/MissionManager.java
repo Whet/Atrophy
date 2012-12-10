@@ -21,6 +21,7 @@ import atrophy.combat.items.StunGrenadeItem;
 import atrophy.combat.items.UnitDetector;
 import atrophy.combat.items.WeaponSupply;
 import atrophy.combat.items.WeldingTorch;
+import atrophy.gameMenu.saveFile.Missions;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -28,35 +29,29 @@ import atrophy.combat.items.WeldingTorch;
  */
 public class MissionManager {
 	
-	/**
-	 * The instance.
-	 */
-	private static MissionManager instance;
-	
-	/**
-	 * Gets the single instance of MissionManager.
-	 *
-	 * @return single instance of MissionManager
-	 */
-	public static MissionManager getInstance(){
-		if(instance == null){
-			instance = new MissionManager();
-		}
-		
-		return instance;
-	}
-	
 	// stashes where mission items can spawn
 	/**
 	 * The spawn stashes.
 	 */
 	private HashMap<String, SpawnInfo> spawnStashes;
+	private Missions missions;
 	
 	/**
 	 * Instantiates a new mission manager.
+	 * @param missions 
 	 */
-	private MissionManager(){
+	public MissionManager(Missions missions){
 		spawnStashes = new HashMap<String, SpawnInfo>();
+		this.missions = missions;
+	}
+	
+	public void triggerLootEvent(Lootable lootable) {
+		for(SpawnInfo info : spawnStashes.values()) {
+			if(info.stash == lootable && info.spawnOnLoot) {
+				info.spawnitem(info.tag);
+				missions.addMemCode(info.memCode);
+			}
+		}
 	}
 
 	/**
@@ -69,7 +64,7 @@ public class MissionManager {
 	 * @param spawnOnce the spawn once
 	 */
 	public void addSpawnStash(String tag, Lootable stash, double[] location, String item, boolean spawnOnce) {
-		SpawnInfo info = new SpawnInfo(stash, location, item, spawnOnce);
+		SpawnInfo info = new SpawnInfo(tag, stash, location, item, spawnOnce, false);
 		
 		info.item = info.workOutItem(item);
 		
@@ -80,6 +75,24 @@ public class MissionManager {
 		}
 		
 		this.spawnStashes.put(tag, info);
+	}
+	
+	public void addSpawnStash(String tag, Lootable stash, double[] location, String item, String spawnTag) {
+		
+		if(missions.hasMemCode(spawnTag))
+			return;
+		
+		SpawnInfo info = new SpawnInfo(tag, stash, location, item, true, true);
+		
+		info.item = info.workOutItem(item);
+		
+		// incorrect item code
+		if(info.item == null){
+			System.err.println("Incorrect spawn item code: " + item);
+			return;
+		}
+		
+		this.spawnStashes.put(tag, info);		
 	}
 	
 	// spawns an item in the given stash and returns where the stash is so a marker can be made
@@ -108,6 +121,12 @@ public class MissionManager {
 	 */
 	private class SpawnInfo{
 		
+		public String memCode;
+
+		public String tag;
+
+		public boolean spawnOnLoot;
+
 		/**
 		 * The stash.
 		 */
@@ -133,13 +152,15 @@ public class MissionManager {
 		 *
 		 * @param stash the stash
 		 * @param location the location
-		 * @param item the item
 		 * @param doOnce the do once
 		 */
-		public SpawnInfo(Lootable stash, double[] location, String item, boolean doOnce){
+		public SpawnInfo(String tag, Lootable stash, double[] location, String memCode, boolean doOnce, boolean spawnOnLoot){
+			this.tag = tag;
 			this.stash = stash;
 			this.location = location;
 			this.doOnce = doOnce;
+			this.spawnOnLoot = spawnOnLoot;
+			this.memCode = memCode;
 		}
 
 		/**
@@ -210,5 +231,5 @@ public class MissionManager {
 				spawnStashes.remove(tag);
 		}
 	}
-	
+
 }

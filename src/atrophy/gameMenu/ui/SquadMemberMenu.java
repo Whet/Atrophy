@@ -14,8 +14,10 @@ import java.util.Map;
 
 import watoydoEngine.designObjects.display.Text;
 import watoydoEngine.designObjects.display.TextButton;
+import watoydoEngine.fonts.FontList;
 import watoydoEngine.gubbinz.GraphicsFunctions;
 import watoydoEngine.sounds.SoundBoard;
+import atrophy.gameMenu.saveFile.Squad;
 import atrophy.gameMenu.saveFile.Squad.Squaddie;
 import atrophy.gameMenu.ui.popups.SkillPopup;
 
@@ -44,15 +46,23 @@ public class SquadMemberMenu extends Menu {
 	 */
 	private int index;
 	
+	private Squad squad;
+
+	private StashManager stashManager;
+	
 	/**
 	 * Instantiates a new squad member menu.
 	 *
 	 * @param index the index
 	 */
-	public SquadMemberMenu(int index){
-		super(new double[]{375,240});
+	public SquadMemberMenu(WindowManager windowManager, Squad squad, StashManager stashManager, int index){
+		super(windowManager, new double[]{375,240});
+		
 		this.index = index;
-		this.squadMember = SquadMenu.getSquad().getSquadMember(index);
+		this.squadMember = squad.getSquadMember(index);
+		this.squad = squad;
+		this.stashManager = stashManager;
+		
 		itemButtons = new ArrayList<TextButton>();
 		skillButtons = new HashMap<TextButton,String>();
 		addComponents();
@@ -63,14 +73,14 @@ public class SquadMemberMenu extends Menu {
 	 */
 	private void addComponents() {
 		addItemButtons();
-		addSkillButtons();
+		addSkillButtons(squad);
 	}
 
 	/**
 	 * Adds the skill buttons.
 	 */
-	private void addSkillButtons() {
-		Text itemsTag = new Text("", (int)this.getLocation()[0] + 220, (int)this.getLocation()[1] + 41, "Skills");
+	private void addSkillButtons(final Squad squad) {
+		Text itemsTag = new Text((int)this.getLocation()[0] + 160, (int)this.getLocation()[1] + 41, "Skills");
 		this.addDisplayItem(itemsTag);
 		
 		Iterator<String> skillIt = squadMember.getSkills();
@@ -81,18 +91,18 @@ public class SquadMemberMenu extends Menu {
 			
 			final String skillF = skillIt.next();
 			final int ind = i;
-			TextButton tb = new TextButton("skill"+skillF, Color.yellow, Color.red) {
+			TextButton tb = new TextButton(Color.yellow, Color.red) {
 				
 				{
-					this.setLocation((int)this.getLocation()[0] + 220, (int)this.getLocation()[1] + 68 + 20 * ind);
+					this.setLocation((int)this.getLocation()[0] + 160, (int)this.getLocation()[1] + 68 + 20 * ind);
 					this.setText(skillF + " - " + squadMember.getSkillLevel(skillF));
 				}
 				
 				@Override
 				public boolean mD(Point mousePosition, MouseEvent e) {
 					if(squadMember.getSkillLevel(skillF) < 4 &&
-					   SquadMenu.getSquad().getAdvance() >= ShopManager.getInstance().abilityCost(squadMember, skillF)){
-						WindowManager.getInstance().addPopup(SquadMemberMenu.this,new SkillPopup(squadMember, skillF));
+					   squad.getAdvance() >= ShopManager.abilityCost(squadMember, skillF)){
+						windowManager.addPopup(SquadMemberMenu.this, new SkillPopup(squadMember, skillF, windowManager, squad));
 					}
 					
 					return true;
@@ -111,12 +121,12 @@ public class SquadMemberMenu extends Menu {
 	 */
 	private void addItemButtons() {
 		
-		Text itemsTag = new Text("", (int)this.getLocation()[0] + 11, (int)this.getLocation()[1] + 51, "Items");
+		Text itemsTag = new Text((int)this.getLocation()[0] + 11, (int)this.getLocation()[1] + 51, "Items");
 		this.addDisplayItem(itemsTag);
 		
 		for(int i = 0; i < 5; i++){
 			final int ind = i;
-			TextButton tb = new TextButton("stashIndex"+ind, Color.yellow, Color.red) {
+			TextButton tb = new TextButton(Color.yellow, Color.red) {
 				
 				private int index;
 				
@@ -131,7 +141,7 @@ public class SquadMemberMenu extends Menu {
 					
 					String item = squadMember.getItem(index);
 					if(!item.equals("Empty")){
-						StashManager.getInstance().addItem(item);
+						stashManager.addItem(item);
 						squadMember.removeItem(ind);
 						SoundBoard.getInstance().playEffect("invExchange");
 					}
@@ -145,10 +155,10 @@ public class SquadMemberMenu extends Menu {
 			this.itemButtons.add(tb);
 		}
 		
-		Text weaponTag = new Text("",(int)this.getLocation()[0] + 21, (int)this.getLocation()[1] + 201,"Weapon");
+		Text weaponTag = new Text((int)this.getLocation()[0] + 21, (int)this.getLocation()[1] + 201,"Weapon");
 		this.addDisplayItem(weaponTag);
 		
-		TextButton tb = new TextButton("weapon", Color.yellow, Color.red) {
+		TextButton tb = new TextButton(Color.yellow, Color.red) {
 			
 			{
 				this.setLocation((int)this.getLocation()[0] + 21, (int)this.getLocation()[1] + 220);
@@ -171,8 +181,8 @@ public class SquadMemberMenu extends Menu {
 	 */
 	@Override
 	public boolean mD(Point mousePosition, MouseEvent e) {
-		if(StashManager.getInstance().transferItem(squadMember)){return true;}
-		return super.mD(mousePosition, e);
+		if(stashManager.transferItem(squadMember)){return true;}
+			return super.mD(mousePosition, e);
 	}
 	
 	/* (non-Javadoc)
@@ -205,7 +215,8 @@ public class SquadMemberMenu extends Menu {
 		while(buttonIt.hasNext()){
 			TextButton next = buttonIt.next();
 			
-			next.setText(this.skillButtons.get(next) + " - " + squadMember.getSkillLevel(this.skillButtons.get(next)));
+			next.setText(FontList.digitString(5, squad.getAdvance()) + " *" + FontList.digitString(5, ShopManager.abilityCost(squadMember, this.skillButtons.get(next))) + "  " +
+						 this.skillButtons.get(next) + " - " + squadMember.getSkillLevel(this.skillButtons.get(next)));
 		}
 		
 		itemButtons.get(itemButtons.size() - 1).setText(this.squadMember.getWeapon());
@@ -230,10 +241,10 @@ public class SquadMemberMenu extends Menu {
 	 */
 	@Override
 	public void updateInformation() {
-		if(SquadMenu.getSquad().getSquad().size() < this.index + 1){
+		if(squad.getSquad().size() < this.index + 1){
 			this.index = 0;
 		}
-		this.squadMember = SquadMenu.getSquad().getSquadMember(index);
+		this.squadMember = squad.getSquadMember(index);
 		updateText();
 	}
 

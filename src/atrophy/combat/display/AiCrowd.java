@@ -24,7 +24,6 @@ import atrophy.combat.ai.ThinkingAi;
 import atrophy.combat.ai.VehicleAi;
 import atrophy.gameMenu.saveFile.Squad;
 import atrophy.gameMenu.saveFile.Squad.Squaddie;
-import atrophy.gameMenu.ui.SquadMenu;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -52,14 +51,19 @@ public class AiCrowd extends Crowd {
 	 */
 	private Stack<Ai> shuffledStack;
 	
+	private Squad squad;
+	
 	/**
 	 * Instantiates a new ai crowd.
+	 * @param squadMenu 
 	 */
-	public AiCrowd() {
-		super("AiCrowd", false);
+	public AiCrowd(Squad squad) {
+		super(false);
 		actors = new ArrayList<Ai>();
 		masks = new ArrayList<AiImage>();
 		loadBank();
+		
+		this.squad = squad;
 	}
 	
 	// the void
@@ -315,10 +319,11 @@ public class AiCrowd extends Crowd {
 	/**
 	 * Save to squad.
 	 */
-	public void saveToSquad() {
+	public Squad saveToSquad() {
 		Squad squad = new Squad();
 		
-		squad.setKills(SquadMenu.getSquad().getSquadKills());
+		squad.setAdvance(this.squad.getAdvance());
+		squad.setKills(this.squad.getSquadKills());
 		
 		for(int i = 0; i < this.actors.size(); i++){
 			if(actors.get(i).getFaction().equals(AiGenerator.PLAYER) && !actors.get(i).isDead()){
@@ -347,7 +352,8 @@ public class AiCrowd extends Crowd {
 			}
 		}
 		
-		SquadMenu.setSquad(squad);
+		return squad;
+		
 	}
 
 	/**
@@ -364,6 +370,4 @@ public class AiCrowd extends Crowd {
 		}
 	}
 
-	
-	
 }

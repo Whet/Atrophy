@@ -9,6 +9,7 @@ import java.awt.event.MouseEvent;
 import watoydoEngine.designObjects.display.Text;
 import watoydoEngine.designObjects.display.TextButton;
 import atrophy.gameMenu.ui.Menu;
+import atrophy.gameMenu.ui.WindowManager;
 
 /**
  * The Class Popup.
@@ -36,8 +37,8 @@ public abstract class Popup extends Menu{
 	 * @param message the message
 	 * @param options the options
 	 */
-	public Popup(Text message, TextButton[] options) {
-		super(calculateSize(message,options));
+	public Popup(WindowManager windowManager, Text message, TextButton[] options) {
+		super(windowManager, calculateSize(message,options));
 		constructPopup(message,options);
 	}
 

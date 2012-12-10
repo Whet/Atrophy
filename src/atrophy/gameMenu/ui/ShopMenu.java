@@ -33,13 +33,18 @@ public class ShopMenu extends Menu{
 	 */
 	private ArrayList<TextButton> buttons;
 	
+	private ShopManager shopManager;
+	private StashManager stashManager;
+	
 	/**
 	 * Instantiates a new shop menu.
 	 */
-	public ShopMenu(){
-		super(new double[]{280,270});
+	public ShopMenu(WindowManager windowManager, ShopManager shopManager, StashManager stashManager){
+		super(windowManager, new double[]{280,270});
 		page = 0;
 		addComponents();
+		this.shopManager = shopManager;
+		this.stashManager = stashManager;
 	}
 	
 	/**
@@ -49,7 +54,7 @@ public class ShopMenu extends Menu{
 		buttons = new ArrayList<TextButton>(MAX_ITEMS);
 		for(int i = 0; i < MAX_ITEMS; i++){
 			final int ind = i;
-			TextButton tb = new TextButton("shopeIndex"+ind, Color.yellow, Color.red) {
+			TextButton tb = new TextButton(Color.yellow, Color.red) {
 				
 				private int index;
 				
@@ -61,7 +66,7 @@ public class ShopMenu extends Menu{
 				
 				@Override
 				public boolean mD(Point mousePosition, MouseEvent e) {;
-					ShopManager.getInstance().buyItem(page * MAX_ITEMS + index);
+					shopManager.buyItem(page * MAX_ITEMS + index);
 					return true;
 				}
 			};
@@ -71,7 +76,7 @@ public class ShopMenu extends Menu{
 			buttons.add(tb);
 		}
 		
-		TextButton previous = new TextButton("next",Color.yellow,Color.red) {
+		TextButton previous = new TextButton(Color.yellow,Color.red) {
 			
 			{
 				this.setText("Next");
@@ -87,7 +92,7 @@ public class ShopMenu extends Menu{
 		this.addDisplayItem(previous);
 		this.addMouseActionItem(previous);
 		
-		TextButton next = new TextButton("previous",Color.yellow,Color.red) {
+		TextButton next = new TextButton(Color.yellow,Color.red) {
 			
 			{
 				this.setText("Previous");
@@ -111,9 +116,9 @@ public class ShopMenu extends Menu{
 	 */
 	private void changePage(int change){
 		if(change == -1 && page == 0){
-			page = (int)Math.ceil(ShopManager.getInstance().getItemCount() / MAX_ITEMS);
+			page = (int)Math.ceil(shopManager.getItemCount() / MAX_ITEMS);
 		}
-		else if(change == 1 && page == (int)Math.ceil(ShopManager.getInstance().getItemCount() / MAX_ITEMS)){
+		else if(change == 1 && page == (int)Math.ceil(shopManager.getItemCount() / MAX_ITEMS)){
 			page = 0;
 		}
 		else{
@@ -130,21 +135,8 @@ public class ShopMenu extends Menu{
 		super.drawMethod(drawShape);
 		
 		drawTitle(drawShape);
-		
-		if(!drawLess)
-			drawContents(drawShape);
 	}
 	
-	/**
-	 * Draw contents.
-	 *
-	 * @param drawShape the draw shape
-	 */
-	protected void drawContents(Graphics2D drawShape) {
-//		drawTitle(drawShape);
-		drawComponents(drawShape);
-	}
-
 	/**
 	 * Draw title.
 	 *
@@ -156,20 +148,12 @@ public class ShopMenu extends Menu{
 		drawShape.drawString("Shop   Page " + page, (int)this.getLocation()[0] + 20, (int)this.getLocation()[1] + 21);
 	}
 	
-	/**
-	 * Draw components.
-	 *
-	 * @param drawShape the draw shape
-	 */
-	private void drawComponents(Graphics2D drawShape) {
-	}
-	
 	/* (non-Javadoc)
 	 * @see atrophy.gameMenu.ui.Menu#mD(java.awt.Point, java.awt.event.MouseEvent)
 	 */
 	@Override
 	public boolean mD(Point mousePosition, MouseEvent e){
-		if(StashManager.getInstance().transferItem(this)){
+		if(stashManager.transferItem(this)){
 			SoundBoard.getInstance().playEffect("invExchange");
 			return true;
 		}
@@ -199,7 +183,7 @@ public class ShopMenu extends Menu{
 	 */
 	private void updateText() {
 		for(int i = 0; i < buttons.size(); i++){
-			buttons.get(i).setText(ShopManager.getInstance().getItem(i + (page * MAX_ITEMS)));
+			buttons.get(i).setText(shopManager.getItem(i + (page * MAX_ITEMS)));
 		}
 	}
 

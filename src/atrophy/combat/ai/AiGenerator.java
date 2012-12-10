@@ -132,12 +132,14 @@ public class AiGenerator{
 	 * Generate ai.
 	 *
 	 * @param crowd the crowd
+	 * @param itemMarket 
+	 * @param generationCommands 
 	 */
-	public void generateAi(Crowd crowd){
+	public void generateAi(Crowd crowd, ItemMarket itemMarket, List<AiGeneratorInterface.GenerateCommand> generationCommands){
 		
 		int squadCount = 0;
 		
-		for(AiGeneratorInterface.GenerateCommand command : AiGeneratorInterface.getInstance().getCommands()){
+		for(AiGeneratorInterface.GenerateCommand command : generationCommands){
 			
 			if(command instanceof SoloGenerateCommand){
 				generateSoloAi(crowd, (SoloGenerateCommand)command, squadCount);
@@ -182,14 +184,12 @@ public class AiGenerator{
 		
 		for(int i = 0; i < AiGeneratorInterface.LONER_SPAWN_AMOUNT; i++){
 			generateLoner(Integer.toString(squadCount)+LONER,
-						  ItemMarket.getInstance().getLonerAllowedItems(),
-						  ItemMarket.getInstance().getLonerAllowedWeapons(), 
+						  itemMarket.getLonerAllowedItems(),
+						  itemMarket.getLonerAllowedWeapons(), 
 					      crowd,
 					      levelManager.getFactionRoom(LONER));
 			squadCount++;
 		}
-		
-		AiGeneratorInterface.getInstance().getCommands().clear();
 		
 		// choose 1st ai to control
 		combatMembersManager.pickStartingAi();
@@ -207,7 +207,7 @@ public class AiGenerator{
 		
 		// Test Ai image
 			
-		AiImage aiImg = new AiImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, "Thinker"+"Loner",0,0, mouseAbilityHandler);
+		AiImage aiImg = new AiImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, 0,0, mouseAbilityHandler);
 		ThinkingAi ai = null;
 		
 		switch(command.getFaction()){
@@ -272,7 +272,7 @@ public class AiGenerator{
 			AiImage aiImg = null;
 			
 			if(squad.get(i).isVehicle()){
-				aiImg = new VehicleImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, "AiImg"+i,100,100, mouseAbilityHandler);
+				aiImg = new VehicleImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, 100,100, mouseAbilityHandler);
 				
 				switch(squad.get(i).getVehicleType()){
 					case MuleAi.MULE:
@@ -284,7 +284,7 @@ public class AiGenerator{
 				ai.setTeam("1Player");
 			}
 			else{
-				aiImg = new AiImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, "AiImg"+i,100,100, mouseAbilityHandler);
+				aiImg = new AiImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, 100,100, mouseAbilityHandler);
 				
 				ai = new Ai(floatingIcons, mouseAbilityHandler, squad.get(i).getName(),randomLocation[0],randomLocation[1], combatInorganicManager, levelManager, lootbox, combatMembersManager, combatUiManager, combatVisualManager, aiCrowd, panningManager);
 				ai.setImage(squad.get(i).getImage());
@@ -337,6 +337,12 @@ public class AiGenerator{
 		combatMembersManager.updateCommanders();
 		combatMembersManager.initTeams();
 		combatMembersManager.updateTeams();
+		
+		// Set turret owners
+		for(Ai turret : aiCrowd.getActors()) {
+			if(turret instanceof TurretAi)
+				((TurretAi) turret).setCommander(combatMembersManager.getCommander(levelManager.getCurrentLevel().getMapOwner()));
+		}
 	}
 	
 	/**
@@ -354,7 +360,7 @@ public class AiGenerator{
 		
 		// Test Ai image
 			
-		AiImage aiImg = new AiImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, "Thinker"+"Loner",0,0, mouseAbilityHandler);
+		AiImage aiImg = new AiImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, 0,0, mouseAbilityHandler);
 		ThinkingAi ai;
 		
 //		switch(new Random().nextInt(5)){
@@ -387,7 +393,7 @@ public class AiGenerator{
 	
 	private void generateTurrets(String team, Crowd crowd, double x, double y){
 		
-		AiImage aiImg = new AiImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, "Thinker"+"Loner",0,0, mouseAbilityHandler);
+		AiImage aiImg = new AiImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, 0,0, mouseAbilityHandler);
 		ThinkingAi ai;
 		
 		ai = new TurretAi(panningManager, aiCrowd, combatVisualManager, turnProcess, floatingIcons, mouseAbilityHandler, combatMembersManager, x,y, levelManager, combatInorganicManager, combatUiManager, lootbox);
@@ -425,12 +431,11 @@ public class AiGenerator{
 		Matcher numberMatcher;
 		numberMatcher = numberPattern.matcher(team);
 		numberMatcher.find();
-		String faction = team.substring(numberMatcher.group().length());
 		
 		for(int i = 0; i < members; i++){
 			// Test Ai image
 			
-			AiImage aiImg = new AiImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, "Thinker"+faction+i,0,0, mouseAbilityHandler);
+			AiImage aiImg = new AiImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, 0,0, mouseAbilityHandler);
 			
 			ThinkingAi ai = new ThinkingAi(panningManager, combatVisualManager, turnProcess, floatingIcons, mouseAbilityHandler, aiCrowd, combatMembersManager, randomName(),randomLocation[0],randomLocation[1], levelManager, combatInorganicManager, combatUiManager, lootbox);
 			
@@ -513,12 +518,12 @@ public class AiGenerator{
 				
 				switch(faction){
 					case BANDITS:
-						teamObject = new BanditTeamObject(combatVisualManager, team, levelManager);
+						teamObject = new BanditTeamObject(combatVisualManager, team);
 						combatMembersManager.addTeam(teamObject);
 						((BanditTeamObject) combatMembersManager.getTeamObject(team)).addAlliance(DAEMON);
 					break;
 					case WHITE_VISTA:
-						teamObject = new WhiteVistaTeamObject(combatVisualManager, team, levelManager);
+						teamObject = new WhiteVistaTeamObject(combatVisualManager, team);
 						combatMembersManager.addTeam(teamObject);
 						((WhiteVistaTeamObject) combatMembersManager.getTeamObject(team)).addAlliance(PLAYER);
 						((WhiteVistaTeamObject) combatMembersManager.getTeamObject(team)).addAlliance(DAEMON);
@@ -530,7 +535,7 @@ public class AiGenerator{
 						((DaemonTeamObject) combatMembersManager.getTeamObject(team)).addAlliance(BANDITS);
 					break;*/
 					case LONER:
-						teamObject = new LonerTeamObject(combatVisualManager, team, levelManager);
+						teamObject = new LonerTeamObject(combatVisualManager, team);
 						combatMembersManager.addTeam(teamObject);
 						((LonerTeamObject) combatMembersManager.getTeamObject(team)).addAlliance(DAEMON);
 					break;

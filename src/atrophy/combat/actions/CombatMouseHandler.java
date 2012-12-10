@@ -39,7 +39,7 @@ public class CombatMouseHandler extends ActionRegion {
 	 * Instantiates a new combat mouse handler.
 	 */
 	public CombatMouseHandler(LevelManager levelManager, MouseAbilityHandler mouseAbilityHandler, AiManagementSuite aiManagementSuite, UiUpdaterSuite uiUpdaterSuite) {
-		super(0, 0, DisplayManager.getInstance().getResolution()[0], DisplayManager.getInstance().getResolution()[1], true);
+		super(0, 0, DisplayManager.getInstance().getResolution()[0], DisplayManager.getInstance().getResolution()[1]);
 		z = 0;
 
 		this.levelManager = levelManager;

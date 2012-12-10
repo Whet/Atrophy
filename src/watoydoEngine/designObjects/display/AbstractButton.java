@@ -28,11 +28,6 @@ public abstract class AbstractButton implements Displayable, MouseRespondable{
 	private boolean visible;
 	
 	/**
-	 * The tag.
-	 */
-	private String tag;
-	
-	/**
 	 * The scale.
 	 */
 	private double scale;
@@ -71,11 +66,8 @@ public abstract class AbstractButton implements Displayable, MouseRespondable{
 	
 	/**
 	 * Instantiates a new abstract button.
-	 *
-	 * @param tag the tag
 	 */
-	public AbstractButton(String tag){
-		this.tag = tag;
+	public AbstractButton(){
 		this.scale = 1;
 		this.rotation = 0;
 		this.transformation = new AffineTransform();
@@ -95,12 +87,10 @@ public abstract class AbstractButton implements Displayable, MouseRespondable{
 	/**
 	 * Instantiates a new abstract button.
 	 *
-	 * @param tag the tag
 	 * @param x the x
 	 * @param y the y
 	 */
-	public AbstractButton(String tag, double x, double y){
-		this.tag = tag;
+	public AbstractButton(double x, double y){
 		this.scale = 1;
 		this.rotation = 0;
 		this.transformation = new AffineTransform();
@@ -119,11 +109,9 @@ public abstract class AbstractButton implements Displayable, MouseRespondable{
 	/**
 	 * Instantiates a new abstract button.
 	 *
-	 * @param tag the tag
 	 * @param visible the visible
 	 */
-	public AbstractButton(String tag, boolean visible){
-		this.tag = tag;
+	public AbstractButton(boolean visible){
 		this.scale = 1;
 		this.rotation = 0;
 		this.transformation = new AffineTransform();
@@ -143,12 +131,10 @@ public abstract class AbstractButton implements Displayable, MouseRespondable{
 	/**
 	 * Instantiates a new abstract button.
 	 *
-	 * @param tag the tag
 	 * @param visible the visible
 	 * @param active the active
 	 */
-	public AbstractButton(String tag, boolean visible, boolean active){
-		this.tag = tag;
+	public AbstractButton(boolean visible, boolean active){
 		this.scale = 1;
 		this.rotation = 0;
 		this.transformation = new AffineTransform();
@@ -168,13 +154,11 @@ public abstract class AbstractButton implements Displayable, MouseRespondable{
 	/**
 	 * Instantiates a new abstract button.
 	 *
-	 * @param tag the tag
 	 * @param x the x
 	 * @param y the y
 	 * @param visible the visible
 	 */
-	public AbstractButton(String tag, double x, double y, boolean visible){
-		this.tag = tag;
+	public AbstractButton(double x, double y, boolean visible){
 		this.scale = 1;
 		this.rotation = 0;
 		this.transformation = new AffineTransform();
@@ -194,15 +178,13 @@ public abstract class AbstractButton implements Displayable, MouseRespondable{
 	/**
 	 * Instantiates a new abstract button.
 	 *
-	 * @param tag the tag
 	 * @param x the x
 	 * @param y the y
 	 * @param visible the visible
 	 * @param active the active
 	 * @param z the z
 	 */
-	public AbstractButton(String tag, double x, double y, boolean visible, boolean active, int z){
-		this.tag = tag;
+	public AbstractButton(double x, double y, boolean visible, boolean active, int z){
 		this.scale = 1;
 		this.rotation = 0;
 		this.transformation = new AffineTransform();
@@ -339,27 +321,10 @@ public abstract class AbstractButton implements Displayable, MouseRespondable{
 	}
 	
 	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Displayable#isEqual(java.lang.String)
-	 */
-	public boolean isEqual(String tag1){
-		if(tag1.equals(this.tag)){
-			return true;
-		}
-		return false;
-	}
-	
-	/* (non-Javadoc)
 	 * @see watoydoEngine.designObjects.display.Displayable#getZ()
 	 */
 	public int getZ(){
 		return this.z;
-	}
-	
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Displayable#getTag()
-	 */
-	public String getTag(){
-		return this.tag;
 	}
 	
 	/* (non-Javadoc)

@@ -13,23 +13,6 @@ import atrophy.gameMenu.saveFile.Squad.Squaddie;
  * The Class AiGeneratorInterface.
  */
 public class AiGeneratorInterface {
-
-	/**
-	 * The instance.
-	 */
-	private static AiGeneratorInterface instance;
-	
-	/**
-	 * Gets the single instance of AiGeneratorInterface.
-	 *
-	 * @return single instance of AiGeneratorInterface
-	 */
-	public static AiGeneratorInterface getInstance(){
-		if(instance == null){
-			instance = new AiGeneratorInterface();
-		}
-		return instance;
-	}	
 	
 	/**
 	 * The commands.

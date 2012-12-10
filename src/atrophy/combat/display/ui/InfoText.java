@@ -39,7 +39,7 @@ public class InfoText extends Text {
 	 * Instantiates a new info text.
 	 */
 	public InfoText(CombatUiManager combatUiManager) {
-		super("InfoText",0,0,"");
+		super(0,0,"");
 		hints = new LimitedArrayList<InfoTextDisplayable>(MAX_HINTS);
 		this.setFont(FontList.AUD16);
 		

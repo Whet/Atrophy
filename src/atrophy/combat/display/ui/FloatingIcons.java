@@ -72,7 +72,7 @@ public class FloatingIcons extends Crowd{
 	 * @param levelManager 
 	 */
 	public FloatingIcons(CombatMembersManager combatMembersManager, PanningManager panningManager, AiCrowd aiCrowd, CombatVisualManager combatVisualManager, CombatInorganicManager combatInorganicManager, LevelManager levelManager) {
-		super("FloatingIcons", true);
+		super(true);
 		
 		this.combatMembersManager = combatMembersManager;
 		this.panningManager = panningManager;

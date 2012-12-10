@@ -9,7 +9,6 @@ import java.util.HashSet;
 import java.util.Set;
 
 import atrophy.gameMenu.saveFile.Squad.Squaddie;
-import atrophy.gameMenu.ui.SquadMenu;
 import atrophy.gameMenu.ui.StashManager;
 
 /**
@@ -18,23 +17,6 @@ import atrophy.gameMenu.ui.StashManager;
 public class Missions{
 
 	public static final String DEFAULT_MEM_CODE = "OPEN";
-	
-	/**
-	 * The instance.
-	 */
-	private static Missions instance;
-	
-	/**
-	 * Gets the single instance of Missions.
-	 *
-	 * @return single instance of Missions
-	 */
-	public static Missions getInstance(){
-		if(instance == null)
-			instance = new Missions();
-		
-		return instance;
-	}
 	
 	/**
 	 * The interacting member.
@@ -58,28 +40,39 @@ public class Missions{
 	
 	private Set<String> memCodes;
 	
+	private Squad squad;
+	
 	/**
 	 * Instantiates a new missions.
+	 * @param stashManager 
+	 * @param itemMarket 
+	 * @param squadMenu 
+	 * @param squadMenu 
 	 */
-	private Missions(){
+	public Missions(){
 		missions = new ArrayList<>();
 		missionGivers = new ArrayList<MissionGiver>();
 		economyEffects = new ArrayList<String>();
 		memCodes = new HashSet<>();
 		memCodes.add(DEFAULT_MEM_CODE);
-		defaultMissions();
+	}
+	
+	public void lazyLoad(Squad squad, StashManager stashManager, ItemMarket itemMarket) {
+		this.squad = squad;
+		defaultMissions(stashManager, itemMarket);
 	}
 
 	/**
 	 * Default missions.
+	 * @param itemMarkert 
 	 */
-	private void defaultMissions() {
-		this.missionGivers.add(new MissionGiver.WVGiver1());
-		this.missionGivers.add(new MissionGiver.LonerGiver1());
-		this.missionGivers.add(new MissionGiver.BanditGiver1());
-		this.missionGivers.add(new MissionGiver.WVGiver2());
-		this.missionGivers.add(new MissionGiver.LonerGiver2());
-		this.missionGivers.add(new MissionGiver.BanditGiver2());
+	private void defaultMissions(StashManager stashManager, ItemMarket itemMarkert) {
+		this.missionGivers.add(new MissionGiver.WVGiver1(squad, this, stashManager, itemMarkert));
+		this.missionGivers.add(new MissionGiver.LonerGiver1(squad, this, stashManager, itemMarkert));
+		this.missionGivers.add(new MissionGiver.BanditGiver1(squad, this, stashManager, itemMarkert));
+		this.missionGivers.add(new MissionGiver.WVGiver2(squad, this, stashManager, itemMarkert));
+		this.missionGivers.add(new MissionGiver.LonerGiver2(squad, this, stashManager, itemMarkert));
+		this.missionGivers.add(new MissionGiver.BanditGiver2(squad, this, stashManager, itemMarkert));
 		this.updateMissions();
 	}
 
@@ -275,6 +268,10 @@ public class Missions{
 		 * The reward item.
 		 */
 		protected boolean rewardItem;
+
+		protected Missions missions;
+		protected Squad squad;
+		protected StashManager stashManager;
 		
 		/**
 		 * Instantiates a new mission.
@@ -283,12 +280,16 @@ public class Missions{
 		 * @param description the description
 		 * @param rewardItem the reward item
 		 * @param reward the reward
+		 * @param squadMenu 
 		 */
-		public Mission(String name, String description, boolean rewardItem, Object reward){
+		public Mission(Missions missions, StashManager stashManager, String name, String description, boolean rewardItem, Object reward, Squad squad){
 			this.rewardItem = rewardItem;
 			this.reward = reward;
 			this.name = name;
 			this.description = description;
+			this.missions = missions;
+			this.squad = squad;
+			this.stashManager = stashManager;
 		}
 		
 		/**
@@ -296,13 +297,13 @@ public class Missions{
 		 */
 		protected void giveReward() {
 			if(rewardItem){
-				StashManager.getInstance().addItem((String) reward);
+				stashManager.addItem((String) reward);
 			}
 			else{
-				SquadMenu.getSquad().setAdvance(SquadMenu.getSquad().getAdvance() + (Integer)reward);
+				missions.squad.setAdvance(missions.squad.getAdvance() + (Integer)reward);
 			}
 			
-			instance.missions.remove(this);
+			missions.missions.remove(this);
 		}
 		
 		/**
@@ -366,10 +367,10 @@ public class Missions{
 		 * @param rewardItem the reward item
 		 * @param reward the reward
 		 */
-		public GatherMission(String targetItem, boolean rewardItem, Object reward){
-			super("Req: " + targetItem,
+		public GatherMission(Missions missions, Squad squad, StashManager stashManager, String targetItem, boolean rewardItem, Object reward){
+			super(missions, stashManager, "Req: " + targetItem,
 				  "Obj: Hand in a " + targetItem + "@nReward: " + reward,
-				  rewardItem, reward);
+				  rewardItem, reward, squad);
 			
 			this.targetItem = targetItem;
 		}
@@ -380,7 +381,7 @@ public class Missions{
 		@Override
 		public boolean interact() {
 			if(stashHas(targetItem)){
-				StashManager.getInstance().getItems().remove(targetItem);
+				stashManager.getItems().remove(targetItem);
 				giveReward();
 				return true;
 			}
@@ -394,8 +395,8 @@ public class Missions{
 		 * @return true, if successful
 		 */
 		private boolean stashHas(String targetItem2) {
-			for(int i = 0; i < StashManager.getInstance().getItemCount(); i++){
-				if(StashManager.getInstance().getItem(i).equals(targetItem2))
+			for(int i = 0; i < stashManager.getItemCount(); i++){
+				if(stashManager.getItem(i).equals(targetItem2))
 					return true;
 			}
 			return false;
@@ -430,10 +431,10 @@ public class Missions{
 		 * @param rewardItem the reward item
 		 * @param reward the reward
 		 */
-		public KillMission(String faction, int count, boolean rewardItem, Object reward){
-			super("Kill: " + faction,
+		public KillMission(Missions missions, Squad squad, StashManager stashManager, String faction, int count, boolean rewardItem, Object reward){
+			super(missions, stashManager, "Kill: " + faction,
 				  "Obj: Kill " + count + " members of " + faction + "@nReward: " + reward,
-				  rewardItem, reward);
+				  rewardItem, reward, squad);
 			
 			this.targetFaction = faction;
 			this.requiredKills = count;
@@ -444,7 +445,7 @@ public class Missions{
 		 */
 		@Override
 		public boolean interact() {
-			if(SquadMenu.getSquad().getFactionKills(targetFaction) > this.requiredKills){
+			if(missions.squad.getFactionKills(targetFaction) > this.requiredKills){
 				giveReward();
 				return true;
 			}

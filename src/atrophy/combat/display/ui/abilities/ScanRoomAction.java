@@ -19,11 +19,10 @@ public class ScanRoomAction extends AbilityButton implements InfoTextDisplayable
 	/**
 	 * Instantiates a new scan room action.
 	 *
-	 * @param tag the tag
 	 * @param image the image
 	 */
-	public ScanRoomAction(String tag, BufferedImage image) {
-		super(tag, image);
+	public ScanRoomAction(BufferedImage image) {
+		super(image);
 	}
 	
 	/* (non-Javadoc)

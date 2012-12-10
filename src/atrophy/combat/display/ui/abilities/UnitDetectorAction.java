@@ -22,8 +22,8 @@ public class UnitDetectorAction extends AbilityButton implements InfoTextDisplay
 	 * @param tag the tag
 	 * @param image the image
 	 */
-	public UnitDetectorAction(String tag, BufferedImage image) {
-		super(tag, image);
+	public UnitDetectorAction(BufferedImage image) {
+		super(image);
 	}
 	
 	/* (non-Javadoc)

@@ -23,8 +23,8 @@ public class BackstabAction extends AbilityButton implements InfoTextDisplayable
 	 * @param tag the tag
 	 * @param image the image
 	 */
-	public BackstabAction(String tag, BufferedImage image) {
-		super(tag, image);
+	public BackstabAction(BufferedImage image) {
+		super(image);
 	}
 	
 	/* (non-Javadoc)

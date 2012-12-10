@@ -23,6 +23,9 @@ import atrophy.combat.display.ui.UiUpdaterSuite;
 import atrophy.combat.display.ui.loot.LootBox;
 import atrophy.combat.level.LevelManager;
 import atrophy.combat.mechanics.TurnProcess;
+import atrophy.gameMenu.saveFile.Missions;
+import atrophy.gameMenu.saveFile.TechTree;
+import atrophy.gameMenu.ui.StashManager;
 import atrophy.hardPanes.GameMenuHardPane;
 
 // TODO: Auto-generated Javadoc
@@ -42,8 +45,11 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 	private MouseAbilityHandler mouseAbilityHandler;
 	private CombatVisualManager combatVisualManager;
 	private LevelManager levelManager;
+	private TechTree techTree;
+	private StashManager stashManager;
+	private Missions missions;
 	
-	public CombatKeyboardHandler(LevelManager levelManager, MouseAbilityHandler mouseAbilityHandler, TurnProcess turnProcess, AiManagementSuite aiManagementSuite, UiUpdaterSuite uiUpdaterSuite){
+	public CombatKeyboardHandler(LevelManager levelManager, MouseAbilityHandler mouseAbilityHandler, TurnProcess turnProcess, AiManagementSuite aiManagementSuite, UiUpdaterSuite uiUpdaterSuite, TechTree techTree, StashManager stashManager, Missions missions){
 		
 		this.aiCrowd = aiManagementSuite.getAiCrowd();
 		this.combatMembersManager = aiManagementSuite.getCombatMembersManager();
@@ -55,9 +61,13 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 		this.combatVisualManager = uiUpdaterSuite.getCombatVisualManager();
 		this.panningManager = uiUpdaterSuite.getPanningManager();
 		this.levelManager = levelManager;
+		this.missions = missions;
 		
 		this.turnProcess = turnProcess;
 		this.mouseAbilityHandler = mouseAbilityHandler;
+		
+		this.techTree = techTree;
+		this.stashManager = stashManager;
 		
 	}
 	
@@ -153,8 +163,7 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 				}
 				
 				if(teamInSaferoom){
-					aiCrowd.saveToSquad();
-					ActivePane.getInstance().changePane(new Crowd("CurrentPane", false, new GameMenuHardPane()));
+					ActivePane.getInstance().changePane(new Crowd(new GameMenuHardPane(aiCrowd.saveToSquad(), techTree, stashManager, missions)));
 				}
 				
 			break;
@@ -208,7 +217,8 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 			
 			// k DEBUG
 			case 75:
-				combatMembersManager.getCurrentAi().setDead(true);
+//				combatMembersManager.getCurrentAi().setDead(true);
+				mouseAbilityHandler.setAbility("Hack");
 			break;
 			
 			// X panning

@@ -4,12 +4,16 @@
 package atrophy.hardPanes;
 
 import watoydoEngine.designObjects.display.Crowd;
-import watoydoEngine.hardPanes.ModdableHardPane;
+import watoydoEngine.hardPanes.HardPaneDefineable;
+import atrophy.gameMenu.saveFile.ItemMarket;
 import atrophy.gameMenu.saveFile.MapWar;
 import atrophy.gameMenu.saveFile.Missions;
+import atrophy.gameMenu.saveFile.Squad;
+import atrophy.gameMenu.saveFile.TechTree;
 import atrophy.gameMenu.ui.GameMenuKeyHandler;
 import atrophy.gameMenu.ui.MenuBar;
 import atrophy.gameMenu.ui.ShopManager;
+import atrophy.gameMenu.ui.StashManager;
 import atrophy.gameMenu.ui.WindowManager;
 
 
@@ -17,43 +21,49 @@ import atrophy.gameMenu.ui.WindowManager;
 /**
  * The Class GameMenuHardPane.
  */
-public class GameMenuHardPane extends ModdableHardPane{
+public class GameMenuHardPane implements HardPaneDefineable{
 	
-	/**
-	 * The Constant NAME.
-	 */
-	public static final String NAME = "GameMenuHardPane";
-
+	private Squad squad;
+	private TechTree techTree;
+	private StashManager stashManager;
+	private Missions missions;
+	
+	public GameMenuHardPane(Squad squad, TechTree techTree, StashManager stashManager, Missions missions) {
+		this.squad = squad;
+		this.techTree = techTree;
+		this.stashManager = stashManager;
+		this.missions = missions;
+	}
+	
 	/* (non-Javadoc)
 	 * @see watoydoEngine.hardPanes.ModdableHardPane#load(java.lang.String, watoydoEngine.designObjects.display.Crowd)
 	 */
-	public void load(String tag, Crowd crowd){
+	public void load(Crowd crowd){
+	
+		MenuBar menuBar = new MenuBar();
+		WindowManager windowManager = new WindowManager(menuBar);
+		stashManager.setWindowManager(windowManager);
+		ItemMarket itemMarket = new ItemMarket(techTree);
+		MapWar mapWar = new MapWar(missions);
+		ShopManager shopManager = new ShopManager(windowManager, stashManager, itemMarket);
 		
-		clearOld();
+		shopManager.lazyLoad(squad);
+		menuBar.lazyLoad(windowManager, mapWar, missions, squad, shopManager, stashManager, techTree, itemMarket);
+		stashManager.lazyLoad(shopManager);
+		missions.lazyLoad(squad, stashManager, itemMarket);
 		
-		crowd.setTemplate(NAME);
+		crowd.addKeyListener(new GameMenuKeyHandler(windowManager));
+		crowd.addCrowd(menuBar);
+		crowd.addCrowd(windowManager);
 		
-		crowd.addKeyListener(new GameMenuKeyHandler());
+		mapWar.updateSectors();
+		shopManager.randomItems();
+		missions.updateMissions();
 		
-		crowd.addCrowd(MenuBar.getInstance());
-		crowd.addCrowd(WindowManager.getInstance());
+		windowManager.updateWindows();
 		
-		MapWar.getInstance().updateSectors();
-		ShopManager.getInstance().randomItems();
-		Missions.getInstance().updateMissions();
+		windowManager.releaseWindowKey();
 		
-		WindowManager.getInstance().updateWindows();
-		
-		WindowManager.getInstance().releaseWindowKey();
-		
-		loadSoftPane(tag,crowd);
 	}
 
-	/**
-	 * Clear old.
-	 */
-	public static void clearOld() {
-		WindowManager.getInstance().defragWindowZ();
-	}
-	
 }

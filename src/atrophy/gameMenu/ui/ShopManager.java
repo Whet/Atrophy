@@ -6,10 +6,13 @@ package atrophy.gameMenu.ui;
 import java.util.ArrayList;
 import java.util.Random;
 
+import watoydoEngine.fonts.FontList;
+
 import atrophy.combat.items.EngineeringSupply;
 import atrophy.combat.items.ScienceSupply;
 import atrophy.combat.items.WeaponSupply;
 import atrophy.gameMenu.saveFile.ItemMarket;
+import atrophy.gameMenu.saveFile.Squad;
 import atrophy.gameMenu.saveFile.Squad.Squaddie;
 
 
@@ -23,34 +26,31 @@ public class ShopManager{
 	 * The Constant SELL_WEAKNESS.
 	 */
 	private static final double SELL_WEAKNESS = 0.25;
-
-	/**
-	 * The instance.
-	 */
-	private static ShopManager instance;
-	
-	/**
-	 * Gets the single instance of ShopManager.
-	 *
-	 * @return single instance of ShopManager
-	 */
-	public static ShopManager getInstance(){
-		if(instance == null){
-			instance = new ShopManager();
-		}
-		return instance;
-	}
 	
 	/**
 	 * The items.
 	 */
 	private ArrayList<String> items;
 	
+	private Squad squad;
+	private WindowManager windowManager;
+	private StashManager stashManager;
+	private ItemMarket itemMarket;
+	
 	/**
 	 * Instantiates a new shop manager.
+	 * @param itemMarket 
 	 */
-	private ShopManager(){
+	public ShopManager(WindowManager windowManager, StashManager stashManager, ItemMarket itemMarket){
 		items = new ArrayList<String>();
+		
+		this.windowManager = windowManager;
+		this.stashManager = stashManager;
+		this.itemMarket = itemMarket;
+	}
+	
+	public void lazyLoad(Squad squad) {
+		this.squad = squad;
 	}
 
 	/**
@@ -62,8 +62,8 @@ public class ShopManager{
 		
 		levelUpItem(selectedItem);
 		
-		SquadMenu.getSquad().payAdvance(-sellCost(selectedItem));
-		WindowManager.getInstance().updateWindows();
+		squad.payAdvance(-sellCost(selectedItem));
+		windowManager.updateWindows();
 	}
 	
 	/**
@@ -74,13 +74,13 @@ public class ShopManager{
 	private void levelUpItem(String selectedItem) {
 		switch(selectedItem){
 			case WeaponSupply.NAME:
-				WindowManager.getInstance().updateWindows();
+				windowManager.updateWindows();
 			break;
 			case EngineeringSupply.NAME:
-				WindowManager.getInstance().updateWindows();
+				windowManager.updateWindows();
 			break;
 			case ScienceSupply.NAME:
-				WindowManager.getInstance().updateWindows();
+				windowManager.updateWindows();
 			break;
 		}
 	}
@@ -92,11 +92,11 @@ public class ShopManager{
 	 * @return the int
 	 */
 	public int sellCost(String selectedItem){
-		return (int)(ItemMarket.getInstance().getItemCost(selectedItem) * SELL_WEAKNESS);
+		return (int)(itemMarket.getItemCost(selectedItem) * SELL_WEAKNESS);
 	}
 	
 	public int buyCost(String selectedItem){
-		return ItemMarket.getInstance().getItemCost(selectedItem);
+		return itemMarket.getItemCost(selectedItem);
 	}
 
 	/**
@@ -105,11 +105,11 @@ public class ShopManager{
 	 * @param i the i
 	 */
 	public void buyItem(int i) {
-		if(SquadMenu.getSquad().payAdvance(this.buyCost(this.items.get(i)))){
-			StashManager.getInstance().addItem(this.items.get(i));
+		if(squad.payAdvance(this.buyCost(this.items.get(i)))){
+			stashManager.addItem(this.items.get(i));
 			this.items.remove(i);
 		}
-		WindowManager.getInstance().updateWindows();
+		windowManager.updateWindows();
 	}
 
 	/**
@@ -120,7 +120,8 @@ public class ShopManager{
 	 */
 	public String getItem(int i) {
 		if(i >= 0 && i < this.items.size())
-			return this.items.get(i) + "  " + SquadMenu.getSquad().getAdvance() + " / " + this.buyCost(this.items.get(i));
+			return FontList.digitString(5, squad.getAdvance()) + " *" + FontList.digitString(5, this.buyCost(this.items.get(i))) + "   " + this.items.get(i);
+		
 		return "Empty";
 	}
 
@@ -131,7 +132,7 @@ public class ShopManager{
 	 * @param skill the skill
 	 * @return the int
 	 */
-	public int abilityCost(Squaddie squadMember, String skill) {
+	public static int abilityCost(Squaddie squadMember, String skill) {
 		switch(squadMember.getSkillLevel(skill) + 1){
 			case 1:
 				return 500;
@@ -162,11 +163,11 @@ public class ShopManager{
 	}
 
 	private String getRandomItem() {
-		return ItemMarket.getInstance().getRandomItem();
+		return itemMarket.getRandomItem();
 	}
 
 	private String getRandomWeapon() {
-		return ItemMarket.getInstance().getRandomWeapon();
+		return itemMarket.getRandomWeapon();
 	}
 	
 	/**

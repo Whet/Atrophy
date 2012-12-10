@@ -207,28 +207,7 @@ public class LevelManager {
 	public void setCurrentLevel(Level currentLevel) {
 		this.currentLevel = currentLevel;
 	}
-
-	/**
-	 * Gets the height at.
-	 *
-	 * @param location the location
-	 * @return the height at
-	 */
-	public int getHeightAt(double[] location){
-		return 0;
-	}
 	
-	/**
-	 * Gets the height at.
-	 *
-	 * @param x the x
-	 * @param y the y
-	 * @return the height at
-	 */
-	public int getHeightAt(double x, double y){
-		return 0;
-	}
-
 	/**
 	 * Random room.
 	 *

@@ -29,13 +29,12 @@ public class AiImageRoster extends ButtonSingle {
 	/**
 	 * Instantiates a new ai image roster.
 	 *
-	 * @param tag the tag
 	 * @param ai the ai
 	 * @param x the x
 	 * @param y the y
 	 */
-	public AiImageRoster(AiCrowd aiCrowd, CombatMembersManager combatMembersManager, String tag, Ai ai, double x, double y){
-		super(tag, null, x, y);
+	public AiImageRoster(AiCrowd aiCrowd, CombatMembersManager combatMembersManager, Ai ai, double x, double y){
+		super(null, x, y);
 		this.aiObject = ai;
 		this.aiCrowd = aiCrowd;
 		this.combatMembersManager = combatMembersManager;

@@ -31,7 +31,7 @@ public class MoveFlag extends ButtonSingle implements InfoTextDisplayable{
 	 * @param visible the visible
 	 */
 	public MoveFlag(PanningManager panningManager, CombatUiManager combatUiManager, CombatMembersManager combatMembersManager, BufferedImage image, boolean visible) {
-		super("MoveFlag", image, visible);
+		super(image, visible);
 		this.panningManager = panningManager;
 		this.combatUiManager = combatUiManager;
 		this.combatMembersManager = combatMembersManager;

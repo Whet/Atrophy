@@ -22,16 +22,16 @@ public class ErrorPopup extends Popup {
 	 *
 	 * @param message the message
 	 */
-	public ErrorPopup(String message) {
-		super(new Text("",0,0,message), new TextButton[]{
-				new TextButton("",Color.yellow,Color.red) {
+	public ErrorPopup(final WindowManager windowManager, String message) {
+		super(windowManager, new Text(0,0,message), new TextButton[]{
+				new TextButton(Color.yellow,Color.red) {
 					{
 						this.setText("Close");
 					}
 					
 					@Override
 					public boolean mD(Point mousePosition, MouseEvent e) {
-						WindowManager.getInstance().setPopupOpen(false);
+						windowManager.setPopupOpen(false);
 						return true;
 					}
 				}

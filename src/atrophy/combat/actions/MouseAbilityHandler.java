@@ -5,6 +5,7 @@ package atrophy.combat.actions;
 
 import java.awt.Color;
 import java.awt.Point;
+import java.util.HashSet;
 
 import watoydoEngine.gubbinz.Maths;
 import watoydoEngine.sounds.SoundBoard;
@@ -24,7 +25,7 @@ import atrophy.combat.display.ui.UiUpdaterSuite;
 import atrophy.combat.display.ui.loot.LootBox;
 import atrophy.combat.level.LevelManager;
 import atrophy.combat.mechanics.Abilities;
-import atrophy.gameMenu.ui.SquadMenu;
+import atrophy.gameMenu.saveFile.Squad;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -49,12 +50,13 @@ public class MouseAbilityHandler {
 	private LootBox lootBox;
 	private AiCrowd aiCrowd;
 	private LevelManager levelManager;
+	private Squad squad;
 	
 	/**
 	 * Instantiates a new mouse ability handler.
 	 * @param levelManager 
 	 */
-	public MouseAbilityHandler(AiManagementSuite aiManagementSuite, UiUpdaterSuite uiUpdaterSuite, LevelManager levelManager){
+	public MouseAbilityHandler(Squad squad, AiManagementSuite aiManagementSuite, UiUpdaterSuite uiUpdaterSuite, LevelManager levelManager){
 		abilityApplied = "";
 		settingAbility = false;
 		
@@ -67,6 +69,7 @@ public class MouseAbilityHandler {
 		this.lootBox = uiUpdaterSuite.getLootBox();
 		this.levelManager = levelManager;
 		
+		this.squad = squad;
 	}
 	
 	/**
@@ -165,11 +168,18 @@ public class MouseAbilityHandler {
 				   targetAi.isDead() &&
 				   Maths.getDistance(targetAi.getLocation(), combatMembersManager.getCurrentAi().getLocation()) <= AiData.INTERACTION_RANGE){
 					
-					SquadMenu.getSquad().addKill(targetAi);
+					squad.addKill(targetAi.getFaction());
 					combatUiManager.getLargeEventText().flashText(targetAi.getName() + " Tagged", Color.yellow);
 				}
-				
 			break;
+			
+			case "Hack":
+				TurretAi turret = getClosestTurretToMouse(mousePoint, 40, false);
+				
+				if(turret != null)
+					turret.hack(new HashSet<String>(){{this.add(AiGenerator.BANDITS);}});
+			break;
+				
 		}
 		
 		SoundBoard.getInstance().playEffect("cancel");
@@ -226,6 +236,42 @@ public class MouseAbilityHandler {
 		
 		if(closestAiImage != null){
 			return closestAiImage.getAi();
+		}
+		
+		return null;
+	}
+	
+	private TurretAi getClosestTurretToMouse(Point mousePosition, int minRadius, boolean allowDead){
+		
+		AiImage closestAiImage = null;
+		
+		for(int i = 0; i < aiCrowd.getActorCount(); i++){
+			if(aiCrowd.getActor(i) instanceof TurretAi &&
+			   (allowDead || !aiCrowd.getMask(i).getAi().isDead()) &&
+				aiCrowd.getMask(i).isVisible() &&
+				// within min radius
+				Maths.getDistance(mousePosition.x - panningManager.getOffset()[0],
+					              mousePosition.y - panningManager.getOffset()[1],
+					              aiCrowd.getMask(i).getLocation()[0],
+					              aiCrowd.getMask(i).getLocation()[1]) <= minRadius &&
+					              
+				(closestAiImage == null || 
+				// new ai is closer than current closest ai
+			    Maths.getDistance(mousePosition.x - panningManager.getOffset()[0],
+			    		          mousePosition.y - panningManager.getOffset()[1],
+			    		          aiCrowd.getMask(i).getLocation()[0],
+			    		          aiCrowd.getMask(i).getLocation()[1]) <
+			    		          
+			    Maths.getDistance(closestAiImage.getLocation()[0], closestAiImage.getLocation()[1], 
+			    		          mousePosition.x - panningManager.getOffset()[0],
+			    		          mousePosition.y - panningManager.getOffset()[1]))){
+				
+				closestAiImage = aiCrowd.getMask(i);
+			}
+		}
+		
+		if(closestAiImage != null){
+			return (TurretAi) closestAiImage.getAi();
 		}
 		
 		return null;

@@ -38,70 +38,63 @@ public abstract class ButtonMulti extends AbstractButton implements ImageDisplay
 	/**
 	 * Instantiates a new button multi.
 	 *
-	 * @param tag the tag
 	 * @param image the image
 	 */
-	public ButtonMulti(String tag, BufferedImage image[]){
-		super(tag);
+	public ButtonMulti(BufferedImage image[]){
 		this.image = image;
 	}
 	
 	/**
 	 * Instantiates a new button multi.
 	 *
-	 * @param tag the tag
 	 * @param image the image
 	 * @param x the x
 	 * @param y the y
 	 */
-	public ButtonMulti(String tag, BufferedImage image[], double x, double y){
-		super(tag,x,y);
+	public ButtonMulti(BufferedImage image[], double x, double y){
+		super(x,y);
 		this.image = image;
 	}
 	
 	/**
 	 * Instantiates a new button multi.
 	 *
-	 * @param tag the tag
 	 * @param image the image
 	 * @param visible the visible
 	 */
-	public ButtonMulti(String tag, BufferedImage image[], boolean visible){
-		super(tag,visible);
+	public ButtonMulti(BufferedImage image[], boolean visible){
+		super(visible);
 		this.image = image;
 	}
 	
 	/**
 	 * Instantiates a new button multi.
 	 *
-	 * @param tag the tag
 	 * @param image the image
 	 * @param visible the visible
 	 * @param active the active
 	 */
-	public ButtonMulti(String tag, BufferedImage image[], boolean visible, boolean active){
-		super(tag,visible,active);
+	public ButtonMulti(BufferedImage image[], boolean visible, boolean active){
+		super(visible,active);
 		this.image = image;
 	}
 	
 	/**
 	 * Instantiates a new button multi.
 	 *
-	 * @param tag the tag
 	 * @param image the image
 	 * @param x the x
 	 * @param y the y
 	 * @param visible the visible
 	 */
-	public ButtonMulti(String tag, BufferedImage image[], double x, double y, boolean visible){
-		super(tag,x,y,visible);
+	public ButtonMulti(BufferedImage image[], double x, double y, boolean visible){
+		super(x,y,visible);
 		this.image = image;
 	}
 	
 	/**
 	 * Instantiates a new button multi.
 	 *
-	 * @param tag the tag
 	 * @param image the image
 	 * @param x the x
 	 * @param y the y
@@ -109,8 +102,8 @@ public abstract class ButtonMulti extends AbstractButton implements ImageDisplay
 	 * @param active the active
 	 * @param z the z
 	 */
-	public ButtonMulti(String tag, BufferedImage image[], double x, double y, boolean visible, boolean active, int z){
-		super(tag,x,y,visible,active,z);
+	public ButtonMulti(BufferedImage image[], double x, double y, boolean visible, boolean active, int z){
+		super(x,y,visible,active,z);
 		this.image = image;
 	}
 	

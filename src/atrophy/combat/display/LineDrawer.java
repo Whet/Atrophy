@@ -74,11 +74,6 @@ public class LineDrawer implements Displayable{
 	 */
 	private int z;
 	
-	/**
-	 * The tag.
-	 */
-	private String tag;
-
 	private AiCrowd aiCrowd;
 	private PanningManager panningManager;
 	private CombatVisualManager combatVisualManager;
@@ -90,7 +85,6 @@ public class LineDrawer implements Displayable{
 	 * @param levelManager 
 	 */
 	public LineDrawer(AiCrowd aiCrowd, PanningManager panningManager, CombatVisualManager combatVisualManager, CombatMembersManager combatMembersManager, LevelManager levelManager){
-		tag = "LineSurface";
 		visible = true;
 		this.aiCrowd = aiCrowd;
 		this.panningManager = panningManager;
@@ -143,8 +137,6 @@ public class LineDrawer implements Displayable{
 				}
 				
 				map[mapNumber].drawRegions(levelBlock);
-				
-				Lighting.applyLight(map[mapNumber].getImage(), levelBlock);
 				
 				mapNumber++;
 			}
@@ -208,7 +200,6 @@ public class LineDrawer implements Displayable{
 			}
 		}
 		drawKillRadius(drawShape);
-		drawObjectiveMarkers(drawShape);
 	}
 	
 
@@ -881,30 +872,6 @@ public class LineDrawer implements Displayable{
 		}
 			
 	}
-	
-	/**
-	 * Draw objective markers.
-	 *
-	 * @param drawShape the draw shape
-	 */
-	private void drawObjectiveMarkers(Graphics2D drawShape){/*
-		double[][] markers = MissionManager.getInstance().getObjectiveLocations();
-		
-		if(markers != null && combatVisualManager.isDrawingObjLines()){
-			drawShape.setColor(Color.yellow);
-			
-			for(int i = 0; i < markers.length; i++){
-				drawShape.drawOval((int)(markers[i][0] + panningManager.getOffset()[0] - MARKER_RADIUS), 
-								   (int)(markers[i][1] + panningManager.getOffset()[1] - MARKER_RADIUS),
-								   MARKER_RADIUS * 2, MARKER_RADIUS * 2);
-				drawShape.drawString(Integer.toString(i), 
-									(int)(markers[i][0] + panningManager.getOffset()[0] - MARKER_RADIUS), 
-									(int)(markers[i][1] + panningManager.getOffset()[1] - MARKER_RADIUS));
-				
-				drawObjectiveLines(drawShape,markers[i]);
-			}
-		}*/
-	}
 	/*
 	private void drawDangerScores(Graphics2D drawShape){
 		
@@ -977,22 +944,6 @@ public class LineDrawer implements Displayable{
 		return this.visible;
 	}
 	
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Displayable#isEqual(java.lang.String)
-	 */
-	@Override
-	public boolean isEqual(String tag1) {
-		return tag1.equals(this.tag);
-	}
-
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Displayable#getTag()
-	 */
-	@Override
-	public String getTag() {
-		return this.tag;
-	}
-
 	/* (non-Javadoc)
 	 * @see watoydoEngine.designObjects.display.Displayable#compareTo(watoydoEngine.designObjects.display.Displayable)
 	 */

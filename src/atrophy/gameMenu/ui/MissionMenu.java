@@ -41,35 +41,39 @@ public class MissionMenu extends Menu {
 	 */
 	private Text textBoxes[];
 	
+	private Missions missions;
+	
 	/**
 	 * Instantiates a new mission menu.
 	 *
 	 * @param index the index
+	 * @param stashManager 
 	 */
-	public MissionMenu(int index){
-		super(new double[]{400,240});
+	public MissionMenu(WindowManager windowManager, Missions missions, StashManager stashManager, int index){
+		super(windowManager, new double[]{400,240});
 		this.index = index;
-		this.mission = Missions.getInstance().getMission(index);
-		this.giver = Missions.getInstance().getGiver(mission);
-		addComponents();
+		this.mission = missions.getMission(index);
+		this.missions = missions;
+		this.giver = missions.getGiver(mission);
+		addComponents(stashManager);
 	}
 
 	/**
 	 * Adds the components.
 	 */
-	private void addComponents() {
+	private void addComponents(final StashManager stashManager) {
 		
 		textBoxes = new Text[4];
 		
-		Text missionOwner = new Text("", (int)this.getLocation()[0] + 11, (int)this.getLocation()[1] + 45, mission.getName());
+		Text missionOwner = new Text((int)this.getLocation()[0] + 11, (int)this.getLocation()[1] + 45, mission.getName());
 		this.addDisplayItem(missionOwner);
 		textBoxes[0] = missionOwner;
 		
-		Text missionDescription = new Text("", (int)this.getLocation()[0] + 11, (int)this.getLocation()[1] + 72, mission.getDescription());
+		Text missionDescription = new Text((int)this.getLocation()[0] + 11, (int)this.getLocation()[1] + 72, mission.getDescription());
 		this.addDisplayItem(missionDescription);
 		textBoxes[1] = missionDescription;
 		
-		TextButton handin = new TextButton("", Color.green, Color.green.darker()){
+		TextButton handin = new TextButton(Color.green, Color.green.darker()){
 			
 			{
 				this.setLocation((int)this.getLocation()[0] + 11, (int)this.getLocation()[1] + 228);
@@ -78,11 +82,11 @@ public class MissionMenu extends Menu {
 			
 			@Override
 			public boolean mD(Point mousePosition, MouseEvent e) {
-				if(Missions.getInstance().interactMission(index)){
+				if(missions.interactMission(index)){
 					MissionMenu.this.setVisible(false);
-					WindowManager.getInstance().removeItem(MissionMenu.this);
-					WindowManager.getInstance().updateWindows();
-					StashManager.getInstance().removeSelectedItem();
+					windowManager.removeItem(MissionMenu.this);
+					windowManager.updateWindows();
+					stashManager.removeSelectedItem();
 					setPriorityMode(false);
 				}
 				
@@ -158,11 +162,11 @@ public class MissionMenu extends Menu {
 	 */
 	@Override
 	public void updateInformation() {
-		if(Missions.getInstance().getMissionCount() < this.index + 1){
+		if(missions.getMissionCount() < this.index + 1){
 			this.index = 0;
 		}
-		this.mission = Missions.getInstance().getMission(index);
-		this.giver = Missions.getInstance().getGiver(mission);
+		this.mission = missions.getMission(index);
+		this.giver = missions.getGiver(mission);
 		updateText();
 	}
 

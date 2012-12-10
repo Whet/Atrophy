@@ -17,8 +17,8 @@ public abstract class AbilityButton extends ButtonSingle {
 	protected CombatMembersManager combatMembersManager;
 	protected CombatUiManager combatUiManager;
 	
-	public AbilityButton(String tag, BufferedImage image) {
-		super(tag, image);
+	public AbilityButton(BufferedImage image) {
+		super(image);
 	}
 	
 	@Override

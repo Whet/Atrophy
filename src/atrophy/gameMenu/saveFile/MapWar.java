@@ -22,33 +22,22 @@ import atrophy.combat.level.LevelIO;
 public class MapWar {
 
 	/**
-	 * The instance.
-	 */
-	private static MapWar instance;
-	
-	/**
-	 * Gets the single instance of MapWar.
-	 *
-	 * @return single instance of MapWar
-	 */
-	public static MapWar getInstance(){
-		if(instance == null)
-			instance = new MapWar();
-		
-		return instance;
-	}
-	
-	/**
 	 * The sectors.
 	 */
 	private ArrayList<Sector> sectors;
 	
+	private Missions missions;
+	
 	/**
 	 * Instantiates a new map war.
 	 */
-	private MapWar(){
+	public MapWar(Missions missions){
+		
 		sectors = new ArrayList<Sector>();
+		this.missions = missions;
+		
 		createSectors();
+		
 		try {
 			loadMaps();
 		}
@@ -160,7 +149,7 @@ public class MapWar {
 	public void updateSectors(){
 		for(int i = 0 ; i < this.sectors.size(); i++){
 			sectors.get(i).updateOwnership();
-			sectors.get(i).updateUnlockedMaps();
+			sectors.get(i).updateUnlockedMaps(missions);
 		}
 	}
 	
@@ -195,7 +184,7 @@ public class MapWar {
 		private int engineeringChance,medicalChance,weaponChance,scienceChance;
 
 		private Set<String> unlockedMaps;
-		
+
 		/**
 		 * Instantiates a new sector.
 		 *
@@ -204,6 +193,7 @@ public class MapWar {
 		 * @param m the m
 		 * @param w the w
 		 * @param s the s
+		 * @param missions 
 		 */
 		public Sector(String name,int e, int m, int w, int s){
 			this.name = name;
@@ -252,9 +242,9 @@ public class MapWar {
 			return "";
 		}
 
-		public void updateUnlockedMaps() {
+		public void updateUnlockedMaps(Missions missions) {
 			for(int i = 0; i < maps.length; i++) {
-				if(Missions.getInstance().hasMemCode(this.maps[1][i]))
+				if(missions.hasMemCode(this.maps[1][i]))
 					unlockedMaps.add(this.maps[0][i]);
 			}
 		}

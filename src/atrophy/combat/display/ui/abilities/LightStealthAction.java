@@ -24,8 +24,8 @@ public class LightStealthAction extends AbilityButton implements InfoTextDisplay
 	 * @param tag the tag
 	 * @param image the image
 	 */
-	public LightStealthAction(String tag, BufferedImage image) {
-		super(tag, image);
+	public LightStealthAction(BufferedImage image) {
+		super(image);
 	}
 	
 	/* (non-Javadoc)

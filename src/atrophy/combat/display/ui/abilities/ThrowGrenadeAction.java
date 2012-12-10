@@ -23,8 +23,8 @@ public class ThrowGrenadeAction extends AbilityButton implements InfoTextDisplay
 	 * @param tag the tag
 	 * @param image the image
 	 */
-	public ThrowGrenadeAction(String tag, BufferedImage image) {
-		super(tag, image);
+	public ThrowGrenadeAction(BufferedImage image) {
+		super(image);
 	}
 	
 	/* (non-Javadoc)

@@ -152,8 +152,8 @@ public class TeamsCommander {
 	 * @param faction the faction
 	 */
 	public TeamsCommander(TurnProcess turnProcess, String faction, LevelManager levelManager){
+
 		this.faction = faction;
-		
 		this.levelManager = levelManager;
 		
 		teams = new ArrayList<ThinkingTeamObject>(2);
@@ -225,7 +225,7 @@ public class TeamsCommander {
 						break;
 							
 						case SCOUTER:
-							returnBlock = hunterSeeker(team);
+							returnBlock = hunterSeeker();
 						break;
 					}
 				}
@@ -286,10 +286,9 @@ public class TeamsCommander {
 	/**
 	 * Hunter seeker.
 	 *
-	 * @param team the team
 	 * @return the level block
 	 */
-	private LevelBlock hunterSeeker(ThinkingTeamObject team){
+	private LevelBlock hunterSeeker(){
 		
 		// return a room where enemies have been reported
 		if(this.scoutRooms.size() > 0){

@@ -11,8 +11,8 @@ public class VehicleImage extends AiImage {
 
 	private double[] previousLocation;
 	
-	public VehicleImage(AiCrowd aiCrowd, CombatMembersManager combatMembersManager, CombatUiManager combatUiManager, CombatVisualManager combatVisualManager, PanningManager panningManager, String tag, double x, double y, MouseAbilityHandler mouseAbilityHandler) {
-		super(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, tag, x, y, mouseAbilityHandler);
+	public VehicleImage(AiCrowd aiCrowd, CombatMembersManager combatMembersManager, CombatUiManager combatUiManager, CombatVisualManager combatVisualManager, PanningManager panningManager, double x, double y, MouseAbilityHandler mouseAbilityHandler) {
+		super(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, x, y, mouseAbilityHandler);
 		
 		this.previousLocation = new double[]{x,y};
 	}

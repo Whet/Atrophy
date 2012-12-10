@@ -65,9 +65,9 @@ public class ScoringMechanics {
 	private static boolean hitTarget(Ai ai, Ai targetAi){
 		// ignore cover if weapon allows it, target isn't in cover or ai are in the same block of cover
 		if(ai.getWeapon().ignoresCover() || targetAi.getCoverObject() == null || ai.getCoverObject() == targetAi.getCoverObject()){
-			return new Random().nextInt(100) <= ai.getWeapon().getAccuracy() + ai.getSwing() * Weapon.SWING_BONUS;
+			return new Random().nextInt(100) <= (ai.getWeapon().getAccuracy() + ai.getAccuracyBoost()) + ai.getSwing() * Weapon.SWING_BONUS;
 		}
-		return new Random().nextInt(140) <= ai.getSwing() * Weapon.SWING_BONUS;
+		return new Random().nextInt(140) <= (ai.getWeapon().getAccuracy() + ai.getAccuracyBoost()) + ai.getSwing() * Weapon.SWING_BONUS;
 	}
 	
 	

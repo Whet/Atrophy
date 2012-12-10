@@ -27,7 +27,7 @@ public class DrawFovToggle extends ButtonMulti implements InfoTextDisplayable{
 	 * @param image the image
 	 */
 	public DrawFovToggle(CombatVisualManager combatVisualManagers, CombatUiManager combatUiManagers, BufferedImage[] image) {
-		super("DrawFovToggle", image);
+		super(image);
 		this.combatVisualManager = combatVisualManagers;
 		this.combatUiManager = combatUiManagers;
 	}

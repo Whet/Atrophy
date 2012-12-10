@@ -209,7 +209,7 @@ public class ActivePane extends JFrame implements MouseListener, KeyListener, Wi
 		Thread loadFrame = new Thread(){
 			public void run() {
 				// Load the first frame
-				Crowd intro  = new Crowd("CurrentPane",false,new SplashPane());
+				Crowd intro  = new Crowd(new SplashPane());
 				currentPane = intro;
 				
 				loaded = true;
@@ -242,7 +242,6 @@ public class ActivePane extends JFrame implements MouseListener, KeyListener, Wi
 		this.repaint();
 		try {
 			loadedMutex.acquire();
-			this.currentPane.removeOld();
 			this.currentPane = pane;
 			this.loaded = true;
 		//	DevMenu.getInstance().setVisible(true);

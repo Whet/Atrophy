@@ -22,8 +22,8 @@ public class StashSearchAction extends AbilityButton implements InfoTextDisplaya
 	 * @param tag the tag
 	 * @param image the image
 	 */
-	public StashSearchAction(String tag, BufferedImage image) {
-		super(tag, image);
+	public StashSearchAction(BufferedImage image) {
+		super(image);
 	}
 	
 	/* (non-Javadoc)

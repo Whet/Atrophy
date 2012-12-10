@@ -13,9 +13,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 
-import atrophy.hardPanes.CombatHardPane;
-import atrophy.hardPanes.GameMenuHardPane;
-
 import watoydoEngine.designObjects.actions.KeyboardRespondable;
 import watoydoEngine.designObjects.actions.MouseRespondable;
 import watoydoEngine.display.tweens.TweenDefinable;
@@ -48,11 +45,6 @@ public class Crowd implements Displayable, MouseRespondable, KeyboardRespondable
 	 * The image bank.
 	 */
 	private ArrayList<BankedImage> imageBank;
-	
-	/**
-	 * The tag.
-	 */
-	private String tag;
 	
 	/**
 	 * The scale.
@@ -108,18 +100,15 @@ public class Crowd implements Displayable, MouseRespondable, KeyboardRespondable
 	/**
 	 * Instantiates a new crowd.
 	 *
-	 * @param tag the tag
-	 * @param loadAsPane the load as pane
 	 * @param pane the pane
 	 */
-	public Crowd(String tag, boolean loadAsPane, HardPaneDefineable pane){
+	public Crowd(HardPaneDefineable pane){
 		
 		displayList = new ArrayList<Displayable>();
 		mouseActionList = new ArrayList<MouseRespondable>();
 		keyboardActionList = new ArrayList<KeyboardRespondable>();
 		imageBank = new ArrayList<BankedImage>();
 		
-		this.tag = tag;
 		scale = 1.0;
 		location = new double[2];
 		location[0] = 0;
@@ -135,7 +124,7 @@ public class Crowd implements Displayable, MouseRespondable, KeyboardRespondable
 		z = 0;
 		actionZ = 0;
 		
-		pane.load(tag,this);
+		pane.load(this);
 		
 		computeZOrder();
 	}
@@ -144,19 +133,17 @@ public class Crowd implements Displayable, MouseRespondable, KeyboardRespondable
 	 * Instantiates a new crowd.
 	 *
 	 * @param tag the tag
-	 * @param loadAsPane the load as pane
 	 * @param pane the pane
 	 * @param useLocalCord the use local cord
 	 * @param z the z
 	 */
-	public Crowd(String tag, boolean loadAsPane, HardPaneDefineable pane, boolean useLocalCord, int z){
+	public Crowd(HardPaneDefineable pane, boolean useLocalCord, int z){
 
 		displayList = new ArrayList<Displayable>();
 		mouseActionList = new ArrayList<MouseRespondable>();
 		keyboardActionList = new ArrayList<KeyboardRespondable>();
 		imageBank = new ArrayList<BankedImage>();
 		
-		this.tag = tag;
 		scale = 1.0;
 		location = new double[2];
 		location[0] = 0;
@@ -172,7 +159,7 @@ public class Crowd implements Displayable, MouseRespondable, KeyboardRespondable
 		this.z = z;
 		actionZ = 0;
 		
-		pane.load(tag,this);
+		pane.load(this);
 		
 		computeZOrder();
 	}
@@ -180,17 +167,15 @@ public class Crowd implements Displayable, MouseRespondable, KeyboardRespondable
 	/**
 	 * Instantiates a new crowd.
 	 *
-	 * @param tag the tag
 	 * @param visible the visible
 	 */
-	public Crowd(String tag, boolean visible){
+	public Crowd(boolean visible){
 		
 		displayList = new ArrayList<Displayable>();
 		mouseActionList = new ArrayList<MouseRespondable>();
 		keyboardActionList = new ArrayList<KeyboardRespondable>();
 		imageBank = new ArrayList<BankedImage>();
 		
-		this.tag = tag;
 		scale = 1.0;
 		location = new double[2];
 		location[0] = 0;
@@ -212,19 +197,17 @@ public class Crowd implements Displayable, MouseRespondable, KeyboardRespondable
 	/**
 	 * Instantiates a new crowd.
 	 *
-	 * @param tag the tag
 	 * @param visible the visible
 	 * @param useLocalCord the use local cord
 	 * @param z the z
 	 */
-	public Crowd(String tag, boolean visible,boolean useLocalCord, int z){
+	public Crowd(boolean visible,boolean useLocalCord, int z){
 
 		displayList = new ArrayList<Displayable>();
 		mouseActionList = new ArrayList<MouseRespondable>();
 		keyboardActionList = new ArrayList<KeyboardRespondable>();
 		imageBank = new ArrayList<BankedImage>();
 		
-		this.tag = tag;
 		scale = 1.0;
 		location = new double[2];
 		location[0] = 0;
@@ -587,16 +570,6 @@ public class Crowd implements Displayable, MouseRespondable, KeyboardRespondable
 		return this.location;
 	}
 	
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Displayable#isEqual(java.lang.String)
-	 */
-	public boolean isEqual(String tag1){
-		if(tag1.equals(this.tag)){
-			return true;
-		}
-		return false;
-	}
-	
 	/**
 	 * Gets the display list.
 	 *
@@ -623,21 +596,6 @@ public class Crowd implements Displayable, MouseRespondable, KeyboardRespondable
 	public ArrayList<KeyboardRespondable> getKeyboardActionList(){
 		return this.keyboardActionList;
 	}
-	// Gets an individual image so other places can do local manipulation
-	/**
-	 * Gets the item.
-	 *
-	 * @param tag the tag
-	 * @return the item
-	 */
-	public Displayable getItem(String tag){
-		for(int i = 0; i < displayList.size(); i++){
-			if(displayList.get(i).getTag().equals(tag)){
-				return displayList.get(i);
-			}
-		}
-		return null;
-	}
 	
 	/**
 	 * Gets the local.
@@ -653,13 +611,6 @@ public class Crowd implements Displayable, MouseRespondable, KeyboardRespondable
 	 */
 	public int getZ(){
 		return this.z;
-	}
-	
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Displayable#getTag()
-	 */
-	public String getTag(){
-		return this.tag;
 	}
 	
 	/* (non-Javadoc)
@@ -854,35 +805,6 @@ public class Crowd implements Displayable, MouseRespondable, KeyboardRespondable
 	 */
 	public void setActionZ(int actionZ) {
 		this.actionZ = actionZ;
-	}
-
-	/**
-	 * The template.
-	 */
-	private String template;
-	
-	/**
-	 * Removes the old.
-	 */
-	public void removeOld() {
-		switch (template) {
-			case CombatHardPane.NAME:
-				CombatHardPane.clearOld();
-			break;
-			case GameMenuHardPane.NAME:
-				GameMenuHardPane.clearOld();
-			break;
-		}
-		template = "";
-	}
-
-	/**
-	 * Sets the template.
-	 *
-	 * @param string the new template
-	 */
-	public void setTemplate(String string) {
-		this.template = string;
 	}
 
 	/**

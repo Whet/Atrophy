@@ -23,8 +23,8 @@ public class ShopSellPopup extends Popup {
 	 *
 	 * @param item the item
 	 */
-	public ShopSellPopup(String item) {
-		super(new Text("", 0, 0, "Are you sure you want to sell " + item + " for " + ShopManager.getInstance().sellCost(item) + "?"),getOptions(item));
+	public ShopSellPopup(WindowManager windowManager, ShopManager shopManager, StashManager stashManager, String item) {
+		super(windowManager, new Text(0, 0, "Are you sure you want to sell " + item + " for " + shopManager.sellCost(item) + "?"),getOptions(windowManager, shopManager, stashManager, item));
 	}
 
 	/**
@@ -33,10 +33,10 @@ public class ShopSellPopup extends Popup {
 	 * @param item the item
 	 * @return the options
 	 */
-	private static TextButton[] getOptions(final String item) {
+	private static TextButton[] getOptions(final WindowManager windowManager, final ShopManager shopManager, final StashManager stashManager, final String item) {
 		TextButton[] options = new TextButton[2];
 		
-		options[0] = new TextButton("",Color.green,Color.green.darker()) {
+		options[0] = new TextButton(Color.green,Color.green.darker()) {
 			
 			{
 				this.setText("Sell Item");
@@ -44,15 +44,15 @@ public class ShopSellPopup extends Popup {
 			
 			@Override
 			public boolean mD(Point mousePosition, MouseEvent e) {
-				ShopManager.getInstance().sellItem(item);
-				StashManager.getInstance().removeItem(item);
-				WindowManager.getInstance().setPopupOpen(false);
+				shopManager.sellItem(item);
+				stashManager.removeItem(item);
+				windowManager.setPopupOpen(false);
 				return true;
 			}
 			
 		};
 		
-		options[1] = new TextButton("",Color.yellow,Color.red) {
+		options[1] = new TextButton(Color.yellow,Color.red) {
 			
 			{
 				this.setText("Cancel");
@@ -60,7 +60,7 @@ public class ShopSellPopup extends Popup {
 			
 			@Override
 			public boolean mD(Point mousePosition, MouseEvent e) {
-				WindowManager.getInstance().setPopupOpen(false);
+				windowManager.setPopupOpen(false);
 				return true;
 			}
 			

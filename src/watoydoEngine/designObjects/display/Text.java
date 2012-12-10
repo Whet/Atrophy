@@ -34,11 +34,6 @@ public class Text implements Displayable{
 	private boolean visible;
 	
 	/**
-	 * The tag.
-	 */
-	private String tag;
-	
-	/**
 	 * The scale.
 	 */
 	private double scale;
@@ -81,11 +76,8 @@ public class Text implements Displayable{
 
 	/**
 	 * Instantiates a new text.
-	 *
-	 * @param tag the tag
 	 */
-	public Text(String tag){
-		this.tag = tag;
+	public Text(){
 		location = new double[2];
 		location[0] = 0;
 		location[1] = 0;
@@ -99,12 +91,10 @@ public class Text implements Displayable{
 	/**
 	 * Instantiates a new text.
 	 *
-	 * @param tag the tag
 	 * @param x the x
 	 * @param y the y
 	 */
-	public Text(String tag, double x, double y){
-		this.tag = tag;
+	public Text(double x, double y){
 		location = new double[2];
 		location[0] = x;
 		location[1] = y;
@@ -118,13 +108,11 @@ public class Text implements Displayable{
 	/**
 	 * Instantiates a new text.
 	 *
-	 * @param tag the tag
 	 * @param x the x
 	 * @param y the y
 	 * @param message the message
 	 */
-	public Text(String tag, double x, double y, String message){
-		this.tag = tag;
+	public Text(double x, double y, String message){
 		location = new double[2];
 		location[0] = x;
 		location[1] = y;
@@ -138,14 +126,12 @@ public class Text implements Displayable{
 	/**
 	 * Instantiates a new text.
 	 *
-	 * @param tag the tag
 	 * @param x the x
 	 * @param y the y
 	 * @param message the message
 	 * @param colour the colour
 	 */
-	public Text(String tag, double x, double y, String message, Color colour){
-		this.tag = tag;
+	public Text(double x, double y, String message, Color colour){
 		location = new double[2];
 		location[0] = x;
 		location[1] = y;
@@ -227,15 +213,6 @@ public class Text implements Displayable{
 		return this.location;
 	}
 	
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Displayable#isEqual(java.lang.String)
-	 */
-	public boolean isEqual(String tag1){
-		if(tag1.equals(this.tag)){
-			return true;
-		}
-		return false;
-	}
 	// Moves tween to next position
 	/* (non-Javadoc)
 	 * @see watoydoEngine.designObjects.display.Displayable#kickTween()
@@ -255,13 +232,6 @@ public class Text implements Displayable{
 	 */
 	public int getZ(){
 		return this.z;
-	}
-	
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Displayable#getTag()
-	 */
-	public String getTag(){
-		return this.tag;
 	}
 	
 	/**

@@ -23,8 +23,8 @@ public class StunAction extends AbilityButton implements InfoTextDisplayable{
 	 * @param tag the tag
 	 * @param image the image
 	 */
-	public StunAction(String tag, BufferedImage image) {
-		super(tag, image);
+	public StunAction(BufferedImage image) {
+		super(image);
 	}
 	
 	/* (non-Javadoc)

@@ -22,8 +22,8 @@ public class KillTagAction extends AbilityButton implements InfoTextDisplayable{
 	 * @param tag the tag
 	 * @param image the image
 	 */
-	public KillTagAction(String tag, BufferedImage image) {
-		super(tag, image);
+	public KillTagAction(BufferedImage image) {
+		super(image);
 	}
 	
 	/* (non-Javadoc)

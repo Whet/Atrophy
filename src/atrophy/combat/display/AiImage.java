@@ -38,13 +38,12 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 	/**
 	 * Instantiates a new ai image.
 	 *
-	 * @param tag the tag
 	 * @param x the x
 	 * @param y the y
 	 * @param mouseAbilityHandler 
 	 */
-	public AiImage(AiCrowd aiCrowd, CombatMembersManager combatMembersManager, CombatUiManager combatUiManager, CombatVisualManager combatVisualManager, PanningManager panningManager, String tag, double x, double y, MouseAbilityHandler mouseAbilityHandler){
-		super(aiCrowd, combatMembersManager, tag, null, x, y);
+	public AiImage(AiCrowd aiCrowd, CombatMembersManager combatMembersManager, CombatUiManager combatUiManager, CombatVisualManager combatVisualManager, PanningManager panningManager, double x, double y, MouseAbilityHandler mouseAbilityHandler){
+		super(aiCrowd, combatMembersManager, null, x, y);
 		this.setZ(2);
 		this.panningManager = panningManager;
 		this.aiCrowd = aiCrowd;

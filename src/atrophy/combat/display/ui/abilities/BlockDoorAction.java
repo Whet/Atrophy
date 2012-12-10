@@ -22,8 +22,8 @@ public class BlockDoorAction extends AbilityButton implements InfoTextDisplayabl
 	 * @param tag the tag
 	 * @param image the image
 	 */
-	public BlockDoorAction(String tag, BufferedImage image) {
-		super(tag, image);
+	public BlockDoorAction(BufferedImage image) {
+		super(image);
 	}
 	
 	/* (non-Javadoc)

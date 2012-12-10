@@ -109,9 +109,9 @@ public class CombatUiManager{
 		
 		//effectsTextBox = new ActiveEffectsText();
 		
-		actionsBar = new ActionsBar(combatMembersManager, this);
+		actionsBar = new ActionsBar(combatMembersManager);
 		
-		miniMap = new MiniMap(cartographer, aiCrowd, panningManager, levelManager, "MiniMap");
+		miniMap = new MiniMap(cartographer, aiCrowd, panningManager, levelManager);
 		
 		largeEventText = new LargeEventText();
 		
@@ -128,7 +128,7 @@ public class CombatUiManager{
 		}
 	}
 	
-	public void lazyLoad(MouseAbilityHandler mouseAbilityHandler, CombatUiManager combatUiManager, FloatingIcons floatingIcons, CombatVisualManager combatVisualManager, LootBox lootBox, CombatVisualManager combatVisualManager2, LevelManager levelManager, AiCrowd aiCrowd, PanningManager panningManager) {
+	public void lazyLoad(MouseAbilityHandler mouseAbilityHandler, CombatUiManager combatUiManager, FloatingIcons floatingIcons, CombatVisualManager combatVisualManager, LootBox lootBox, LevelManager levelManager, AiCrowd aiCrowd, PanningManager panningManager) {
 		lineSurface = new LineDrawer(aiCrowd, panningManager, combatVisualManager, combatMembersManager, levelManager);
 		actionsBar.lazyLoad(combatMembersManager, mouseAbilityHandler, combatUiManager);
 		lineSurface.makeMap();

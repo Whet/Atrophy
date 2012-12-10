@@ -18,5 +18,5 @@ public interface HardPaneDefineable {
 	 * @param tag the tag
 	 * @param crowd the crowd
 	 */
-	public void load(String tag, Crowd crowd);
+	public void load(Crowd crowd);
 }

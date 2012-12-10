@@ -68,7 +68,7 @@ public class AllyRoster extends Crowd {
 	 * Instantiates a new ally roster.
 	 */
 	public AllyRoster(AiCrowd aiCrowd, CombatMembersManager combatMembersManager, TurnProcess turnProcess){
-		super("AllyRoster",true);
+		super(true);
 		
 		rosterImages = new ArrayList<AiImageRoster>(4);
 		rosterText = new HashMap<AiImageRoster,Text>(4);
@@ -112,7 +112,7 @@ public class AllyRoster extends Crowd {
 			this.addDisplayItem(backdrop);
 			
 			// ai helmet as button
-			rosterImages.add(new AiImageRoster(aiCrowd, combatMembersManager, combatMembersManager.getAlly(i).getName() +"Roster",
+			rosterImages.add(new AiImageRoster(aiCrowd, combatMembersManager,
 											   combatMembersManager.getAlly(i),
 											   20 + PORTRAIT_SPACING_X * portraitX + backdrop.getSize()[0] * 0.25,
 											   ActivePane.getInstance().getInsets().top + backdrop.getSize()[1] * 0.25 + (portraitY * backgroundImage.getHeight())));
@@ -120,8 +120,7 @@ public class AllyRoster extends Crowd {
 			this.addButton(rosterImages.get(i));
 			
 			// text to show hotkey to select ai
-			Text text = new Text(combatMembersManager.getAlly(i).getName() +"Hotkey",
-								 backdrop.getLocationCentre()[0] - 18,
+			Text text = new Text( backdrop.getLocationCentre()[0] - 18,
 								 backdrop.getSize()[1] + backdrop.getLocation()[1] - 8,
 								 new Integer(i + 1).toString());
 			rosterText.put(rosterImages.get(i),text);

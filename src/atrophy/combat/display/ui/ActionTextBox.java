@@ -41,7 +41,6 @@ public class ActionTextBox extends Text{
 	 * Instantiates a new action text box.
 	 */
 	public ActionTextBox(PanningManager panningManager, AiCrowd aiCrowd, CombatMembersManager combatMembersManager) {
-		super("ActionText");
 		this.setFont(FontList.AUD18);
 		this.panningManager = panningManager;
 		this.aiCrowd = aiCrowd;

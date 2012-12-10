@@ -15,7 +15,11 @@ import watoydoEngine.designObjects.display.TextButton;
 import watoydoEngine.gubbinz.GraphicsFunctions;
 import watoydoEngine.io.ReadWriter;
 import atrophy.combat.ai.AiGenerator;
+import atrophy.gameMenu.saveFile.ItemMarket;
 import atrophy.gameMenu.saveFile.MapWar.Sector;
+import atrophy.gameMenu.saveFile.Missions;
+import atrophy.gameMenu.saveFile.Squad;
+import atrophy.gameMenu.saveFile.TechTree;
 import atrophy.gameMenu.ui.popups.ErrorPopup;
 
 /**
@@ -52,22 +56,27 @@ public class MapsMenu extends Menu {
 	 * Instantiates a new maps menu.
 	 *
 	 * @param sector the sector
+	 * @param itemMarket 
+	 * @param techTree 
+	 * @param stashManager 
+	 * @param missionManager 
+	 * @param squadMenu 
 	 */
-	public MapsMenu(Sector sector){
-		super(new double[]{380,270});
+	public MapsMenu(WindowManager windowManager, Missions missions, Squad squad, Sector sector, ItemMarket itemMarket, TechTree techTree, StashManager stashManager){
+		super(windowManager, new double[]{380,270});
 		page = 0;
-		addComponents();
+		addComponents(squad, missions, itemMarket, techTree, stashManager);
 		this.sector = sector;
 	}
 	
 	/**
 	 * Adds the components.
 	 */
-	private void addComponents() {
+	private void addComponents(final Squad squad, final Missions missions, final ItemMarket itemMarket, final TechTree techTree, final StashManager stashManager) {
 		buttons = new ArrayList<TextButton>(MAX_ITEMS);
 		for(int i = 0; i < MAX_ITEMS; i++){
 			final int ind = i;
-			TextButton tb = new TextButton("mapsMenu"+ind, Color.yellow, Color.red) {
+			TextButton tb = new TextButton(Color.yellow, Color.red) {
 				
 				{
 					this.setLocation((int)this.getLocation()[0] + 11, (int)this.getLocation()[1] + 41 + 20 * ind);
@@ -79,12 +88,12 @@ public class MapsMenu extends Menu {
 					try {
 						setPriorityMode(false);
 						MenuMapInterface.loadLevel(ReadWriter.getRootFile("Maps\\" + sector.getMap(ind + (page * MAX_ITEMS))), sector.getOwner(ind + (page * MAX_ITEMS)),
-																		  sector.getEngineeringChance(),sector.getMedicalChance(),sector.getWeaponChance(),sector.getScienceChance());
-						SquadMenu.getSquad().resetKills();
+																		  squad, sector.getEngineeringChance(),sector.getMedicalChance(),sector.getWeaponChance(),sector.getScienceChance(), missions, itemMarket, techTree, stashManager);
+						squad.resetKills();
 					} 
 					catch (IOException e1) {
-						ErrorPopup popup = new ErrorPopup("Could Not Load Map At: " + System.getProperty("user.home") + "\\Atrophy\\Maps\\" + sector.getMaps()[ind + (page * MAX_ITEMS)]);
-						WindowManager.getInstance().addPopup(MapsMenu.this,popup);
+						ErrorPopup popup = new ErrorPopup(windowManager, "Could Not Load Map At: " + System.getProperty("user.home") + "\\Atrophy\\Maps\\" + sector.getMaps()[ind + (page * MAX_ITEMS)]);
+						windowManager.addPopup(MapsMenu.this,popup);
 					}
 					return true;
 				}
@@ -98,13 +107,13 @@ public class MapsMenu extends Menu {
 		mapOwners = new ArrayList<Text>();
 		for(int i = 0; i < MAX_ITEMS; i++){
 			final int ind = i;
-			Text owner = new Text("", (int)this.getLocation()[0] + 211, (int)this.getLocation()[1] + 41 + 20 * ind);
+			Text owner = new Text((int)this.getLocation()[0] + 211, (int)this.getLocation()[1] + 41 + 20 * ind);
 			
 			this.addDisplayItem(owner);
 			this.mapOwners.add(owner);
 		}
 		
-		TextButton previous = new TextButton("next",Color.yellow,Color.red) {
+		TextButton previous = new TextButton(Color.yellow,Color.red) {
 			
 			{
 				this.setText("Next");
@@ -120,7 +129,7 @@ public class MapsMenu extends Menu {
 		this.addDisplayItem(previous);
 		this.addMouseActionItem(previous);
 		
-		TextButton next = new TextButton("previous",Color.yellow,Color.red) {
+		TextButton next = new TextButton(Color.yellow,Color.red) {
 			
 			{
 				this.setText("Previous");
@@ -194,7 +203,7 @@ public class MapsMenu extends Menu {
 	 *
 	 * @param drawShape the draw shape
 	 */
-	private void drawComponents(Graphics2D drawShape) {
+	private void drawComponents(@SuppressWarnings("unused") Graphics2D drawShape) {
 	}
 	
 	/* (non-Javadoc)

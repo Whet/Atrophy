@@ -33,13 +33,16 @@ public class StashMenu extends Menu {
 	 */
 	private ArrayList<TextButton> buttons;
 	
+	private StashManager stashManager;
+	
 	/**
 	 * Instantiates a new stash menu.
 	 */
-	public StashMenu(){
-		super(new double[]{190,270});
+	public StashMenu(WindowManager windowManager, StashManager stashManager){
+		super(windowManager, new double[]{190,270});
 		page = 0;
 		addComponents();
+		this.stashManager = stashManager;
 	}
 	
 	/**
@@ -49,7 +52,7 @@ public class StashMenu extends Menu {
 		buttons = new ArrayList<TextButton>(MAX_ITEMS);
 		for(int i = 0; i < MAX_ITEMS; i++){
 			final int ind = i;
-			TextButton tb = new TextButton("stashIndex"+ind, Color.yellow, Color.red) {
+			TextButton tb = new TextButton(Color.yellow, Color.red) {
 				
 				private int index;
 				
@@ -61,7 +64,7 @@ public class StashMenu extends Menu {
 				
 				@Override
 				public boolean mD(Point mousePosition, MouseEvent e) {;
-					StashManager.getInstance().setSelectedItem(page * MAX_ITEMS + index);
+					stashManager.setSelectedItem(page * MAX_ITEMS + index);
 					SoundBoard.getInstance().playEffect("tick");
 					return true;
 				}
@@ -72,7 +75,7 @@ public class StashMenu extends Menu {
 			buttons.add(tb);
 		}
 		
-		TextButton previous = new TextButton("next",Color.yellow,Color.red) {
+		TextButton previous = new TextButton(Color.yellow,Color.red) {
 			
 			{
 				this.setText("Next");
@@ -88,7 +91,7 @@ public class StashMenu extends Menu {
 		this.addDisplayItem(previous);
 		this.addMouseActionItem(previous);
 		
-		TextButton next = new TextButton("previous",Color.yellow,Color.red) {
+		TextButton next = new TextButton(Color.yellow,Color.red) {
 			
 			{
 				this.setText("Previous");
@@ -112,9 +115,9 @@ public class StashMenu extends Menu {
 	 */
 	private void changePage(int change){
 		if(change == -1 && page == 0){
-			page = (int)Math.ceil(StashManager.getInstance().getItemCount() / MAX_ITEMS);
+			page = (int)Math.ceil(stashManager.getItemCount() / MAX_ITEMS);
 		}
-		else if(change == 1 && page == (int)Math.ceil(StashManager.getInstance().getItemCount() / MAX_ITEMS)){
+		else if(change == 1 && page == (int)Math.ceil(stashManager.getItemCount() / MAX_ITEMS)){
 			page = 0;
 		}
 		else{
@@ -131,21 +134,8 @@ public class StashMenu extends Menu {
 		super.drawMethod(drawShape);
 		
 		drawTitle(drawShape);
-		
-		if(!drawLess)
-			drawContents(drawShape);
 	}
 	
-	/**
-	 * Draw contents.
-	 *
-	 * @param drawShape the draw shape
-	 */
-	protected void drawContents(Graphics2D drawShape) {
-//		drawTitle(drawShape);
-		drawComponents(drawShape);
-	}
-
 	/**
 	 * Draw title.
 	 *
@@ -156,15 +146,7 @@ public class StashMenu extends Menu {
 		drawShape.setColor(Color.white);
 		drawShape.drawString("Stash   Page " + page, (int)this.getLocation()[0] + 20, (int)this.getLocation()[1] + 21);
 	}
-	
-	/**
-	 * Draw components.
-	 *
-	 * @param drawShape the draw shape
-	 */
-	private void drawComponents(Graphics2D drawShape) {
-	}
-	
+
 	/* (non-Javadoc)
 	 * @see atrophy.gameMenu.ui.Menu#mI(java.awt.Point)
 	 */
@@ -188,7 +170,7 @@ public class StashMenu extends Menu {
 	 */
 	private void updateText() {
 		for(int i = 0; i < buttons.size(); i++){
-			buttons.get(i).setText(StashManager.getInstance().getItem(i + (page * MAX_ITEMS)));
+			buttons.get(i).setText(stashManager.getItem(i + (page * MAX_ITEMS)));
 		}
 	}
 

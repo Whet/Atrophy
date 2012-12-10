@@ -7,7 +7,6 @@ import java.awt.Color;
 import java.util.Iterator;
 
 import atrophy.combat.CombatVisualManager;
-import atrophy.combat.level.LevelManager;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -21,8 +20,8 @@ public class WhiteVistaTeamObject extends ThinkingTeamObject{
 	 * @param team the team
 	 * @param levelManager 
 	 */
-	public WhiteVistaTeamObject(CombatVisualManager combatVisualManager, String team, LevelManager levelManager){
-		super(combatVisualManager, levelManager, team,Color.white);
+	public WhiteVistaTeamObject(CombatVisualManager combatVisualManager, String team){
+		super(combatVisualManager, team,Color.white);
 		this.setFormation(new HerringBone());
 	}
 	

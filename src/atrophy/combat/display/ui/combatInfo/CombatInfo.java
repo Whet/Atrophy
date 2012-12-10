@@ -61,7 +61,7 @@ public class CombatInfo extends Crowd {
 	 * @param combatVisualManager 
 	 */
 	public CombatInfo(CombatMembersManager combatMembersManager, CombatUiManager combatUiManager, FloatingIcons floatingIcons, CombatVisualManager combatVisualManager){
-		super("CombatInfo",true);
+		super(true);
 		
 		this.combatMembersManager = combatMembersManager;
 		
@@ -73,24 +73,21 @@ public class CombatInfo extends Crowd {
 			this.addDisplayItem(combatBack);
 			
 			// add swing counter and ammo counter text
-			ammoText = new Text("AmmoCounter",
-								160,
+			ammoText = new Text(160,
 								DisplayManager.getInstance().getResolution()[1] - 44,
 								"0");
 			ammoText.setColour(Color.white);
 			ammoText.setFont(FontList.AUD16);
 			this.addDisplayItem(ammoText);
 
-			reloadText = new Text("ReloadCounter",
-								  160,
+			reloadText = new Text(160,
 								  DisplayManager.getInstance().getResolution()[1] - 25,
 								  "0");
 			reloadText.setColour(Color.white);
 			reloadText.setFont(FontList.AUD16);
 			this.addDisplayItem(reloadText);
 
-			swingText = new Text("SwingCounter",
-								 160,
+			swingText = new Text(160,
 								 DisplayManager.getInstance().getResolution()[1] - 80,
 								 "18");
 			swingText.setColour(Color.white);

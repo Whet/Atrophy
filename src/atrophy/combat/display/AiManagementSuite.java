@@ -6,14 +6,15 @@ import atrophy.combat.actions.MouseAbilityHandler;
 import atrophy.combat.display.ui.UiUpdaterSuite;
 import atrophy.combat.level.LevelManager;
 import atrophy.combat.mechanics.TurnProcess;
+import atrophy.gameMenu.saveFile.Squad;
 
 public class AiManagementSuite {
 	
 	private AiCrowd aiCrowd;
 	private CombatMembersManager combatMembersManager;
 	
-	public AiManagementSuite(TurnProcess turnProcess, CombatInorganicManager combatInorganicManager, LevelManager levelManager){
-		aiCrowd = new AiCrowd();
+	public AiManagementSuite(TurnProcess turnProcess, CombatInorganicManager combatInorganicManager, LevelManager levelManager, Squad squad){
+		aiCrowd = new AiCrowd(squad);
 		combatMembersManager = new CombatMembersManager(aiCrowd, turnProcess, levelManager, combatInorganicManager);
 	}
 

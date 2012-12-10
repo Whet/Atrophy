@@ -11,7 +11,6 @@ import java.util.Iterator;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.ai.ThinkingAi.AiNode;
 import atrophy.combat.level.LevelBlock;
-import atrophy.combat.level.LevelManager;
 import atrophy.combat.level.Portal;
 import atrophy.combat.mechanics.Abilities;
 
@@ -66,15 +65,13 @@ public abstract class ThinkingTeamObject extends TeamObject{
 	 */
 	protected HashMap<ThinkingAi, AiNode> smartTerrainUsers;
 
-	private LevelManager levelManager;
-	
 	/**
 	 * Instantiates a new thinking team object.
 	 *
 	 * @param faction the faction
 	 * @param colour the colour
 	 */
-	public ThinkingTeamObject(CombatVisualManager combatVisualManager, LevelManager levelManager, String faction, Color colour){
+	public ThinkingTeamObject(CombatVisualManager combatVisualManager, String faction, Color colour){
 		super(combatVisualManager, faction, colour);
 		
 		teamTurnCounter = 0;
@@ -89,8 +86,6 @@ public abstract class ThinkingTeamObject extends TeamObject{
 		smartTerrainUsers = new HashMap<ThinkingAi, AiNode>();
 		
 		teamAlive = true;
-		
-		this.levelManager = levelManager;
 	}
 	
 	/**
@@ -451,9 +446,6 @@ public abstract class ThinkingTeamObject extends TeamObject{
 	 */
 	public void removeAlliance(String faction){
 		this.commander.removeAlliance(faction);
-		
-		if(levelManager.getCurrentLevel().getMapOwner().equals(this.getFaction()))
-			TurretAi.addTargetFaction(faction);
 	}
 	
 	/**

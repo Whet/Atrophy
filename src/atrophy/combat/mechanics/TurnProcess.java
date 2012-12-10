@@ -6,11 +6,7 @@ package atrophy.combat.mechanics;
 import java.awt.Color;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
-import java.io.File;
 import java.util.Stack;
-
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
 
 import watoydoEngine.designObjects.display.Crowd;
 import watoydoEngine.designObjects.display.TextButton;
@@ -36,10 +32,7 @@ import atrophy.combat.display.ui.FloatingIcons;
 import atrophy.combat.display.ui.MessageBox;
 import atrophy.combat.display.ui.UiUpdaterSuite;
 import atrophy.combat.display.ui.loot.LootBox;
-import atrophy.gameMenu.saveFile.SaveFile;
-import atrophy.gameMenu.ui.WindowManager;
-import atrophy.hardPanes.CharacterCreatePane;
-import atrophy.hardPanes.GameMenuHardPane;
+import atrophy.hardPanes.SplashPane;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -334,16 +327,16 @@ public class TurnProcess {
 	private void endGame(){
 		combatVisualManager.revealAll();
 		
-		TextButton newGame = new TextButton("New Game", Color.yellow, Color.red) {
+		TextButton newGame = new TextButton(Color.yellow, Color.red) {
 			
 			{
-				this.setText("New Game");
+				this.setText("To Splash Screen");
 				this.setVisible(true);
 			}
 			
 			@Override
 			public boolean mD(Point mousePosition, MouseEvent e) {
-				ActivePane.getInstance().changePane(new Crowd("CurrentPane",false,new CharacterCreatePane()));
+				ActivePane.getInstance().changePane(new Crowd(new SplashPane()));
 				return true;
 			}
 		};
@@ -352,35 +345,53 @@ public class TurnProcess {
 		ActivePane.getInstance().getPane().addMouseActionItem(newGame);
 		ActivePane.getInstance().getPane().addDisplayItem(newGame);
 		
-		TextButton loadGame = new TextButton("Load", Color.yellow, Color.red) {
-			
-			{
-				this.setText("Load");
-				this.setVisible(true);
-			}
-			
-			@Override
-			public boolean mD(Point mousePosition, MouseEvent e) {
-				
-				ActivePane.getInstance().setVisible(false);
-				
-				JFileChooser chooser = new JFileChooser(new File(System.getProperty("user.home") + "/Atrophy"));
-				int returnValue = chooser.showOpenDialog(new JFrame());
-				
-				if(returnValue == JFileChooser.APPROVE_OPTION){
-					ActivePane.getInstance().changePane(new Crowd("CurrentPane",false,new GameMenuHardPane()));
-					SaveFile.loadGame(chooser.getSelectedFile());
-				}
-				
-				ActivePane.getInstance().setVisible(true);
-				WindowManager.getInstance().updateWindows();
-				return true;
-			}
-		};
+//		TextButton newGame = new TextButton("New Game", Color.yellow, Color.red) {
+//			
+//			{
+//				this.setText("New Game");
+//				this.setVisible(true);
+//			}
+//			
+//			@Override
+//			public boolean mD(Point mousePosition, MouseEvent e) {
+//				ActivePane.getInstance().changePane(new Crowd("CurrentPane",false,new CharacterCreatePane()));
+//				return true;
+//			}
+//		};
+//		
+//		newGame.setLocation(DisplayManager.getInstance().getResolution()[0] /2 - 40, DisplayManager.getInstance().getResolution()[1] /2 + 30);
+//		ActivePane.getInstance().getPane().addMouseActionItem(newGame);
+//		ActivePane.getInstance().getPane().addDisplayItem(newGame);
 		
-		loadGame.setLocation(DisplayManager.getInstance().getResolution()[0] /2 - 40, DisplayManager.getInstance().getResolution()[1] /2 + 60);
-		ActivePane.getInstance().getPane().addMouseActionItem(loadGame);
-		ActivePane.getInstance().getPane().addDisplayItem(loadGame);
+//		TextButton loadGame = new TextButton("Load", Color.yellow, Color.red) {
+//			
+//			{
+//				this.setText("Load");
+//				this.setVisible(true);
+//			}
+//			
+//			@Override
+//			public boolean mD(Point mousePosition, MouseEvent e) {
+//				
+//				ActivePane.getInstance().setVisible(false);
+//				
+//				JFileChooser chooser = new JFileChooser(new File(System.getProperty("user.home") + "/Atrophy"));
+//				int returnValue = chooser.showOpenDialog(new JFrame());
+//				
+//				if(returnValue == JFileChooser.APPROVE_OPTION){
+//					ActivePane.getInstance().changePane(new Crowd("CurrentPane",false,new GameMenuHardPane()));
+//					SaveFile.loadGame(chooser.getSelectedFile());
+//				}
+//				
+//				ActivePane.getInstance().setVisible(true);
+//				
+//				return true;
+//			}
+//		};
+//		
+//		loadGame.setLocation(DisplayManager.getInstance().getResolution()[0] /2 - 40, DisplayManager.getInstance().getResolution()[1] /2 + 60);
+//		ActivePane.getInstance().getPane().addMouseActionItem(loadGame);
+//		ActivePane.getInstance().getPane().addDisplayItem(loadGame);
 	}
 	
 	/**

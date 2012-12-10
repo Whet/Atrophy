@@ -15,29 +15,6 @@ import atrophy.gameMenu.ui.popups.ShopSellPopup;
 public class StashManager {
 
 	/**
-	 * The instance.
-	 */
-	private static StashManager instance;
-	
-	/**
-	 * Gets the single instance of StashManager.
-	 *
-	 * @return single instance of StashManager
-	 */
-	public static StashManager getInstance(){
-		if(instance == null){
-			instance = new StashManager();
-		}
-		return instance;
-	}
-	
-	/**
-	 * Instantiates a new stash manager.
-	 */
-	protected StashManager(){
-	}
-	
-	/**
 	 * The items.
 	 */
 	protected ArrayList<String> items = new ArrayList<String>();
@@ -46,6 +23,17 @@ public class StashManager {
 	 * The selected item.
 	 */
 	protected String selectedItem;
+	
+	private ShopManager shopManager;
+	private WindowManager windowManager;
+	
+	public StashManager(WindowManager windowManager){
+		this.windowManager = windowManager;
+	}
+	
+	public void lazyLoad(ShopManager shopManager) {
+		this.shopManager = shopManager;
+	}
 	
 	/**
 	 * Adds the item.
@@ -87,8 +75,8 @@ public class StashManager {
 	 */
 	public boolean transferItem(Menu invoker) {
 		if(selectedItem != null && !selectedItem.isEmpty()){
-			ShopSellPopup popup = new ShopSellPopup(StashManager.getInstance().selectedItem);
-			WindowManager.getInstance().addPopup(invoker,popup);
+			ShopSellPopup popup = new ShopSellPopup(windowManager, shopManager, this, this.selectedItem);
+			windowManager.addPopup(invoker,popup);
 			this.selectedItem = "";
 			return true;
 		}
@@ -100,7 +88,7 @@ public class StashManager {
 	 */
 	public void sellItem(){
 		if(selectedItem != null && !selectedItem.isEmpty()){
-			ShopManager.getInstance().sellItem(selectedItem);
+			shopManager.sellItem(selectedItem);
 			this.selectedItem = "";
 		}
 	}
@@ -176,6 +164,10 @@ public class StashManager {
 	 */
 	public void removeSelectedItem() {
 		this.selectedItem = "";
+	}
+
+	public void setWindowManager(WindowManager windowManager) {
+		this.windowManager = windowManager;
 	}
 	
 }

@@ -51,4 +51,22 @@ public class FontList {
 		AUD24 = dynamicFont.deriveFont(24f);
 	}
 	
+	public static String digitString(int digits, int number) {
+		
+		int length = (int)(Math.log10(number)+1);
+		
+		if(length > digits)
+			return Integer.toString(number);
+		
+		StringBuffer sb = new StringBuffer();
+		
+		sb.append(number);
+		
+		for(int i = 0; i < digits - length; i++) {
+			sb.append(" ");
+		}
+		
+		return sb.toString();
+	}
+	
 }

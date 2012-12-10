@@ -27,7 +27,7 @@ public class RadioSilenceToggle extends ButtonMulti implements InfoTextDisplayab
 	 * @param image the image
 	 */
 	public RadioSilenceToggle(CombatMembersManager combatMembersManagers, CombatUiManager combatUiManagers, BufferedImage[] image) {
-		super("RadioSilenceToggle", image);
+		super(image);
 		this.combatMembersManager = combatMembersManagers;
 		this.combatUiManager = combatUiManagers;
 	}

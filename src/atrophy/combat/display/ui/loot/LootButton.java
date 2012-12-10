@@ -34,12 +34,11 @@ public class LootButton extends ButtonSingle implements InfoTextDisplayable{
 	/**
 	 * Instantiates a new loot button.
 	 *
-	 * @param tag the tag
 	 * @param image the image
 	 * @param returnCode the return code
 	 */
-	public LootButton(LootBox lootBox, CombatUiManager combatUiManager, String tag, BufferedImage image, int returnCode) {
-		super(tag, image);
+	public LootButton(LootBox lootBox, CombatUiManager combatUiManager, BufferedImage image, int returnCode) {
+		super(image);
 		lootActive = true;
 		this.returnCode = returnCode;
 		this.lootBox = lootBox;

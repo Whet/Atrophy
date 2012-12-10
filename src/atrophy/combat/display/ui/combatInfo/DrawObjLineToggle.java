@@ -27,7 +27,7 @@ public class DrawObjLineToggle extends ButtonMulti implements InfoTextDisplayabl
 	 * @param image the image
 	 */
 	public DrawObjLineToggle(CombatVisualManager combatVisualManagers, CombatUiManager combatUiManagers, BufferedImage[] image) {
-		super("ObjLineToggle", image);
+		super(image);
 		this.combatVisualManager = combatVisualManagers;
 		this.combatUiManager = combatUiManagers;
 	}

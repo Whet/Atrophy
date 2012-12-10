@@ -24,8 +24,8 @@ public class SpeedBoosterAction extends AbilityButton implements InfoTextDisplay
 	 * @param tag the tag
 	 * @param image the image
 	 */
-	public SpeedBoosterAction(String tag, BufferedImage image) {
-		super(tag, image);
+	public SpeedBoosterAction(BufferedImage image) {
+		super(image);
 	}
 	
 	/* (non-Javadoc)

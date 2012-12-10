@@ -22,8 +22,8 @@ public class ScienceScanRoom extends AbilityButton implements InfoTextDisplayabl
 	 * @param tag the tag
 	 * @param image the image
 	 */
-	public ScienceScanRoom(String tag, BufferedImage image) {
-		super(tag, image);
+	public ScienceScanRoom(BufferedImage image) {
+		super(image);
 	}
 	
 	/* (non-Javadoc)

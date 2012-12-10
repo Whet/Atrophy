@@ -20,7 +20,7 @@ import atrophy.combat.mechanics.Abilities;
 
 public class MuleAi extends VehicleAi {
 
-	private static final int ARMOUR = 200;
+	private static final int ARMOUR = 60;
 	public static final String MULE = "MULE";
 
 	public MuleAi(PanningManager panningManager, FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, String name, double x, double y, CombatInorganicManager combatInorganicManager, LevelManager levelManager, LootBox lootBox, CombatMembersManager combatMembersManager, CombatUiManager combatUiManager, CombatVisualManager combatVisualManager, AiCrowd aiCrowd) {
