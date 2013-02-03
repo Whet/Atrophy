@@ -2,7 +2,9 @@ package atrophy.gameMenu.saveFile;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 public class TechTree implements Serializable{
 
@@ -31,12 +33,9 @@ public class TechTree implements Serializable{
 	public static final String BASIC_INCAPACITATION = 		"Basic Incapacitation";
 	public static final String BASIC_EXPLOSIVES = 			"Basic Explosives";
 	public static final String SPACE_WALKING = 				"Space Walking";
+	public static final String MULE = 						"Robotics";
 	
 	private Map<String, TechnologyNode> techTree;
-	
-	public TechTree(Map<String, TechnologyNode> techTree){
-		this.techTree = techTree;
-	}
 	
 	public TechTree(){
 
@@ -112,6 +111,10 @@ public class TechTree implements Serializable{
 		
 		TechnologyNode suitControl = new TechnologyNode(new TechnologyNode[]{unitDetector}, ADVANCED_SUIT_THRUSTERS,4,1,0,0);
 		techTree.put(ADVANCED_SUIT_THRUSTERS,suitControl);
+		
+
+		TechnologyNode robotics = new TechnologyNode(new TechnologyNode[]{suitControl,optics,scienceScanner}, MULE,4,3,0,0);
+		techTree.put(MULE,robotics);
 
 		
 		TechnologyNode plasmaWeapons = new TechnologyNode(new TechnologyNode[]{suitControl, shotgun1, optics}, ADVANCED_WEAPONRY,3,3,3,0);
@@ -156,17 +159,14 @@ public class TechTree implements Serializable{
 			this.isResearched = false;
 		}
 
-		@SuppressWarnings("unused")
 		public TechnologyNode[] getParentNodes() {
 			return parentNodes;
 		}
 
-		@SuppressWarnings("unused")
 		public String getTech() {
 			return tech;
 		}
 
-		@SuppressWarnings("unused")
 		public int[] getResearchRequirements() {
 			return researchRequirements;
 		}
@@ -179,6 +179,32 @@ public class TechTree implements Serializable{
 			this.isResearched = isResearched;
 		}
 		
+	}
+
+	public Set<String> getNextTechs() {
+		Set<String> nextTechs = new HashSet<>();
+		
+LOOP: for(TechnologyNode node :this.techTree.values()) {
+			if(!node.isResearched) {
+				
+				for(TechnologyNode parentNode : node.getParentNodes()) {
+					if(!parentNode.isResearched)
+						continue LOOP;
+				}
+				
+				nextTechs.add(node.getTech());
+			}
+		}
+		
+		return nextTechs;
+	}
+
+	public void research(String techName) {
+		this.getTech(techName).setResearched(true);
+	}
+
+	public int[] getRequirements(String tech) {
+		return this.getTech(tech).getResearchRequirements();
 	}
 
 }

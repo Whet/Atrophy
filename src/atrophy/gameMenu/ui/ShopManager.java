@@ -7,10 +7,6 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import watoydoEngine.fonts.FontList;
-
-import atrophy.combat.items.EngineeringSupply;
-import atrophy.combat.items.ScienceSupply;
-import atrophy.combat.items.WeaponSupply;
 import atrophy.gameMenu.saveFile.ItemMarket;
 import atrophy.gameMenu.saveFile.Squad;
 import atrophy.gameMenu.saveFile.Squad.Squaddie;
@@ -59,31 +55,10 @@ public class ShopManager{
 	 * @param selectedItem the selected item
 	 */
 	public void sellItem(String selectedItem) {
-		
-		levelUpItem(selectedItem);
-		
 		squad.payAdvance(-sellCost(selectedItem));
 		windowManager.updateWindows();
 	}
 	
-	/**
-	 * Level up item.
-	 *
-	 * @param selectedItem the selected item
-	 */
-	private void levelUpItem(String selectedItem) {
-		switch(selectedItem){
-			case WeaponSupply.NAME:
-				windowManager.updateWindows();
-			break;
-			case EngineeringSupply.NAME:
-				windowManager.updateWindows();
-			break;
-			case ScienceSupply.NAME:
-				windowManager.updateWindows();
-			break;
-		}
-	}
 
 	/**
 	 * Sell cost.
@@ -155,21 +130,10 @@ public class ShopManager{
 		int count = new Random().nextInt(20);
 		for(int i = 0; i < count; i++){
 			
-			if(new Random().nextBoolean())
-				this.items.add(getRandomItem());
-			else
-				this.items.add(getRandomWeapon());
+			this.items.add((String) itemMarket.getRandomMarketItem());
 		}
 	}
 
-	private String getRandomItem() {
-		return itemMarket.getRandomItem();
-	}
-
-	private String getRandomWeapon() {
-		return itemMarket.getRandomWeapon();
-	}
-	
 	/**
 	 * Gets the item count.
 	 *

@@ -11,6 +11,7 @@ import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.ui.FloatingIcons;
 import atrophy.combat.display.ui.loot.LootBox;
 import atrophy.combat.display.ui.loot.LootBox.Lootable;
+import atrophy.combat.items.MeleeWeapon1;
 import atrophy.combat.items.ScienceSupply;
 import atrophy.combat.level.LevelManager;
 import atrophy.combat.level.Portal;
@@ -569,7 +570,7 @@ public class AiActions {
 	 */
 	public void stunTarget(Ai invoker){
 		
-		if(Maths.getDistance(invoker.getLocation(), invoker.getTargetAi().getLocation()) <= invoker.getWeapon().getRange() + 10){
+		if(Maths.getDistance(invoker.getLocation(), invoker.getTargetAi().getLocation()) <= MeleeWeapon1.RANGE){
 			
 			// break any alliances with the faction if visible
 			if(!invoker.getFaction().equals(AiGenerator.LONER) &&
@@ -585,7 +586,7 @@ public class AiActions {
 				invoker.getTargetAi().setStunnedTurns(3);
 			}
 			
-			invoker.setLocation(invoker.getTargetAi().getLocation().clone());
+//			invoker.setLocation(invoker.getTargetAi().getLocation().clone());
 			
 			// break any alliances with the faction if visible
 			// check after move too
@@ -605,6 +606,7 @@ public class AiActions {
 		else{
 			invoker.moveWithinRadius(invoker.getTargetAi().getLocation(), invoker.getWeapon().getRange());
 			invoker.aiPathing.move(invoker);
+			this.setAction(STUN_TARGET);
 		}
 		
 		this.setActionTurns(0);
@@ -718,6 +720,13 @@ public class AiActions {
 			case Abilities.STASH_SEARCH:
 				this.stashSearch(invoker);
 			break;
+			case Abilities.HACK:
+				if(getActionTurns() > Abilities.turnsToDo(Abilities.HACK, invoker.getSkillLevel(Abilities.SCAN_SCIENCE))){
+					((TurretAi) invoker.getTargetAi()).hack(AiGenerator.BANDITS);
+					this.setAction(NO_ACTION);
+				}
+				invoker.aiActions.incrementActionTurns();
+			break;
 			case NO_ACTION:
 			default:
 				this.aiCombatActions.reload(invoker);
@@ -769,6 +778,12 @@ public class AiActions {
 
 	public void setSwing(int swing) {
 		this.aiCombatActions.setSwing(swing);
+	}
+
+	public void setHackTarget(Ai invoker, TurretAi targetAi) {
+		invoker.removeOrders(mouseAbilityHandler);
+		invoker.setTargetAi(targetAi);
+		this.setAction(Abilities.HACK);
 	}
 	
 	

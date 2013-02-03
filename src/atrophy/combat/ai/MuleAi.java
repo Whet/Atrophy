@@ -17,14 +17,15 @@ import atrophy.combat.items.SpeedBooster;
 import atrophy.combat.items.UnitDetector;
 import atrophy.combat.level.LevelManager;
 import atrophy.combat.mechanics.Abilities;
+import atrophy.combat.mechanics.TurnProcess;
 
 public class MuleAi extends VehicleAi {
 
 	private static final int ARMOUR = 60;
 	public static final String MULE = "MULE";
 
-	public MuleAi(PanningManager panningManager, FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, String name, double x, double y, CombatInorganicManager combatInorganicManager, LevelManager levelManager, LootBox lootBox, CombatMembersManager combatMembersManager, CombatUiManager combatUiManager, CombatVisualManager combatVisualManager, AiCrowd aiCrowd) {
-		super(panningManager, floatingIcons, mouseAbilityHandler, name, MuleAi.MULE, x, y, levelManager, combatInorganicManager, lootBox, combatMembersManager, combatUiManager, combatVisualManager, aiCrowd);
+	public MuleAi(PanningManager panningManager, FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, String name, double x, double y, CombatInorganicManager combatInorganicManager, LevelManager levelManager, LootBox lootBox, CombatMembersManager combatMembersManager, CombatUiManager combatUiManager, CombatVisualManager combatVisualManager, AiCrowd aiCrowd, TurnProcess turnProcess) {
+		super(panningManager, floatingIcons, mouseAbilityHandler, name, MuleAi.MULE, x, y, levelManager, combatInorganicManager, lootBox, combatMembersManager, combatUiManager, combatVisualManager, aiCrowd, turnProcess);
 		this.setArmour(ARMOUR);
 		this.setDefaultArmour(ARMOUR);
 		this.setFov(0);

@@ -45,6 +45,7 @@ public class ShopMenu extends Menu{
 		addComponents();
 		this.shopManager = shopManager;
 		this.stashManager = stashManager;
+		updateText();
 	}
 	
 	/**
@@ -65,8 +66,10 @@ public class ShopMenu extends Menu{
 				
 				
 				@Override
-				public boolean mD(Point mousePosition, MouseEvent e) {;
-					shopManager.buyItem(page * MAX_ITEMS + index);
+				public boolean mD(Point mousePosition, MouseEvent e) {
+					if(!this.getText().equals("Empty"))
+						shopManager.buyItem(page * MAX_ITEMS + index);
+					ShopMenu.this.updateText();
 					return true;
 				}
 			};
@@ -124,6 +127,7 @@ public class ShopMenu extends Menu{
 		else{
 			page += change;
 		}
+		this.updateText();
 	}
 
 
@@ -166,7 +170,7 @@ public class ShopMenu extends Menu{
 	@Override
 	public void mI(Point mousePosition) {
 		super.mI(mousePosition);
-		updateText();
+//		updateText();
 	}
 	
 	/* (non-Javadoc)

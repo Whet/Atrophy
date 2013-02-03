@@ -18,16 +18,6 @@ public class AiGeneratorInterface {
 	 * The commands.
 	 */
 	private ArrayList<GenerateCommand> commands;
-
-	/**
-	 * The DAEMO n_ spaw n_ allowed.
-	 */
-	public static boolean DAEMON_SPAWN_ALLOWED = false;
-	
-	/**
-	 * The DAEMO n_ spaw n_ amount.
-	 */
-	public static int DAEMON_SPAWN_AMOUNT = 4;
 	
 	/**
 	 * The LONE r_ spaw n_ amount.

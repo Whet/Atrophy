@@ -7,6 +7,7 @@ import atrophy.combat.ai.Ai;
 import atrophy.combat.ai.PathFinder;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.ui.FloatingIcons;
+import atrophy.combat.items.StunGrenadeItem;
 import atrophy.combat.level.LevelManager;
 
 // TODO: Auto-generated Javadoc
@@ -40,7 +41,7 @@ public class StunGrenade extends Grenade{
 	 * @param skillLevel the skill level
 	 */
 	public StunGrenade(AiCrowd aiCrowd, FloatingIcons floatingIcons, LevelManager levelManager, Ai originator, double[] location, double angleHeading, double momentum, int skillLevel){
-		super(aiCrowd, floatingIcons, levelManager, originator,location,angleHeading,momentum,FUSE_TIME);
+		super(StunGrenadeItem.NAME, aiCrowd, floatingIcons, levelManager, originator,location,angleHeading,momentum,FUSE_TIME);
 		this.skillLevel = skillLevel;
 	}
 	

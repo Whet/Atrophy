@@ -56,6 +56,7 @@ public class MissionMenu extends Menu {
 		this.missions = missions;
 		this.giver = missions.getGiver(mission);
 		addComponents(stashManager);
+		updateText();
 	}
 
 	/**
@@ -88,6 +89,7 @@ public class MissionMenu extends Menu {
 					windowManager.updateWindows();
 					stashManager.removeSelectedItem();
 					setPriorityMode(false);
+					missions.updateMissions();
 				}
 				
 				return true;
@@ -105,7 +107,7 @@ public class MissionMenu extends Menu {
 	@Override
 	public void mI(Point mousePosition) {
 		super.mI(mousePosition);
-		updateText();
+//		updateText();
 	}
 	
 	/* (non-Javadoc)
@@ -139,7 +141,6 @@ public class MissionMenu extends Menu {
 	 * Update text.
 	 */
 	private void updateText() {
-//		textBoxes[0].setText(mission.getName());
 		textBoxes[0].setText(this.giver.getName() + " - " + this.giver.getFaction());
 		
 		switch(this.giver.getFaction()){
@@ -153,6 +154,8 @@ public class MissionMenu extends Menu {
 				textBoxes[0].setColour(Color.gray);
 			break;
 		}
+		
+		this.mission = missions.getMission(index);
 		
 		textBoxes[1].setText(mission.getDescription());
 	}

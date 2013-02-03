@@ -15,7 +15,7 @@ import watoydoEngine.designObjects.display.Crowd;
 import watoydoEngine.designObjects.display.TextButton;
 import watoydoEngine.workings.displayActivity.ActivePane;
 import atrophy.gameMenu.saveFile.ItemMarket;
-import atrophy.gameMenu.saveFile.MapWar;
+import atrophy.gameMenu.saveFile.MapManager;
 import atrophy.gameMenu.saveFile.Missions;
 import atrophy.gameMenu.saveFile.SaveFile;
 import atrophy.gameMenu.saveFile.Squad;
@@ -86,14 +86,14 @@ public class SplashMenu extends Crowd {
 					TechTree techTree = new TechTree();
 					ItemMarket itemMarket = new ItemMarket(techTree);
 					Missions missions = new Missions();
-					MapWar mapWar = new MapWar(missions);
+					MapManager mapWar = new MapManager(missions);
 					ShopManager shopManager = new ShopManager(windowManager, stashManager, itemMarket);
 					Squad squad = SaveFile.loadGame(chooser.getSelectedFile(), stashManager, mapWar, shopManager, missions, windowManager);
 					
 					shopManager.lazyLoad(squad);
 					menuBar.lazyLoad(windowManager, mapWar, missions, squad, shopManager, stashManager, techTree, itemMarket);
 					stashManager.lazyLoad(shopManager);
-					missions.lazyLoad(squad, stashManager, itemMarket);
+					missions.lazyLoad(squad, stashManager, itemMarket, techTree);
 					
 					ActivePane.getInstance().changePane(new Crowd(new GameMenuHardPane(squad, techTree, stashManager, missions)));
 				}

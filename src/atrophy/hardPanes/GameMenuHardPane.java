@@ -6,7 +6,7 @@ package atrophy.hardPanes;
 import watoydoEngine.designObjects.display.Crowd;
 import watoydoEngine.hardPanes.HardPaneDefineable;
 import atrophy.gameMenu.saveFile.ItemMarket;
-import atrophy.gameMenu.saveFile.MapWar;
+import atrophy.gameMenu.saveFile.MapManager;
 import atrophy.gameMenu.saveFile.Missions;
 import atrophy.gameMenu.saveFile.Squad;
 import atrophy.gameMenu.saveFile.TechTree;
@@ -44,13 +44,13 @@ public class GameMenuHardPane implements HardPaneDefineable{
 		WindowManager windowManager = new WindowManager(menuBar);
 		stashManager.setWindowManager(windowManager);
 		ItemMarket itemMarket = new ItemMarket(techTree);
-		MapWar mapWar = new MapWar(missions);
+		MapManager mapWar = new MapManager(missions);
 		ShopManager shopManager = new ShopManager(windowManager, stashManager, itemMarket);
 		
 		shopManager.lazyLoad(squad);
 		menuBar.lazyLoad(windowManager, mapWar, missions, squad, shopManager, stashManager, techTree, itemMarket);
 		stashManager.lazyLoad(shopManager);
-		missions.lazyLoad(squad, stashManager, itemMarket);
+		missions.lazyLoad(squad, stashManager, itemMarket, techTree);
 		
 		crowd.addKeyListener(new GameMenuKeyHandler(windowManager));
 		crowd.addCrowd(menuBar);

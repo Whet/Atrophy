@@ -213,19 +213,19 @@ public class AiGenerator{
 		switch(command.getFaction()){
 			case AiGenerator.LONER:
 				ai = new LonerAi(panningManager, aiCrowd, combatVisualManager, turnProcess, floatingIcons, mouseAbilityHandler, combatMembersManager, command.getName(),location[0],location[1], levelManager, combatInorganicManager, combatUiManager, lootbox);
-				ai.setBaseAggression(ThinkingAi.PASSIVE_RESPOND);
+				ai.setBaseAggression(ThinkingAiEmotion.PASSIVE_RESPOND);
 				ai.setImage(randomImage());
 				ai.setTeam(team+LONER);
 			break;
 			case AiGenerator.WHITE_VISTA:
 				ai = new ThinkingAi(panningManager, combatVisualManager, turnProcess, floatingIcons, mouseAbilityHandler, aiCrowd, combatMembersManager, command.getName(),location[0],location[1], levelManager, combatInorganicManager, combatUiManager, lootbox);
-				ai.setBaseAggression(ThinkingAi.PASSIVE_RESPOND);
+				ai.setBaseAggression(ThinkingAiEmotion.PASSIVE_RESPOND);
 				ai.setImage("Armour");
 				ai.setTeam(team+WHITE_VISTA);
 			break;
 			case AiGenerator.BANDITS:
 				ai = new ThinkingAi(panningManager, combatVisualManager, turnProcess, floatingIcons, mouseAbilityHandler, aiCrowd, combatMembersManager, command.getName(),location[0],location[1], levelManager, combatInorganicManager, combatUiManager, lootbox);
-				ai.setBaseAggression(ThinkingAi.AGGRESSIVE_FIGHTER);
+				ai.setBaseAggression(ThinkingAiEmotion.AGGRESSIVE_FIGHTER);
 				ai.setImage(randomImage());
 				ai.setTeam(team+BANDITS);
 			break;
@@ -276,7 +276,7 @@ public class AiGenerator{
 				
 				switch(squad.get(i).getVehicleType()){
 					case MuleAi.MULE:
-						ai = new MuleAi(panningManager, floatingIcons, mouseAbilityHandler, squad.get(i).getName(),randomLocation[0],randomLocation[1], combatInorganicManager, levelManager, lootbox, combatMembersManager, combatUiManager, combatVisualManager, aiCrowd);
+						ai = new MuleAi(panningManager, floatingIcons, mouseAbilityHandler, squad.get(i).getName(),randomLocation[0],randomLocation[1], combatInorganicManager, levelManager, lootbox, combatMembersManager, combatUiManager, combatVisualManager, aiCrowd, turnProcess);
 					break;
 				}
 				
@@ -286,7 +286,7 @@ public class AiGenerator{
 			else{
 				aiImg = new AiImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, 100,100, mouseAbilityHandler);
 				
-				ai = new Ai(floatingIcons, mouseAbilityHandler, squad.get(i).getName(),randomLocation[0],randomLocation[1], combatInorganicManager, levelManager, lootbox, combatMembersManager, combatUiManager, combatVisualManager, aiCrowd, panningManager);
+				ai = new Ai(floatingIcons, mouseAbilityHandler, squad.get(i).getName(),randomLocation[0],randomLocation[1], combatInorganicManager, levelManager, lootbox, combatMembersManager, combatUiManager, combatVisualManager, aiCrowd, panningManager, turnProcess);
 				ai.setImage(squad.get(i).getImage());
 				ai.setTeam("1Player");
 			}
@@ -370,7 +370,7 @@ public class AiGenerator{
 //			break;
 //			default:
 				ai = new LonerAi(panningManager, aiCrowd, combatVisualManager, turnProcess, floatingIcons, mouseAbilityHandler, combatMembersManager, randomName(),randomLocation[0],randomLocation[1], levelManager, combatInorganicManager, combatUiManager, lootbox);
-				ai.setBaseAggression(ThinkingAi.PASSIVE_RESPOND);
+				ai.setBaseAggression(ThinkingAiEmotion.PASSIVE_RESPOND);
 //			break;
 //		}
 		
@@ -447,10 +447,10 @@ public class AiGenerator{
 			
 			switch(ai.getFaction()){
 				case BANDITS:
-					ai.setBaseAggression(ThinkingAi.AGGRESSIVE_FIGHTER);
+					ai.setBaseAggression(ThinkingAiEmotion.AGGRESSIVE_FIGHTER);
 				break;
 				case WHITE_VISTA:
-					ai.setBaseAggression(ThinkingAi.PASSIVE_RESPOND);
+					ai.setBaseAggression(ThinkingAiEmotion.PASSIVE_RESPOND);
 					ai.setImage("Armour");
 				break;
 			}
@@ -479,17 +479,18 @@ public class AiGenerator{
 		ai.setWeapon(Weapon.stringToWeapon(allowedWeapons.get(new Random().nextInt(allowedWeapons.size()))));
 		
 		int randomItemCount = new Random().nextInt(5);
-		
-		for(int i = 0; i < randomItemCount; i++){
-			String item = allowedItems.get(new Random().nextInt(allowedItems.size()));
-			
-			Set<String> allowedDuplicateItems = new HashSet<String>();
-			
-			allowedDuplicateItems.add(GrenadeItem.NAME);
-			allowedDuplicateItems.add(StunGrenadeItem.NAME);
-			
-			if(item != null && (!ai.getInventory().hasItem(Item.stringToItem(item)) || allowedDuplicateItems.contains(item)))
-				ai.addItem(Item.stringToItem(item));
+		if(allowedItems.size() > 0) {
+			for(int i = 0; i < randomItemCount; i++){
+				String item = allowedItems.get(new Random().nextInt(allowedItems.size()));
+				
+				Set<String> allowedDuplicateItems = new HashSet<String>();
+				
+				allowedDuplicateItems.add(GrenadeItem.NAME);
+				allowedDuplicateItems.add(StunGrenadeItem.NAME);
+				
+				if(item != null && (!ai.getInventory().hasItem(Item.stringToItem(item)) || allowedDuplicateItems.contains(item)))
+					ai.addItem(Item.stringToItem(item));
+			}
 		}
 	}
 	
@@ -526,14 +527,9 @@ public class AiGenerator{
 						teamObject = new WhiteVistaTeamObject(combatVisualManager, team);
 						combatMembersManager.addTeam(teamObject);
 						((WhiteVistaTeamObject) combatMembersManager.getTeamObject(team)).addAlliance(PLAYER);
+						((WhiteVistaTeamObject) combatMembersManager.getTeamObject(team)).addAlliance(LONER);
 						((WhiteVistaTeamObject) combatMembersManager.getTeamObject(team)).addAlliance(DAEMON);
-					break;/*
-					case DAEMON:
-						teamObject = new DaemonTeamObject(team);
-						combatMembersManager.addTeam(teamObject);
-						((DaemonTeamObject) combatMembersManager.getTeamObject(team)).addAlliance(WHITE_VISTA);
-						((DaemonTeamObject) combatMembersManager.getTeamObject(team)).addAlliance(BANDITS);
-					break;*/
+					break;
 					case LONER:
 						teamObject = new LonerTeamObject(combatVisualManager, team);
 						combatMembersManager.addTeam(teamObject);

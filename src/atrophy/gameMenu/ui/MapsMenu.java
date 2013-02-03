@@ -16,7 +16,7 @@ import watoydoEngine.gubbinz.GraphicsFunctions;
 import watoydoEngine.io.ReadWriter;
 import atrophy.combat.ai.AiGenerator;
 import atrophy.gameMenu.saveFile.ItemMarket;
-import atrophy.gameMenu.saveFile.MapWar.Sector;
+import atrophy.gameMenu.saveFile.MapManager.Sector;
 import atrophy.gameMenu.saveFile.Missions;
 import atrophy.gameMenu.saveFile.Squad;
 import atrophy.gameMenu.saveFile.TechTree;
@@ -67,6 +67,7 @@ public class MapsMenu extends Menu {
 		page = 0;
 		addComponents(squad, missions, itemMarket, techTree, stashManager);
 		this.sector = sector;
+		updateText();
 	}
 	
 	/**
@@ -87,12 +88,12 @@ public class MapsMenu extends Menu {
 				public boolean mD(Point mousePosition, MouseEvent e) {;
 					try {
 						setPriorityMode(false);
-						MenuMapInterface.loadLevel(ReadWriter.getRootFile("Maps\\" + sector.getMap(ind + (page * MAX_ITEMS))), sector.getOwner(ind + (page * MAX_ITEMS)),
+						MenuMapInterface.loadLevel(ReadWriter.getRootFile("Maps/" + sector.getMap(ind + (page * MAX_ITEMS))), sector.getOwner(ind + (page * MAX_ITEMS)),
 																		  squad, sector.getEngineeringChance(),sector.getMedicalChance(),sector.getWeaponChance(),sector.getScienceChance(), missions, itemMarket, techTree, stashManager);
 						squad.resetKills();
 					} 
 					catch (IOException e1) {
-						ErrorPopup popup = new ErrorPopup(windowManager, "Could Not Load Map At: " + System.getProperty("user.home") + "\\Atrophy\\Maps\\" + sector.getMaps()[ind + (page * MAX_ITEMS)]);
+						ErrorPopup popup = new ErrorPopup(windowManager, "Could Not Load Map At: " + System.getProperty("user.home") + "/Atrophy/Maps/" + sector.getMaps()[ind + (page * MAX_ITEMS)]);
 						windowManager.addPopup(MapsMenu.this,popup);
 					}
 					return true;
@@ -212,7 +213,7 @@ public class MapsMenu extends Menu {
 	@Override
 	public void mI(Point mousePosition) {
 		super.mI(mousePosition);
-		updateText();
+//		updateText();
 	}
 	
 	/* (non-Javadoc)

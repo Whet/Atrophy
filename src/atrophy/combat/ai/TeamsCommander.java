@@ -24,20 +24,9 @@ import atrophy.combat.mechanics.TurnProcess;
  */
 public class TeamsCommander {
 	
-	/**
-	 * The Constant LAYER_DEFENDER.
-	 */
-	public static final String LAYER_DEFENDER = "Vanguard";
-	
-	/**
-	 * The Constant ROOM_DEFENDER.
-	 */
-	public static final String ROOM_DEFENDER = "Last Line";
-	
-	/**
-	 * The Constant SCOUTER.
-	 */
-	public static final String SCOUTER = "Scouter";
+	protected static enum JobTitle {
+		ROOM_DEFENDER, LAYER_DEFENDER, ROAMER
+	}
 
 	// Update for dead units to reassign
 	/**
@@ -70,7 +59,7 @@ public class TeamsCommander {
 	/**
 	 * The team type.
 	 */
-	private HashMap<ThinkingTeamObject,String> teamType;
+	private HashMap<ThinkingTeamObject,JobTitle> teamType;
 	
 	/**
 	 * The team defend assignments.
@@ -157,7 +146,7 @@ public class TeamsCommander {
 		this.levelManager = levelManager;
 		
 		teams = new ArrayList<ThinkingTeamObject>(2);
-		teamType = new HashMap<ThinkingTeamObject,String>(2);
+		teamType = new HashMap<ThinkingTeamObject,JobTitle>(2);
 		defendRooms = new ArrayList<LevelBlock>(2);
 		blockedPortals = new ArrayList<Portal>(2);
 		openPortals = new ArrayList<Portal>(2);
@@ -224,7 +213,7 @@ public class TeamsCommander {
 							returnBlock = this.targetRoom;
 						break;
 							
-						case SCOUTER:
+						case ROAMER:
 							returnBlock = hunterSeeker();
 						break;
 					}
@@ -253,16 +242,16 @@ public class TeamsCommander {
 		
 		if(jobBoard[1] < maxRoomDefenders){
 			jobBoard[1]++;
-			teamType.put(team, ROOM_DEFENDER);
+			teamType.put(team, JobTitle.ROOM_DEFENDER);
 			team.addAbility(Abilities.WELDING);
 		}
 		else if(jobBoard[0] < maxLayerDefenders){
 			jobBoard[0]++;
-			teamType.put(team, LAYER_DEFENDER);
+			teamType.put(team, JobTitle.LAYER_DEFENDER);
 		}
 		else{
 			jobBoard[2]++;
-			teamType.put(team, SCOUTER);
+			teamType.put(team, JobTitle.ROAMER);
 		}
 	}
 	
@@ -380,6 +369,8 @@ public class TeamsCommander {
 							criticalJobLost = true;
 						}
 					break;
+					default:
+					break;
 				}
 				
 				if(criticalJobLost){
@@ -445,16 +436,16 @@ public class TeamsCommander {
 			if(!this.teamType.containsKey(team)){
 				if(this.jobBoard[1] < maxRoomDefenders){
 					jobBoard[1]++;
-					teamType.put(team, ROOM_DEFENDER);
+					teamType.put(team, JobTitle.ROOM_DEFENDER);
 					team.addAbility(Abilities.WELDING);
 				}
 				else if(this.jobBoard[0] < maxLayerDefenders){
 					jobBoard[0]++;
-					teamType.put(team, LAYER_DEFENDER);
+					teamType.put(team, JobTitle.LAYER_DEFENDER);
 				}
 				else{
 					jobBoard[2]++;
-					teamType.put(team, SCOUTER);
+					teamType.put(team, JobTitle.ROAMER);
 				}
 			}
 		}
@@ -480,17 +471,17 @@ public class TeamsCommander {
 			if(this.jobBoard[1] < maxRoomDefenders &&
 			    team.hasAbility(Abilities.WELDING)){
 				jobBoard[1]++;
-				teamType.put(team, ROOM_DEFENDER);
+				teamType.put(team, JobTitle.ROOM_DEFENDER);
 				team.addAbility(Abilities.WELDING);
 			}
 			else if(this.jobBoard[0] < maxLayerDefenders &&
 				team.hasAbility(Abilities.XRAY_SCAN)){
 				jobBoard[0]++;
-				teamType.put(team, LAYER_DEFENDER);
+				teamType.put(team, JobTitle.LAYER_DEFENDER);
 			}
 			else if(team.hasAbility(Abilities.STEALTH1) || team.hasAbility(Abilities.STEALTH2)){
 				jobBoard[2]++;
-				teamType.put(team, SCOUTER);
+				teamType.put(team, JobTitle.ROAMER);
 			}
 		}
 	}
@@ -673,7 +664,7 @@ public class TeamsCommander {
 		if(teamType.get(thinkingTeamObject) == null){
 			this.assignNewJob(thinkingTeamObject);
 		}
-		if(this.targetRoom == null || teamType.get(thinkingTeamObject).equals(SCOUTER) || teamType.get(thinkingTeamObject).equals(LAYER_DEFENDER)){
+		if(this.targetRoom == null || teamType.get(thinkingTeamObject).equals(JobTitle.ROAMER) || teamType.get(thinkingTeamObject).equals(JobTitle.LAYER_DEFENDER)){
 			return true;
 		}
 		return false;
@@ -851,7 +842,7 @@ public class TeamsCommander {
 	 * @param thinkingTeamObject the thinking team object
 	 * @return the job
 	 */
-	public String getJob(ThinkingTeamObject thinkingTeamObject) {
+	public JobTitle getJob(ThinkingTeamObject thinkingTeamObject) {
 		return this.teamType.get(thinkingTeamObject);
 	}
 

@@ -18,6 +18,7 @@ import atrophy.combat.ai.MuleAi;
 import atrophy.combat.items.MeleeWeapon1;
 import atrophy.combat.items.UnarmedWeapon;
 import atrophy.gameMenu.saveFile.Squad;
+import atrophy.gameMenu.saveFile.TechTree;
 import atrophy.gameMenu.saveFile.Squad.Squaddie;
 
 /**
@@ -33,20 +34,23 @@ public class SquadMenu extends Menu{
 	private Squad squad;
 	private ShopManager shopManager;
 	private StashManager stashManager;
+	private TechTree techTree;
 	
 	/**
 	 * Instantiates a new squad menu.
 	 * @param squad 
 	 * @param shopManager 
 	 */
-	public SquadMenu(WindowManager windowManager, ShopManager shopManager, StashManager stashManager, Squad squad){
+	public SquadMenu(WindowManager windowManager, ShopManager shopManager, StashManager stashManager, Squad squad, TechTree techTree){
 		super(windowManager, new double[]{300,460});
 		
 		this.squad = squad;
 		this.shopManager = shopManager;
 		this.stashManager = stashManager;
+		this.techTree = techTree;
 		
 		createSquadComponents(shopManager, stashManager);
+		updateInformation();
 	}
 
 	/**
@@ -110,7 +114,7 @@ public class SquadMenu extends Menu{
 		this.addDisplayItem(buySquaddie);
 		this.addMouseActionItem(buySquaddie);
 		
-//		if(ShopManager.getInstance().getScienceLootLevel() > 1){
+		if(techTree.isResearched(TechTree.MULE)){
 		
 			TextButton buyMule = new TextButton(Color.yellow, Color.red) {
 				{
@@ -132,7 +136,7 @@ public class SquadMenu extends Menu{
 			this.addDisplayItem(buyMule);
 			this.addMouseActionItem(buyMule);
 		
-//		}
+		}
 		
 		Text squadListTag = new Text(windowLocation[0] + 21, windowLocation[1] + 121, "Squad Members");
 		this.addDisplayItem(squadListTag);

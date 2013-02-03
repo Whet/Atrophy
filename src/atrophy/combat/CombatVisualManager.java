@@ -19,8 +19,6 @@ import atrophy.combat.mechanics.Abilities;
  */
 public class CombatVisualManager {
 	
-	//private static final int VISIBILITY_DISTANCE_EDGE = 60;
-	
 	/**
 	 * The Constant RING_SIZE.
 	 */

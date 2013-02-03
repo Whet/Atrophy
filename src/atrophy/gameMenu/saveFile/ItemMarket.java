@@ -66,7 +66,7 @@ public class ItemMarket {
 		itemData.put(Railgun.NAME, 					new ItemData(techTree, 8000,TechTree.SUPER_PROJECTILES,true));
 		itemData.put(Shotgun1.NAME, 				new ItemData(techTree, 3000,TechTree.CONFLICT_WEAPONRY,true));
 		
-		itemData.put(ArmourPlates1.NAME, 			new ItemData(techTree, 300,TechTree.SPACE_WALKING,false));
+		itemData.put(ArmourPlates1.NAME, 			new ItemData(techTree, 300,TechTree.BASIC_ARMOUR,false));
 		itemData.put(ArmourPlates2.NAME, 			new ItemData(techTree, 800,TechTree.HEAVY_ARMOUR,false));
 		itemData.put(GrenadeItem.NAME, 				new ItemData(techTree, 300,TechTree.BASIC_EXPLOSIVES,false));
 		itemData.put(StunGrenadeItem.NAME, 			new ItemData(techTree, 240,TechTree.BASIC_INCAPACITATION,false));
@@ -161,9 +161,9 @@ public class ItemMarket {
 	}
 
 
-	public Object getRandomMarketItem() {
+	public String getRandomMarketItem() {
 		
-		if(new Random().nextBoolean())
+		if(this.itemsInMarket.size() > 1 && new Random().nextBoolean())
 			return getRandomItem();
 		
 		return getRandomWeapon();

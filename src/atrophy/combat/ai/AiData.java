@@ -11,6 +11,7 @@ import atrophy.combat.combatEffects.Effect;
 import atrophy.combat.items.ArmourPlates1;
 import atrophy.combat.items.ArmourPlates2;
 import atrophy.combat.items.GrenadeItem;
+import atrophy.combat.items.HackTool;
 import atrophy.combat.items.Inventory;
 import atrophy.combat.items.Item;
 import atrophy.combat.items.KillTags;
@@ -136,13 +137,17 @@ public class AiData {
 		if(this.inventory.hasItem(KillTags.getInstance())){
 			this.abilities.add(Abilities.KILL_TAGS);
 		}
+		if(this.inventory.hasItem(HackTool.getInstance())){
+			this.abilities.add(Abilities.HACK);
+		}
 		
 		// Melee
 		if(this.getWeapon() instanceof MeleeWeapon1){
-			this.abilities.add(Abilities.STUN_MELEE);
+			this.abilities.add(Abilities.PARRY);
 		}
 		else if(this.getWeapon() instanceof MeleeWeapon2){
-			this.abilities.add(Abilities.SLIT_MELEE);
+//			this.abilities.add(Abilities.SLIT_MELEE);
+			this.abilities.add(Abilities.PARRY);
 		}
 		
 		// Armour

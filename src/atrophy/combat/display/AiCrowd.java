@@ -9,13 +9,14 @@ import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 import java.util.Random;
 import java.util.Stack;
 
 import javax.imageio.ImageIO;
 
-import watoydoEngine.designObjects.display.BankedImage;
 import watoydoEngine.designObjects.display.Crowd;
 import watoydoEngine.io.ReadWriter;
 import atrophy.combat.ai.Ai;
@@ -52,6 +53,8 @@ public class AiCrowd extends Crowd {
 	private Stack<Ai> shuffledStack;
 	
 	private Squad squad;
+
+	private Map<String, BufferedImage> images;
 	
 	/**
 	 * Instantiates a new ai crowd.
@@ -59,6 +62,7 @@ public class AiCrowd extends Crowd {
 	 */
 	public AiCrowd(Squad squad) {
 		super(false);
+		images = new HashMap<>();
 		actors = new ArrayList<Ai>();
 		masks = new ArrayList<AiImage>();
 		loadBank();
@@ -120,7 +124,7 @@ public class AiCrowd extends Crowd {
 			// Add all heads to the image bank
 			for(int i = 0; i < files.length; i++){
 				img = ImageIO.read(ReadWriter.getResourceAsInputStream(files[i]));
-				this.addBankedImage(new BankedImage(names[i],img));
+				this.images.put(names[i],img);
 			}
 		
 		}
@@ -368,6 +372,10 @@ public class AiCrowd extends Crowd {
 				masterStack.set(i, playerAi);
 			}
 		}
+	}
+
+	public BufferedImage getBankedImage(String image) {
+		return this.images.get(image);
 	}
 
 }

@@ -3,6 +3,8 @@
  */
 package atrophy.combat.levelAssets;
 
+import java.awt.image.BufferedImage;
+
 import atrophy.combat.ai.Ai;
 
 // TODO: Auto-generated Javadoc
@@ -35,7 +37,7 @@ public interface LevelAsset {
 	 *
 	 * @return the image name
 	 */
-	public String getImageName();
+	public BufferedImage getImage();
 	
 	/**
 	 * Gets the originator.

@@ -139,6 +139,12 @@ public class Abilities{
 	 * The Constant TURNS_TO_SCAN.
 	 */
 	public static final int TURNS_TO_SCAN[] = {8,7,6,5,4};
+
+	public static final String HACK = "Hack";
+	
+	public static final int TURNS_TO_HACK[] = {12,11,10,8,6};
+
+	public static final String PARRY = "Parry";
 	
 	/**
 	 * Turns to do.
@@ -156,6 +162,9 @@ public class Abilities{
 			break;
 			case SCAN_SCIENCE:
 				turns = TURNS_TO_SCAN[skillLevel];
+			break;
+			case HACK:
+				turns = TURNS_TO_HACK[skillLevel];
 			break;
 		}
 		

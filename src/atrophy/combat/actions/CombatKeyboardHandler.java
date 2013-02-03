@@ -18,6 +18,7 @@ import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.AiManagementSuite;
 import atrophy.combat.display.ui.CartographerBox;
+import atrophy.combat.display.ui.LargeEventText;
 import atrophy.combat.display.ui.MessageBox;
 import atrophy.combat.display.ui.UiUpdaterSuite;
 import atrophy.combat.display.ui.loot.LootBox;
@@ -152,6 +153,7 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 			//esc
 			case 27:
 				
+				
 				boolean teamInSaferoom = false;
 				
 				for(int i = 0; i < aiCrowd.getActorCount(); i++){
@@ -163,6 +165,10 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 				}
 				
 				if(teamInSaferoom){
+					// Cleanup timer thread
+					LargeEventText.flashTimer.cancel();
+					LargeEventText.flashTimer.purge();
+					
 					ActivePane.getInstance().changePane(new Crowd(new GameMenuHardPane(aiCrowd.saveToSquad(), techTree, stashManager, missions)));
 				}
 				

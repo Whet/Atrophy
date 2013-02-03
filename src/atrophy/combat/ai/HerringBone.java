@@ -30,7 +30,7 @@ public class HerringBone extends Formation{
 	 */
 	public HerringBone(){
 		super();
-		formationType = "Patrolling";
+		formationType = ThinkingAi.AiMode.PATROLLING;
 	}
 	
 	/* (non-Javadoc)

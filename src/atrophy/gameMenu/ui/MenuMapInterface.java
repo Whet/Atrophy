@@ -19,10 +19,10 @@ import atrophy.combat.ai.AiGeneratorInterface.GenerateCommand;
 import atrophy.combat.display.AiManagementSuite;
 import atrophy.combat.display.ui.UiUpdaterSuite;
 import atrophy.combat.level.LevelIO;
+import atrophy.combat.level.MissionManager;
 import atrophy.combat.level.LevelIO.LevelFormatException;
 import atrophy.combat.level.LevelManager;
 import atrophy.combat.mechanics.TurnProcess;
-import atrophy.combat.missions.MissionManager;
 import atrophy.gameMenu.saveFile.ItemMarket;
 import atrophy.gameMenu.saveFile.Missions;
 import atrophy.gameMenu.saveFile.Squad;
@@ -103,7 +103,7 @@ public class MenuMapInterface {
 		
 		int whiteVistaTeamSpawn = new Random().nextInt((levelManager.getBlocks().length / 5) + 1);
 		
-		AiGeneratorInterface.LONER_SPAWN_AMOUNT = new Random().nextInt(4);
+		AiGeneratorInterface.LONER_SPAWN_AMOUNT = new Random().nextInt(4) + 1;
 		
 		ArrayList<String> targetFactions =  new ArrayList<String>();
 		
@@ -143,7 +143,6 @@ public class MenuMapInterface {
 
 		generationCommands.add(new GenerateCommand(squad.getSquad(), AiGenerator.PLAYER));
 		
-		AiGeneratorInterface.DAEMON_SPAWN_AMOUNT = 0;
 		
 	}
 	

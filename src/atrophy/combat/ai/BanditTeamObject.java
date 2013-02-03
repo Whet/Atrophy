@@ -59,7 +59,7 @@ public class BanditTeamObject extends ThinkingTeamObject{
 		if(memberDied){
 			// make all other members aggressive
 			for(Ai ai1 : this.getTeamMembers()){
-				((ThinkingAi) ai1).modifyAggression(ThinkingAi.TEAM_MEMBER_KILLED);
+				((ThinkingAi) ai1).modifyAggression(ThinkingAiEmotion.TEAM_MEMBER_KILLED);
 			}
 			
 			// move formation to find attacker

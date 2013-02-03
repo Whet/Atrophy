@@ -139,10 +139,15 @@ public abstract class TextButton extends Text implements MouseRespondable{
 	 */
 	@Override
 	public boolean isInBounds(double x, double y) {
-		if(this.boundBox == null){
-			return false;
+		synchronized(this){
+			if(this.boundBox == null || this.getText().isEmpty()){
+				return false;
+			}
+			
+			boolean contains = boundBox.contains(x - this.getLocation()[0], y - this.getLocation()[1]);
+	
+			return contains;
 		}
-		return boundBox.contains(x - this.getLocation()[0], y - this.getLocation()[1]);
 	}
 
 	/* (non-Javadoc)
@@ -175,7 +180,10 @@ public abstract class TextButton extends Text implements MouseRespondable{
 	@Override
 	public void setText(String message) {
 		super.setText(message);
-		this.boundBox = null;
+		synchronized(this){
+			// Causes flickering in menus
+			this.boundBox = null;
+		}
 	}
 	
 	/* (non-Javadoc)
@@ -184,7 +192,9 @@ public abstract class TextButton extends Text implements MouseRespondable{
 	@Override
 	public void setFont(Font font) {
 		super.setFont(font);
-		this.boundBox = null;
+		synchronized(this){
+			this.boundBox = null;
+		}
 	}
 	
 	/**

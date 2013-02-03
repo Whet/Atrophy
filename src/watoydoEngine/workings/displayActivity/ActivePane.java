@@ -114,8 +114,8 @@ public class ActivePane extends JFrame implements MouseListener, KeyListener, Wi
 		
 		// Display settings
 		res = new int[2];
-		res[0] = 800;
-		res[1] = 600;
+		res[0] = 1280;
+		res[1] = 720;
 		windowed = false;
 
 		

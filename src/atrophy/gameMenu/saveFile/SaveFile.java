@@ -13,7 +13,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Set;
 
-import atrophy.gameMenu.saveFile.MapWar.Sector;
+import atrophy.gameMenu.saveFile.MapManager.Sector;
 import atrophy.gameMenu.ui.ShopManager;
 import atrophy.gameMenu.ui.StashManager;
 import atrophy.gameMenu.ui.WindowManager;
@@ -131,7 +131,7 @@ public class SaveFile implements Serializable{
 	 * @param windowManager 
 	 * @return 
 	 */
-	public static Squad loadGame(File file, StashManager stashManager, MapWar mapWar, ShopManager shopManager, Missions missions, WindowManager windowManager) {
+	public static Squad loadGame(File file, StashManager stashManager, MapManager mapWar, ShopManager shopManager, Missions missions, WindowManager windowManager) {
 		
 		SaveFile save = null;
 		

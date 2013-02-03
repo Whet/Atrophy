@@ -31,7 +31,7 @@ public class GameMenuKeyHandler implements KeyboardRespondable{
 	 */
 	@Override
 	public boolean kU(KeyEvent e) {
-		System.out.println(e.getKeyCode());
+//		System.out.println(e.getKeyCode());
 		
 		if(!windowManager.isPopupVisible())
 		switch(e.getKeyCode()){
@@ -48,8 +48,7 @@ public class GameMenuKeyHandler implements KeyboardRespondable{
 	 */
 	@Override
 	public boolean kP(KeyEvent e) {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 	
 	/* (non-Javadoc)
@@ -57,8 +56,7 @@ public class GameMenuKeyHandler implements KeyboardRespondable{
 	 */
 	@Override
 	public boolean kD(KeyEvent e) {
-		// TODO Auto-generated method stub
-		return false;
+		return true;
 	}
 	
 	/* (non-Javadoc)

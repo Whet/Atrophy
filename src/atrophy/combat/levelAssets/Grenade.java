@@ -3,11 +3,14 @@
  */
 package atrophy.combat.levelAssets;
 
+import java.awt.image.BufferedImage;
+
 import atrophy.combat.ai.Ai;
 import atrophy.combat.ai.PathFinder;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.MapPainter;
 import atrophy.combat.display.ui.FloatingIcons;
+import atrophy.combat.items.GrenadeItem;
 import atrophy.combat.level.LevelBlock;
 import atrophy.combat.level.LevelManager;
 import atrophy.combat.mechanics.ScoringMechanics;
@@ -66,6 +69,8 @@ public class Grenade implements LevelAsset{
 	protected AiCrowd aiCrowd;
 	protected FloatingIcons floatingIcons;
 	private LevelManager levelManager;
+
+	private BufferedImage image;
 	
 	/**
 	 * Instantiates a new grenade.
@@ -79,7 +84,7 @@ public class Grenade implements LevelAsset{
 	 */
 	public Grenade(AiCrowd aiCrowd, FloatingIcons floatingIcons, LevelManager levelManager, Ai originator, double[] location, double angleHeading, double momentum, int skillLevel){
 
-		
+		this.image = floatingIcons.getImage(GrenadeItem.NAME);
 		
 		this.originator = originator;
 		this.location = location;
@@ -108,7 +113,9 @@ public class Grenade implements LevelAsset{
 	 * @param momentum the momentum
 	 * @param fuseTime the fuse time
 	 */
-	protected Grenade(AiCrowd aiCrowd, FloatingIcons floatingIcons, LevelManager levelManager, Ai originator, double[] location, double angleHeading, double momentum, byte fuseTime) {
+	protected Grenade(String imageName, AiCrowd aiCrowd, FloatingIcons floatingIcons, LevelManager levelManager, Ai originator, double[] location, double angleHeading, double momentum, byte fuseTime) {
+		
+		this.image = floatingIcons.getImage(imageName);
 		
 		this.location = location;
 		this.angleHeading = angleHeading;
@@ -195,8 +202,8 @@ public class Grenade implements LevelAsset{
 	/* (non-Javadoc)
 	 * @see atrophy.combat.levelAssets.LevelAsset#getImageName()
 	 */
-	public String getImageName(){
-		return LevelAssetImageNames.GRENADE;
+	public BufferedImage getImage(){
+		return this.image;
 	}
 	
 	/**

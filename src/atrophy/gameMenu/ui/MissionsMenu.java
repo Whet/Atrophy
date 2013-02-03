@@ -41,11 +41,12 @@ public class MissionsMenu extends Menu{
 	 * @param stashManager 
 	 */
 	public MissionsMenu(WindowManager windowManager, Missions missions, StashManager stashManager) {
-		super(windowManager, new double[]{300,270});
+		super(windowManager, new double[]{400,270});
 		page = 0;
 		addComponents(missions, stashManager);
 		
 		this.missions = missions;
+		updateText();
 	}
 	
 	/**
@@ -177,7 +178,7 @@ public class MissionsMenu extends Menu{
 	@Override
 	public void mI(Point mousePosition) {
 		super.mI(mousePosition);
-		updateText();
+//		updateText();
 	}
 	
 	/* (non-Javadoc)

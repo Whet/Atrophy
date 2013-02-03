@@ -5,7 +5,6 @@ package atrophy.combat.actions;
 
 import java.awt.Color;
 import java.awt.Point;
-import java.util.HashSet;
 
 import watoydoEngine.gubbinz.Maths;
 import watoydoEngine.sounds.SoundBoard;
@@ -177,7 +176,7 @@ public class MouseAbilityHandler {
 				TurretAi turret = getClosestTurretToMouse(mousePoint, 40, false);
 				
 				if(turret != null)
-					turret.hack(new HashSet<String>(){{this.add(AiGenerator.BANDITS);}});
+					combatMembersManager.getCurrentAi().setHackTarget(turret);
 			break;
 				
 		}

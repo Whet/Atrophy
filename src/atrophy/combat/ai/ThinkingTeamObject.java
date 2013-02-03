@@ -9,6 +9,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import atrophy.combat.CombatVisualManager;
+import atrophy.combat.ai.TeamsCommander.JobTitle;
 import atrophy.combat.ai.ThinkingAi.AiNode;
 import atrophy.combat.level.LevelBlock;
 import atrophy.combat.level.Portal;
@@ -302,26 +303,26 @@ public abstract class ThinkingTeamObject extends TeamObject{
 			return true;
 		}
 		
-		String teamRole = this.commander.getJob(this);
+		JobTitle teamRole = this.commander.getJob(this);
 		
 		if(teamRole == null){
 			return false;
 		}
 		
 		switch(teamRole){
-			case TeamsCommander.LAYER_DEFENDER:
+			case LAYER_DEFENDER:
 				if(aiNode.hasPriority(AiNode.PRI_DEFENDER)){
 					return true;
 				}
 				return false;
 		
-			case TeamsCommander.ROOM_DEFENDER:
+			case ROOM_DEFENDER:
 				if(aiNode.hasPriority(AiNode.PRI_DEFENDER)){
 					return true;
 				}
 				return false;
 				
-			case TeamsCommander.SCOUTER:
+			case ROAMER:
 				return false;
 		}
 		

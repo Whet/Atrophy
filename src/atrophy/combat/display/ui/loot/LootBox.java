@@ -10,12 +10,13 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 
 import watoydoEngine.designObjects.actions.ActionRegion;
-import watoydoEngine.designObjects.display.BankedImage;
 import watoydoEngine.designObjects.display.Crowd;
 import watoydoEngine.designObjects.display.Text;
 import watoydoEngine.gubbinz.GraphicsFunctions;
@@ -29,6 +30,7 @@ import atrophy.combat.items.ArmourPlates1;
 import atrophy.combat.items.ArmourPlates2;
 import atrophy.combat.items.EngineeringSupply;
 import atrophy.combat.items.GrenadeItem;
+import atrophy.combat.items.HackTool;
 import atrophy.combat.items.Harpoon1;
 import atrophy.combat.items.Harpoon2;
 import atrophy.combat.items.Inventory;
@@ -129,6 +131,8 @@ public class LootBox extends Crowd{
 	 */
 	private int[] dragLocation;
 	
+	private Map<String, BufferedImage> images;
+	
 	/**
 	 * The mouse drag region.
 	 */
@@ -203,6 +207,8 @@ public class LootBox extends Crowd{
 			this.addDisplayItem(lootText[0]);
 			this.addDisplayItem(lootText[1]);
 			
+			images = new HashMap<>();
+			
 			// load banked images
 			String[] files = {"images/atrophy/combat/ui/weldTorch.png",
 							  "images/atrophy/combat/ui/sensorSuite.png",
@@ -216,6 +222,7 @@ public class LootBox extends Crowd{
 							  "images/atrophy/combat/ui/speedBooster.png",
 							  "images/atrophy/combat/ui/armour1.png",
 							  "images/atrophy/combat/ui/armour2.png",
+							  "images/atrophy/combat/ui/hackTool.png",
 							  "images/atrophy/combat/ui/engineeringSupply.png",
 							  "images/atrophy/combat/ui/scienceSupply.png",
 							  "images/atrophy/combat/ui/medicalSupply.png",
@@ -241,6 +248,7 @@ public class LootBox extends Crowd{
 							  GrenadeItem.getInstance().getName(), StunGrenadeItem.getInstance().getName(),
 							  SpeedBooster.getInstance().getName(),
 							  ArmourPlates1.getInstance().getName(), ArmourPlates2.getInstance().getName(),
+							  HackTool.getInstance().getName(),
 							  EngineeringSupply.NAME, ScienceSupply.NAME, MedicalSupply.NAME, WeaponSupply.NAME,
 							  Harpoon1.NAME, Harpoon2.NAME,
 							  Pistol1.NAME, Pistol2.NAME, Pistol3.NAME, Pistol4.NAME,
@@ -250,10 +258,10 @@ public class LootBox extends Crowd{
 			// Add all items to the image bank
 			for(int i = 0; i < files.length; i++){
 				img = ImageIO.read(ReadWriter.getResourceAsInputStream(files[i]));
-				this.addBankedImage(new BankedImage(names[i],img));
+				images.put(names[i],img);
 			}
 			
-			this.addBankedImage(new BankedImage(UnarmedWeapon.NAME, new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB)));
+			images.put(UnarmedWeapon.NAME, new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB));
 			
 		}
 		catch(IOException ioExcept){
@@ -404,11 +412,11 @@ public class LootBox extends Crowd{
 		lootLink[0] = looter;
 		lootLink[1] = looted;
 		
-		this.weaponLootButtons[0].setImage(this.getBankedImage(looter.getWeapon().getName()));
+		this.weaponLootButtons[0].setImage(images.get(looter.getWeapon().getName()));
 		this.weaponLootButtons[0].setVisible(true);
 		
 		if(lootLink[1].getWeapon() != null){
-			this.weaponLootButtons[1].setImage(this.getBankedImage(looted.getWeapon().getName()));
+			this.weaponLootButtons[1].setImage(images.get(looted.getWeapon().getName()));
 			this.weaponLootButtons[1].setVisible(true);
 		}
 		else{
@@ -416,13 +424,13 @@ public class LootBox extends Crowd{
 		}
 		
 		for(int i = 0; i < looter.getInventory().getItemCount(); i++){
-			looterButtons.get(i).setImage(this.getBankedImage(looter.getInventory().getItemAt(i).getName()));
+			looterButtons.get(i).setImage(images.get(looter.getInventory().getItemAt(i).getName()));
 			looterButtons.get(i).setVisible(true);
 			looterButtons.get(i).setLootActive(true);
 		}
 		
 		for(int i = 0; i < looted.getInventory().getItemCount(); i++){
-			lootedButtons.get(i).setImage(this.getBankedImage(looted.getInventory().getItemAt(i).getName()));
+			lootedButtons.get(i).setImage(images.get(looted.getInventory().getItemAt(i).getName()));
 			lootedButtons.get(i).setVisible(true);
 		}
 		
@@ -473,7 +481,7 @@ public class LootBox extends Crowd{
 		lootLink[1] = null;
 		
 		for(int i = 0; i < looter.getInventory().getItemCount(); i++){
-			looterButtons.get(i).setImage(this.getBankedImage(looter.getInventory().getItemAt(i).getName()));
+			looterButtons.get(i).setImage(images.get(looter.getInventory().getItemAt(i).getName()));
 			looterButtons.get(i).setVisible(true);
 			looterButtons.get(i).setLootActive(allowModification);
 		}
@@ -481,7 +489,7 @@ public class LootBox extends Crowd{
 			button.setVisible(false);
 		}
 		
-		this.weaponLootButtons[0].setImage(this.getBankedImage(looter.getWeapon().getName()));
+		this.weaponLootButtons[0].setImage(images.get(looter.getWeapon().getName()));
 		this.weaponLootButtons[0].setVisible(true);
 		
 		this.lootText[0].setText(looter.getName());
@@ -518,10 +526,10 @@ public class LootBox extends Crowd{
 	 */
 	private void reloadLootDisplay(){
 		
-		this.weaponLootButtons[0].setImage(this.getBankedImage(this.lootLink[0].getWeapon().getName()));
+		this.weaponLootButtons[0].setImage(images.get(this.lootLink[0].getWeapon().getName()));
 		
 		if(lootLink[1].getWeapon() != null){
-			this.weaponLootButtons[1].setImage(this.getBankedImage(this.lootLink[1].getWeapon().getName()));
+			this.weaponLootButtons[1].setImage(images.get(this.lootLink[1].getWeapon().getName()));
 		}
 		
 		// hide all buttons
@@ -534,12 +542,12 @@ public class LootBox extends Crowd{
 		
 		// show proper ones
 		for(int i = 0; i < this.lootLink[0].getInventory().getItemCount(); i++){
-			looterButtons.get(i).setImage(this.getBankedImage(this.lootLink[0].getInventory().getItemAt(i).getName()));
+			looterButtons.get(i).setImage(images.get(this.lootLink[0].getInventory().getItemAt(i).getName()));
 			looterButtons.get(i).setVisible(true);
 		}
 		
 		for(int i = 0; i < this.lootLink[1].getInventory().getItemCount(); i++){
-			lootedButtons.get(i).setImage(this.getBankedImage(this.lootLink[1].getInventory().getItemAt(i).getName()));
+			lootedButtons.get(i).setImage(images.get(this.lootLink[1].getInventory().getItemAt(i).getName()));
 			lootedButtons.get(i).setVisible(true);
 		}
 		
@@ -556,7 +564,7 @@ public class LootBox extends Crowd{
 	 */
 	private void reloadInventoryDisplay(){
 		
-		this.weaponLootButtons[0].setImage(this.getBankedImage(this.lootLink[0].getWeapon().getName()));
+		this.weaponLootButtons[0].setImage(images.get(this.lootLink[0].getWeapon().getName()));
 		this.weaponLootButtons[0].setVisible(true);
 		this.weaponLootButtons[1].setVisible(false);
 		
@@ -570,7 +578,7 @@ public class LootBox extends Crowd{
 		
 		// show proper ones
 		for(int i = 0; i < this.lootLink[0].getInventory().getItemCount(); i++){
-			looterButtons.get(i).setImage(this.getBankedImage(this.lootLink[0].getInventory().getItemAt(i).getName()));
+			looterButtons.get(i).setImage(images.get(this.lootLink[0].getInventory().getItemAt(i).getName()));
 			looterButtons.get(i).setVisible(true);
 		}
 		

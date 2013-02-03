@@ -14,8 +14,8 @@ import watoydoEngine.designObjects.display.TextButton;
 import watoydoEngine.gubbinz.GraphicsFunctions;
 import watoydoEngine.sounds.SoundBoard;
 import atrophy.gameMenu.saveFile.ItemMarket;
-import atrophy.gameMenu.saveFile.MapWar;
-import atrophy.gameMenu.saveFile.MapWar.Sector;
+import atrophy.gameMenu.saveFile.MapManager;
+import atrophy.gameMenu.saveFile.MapManager.Sector;
 import atrophy.gameMenu.saveFile.Missions;
 import atrophy.gameMenu.saveFile.Squad;
 import atrophy.gameMenu.saveFile.TechTree;
@@ -27,17 +27,18 @@ public class SectorsMenu extends Menu{
 
 	private List<TextButton> buttons;
 	
-	private MapWar mapWar;
+	private MapManager mapWar;
 	
 	/**
 	 * Instantiates a new sectors menu.
 	 * @param techTree 
 	 * @param stashManager 
 	 */
-	public SectorsMenu(MapWar mapWar, WindowManager windowManager, Missions missions, Squad squad, ItemMarket itemMarket, TechTree techTree, StashManager stashManager) {
+	public SectorsMenu(MapManager mapWar, WindowManager windowManager, Missions missions, Squad squad, ItemMarket itemMarket, TechTree techTree, StashManager stashManager) {
 		super(windowManager, new double[]{180, 40 + mapWar.getSectorCount() * 20});
 		this.mapWar = mapWar;
 		addComponents(squad, missions, itemMarket, techTree, stashManager);
+		updateText();
 	}
 
 	/**
@@ -61,6 +62,7 @@ public class SectorsMenu extends Menu{
 					SoundBoard.getInstance().playEffect("tick");
 					return true;
 				}
+				
 			};
 			
 			this.addDisplayItem(tb);
@@ -94,7 +96,7 @@ public class SectorsMenu extends Menu{
 	@Override
 	public void mI(Point mousePosition) {
 		super.mI(mousePosition);
-		updateText();
+//		updateText();
 	}
 	
 	/* (non-Javadoc)
@@ -102,8 +104,8 @@ public class SectorsMenu extends Menu{
 	 */
 	@Override
 	public void mO(Point mousePosition) {
-		updateText();
 		super.mO(mousePosition);
+		updateText();
 	}
 	
 	/**

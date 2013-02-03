@@ -149,6 +149,15 @@ public class ActionTextBox extends Text{
 								 aiCrowd.getActorMask(combatMembersManager.getCurrentAi()).getLocation()[1] - 25);
 			break;
 			
+			case Abilities.HACK:
+				this.setColour(Color.green.darker());
+				this.setText("Hacking " + combatMembersManager.getCurrentAi().getActionTurns() +"/"+
+							(Abilities.turnsToDo(Abilities.HACK, combatMembersManager.getCurrentAi().getSkillLevel(Abilities.SCAN_SCIENCE)) + 2));
+				
+				this.setLocation(aiCrowd.getActorMask(combatMembersManager.getCurrentAi()).getLocation()[0], 
+								 aiCrowd.getActorMask(combatMembersManager.getCurrentAi()).getLocation()[1] - 25);
+			break;
+			
 			case "Stealthed":
 				this.setColour(Color.green.darker());
 				this.setText("Stealthed");

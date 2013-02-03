@@ -5,6 +5,8 @@ package atrophy.combat.ai;
 
 import java.util.ArrayList;
 
+import atrophy.combat.ai.ThinkingAi.AiMode;
+
 
 // TODO: Auto-generated Javadoc
 /**
@@ -15,7 +17,7 @@ public abstract class Formation {
 	/**
 	 * The formation type.
 	 */
-	protected String formationType;
+	protected AiMode formationType;
 	
 	/**
 	 * The participants.
@@ -136,23 +138,11 @@ public abstract class Formation {
 	}
 	
 	/**
-	 * From the front number.
-	 */
-	public void fromTheFrontNumber(){
-		if(this.participants.size() > 1){
-			for(int i = 0; i < this.participants.size() - 1; i++){
-				System.out.println(this.participants.get(i).getName() + ": "+ (i + 1));
-			}
-			System.out.println(this.participants.get(this.participants.size() - 1).getName() + ": "+ (this.participants.size()) + " sir!");
-		}
-	}
-	
-	/**
 	 * Gets the formation type.
 	 *
 	 * @return the formation type
 	 */
-	public String getFormationType(){
+	public AiMode getFormationType(){
 		return this.formationType;
 	}
 	

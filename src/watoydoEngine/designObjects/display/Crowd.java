@@ -8,7 +8,6 @@ import java.awt.Point;
 import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
-import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -40,11 +39,6 @@ public class Crowd implements Displayable, MouseRespondable, KeyboardRespondable
 	 * The keyboard action list.
 	 */
 	private ArrayList<KeyboardRespondable> keyboardActionList;
-	
-	/**
-	 * The image bank.
-	 */
-	private ArrayList<BankedImage> imageBank;
 	
 	/**
 	 * The scale.
@@ -107,7 +101,6 @@ public class Crowd implements Displayable, MouseRespondable, KeyboardRespondable
 		displayList = new ArrayList<Displayable>();
 		mouseActionList = new ArrayList<MouseRespondable>();
 		keyboardActionList = new ArrayList<KeyboardRespondable>();
-		imageBank = new ArrayList<BankedImage>();
 		
 		scale = 1.0;
 		location = new double[2];
@@ -142,7 +135,6 @@ public class Crowd implements Displayable, MouseRespondable, KeyboardRespondable
 		displayList = new ArrayList<Displayable>();
 		mouseActionList = new ArrayList<MouseRespondable>();
 		keyboardActionList = new ArrayList<KeyboardRespondable>();
-		imageBank = new ArrayList<BankedImage>();
 		
 		scale = 1.0;
 		location = new double[2];
@@ -174,7 +166,6 @@ public class Crowd implements Displayable, MouseRespondable, KeyboardRespondable
 		displayList = new ArrayList<Displayable>();
 		mouseActionList = new ArrayList<MouseRespondable>();
 		keyboardActionList = new ArrayList<KeyboardRespondable>();
-		imageBank = new ArrayList<BankedImage>();
 		
 		scale = 1.0;
 		location = new double[2];
@@ -206,7 +197,6 @@ public class Crowd implements Displayable, MouseRespondable, KeyboardRespondable
 		displayList = new ArrayList<Displayable>();
 		mouseActionList = new ArrayList<MouseRespondable>();
 		keyboardActionList = new ArrayList<KeyboardRespondable>();
-		imageBank = new ArrayList<BankedImage>();
 		
 		scale = 1.0;
 		location = new double[2];
@@ -648,21 +638,6 @@ public class Crowd implements Displayable, MouseRespondable, KeyboardRespondable
 	}
 	
 	/**
-	 * Gets the banked image.
-	 *
-	 * @param imageTag the image tag
-	 * @return the banked image
-	 */
-	public BufferedImage getBankedImage(String imageTag){
-		for(int i = 0; i < this.imageBank.size(); i++){
-			if(this.imageBank.get(i).getTag().equals(imageTag)){
-				return this.imageBank.get(i).getImage();
-			}
-		}
-		return null;
-	}
-	
-	/**
 	 * Gets the transformation.
 	 *
 	 * @return the transformation
@@ -764,34 +739,6 @@ public class Crowd implements Displayable, MouseRespondable, KeyboardRespondable
 		this.active = active;
 	}
 	
-	/**
-	 * Adds the banked image.
-	 *
-	 * @param image the image
-	 */
-	public void addBankedImage(BankedImage image){
-		imageBank.add(image);
-	}
-	
-	/**
-	 * Clear bank.
-	 */
-	public void clearBank(){
-		for(int i = 0; i < this.imageBank.size(); i++){
-			this.imageBank.get(i).getImage().flush();
-		}
-		this.imageBank.clear();
-	}
-	
-	/**
-	 * Removes the banked image at.
-	 *
-	 * @param imageIndex the image index
-	 */
-	public void removeBankedImageAt(int imageIndex){
-		this.imageBank.remove(imageIndex);
-	}
-
 	/* (non-Javadoc)
 	 * @see watoydoEngine.designObjects.actions.MouseRespondable#getActionZ()
 	 */

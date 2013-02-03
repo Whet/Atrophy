@@ -82,8 +82,8 @@ public class SetupWindow extends JFrame{
 		
 		windowedMode = true;
 		resolutionMode = new int[2];
-		resolutionMode[0] = 800;
-		resolutionMode[1] = 600;
+		resolutionMode[0] = 1280;
+		resolutionMode[1] = 720;
 		
 		// sets up window properties
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);

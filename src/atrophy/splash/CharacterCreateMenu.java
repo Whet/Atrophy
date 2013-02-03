@@ -79,7 +79,7 @@ public class CharacterCreateMenu extends Crowd{
 		Text nameTag = new Text(this.getLocation()[0] + 30, this.getLocation()[1] + 50, "Name: ");
 		this.addDisplayItem(nameTag);
 		
-		name = new TextInput(this.getLocation()[0] + 66, this.getLocation()[1] + 50,"Barry"){
+		name = new TextInput(this.getLocation()[0] + 66, this.getLocation()[1] + 50,"Julian"){
 			@Override
 			public void setFocus(boolean focus) {
 				super.setFocus(focus);
@@ -178,14 +178,6 @@ public class CharacterCreateMenu extends Crowd{
 		squad.setAdvance(START_ADVANCE);
 		
 		squad.addSquaddie(new Squaddie(specialNames(name),this.image.getImageName(),MeleeWeapon2.NAME, ""));
-		
-//		ShopManager shopManager = new ShopManager(windowManager, stashManager, squad);
-		
-//		shopManager.randomShopItems();
-//		TechTree.newInstance();
-//		stashManager.defaultStash();
-		
-//		windowManager.updateWindows();
 		
 		switch(startType){
 			case 1:

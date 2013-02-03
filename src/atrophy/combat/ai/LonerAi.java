@@ -16,7 +16,6 @@ import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.ui.FloatingIcons;
 import atrophy.combat.display.ui.loot.LootBox;
 import atrophy.combat.level.LevelManager;
-import atrophy.combat.mechanics.ScoringMechanics;
 import atrophy.combat.mechanics.TurnProcess;
 
 /**
@@ -136,7 +135,8 @@ public class LonerAi extends ThinkingAi{
 	 */
 	@Override
 	public boolean willJoinPlayer(Ai player) {
-		return ScoringMechanics.weakIntimidateCheck(player, this, combatMembersManager);
+//		return ScoringMechanics.weakIntimidateCheck(player, this, combatMembersManager);
+		return false;
 	}
 	
 }

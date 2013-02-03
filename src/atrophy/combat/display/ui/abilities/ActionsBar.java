@@ -116,7 +116,7 @@ public class ActionsBar extends Crowd{
 			this.addButton(speedBoost);
 			
 			SpeechAction speech = new SpeechAction(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/speechIcon.png")));
-			actionButtonMap.put("blockDoor", speech);
+			actionButtonMap.put("speech", speech);
 			this.addButton(speech);
 			
 			StashSearchAction stashSearch = new StashSearchAction(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/stashSearch.png")));
@@ -130,6 +130,14 @@ public class ActionsBar extends Crowd{
 			BackstabAction backstab = new BackstabAction(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/backstab.png")));
 			actionButtonMap.put("backstab", backstab);
 			this.addButton(backstab);
+			
+			HackAction hack = new HackAction(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/hackTool.png")));
+			actionButtonMap.put("hack", hack);
+			this.addButton(hack);
+			
+			ParryAction parry = new ParryAction(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/stun.png")));
+			actionButtonMap.put("parry", parry);
+			this.addButton(parry);
 		}
 		catch(IOException ioExcept){
 			System.err.println("Could not load ActionsBar image. Terminating.");
@@ -193,8 +201,14 @@ public class ActionsBar extends Crowd{
 					case Abilities.STUN_MELEE:
 						this.visibleButtons.add(actionButtonMap.get("stunMelee"));
 					break;
+					case Abilities.HACK:
+						this.visibleButtons.add(actionButtonMap.get("hack"));
+					break;
 					case Abilities.SPEECH:
 						this.visibleButtons.add(actionButtonMap.get("speech"));
+					break;
+					case Abilities.PARRY:
+						this.visibleButtons.add(actionButtonMap.get("parry"));
 					break;
 				}
 			}

@@ -20,12 +20,12 @@ import atrophy.combat.ai.AiGeneratorInterface.GenerateCommand;
 import atrophy.combat.ai.AiGeneratorInterface.SoloGenerateCommand;
 import atrophy.combat.ai.AiGeneratorInterface.TurretGenerateCommand;
 import atrophy.combat.ai.ThinkingAi.AiNode;
+import atrophy.combat.ai.conversation.Dialogue;
+import atrophy.combat.ai.conversation.TalkMap;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.ui.MessageBox;
-import atrophy.combat.display.ui.MessageBox.Dialogue;
 import atrophy.combat.display.ui.loot.LootBox.Lootable;
 import atrophy.combat.mechanics.TurnProcess;
-import atrophy.combat.missions.MissionManager;
 import atrophy.gameMenu.saveFile.Missions;
 
 /**
@@ -189,6 +189,8 @@ public class LevelIO {
 		String lineString = ReadWriter.readFromFile(levelFile, lineNumber);
 		
 		AiNode lastNode = null;
+		
+		TalkMap lastTalkMap = null;
 		
 		while(lineString != null){
 			
@@ -360,7 +362,7 @@ public class LevelIO {
 					throw new LevelFormatException(lineNumber,"Room " + blockNumber + " has a lockedNode co-ordinate that is not a number!");
 				}
 				
-				AiNode aiNode = new AiNode(aiCrowd, messageBox, turnProcess, vertexX,vertexY);
+				AiNode aiNode = new AiNode(aiCrowd, messageBox, turnProcess, missionsManager, vertexX,vertexY);
 				
 				SoloGenerateCommand command = (SoloGenerateCommand) generationCommands.get(generationCommands.size() - 1);
 				
@@ -391,7 +393,7 @@ public class LevelIO {
 					factions[i] = ReadWriter.readFromArray(lineString, i + 2);
 				}
 				
-				lastNode = new AiNode(aiCrowd, messageBox, turnProcess, vertexX,vertexY);
+				lastNode = new AiNode(aiCrowd, messageBox, turnProcess, missionsManager, vertexX,vertexY);
 				
 				blocksList.peek().addNode(lastNode);
 				
@@ -401,6 +403,19 @@ public class LevelIO {
 				
 				
 			}
+			else if(lineString.startsWith("BEHAVIOUR")){
+				
+				ArrayList<String> behaviours = new ArrayList<String>();
+				
+				int size = ReadWriter.getArraySize(lineString);
+				
+				for(int i = 0; i < size; i++){
+					behaviours.add(ReadWriter.readFromArray(lineString, i));
+				}
+				
+				lastNode.addBehaviours(behaviours);
+			}
+			//TODO: Fix smart tag, is a bit of a outdated mess atm
 			else if(lineString.startsWith("SMART")){
 				
 				if(lastNode == null){
@@ -458,80 +473,131 @@ public class LevelIO {
 				
 				lastNode.addPriorities(priorities);
 			}
-			else if(lineString.startsWith("DIALOGUE")){
+//			else if(lineString.startsWith("DIALOGUE")){
+//				
+//				if(lastNode == null){
+//					throw new LevelFormatException(lineNumber,"A dialogue is added before any nodes have been made!");
+//				}
+//				
+////				int tone;
+////				String targetFaction;
+//				String openingLine = null;
+//				String[] options = null;
+//				
+//				try{
+////					tone = Integer.parseInt(ReadWriter.readFromArray(lineString, 0));
+////					targetFaction = ReadWriter.readFromArray(lineString, 1);
+//				}
+//				catch(NumberFormatException e){
+//					throw new LevelFormatException(lineNumber,"Dialogue was applied to block " + blockNumber + " with a non-integer tone!");
+//				}
+//				
+//				openingLine = ReadWriter.readFromArray(lineString, 2);
+//				
+//				options = new String[ReadWriter.getArraySize(lineString) - 3];
+//				
+//				for(int i = 0; i < options.length; i++){
+//					options[i] = ReadWriter.readFromArray(lineString, i + 3);
+//				}
+//				
+//				Dialogue dialogue = messageBox.createDialogue(missions, missionsManager, 0, openingLine, options);
+//				lastNode.setDialogue(dialogue);
+//				lastNode.getDialogue().setTargetFaction(AiGenerator.PLAYER);
+//			}
+//			else if(lineString.startsWith("MESSAGE")){
+//				
+//				String name = ReadWriter.readFromArray(lineString, 0);
+//				List<String> speech = new ArrayList<>();
+//				List<String> speechRequirements = new ArrayList<>();
+//				
+//				for(int i = 1; i < ReadWriter.getArraySize(lineString); i++){
+//					if(ReadWriter.readFromArray(lineString, i).startsWith("REQ:"))
+//						speechRequirements.add(ReadWriter.readFromArray(lineString, i).substring(4));
+//					else
+//						speech.add(ReadWriter.readFromArray(lineString, i));
+//				}
+//				
+//				lastNode.getTopics().addLongSpeech(name,speech.toArray(new String[speech.size()]),speechRequirements.toArray(new String[speechRequirements.size()]));
+//			}
+//			else if(lineString.startsWith("TOPICS")){
+//				
+//				if(lastNode == null){
+//					throw new LevelFormatException(lineNumber,"A set of topics is added before any nodes have been made!");
+//				}
+//				
+//				String[] options = new String[ReadWriter.getArraySize(lineString)];
+//				
+//				for(int i = 0; i < options.length; i++){
+//					options[i] = ReadWriter.readFromArray(lineString, i);
+//				}
+//				
+//				lastNode.setTopics(messageBox.createDialogue(missions, missionsManager, 0, "", options));
+//			}
+//			else if(lineString.startsWith("TOPIC")){
+//
+//				String name = ReadWriter.readFromArray(lineString, 0);
+//				List<String> speech = new ArrayList<>();
+//				List<String> speechRequirements = new ArrayList<>();
+//				
+//				for(int i = 1; i < ReadWriter.getArraySize(lineString); i++){
+//					if(ReadWriter.readFromArray(lineString, i).startsWith("REQ:"))
+//						speechRequirements.add(ReadWriter.readFromArray(lineString, i).substring(4));
+//					else
+//						speech.add(ReadWriter.readFromArray(lineString, i));
+//				}
+//				
+//				lastNode.getTopics().addLongSpeech(name,speech.toArray(new String[speech.size()]),speechRequirements.toArray(new String[speechRequirements.size()]));
+//			}
+			else if(lineString.startsWith("TALKMAP")){
 				
-				if(lastNode == null){
-					throw new LevelFormatException(lineNumber,"A dialogue is added before any nodes have been made!");
-				}
+				String tag = ReadWriter.readFromArray(lineString, 0);
 				
-//				int tone;
-//				String targetFaction;
-				String openingLine = null;
-				String[] options = null;
+				lastTalkMap = new TalkMap(tag);
 				
-				try{
-//					tone = Integer.parseInt(ReadWriter.readFromArray(lineString, 0));
-//					targetFaction = ReadWriter.readFromArray(lineString, 1);
-				}
-				catch(NumberFormatException e){
-					throw new LevelFormatException(lineNumber,"Dialogue was applied to block " + blockNumber + " with a non-integer tone!");
-				}
+				missionsManager.addTalkMap(tag, lastTalkMap);
 				
-				openingLine = ReadWriter.readFromArray(lineString, 2);
-				
-				options = new String[ReadWriter.getArraySize(lineString) - 3];
-				
-				for(int i = 0; i < options.length; i++){
-					options[i] = ReadWriter.readFromArray(lineString, i + 3);
-				}
-				
-				Dialogue dialogue = new Dialogue(missions, missionsManager, 0, openingLine, options);
-				lastNode.setDialogue(dialogue);
-				lastNode.getDialogue().setTargetFaction(AiGenerator.PLAYER);
 			}
-			else if(lineString.startsWith("MESSAGE")){
+			else if(lineString.startsWith("TALKSTAGE")){
 				
-				String name = ReadWriter.readFromArray(lineString, 0);
-				List<String> speech = new ArrayList<>();
-				List<String> speechRequirements = new ArrayList<>();
+				int stage = Integer.parseInt(ReadWriter.readFromArray(lineString, 0));
+				boolean initiator = Boolean.parseBoolean(ReadWriter.readFromArray(lineString, 1));
+				String openingLine = ReadWriter.readFromArray(lineString, 2);
+				String[] options = new String[ReadWriter.getArraySize(lineString) - 3];
 				
-				for(int i = 1; i < ReadWriter.getArraySize(lineString); i++){
-					if(ReadWriter.readFromArray(lineString, i).startsWith("REQ:"))
-						speechRequirements.add(ReadWriter.readFromArray(lineString, i).substring(4));
-					else
-						speech.add(ReadWriter.readFromArray(lineString, i));
+				for(int i = 3; i < ReadWriter.getArraySize(lineString); i++){
+					options[i - 3] = ReadWriter.readFromArray(lineString, i);
 				}
 				
-				lastNode.getTopics().addLongSpeech(name,speech.toArray(new String[speech.size()]),speechRequirements.toArray(new String[speechRequirements.size()]));
+				Dialogue dialogue = messageBox.createDialogue(missions, missionsManager, openingLine, options, initiator);
+				
+				lastTalkMap.addDialogue(stage, dialogue);
+				
 			}
-			else if(lineString.startsWith("TOPICS")){
-				
-				if(lastNode == null){
-					throw new LevelFormatException(lineNumber,"A set of topics is added before any nodes have been made!");
-				}
-				
-				String[] options = new String[ReadWriter.getArraySize(lineString)];
-				
-				for(int i = 0; i < options.length; i++){
-					options[i] = ReadWriter.readFromArray(lineString, i);
-				}
-				
-				lastNode.setTopics(new Dialogue(missions, missionsManager, 0, "", options));
-			}
-			else if(lineString.startsWith("TOPIC")){
+			else if(lineString.startsWith("TALK")){
 
-				String name = ReadWriter.readFromArray(lineString, 0);
+				int stage = Integer.parseInt(ReadWriter.readFromArray(lineString, 0));
+				String name = ReadWriter.readFromArray(lineString, 1);
 				List<String> speech = new ArrayList<>();
 				List<String> speechRequirements = new ArrayList<>();
 				
-				for(int i = 1; i < ReadWriter.getArraySize(lineString); i++){
+				for(int i = 2; i < ReadWriter.getArraySize(lineString); i++){
 					if(ReadWriter.readFromArray(lineString, i).startsWith("REQ:"))
 						speechRequirements.add(ReadWriter.readFromArray(lineString, i).substring(4));
 					else
 						speech.add(ReadWriter.readFromArray(lineString, i));
 				}
 				
-				lastNode.getTopics().addLongSpeech(name,speech.toArray(new String[speech.size()]),speechRequirements.toArray(new String[speechRequirements.size()]));
+				lastTalkMap.getDialogue(stage).addLongSpeech(name,speech.toArray(new String[speech.size()]),speechRequirements.toArray(new String[speechRequirements.size()]));
+			}
+			else if(lineString.startsWith("SUBSCRIBE")){
+				
+				String[] talkMaps = new String[ReadWriter.getArraySize(lineString)];
+				
+				for(int i = 0; i < ReadWriter.getArraySize(lineString); i++){
+					talkMaps[i] = ReadWriter.readFromArray(lineString, i);
+				}
+				
+				lastNode.subscribeToTalkMaps(talkMaps);
 			}
 			else if(lineString.startsWith("TURRET")){
 

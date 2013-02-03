@@ -43,6 +43,7 @@ public class StashMenu extends Menu {
 		page = 0;
 		addComponents();
 		this.stashManager = stashManager;
+		updateText();
 	}
 	
 	/**
@@ -123,6 +124,7 @@ public class StashMenu extends Menu {
 		else{
 			page += change;
 		}
+		this.updateText();
 	}
 
 
@@ -153,7 +155,6 @@ public class StashMenu extends Menu {
 	@Override
 	public void mI(Point mousePosition) {
 		super.mI(mousePosition);
-		updateText();
 	}
 	
 	/* (non-Javadoc)

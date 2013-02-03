@@ -8,6 +8,7 @@ import java.util.HashMap;
 import java.util.Random;
 
 import watoydoEngine.gubbinz.Maths;
+import atrophy.combat.ai.ThinkingAi.AiMode;
 import atrophy.combat.mechanics.Abilities;
 
 // TODO: Auto-generated Javadoc
@@ -41,7 +42,7 @@ public class PolygonAmbush extends Formation {
 	 */
 	public PolygonAmbush(){
 		super();
-		formationType = "Camping";
+		formationType = AiMode.CAMPING;
 		aiToRegion = new HashMap<Ai, Polygon>();
 		randomiseElements();
 	}

@@ -16,7 +16,7 @@ import watoydoEngine.designObjects.display.TextButton;
 import watoydoEngine.sounds.SoundBoard;
 import watoydoEngine.workings.displayActivity.ActivePane;
 import atrophy.gameMenu.saveFile.ItemMarket;
-import atrophy.gameMenu.saveFile.MapWar;
+import atrophy.gameMenu.saveFile.MapManager;
 import atrophy.gameMenu.saveFile.Missions;
 import atrophy.gameMenu.saveFile.SaveFile;
 import atrophy.gameMenu.saveFile.Squad;
@@ -41,14 +41,14 @@ public class MenuBar extends Crowd{
 		this.setLocation(10, 60);
 	}
 
-	public void lazyLoad(WindowManager windowManager, MapWar mapWar, Missions missions, Squad squad, ShopManager shopManager, StashManager stashManager, TechTree techTree, ItemMarket itemMarket) {
+	public void lazyLoad(WindowManager windowManager, MapManager mapWar, Missions missions, Squad squad, ShopManager shopManager, StashManager stashManager, TechTree techTree, ItemMarket itemMarket) {
 		addTextButtons(windowManager, mapWar, missions, squad, shopManager, stashManager, techTree, itemMarket);
 	}
 	
 	/**
 	 * Adds the text buttons.
 	 */
-	private void addTextButtons(final WindowManager windowManager, final MapWar mapWar, final Missions missions, final Squad squad, final ShopManager shopManager, final StashManager stashManager, final TechTree techTree, final ItemMarket itemMarket) {
+	private void addTextButtons(final WindowManager windowManager, final MapManager mapWar, final Missions missions, final Squad squad, final ShopManager shopManager, final StashManager stashManager, final TechTree techTree, final ItemMarket itemMarket) {
 		
 		TextButton mapSelection = new TextButton(Color.yellow, Color.red) {
 			
@@ -78,7 +78,7 @@ public class MenuBar extends Crowd{
 			
 			@Override
 			public boolean mU(Point mousePosition, MouseEvent e) {
-				SquadMenu menu = new SquadMenu(windowManager, shopManager, stashManager, squad);
+				SquadMenu menu = new SquadMenu(windowManager, shopManager, stashManager, squad, techTree);
 				windowManager.addWindow(menu);
 				SoundBoard.getInstance().playEffect("tick");
 				return true;

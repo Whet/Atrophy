@@ -140,7 +140,6 @@ public class TurnProcess {
 	 * Update tweens.
 	 */
 	private void updateTweens(){
-		// Loop through actors and let them do their turns
 		for(int i = 0; i < aiCrowd.getActorCount(); i++){
 			// If images haven't tweened to their target then skip them to their location
 			aiCrowd.getMask(i).updateImage();
@@ -197,6 +196,7 @@ public class TurnProcess {
 				
 				currentAi.action();
 				aiCrowd.getActorMask(currentAi).updateTween();
+//				return;
 			}
 			else{
 				
@@ -216,8 +216,17 @@ public class TurnProcess {
 				return;
 			}
 		}
+	
+		if(shuffledAi.size() == 0){
+			shuffledAi = aiCrowd.getShuffledStack();
+			currentAiDone(true);
+		}
 		
-		lastAiUpdated();
+		if(checkGameOver()){
+			lastAiUpdated();
+			endGame();
+			combatUiManager.getLargeEventText().flashText("Game Over, Turn: " + turnCount, Color.red.darker());
+		}
 	}
 	
 	// checks if all player controlled units are skipping turns to stop infinite looping
@@ -228,7 +237,7 @@ public class TurnProcess {
 	 */
 	private boolean allPlayersWaiting() {
 		for(int i = 0; i < aiCrowd.getActorCount(); i++){
-			if(aiCrowd.getActor(i).getFaction().equals(AiGenerator.PLAYER) && !aiCrowd.getActor(i).isSkippingTurns()){
+			if(aiCrowd.getActor(i).getFaction().equals(AiGenerator.PLAYER) && !aiCrowd.getActor(i).isSkippingTurns() && !aiCrowd.getActor(i).isDead()){
 				return false;
 			}
 		}
@@ -247,7 +256,12 @@ public class TurnProcess {
 		turnInProgress = false;
 		combatUiManager.getActionsBar().setVisible(true);
 		updateUi();
-		checkGameOver();
+		
+		if(checkGameOver()){
+			endGame();
+			combatUiManager.getLargeEventText().flashText("Game Over, Turn: " + turnCount, Color.red.darker());
+		}
+		
 		floatingIcons.updatePending();
 		messageBox.updateMessages();
 		
@@ -258,8 +272,7 @@ public class TurnProcess {
 		for(int i = 0; i < aiCrowd.getActorCount(); i++){
 			aiCrowd.getMask(i).setActive(true);
 		}
-		//TODO
-//		LineDrawer.MapDrawBlock.updateAlphas();
+		lineDrawer.updateAlphas();
 	}
 	
 	/**
@@ -309,16 +322,14 @@ public class TurnProcess {
 	/**
 	 * Check game over.
 	 */
-	private void checkGameOver(){
+	private boolean checkGameOver(){
 		for(int i = 0; i < aiCrowd.getActorCount(); i++){
 			if(!aiCrowd.getActor(i).isDead() &&
 			   aiCrowd.getActor(i).getFaction().equals("Player")){
-				return;
+				return false;
 			}
 		}
-		endGame();
-		combatUiManager.getLargeEventText().flashText("Game Over, Turn: " + turnCount, Color.red.darker());
-		
+		return true;
 	}
 	
 	/**

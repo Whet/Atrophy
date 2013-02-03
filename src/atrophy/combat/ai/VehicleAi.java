@@ -10,14 +10,15 @@ import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.ui.FloatingIcons;
 import atrophy.combat.display.ui.loot.LootBox;
 import atrophy.combat.level.LevelManager;
+import atrophy.combat.mechanics.TurnProcess;
 
 
 public class VehicleAi extends Ai {
 
 	private String vehicleType;
 	
-	public VehicleAi(PanningManager panningManager, FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, String name, String vehicleType, double x, double y, LevelManager levelManager, CombatInorganicManager combatInorganicManager, LootBox lootBox, CombatMembersManager combatMembersManager, CombatUiManager combatUiManager, CombatVisualManager combatVisualManager, AiCrowd aiCrowd) {
-		super(floatingIcons, mouseAbilityHandler, name, x, y, combatInorganicManager, levelManager, lootBox, combatMembersManager, combatUiManager, combatVisualManager, aiCrowd, panningManager);
+	public VehicleAi(PanningManager panningManager, FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, String name, String vehicleType, double x, double y, LevelManager levelManager, CombatInorganicManager combatInorganicManager, LootBox lootBox, CombatMembersManager combatMembersManager, CombatUiManager combatUiManager, CombatVisualManager combatVisualManager, AiCrowd aiCrowd, TurnProcess turnProcess) {
+		super(floatingIcons, mouseAbilityHandler, name, x, y, combatInorganicManager, levelManager, lootBox, combatMembersManager, combatUiManager, combatVisualManager, aiCrowd, panningManager, turnProcess);
 		this.vehicleType = vehicleType;
 	}
 

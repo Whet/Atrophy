@@ -8,11 +8,12 @@ import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.ListIterator;
+import java.util.Map;
 
 import javax.imageio.ImageIO;
 
-import watoydoEngine.designObjects.display.BankedImage;
 import watoydoEngine.designObjects.display.Crowd;
 import watoydoEngine.fonts.FontList;
 import watoydoEngine.gubbinz.GraphicsFunctions;
@@ -26,10 +27,11 @@ import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.AiImage;
 import atrophy.combat.display.LineDrawer;
 import atrophy.combat.display.MapPainter;
+import atrophy.combat.items.GrenadeItem;
+import atrophy.combat.items.StunGrenadeItem;
 import atrophy.combat.level.LevelBlock;
 import atrophy.combat.level.LevelManager;
 import atrophy.combat.levelAssets.LevelAsset;
-import atrophy.combat.levelAssets.LevelAssetImageNames;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -65,6 +67,11 @@ public class FloatingIcons extends Crowd{
 	private LevelManager levelManager;
 	private CombatInorganicManager combatInorganicManager;
 	
+	private BufferedImage imageBlockedDoor;
+	private BufferedImage imageOpenDoor;
+
+	private Map<String, BufferedImage> images;
+	
 	/**
 	 * Instantiates a new floating icons.
 	 * @param lineDrawer 
@@ -80,18 +87,14 @@ public class FloatingIcons extends Crowd{
 		this.combatVisualManager = combatVisualManager;
 		this.combatInorganicManager = combatInorganicManager;
 		this.levelManager = levelManager;
+		this.images = new HashMap<>();
 		
 		try{
+			imageBlockedDoor = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/lockedDoor.png"));
+			imageOpenDoor = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/openDoor.png"));
 			
-			BankedImage blockedDoor = new BankedImage("blockedDoor",ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/lockedDoor.png")));
-			BankedImage openDoor = new BankedImage("openDoor",ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/openDoor.png")));
-			BankedImage grenade = new BankedImage(LevelAssetImageNames.GRENADE,ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/items/bomb.png")));
-			BankedImage stunGrenade = new BankedImage(LevelAssetImageNames.STUNGRENADE,ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/items/stunBomb.png")));
-			
-			this.addBankedImage(blockedDoor);
-			this.addBankedImage(openDoor);
-			this.addBankedImage(grenade);
-			this.addBankedImage(stunGrenade);
+			images.put(GrenadeItem.NAME, ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/items/bomb.png")));
+			images.put(StunGrenadeItem.NAME, ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/items/stunBomb.png")));
 		}
 		catch(IOException ioExcept){
 			System.err.println("Could not load FloatingIcons image. Terminating.");
@@ -199,57 +202,27 @@ public class FloatingIcons extends Crowd{
 				for(int j = 0; j < combatMembersManager.getAlly(i).getLevelBlock().getPortalCount(); j++){
 					if(!combatMembersManager.getAlly(i).getLevelBlock().getPortal(j).canUse()){
 						this.setLocation(combatMembersManager.getAlly(i).getLevelBlock().getPortal(j).getLocation()[0] +
-										 panningManager.getOffset()[0] - this.getBankedImage("blockedDoor").getWidth() * 0.5, 
+										 panningManager.getOffset()[0] - this.imageBlockedDoor.getWidth() * 0.5, 
 		                                 
 										 combatMembersManager.getAlly(i).getLevelBlock().getPortal(j).getLocation()[1] +
-		                                 panningManager.getOffset()[1] - this.getBankedImage("blockedDoor").getHeight() * 0.5);
+		                                 panningManager.getOffset()[1] - this.imageBlockedDoor.getHeight() * 0.5);
 
-						drawShape.drawImage(this.getBankedImage("blockedDoor"),this.getTransformationForDrawing(),null);
+						drawShape.drawImage(this.imageBlockedDoor,this.getTransformationForDrawing(),null);
 					}
 					else{
 						this.setLocation(combatMembersManager.getAlly(i).getLevelBlock().getPortal(j).getLocation()[0] +
-										 panningManager.getOffset()[0] - this.getBankedImage("openDoor").getWidth() * 0.5, 
+										 panningManager.getOffset()[0] - this.imageOpenDoor.getWidth() * 0.5, 
                                 
 										 combatMembersManager.getAlly(i).getLevelBlock().getPortal(j).getLocation()[1] +
-										 panningManager.getOffset()[1] - this.getBankedImage("openDoor").getHeight() * 0.5);
+										 panningManager.getOffset()[1] - this.imageOpenDoor.getHeight() * 0.5);
 
-						drawShape.drawImage(this.getBankedImage("openDoor"),this.getTransformationForDrawing(),null);
+						drawShape.drawImage(this.imageOpenDoor,this.getTransformationForDrawing(),null);
 					}
 				}
 			}
 		}
 	}
 	
-	/**
-	 * Draw all doors.
-	 *
-	 * @param drawShape the draw shape
-	 */
-//	private void drawAllDoors(Graphics2D drawShape){
-//		// draw all locked doors
-//		for(int i = 0; i < levelManager.getCurrentLevel().getBlockCount(); i++){
-//			for(int j = 0; j < levelManager.getCurrentLevel().getBlock(i).getPortalCount(); j++){
-//				if(levelManager.getCurrentLevel().getBlock(i).getPortal(j).canUse()){
-//					this.setLocation(levelManager.getCurrentLevel().getBlock(i).getPortal(j).getLocation()[0] +
-//									 panningManager.getOffset()[0] - this.getBankedImage("openDoor").getWidth() * 0.5, 
-//							  
-//									 levelManager.getCurrentLevel().getBlock(i).getPortal(j).getLocation()[1] +
-//									 panningManager.getOffset()[1] - this.getBankedImage("openDoor").getHeight() * 0.5);
-//	
-//					drawShape.drawImage(this.getBankedImage("openDoor"),this.getTransformationForDrawing(),null);
-//				}
-//				else{
-//					this.setLocation(levelManager.getCurrentLevel().getBlock(i).getPortal(j).getLocation()[0] +
-//							 panningManager.getOffset()[0] - this.getBankedImage("blockedDoor").getWidth() * 0.5, 
-//					  
-//							 levelManager.getCurrentLevel().getBlock(i).getPortal(j).getLocation()[1] +
-//							 panningManager.getOffset()[1] - this.getBankedImage("blockedDoor").getHeight() * 0.5);
-//
-//					drawShape.drawImage(this.getBankedImage("blockedDoor"),this.getTransformationForDrawing(),null);
-//				}
-//			}
-//		}
-//	}
 	
 	/**
 	 * Draw assets.
@@ -270,13 +243,13 @@ public class FloatingIcons extends Crowd{
 				   levelManager.getBlock(asset.getLocation()) == combatMembersManager.getAlly(j).getLevelBlock()){
 
 					double[] location = {asset.getLocation()[0] +
-										 panningManager.getOffset()[0] - this.getBankedImage(asset.getImageName()).getWidth() * 0.5,
+										 panningManager.getOffset()[0] - asset.getImage().getWidth() * 0.5,
 										 asset.getLocation()[1] +
-										 panningManager.getOffset()[1] - this.getBankedImage(asset.getImageName()).getWidth() * 0.5};
+										 panningManager.getOffset()[1] - asset.getImage().getWidth() * 0.5};
 					
 					this.setLocation(location[0],location[1]);
 		
-					drawShape.drawImage(this.getBankedImage(asset.getImageName()),this.getTransformationForDrawing(),null);
+					drawShape.drawImage(asset.getImage(),this.getTransformationForDrawing(),null);
 					
 					drawShape.setFont(FontList.AUD14);
 					drawShape.setColor(Color.yellow);
@@ -465,6 +438,11 @@ public class FloatingIcons extends Crowd{
 	 */
 	public boolean isDrawingDoors() {
 		return drawingDoors;
+	}
+
+
+	public BufferedImage getImage(String image) {
+		return this.images.get(image);
 	}
 	
 }

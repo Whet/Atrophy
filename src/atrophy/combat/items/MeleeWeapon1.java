@@ -30,7 +30,7 @@ public class MeleeWeapon1 extends Weapon {
 	/**
 	 * The Constant ACCURACY.
 	 */
-	public static final int ACCURACY = 20;
+	public static final int ACCURACY = 10;
 	
 	/**
 	 * The Constant TURNS_TO_RELOAD.
@@ -134,7 +134,7 @@ public class MeleeWeapon1 extends Weapon {
 	 */
 	@Override
 	public VisualEffect getFireEffect(PanningManager panningManagers, double[] location, double[] targetLocation) {
-		return new VisualEffect.Bullet(panningManagers, location, targetLocation, Color.black, 10);
+		return new VisualEffect.Bullet(panningManagers, location, targetLocation, Color.black, 4);
 	}
 	
 	/* (non-Javadoc)

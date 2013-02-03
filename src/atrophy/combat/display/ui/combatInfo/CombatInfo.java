@@ -107,7 +107,7 @@ public class CombatInfo extends Crowd {
 			this.addButton(combatButtons[0]);
 			
 			BufferedImage[] drawFovIcons = {ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/fovEnabled.png")),
-					 ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/fovDisabled.png"))};
+					 						ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/fovDisabled.png"))};
 
 			combatButtons[1] = new DrawFovToggle(combatVisualManager, combatUiManager, drawFovIcons);
 			
@@ -186,13 +186,23 @@ public class CombatInfo extends Crowd {
 				swingText.setText("No Target");
 			}
 			
-			// shows how many shots left
-			ammoText.setText(Integer.toString(combatMembersManager.getCurrentAi().getWeapon().getAmmoLeft()) + "/" +
-							 Integer.toString(combatMembersManager.getCurrentAi().getWeapon().getMagsize()) + " Ammo.");
+			if(combatMembersManager.getCurrentAi().getWeapon().isMelee()) {
+				ammoText.setText("Melee");
+			}
+			else{
+				// shows how many shots left
+				ammoText.setText(Integer.toString(combatMembersManager.getCurrentAi().getWeapon().getAmmoLeft()) + "/" +
+								 Integer.toString(combatMembersManager.getCurrentAi().getWeapon().getMagsize()) + " Ammo.");
+			}
 			
+			if(combatMembersManager.getCurrentAi().getReloadTurns() > 0) {
 			// show reload turns
 			reloadText.setText(Integer.toString(combatMembersManager.getCurrentAi().getReloadTurns()) + "/" +
 							   Integer.toString(combatMembersManager.getCurrentAi().getWeapon().getReloadTurns()) + " Reloaded.");
+			}
+			else{
+				reloadText.setText("");
+			}
 		}
 	}
 	

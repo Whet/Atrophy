@@ -5,16 +5,19 @@ package atrophy.combat.level;
 
 import java.awt.Polygon;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
+import java.util.Set;
 import java.util.Stack;
 
 import watoydoEngine.gubbinz.Maths;
+import atrophy.combat.CombatVisualManager;
 import atrophy.combat.ai.Ai;
 import atrophy.combat.ai.PathNotFoundException;
 import atrophy.combat.ai.ThinkingAi.AiNode;
 import atrophy.combat.display.ui.loot.LootBox.Lootable;
 import atrophy.combat.display.ui.loot.LootContainer;
-import atrophy.combat.missions.MissionManager;
 
 /**
  * The Class LevelBlock.
@@ -24,7 +27,7 @@ public class LevelBlock {
 	/**
 	 * The portals.
 	 */
-	private ArrayList<Portal> portals;
+	private List<Portal> portals;
 	
 	/**
 	 * The hitbox.
@@ -44,22 +47,22 @@ public class LevelBlock {
 	/**
 	 * The cover polygons.
 	 */
-	private ArrayList<Polygon> coverPolygons;
+	private List<Polygon> coverPolygons;
 	
 	/**
 	 * The stash polygons.
 	 */
-	private ArrayList<Polygon> stashPolygons;
+	private List<Polygon> stashPolygons;
 	
 	/**
 	 * The stashes.
 	 */
-	private ArrayList<Lootable> stashes;
+	private List<Lootable> stashes;
 	
 	/**
 	 * The nodes.
 	 */
-	private ArrayList<AiNode> nodes;
+	private List<AiNode> nodes;
 	
 	/**
 	 * The code.
@@ -155,7 +158,7 @@ public class LevelBlock {
 	 *
 	 * @return the portals
 	 */
-	public ArrayList<Portal> getPortals() {
+	public List<Portal> getPortals() {
 		return portals;
 	}
 	
@@ -365,7 +368,7 @@ public class LevelBlock {
 	 *
 	 * @return the cover
 	 */
-	public ArrayList<Polygon> getCover() {
+	public List<Polygon> getCover() {
 		return coverPolygons;
 	}
 
@@ -409,7 +412,7 @@ public class LevelBlock {
 	 *
 	 * @return the stealth region
 	 */
-	public ArrayList<Polygon> getStealthRegion() {
+	public List<Polygon> getStealthRegion() {
 		return stashPolygons;
 	}
 
@@ -434,7 +437,7 @@ public class LevelBlock {
 	 * @param location the location
 	 * @return true, if is in region
 	 */
-	public boolean isInRegion(ArrayList<Polygon> region, double[] location){
+	public boolean isInRegion(List<Polygon> region, double[] location){
 		for(Polygon area : region){
 			if(area.contains(location[0] - this.getLocation()[0], location[1] - this.getLocation()[1]))
 				return true;
@@ -449,7 +452,7 @@ public class LevelBlock {
 	 * @param regions the regions
 	 * @throws PathNotFoundException the path not found exception
 	 */
-	public void moveTowardsNearestRegion(Ai mover, ArrayList<Polygon> regions)throws PathNotFoundException{
+	public void moveTowardsNearestRegion(Ai mover, List<Polygon> regions)throws PathNotFoundException{
 		// room has no regions
 		if(regions.size() == 0){
 			 return;
@@ -491,7 +494,7 @@ public class LevelBlock {
 	 * @return the polygon
 	 * @throws PathNotFoundException the path not found exception
 	 */
-	public Polygon moveTowardsRandomRegion(Ai mover, ArrayList<Polygon> regions)throws PathNotFoundException{
+	public Polygon moveTowardsRandomRegion(Ai mover, List<Polygon> regions)throws PathNotFoundException{
 		// room has no regions
 		if(regions.size() == 0){
 			 return null;
@@ -630,7 +633,7 @@ public class LevelBlock {
 	 *
 	 * @return the nodes
 	 */
-	public ArrayList<AiNode> getNodes() {
+	public List<AiNode> getNodes() {
 		return nodes;
 	}
 
@@ -657,7 +660,7 @@ public class LevelBlock {
 	 *
 	 * @return the stash loot ables
 	 */
-	public ArrayList<Lootable> getStashLootAbles() {
+	public List<Lootable> getStashLootAbles() {
 		return this.stashes;
 	}
 
@@ -686,6 +689,27 @@ public class LevelBlock {
 	 */
 	public boolean hasScience(){
 		return this.containsScience;
+	}
+
+	public Set<LevelBlock> getConnectedRooms() {
+		Set<LevelBlock> connectedRooms = new HashSet<>();
+		
+		for(Portal portal : this.portals){
+			connectedRooms.add(portal.linksTo(this));
+		}
+		
+		return connectedRooms;
+	}
+
+	public Set<LevelBlock> getCloseConnectedRooms(Ai ai) {
+		Set<LevelBlock> connectedRooms = new HashSet<>();
+		
+		for(Portal portal : this.portals){
+			if(portal.isInRadius(ai.getLocation(), this) && CombatVisualManager.spotFovNoRadius(ai, portal.getLocation()))
+				connectedRooms.add(portal.linksTo(this));
+		}
+		
+		return connectedRooms;
 	}
 
 }

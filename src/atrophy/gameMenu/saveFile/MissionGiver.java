@@ -5,11 +5,11 @@ package atrophy.gameMenu.saveFile;
 
 import java.io.Serializable;
 import java.util.Random;
+import java.util.Set;
 
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.items.EngineeringSupply;
 import atrophy.combat.items.MedicalSupply;
-import atrophy.combat.items.ScienceSupply;
 import atrophy.combat.items.WeaponSupply;
 import atrophy.gameMenu.saveFile.Missions.GatherMission;
 import atrophy.gameMenu.saveFile.Missions.KillMission;
@@ -41,6 +41,10 @@ public abstract class MissionGiver implements Serializable{
 	 */
 	private String faction;
 	
+	protected String tech;
+	
+	protected int scienceSupply, weaponSupply, engineeringSupply, medicalSupply;
+	
 	/**
 	 * The reputation.
 	 */
@@ -50,6 +54,7 @@ public abstract class MissionGiver implements Serializable{
 	protected Missions missions;
 	protected StashManager stashManager;
 	protected ItemMarket itemMarket;
+	protected TechTree techTree;
 
 	/**
 	 * Instantiates a new mission giver.
@@ -57,15 +62,23 @@ public abstract class MissionGiver implements Serializable{
 	 * @param name the name
 	 * @param faction the faction
 	 */
-	protected MissionGiver(Squad squad, Missions missions, StashManager stashManager, ItemMarket itemMarket, String name, String faction){
+	protected MissionGiver(Squad squad, Missions missions, TechTree techTree, StashManager stashManager, ItemMarket itemMarket, String name, String faction){
 		this.name = name;
 		this.faction = faction;
 		this.reputation = 0;
 		
 		this.squad = squad;
 		this.missions = missions;
+		this.techTree = techTree;
 		this.stashManager = stashManager;
 		this.itemMarket = itemMarket;
+		
+		this.scienceSupply = 0;
+		this.weaponSupply = 0;
+		this.engineeringSupply = 0;
+		this.medicalSupply = 0;
+		
+		this.tech = "";
 		
 		computeMission();
 	}
@@ -138,6 +151,12 @@ public abstract class MissionGiver implements Serializable{
 	 */
 	public abstract void computeMission();
 	
+	protected void shoppingListMission(Squad squad, Missions missions, StashManager stashManager, int[] requirements, String tech){
+		Object reward = new Random().nextInt(300) + 100;
+		
+		this.mission = new Missions.ShoppingListMission(missions, squad, stashManager, techTree, requirements, reward, tech);
+	}
+	
 	/**
 	 * Gather mission.
 	 *
@@ -182,6 +201,23 @@ public abstract class MissionGiver implements Serializable{
 				return MedicalSupply.NAME;
 		}
 	}
+	
+	protected String randomTech() {
+		Set<String> nextTechs = techTree.getNextTechs();
+		
+		int rand = new Random().nextInt(nextTechs.size());
+		int i = 0;
+		
+		for(String tech : nextTechs){
+			if(i == rand)
+				return tech;
+			
+			i++;
+		}
+		
+		// No techs to research
+		return "";
+	}
 
 	/**
 	 * Gets the reputation.
@@ -223,8 +259,8 @@ public abstract class MissionGiver implements Serializable{
 		/**
 		 * Instantiates a new wV giver1.
 		 */
-		protected WVGiver1(Squad squad, Missions missions, StashManager stashManager, ItemMarket itemMarket) {
-			super(squad, missions, stashManager, itemMarket, "Commander Deaton",AiGenerator.WHITE_VISTA);
+		protected WVGiver1(Squad squad, Missions missions, TechTree techTree, StashManager stashManager, ItemMarket itemMarket) {
+			super(squad, missions, techTree, stashManager, itemMarket, "Commander Deaton",AiGenerator.WHITE_VISTA);
 		}
 
 		/* (non-Javadoc)
@@ -232,7 +268,11 @@ public abstract class MissionGiver implements Serializable{
 		 */
 		@Override
 		public void computeMission() {
-			killMission(AiGenerator.BANDITS, squad, missions, stashManager);
+			if(this.tech.isEmpty() || techTree.isResearched(this.tech) )
+				this.tech = randomTech();
+			
+			shoppingListMission(squad, missions, stashManager, techTree.getRequirements(this.tech), this.tech);
+//			killMission(AiGenerator.BANDITS, squad, missions, stashManager);
 		}
 		
 	}
@@ -250,8 +290,8 @@ public abstract class MissionGiver implements Serializable{
 		/**
 		 * Instantiates a new wV giver2.
 		 */
-		protected WVGiver2(Squad squad, Missions missions, StashManager stashManager, ItemMarket itemMarket) {
-			super(squad, missions, stashManager, itemMarket, "Johan",AiGenerator.WHITE_VISTA);
+		protected WVGiver2(Squad squad, Missions missions, TechTree techTree, StashManager stashManager, ItemMarket itemMarket) {
+			super(squad, missions, techTree, stashManager, itemMarket, "Johan",AiGenerator.WHITE_VISTA);
 		}
 
 		/* (non-Javadoc)
@@ -259,7 +299,11 @@ public abstract class MissionGiver implements Serializable{
 		 */
 		@Override
 		public void computeMission() {
-			gatherMission(ScienceSupply.NAME, squad, missions, stashManager);
+			if(this.tech.isEmpty() || techTree.isResearched(this.tech) )
+				this.tech = randomTech();
+			
+			shoppingListMission(squad, missions, stashManager, techTree.getRequirements(this.tech), this.tech);
+//			gatherMission(ScienceSupply.NAME, squad, missions, stashManager);
 		}
 
 	}
@@ -277,8 +321,8 @@ public abstract class MissionGiver implements Serializable{
 		/**
 		 * Instantiates a new bandit giver1.
 		 */
-		protected BanditGiver1(Squad squad, Missions missions, StashManager stashManager, ItemMarket itemMarket) {
-			super(squad, missions, stashManager, itemMarket, "Queen",AiGenerator.BANDITS);
+		protected BanditGiver1(Squad squad, Missions missions, TechTree techTree, StashManager stashManager, ItemMarket itemMarket) {
+			super(squad, missions, techTree, stashManager, itemMarket, "Queen",AiGenerator.BANDITS);
 		}
 
 		/* (non-Javadoc)
@@ -286,7 +330,11 @@ public abstract class MissionGiver implements Serializable{
 		 */
 		@Override
 		public void computeMission() {
-			gatherMission(MedicalSupply.NAME, squad, missions, stashManager);
+			if(this.tech.isEmpty() || techTree.isResearched(this.tech) )
+				this.tech = randomTech();
+			
+			shoppingListMission(squad, missions, stashManager, techTree.getRequirements(this.tech), this.tech);
+//			gatherMission(MedicalSupply.NAME, squad, missions, stashManager);
 		}
 
 	}
@@ -304,8 +352,8 @@ public abstract class MissionGiver implements Serializable{
 		/**
 		 * Instantiates a new bandit giver2.
 		 */
-		protected BanditGiver2(Squad squad, Missions missions, StashManager stashManager, ItemMarket itemMarket) {
-			super(squad, missions, stashManager, itemMarket, "Omar",AiGenerator.BANDITS);
+		protected BanditGiver2(Squad squad, Missions missions, TechTree techTree, StashManager stashManager, ItemMarket itemMarket) {
+			super(squad, missions, techTree, stashManager, itemMarket, "Omar",AiGenerator.BANDITS);
 		}
 
 		/* (non-Javadoc)
@@ -313,7 +361,11 @@ public abstract class MissionGiver implements Serializable{
 		 */
 		@Override
 		public void computeMission() {
-			gatherMission(MedicalSupply.NAME, squad, missions, stashManager);
+			if(this.tech.isEmpty() || techTree.isResearched(this.tech) )
+				this.tech = randomTech();
+			
+			shoppingListMission(squad, missions, stashManager, techTree.getRequirements(this.tech), this.tech);
+//			gatherMission(MedicalSupply.NAME, squad, missions, stashManager);
 		}
 
 	}
@@ -331,8 +383,8 @@ public abstract class MissionGiver implements Serializable{
 		/**
 		 * Instantiates a new loner giver1.
 		 */
-		protected LonerGiver1(Squad squad, Missions missions, StashManager stashManager, ItemMarket itemMarket) {
-			super(squad, missions, stashManager, itemMarket, "Jacob and Dave",AiGenerator.LONER);
+		protected LonerGiver1(Squad squad, Missions missions, TechTree techTree, StashManager stashManager, ItemMarket itemMarket) {
+			super(squad, missions, techTree, stashManager, itemMarket, "Jacob and Dave",AiGenerator.LONER);
 		}
 
 		/* (non-Javadoc)
@@ -340,7 +392,11 @@ public abstract class MissionGiver implements Serializable{
 		 */
 		@Override
 		public void computeMission() {
-			gatherMission(randomSupply(), squad, missions, stashManager);
+			if(this.tech.isEmpty() || techTree.isResearched(this.tech) )
+				this.tech = randomTech();
+			
+			shoppingListMission(squad, missions, stashManager, techTree.getRequirements(this.tech), this.tech);
+//			gatherMission(randomSupply(), squad, missions, stashManager);
 		}
 
 	}
@@ -358,8 +414,8 @@ public abstract class MissionGiver implements Serializable{
 		/**
 		 * Instantiates a new loner giver2.
 		 */
-		protected LonerGiver2(Squad squad, Missions missions, StashManager stashManager, ItemMarket itemMarket) {
-			super(squad, missions, stashManager, itemMarket, "Hannah", AiGenerator.LONER);
+		protected LonerGiver2(Squad squad, Missions missions, TechTree techTree, StashManager stashManager, ItemMarket itemMarket) {
+			super(squad, missions, techTree, stashManager, itemMarket, "Hannah", AiGenerator.LONER);
 		}
 
 		/* (non-Javadoc)
@@ -367,7 +423,11 @@ public abstract class MissionGiver implements Serializable{
 		 */
 		@Override
 		public void computeMission() {
-			gatherMission(randomSupply(), squad, missions, stashManager);
+			if(this.tech.isEmpty() || techTree.isResearched(this.tech) )
+				this.tech = randomTech();
+			
+			shoppingListMission(squad, missions, stashManager, techTree.getRequirements(this.tech), this.tech);
+//			gatherMission(randomSupply(), squad, missions, stashManager);
 		}
 
 	}

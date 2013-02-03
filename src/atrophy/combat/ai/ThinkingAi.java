@@ -18,13 +18,15 @@ import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.actions.MouseAbilityHandler;
+import atrophy.combat.ai.conversation.Dialogue;
+import atrophy.combat.ai.conversation.Topic;
 import atrophy.combat.combatEffects.MobileInvisibility;
+import atrophy.combat.combatEffects.Parrying;
 import atrophy.combat.combatEffects.SpeedBoost;
 import atrophy.combat.combatEffects.StationaryInvisibility;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.ui.FloatingIcons;
 import atrophy.combat.display.ui.MessageBox;
-import atrophy.combat.display.ui.MessageBox.Dialogue;
 import atrophy.combat.display.ui.loot.LootBox;
 import atrophy.combat.display.ui.loot.LootBox.Lootable;
 import atrophy.combat.items.GrenadeItem;
@@ -33,6 +35,7 @@ import atrophy.combat.items.StunGrenadeItem;
 import atrophy.combat.items.Weapon;
 import atrophy.combat.level.LevelBlock;
 import atrophy.combat.level.LevelManager;
+import atrophy.combat.level.MissionManager;
 import atrophy.combat.level.Portal;
 import atrophy.combat.levelAssets.Grenade;
 import atrophy.combat.mechanics.Abilities;
@@ -44,76 +47,9 @@ import atrophy.combat.mechanics.TurnProcess;
  */
 public class ThinkingAi extends Ai{
 	
-	// Aggression values
-	/**
-	 * The Constant PASSIVE.
-	 */
-	public static final int PASSIVE = -2;
-	
-	/**
-	 * The Constant PASSIVE_RESPOND.
-	 */
-	public static final int PASSIVE_RESPOND = -1;	
-	
-	/**
-	 * The Constant PASSIVE_COMBATSCORE_DIFFERENCE.
-	 */
-	public static final int PASSIVE_COMBATSCORE_DIFFERENCE = 80;
-	
-	/**
-	 * The Constant AGGRESSIVE_FIGHTER.
-	 */
-	public static final int AGGRESSIVE_FIGHTER = 1; 
- 
- /**
-  * The Constant AGGRESSIVE_FIGHTER_COMBATSCORE_DIFFERENCE.
-  */
- public static final int AGGRESSIVE_FIGHTER_COMBATSCORE_DIFFERENCE = 120;
-	
-	/**
-	 * The Constant MINDLESS_TERROR.
-	 */
-	public static final int MINDLESS_TERROR = 2;	
-	
-	/**
-	 * The Constant MINDLESS_TERROR_COMBATSCORE_DIFFERENCE.
-	 */
-	public static final int MINDLESS_TERROR_COMBATSCORE_DIFFERENCE = 80;
-	
-	/**
-	 * The Constant AGGRESSION_RESTORE_RATE.
-	 */
-	public static final double AGGRESSION_RESTORE_RATE = 0.005;
-	
-	/**
-	 * The Constant TEAM_MEMBER_KILLED.
-	 */
-	public static final double TEAM_MEMBER_KILLED = +1.5;
-	
-	/**
-	 * The Constant SHOT_AT.
-	 */
-	public static final double SHOT_AT = +0.8;
-	
-	/**
-	 * The Constant AIMING_AGGRESSION.
-	 */
-	public static final double AIMING_AGGRESSION = +0.3;
-	
-	/**
-	 * The Constant FAILED_INTIMIDATION.
-	 */
-	public static final double FAILED_INTIMIDATION = +0.2;
-	
-	/**
-	 * The Constant SUCCESSFUL_INTIMIDATION.
-	 */
-	public static final double SUCCESSFUL_INTIMIDATION = -0.3;
-	
-	/**
-	 * The Constant HIGHWAYMAN_FIGHT.
-	 */
-	public static final double HIGHWAYMAN_FIGHT = + 0.4;
+	protected static enum AiMode {
+		EMPTY, CAMPING, FLEEING, PATROLLING, ENGAGING, LOOT
+	}
 	
 	/**
 	 * The thinking node.
@@ -123,7 +59,7 @@ public class ThinkingAi extends Ai{
 	/**
 	 * The ai mode.
 	 */
-	private String aiMode;
+	protected AiMode aiMode;
 	
 	/**
 	 * The turn counter.
@@ -141,25 +77,11 @@ public class ThinkingAi extends Ai{
 	private boolean listeningToCommand;
 
 	/**
-	 * The base aggression.
-	 */
-	private int baseAggression;
-	
-	/**
-	 * The aggression.
-	 */
-	private double aggression;
-	
-	/**
 	 * The block player convo.
 	 */
 	private boolean blockPlayerConvo;
 	
-	/**
-	 * The aggression modified.
-	 */
-	private boolean aggressionModified;
-
+	ThinkingAiEmotion emotionManager;
 	private CombatInorganicManager combatInorganicManager;
 	private LevelManager levelManager;
 
@@ -174,21 +96,20 @@ public class ThinkingAi extends Ai{
 	 * @param combatInorganicManager 
 	 */
 	public ThinkingAi(PanningManager panningManager, CombatVisualManager combatVisualManager, TurnProcess turnProcess, FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, AiCrowd aiCrowd, CombatMembersManager combatMembersManager, String name, double x, double y, LevelManager levelManager, CombatInorganicManager combatInorganicManager, CombatUiManager combatUiManager, LootBox lootBox){
-		super(floatingIcons, mouseAbilityHandler, name,x,y, combatInorganicManager, levelManager, lootBox, combatMembersManager, combatUiManager, combatVisualManager, aiCrowd, panningManager);
-		aiMode = "";
+		super(floatingIcons, mouseAbilityHandler, name,x,y, combatInorganicManager, levelManager, lootBox, combatMembersManager, combatUiManager, combatVisualManager, aiCrowd, panningManager, turnProcess);
+		aiMode = AiMode.EMPTY;
 		turnCounter = 0;
 		chaseAi = null;
 		listeningToCommand = true;
-		aggression = PASSIVE_RESPOND;
-		baseAggression = PASSIVE_RESPOND;
 		blockPlayerConvo = false;
-		aggressionModified = false;
 		this.combatMembersManager = combatMembersManager;
 		this.turnProcess = turnProcess;
 		this.aiCrowd = aiCrowd;
 		this.combatVisualManager = combatVisualManager;
 		this.combatInorganicManager = combatInorganicManager;
 		this.levelManager = levelManager;
+		
+		this.emotionManager = new ThinkingAiEmotion(this);
 	}
 
 	/* (non-Javadoc)
@@ -226,8 +147,8 @@ public class ThinkingAi extends Ai{
 		
 			this.aiData.handleEffects(this, this.getAction());
 			
-			if(aiMode.equals("Loot") && this.getAction().equals("")){
-				this.setAction("Loot");
+			if(aiMode.equals(AiMode.LOOT) && this.getAction().equals("")){
+				this.aiMode = (AiMode.LOOT);
 			}
 			
 			if(Maths.getDistance(this.getLocation(), this.getMoveLocation()) > 0){
@@ -235,7 +156,7 @@ public class ThinkingAi extends Ai{
 				
 				this.setActionTurns(0);
 			}
-			else if(this.getTargetAi() != null && !this.aiMode.equals("Loot")&&!this.getAction().equals("Loot") && !this.getAction().equals("Looting")){
+			else if(this.getTargetAi() != null && !this.aiMode.equals(AiMode.LOOT)&&!this.getAction().equals("Loot") && !this.getAction().equals("Looting")){
 				attack();
 				
 				this.setActionTurns(0);
@@ -258,7 +179,6 @@ public class ThinkingAi extends Ai{
 		
 		this.setOldAction(this.getAction());
 		this.setOldActionTurns(this.getActionTurns());
-		
 		turnProcess.currentAiDone(true);
 	}
 
@@ -283,7 +203,7 @@ public class ThinkingAi extends Ai{
 		// e.g aiming at a dead target
 		cleanupIntraTurnVars();
 
-		if(this.getTargetAi() == null || this.aiMode.equals("Loot") || this.getWeapon().isMelee()){
+		if(this.getTargetAi() == null || this.aiMode.equals(AiMode.LOOT) || this.getWeapon().isMelee()){
 			engageWithHostiles();
 		}
 		else{
@@ -298,24 +218,24 @@ public class ThinkingAi extends Ai{
 		
 		computeAiMode();
 		
-		if(this.aiMode.equals("Engaging")){
+		if(this.aiMode.equals(AiMode.ENGAGING)){
 			this.computeWhenToFire();
-			this.modifyAggression(AIMING_AGGRESSION);
+			emotionManager.modifyAggression(ThinkingAiEmotion.AIMING_AGGRESSION);
 		}
 		else{
 			this.computeLookDirection();
 		}
 		
 		// start to reset aggression if no change occurred
-		if(!aggressionModified){
-			this.resetAggression(AGGRESSION_RESTORE_RATE);
+		if(!this.emotionManager.isAggressionModified()){
+			emotionManager.resetAggression(ThinkingAiEmotion.AGGRESSION_RESTORE_RATE);
 		}
 		
-		if(this.aggression < MINDLESS_TERROR){
+		if(this.emotionManager.getAggression() < ThinkingAiEmotion.MINDLESS_TERROR){
 			blockPlayerConvo = false;
 		}
 		
-		aggressionModified = false;
+		this.emotionManager.setAggressionModified(false);
 	}
 
 	/**
@@ -328,9 +248,9 @@ public class ThinkingAi extends Ai{
 			fleeFromGrenades();
 			
 			// if not engaging then see if in correct room
-			if(!this.aiMode.equals("Engaging") &&
-			   !this.aiMode.equals("Fleeing") &&
-			   !this.aiMode.equals("Loot") &&
+			if(!this.aiMode.equals(AiMode.ENGAGING) &&
+			   !this.aiMode.equals(AiMode.FLEEING) &&
+			   !this.aiMode.equals(AiMode.LOOT) &&
 			   !this.getAction().startsWith("Applying")){
 				
 				this.setSwing(0);
@@ -342,7 +262,7 @@ public class ThinkingAi extends Ai{
 					actIgnoreCommand();
 				}
 			}
-			else if(this.aiMode.equals("Fleeing")){ 
+			else if(this.aiMode.equals(AiMode.FLEEING)){ 
 				fleeingAction();
 			}
 		}
@@ -436,7 +356,7 @@ public class ThinkingAi extends Ai{
 	 * Idle.
 	 */
 	private void idle() {
-		this.aiMode = "Camping";
+		this.aiMode = AiMode.CAMPING;
 		this.setMoveLocationToSelf();
 		listeningToCommand = true;
 	}
@@ -448,7 +368,7 @@ public class ThinkingAi extends Ai{
 	 */
 	private void actIgnoreCommand() throws PathNotFoundException {
 		if(this.chaseAi != null){
-			if(this.aggression > 0 && (this.getTeamObject().canPursue() || this.chaseAi.getLevelBlock() == this.getLevelBlock())){
+			if(this.emotionManager.getAggression() > 0 && (this.getTeamObject().canPursue() || this.chaseAi.getLevelBlock() == this.getLevelBlock())){
 				chasetarget();
 			}
 			else{
@@ -461,11 +381,11 @@ public class ThinkingAi extends Ai{
 		else if(Maths.getDistance(this.getLocation(), this.getMoveLocation()) == 0 &&
 		   this.turnCounter == 0){
 			
-			this.aiMode = "Camping";
+			this.aiMode = AiMode.CAMPING;
 			this.turnCounter = 6;
 		}
 		// do not set turnCounter == 0, otherwise it will be reset to a higher value and the ai will cycle in place
-		if(this.aiMode.equals("Camping") && this.turnCounter == 1 && !this.getAction().startsWith("Applying:")){
+		if(this.aiMode.equals(AiMode.CAMPING) && this.turnCounter == 1 && !this.getAction().startsWith("Applying:")){
 			listeningToCommand = true;
 		}
 	}
@@ -482,7 +402,7 @@ public class ThinkingAi extends Ai{
 		}
 		
 		if(Maths.getDistance(this.getLocation(), this.getMoveLocation()) == 0){
-			this.aiMode = "Camping";
+			this.aiMode = AiMode.CAMPING;
 		}
 	}
 
@@ -505,7 +425,7 @@ public class ThinkingAi extends Ai{
 			this.addEffect(new SpeedBoost(this.getSkillLevel(Abilities.SPEED_BOOSTER)));
 		}
 		else{
-			this.setMoveLocation(this.chaseAi.getLocation());
+			this.setMoveLocation(this.chaseAi.getLocation().clone());
 			this.chaseAi = null;
 		}
 	}
@@ -516,7 +436,7 @@ public class ThinkingAi extends Ai{
 	 * @param regions the regions
 	 * @throws PathNotFoundException the path not found exception
 	 */
-	public void moveTowardsNearestRegion(ArrayList<Polygon> regions) throws PathNotFoundException{
+	public void moveTowardsNearestRegion(List<Polygon> regions) throws PathNotFoundException{
 		this.getLevelBlock().moveTowardsNearestRegion(this, regions);
 	}
 	
@@ -527,7 +447,7 @@ public class ThinkingAi extends Ai{
 	 * @return the polygon
 	 * @throws PathNotFoundException the path not found exception
 	 */
-	public Polygon moveTowardsRandomRegion(ArrayList<Polygon> regions) throws PathNotFoundException{
+	public Polygon moveTowardsRandomRegion(List<Polygon> regions) throws PathNotFoundException{
 		return this.getLevelBlock().moveTowardsRandomRegion(this, regions);
 	}
 
@@ -538,7 +458,7 @@ public class ThinkingAi extends Ai{
 	 */
 	private void fleeFromGrenades() throws PathNotFoundException{
 		
-		if(!this.aiMode.equals("Fleeing")){
+		if(!this.aiMode.equals(AiMode.FLEEING)){
 			// if a grenade is spotted then flee
 			for(int i = 0; i < combatInorganicManager.getLevelAssets().size(); i++){
 				if(combatInorganicManager.getLevelAsset(i) instanceof Grenade &&
@@ -594,7 +514,7 @@ public class ThinkingAi extends Ai{
 		}
 		
 		if(fleePortal != null){
-			this.aiMode = "Fleeing";
+			this.aiMode = AiMode.FLEEING;
 			this.listeningToCommand = false;
 			this.chaseAi = null;
 			this.setTargetAi(null);
@@ -638,7 +558,7 @@ public class ThinkingAi extends Ai{
 		}
 		
 		if(fleePortal != null){
-			this.aiMode = "Fleeing";
+			this.aiMode = AiMode.FLEEING;
 			this.listeningToCommand = false;
 			this.chaseAi = null;
 			this.setTargetAi(null);
@@ -676,7 +596,7 @@ public class ThinkingAi extends Ai{
 	protected void cleanupIntraTurnVars(){
 		// chase an ai, ignore commander
 		if(this.getTargetAi() == null && this.chaseAi != null){
-			this.aiMode = "Patrolling";
+			this.aiMode = AiMode.PATROLLING;
 			listeningToCommand = false;
 			this.setSwing(0);
 		}
@@ -688,7 +608,7 @@ public class ThinkingAi extends Ai{
 		
 		if(this.getAction().equals("Loot") && this.getTeamObject().isAiLooted(this.getTargetAi())){
 			this.removeOrdersWithoutUpdate(mouseAbilityHandler);
-			this.aiMode = "";
+			this.aiMode = AiMode.EMPTY;
 		}
 		
 		// stops ai locking up to stare at corpse
@@ -697,11 +617,11 @@ public class ThinkingAi extends Ai{
 			
 			// if else to stop ai running back into a room they ran from e.g grenade avoidance
 			if(this.turnCounter > 0){
-				this.aiMode = "Camping";
+				this.aiMode = AiMode.CAMPING;
 				this.listeningToCommand = false;
 			}
 			else{
-				this.aiMode = "Patrolling";
+				this.aiMode = AiMode.PATROLLING;
 				this.listeningToCommand = true;
 			}
 		}
@@ -788,12 +708,12 @@ public class ThinkingAi extends Ai{
 		// if combat is initiated the team may easily win but each ai wants to live
 		int friendlyCount = (int)((combatMembersManager.getFactionStrength(this.getFaction(), this.getLevelBlock()) - this.getCombatScore()) / (float)1.5) + this.getCombatScore();
 		
-		reactToCloseEnemy(target);
+		emotionManager.reactToCloseEnemy(target);
 		
-		if(aggression > 0){
+		if(this.emotionManager.getAggression() > 0){
 			aggressiveEngageReaction(friendlyCount,enemyCount,target);
 		}
-		else if(aggression < 0){
+		else if(this.emotionManager.getAggression() < 0){
 			
 			passiveEngageReaction(friendlyCount,enemyCount,target);
 		}
@@ -811,55 +731,6 @@ public class ThinkingAi extends Ai{
 	}
 
 	/**
-	 * React to close enemy.
-	 *
-	 * @param target the target
-	 */
-	protected void reactToCloseEnemy(Ai target) {
-		
-		if(this.getIncapTurns() == 0 && target.getIncapTurns() == 0){
-			double distance = Maths.getDistance(this.getLocation(), target.getLocation());
-			
-			if(distance < 140){
-				if(this.aggression < 0){
-					this.modifyAggression(-0.05);
-				}
-				else{
-					this.modifyAggression(0.05);
-				}
-			}
-			else if(distance < 100){
-				if(this.aggression < 0){
-					this.modifyAggression(-0.1);
-				}
-				else{
-					this.modifyAggression(0.1);
-				}
-			}
-			// melee range
-			else if(distance <= 60){
-				if(this.aggression < 0){
-					if(target.getWeapon().isMelee()){
-						this.modifyAggression(-0.6);
-					}
-					else{
-						this.modifyAggression(-0.3);
-					}
-				}
-				else{
-					if(target.getWeapon().isMelee()){
-						this.modifyAggression(+0.6);
-					}
-					else{
-						this.modifyAggression(+0.3);
-					}
-				}
-			}
-		}
-		
-	}
-
-	/**
 	 * Passive engage reaction.
 	 *
 	 * @param friendlyCount the friendly count
@@ -867,20 +738,27 @@ public class ThinkingAi extends Ai{
 	 * @param target the target
 	 */
 	protected void passiveEngageReaction(int friendlyCount, int enemyCount, Ai target) {
+		
+		if(this.getWeapon().isMelee() && this.getWeapon().isInRange(this, target) && !this.hasActiveEffect(Parrying.NAME) && new Random().nextInt(4) > 1){
+			this.addEffect(new Parrying());
+			return;
+		}
+		
 		// if being aimed at then engage
-		if(this.isBeingTargeted() || this.getTeamObject().isAiHated(target) && this.aggression > PASSIVE){
+		if(this.isBeingTargeted() || this.getTeamObject().isAiHated(target) && emotionManager.getAggression() > ThinkingAiEmotion.PASSIVE){
 			// if fight is possible then engage
 			if(friendlyCount >= enemyCount){
-				this.aiMode = "Engaging";
+				this.aiMode = AiMode.ENGAGING;
 				this.aim(target);
-				this.modifyAggression(AIMING_AGGRESSION);
+				emotionManager.modifyAggression(ThinkingAiEmotion.AIMING_AGGRESSION);
+				chanceToParry();
 			}
 			// if a a minor difference in combat ability then call help
-			else if(enemyCount - friendlyCount < getCombatScoreThreshold() && this.getTeamObject().getTeamSizeInRoom(this.getLevelBlock()) < this.getTeamObject().getTeamSize()){
+			else if(enemyCount - friendlyCount < emotionManager.getCombatScoreThreshold() && this.getTeamObject().getTeamSizeInRoom(this.getLevelBlock()) < this.getTeamObject().getTeamSize()){
 				this.getTeamObject().requestHelp(this.getLevelBlock());
-				this.aiMode = "Engaging";
+				this.aiMode = AiMode.ENGAGING;
 				this.aim(target);
-				this.modifyAggression(AIMING_AGGRESSION);
+				emotionManager.modifyAggression(ThinkingAiEmotion.AIMING_AGGRESSION);
 			}
 			// if more than minor difference and no grenades in room and this isn't a room the ai is defending
 			else if(this.hasAbility(Abilities.GRENADETHROWER) && this.getLevelBlock() != this.getTeamObject().getLevelBlock() &&
@@ -927,6 +805,11 @@ public class ThinkingAi extends Ai{
 		}
 	}
 	
+	private void chanceToParry() {
+		if(!this.hasActiveEffect(Parrying.NAME) && new Random().nextInt(4) > 1)
+			this.addEffect(new Parrying());
+	}
+
 	/**
 	 * Gets the a new room.
 	 *
@@ -945,16 +828,21 @@ public class ThinkingAi extends Ai{
 	 */
 	protected void aggressiveEngageReaction(int friendlyCount, int enemyCount, Ai target) {
 		
+		if(this.getWeapon().isMelee() && this.getWeapon().isInRange(this, target) && !this.hasActiveEffect(Parrying.NAME) && new Random().nextInt(4) > 1){
+			this.addEffect(new Parrying());
+			return;
+		}
+		
 		// if fight is possible then engage
-		if(friendlyCount >= enemyCount || aggression >= MINDLESS_TERROR){
-			this.aiMode = "Engaging";
+		if(friendlyCount >= enemyCount || emotionManager.getAggression() >= ThinkingAiEmotion.MINDLESS_TERROR){
+			this.aiMode = AiMode.ENGAGING;
 			this.aim(target);
 		}
 		// if a a minor difference in combat ability then call help or shank if using melee
-		else if(enemyCount - friendlyCount < this.getCombatScoreThreshold() && ( ( this.getWeapon().isMelee() && this.getWeapon().isInRange(this, target) ) ||
+		else if(enemyCount - friendlyCount < this.emotionManager.getCombatScoreThreshold() && ( ( this.getWeapon().isMelee() && this.getWeapon().isInRange(this, target) ) ||
 				                                                                this.getTeamObject().getTeamSizeInRoom(this.getLevelBlock()) < this.getTeamObject().getTeamSize())){
 			this.getTeamObject().requestHelp(this.getLevelBlock());
-			this.aiMode = "Engaging";
+			this.aiMode = AiMode.ENGAGING;
 			this.aim(target);
 		}
 		// if more than minor difference and no grenades in room and this isn't a room the ai is defending
@@ -966,42 +854,15 @@ public class ThinkingAi extends Ai{
 		// low chance of winning
 		// engage if being targeted
 		else if(this.isBeingTargeted()){
-			this.aiMode = "Engaging";
+			this.aiMode = AiMode.ENGAGING;
 			this.aim(target);
 		}
 		else{
 			// Become more passive
-			this.modifyAggression(-0.1);
+			emotionManager.modifyAggression(-0.1);
 		}
 	}
 	
-	
-
-	/**
-	 * Gets the combat score threshold.
-	 *
-	 * @return the combat score threshold
-	 */
-	protected int getCombatScoreThreshold() {
-		int threshold = 0;
-		switch((int)Math.floor(this.aggression)){
-			case PASSIVE:
-				threshold = 0;
-			break;
-			case PASSIVE_RESPOND:
-			case 0:
-				threshold = PASSIVE_COMBATSCORE_DIFFERENCE;
-			break;
-			case AGGRESSIVE_FIGHTER:
-				threshold = AGGRESSIVE_FIGHTER_COMBATSCORE_DIFFERENCE;
-			break;
-			case MINDLESS_TERROR:
-				threshold = MINDLESS_TERROR_COMBATSCORE_DIFFERENCE;
-			break;
-		}
-		return threshold;
-	}
-
 	/**
 	 * Act under command.
 	 *
@@ -1012,20 +873,20 @@ public class ThinkingAi extends Ai{
 		this.getTeamObject().joinFormation(this);
 
 		if(this.getLevelBlock() == this.getTeamObject().getLevelBlock()){
-			this.aiMode = "Camping";
+			this.aiMode = AiMode.CAMPING;
 			
 			if(this.getTeamObject().getTeamFormation() != null &&
 			   this.getTeamObject().getTeamFormation().isInFormation(this) &&
 			   this.aiMode.equals(this.getTeamObject().getTeamFormation().getFormationType())){
 				
-				this.aiMode = "Camping";
+				this.aiMode = AiMode.CAMPING;
 				this.setMoveLocation(this.getTeamObject().getTeamFormation().getLocation(this));
 			}
 			else if(this.getTeamObject().getTeamFormation() == null && this.getLevelBlock().isInCover(this.getMoveLocation())){
-				this.aiMode = "Camping";
+				this.aiMode = AiMode.CAMPING;
 			}
 			else{
-				this.aiMode = "Camping";
+				this.aiMode = AiMode.CAMPING;
 				
 				if(this.getLevelBlock().getStealthRegion().size() > 0){
 					this.moveTowardsNearestRegion(this.getLevelBlock().getStealthRegion());
@@ -1063,11 +924,11 @@ public class ThinkingAi extends Ai{
 			   !this.getTeamObject().getTeamFormation().isLeader(this) &&
 			   this.aiMode.equals(this.getTeamObject().getTeamFormation().getFormationType())){
 				
-				this.aiMode = "Patrolling";
+				this.aiMode = AiMode.PATROLLING;
 				this.setMoveLocation(this.getTeamObject().getTeamFormation().getLocation(this));
 			}
 			else{
-				this.aiMode = "Patrolling";
+				this.aiMode = AiMode.PATROLLING;
 				
 				// if not moving to room then move to room
 				if(levelManager.getBlock(this.getMoveLocation()) != this.getTeamObject().getLevelBlock()){
@@ -1085,28 +946,13 @@ public class ThinkingAi extends Ai{
 		   
 		if(this.getSwing() > 0 &&
 		    // fire if 60% chance to hit
-		   (accuracyForAggression() ||
-		    this.getSwing() == this.getWeapon().getMaxSwing() ||
-		    // or fire asap if the enemy has a good shot
-		    this.getTargetAi().getSwing() * Weapon.SWING_BONUS + this.getTargetAi().getWeapon().getAccuracy() > 60)){
+		   (emotionManager.hasAccuracyForAggressionLevel(this) ||
+		    this.getSwing() == this.getWeapon().getMaxSwing())){
+//		    // or fire asap if the enemy has a good shot
+//		    this.getTargetAi().getSwing() * Weapon.SWING_BONUS + this.getTargetAi().getWeapon().getAccuracy() > 60)){
 			
 			this.setAction(AiCombatActions.SHOOTING);
 		}
-	}
-	
-	/**
-	 * Accuracy for aggression.
-	 *
-	 * @return true, if successful
-	 */
-	private boolean accuracyForAggression(){
-		if(Math.abs(aggression) > 1 && this.getSwing() * Weapon.SWING_BONUS + this.getWeapon().getAccuracy() > 60 * this.aggression){
-			return true;
-		}
-		else if(this.getSwing() * Weapon.SWING_BONUS + this.getWeapon().getAccuracy() > 50){
-			return true;
-		}
-		return false;
 	}
 	
 	/* (non-Javadoc)
@@ -1138,7 +984,7 @@ public class ThinkingAi extends Ai{
 	 */
 	protected void computeLookDirection(){
 		
-		if(this.aiMode.equals("Patrolling")){
+		if(this.aiMode.equals(AiMode.PATROLLING)){
 			
 			// if there isn't a formation or this is not in it or this is the leader of it
 			if(this.getTeamObject().getTeamFormation() == null ||
@@ -1162,7 +1008,7 @@ public class ThinkingAi extends Ai{
 				this.setTrueLookAngle(this.getTeamObject().getTeamFormation().getHeading(this));
 			}
 		}
-		else if(this.aiMode.equals("Camping")){
+		else if(this.aiMode.equals(AiMode.CAMPING)){
 			if(this.getTeamObject().getTeamFormation() == null ||
 					(
 					!this.getTeamObject().getTeamFormation().isInFormation(this) ||
@@ -1188,7 +1034,7 @@ public class ThinkingAi extends Ai{
 				this.setTrueLookAngle(this.getTeamObject().getTeamFormation().getHeading(this));
 			}
 		}
-		else if(this.getTargetAi() != null && this.aiMode.equals("Loot")){
+		else if(this.getTargetAi() != null && this.aiMode.equals(AiMode.LOOT)){
 			this.setTrueLookAngle(Maths.getDegrees(this.getLocation(), this.getTargetAi().getLocation()));
 		}
 		else{
@@ -1215,7 +1061,7 @@ public class ThinkingAi extends Ai{
 				
 				this.setActionTurns(0);
 				
-				this.setAiMode("Camping");
+				this.aiMode = AiMode.CAMPING;
 				this.setAction("");
 				
 				return;
@@ -1298,7 +1144,7 @@ public class ThinkingAi extends Ai{
 		if(!this.getInventory().isFull())
 		for(Ai ai : aiCrowd.getActors()){
 			if(ai.getLevelBlock() == this.getLevelBlock() && (ai.isDead() || (this.isTargetHostile(ai) && ai.getIncapTurns() > 0)) && !this.getTeamObject().isAiLooted(ai) && hasStuffToLoot(ai) && combatVisualManager.isAiInSight(ai, this.getFaction())){
-				this.setAiMode("Loot");
+				this.aiMode = AiMode.LOOT;
 				this.setAction("Loot");
 				this.loot(ai);
 				
@@ -1364,24 +1210,6 @@ public class ThinkingAi extends Ai{
 		}
 		return false;
 	}
-	
-	/**
-	 * Gets the ai mode.
-	 *
-	 * @return the ai mode
-	 */
-	public String getAiMode() {
-		return aiMode;
-	}
-
-	/**
-	 * Sets the ai mode.
-	 *
-	 * @param aiMode the new ai mode
-	 */
-	public void setAiMode(String aiMode) {
-		this.aiMode = aiMode;
-	}
 
 	/**
 	 * Wait for turns.
@@ -1391,7 +1219,7 @@ public class ThinkingAi extends Ai{
 	public void waitForTurns(int count) {
 		this.turnCounter = count;
 		this.listeningToCommand = false;
-		this.aiMode = "Camping";
+		this.aiMode = AiMode.CAMPING;
 	}
 	
 	// getters
@@ -1443,70 +1271,6 @@ public class ThinkingAi extends Ai{
 	}
 	
 	/**
-	 * Gets the aggression.
-	 *
-	 * @return the aggression
-	 */
-	public double getAggression() {
-		return aggression;
-	}
-
-	/**
-	 * Sets the aggression.
-	 *
-	 * @param aggression the new aggression
-	 */
-	public void setAggression(int aggression) {
-		this.aggression = aggression;
-	}
-	
-	/**
-	 * Sets the base aggression.
-	 *
-	 * @param aggression the new base aggression
-	 */
-	public void setBaseAggression(int aggression){
-		this.baseAggression = aggression;
-		this.aggression = aggression;
-	}
-	
-	/**
-	 * Modify aggression.
-	 *
-	 * @param aggression the aggression
-	 */
-	public void modifyAggression(double aggression){
-		this.aggression += aggression;
-		if(this.aggression < this.baseAggression - 1.5){
-			this.aggression = this.baseAggression -1.5;
-		}
-		else if(this.aggression > this.baseAggression + 1.5){
-			this.aggression = this.baseAggression + 1.5;
-		}
-		aggressionModified = true;
-	}
-	
-	/**
-	 * Reset aggression.
-	 *
-	 * @param normal the normal
-	 */
-	public void resetAggression(double normal){
-		if(this.aggression > this.baseAggression){
-			this.aggression -= normal;
-			if(aggression < this.baseAggression){
-				this.aggression = this.baseAggression;
-			}
-		}
-		else if(this.aggression < this.baseAggression){
-			this.aggression += normal;
-			if(aggression > this.baseAggression){
-				this.aggression = this.baseAggression;
-			}
-		}
-	}
-	
-	/**
 	 * Checks if is block player convo.
 	 *
 	 * @return true, if is block player convo
@@ -1530,20 +1294,20 @@ public class ThinkingAi extends Ai{
 	 * @param message the message
 	 * @param speaker the speaker
 	 */
-	public void respondToMessage(String message, Ai speaker) {
+	public void respondToMessage(Topic message, Ai speaker) {
 		switch(message){
 			// Engage ai
-			case "ATTACK":
-				this.aiMode = "Engaging";
+			case ATTACK:
+				this.aiMode = AiMode.ENGAGING;
 				this.aim(speaker);
 				this.aiNode.freeThinkTurns = 6;
 			break;
 			// Take money from ai
-			case "PAY":
+			case PAY:
 			break;
 			// Take items from ai
-			case "GIVE_ITEMS":
-				this.setAiMode("Loot");
+			case GIVE_ITEMS:
+				this.aiMode = AiMode.LOOT;
 				this.setAction("Loot");
 				
 				this.loot(speaker);
@@ -1554,7 +1318,9 @@ public class ThinkingAi extends Ai{
 				this.aiNode.freeThinkTurns = stunTurns + 1;
 			break;
 			// Open trade with ai
-			case "TRADE":
+			case TRADE:
+			break;
+			default:
 			break;
 		}
 	}
@@ -1629,6 +1395,8 @@ public class ThinkingAi extends Ai{
 		 * The Constant PRI_DEFENDER.
 		 */
 		public static final String PRI_DEFENDER = "DEFENDER";
+
+		private static final String FOLLOW_PLAYER = "FOLLOW_PLAYER";
 		
 		/**
 		 * The location.
@@ -1657,15 +1425,7 @@ public class ThinkingAi extends Ai{
 		 */
 		private boolean mustBeOccupied;
 		
-		/**
-		 * The dialogue.
-		 */
-		private Dialogue dialogue;
-		
-		/**
-		 * The topics.
-		 */
-		private Dialogue topics;
+		private Set<String> talkMapTags;
 		
 		/**
 		 * The free think turns.
@@ -1687,6 +1447,8 @@ public class ThinkingAi extends Ai{
 		 */
 		private HashSet<String> priorities;
 		
+		private ArrayList<String> behaviours;
+		
 		// whether this node will think for the ai
 		// can be used to make nodes purely for dialogue
 		/**
@@ -1700,13 +1462,15 @@ public class ThinkingAi extends Ai{
 
 		private AiCrowd aiCrowd;
 
+		private MissionManager missionManager;
+
 		/**
 		 * Instantiates a new ai node.
 		 *
 		 * @param x the x
 		 * @param y the y
 		 */
-		public AiNode(AiCrowd aiCrowd, MessageBox messageBox, TurnProcess turnProcess, double x, double y){
+		public AiNode(AiCrowd aiCrowd, MessageBox messageBox, TurnProcess turnProcess, MissionManager missionManager, double x, double y){
 			this.location = new double[]{x,y};
 			
 			angle = 361;
@@ -1717,7 +1481,7 @@ public class ThinkingAi extends Ai{
 			
 			mustBeOccupied = false;
 			
-			dialogue = null;
+			talkMapTags = new HashSet<String>();
 			
 			freeThinkTurns = 0;
 			
@@ -1727,10 +1491,12 @@ public class ThinkingAi extends Ai{
 			
 			users = new HashSet<ThinkingAi>();
 			priorities = new HashSet<String>();
+			behaviours = new ArrayList<>();
 			
 			this.aiCrowd = aiCrowd;
 			this.turnProcess = turnProcess;
 			this.messageBox = messageBox;
+			this.missionManager = missionManager;
 		}
 		
 		/**
@@ -1763,9 +1529,15 @@ public class ThinkingAi extends Ai{
 		 */
 		public void think(ThinkingAi ai){
 			
-			if(!thinks){
+			if(!thinks || this.behaviours.size() > 0){
 				if(!useDialogue(ai)){
+					
+					if(this.behaviours.contains(FOLLOW_PLAYER)){
+						ai.getTeamObject().setTargetRoomIgnoreSetting(ai.combatMembersManager.getCurrentAi().getLevelBlock());
+					}
+
 					ai.gatherEnvironmentData();
+					
 				}
 				return;
 			}
@@ -1805,7 +1577,7 @@ public class ThinkingAi extends Ai{
 					// idle
 				}
 			}
-			
+
 			if(!useDialogue(ai))
 				turnProcess.currentAiDone(true);
 		}
@@ -1817,13 +1589,16 @@ public class ThinkingAi extends Ai{
 		 * @return true, if successful
 		 */
 		private boolean useDialogue(ThinkingAi ai) {
-			if(hasDialogue() && this.dialogue.getTargetFaction().equals(AiGenerator.PLAYER)){
+			if(hasDialogue()){
+				
+				Dialogue dialogue = getInitiatorDialogue();
+				
 				
 				Ai talkTarget = null;
 				
 				// find a player unit in sight
 				for(Ai actor : aiCrowd.getActors()){
-					if(actor.getFaction().equals(AiGenerator.PLAYER) && !actor.isDead() && dialogue.canTalkTo(actor) && CombatVisualManager.isAiInSight(ai, actor)){
+					if(actor.getFaction().equals(AiGenerator.PLAYER) && !actor.isDead() && !(actor instanceof VehicleAi) && dialogue.canTalkTo(actor) && CombatVisualManager.isAiInSight(ai, actor)){
 						talkTarget = actor;
 						break;
 					}
@@ -2021,27 +1796,21 @@ public class ThinkingAi extends Ai{
 		 * @return true, if successful
 		 */
 		public boolean hasDialogue(){
-			return this.dialogue != null;
+			for(String talkMap : talkMapTags){
+				if(missionManager.getTalkMap(talkMap).getDialogue().isInitiator())
+					return true;
+			}
+			return false;
+		}
+		
+		public Dialogue getInitiatorDialogue(){
+			for(String talkMap : talkMapTags){
+				if(missionManager.getTalkMap(talkMap).getDialogue().isInitiator())
+					return missionManager.getTalkMap(talkMap).getDialogue();
+			}
+			return null;
 		}
 
-		/**
-		 * Gets the dialogue.
-		 *
-		 * @return the dialogue
-		 */
-		public Dialogue getDialogue() {
-			return this.dialogue;
-		}
-		
-		/**
-		 * Sets the dialogue.
-		 *
-		 * @param dialogue the new dialogue
-		 */
-		public void setDialogue(Dialogue dialogue){
-			this.dialogue = dialogue;
-		}
-		
 		/**
 		 * Sets the disabler.
 		 *
@@ -2079,26 +1848,23 @@ public class ThinkingAi extends Ai{
 		 *
 		 * @return the topics
 		 */
-		public Dialogue getTopics() {
+		public List<Dialogue> getTopics() {
+			List<Dialogue> topics = new ArrayList<>();
+			
+			for(String topicTag : this.talkMapTags){
+				topics.add(missionManager.getTalkMap(topicTag).getDialogue());
+			}
+			
 			return topics;
 		}
 
-		/**
-		 * Sets the topics.
-		 *
-		 * @param topics the new topics
-		 */
-		public void setTopics(Dialogue topics) {
-			this.topics = topics;
-		}
-		
 		/**
 		 * Checks for topics.
 		 *
 		 * @return true, if successful
 		 */
 		public boolean hasTopics(){
-			return this.topics != null;
+			return this.talkMapTags.size() > 0;
 		}
 
 		/**
@@ -2150,6 +1916,16 @@ public class ThinkingAi extends Ai{
 		public boolean hasPriority(String priority){
 			return this.priorities.contains(priority);
 		}
+
+		public void subscribeToTalkMaps(String[] talkMaps) {
+			for(String talkMap : talkMaps){
+				this.talkMapTags.add(talkMap);
+			}
+		}
+
+		public void addBehaviours(ArrayList<String> behaviours) {
+			this.behaviours.addAll(behaviours);
+		}
 		
 	}
 
@@ -2184,5 +1960,17 @@ public class ThinkingAi extends Ai{
 	 */
 	public boolean stationaryNode() {
 		return this.aiNode.mustBeOccupied;
+	}
+
+	public double getAggression() {
+		return this.emotionManager.getAggression();
+	}
+
+	public void modifyAggression(double aggression) {
+		this.emotionManager.modifyAggression(aggression);
+	}
+
+	public void setBaseAggression(int aggression) {
+		this.emotionManager.setBaseAggression(aggression);
 	}
 }

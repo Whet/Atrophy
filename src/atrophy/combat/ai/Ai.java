@@ -81,7 +81,7 @@ public class Ai implements Lootable{
 	protected LootBox lootBox;
 	protected PanningManager panningManager;
 
-	public Ai(FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, String name, double x, double y, CombatInorganicManager combatInorganicManager, LevelManager levelManager, LootBox lootBox, CombatMembersManager combatMembersManager, CombatUiManager combatUiManager, CombatVisualManager combatVisualManager, AiCrowd aiCrowd, PanningManager panningManager){
+	public Ai(FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, String name, double x, double y, CombatInorganicManager combatInorganicManager, LevelManager levelManager, LootBox lootBox, CombatMembersManager combatMembersManager, CombatUiManager combatUiManager, CombatVisualManager combatVisualManager, AiCrowd aiCrowd, PanningManager panningManager, TurnProcess turnProcess){
 		this.name = name;
 		image = "";
 		
@@ -114,6 +114,8 @@ public class Ai implements Lootable{
 		
 		this.mouseAbilityHandler = mouseAbilityHandler;
 		this.floatingIcons = floatingIcons;
+		this.turnProcess = turnProcess;
+		
 	}
 	
 	public Ai(ThinkingAi thinkingAi, LevelManager levelManager, CombatInorganicManager combatInorganicManager) {
@@ -151,6 +153,7 @@ public class Ai implements Lootable{
 		
 		this.mouseAbilityHandler = thinkingAi.mouseAbilityHandler;
 		this.floatingIcons = thinkingAi.floatingIcons;
+		this.turnProcess = thinkingAi.turnProcess;
 		
 	}
 	
@@ -179,7 +182,7 @@ public class Ai implements Lootable{
 				this.aiActions.setActionTurns(0);
 			}
 			else if(this.getTargetAi() != null && 
-					!this.getAction().equals("Loot") && !this.getAction().equals("Looting") && !this.getAction().equals("Backstab") && !this.getAction().equals("StunTarget")){
+					!this.getAction().equals("Loot") && !this.getAction().equals("Looting") && !this.getAction().equals("Backstab") && !this.getAction().equals(AiActions.STUN_TARGET) && !this.getAction().equals(Abilities.HACK)){
 				attack();
 				
 				this.aiActions.setActionTurns(0);
@@ -208,6 +211,8 @@ public class Ai implements Lootable{
 		
 		this.setOldAction(this.getAction());
 		this.setOldActionTurns(this.getActionTurns());
+		
+		turnProcess.currentAiDone(false);
 	}
 
 	public int getIncapTurns() {
@@ -369,12 +374,12 @@ public class Ai implements Lootable{
 		this.aiActions.setStunTarget(this, targetAi);
 	}
 	
-	public void stunTarget(){
-		this.aiActions.stunTarget(this);
-	}
-	
 	public void setBackstabTarget(Ai targetAi){
 		this.aiActions.setBackstabTarget(this, targetAi);
+	}
+	
+	public void setHackTarget(TurretAi turret) {
+		this.aiActions.setHackTarget(this, turret);		
 	}
 	
 	public void backstabTarget(){
@@ -805,5 +810,5 @@ public class Ai implements Lootable{
 	public int getAccuracyBoost() {
 		return this.aiData.getAccuracyBoost();
 	}
-	
+
 }

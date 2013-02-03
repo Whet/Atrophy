@@ -26,7 +26,7 @@ public class LargeEventText extends Text {
 	/**
 	 * The flash timer.
 	 */
-	private Timer flashTimer;
+	public static Timer flashTimer;
 	
 	/**
 	 * Instantiates a new large event text.
@@ -34,7 +34,6 @@ public class LargeEventText extends Text {
 	public LargeEventText() {
 		super(0,DisplayManager.getInstance().getResolution()[1] * 0.5);
 		this.setFont(FontList.AUD24);
-		// initialise just to avoid if(null)
 		flashTimer = new Timer();
 	}
 

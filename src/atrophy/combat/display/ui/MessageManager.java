@@ -2,44 +2,35 @@ package atrophy.combat.display.ui;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
 
 import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.ai.Ai;
 import atrophy.combat.ai.ThinkingAi;
-import atrophy.combat.display.ui.MessageBox.ChatterBox;
-import atrophy.combat.display.ui.MessageBox.Dialogue;
+import atrophy.combat.ai.ThinkingAiEmotion;
+import atrophy.combat.ai.conversation.ChatterBox;
+import atrophy.combat.ai.conversation.Dialogue;
+import atrophy.combat.ai.conversation.Topic;
 import atrophy.combat.display.ui.MessageBox.SpeechOption;
 import atrophy.combat.level.LevelBlock;
 import atrophy.combat.mechanics.ScoringMechanics;
 
 public class MessageManager{
 
-	/**
-	 * The Constant CONVO_TOPICS.
-	 */
-	private static final String[] CONVO_TOPICS = {"EXIT","HELLO","BYE"};
+	public static final String TOPIC_EXIT = "Close";
+	public static final String TOPIC_HELLO = "Hello";
+	public static final String TOPIC_BYE = "Bye";
+	public static final String TOPIC_INTIMIDATE = "Intimidate";
+	public static final String TOPIC_INCAP = "Incapacitate";
+	public static final String TOPIC_SHOW_ENEMIES = "Enemy Locations";
+	public static final String TOPIC_STEAL = "Steal";
+	public static final String TOPIC_JOIN = "Recruit";
 	
-	/**
-	 * The Constant EMOTION_TOPICS.
-	 */
-	private static final String[] EMOTION_TOPICS = {"INTIMIDATE","PLEA", "INCAP"};
-	
-	/**
-	 * The Constant HELP_TOPICS.
-	 */
-	private static final String[] HELP_TOPICS = {"SHOW_ENEMIES","STEAL","JOIN"};
-	
-	/**
-	 * The Constant SHOP_TOPICS.
-	 */
-//	private static final String[] SHOP_TOPICS = {"LIST_ITEM","BUY_ITEM"};
-	
-	/**
-	 * The Constant HITMAN_TOPIC.
-	 */
-//	private static final String[] HITMAN_TOPIC = {"WHAT_TARGET","CLAIM_BOUNTY"};
+	private Map<String, Topic> nameToTopic = new HashMap<>();;
 	
 	/**
 	 * The topics.
@@ -76,6 +67,23 @@ public class MessageManager{
 		this.combatVisualManager = combatVisualManager;
 		topics = new ArrayList<String>(9);
 		intimidated = false;
+		
+		initMap();
+	}
+	
+	private void initMap(){
+		nameToTopic.put(TOPIC_INTIMIDATE, Topic.INTIMIDATE);
+		nameToTopic.put(TOPIC_INCAP, Topic.INCAP);
+		nameToTopic.put(TOPIC_JOIN, Topic.JOIN);
+		nameToTopic.put(TOPIC_STEAL, Topic.STEAL);
+		nameToTopic.put(TOPIC_SHOW_ENEMIES, Topic.SHOW_ENEMIES);
+		nameToTopic.put(TOPIC_HELLO, Topic.HELLO);
+		nameToTopic.put(TOPIC_BYE, Topic.BYE);
+		nameToTopic.put(TOPIC_EXIT, Topic.EXIT);
+		nameToTopic.put("Attack", Topic.ATTACK);
+		nameToTopic.put("Pay", Topic.PAY);
+		nameToTopic.put("Trade", Topic.TRADE);
+		nameToTopic.put("Give Items", Topic.GIVE_ITEMS);
 	}
 
 	/**
@@ -84,7 +92,13 @@ public class MessageManager{
 	 * @param topicNumber the topic number
 	 */
 	public void triggerTopic(int topicNumber) {
-		this.topicAction(topics.get(topicNumber));
+		String topicString = topics.get(topicNumber);
+		Topic topic = nameToTopic.get(topicString);
+		
+		if(topic == null)
+			this.topicAction(topicString);
+		else	
+			this.topicAction(topic);
 	}
 
 	/**
@@ -110,7 +124,7 @@ public class MessageManager{
 			intimidated = true;
 			tone = -1;
 		}
-		else if(ai2.getFaction().equals("Loner") && ((ThinkingAi) ai2).getAggression() <= ThinkingAi.AGGRESSIVE_FIGHTER){
+		else if(ai2.getFaction().equals("Loner") && ((ThinkingAi) ai2).getAggression() <= ThinkingAiEmotion.AGGRESSIVE_FIGHTER){
 			tone = 0;
 		}
 		else{
@@ -130,7 +144,7 @@ public class MessageManager{
 		resetTopics();
 		
 		intimidated = false;
-		this.tone = dialogue.tone;
+		this.tone = 0;
 		
 		messageBox.addMessage(messageBox.getConversers()[1].getName() + ": " +dialogue.openingLine);
 
@@ -174,30 +188,93 @@ public class MessageManager{
 	 * Greeting topic.
 	 */
 	private void greetingTopic() {
-		this.topics.add(CONVO_TOPICS[1]);
-		this.topics.add(CONVO_TOPICS[0]);
+		this.topics.add(TOPIC_HELLO);
+		this.topics.add(TOPIC_EXIT);
+	}
+
+	private void topicAction(String topic){
+		if(thinkingAiInitiated){
+			playerResponseAction(topic);
+		}
+		else{	
+			longSpeechAction(topic);
+			baseTopics();
+		}
 	}
 	
-	/**
-	 * Reload dialogue.
-	 */
-	private void reloadDialogue(){
-		Dialogue dialogue = ((ThinkingAi) messageBox.getConversers()[1]).getAiNode().getDialogue();
+	private void playerResponseAction(String topic){
+		resetTopics();
 		
-		// Add long speech setters
+		String speech;
+
+		Dialogue dialogue = ((ThinkingAi) messageBox.getConversers()[1]).getAiNode().getInitiatorDialogue();
+		
 		Iterator<String> speechIt = dialogue.longSpeeches.keySet().iterator();
+
 		while(speechIt.hasNext()){
-			
 			String next = speechIt.next();
-			
-			this.topics.add(next);
+
+			if(next.equals(topic)){
+				dialogue.setLongSpeech(next);
+				speech = dialogue.nextSpeechDialogue();
+
+				// if the next speech text is a trigger then skip to next speech segment until text is reached
+				while(dialogue.checkTriggers(speech, messageBox)){
+					speech = dialogue.nextSpeechDialogue();
+				}
+
+				messageBox.addMessage(messageBox.getConversers()[1].getName() + ": " + speech);
+
+				break;
+			}
 		}
 		
-		for(int i = 0; i < dialogue.options.length; i++){
-			this.topics.add(dialogue.options[i]);
+		// Add long speech setters and dialogue topics
+		speechIt = dialogue.longSpeeches.keySet().iterator();
+		while(speechIt.hasNext()){
+			String next = speechIt.next();
+			
+			if(dialogue.requirementsMet(dialogue.longSpeeches.get(next)[1], messageBox.getConversers()[0]))
+				this.topics.add(next);
+		}
+		
+		for(String textOption : dialogue.options){
+			this.topics.add(textOption);
 		}
 		
 		setTopicButtons();
+	}
+	
+	private void longSpeechAction(String topic){
+
+		resetTopics();
+		
+		List<Dialogue> dialogues = ((ThinkingAi) messageBox.getConversers()[1]).getAiNode().getTopics();
+
+		String speech;
+
+		for(Dialogue dialogue : dialogues){
+		
+			Iterator<String> speechIt = dialogue.longSpeeches.keySet().iterator();
+	
+			while(speechIt.hasNext()){
+				String next = speechIt.next();
+	
+				if(next.equals(topic)){
+					dialogue.setLongSpeech(next);
+					speech = dialogue.nextSpeechDialogue();
+	
+					// if the next speech text is a trigger then skip to next speech segment until text is reached
+					while(dialogue.checkTriggers(speech, messageBox)){
+						speech = dialogue.nextSpeechDialogue();
+					}
+	
+					messageBox.addMessage(messageBox.getConversers()[1].getName() + ": " + speech);
+	
+					return;
+				}
+			}
+		}
 	}
 	
 	/**
@@ -205,25 +282,16 @@ public class MessageManager{
 	 *
 	 * @param topic the topic
 	 */
-	private void topicAction(String topic) {
+	private void topicAction(Topic topic) {
 		resetTopics();
-		
-		if(thinkingAiInitiated && dialogueSpeechTopic(topic)){
-			reloadDialogue();
-			return;
-		}
-		
-		if(topicsSpeechTopic(topic)){
-			baseTopics();
-			return;
-		}
 		
 		messageBox.addMessage(ChatterBox.message(messageBox.getConversers()[0].getName(), topic, tone));
 		
 		if(!topicReaction(topic)){
 			
-			if(messageBox.getConversers()[1] != null && ((ThinkingAi) messageBox.getConversers()[1]).getAiNode() != null && ((ThinkingAi) messageBox.getConversers()[1]).getAiNode().getDialogue() != null)
-				((ThinkingAi) messageBox.getConversers()[1]).getAiNode().getDialogue().longSpeechPoint = 0;
+			if(messageBox.getConversers()[1] != null && ((ThinkingAi) messageBox.getConversers()[1]).getAiNode() != null &&
+			  ((ThinkingAi) messageBox.getConversers()[1]).getAiNode().hasDialogue())
+//				((ThinkingAi) messageBox.getConversers()[1]).getAiNode().getDialogue().longSpeechPoint = 0;
 			
 			// If ai started the convo then state their turn is ended
 			if(thinkingAiInitiated && messageBox.getConversers()[1] != null){
@@ -235,294 +303,189 @@ public class MessageManager{
 		
 		switch(topic){
 		
-			case "SHOW_ENEMIES":
-			case "HELLO":
-			case "STEAL":
-			case "BUY_ITEM":
-			case "LIST_ITEM":
-			case "WHAT_TARGET":
-			case "CLAIM_BOUNTY":
-			case "INTIMIDATE":
-			case "INCAP":
-			case "JOIN":
+			case BYE:
+			case EXIT:
+				messageBox.setVisible(false);
+			return;
+			default:
 				if(thinkingAiInitiated){
 					reloadDialogue();
 					return;
 				}
 				baseTopics();
-			break;
-			case "BYE":
-			case "EXIT":
-				messageBox.setVisible(false);
-			return;
 		}
 		// if no new topics have been set then close
 		if(topics.size() == 0){
 			messageBox.setVisible(false);
 		}
 	}
+	
+	private void reloadDialogue(){
+		Dialogue dialogue = ((ThinkingAi) messageBox.getConversers()[1]).getAiNode().getInitiatorDialogue();
 
-	/**
-	 * Dialogue speech topic.
-	 *
-	 * @param topic the topic
-	 * @return true, if successful
-	 */
-	private boolean dialogueSpeechTopic(String topic) {
-		
-		if(((ThinkingAi) messageBox.getConversers()[1]).getAiNode() == null ||
-		   !((ThinkingAi) messageBox.getConversers()[1]).getAiNode().hasDialogue())
-			return false;
-		
-		Dialogue dialogue = ((ThinkingAi) messageBox.getConversers()[1]).getAiNode().getDialogue();
-		
-		String speech;
-		
+		// Add long speech setters
 		Iterator<String> speechIt = dialogue.longSpeeches.keySet().iterator();
-		
 		while(speechIt.hasNext()){
+
 			String next = speechIt.next();
-			
-			if(next.equals(topic)){
-				dialogue.setLongSpeech(next);
-				speech = dialogue.nextSpeechDialogue();
-				messageBox.addMessage(messageBox.getConversers()[1].getName() + ": " + speech);
-				return true;
-			}
+
+			this.topics.add(next);
 		}
-		
-		
-		return false;
+
+		for(int i = 0; i < dialogue.options.length; i++){
+			this.topics.add(dialogue.options[i]);
+		}
+
+		setTopicButtons();
 	}
 	
-	/**
-	 * Topics speech topic.
-	 *
-	 * @param topic the topic
-	 * @return true, if successful
-	 */
-	private boolean topicsSpeechTopic(String topic){
-		if(((ThinkingAi) messageBox.getConversers()[1]).getAiNode() == null ||
-		   !((ThinkingAi) messageBox.getConversers()[1]).getAiNode().hasTopics())
-			return false;
-		
-		Dialogue dialogue = ((ThinkingAi) messageBox.getConversers()[1]).getAiNode().getTopics();
-		
-		String speech;
-		
-		Iterator<String> speechIt = dialogue.longSpeeches.keySet().iterator();
-		
-		while(speechIt.hasNext()){
-			String next = speechIt.next();
-			
-			if(next.equals(topic)){
-				dialogue.setLongSpeech(next);
-				speech = dialogue.nextSpeechDialogue();
-				
-				// if the next speech text is a trigger then skip to next speech segment until text is reached
-				while(dialogue.checkTriggers(speech, messageBox)){
-					speech = dialogue.nextSpeechDialogue();
-				}
-				
-				messageBox.addMessage(messageBox.getConversers()[1].getName() + ": " + speech);
-				
-				return true;
-			}
-		}
-		
-		
-		return false;
-	}
-
 	/**
 	 * Topic reaction.
 	 *
 	 * @param topic the topic
 	 * @return true, if successful
 	 */
-	private boolean topicReaction(String topic) {
+	private boolean topicReaction(Topic topic) {
 		switch(topic){
-			case "SHOW_ENEMIES":
+			case SHOW_ENEMIES:
 				if(tone <= 0 || ((ThinkingAi) messageBox.getConversers()[1]).willJoinPlayer(messageBox.getConversers()[0])){
 					ArrayList<LevelBlock> rooms = ((ThinkingAi) messageBox.getConversers()[1]).getTeamObject().getAllRoomsToAvoid();
 					
 					if(rooms.size() > 0){
-						messageBox.addMessage(ChatterBox.message(messageBox.getConversers()[1].getName(), "ACKNOWLEDGE", tone));
+						messageBox.addMessage(ChatterBox.message(messageBox.getConversers()[1].getName(), Topic.ACKNOWLEDGE, tone));
 						cartographer.markRooms("People Spotted",Color.red, rooms);
 					}
 					else{
-						messageBox.addMessage(ChatterBox.message(messageBox.getConversers()[1].getName(), "NO", tone));
+						messageBox.addMessage(ChatterBox.message(messageBox.getConversers()[1].getName(), Topic.NO, tone));
 					}
 				}
 				else{
-					messageBox.addMessage(ChatterBox.message(messageBox.getConversers()[1].getName(), "NO_TRUST", tone));
+					messageBox.addMessage(ChatterBox.message(messageBox.getConversers()[1].getName(), Topic.NO_TRUST, tone));
 				}
 				return true;
 			
-			case "STEAL":
+			case STEAL:
 				if(intimidated || messageBox.getConversers()[1].getIncapTurns() > 0){
-					messageBox.addMessage(ChatterBox.message(messageBox.getConversers()[1].getName(), "YES", tone));
+					messageBox.addMessage(ChatterBox.message(messageBox.getConversers()[1].getName(), Topic.YES, tone));
 					messageBox.getConversers()[0].tradeWithAlly(messageBox.getConversers()[1]);
 					if(messageBox.getConversers()[1] instanceof ThinkingAi){
 						((ThinkingAi) messageBox.getConversers()[1]).waitForTurns(4);
 					}
 				}
 				else{
-					messageBox.addMessage(ChatterBox.message(messageBox.getConversers()[1].getName(), "INTIMIDATE_REACTION", 1));
+					messageBox.addMessage(ChatterBox.message(messageBox.getConversers()[1].getName(), Topic.INCAP_REACTION, 1));
 					((ThinkingAi)messageBox.getConversers()[1]).setBlockPlayerConvo(true);
-					((ThinkingAi)messageBox.getConversers()[1]).modifyAggression(ThinkingAi.FAILED_INTIMIDATION);
+					((ThinkingAi)messageBox.getConversers()[1]).modifyAggression(ThinkingAiEmotion.FAILED_INTIMIDATION);
 				}
 				return true;
 				
-			case "PURCHASE":
-				messageBox.addMessage(ChatterBox.message(messageBox.getConversers()[1].getName(), "YES", tone));
-				messageBox.getConversers()[0].tradeWithAlly(messageBox.getConversers()[0]);
-				return false;
-				
-			case "INTIMIDATE":
+			case INTIMIDATE:
 				// works if ai isn't mindless
 				// if the initiator isn't visible and a minor check
 				// if visible and a big check
-				if(((ThinkingAi) messageBox.getConversers()[1]).getAggression() < ThinkingAi.MINDLESS_TERROR && (
+				if(((ThinkingAi) messageBox.getConversers()[1]).getAggression() < ThinkingAiEmotion.MINDLESS_TERROR && (
 				   (!combatVisualManager.isAiInSight(messageBox.getConversers()[0], messageBox.getConversers()[1].getFaction()) && 
 				   ScoringMechanics.weakIntimidateCheck(messageBox.getConversers()[0], messageBox.getConversers()[1], combatMembersManager)) ||
 				   (combatVisualManager.isAiInSight(messageBox.getConversers()[0], messageBox.getConversers()[1].getFaction()) &&
 				   ScoringMechanics.strongIntimidateCheck(messageBox.getConversers()[0], messageBox.getConversers()[1], combatMembersManager) ))){
 					
-					messageBox.addMessage(ChatterBox.message(messageBox.getConversers()[1].getName(), "INTIMIDATE_REACTION", -1));
+					messageBox.addMessage(ChatterBox.message(messageBox.getConversers()[1].getName(), Topic.INCAP_REACTION, -1));
 					tone  = -1;
 					intimidated = true;
-					((ThinkingAi)messageBox.getConversers()[1]).modifyAggression(ThinkingAi.SUCCESSFUL_INTIMIDATION);
+					((ThinkingAi)messageBox.getConversers()[1]).modifyAggression(ThinkingAiEmotion.SUCCESSFUL_INTIMIDATION);
 					
 					return true;
 				}
 				else{
-					messageBox.addMessage(ChatterBox.message(messageBox.getConversers()[1].getName(), "INTIMIDATE_REACTION", 1));
+					messageBox.addMessage(ChatterBox.message(messageBox.getConversers()[1].getName(), Topic.INTIMIDATE_REACTION, 1));
 					((ThinkingAi)messageBox.getConversers()[1]).setBlockPlayerConvo(true);
-					((ThinkingAi)messageBox.getConversers()[1]).modifyAggression(ThinkingAi.FAILED_INTIMIDATION);
+					((ThinkingAi)messageBox.getConversers()[1]).modifyAggression(ThinkingAiEmotion.FAILED_INTIMIDATION);
 					
 					return false;
 				}
 
-			case "INCAP":
+			case INCAP:
 				// works if ai isn't mindless
 				// if already intimidated
 				// if the initiator isn't visible and a minor check
 				// if visible and a big check
-				if(((ThinkingAi) messageBox.getConversers()[1]).getAggression() < ThinkingAi.MINDLESS_TERROR &&
+				if(((ThinkingAi) messageBox.getConversers()[1]).getAggression() < ThinkingAiEmotion.MINDLESS_TERROR &&
 				    (intimidated || messageBox.getConversers()[1].getIncapTurns() > 0 ||
 				    (!combatVisualManager.isAiInSight(messageBox.getConversers()[0], messageBox.getConversers()[1].getFaction()) && 
 				    ScoringMechanics.weakIntimidateCheck(messageBox.getConversers()[0], messageBox.getConversers()[1], combatMembersManager)) ||
 				    (combatVisualManager.isAiInSight(messageBox.getConversers()[0], messageBox.getConversers()[1].getFaction()) &&
 				    ScoringMechanics.strongIntimidateCheck(messageBox.getConversers()[0], messageBox.getConversers()[1], combatMembersManager) ))){
 					
-					messageBox.addMessage(ChatterBox.message(messageBox.getConversers()[1].getName(), "INCAP_REACTION", -1));
+					messageBox.addMessage(ChatterBox.message(messageBox.getConversers()[1].getName(), Topic.INCAP_REACTION, -1));
 					tone  = -1;
 					intimidated = true;
 					messageBox.getConversers()[1].setIncapTurns(10);
-					((ThinkingAi)messageBox.getConversers()[1]).modifyAggression(ThinkingAi.SUCCESSFUL_INTIMIDATION);
+					((ThinkingAi)messageBox.getConversers()[1]).modifyAggression(ThinkingAiEmotion.SUCCESSFUL_INTIMIDATION);
 					
 					return true;
 				}
 				else{
 					resetTopics();
-					messageBox.addMessage(ChatterBox.message(messageBox.getConversers()[1].getName(), "INCAP_REACTION", 1));
+					messageBox.addMessage(ChatterBox.message(messageBox.getConversers()[1].getName(), Topic.INCAP_REACTION, 1));
 					((ThinkingAi)messageBox.getConversers()[1]).setBlockPlayerConvo(true);
-					((ThinkingAi)messageBox.getConversers()[1]).modifyAggression(ThinkingAi.FAILED_INTIMIDATION);
+					((ThinkingAi)messageBox.getConversers()[1]).modifyAggression(ThinkingAiEmotion.FAILED_INTIMIDATION);
 					
 					return false;
 				}
 			
-			case "HELLO":
-//				if(messageBox.getConversers()[1] instanceof ShopkeeperAi){
-//					if(((ShopkeeperAi) messageBox.getConversers()[1]).getShopType() == 0 && ((ShopkeeperAi) messageBox.getConversers()[1]).isInStock()){
-//						messageBox.addMessage(ChatterBox.message(messageBox.getConversers()[1].getName(), "HELLO_SHOPKEEP", tone));
-//					}
-//					else if(((ShopkeeperAi) messageBox.getConversers()[1]).getShopType() == 1 && !((HitmanAi) messageBox.getConversers()[1]).isMissionGiven() 
-//						     && !(((HitmanAi) messageBox.getConversers()[1]).getHitmanTargetAi() == messageBox.getConversers()[0])){
-//						messageBox.addMessage(ChatterBox.message(messageBox.getConversers()[1].getName(), "HELLO_HITMAN_OFFER_MISSION", tone));
-//					}
-//					else if(((ShopkeeperAi) messageBox.getConversers()[1]).getShopType() == 1 && ((HitmanAi) messageBox.getConversers()[1]).isMissionGiven() && ((ShopkeeperAi) messageBox.getConversers()[1]).isInStock()){
-//						messageBox.addMessage(ChatterBox.message(messageBox.getConversers()[1].getName(), "HELLO_HITMAN_GIVEN", tone));
-//					}
-//				}
-//				else{
+			case HELLO:
 					messageBox.addMessage(ChatterBox.message(messageBox.getConversers()[1].getName(), topic, tone));
-//				}
 				
 				return true;
 
-			case "BYE":
+			case BYE:
 				messageBox.addMessage(ChatterBox.message(messageBox.getConversers()[1].getName(), topic, tone));
 				
 				return false;
 				
-			case "EXIT":
+			case EXIT:
 				return false;
 				
-			case "BUY_ITEM":
-//				if(!messageBox.getConversers()[0].getInventory().isFull()){
-//					messageBox.addMessage(ChatterBox.message(messageBox.getConversers()[1].getName(), "BUY_ITEM_REACTION", 1));
-//					((ShopkeeperAi) messageBox.getConversers()[1]).giveItem(messageBox.getConversers()[0]);
-//				}
-//				else if(messageBox.getConversers()[0].getInventory().isFull()){
-//					messageBox.addMessage(ChatterBox.message(messageBox.getConversers()[1].getName(), "BUY_ITEM_REACTION", 0));
-//				}
-//				else{
-//					messageBox.addMessage(ChatterBox.message(messageBox.getConversers()[1].getName(), "BUY_ITEM_REACTION", -1));
-//				}
-				return true;
-				
-			case "LIST_ITEM":
-//				if(((ShopkeeperAi) messageBox.getConversers()[1]).isInStock()){
-//					messageBox.addMessage(ChatterBox.message(messageBox.getConversers()[1].getName(), "LIST_ITEM_REACTION", ((ShopkeeperAi) messageBox.getConversers()[1]).getItemName(), 1));
-//				}
-//				else{
-//					messageBox.addMessage(ChatterBox.message(messageBox.getConversers()[1].getName(), "LIST_ITEM_REACTION", -1));
-//				}
-				return true;
-				
-			case "WHAT_TARGET":
-//				messageBox.addMessage(ChatterBox.message(messageBox.getConversers()[1].getName(), "WHAT_TARGET_REACTION",
-//								   ((HitmanAi) messageBox.getConversers()[1]).getHitmanTargetAi().getName() + " they're with the " + ((HitmanAi) messageBox.getConversers()[1]).getHitmanTargetAi().getFaction(), 1));
-//				((HitmanAi) messageBox.getConversers()[1]).giveMission();
-				return true;
-				
-			case "CLAIM_BOUNTY":
-//				if(((HitmanAi) messageBox.getConversers()[1]).getHitmanTargetAi().isDead()){
-//					if(!messageBox.getConversers()[0].getInventory().isFull()){
-//						messageBox.addMessage(ChatterBox.message(messageBox.getConversers()[1].getName(), "CLAIM_BOUNTY_REACTION", 1));
-//						((HitmanAi) messageBox.getConversers()[1]).giveItem(messageBox.getConversers()[0]);
-//					}
-//					else{
-//						messageBox.addMessage(ChatterBox.message(messageBox.getConversers()[1].getName(), "CLAIM_BOUNTY_REACTION", 0));
-//					}
-//				}
-//				else{
-//					messageBox.addMessage(ChatterBox.message(messageBox.getConversers()[1].getName(), "CLAIM_BOUNTY_REACTION", -1));
-//				}
-				return true;
-				
-			case "JOIN":
+			case JOIN:
 				if(messageBox.getConversers()[0].getTargetAi() != messageBox.getConversers()[1] &&
 				   messageBox.getConversers()[1].getTargetAi() != messageBox.getConversers()[0] &&
 				   ((ThinkingAi) messageBox.getConversers()[1]).willJoinPlayer(messageBox.getConversers()[0])){
 					
-					messageBox.addMessage(ChatterBox.message(messageBox.getConversers()[1].getName(), "JOIN_REACTION", -1));
+					messageBox.addMessage(ChatterBox.message(messageBox.getConversers()[1].getName(), Topic.JOIN_REACTION, -1));
 					combatMembersManager.changeThinkingAiToPlayerAi((ThinkingAi) messageBox.getConversers()[1]);
 					return false;
 				}
 
-				messageBox.addMessage(ChatterBox.message(messageBox.getConversers()[1].getName(), "JOIN_REACTION", 1));
+				messageBox.addMessage(ChatterBox.message(messageBox.getConversers()[1].getName(), Topic.JOIN_REACTION, 1));
 				return true;
 				
-			case "GIVE_ITEMS":
-				((ThinkingAi) messageBox.getConversers()[1]).respondToMessage("GIVE_ITEMS",messageBox.getConversers()[0]);
+			case GIVE_ITEMS:
+				((ThinkingAi) messageBox.getConversers()[1]).respondToMessage(Topic.GIVE_ITEMS,messageBox.getConversers()[0]);
 			return false;
 			
-			case "ATTACK":
-				((ThinkingAi) messageBox.getConversers()[1]).respondToMessage("ATTACK",messageBox.getConversers()[0]);
+			case ATTACK:
+				((ThinkingAi) messageBox.getConversers()[1]).respondToMessage(Topic.ATTACK,messageBox.getConversers()[0]);
 			return false;
+			case ACKNOWLEDGE:
+			break;
+			case INCAP_REACTION:
+			break;
+			case INTIMIDATE_REACTION:
+			break;
+			case JOIN_REACTION:
+			break;
+			case NO:
+			break;
+			case NO_TRUST:
+			break;
+			case PAY:
+			break;
+			case TRADE:
+			break;
+			case YES:
+			break;
+			default:
+			break;
 
 		}
 		
@@ -537,67 +500,51 @@ public class MessageManager{
 		if(((ThinkingAi) messageBox.getConversers()[1]).getAiNode() != null &&
 		   ((ThinkingAi) messageBox.getConversers()[1]).getAiNode().hasTopics()){
 			
-			Dialogue topics = ((ThinkingAi) messageBox.getConversers()[1]).getAiNode().getTopics();
+			List<Dialogue> topics = ((ThinkingAi) messageBox.getConversers()[1]).getAiNode().getTopics();
 			
-			// Add long speech setters
-			Iterator<String> speechIt = topics.longSpeeches.keySet().iterator();
-			while(speechIt.hasNext()){
-				String next = speechIt.next();
-				
-				if(topics.requirementsMet(topics.longSpeeches.get(next)[1], messageBox.getConversers()[0]))
-					this.topics.add(next);
+			if(topics.size() > 0 && topics.get(0) != null){
+				for(Dialogue dialogue : topics) {
+					// Add long speech setters
+					Iterator<String> speechIt = dialogue.longSpeeches.keySet().iterator();
+					while(speechIt.hasNext()){
+						String next = speechIt.next();
+						
+						if(dialogue.requirementsMet(dialogue.longSpeeches.get(next)[1], messageBox.getConversers()[0]))
+							this.topics.add(next);
+					}
+				}
 			}
 		}
 		
-		// team members
-		if(tone == -2){
-			this.topics.add(CONVO_TOPICS[2]);
-			setTopicButtons();
-		}
-		// neutral
-		else if(tone <= 0){
-			this.topics.add(HELP_TOPICS[0]);
-			this.topics.add(HELP_TOPICS[1]);
+		if(tone <= 0){
+			this.topics.add(TOPIC_SHOW_ENEMIES);
 			if(!intimidated){
-				this.topics.add(EMOTION_TOPICS[0]);
-				this.topics.add(HELP_TOPICS[2]);
+				this.topics.add(TOPIC_INTIMIDATE);
+				this.topics.add(TOPIC_JOIN);
 			}
+			this.topics.add(TOPIC_STEAL);
 			if((!messageBox.getConversers()[0].getWeapon().isMelee() ||
               (messageBox.getConversers()[0].getWeapon().isMelee() &&
                messageBox.getConversers()[0].getWeapon().isInRange(messageBox.getConversers()[0], messageBox.getConversers()[1])) ) ){
-			this.topics.add(EMOTION_TOPICS[2]);
+			this.topics.add(TOPIC_INCAP);
 			}
-//			if(messageBox.getConversers()[1] instanceof ShopkeeperAi && ((ShopkeeperAi) messageBox.getConversers()[1]).getShopType() == 0 && ((ShopkeeperAi) messageBox.getConversers()[1]).isInStock()){
-//				this.topics.add(SHOP_TOPICS[0]);
-//				this.topics.add(SHOP_TOPICS[1]);
-//			}
-//			if(messageBox.getConversers()[1] instanceof ShopkeeperAi && ((ShopkeeperAi) messageBox.getConversers()[1]).getShopType() == 1 &&
-//			  ((HitmanAi) messageBox.getConversers()[1]).getHitmanTargetAi() != messageBox.getConversers()[0] && ((ShopkeeperAi) messageBox.getConversers()[1]).isInStock() &&
-//			  (((HitmanAi) messageBox.getConversers()[1]).isMissionGiven() || !((HitmanAi) messageBox.getConversers()[1]).getHitmanTargetAi().isDead())){
-//				
-//				if(((HitmanAi) messageBox.getConversers()[1]).isMissionGiven()){
-//					this.topics.add(HITMAN_TOPIC[1]);
-//				}
-//				else{
-//					this.topics.add(HITMAN_TOPIC[0]);
-//				}
-//			}
-			this.topics.add(CONVO_TOPICS[2]);
+			this.topics.add(TOPIC_BYE);
 			setTopicButtons();
 		}
 		// enemy
 		else if(tone > 0){
-			this.topics.add(HELP_TOPICS[0]);
-			this.topics.add(HELP_TOPICS[1]);
+			this.topics.add(TOPIC_SHOW_ENEMIES);
 			if(!intimidated){
-				this.topics.add(EMOTION_TOPICS[0]);
+				this.topics.add(TOPIC_INTIMIDATE);
+				this.topics.add(TOPIC_JOIN);
 			}
+			this.topics.add(TOPIC_STEAL);
 			if((!messageBox.getConversers()[0].getWeapon().isMelee() ||
 	                  (messageBox.getConversers()[0].getWeapon().isMelee() &&
 	                   messageBox.getConversers()[0].getWeapon().isInRange(messageBox.getConversers()[0], messageBox.getConversers()[1])) ) ){
-				this.topics.add(EMOTION_TOPICS[2]);
+				this.topics.add(TOPIC_INCAP);
 			}
-			this.topics.add(CONVO_TOPICS[2]);
+			this.topics.add(TOPIC_BYE);
 			setTopicButtons();
 		}
 		

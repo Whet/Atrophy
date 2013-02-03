@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 
+import atrophy.combat.items.EngineeringSupply;
+import atrophy.combat.items.MedicalSupply;
+import atrophy.combat.items.ScienceSupply;
+import atrophy.combat.items.WeaponSupply;
 import atrophy.gameMenu.saveFile.Squad.Squaddie;
 import atrophy.gameMenu.ui.StashManager;
 
@@ -57,22 +61,26 @@ public class Missions{
 		memCodes.add(DEFAULT_MEM_CODE);
 	}
 	
-	public void lazyLoad(Squad squad, StashManager stashManager, ItemMarket itemMarket) {
+	public void lazyLoad(Squad squad, StashManager stashManager, ItemMarket itemMarket, TechTree techTree) {
 		this.squad = squad;
-		defaultMissions(stashManager, itemMarket);
+		defaultMissions(stashManager, itemMarket, techTree);
 	}
 
 	/**
 	 * Default missions.
 	 * @param itemMarkert 
 	 */
-	private void defaultMissions(StashManager stashManager, ItemMarket itemMarkert) {
-		this.missionGivers.add(new MissionGiver.WVGiver1(squad, this, stashManager, itemMarkert));
-		this.missionGivers.add(new MissionGiver.LonerGiver1(squad, this, stashManager, itemMarkert));
-		this.missionGivers.add(new MissionGiver.BanditGiver1(squad, this, stashManager, itemMarkert));
-		this.missionGivers.add(new MissionGiver.WVGiver2(squad, this, stashManager, itemMarkert));
-		this.missionGivers.add(new MissionGiver.LonerGiver2(squad, this, stashManager, itemMarkert));
-		this.missionGivers.add(new MissionGiver.BanditGiver2(squad, this, stashManager, itemMarkert));
+	private void defaultMissions(StashManager stashManager, ItemMarket itemMarkert, TechTree techTree) {
+		
+		if(this.missionGivers.isEmpty()) {
+			this.missionGivers.add(new MissionGiver.WVGiver1(squad, this, techTree, stashManager, itemMarkert));
+			this.missionGivers.add(new MissionGiver.LonerGiver1(squad, this, techTree, stashManager, itemMarkert));
+			this.missionGivers.add(new MissionGiver.BanditGiver1(squad, this, techTree, stashManager, itemMarkert));
+			this.missionGivers.add(new MissionGiver.WVGiver2(squad, this, techTree, stashManager, itemMarkert));
+			this.missionGivers.add(new MissionGiver.LonerGiver2(squad, this, techTree, stashManager, itemMarkert));
+			this.missionGivers.add(new MissionGiver.BanditGiver2(squad, this, techTree, stashManager, itemMarkert));
+		}
+		
 		this.updateMissions();
 	}
 
@@ -278,12 +286,12 @@ public class Missions{
 		 *
 		 * @param name the name
 		 * @param description the description
-		 * @param rewardItem the reward item
+		 * @param isRewardItem the reward item
 		 * @param reward the reward
 		 * @param squadMenu 
 		 */
-		public Mission(Missions missions, StashManager stashManager, String name, String description, boolean rewardItem, Object reward, Squad squad){
-			this.rewardItem = rewardItem;
+		public Mission(Missions missions, StashManager stashManager, String name, String description, boolean isRewardItem, Object reward, Squad squad){
+			this.rewardItem = isRewardItem;
 			this.reward = reward;
 			this.name = name;
 			this.description = description;
@@ -341,6 +349,90 @@ public class Missions{
 		 */
 		public String getDescription() {
 			return this.description;
+		}
+		
+	}
+	
+	public static class ShoppingListMission extends Mission{
+
+		// science, engineering, weapon, medical
+		private int[] requirements;
+		private TechTree techTree;
+		private String tech;
+		
+		public ShoppingListMission(Missions missions, Squad squad, StashManager stashManager, TechTree techTree, int[] requirements, Object rewardPerItem, String tech) {
+			super(missions, stashManager,
+				  "Unlock the Mysteries of: " + tech,
+				  "Obj: To unlock the mysteries of " + tech + "@nThe following are required:@nSci. "+ requirements[0] + " Eng. " + requirements[1] + " Wep. " + requirements[2] + " Med. " + requirements[3]
+						  + "@nReward per Supply: " + rewardPerItem,
+				  false, rewardPerItem, squad);
+			this.requirements = requirements;
+			this.techTree = techTree;
+			this.tech = tech;
+		}
+		
+		@Override
+		public boolean interact() {
+			while(requirements[0] > 0) {
+				if(stashHas(ScienceSupply.NAME)){
+					stashManager.getItems().remove(ScienceSupply.NAME);
+					giveReward();
+					requirements[0]--;
+				}
+				else
+					break;
+			}
+			while(requirements[1] > 0) {
+				if(stashHas(EngineeringSupply.NAME)){
+					stashManager.getItems().remove(EngineeringSupply.NAME);
+					giveReward();
+					requirements[1]--;
+				}
+				else
+					break;
+			}
+			while(requirements[2] > 0) {
+				if(stashHas(WeaponSupply.NAME)){
+					stashManager.getItems().remove(WeaponSupply.NAME);
+					giveReward();
+					requirements[2]--;
+				}
+				else
+					break;
+			}
+			while(requirements[3] > 0) {
+				if(stashHas(MedicalSupply.NAME)){
+					stashManager.getItems().remove(MedicalSupply.NAME);
+					giveReward();
+					requirements[3]--;
+				}
+				else
+					break;
+			}
+			
+			if(requirements[0] == 0 && requirements[1] == 0 && requirements[2] == 0 && requirements[3] == 0) {
+				techTree.research(tech);
+				return true;
+			}
+			
+			return false;
+		}
+		
+		@Override
+		protected void giveReward() {
+
+			missions.squad.setAdvance(missions.squad.getAdvance() + (Integer)reward);
+			
+			if(requirements[0] == 0 && requirements[1] == 0 && requirements[2] == 0 && requirements[3] == 0)
+				missions.missions.remove(this);
+		}
+		
+		private boolean stashHas(String targetItem2) {
+			for(int i = 0; i < stashManager.getItemCount(); i++){
+				if(stashManager.getItem(i).equals(targetItem2))
+					return true;
+			}
+			return false;
 		}
 		
 	}

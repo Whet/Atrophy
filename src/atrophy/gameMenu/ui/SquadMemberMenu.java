@@ -66,6 +66,7 @@ public class SquadMemberMenu extends Menu {
 		itemButtons = new ArrayList<TextButton>();
 		skillButtons = new HashMap<TextButton,String>();
 		addComponents();
+		updateInformation();
 	}
 	
 	/**
@@ -144,6 +145,7 @@ public class SquadMemberMenu extends Menu {
 						stashManager.addItem(item);
 						squadMember.removeItem(ind);
 						SoundBoard.getInstance().playEffect("invExchange");
+						updateInformation();
 					}
 					this.setText("Empty");
 					return true;
@@ -181,7 +183,10 @@ public class SquadMemberMenu extends Menu {
 	 */
 	@Override
 	public boolean mD(Point mousePosition, MouseEvent e) {
-		if(stashManager.transferItem(squadMember)){return true;}
+		if(stashManager.transferItem(squadMember)){
+			updateInformation();
+			return true;
+		}
 			return super.mD(mousePosition, e);
 	}
 	
@@ -191,7 +196,7 @@ public class SquadMemberMenu extends Menu {
 	@Override
 	public void mI(Point mousePosition) {
 		super.mI(mousePosition);
-		updateText();
+//		updateText();
 	}
 	
 	/* (non-Javadoc)

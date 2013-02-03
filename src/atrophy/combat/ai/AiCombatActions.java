@@ -127,7 +127,7 @@ public class AiCombatActions {
 	public void shoot(Ai invoker) {
 		// Update aggression of ai
 		if(this.getTargetAi() instanceof ThinkingAi){
-			((ThinkingAi) this.getTargetAi()).modifyAggression(ThinkingAi.SHOT_AT);
+			((ThinkingAi) this.getTargetAi()).modifyAggression(ThinkingAiEmotion.SHOT_AT);
 		}
 		
 		if(aiCrowd.getActorMask(invoker).isVisible()){

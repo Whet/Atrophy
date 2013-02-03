@@ -94,7 +94,6 @@ public class SoundBoard {
 	}
 	
 	public void playEffect(String key){
-		
 		try{
 		
 			Sound sound = null;

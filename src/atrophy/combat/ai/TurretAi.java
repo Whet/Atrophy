@@ -36,7 +36,7 @@ public class TurretAi extends LonerAi {
 	
 	public TurretAi(PanningManager panningManager, AiCrowd aiCrowd, CombatVisualManager combatVisualManager, TurnProcess turnProcess, FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, CombatMembersManager combatMembersManager, double x, double y, LevelManager levelManager, CombatInorganicManager combatInorganicManager, CombatUiManager combatUiManager, LootBox lootBox) {
 		super(panningManager, aiCrowd, combatVisualManager, turnProcess, floatingIcons, mouseAbilityHandler, combatMembersManager, AiGenerator.TURRET, x, y, levelManager, combatInorganicManager, combatUiManager, lootBox);
-		this.setAiMode("");
+		this.aiMode = AiMode.EMPTY;
 		
 		lookTurnCounter = 0;
 		
@@ -88,6 +88,8 @@ public class TurretAi extends LonerAi {
 		else{
 			respondToEnvironmentData();
 		}
+		
+		turnProcess.currentAiDone(true);
 	}
 	
 	@Override
@@ -124,11 +126,11 @@ public class TurretAi extends LonerAi {
 		
 		if(target != null){
 			this.aim(target);
-			this.setAiMode("Engaging");
+			this.aiMode = AiMode.ENGAGING;
 			lookTurnCounter = 0;
 		}
 		else{
-			this.setAiMode("");
+			this.aiMode = AiMode.EMPTY;
 			computeLookDirection();
 		}
 	}
@@ -139,7 +141,8 @@ public class TurretAi extends LonerAi {
 		if(!hacked) {
 			if(!target.isDead() &&
 			  (!this.getFaction().equals(target.getFaction())) &&
-               !this.commander.isAlliedWith(target.getFaction()))
+               !this.commander.isAlliedWith(target.getFaction()) &&
+               !target.getFaction().equals(AiGenerator.LONER))
 				return true;
 		}
 		else {
@@ -196,20 +199,6 @@ public class TurretAi extends LonerAi {
 	public void setTargetFaction(Set<String> targetFactions) {
 		this.targetFactions = targetFactions;
 	}
-	
-//	public static void applyHaywire(){
-//		
-//		ArrayList<String> factions = new ArrayList<String>();
-//		factions.add(AiGenerator.BANDITS);
-//		factions.add(AiGenerator.LONER);
-//		factions.add(AiGenerator.WHITE_VISTA);
-//		
-//		TurretAi.setTargetFaction(factions);
-//		for(Ai turret : aiCrowd.getActors()){
-//			if(turret instanceof TurretAi)
-//				((TurretAi) turret).setFaction(AiGenerator.LONER);
-//		}
-//	}
 	
 	@Override
 	public boolean isStealthed() {
