@@ -5,10 +5,18 @@ package atrophy.combat.ai;
 
 import java.awt.Polygon;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
 import java.util.Stack;
+
+import org.omg.CORBA.Current;
 
 import watoydoEngine.gubbinz.Maths;
 import atrophy.combat.level.LevelBlock;
+import atrophy.combat.level.LevelBlockGrid;
+import atrophy.combat.level.LevelBlockGrid.GridBlock;
 import atrophy.combat.level.Portal;
 
 // TODO: Auto-generated Javadoc
@@ -17,52 +25,16 @@ import atrophy.combat.level.Portal;
  */
 public class PathFinder {
 	
-	/**
-	 * The Constant MAX_ITERATIONS.
-	 */
 	private static final int MAX_ITERATIONS = 12;
 	
-	/**
-	 * Creates the pathway.
-	 *
-	 * @param startLocation the start location
-	 * @param endLocation the end location
-	 * @param startBlock the start block
-	 * @param targetRoom the target room
-	 * @return the array list
-	 * @throws PathNotFoundException the path not found exception
-	 */
 	public static ArrayList<Portal> createPathway(double[] startLocation, double[] endLocation, LevelBlock startBlock, LevelBlock targetRoom)throws PathNotFoundException{
 		return createPathway(startLocation,endLocation,startBlock,targetRoom,false);
 	}
 	
-	/**
-	 * Creates the pathway.
-	 *
-	 * @param startLocation the start location
-	 * @param endLocation the end location
-	 * @param startBlock the start block
-	 * @param targetRoom the target room
-	 * @param excludedPortal the excluded portal
-	 * @return the array list
-	 * @throws PathNotFoundException the path not found exception
-	 */
 	public static ArrayList<Portal> createPathway(double[] startLocation, double[] endLocation, LevelBlock startBlock, LevelBlock targetRoom, Portal excludedPortal)throws PathNotFoundException{
 		return createPathway(startLocation,endLocation,startBlock,targetRoom,excludedPortal,false);
 	}
 	
-	/**
-	 * Creates the pathway.
-	 *
-	 * @param startLocation the start location
-	 * @param endLocation the end location
-	 * @param startBlock the start block
-	 * @param targetRoom the target room
-	 * @param excludedPortal the excluded portal
-	 * @param ignoreClosedDoors the ignore closed doors
-	 * @return the array list
-	 * @throws PathNotFoundException the path not found exception
-	 */
 	public static ArrayList<Portal> createPathway(double[] startLocation, double[] endLocation, LevelBlock startBlock, LevelBlock targetRoom, Portal excludedPortal, boolean ignoreClosedDoors)throws PathNotFoundException{
 		
 		// Check for special case where all doors are blocked to the target room
@@ -104,17 +76,6 @@ public class PathFinder {
 		return finalPath;
 	}
 	
-	/**
-	 * Creates the pathway.
-	 *
-	 * @param startLocation the start location
-	 * @param endLocation the end location
-	 * @param startBlock the start block
-	 * @param targetRoom the target room
-	 * @param ignoreClosedDoors the ignore closed doors
-	 * @return the array list
-	 * @throws PathNotFoundException the path not found exception
-	 */
 	public static ArrayList<Portal> createPathway(double[] startLocation, double[] endLocation, LevelBlock startBlock, LevelBlock targetRoom, boolean ignoreClosedDoors)throws PathNotFoundException{
 		
 		// Check for special case where all doors are blocked to the target room
@@ -156,18 +117,6 @@ public class PathFinder {
 		return finalPath;
 	}
 	
-	/**
-	 * Creates the pathway.
-	 *
-	 * @param startLocation the start location
-	 * @param endLocation the end location
-	 * @param startBlock the start block
-	 * @param targetRoom the target room
-	 * @param excludedRooms the excluded rooms
-	 * @param ignoreClosedDoors the ignore closed doors
-	 * @return the array list
-	 * @throws PathNotFoundException the path not found exception
-	 */
 	public static ArrayList<Portal> createPathway(double[] startLocation, double[] endLocation, LevelBlock startBlock, LevelBlock targetRoom, ArrayList<LevelBlock> excludedRooms, boolean ignoreClosedDoors)throws PathNotFoundException{
 		
 		// Check for special case where all doors are blocked to the target room
@@ -209,12 +158,6 @@ public class PathFinder {
 		return finalPath;
 	}
 	
-	/**
-	 * Checks if is room completely blocked.
-	 *
-	 * @param targetRoom the target room
-	 * @return true, if is room completely blocked
-	 */
 	private static boolean isRoomCompletelyBlocked(LevelBlock targetRoom) {
 		for(int i = 0; i < targetRoom.getPortalCount(); i++){
 			if(targetRoom.getPortal(i).canUse()){
@@ -224,17 +167,6 @@ public class PathFinder {
 		return true;
 	}
 
-	/**
-	 * Creates the path nodes.
-	 *
-	 * @param startBlock the start block
-	 * @param nextLayer the next layer
-	 * @param nodeLayers the node layers
-	 * @param targetRoom the target room
-	 * @param excludedRooms the excluded rooms
-	 * @param ignoreClosedDoors the ignore closed doors
-	 * @throws PathNotFoundException the path not found exception
-	 */
 	private static void createPathNodes(LevelBlock startBlock,
 										ArrayList<PathfindingNode> nextLayer,
 										Stack<ArrayList<PathfindingNode>> nodeLayers,
@@ -308,14 +240,6 @@ public class PathFinder {
 	}
 
 
-	/**
-	 * Gets the complexity of path.
-	 *
-	 * @param startBlock the start block
-	 * @param targetRoom the target room
-	 * @param excludedPortal the excluded portal
-	 * @return the complexity of path
-	 */
 	public static int getComplexityOfPath(LevelBlock startBlock, LevelBlock targetRoom, Portal excludedPortal){
 		
 		Stack<ArrayList<PathfindingNode>> nodeLayers = new Stack<ArrayList<PathfindingNode>>();
@@ -332,16 +256,6 @@ public class PathFinder {
 		return createPathNodesForComplexity(startBlock,nextLayer,nodeLayers,targetRoom, excludedPortal);
 	}
 	
-	/**
-	 * Creates the path nodes for complexity.
-	 *
-	 * @param startBlock the start block
-	 * @param nextLayer the next layer
-	 * @param nodeLayers the node layers
-	 * @param targetRoom the target room
-	 * @param excludedPortal the excluded portal
-	 * @return the int
-	 */
 	private static int createPathNodesForComplexity(LevelBlock startBlock,
 											 	    ArrayList<PathfindingNode> nextLayer, 
 											 	    Stack<ArrayList<PathfindingNode>> nodeLayers, 
@@ -417,17 +331,6 @@ public class PathFinder {
 		return calculateLayerContentSize(nodeLayers);
 	}
 	
-	/**
-	 * Creates the path nodes.
-	 *
-	 * @param startBlock the start block
-	 * @param nextLayer the next layer
-	 * @param nodeLayers the node layers
-	 * @param targetRoom the target room
-	 * @param excludedPortal the excluded portal
-	 * @param ignoreClosedDoors the ignore closed doors
-	 * @throws PathNotFoundException the path not found exception
-	 */
 	private static void createPathNodes(LevelBlock startBlock,
 									    ArrayList<PathfindingNode> nextLayer, 
 									    Stack<ArrayList<PathfindingNode>> nodeLayers, 
@@ -507,16 +410,6 @@ public class PathFinder {
 		throw new PathNotFoundException(targetRoom);
 	}
 	
-	/**
-	 * Creates the path nodes.
-	 *
-	 * @param startBlock the start block
-	 * @param nextLayer the next layer
-	 * @param nodeLayers the node layers
-	 * @param targetRoom the target room
-	 * @param ignoreClosedDoors the ignore closed doors
-	 * @throws PathNotFoundException the path not found exception
-	 */
 	private static void createPathNodes(LevelBlock startBlock,
 									    ArrayList<PathfindingNode> nextLayer, 
 									    Stack<ArrayList<PathfindingNode>> nodeLayers, 
@@ -587,14 +480,6 @@ public class PathFinder {
 	throw new PathNotFoundException(targetRoom);
 	}
 		
-	/**
-	 * Room layers contains.
-	 *
-	 * @param array the array
-	 * @param currentLayer the current layer
-	 * @param item the item
-	 * @return true, if successful
-	 */
 	private static boolean roomLayersContains(Stack<ArrayList<PathfindingNode>> array, ArrayList<PathfindingNode> currentLayer, LevelBlock item){
 		
 		for(int i = 0; i < currentLayer.size(); i++){
@@ -613,12 +498,6 @@ public class PathFinder {
 		return false;
 	}
 	
-	/**
-	 * Calculate layer content size.
-	 *
-	 * @param array the array
-	 * @return the int
-	 */
 	private static int calculateLayerContentSize(Stack<ArrayList<PathfindingNode>> array){
 		int count = 0;
 		for(int i = 0; i < array.size(); i++){
@@ -630,14 +509,6 @@ public class PathFinder {
 		return count;
 	}
 	
-	/**
-	 * Can create path.
-	 *
-	 * @param startBlock the start block
-	 * @param targetRoom the target room
-	 * @param excludedPortal the excluded portal
-	 * @return true, if successful
-	 */
 	public static boolean canCreatePath(LevelBlock startBlock, LevelBlock targetRoom, Portal excludedPortal){
 		try{
 			createPathway(null,null,startBlock,targetRoom,excludedPortal,false);
@@ -648,16 +519,6 @@ public class PathFinder {
 		}
 	}
 	
-	/**
-	 * Optimal portals for path.
-	 *
-	 * @param startLocation the start location
-	 * @param targetLocation the target location
-	 * @param endBlock the end block
-	 * @param nonOptimalPath the non optimal path
-	 * @param ignoreBlockedDoors the ignore blocked doors
-	 * @return the array list
-	 */
 	private static ArrayList<Portal> optimalPortalsForPath(double[] startLocation, double[] targetLocation, LevelBlock endBlock, ArrayList<Portal> nonOptimalPath, boolean ignoreBlockedDoors) {
 
 		ArrayList<Portal> optimalPath = new ArrayList<Portal>(nonOptimalPath.size());
@@ -724,89 +585,119 @@ public class PathFinder {
 		return optimalPath;
 	}
 	
-	/**
-	 * The Class PathfindingNode.
-	 */
 	private static class PathfindingNode {
 		
-		/**
-		 * The represented block.
-		 */
 		private LevelBlock representedBlock;
 		
-		/**
-		 * The portal back.
-		 */
 		private Portal portalBack;
 		
-		/**
-		 * The previous block.
-		 */
 		private PathfindingNode previousBlock;
 		
-		/**
-		 * Instantiates a new pathfinding node.
-		 *
-		 * @param representedBlock the represented block
-		 * @param previousBlock the previous block
-		 * @param portalBack the portal back
-		 */
 		public PathfindingNode(LevelBlock representedBlock, PathfindingNode previousBlock, Portal portalBack){
 			this.representedBlock = representedBlock;
 			this.previousBlock = previousBlock;
 			this.portalBack = portalBack;
 		}
 		
-		/**
-		 * Gets the level block.
-		 *
-		 * @return the level block
-		 */
 		public LevelBlock getLevelBlock(){
 			return this.representedBlock;
 		}
 		
-		/**
-		 * Gets the previous block.
-		 *
-		 * @return the previous block
-		 */
 		public PathfindingNode getPreviousBlock(){
 			return this.previousBlock;
 		}
 		
-		/**
-		 * Gets the portal back.
-		 *
-		 * @return the portal back
-		 */
 		public Portal getPortalBack(){
 			return this.portalBack;
 		}
 		
 	}
 	
-	/**
-	 * Find intra path.
-	 *
-	 * @param mover the mover
-	 * @param moveLocation the move location
-	 * @return the array list
-	 * @throws PathNotFoundException the path not found exception
-	 */
 	public static ArrayList<double[]> findIntraPath(Ai mover, double[] moveLocation) throws PathNotFoundException{
-		return findIntraPath(mover, moveLocation, 15);
+	    return findAStarPath(mover, moveLocation);
+	}
+	
+	public static ArrayList<double[]> findAStarPath(Ai mover, double[] moveLocation) throws PathNotFoundException{
+	    
+	    LevelBlockGrid navGrid = mover.getLevelBlock().getLevelBlockGrid();
+	    
+	    navGrid.resetPicks();
+	    
+	    Set<GridBlock> closedSet = new HashSet<>();
+	    Set<GridBlock> openSet = new HashSet<>();
+	    
+	    GridBlock startBlock = navGrid.getGridBlock(mover.getLocation());
+        openSet.add(startBlock);
+	    startBlock.g = 0;
+	    startBlock.h = Maths.getDistance(startBlock.getCentre(), moveLocation);
+	    startBlock.f = startBlock.g + startBlock.h;
+        
+	    Map<GridBlock, GridBlock> cameFrom = new HashMap<>();
+	    
+        GridBlock goal = navGrid.getGridBlock(moveLocation);
+	    
+	    while(!openSet.isEmpty()){
+	        
+	        GridBlock current = lowestF(openSet);
+	        
+	        if(current == goal)
+	            return createAStarPath(cameFrom, goal, startBlock);
+	        
+	        openSet.remove(current);
+	        closedSet.add(current);
+	        
+	        double newG;
+	        
+	        for(GridBlock neighbour : current.neighbours){
+	            if(closedSet.contains(neighbour))
+	                continue;
+	            
+	            if(current.nonDiagNeighbours.contains(neighbour))
+	                newG = current.g + 10;
+	            else
+	                newG = current.g + 12;
+	            
+	            if(!openSet.contains(neighbour) || newG < neighbour.g ) {
+	                cameFrom.put(neighbour, current);
+	                neighbour.g = newG;
+	                neighbour.h = Maths.getDistance(startBlock.getCentre(), moveLocation);
+	                neighbour.f = neighbour.g + neighbour.h;
+	                
+	                openSet.add(neighbour);
+	            }
+	        }
+	    }
+	    
+	    throw new PathNotFoundException(mover.getLevelBlock());
+	}
+	
+    private static GridBlock lowestF(Set<GridBlock> openSet) {
+        
+	    GridBlock returnBlock = null;
+	    
+	    for(GridBlock block : openSet){
+            if(returnBlock == null  || block.f < returnBlock.f)
+                returnBlock = block;
+        }
+	    
+	    return returnBlock;
+    }
+
+    private static ArrayList<double[]> createAStarPath(Map<GridBlock, GridBlock> cameFrom, GridBlock goal, GridBlock start) {
+        
+        GridBlock current = goal;
+        
+        ArrayList<double[]> path = new ArrayList<>();
+        
+        while(current != start) {
+            current.picked = true;
+            path.add(current.getCentre());
+            current = cameFrom.get(current);
+        }
+        
+        return path;
 	}
 	 
-	/**
-	 * Find intra path.
-	 *
-	 * @param mover the mover
-	 * @param moveLocation the move location
-	 * @param radius the radius
-	 * @return the array list
-	 * @throws PathNotFoundException the path not found exception
-	 */
 	public static ArrayList<double[]> findIntraPath(Ai mover, double[] moveLocation, int radius) throws PathNotFoundException{
 		Polygon room = mover.getLevelBlock().getHitBox();
 		
@@ -836,15 +727,6 @@ public class PathFinder {
 		return points;
 	}
 	
-	/**
-	 * Trim pathway.
-	 *
-	 * @param pathPoints the path points
-	 * @param room the room
-	 * @param moverLocation the mover location
-	 * @param moveLocation the move location
-	 * @return the array list
-	 */
 	private static ArrayList<double[]> trimPathway(ArrayList<double[]> pathPoints, double[] moveLocation) {
 		
 		// the optimal path *
@@ -862,16 +744,6 @@ public class PathFinder {
 		return pathPoints;
 	}
 
-	/**
-	 * Computes the rough points.
-	 *
-	 * @param startIndex the start index
-	 * @param modifier the modifier
-	 * @param moverLocation the mover location
-	 * @param room the room
-	 * @param radius the radius
-	 * @return the array list
-	 */
 	private static ArrayList<double[]> computeRoughPoints(int startIndex, int modifier, double[] moverLocation, Polygon room, int radius) {
 		
 		ArrayList<double[]> points = new ArrayList<double[]>(4);
@@ -924,13 +796,6 @@ public class PathFinder {
 		
 	}
 	
-	/**
-	 * Slightly cental vertex.
-	 *
-	 * @param room the room
-	 * @param index the index
-	 * @return the double[]
-	 */
 	private static double[] slightlyCentalVertex(Polygon room, int index){
 		double[] newVertex = {room.xpoints[index],room.ypoints[index]};
 		/*
@@ -942,13 +807,6 @@ public class PathFinder {
 		return newVertex;
 	}
 
-	/**
-	 * Find closest point.
-	 *
-	 * @param moveLocation the move location
-	 * @param room the room
-	 * @return the int
-	 */
 	private static int findClosestPoint(double[] moveLocation, Polygon room) {
 		
 		double distance = 0;
@@ -964,16 +822,6 @@ public class PathFinder {
 		return index;
 	}
 	
-	/**
-	 * Checks if is in sight.
-	 *
-	 * @param x the x
-	 * @param y the y
-	 * @param x1 the x1
-	 * @param y1 the y1
-	 * @param room the room
-	 * @return true, if is in sight
-	 */
 	public static boolean isInSight(double x, double y, double x1, double y1, Polygon room){
 		
 		double vector[] = {Math.cos(Maths.getRads(x, y, x1, y1)) * 14,
@@ -991,17 +839,6 @@ public class PathFinder {
 		return true;
 	}
 	
-	/**
-	 * Checks if is in sight.
-	 *
-	 * @param x the x
-	 * @param y the y
-	 * @param x1 the x1
-	 * @param y1 the y1
-	 * @param room the room
-	 * @param radiusOfSight the radius of sight
-	 * @return true, if is in sight
-	 */
 	public static boolean isInSight(double x, double y, double x1, double y1, Polygon room, int radiusOfSight){
 		
 		double vector[] = {Math.cos(Maths.getRads(x, y, x1, y1)) * 1,
@@ -1019,16 +856,6 @@ public class PathFinder {
 		return true;
 	}
 	
-	/**
-	 * Checks if is in firing sight.
-	 *
-	 * @param x the x
-	 * @param y the y
-	 * @param x1 the x1
-	 * @param y1 the y1
-	 * @param room the room
-	 * @return true, if is in firing sight
-	 */
 	public static boolean isInFiringSight(double x, double y, double x1, double y1, LevelBlock room){
 		
 		double[] startLoc = {x,y};
@@ -1052,16 +879,6 @@ public class PathFinder {
 		return true;
 	}
 	
-	/**
-	 * Checks if is vertex sight.
-	 *
-	 * @param x the x
-	 * @param y the y
-	 * @param x1 the x1
-	 * @param y1 the y1
-	 * @param room the room
-	 * @return true, if is vertex sight
-	 */
 	public static boolean isVertexSight(double x, double y, double x1, double y1, LevelBlock room) {
 		
 		double[] startLoc = {x,y};
@@ -1102,15 +919,6 @@ public class PathFinder {
 		return true;
 	}
 	
-	/**
-	 * Gets the last point.
-	 *
-	 * @param startLocation the is
-	 * @param rads the rads
-	 * @param room the room
-	 * @param space the space
-	 * @return the last point
-	 */
 	public static int[] getLastPoint(int[] startLocation, double rads, LevelBlock room, int space) {
 		double x,y;
 		
@@ -1168,14 +976,6 @@ public class PathFinder {
 		}
 	}
 
-	/**
-	 * Gets the last point.
-	 *
-	 * @param is the is
-	 * @param rads the rads
-	 * @param room the room
-	 * @return the last point
-	 */
 	public static int[] getLastPoint(int[] is, double rads, LevelBlock room) {
 		double x,y;
 		

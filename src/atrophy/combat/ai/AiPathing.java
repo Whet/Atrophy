@@ -102,19 +102,19 @@ public class AiPathing {
 					// If room pathway still exists move to next point
 					if(this.roomPathway != null){
 						
-						// can see move location
-						if(PathFinder.isInSight(this.location[0], this.location[1], this.moveLocation[0],  this.moveLocation[1], this.getLevelBlock().getHitBox())){
-							roomPathway = null;
-							continue;
-						}
-						
-						// check to see if the next point is visible to make paths more efficient
-						int lookIndex = this.roomPathway.size() - 1;
-						while(lookIndex > 0 &&
-							  PathFinder.isInSight(this.location[0], this.location[1], this.roomPathway.get(lookIndex - 1)[0],  this.roomPathway.get(lookIndex - 1)[1], this.getLevelBlock().getHitBox())){
-							this.roomPathway.pop();
-							lookIndex = this.roomPathway.size() - 1;
-						}
+//						// can see move location
+//						if(PathFinder.isInSight(this.location[0], this.location[1], this.moveLocation[0],  this.moveLocation[1], this.getLevelBlock().getHitBox())){
+//							roomPathway = null;
+//							continue;
+//						}
+//						
+//						// check to see if the next point is visible to make paths more efficient
+//						int lookIndex = this.roomPathway.size() - 1;
+//						while(lookIndex > 0 &&
+//							  PathFinder.isInSight(this.location[0], this.location[1], this.roomPathway.get(lookIndex - 1)[0],  this.roomPathway.get(lookIndex - 1)[1], this.getLevelBlock().getHitBox())){
+//							this.roomPathway.pop();
+//							lookIndex = this.roomPathway.size() - 1;
+//						}
 						
 						if(this.roomPathway.size() == 0){
 							this.roomPathway = null;

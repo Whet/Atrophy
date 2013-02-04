@@ -2,13 +2,17 @@ package atrophy.combat.level;
 
 import java.awt.Polygon;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class LevelBlockGrid {
     
     private static final int GRID_BLOCK_SIZE = 5;
     
     private List<List<GridBlock>> blocks;
+
+    private int startX, startY, width, height;
 
     public LevelBlockGrid(Polygon hitbox) {
         
@@ -18,13 +22,43 @@ public class LevelBlockGrid {
         
     }
     
+    public GridBlock getGridBlock(double[] location) {
+        
+//        System.out.println("i " + (int) ((location[0] - startX) / GRID_BLOCK_SIZE));
+//        System.out.println("j " + (int) ((location[1] - startY) / GRID_BLOCK_SIZE));
+        
+        for(int i = (int) ((location[0] - startX) / GRID_BLOCK_SIZE); i < blocks.size(); i++){
+            for(int j = 0; j < blocks.get(i).size(); j++){
+                if(blocks.get(i).get(j).contains(location[0], location[1]))
+                    return blocks.get(i).get(j);
+            }
+        }
+        
+        return null;
+    }
+    
+    public GridBlock getGridBlock(double x, double y) {
+        
+//        System.out.println("i " + (int) ((location[0] - startX) / GRID_BLOCK_SIZE));
+//        System.out.println("j " + (int) ((location[1] - startY) / GRID_BLOCK_SIZE));
+        
+        for(int i = (int) ((x - startX) / GRID_BLOCK_SIZE); i < blocks.size(); i++){
+            for(int j = 0; j < blocks.get(i).size(); j++){
+                if(blocks.get(i).get(j).contains(x, y))
+                    return blocks.get(i).get(j);
+            }
+        }
+        
+        return null;
+    }
+    
     private void convertPolygonToBlocks(Polygon hitbox) {
 
-        int startX = (int) hitbox.getBounds().getX(); 
-        int startY = (int) hitbox.getBounds().getY();
+        startX = (int) hitbox.getBounds().getX(); 
+        startY = (int) hitbox.getBounds().getY();
         
-        double width = hitbox.getBounds().getWidth();
-        double height = hitbox.getBounds().getHeight();
+        width =  (int) hitbox.getBounds().getWidth();
+        height = (int) hitbox.getBounds().getHeight();
         
         for(int i = 0; i < width; i++){
             List<GridBlock> column = new ArrayList<>();
@@ -55,7 +89,7 @@ public class LevelBlockGrid {
         for(int i = 0; i < blocks.size(); i++){
             List<GridBlock> blockList = blocks.get(i);
             for(int j = 0; j < blockList.size(); j++){
-                blockList.get(j).calculateNeighbours(blocks,i,j);
+                blockList.get(j).calculateNeighbours(this);
             }
         }
     }
@@ -68,35 +102,77 @@ public class LevelBlockGrid {
    public static class GridBlock {
         
         public int x, y, width, height;
-        public GridBlock left,top,right,bottom;
+        public Set<GridBlock> nonDiagNeighbours;
+        public Set<GridBlock> neighbours;
+        public double g, h, f;
+        public boolean picked;
         
         public GridBlock(int x, int y, int width, int height){
             this.x = x;
             this.y = y;
             this.width = width;
             this.height = height;
+            neighbours = new HashSet<>();
+            nonDiagNeighbours = new HashSet<>();
+            picked = false;
         }
         
-        public void calculateNeighbours(List<List<GridBlock>> blocks, int i, int j) {
-            // Calculate blocks to right and down then add this block to them to cover the top and left
+        public void calculateNeighbours(LevelBlockGrid grid) {
             
-            if(j + 1 < blocks.get(i).size()) {
-                GridBlock bottomNeighbour = blocks.get(i).get(j + 1);
-                if(bottomNeighbour.x == this.x && bottomNeighbour.y == this.y + height) {
-                    this.bottom = bottomNeighbour;
-                    bottomNeighbour.top = this;
-                }
-            }
-            
-            if(i + 1 < blocks.size() && j < blocks.get(i + 1).size()) {
-                GridBlock rightNeighbour = blocks.get(i + 1).get(j);
-                if(rightNeighbour.x == this.x + width && rightNeighbour.y == this.y) {
-                    this.right = rightNeighbour;
-                    rightNeighbour.left = this;
-                }
-            }
+            GridBlock right = grid.getGridBlock(this.x + this.width + 1, this.y + 1);
+            if(right != null) {
+                this.neighbours.add(right);
+                right.neighbours.add(this);
                 
+                this.nonDiagNeighbours.add(right);
+                right.nonDiagNeighbours.add(this);
+            }
+            
+            GridBlock bottom = grid.getGridBlock(this.x + 1, this.y + this.height + 1);
+            if(bottom != null) {
+                this.neighbours.add(bottom);
+                bottom.neighbours.add(this);
+                
+                this.nonDiagNeighbours.add(bottom);
+                bottom.nonDiagNeighbours.add(this);
+            }
+            
+            GridBlock topRight = grid.getGridBlock(this.x + this.width + 1, this.y - this.height - 1);
+            if(topRight != null) {
+                this.neighbours.add(topRight);
+                topRight.neighbours.add(this);
+            }
+            
+            GridBlock bottomRight = grid.getGridBlock(this.x + this.width + 1, this.y + this.height + 1);
+            if(bottomRight != null) {
+                this.neighbours.add(bottomRight);
+                bottomRight.neighbours.add(this);
+            }
+            
         }
+
+        public boolean contains(double x2, double y2) {
+            return this.x <= x2 && this.x + width >= x2 && this.y <= y2 && this.y + height >= y2;
+        }
+
+        public boolean contains(double[] location) {
+            return this.x <= location[0] && this.x + width >= location[0] && this.y <= location[1] && this.y + height >= location[1];
+        }
+
+        public double[] getCentre() {
+            return new double[]{x + width / 2, y + height / 2};
+        }
+        
+    }
+
+
+    public void resetPicks() {
+        for(int i = 0; i < blocks.size(); i++){
+            List<GridBlock> blockList = blocks.get(i);
+            for(int j = 0; j < blockList.size(); j++){
+                blockList.get(j).picked = false;
+            }
+        }    
     }
     
 }

@@ -286,7 +286,7 @@ public class LineDrawer implements Displayable{
 				}
 				
 				// Debug
-//				drawPathGrid(drawShape, levelManager.getBlock(mapDraw.levelBlockCode).getLevelBlockGrid(), mapDraw.getLocation()[0], mapDraw.getLocation()[1]);
+				drawPathGrid(drawShape, levelManager.getBlock(mapDraw.levelBlockCode).getLevelBlockGrid(), mapDraw.getLocation()[0], mapDraw.getLocation()[1]);
 				
 				if(combatVisualManager.isTabled() && levelManager.getBlock(mapDraw.levelBlockCode) == combatVisualManager.getLastDraggableAi().getLevelBlock()){
 					
@@ -306,13 +306,21 @@ public class LineDrawer implements Displayable{
 
 	@SuppressWarnings("unused")
     private void drawPathGrid(Graphics2D drawShape, LevelBlockGrid levelBlockGrid, double x, double y) {
-	    drawShape.setColor(Color.white);
+	    
 	    for(int i = 0; i < levelBlockGrid.getBlocks().size(); i++){
 	        for(int j = 0; j < levelBlockGrid.getBlocks().get(i).size(); j++){
 	            
 	            GridBlock gridBlock = levelBlockGrid.getBlocks().get(i).get(j);
 	            
-	            drawShape.drawRect((int)(gridBlock.x - x), (int)(gridBlock.y - y), gridBlock.width, gridBlock.height);
+	            if(gridBlock.picked) {
+	                drawShape.setColor(Color.red);
+	                drawShape.fillRect((int)(gridBlock.x - x), (int)(gridBlock.y - y), gridBlock.width, gridBlock.height);
+	            }
+	            else {
+	                drawShape.setColor(Color.white);
+	                drawShape.drawRect((int)(gridBlock.x - x), (int)(gridBlock.y - y), gridBlock.width, gridBlock.height);
+	            }
+	            
 	            
 	        }
 	    }
