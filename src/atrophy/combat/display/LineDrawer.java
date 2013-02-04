@@ -33,6 +33,8 @@ import atrophy.combat.ai.Ai;
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.ai.PathFinder;
 import atrophy.combat.level.LevelBlock;
+import atrophy.combat.level.LevelBlockGrid;
+import atrophy.combat.level.LevelBlockGrid.GridBlock;
 import atrophy.combat.level.LevelManager;
 
 // TODO: Auto-generated Javadoc
@@ -119,8 +121,7 @@ public class LineDrawer implements Displayable{
 			
 			for(LevelBlock levelBlock : levelManager.getCurrentLevel().getBlocks()){
 			
-				map[mapNumber] = new MapDrawBlock(panningManager, new BufferedImage((int)levelBlock.getSize()[0],(int)levelBlock.getSize()[1], BufferedImage.TYPE_INT_ARGB),
-												  levelBlock);
+				map[mapNumber] = new MapDrawBlock(panningManager, new BufferedImage((int)levelBlock.getSize()[0],(int)levelBlock.getSize()[1], BufferedImage.TYPE_INT_ARGB),levelBlock);
 				
 				BufferedImage texture = floorTextures[levelBlock.getFloorTextureCode()];
 				MapPainter.applyMapTexture(texture, levelBlock, map[mapNumber].getImage());
@@ -284,6 +285,9 @@ public class LineDrawer implements Displayable{
 					drawShape.drawPolygon(mapDraw.getStealthRegions().get(i));
 				}
 				
+				// Debug
+//				drawPathGrid(drawShape, levelManager.getBlock(mapDraw.levelBlockCode).getLevelBlockGrid(), mapDraw.getLocation()[0], mapDraw.getLocation()[1]);
+				
 				if(combatVisualManager.isTabled() && levelManager.getBlock(mapDraw.levelBlockCode) == combatVisualManager.getLastDraggableAi().getLevelBlock()){
 					
 					drawShape.setColor(Color.gray);
@@ -300,7 +304,22 @@ public class LineDrawer implements Displayable{
 		drawShape.setTransform(new AffineTransform());
 	}
 
-	/**
+	@SuppressWarnings("unused")
+    private void drawPathGrid(Graphics2D drawShape, LevelBlockGrid levelBlockGrid, double x, double y) {
+	    drawShape.setColor(Color.white);
+	    for(int i = 0; i < levelBlockGrid.getBlocks().size(); i++){
+	        for(int j = 0; j < levelBlockGrid.getBlocks().get(i).size(); j++){
+	            
+	            GridBlock gridBlock = levelBlockGrid.getBlocks().get(i).get(j);
+	            
+	            drawShape.drawRect((int)(gridBlock.x - x), (int)(gridBlock.y - y), gridBlock.width, gridBlock.height);
+	            
+	        }
+	    }
+	    
+    }
+
+    /**
 	 * Draw kill radius.
 	 *
 	 * @param drawShape the draw shape

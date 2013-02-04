@@ -64,6 +64,8 @@ public class LevelBlock {
 	 */
 	private List<AiNode> nodes;
 	
+	private LevelBlockGrid grid;
+	
 	/**
 	 * The code.
 	 */
@@ -108,6 +110,11 @@ public class LevelBlock {
 		this.containsScience = false;
 		
 		this.missionManager = missionManager;
+		
+	}
+	
+	public void createNavigationGrid(){
+	    this.grid = new LevelBlockGrid(this.hitbox);
 	}
 	
 	// The Void
@@ -712,4 +719,8 @@ public class LevelBlock {
 		return connectedRooms;
 	}
 
+    public LevelBlockGrid getLevelBlockGrid() {
+        return this.grid;
+    }
+	
 }
