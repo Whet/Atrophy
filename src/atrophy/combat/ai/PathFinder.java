@@ -11,8 +11,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Stack;
 
-import org.omg.CORBA.Current;
-
 import watoydoEngine.gubbinz.Maths;
 import atrophy.combat.level.LevelBlock;
 import atrophy.combat.level.LevelBlockGrid;

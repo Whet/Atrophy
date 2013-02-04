@@ -70,7 +70,7 @@ public class AiPathing {
 					if(movedIntoPortal == 0){
 						// if entry of portal successful then remove it from the portal pathway
 						this.portalPathway.pop();
-						
+						targetPortal = null;
 						// remove the current room pathway
 						this.roomPathway = null;
 						
@@ -102,34 +102,29 @@ public class AiPathing {
 					// If room pathway still exists move to next point
 					if(this.roomPathway != null){
 						
-//						// can see move location
-//						if(PathFinder.isInSight(this.location[0], this.location[1], this.moveLocation[0],  this.moveLocation[1], this.getLevelBlock().getHitBox())){
-//							roomPathway = null;
-//							continue;
-//						}
-//						
-//						// check to see if the next point is visible to make paths more efficient
-//						int lookIndex = this.roomPathway.size() - 1;
-//						while(lookIndex > 0 &&
-//							  PathFinder.isInSight(this.location[0], this.location[1], this.roomPathway.get(lookIndex - 1)[0],  this.roomPathway.get(lookIndex - 1)[1], this.getLevelBlock().getHitBox())){
-//							this.roomPathway.pop();
-//							lookIndex = this.roomPathway.size() - 1;
-//						}
-						
-						if(this.roomPathway.size() == 0){
-							this.roomPathway = null;
+						// can see move location
+						if(PathFinder.isInSight(this.location[0], this.location[1], this.moveLocation[0],  this.moveLocation[1], this.getLevelBlock().getHitBox())){
+							moveIntra(invoker, this.moveLocation);
 							continue;
 						}
-						
-						moveIntra(invoker,roomPathway.peek());
-						// reset action
-						invoker.setAction("Move");
-						if(Maths.getDistance(this.getLocation(), this.roomPathway.peek()) == 0){
-							this.roomPathway.pop();
+						else {
 							
 							if(this.roomPathway.size() == 0){
 								this.roomPathway = null;
-								invoker.setAction("");
+								continue;
+							}
+							
+							moveIntra(invoker,roomPathway.peek());
+							
+							// reset action
+							invoker.setAction("Move");
+							if(Maths.getDistance(this.getLocation(), this.roomPathway.peek()) == 0){
+								this.roomPathway.pop();
+								
+								if(this.roomPathway.size() == 0){
+									this.roomPathway = null;
+									invoker.setAction("");
+								}
 							}
 						}
 					}
