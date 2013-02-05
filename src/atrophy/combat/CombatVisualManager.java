@@ -64,23 +64,24 @@ public class CombatVisualManager {
 	private CombatUiManager combatUiManager;
 	private CombatMembersManager combatMembersManager;
 	private LevelManager levelManager;
+
+	private boolean drawingIndividualSight;
 	
 	public CombatVisualManager(AiCrowd aiCrowd, CombatUiManager combatUiManager, CombatMembersManager combatMembersManager, LevelManager levelManager){
 		this.aiCrowd = aiCrowd;
 		this.combatUiManager = combatUiManager;
 		this.combatMembersManager = combatMembersManager;
 		this.levelManager = levelManager;
+		
+		drawingIndividualSight = true;
 	}
 	
 	// If this unit becomes the current ai then only units its team can see should be visible
 	// Radio silence means only units this ai can see are visible
-	/**
-	 * Update visible ai.
-	 */
 	public void updateVisibleAi(){
 		for(int i = 0; i < aiCrowd.getActorCount(); i++){
 			// radio silence on
-			if(combatMembersManager.getTeamObject("1Player").isDrawingIndividualSight()){
+			if(drawingIndividualSight){
 				if(aiCrowd.getActor(i) == combatMembersManager.getCurrentAi() || allRevealed ||
 				   aiCrowd.getActor(i).isBroadcastingLocation() ||
 				   isAiInSight(combatMembersManager.getCurrentAi(),aiCrowd.getActor(i))){
@@ -581,6 +582,14 @@ public class CombatVisualManager {
 		}
 		
 		return true;
+	}
+	
+	public void toggleDrawingIndividualSight() {
+		this.drawingIndividualSight = !drawingIndividualSight;
+	}
+
+	public boolean isDrawingIndividualSight() {
+		return this.drawingIndividualSight;
 	}
 	
 }

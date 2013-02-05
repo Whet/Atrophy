@@ -308,8 +308,6 @@ public class TurnProcess {
 			combatUiManager.getMoveFlag().setVisible(false);
 		}
 	
-		combatMembersManager.removeDeadSelectedAi();
-		
 		// Update help text as some items might be displaying old information
 		combatUiManager.updateUi();
 		combatUiManager.getMiniMap().updateAiDrawing();

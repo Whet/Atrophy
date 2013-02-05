@@ -8,8 +8,8 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 
 import watoydoEngine.designObjects.display.ButtonMulti;
-import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatUiManager;
+import atrophy.combat.CombatVisualManager;
 import atrophy.combat.display.ui.InfoTextDisplayable;
 
 // TODO: Auto-generated Javadoc
@@ -19,16 +19,16 @@ import atrophy.combat.display.ui.InfoTextDisplayable;
 public class RadioSilenceToggle extends ButtonMulti implements InfoTextDisplayable{
 
 	private CombatUiManager combatUiManager;
-	private CombatMembersManager combatMembersManager;
+	private CombatVisualManager combatVisualManager;
 
 	/**
 	 * Instantiates a new radio silence toggle.
 	 *
 	 * @param image the image
 	 */
-	public RadioSilenceToggle(CombatMembersManager combatMembersManagers, CombatUiManager combatUiManagers, BufferedImage[] image) {
+	public RadioSilenceToggle(CombatVisualManager combatVisualManager, CombatUiManager combatUiManagers, BufferedImage[] image) {
 		super(image);
-		this.combatMembersManager = combatMembersManagers;
+		this.combatVisualManager = combatVisualManager;
 		this.combatUiManager = combatUiManagers;
 	}
 	
@@ -38,14 +38,7 @@ public class RadioSilenceToggle extends ButtonMulti implements InfoTextDisplayab
 	@Override
 	public boolean mC(Point mousePosition, MouseEvent e){
 		this.nextFrame(true);
-		if(this.getFrame() == 0){
-			combatMembersManager.getTeamObject("1Player").setRadioSilence(false);
-		}
-		else{
-			combatMembersManager.getTeamObject("1Player").setRadioSilence(true);
-		}
-		
-		// update Ui to reflect whether radio silence is in effect
+		combatVisualManager.toggleDrawingIndividualSight();
 		combatUiManager.updateUi();
 		
 		return true;
@@ -72,7 +65,7 @@ public class RadioSilenceToggle extends ButtonMulti implements InfoTextDisplayab
 	 */
 	public String getUiHint(){
 		// Show if radio silence engaged
-		if(combatMembersManager.getTeamObject("1Player").isDrawingIndividualSight()){
+		if(!combatVisualManager.isDrawingIndividualSight()){
 			return "Draw Individual Sight";
 		}
 		return "Draw Game Sight";
