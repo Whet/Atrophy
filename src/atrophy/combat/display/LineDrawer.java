@@ -358,7 +358,7 @@ public class LineDrawer implements Displayable{
 										aiCrowd.getActorMask(ai).getLocationCentre()[1] + panningManager.getOffset()[1],
 										ai.getLocation()[0] + panningManager.getOffset()[0],
 										ai.getLocation()[1] + panningManager.getOffset()[1],
-										combatMembersManager.getTeamObject(ai.getTeam()).getFactionColour(),
+										ai.getTeamColour(),
 										0.4f);
 	}
 	
@@ -601,7 +601,7 @@ public class LineDrawer implements Displayable{
 									        + panningManager.getOffset()[0],  
 									        ai.getPortalPathway().get(ai.getPortalPathway().size() - 1).getLocation()[1]
 									        + panningManager.getOffset()[1],
-									        combatMembersManager.getTeamObject(ai.getTeam()).getFactionColour(),
+									        ai.getTeamColour(),
 									        1.0f);
 			
 			// draw lines between portals
@@ -611,7 +611,7 @@ public class LineDrawer implements Displayable{
 									            ai.getPortalPathway().get(i).getLocation()[1] + panningManager.getOffset()[1],
 									            ai.getPortalPathway().get(i - 1).getLocation()[0] + panningManager.getOffset()[0],  
 									            ai.getPortalPathway().get(i - 1).getLocation()[1] + panningManager.getOffset()[1],
-									            combatMembersManager.getTeamObject(ai.getTeam()).getFactionColour(),
+									            ai.getTeamColour(),
 									            1.0f);
 			}
 			
@@ -621,7 +621,7 @@ public class LineDrawer implements Displayable{
 								            ai.getPortalPathway().get(0).getLocation()[1] + panningManager.getOffset()[1],
 								            ai.getMoveLocation()[0] + panningManager.getOffset()[0],  
 								            ai.getMoveLocation()[1] + panningManager.getOffset()[1],
-								            combatMembersManager.getTeamObject(ai.getTeam()).getFactionColour(),
+								            ai.getTeamColour(),
 									        1.0f);
 		}
 			

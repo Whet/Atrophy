@@ -75,9 +75,7 @@ public class CombatMouseHandler extends ActionRegion {
 			double pointDouble[] = {mousePosition.x - panningManager.getOffset()[0],
 									mousePosition.y - panningManager.getOffset()[1]};
 			
-			for(int i = 0; i < combatMembersManager.getCurrentAis().size(); i++){
-				combatMembersManager.getCurrentAi(i).setLookAngle(pointDouble);
-			}
+			combatMembersManager.getCurrentAi().setLookAngle(pointDouble);
 			
 			mouseAbilityHandler.cancelAbilitySetting();
 		}
@@ -121,11 +119,9 @@ public class CombatMouseHandler extends ActionRegion {
 	@Override
 	public boolean mMC(Point mousePosition, MouseEvent e) {
 		double pointDouble[] = {mousePosition.x - panningManager.getOffset()[0],
-				mousePosition.y - panningManager.getOffset()[1]};
+								mousePosition.y - panningManager.getOffset()[1]};
 
-		for(int i = 0; i < combatMembersManager.getCurrentAis().size(); i++){
-			combatMembersManager.getCurrentAi(i).setLookAngle(pointDouble);
-		}
+		combatMembersManager.getCurrentAi().setLookAngle(pointDouble);
 		
 		mouseAbilityHandler.cancelAbilitySetting();
 		

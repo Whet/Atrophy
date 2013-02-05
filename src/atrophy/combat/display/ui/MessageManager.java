@@ -349,7 +349,7 @@ public class MessageManager{
 		switch(topic){
 			case SHOW_ENEMIES:
 				if(tone <= 0 || ((ThinkingAi) messageBox.getConversers()[1]).willJoinPlayer(messageBox.getConversers()[0])){
-					ArrayList<LevelBlock> rooms = ((ThinkingAi) messageBox.getConversers()[1]).getTeamObject().getAllRoomsToAvoid();
+					ArrayList<LevelBlock> rooms = ((ThinkingAi) messageBox.getConversers()[1]).getCommander().getDangerRooms();
 					
 					if(rooms.size() > 0){
 						messageBox.addMessage(ChatterBox.message(messageBox.getConversers()[1].getName(), Topic.ACKNOWLEDGE, tone));

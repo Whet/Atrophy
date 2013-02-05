@@ -3,6 +3,7 @@
  */
 package atrophy.combat.ai;
 
+import java.awt.Color;
 import java.awt.Polygon;
 import java.util.ArrayList;
 import java.util.Map;
@@ -797,6 +798,25 @@ public class Ai implements Lootable{
 
 	public int getAccuracyBoost() {
 		return this.aiData.getAccuracyBoost();
+	}
+
+	public Color getTeamColour() {
+		Color returnColour = null;
+		switch(this.getFaction()){
+			case AiGenerator.BANDITS:
+				returnColour = Color.red;
+			break;
+			case AiGenerator.WHITE_VISTA:
+				returnColour = Color.white;
+			break;
+			case AiGenerator.LONER:
+				returnColour = Color.gray;
+			break;
+			case AiGenerator.PLAYER:
+				returnColour = Color.green;
+			break;
+		}
+		return returnColour;
 	}
 
 }

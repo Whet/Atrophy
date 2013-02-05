@@ -160,7 +160,6 @@ public class TurnProcess {
 	 */
 	private void updateAiBrass(){
 		combatMembersManager.updateCommanders();
-		combatMembersManager.updateTeams();
 	}
 	
 	/**

@@ -64,24 +64,22 @@ public class MoveFlag extends ButtonSingle implements InfoTextDisplayable{
 	 * @param y the y
 	 */
 	public void setAiMoveLocation(double x, double y){
-		for(int i = 0; i < combatMembersManager.getCurrentAis().size(); i++){
-			try{
-				combatMembersManager.getCurrentAi(i).setMoveLocation(x,y,true);
-				
-				super.setLocation(combatMembersManager.getCurrentAi(i).getMoveLocation()[0] - (this.getSize()[0] * 0.5),
-						          combatMembersManager.getCurrentAi(i).getMoveLocation()[1] - (this.getSize()[1] * 0.5));
-				
-				if(Maths.getDistance(combatMembersManager.getCurrentAi(i).getMoveLocation(), combatMembersManager.getCurrentAi(i).getLocation()) > 0){
-					combatMembersManager.getCurrentAi(i).setAction("Move");
-					this.setVisible(true);
-				}
+		try{
+			combatMembersManager.getCurrentAi().setMoveLocation(x,y,true);
+			
+			super.setLocation(combatMembersManager.getCurrentAi().getMoveLocation()[0] - (this.getSize()[0] * 0.5),
+					          combatMembersManager.getCurrentAi().getMoveLocation()[1] - (this.getSize()[1] * 0.5));
+			
+			if(Maths.getDistance(combatMembersManager.getCurrentAi().getMoveLocation(), combatMembersManager.getCurrentAi().getLocation()) > 0){
+				combatMembersManager.getCurrentAi().setAction("Move");
+				this.setVisible(true);
 			}
-			catch(PathNotFoundException pnfe){
-				combatMembersManager.getCurrentAi(i).setMoveLocationToSelf();
-				combatMembersManager.getCurrentAi(i).setAction("");
-				combatUiManager.updateUi();
-				this.setVisible(false);
-			}
+		}
+		catch(PathNotFoundException pnfe){
+			combatMembersManager.getCurrentAi().setMoveLocationToSelf();
+			combatMembersManager.getCurrentAi().setAction("");
+			combatUiManager.updateUi();
+			this.setVisible(false);
 		}
 	}
 	

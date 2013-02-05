@@ -1973,4 +1973,8 @@ public class ThinkingAi extends Ai{
 	public void setBaseAggression(int aggression) {
 		this.emotionManager.setBaseAggression(aggression);
 	}
+
+	public TeamsCommander getCommander() {
+		return combatMembersManager.getCommander(this.getFaction());
+	}
 }
