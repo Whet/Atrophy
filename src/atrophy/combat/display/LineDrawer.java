@@ -246,7 +246,8 @@ public class LineDrawer implements Displayable{
 				map[i].setAlpha(UNOCCUPIED_ALPHA);
 			}
 			else{
-				map[i].setAlpha(0.f);
+//				map[i].setAlpha(0.f);
+				map[i].setAlpha(1.f);
 			}
 		}
 	}
