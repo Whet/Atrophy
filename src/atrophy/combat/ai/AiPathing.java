@@ -5,6 +5,7 @@ import java.util.Stack;
 
 import watoydoEngine.gubbinz.Maths;
 
+import atrophy.combat.CombatVisualManager;
 import atrophy.combat.level.LevelBlock;
 import atrophy.combat.level.LevelManager;
 import atrophy.combat.level.Portal;
@@ -103,7 +104,7 @@ public class AiPathing {
 					if(this.roomPathway != null){
 						
 						// can see move location
-						if(PathFinder.isInSight(this.location[0], this.location[1], this.moveLocation[0],  this.moveLocation[1], this.getLevelBlock().getHitBox())){
+						if(CombatVisualManager.isInSight(this.location[0], this.location[1], this.moveLocation[0],  this.moveLocation[1], this.getLevelBlock().getHitBox())){
 							moveIntra(invoker, this.moveLocation);
 							continue;
 						}
@@ -154,7 +155,7 @@ public class AiPathing {
 						targetPortal = portalPathway.peek();
 						
 						// can see move location
-						if(PathFinder.isInSight(this.location[0],
+						if(CombatVisualManager.isInSight(this.location[0],
 								                this.location[1],
 								                targetPortal.getLocation(this.getLevelBlock())[0],
 								                targetPortal.getLocation(this.getLevelBlock())[1], this.getLevelBlock().getHitBox())){
@@ -166,7 +167,7 @@ public class AiPathing {
 						// check to see if the next point is visible to make paths more efficient
 						int lookIndex = this.roomPathway.size() - 1;
 						while(lookIndex > 0 &&
-							  PathFinder.isInSight(this.location[0], this.location[1], this.roomPathway.get(lookIndex - 1)[0],  this.roomPathway.get(lookIndex - 1)[1], this.getLevelBlock().getHitBox())){
+							  CombatVisualManager.isInSight(this.location[0], this.location[1], this.roomPathway.get(lookIndex - 1)[0],  this.roomPathway.get(lookIndex - 1)[1], this.getLevelBlock().getHitBox())){
 							this.roomPathway.remove(this.roomPathway.size() - 1);
 							lookIndex = this.roomPathway.size() - 1;
 						}

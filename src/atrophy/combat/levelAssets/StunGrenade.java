@@ -3,8 +3,8 @@
  */
 package atrophy.combat.levelAssets;
 
+import atrophy.combat.CombatVisualManager;
 import atrophy.combat.ai.Ai;
-import atrophy.combat.ai.PathFinder;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.ui.FloatingIcons;
 import atrophy.combat.items.StunGrenadeItem;
@@ -53,7 +53,7 @@ public class StunGrenade extends Grenade{
 		
 		for(int i = 0; i < aiCrowd.getActorCount(); i++){
 			if(aiCrowd.getActor(i).getLevelBlock() == this.getRoom() &&
-			   PathFinder.isInFiringSight(this.getLocation()[0], this.getLocation()[1], aiCrowd.getActor(i).getLocation()[0], aiCrowd.getActor(i).getLocation()[1], this.room)){
+			   CombatVisualManager.isInFiringSight(this.getLocation()[0], this.getLocation()[1], aiCrowd.getActor(i).getLocation()[0], aiCrowd.getActor(i).getLocation()[1], this.room)){
 				aiCrowd.getActor(i).setStunnedTurns(STUN_TURNS + skillLevel);
 			}
 		}

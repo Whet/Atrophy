@@ -43,7 +43,7 @@ public class AiCombatActions {
 	public void attack(Ai invoker) {
 		// if the target is still in the same room engage
 		if(this.targetAi != null && this.targetAi.getLevelBlock() == invoker.getLevelBlock() && invoker.getWeapon().ignoresLOS() ||(
-		   (!this.targetAi.isStealthed() || CombatVisualManager.spotStealth(invoker, this.targetAi)) && PathFinder.isInFiringSight(invoker.getLocation()[0],
+		   (!this.targetAi.isStealthed() || CombatVisualManager.spotStealth(invoker, this.targetAi)) && CombatVisualManager.isInFiringSight(invoker.getLocation()[0],
 				   																												   invoker.getLocation()[1], 
 					   																										       this.targetAi.getLocation()[0], 
 					   																										       this.targetAi.getLocation()[1], invoker.getLevelBlock()))){

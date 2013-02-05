@@ -31,7 +31,6 @@ import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.ai.Ai;
 import atrophy.combat.ai.AiGenerator;
-import atrophy.combat.ai.PathFinder;
 import atrophy.combat.level.LevelBlock;
 import atrophy.combat.level.LevelBlockGrid;
 import atrophy.combat.level.LevelBlockGrid.GridBlock;
@@ -486,7 +485,7 @@ public class LineDrawer implements Displayable{
 		
 		while(pointsIt.hasNext()){
 			int[] point = pointsIt.next();
-			if(!PathFinder.isVertexSight(cover, ai.getLocation()[0], ai.getLocation()[1], point[0], point[1], ai.getLevelBlock())){
+			if(!CombatVisualManager.isVertexSight(cover, ai.getLocation()[0], ai.getLocation()[1], point[0], point[1], ai.getLevelBlock())){
 				outOfLOSRoomPoints.add(point);
 				pointsIt.remove();
 			}
@@ -499,17 +498,17 @@ public class LineDrawer implements Displayable{
 		
 		// add points for max left/right
 		shadowPoints.put(realPoints.get(0), 
-					PathFinder.getLastPointInCover(realPoints.get(0),
+					CombatVisualManager.getLastPointInCover(realPoints.get(0),
 												   Math.toRadians(ai.getEditLookAngle()) + Math.toRadians(ai.getFov()) * 0.5,
 												   ai.getLevelBlock(),2));
 		
 		shadowPoints.put(realPoints.get(1), 
-					PathFinder.getLastPointInCover(realPoints.get(1),
+					CombatVisualManager.getLastPointInCover(realPoints.get(1),
 												   Math.toRadians(ai.getEditLookAngle()) - Math.toRadians(ai.getFov()) * 0.5,
 												   ai.getLevelBlock(),2));
 		
 		for(int i = 2; i < realPoints.size(); i++){
-			int[] lastPoint = PathFinder.getLastPoint(realPoints.get(i), Maths.getRads(ai.getLocation(), realPoints.get(i)), ai.getLevelBlock(),5);
+			int[] lastPoint = CombatVisualManager.getLastPoint(realPoints.get(i), Maths.getRads(ai.getLocation(), realPoints.get(i)), ai.getLevelBlock(),5);
 			
 			if(Maths.getDistance(lastPoint, realPoints.get(i)) > 1)
 				shadowPoints.put(realPoints.get(i), lastPoint);
