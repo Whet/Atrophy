@@ -497,8 +497,6 @@ public class TeamsCommander {
 			this.blockedPortals.clear();
 			
 			LevelBlock defendRoom;
-			ArrayList<Portal> pathway;
-			boolean addPortal = false;
 			// add rooms within 1 door of the target room
 			for(int i = 0; i < this.targetRoom.getPortalCount(); i++){
 				
@@ -517,51 +515,6 @@ public class TeamsCommander {
 					//System.out.println(this.targetRoom.getPortal(i).getTag() + " BLOCK");
 					
 				}
-				// check if not a dead end then if a path cannot be found see if lots of rooms were connected to
-				else if(PathFinder.canCreatePath(this.targetRoom, defendRoom, this.targetRoom.getPortal(i))){
-					
-					if(!levelManager.isRoomBanned(this.getFaction(), defendRoom))
-						this.defendRooms.add(defendRoom);
-					
-					try{
-						
-					pathway = PathFinder.createPathway(null,null,this.targetRoom, defendRoom, this.targetRoom.getPortal(i), false);
-					// room can be reached by another path
-					// want to block off one of the ends of the cycle so that ai don't have to tear down doors to pass through but there is still some protection
-					// so check if the portal pathway contains a door we already said we'll block to avoid blocking both ends
-					if(this.blockedPortals.size() > 0){
-						addPortal = true;
-						for(int j = 0; j < this.blockedPortals.size(); j++){
-							if(pathway.contains(this.blockedPortals.get(j))){
-								addPortal = false;
-								break;
-							}
-						}
-						if(addPortal){
-							this.blockedPortals.add(this.targetRoom.getPortal(i));
-							//System.out.println(this.targetRoom.getPortal(i).getTag() + " BLOCK");
-						}
-					}
-					// if the blocked doors is size 0 then we can just block the door with no worries it has already been blocklisted
-					else{
-						this.blockedPortals.add(this.targetRoom.getPortal(i));
-						//System.out.println(this.targetRoom.getPortal(i).getTag() + " BLOCK");
-					}
-					
-					// not thrown we already checked if we can make the path
-					}catch(PathNotFoundException pnfe){}
-					
-					
-				}
-				// if a dead end has a certain complexity where it links to a lot of rooms then block it
-				else if(PathFinder.getComplexityOfPath(this.targetRoom, defendRoom, this.targetRoom.getPortal(i)) > 10){
-					
-					if(!levelManager.isRoomBanned(this.getFaction(), defendRoom))
-						this.defendRooms.add(defendRoom);
-					
-					this.blockedPortals.add(this.targetRoom.getPortal(i));;
-				}
-				
 			}
 		}
 	}
