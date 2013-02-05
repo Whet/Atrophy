@@ -580,18 +580,6 @@ public class Ai implements Lootable{
 		setMoveLocation(location[0],location[1],ignoreBlockedDoors);
 	}
 	
-	public void setMoveLocation(double[] location, ArrayList<LevelBlock> roomsToAvoid) throws PathNotFoundException {
-		this.removeOrdersWithoutUpdate(mouseAbilityHandler);
-		
-		this.aiPathing.setMoveLocation(this, location, roomsToAvoid);
-	}
-	
-	public void setMoveLocation(double x, double y, ArrayList<LevelBlock> roomsToAvoid) throws PathNotFoundException {
-		this.removeOrdersWithoutUpdate(mouseAbilityHandler);
-		
-		this.aiPathing.setMoveLocation(this,x,y,roomsToAvoid);
-	}
-	
 	public void setMoveLocation(double x, double y, boolean ignoreBlockedDoors)throws PathNotFoundException{
 		
 		this.removeOrdersWithoutUpdate(mouseAbilityHandler);

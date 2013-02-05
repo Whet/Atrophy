@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Set;
-import java.util.Stack;
 
 import watoydoEngine.gubbinz.Maths;
 import atrophy.combat.level.LevelBlock;
@@ -21,74 +20,7 @@ import atrophy.combat.level.Portal;
 
 public class PathFinder {
 	
-	private static final int MAX_ITERATIONS = 12;
-	
-	private static class PathingPortal {
-		public Portal portal;
-		public double g, h, f;
-		
-		public PathingPortal(Portal portal) {
-			this.portal = portal;
-		}
-		
-		public void calcF() {
-			f = g + h;
-		}
-		
-		@Override
-		public boolean equals(Object obj) {
-			if((obj instanceof PathingPortal && ((PathingPortal) obj).portal == this.portal) ||
-			   (obj instanceof Portal && obj == this.portal))
-				return true;
-			return false;
-		}
-
-		public boolean linksTo(LevelBlock targetRoom) {
-			return this.portal.connectsTo(targetRoom);
-		}
-
-		public List<Portal> getAllNeighbours() {
-			List<Portal> portals = this.portal.getLinkedBlocks()[0].getPortals();
-			List<Portal> portals1 = this.portal.getLinkedBlocks()[1].getPortals();
-			
-			List<Portal> combo = new ArrayList<>();
-			
-			for(Portal portal : portals){
-				combo.add(portal);
-			}
-			for(Portal portal : portals1){
-				combo.add(portal);
-			}
-			
-			return combo;
-		}
-		
-	}
-	
-	private static class PathingPortalSet extends HashSet<PathingPortal> {
-		
-		@Override
-		public boolean contains(Object o) {
-			if(o instanceof Portal ||o instanceof PathingPortal){
-				for(PathingPortal pathPortal : this){
-					if(pathPortal.equals(o))
-						return true;
-				}
-			}
-			return false;
-		}
-
-		public PathingPortal get(Portal portal) {
-			for(PathingPortal pathPortal : this){
-				if(pathPortal.equals(portal))
-					return pathPortal;
-			}
-			return null;
-		}
-		
-	}
-	
-	public static ArrayList<Portal> findAStarPath(double[] startLocation, double[] targetLocation, LevelBlock startBlock, LevelBlock targetRoom) throws PathNotFoundException{
+	public static ArrayList<Portal> findAStarPath(double[] startLocation, double[] targetLocation, LevelBlock startBlock, LevelBlock targetRoom, Portal excludedPortal, boolean ignoreClosedDoors) throws PathNotFoundException{
 	    
 		PathingPortalSet closedSet = new PathingPortalSet();
 	    PathingPortalSet openSet = new PathingPortalSet();
@@ -107,6 +39,9 @@ public class PathFinder {
 	    
 	    // Populate with portals in this room
 	    for(Portal portal : startBlock.getPortals()){
+	    	if(portal == excludedPortal || (ignoreClosedDoors && !portal.canUse()))
+	    		continue;
+	    	
 	    	PathingPortal pathingPortal = new PathingPortal(portal);
 	    	pathingPortal.h = Maths.getDistance(portal.getLocation(), targetLocation);
 	    	pathingPortal.g = Maths.getDistance(startLocation, portal.getLocation());
@@ -131,7 +66,7 @@ public class PathFinder {
 	        
 	        // Just loop through all portals on both sides of portal
 	        for(Portal neighbour : current.getAllNeighbours()){
-	            if(closedSet.contains(neighbour))
+	            if(excludedPortal == neighbour || closedSet.contains(neighbour) || (ignoreClosedDoors && !neighbour.canUse()))
 	                continue;
 	            
 	            newG = current.g + Maths.getDistance(neighbour.getLocation(), current.portal.getLocation());
@@ -179,11 +114,11 @@ public class PathFinder {
 	}
 
 	public static ArrayList<Portal> createPathway(double[] startLocation, double[] endLocation, LevelBlock startBlock, LevelBlock targetRoom)throws PathNotFoundException{
-		return findAStarPath(startLocation, endLocation, startBlock, targetRoom);
+		return findAStarPath(startLocation, endLocation, startBlock, targetRoom, null, true);
 	}
 	
 	public static ArrayList<Portal> createPathway(double[] startLocation, double[] endLocation, LevelBlock startBlock, LevelBlock targetRoom, Portal excludedPortal)throws PathNotFoundException{
-		return findAStarPath(startLocation, endLocation, startBlock, targetRoom);
+		return findAStarPath(startLocation, endLocation, startBlock, targetRoom, excludedPortal, true);
 	}
 	
 	public static ArrayList<Portal> createPathway(double[] startLocation, double[] endLocation, LevelBlock startBlock, LevelBlock targetRoom, Portal excludedPortal, boolean ignoreClosedDoors)throws PathNotFoundException{
@@ -193,21 +128,11 @@ public class PathFinder {
 			throw new PathNotFoundException(targetRoom);
 		}
 		
-		return findAStarPath(startLocation, endLocation, startBlock, targetRoom);
+		return findAStarPath(startLocation, endLocation, startBlock, targetRoom, excludedPortal, ignoreClosedDoors);
 	}
 	
 	public static ArrayList<Portal> createPathway(double[] startLocation, double[] endLocation, LevelBlock startBlock, LevelBlock targetRoom, boolean ignoreClosedDoors)throws PathNotFoundException{
-		return findAStarPath(startLocation, endLocation, startBlock, targetRoom);
-	}
-	
-	public static ArrayList<Portal> createPathway(double[] startLocation, double[] endLocation, LevelBlock startBlock, LevelBlock targetRoom, ArrayList<LevelBlock> excludedRooms, boolean ignoreClosedDoors)throws PathNotFoundException{
-		
-		// Check for special case where all doors are blocked to the target room
-		if(targetRoom == null || !ignoreClosedDoors && isRoomCompletelyBlocked(targetRoom)){
-			throw new PathNotFoundException(targetRoom);
-		}
-		
-		return findAStarPath(startLocation, endLocation, startBlock, targetRoom);
+		return findAStarPath(startLocation, endLocation, startBlock, targetRoom, null, ignoreClosedDoors);
 	}
 	
 	private static boolean isRoomCompletelyBlocked(LevelBlock targetRoom) {
@@ -219,24 +144,6 @@ public class PathFinder {
 		return true;
 	}
 
-	public static int getComplexityOfPath(LevelBlock startBlock, LevelBlock targetRoom, Portal excludedPortal){
-		return findAStarPath(startBlock, targetRoom, excludedPortal).size();
-	}
-		
-	private static ArrayList<Portal> findAStarPath(LevelBlock startBlock, LevelBlock targetRoom, Portal excludedPortal) {
-		return null;
-	}
-
-	public static boolean canCreatePath(LevelBlock startBlock, LevelBlock targetRoom, Portal excludedPortal){
-		try{
-			createPathway(null,null,startBlock,targetRoom,excludedPortal,false);
-			return true;
-		}
-		catch(PathNotFoundException pnfe){
-			return false;
-		}
-	}
-	
 	// Intra room pathfinding
 	
 	public static ArrayList<double[]> findIntraPath(Ai mover, double[] moveLocation) throws PathNotFoundException{
@@ -322,6 +229,71 @@ public class PathFinder {
         }
         
         return path;
+	}
+    
+    private static class PathingPortal {
+		public Portal portal;
+		public double g, h, f;
+		
+		public PathingPortal(Portal portal) {
+			this.portal = portal;
+		}
+		
+		public void calcF() {
+			f = g + h;
+		}
+		
+		@Override
+		public boolean equals(Object obj) {
+			if((obj instanceof PathingPortal && ((PathingPortal) obj).portal == this.portal) ||
+			   (obj instanceof Portal && obj == this.portal))
+				return true;
+			return false;
+		}
+
+		public boolean linksTo(LevelBlock targetRoom) {
+			return this.portal.connectsTo(targetRoom);
+		}
+
+		public List<Portal> getAllNeighbours() {
+			List<Portal> portals = this.portal.getLinkedBlocks()[0].getPortals();
+			List<Portal> portals1 = this.portal.getLinkedBlocks()[1].getPortals();
+			
+			List<Portal> combo = new ArrayList<>();
+			
+			for(Portal portal : portals){
+				combo.add(portal);
+			}
+			for(Portal portal : portals1){
+				combo.add(portal);
+			}
+			
+			return combo;
+		}
+		
+	}
+	
+	private static class PathingPortalSet extends HashSet<PathingPortal> {
+		
+		@Override
+		public boolean contains(Object o) {
+			if(o instanceof Portal ||o instanceof PathingPortal){
+				for(PathingPortal pathPortal : this){
+					if(pathPortal.equals(o))
+						return true;
+				}
+			}
+			return false;
+		}
+
+		public PathingPortal get(Portal portal) {
+			for(PathingPortal pathPortal : this){
+				if(pathPortal.equals(portal))
+					return pathPortal;
+			}
+			return null;
+		}
+		
 	}
 	
 }

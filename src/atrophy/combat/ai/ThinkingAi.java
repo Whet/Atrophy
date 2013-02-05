@@ -932,7 +932,7 @@ public class ThinkingAi extends Ai{
 				
 				// if not moving to room then move to room
 				if(levelManager.getBlock(this.getMoveLocation()) != this.getTeamObject().getLevelBlock()){
-					this.setMoveLocation(levelManager.randomInPosition(this.getTeamObject().getLevelBlock()), this.getTeamObject().getRoomsToAvoid());
+					this.setMoveLocation(levelManager.randomInPosition(this.getTeamObject().getLevelBlock()));
 				}
 			}
 			

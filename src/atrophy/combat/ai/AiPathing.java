@@ -1,10 +1,8 @@
 package atrophy.combat.ai;
 
-import java.util.ArrayList;
 import java.util.Stack;
 
 import watoydoEngine.gubbinz.Maths;
-
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.level.LevelBlock;
 import atrophy.combat.level.LevelManager;
@@ -319,7 +317,7 @@ public class AiPathing {
 		}
 	}
 
-	public void setMoveLocation(Ai invoker, double[] location,	ArrayList<LevelBlock> roomsToAvoid) throws PathNotFoundException {
+	public void setMoveLocation(Ai invoker, double[] location) throws PathNotFoundException {
 		this.moveLocation[0] = location[0];
 		this.moveLocation[1] = location[1];
 		
@@ -329,7 +327,7 @@ public class AiPathing {
 		if(levelManager.getBlock(this.moveLocation) != this.residentBlock){
 			// try to create a pathway to the location
 			portalPathway = new Stack<>();
-			portalPathway.addAll(PathFinder.createPathway(this.getLocation(), moveLocation, this.residentBlock, levelManager.getBlock(this.moveLocation), roomsToAvoid, false));
+			portalPathway.addAll(PathFinder.createPathway(this.getLocation(), moveLocation, this.residentBlock, levelManager.getBlock(this.moveLocation), false));
 		}
 		// make the pathway null to avoid issues with ui drawing an old pathway
 		else{
@@ -388,27 +386,6 @@ public class AiPathing {
 			this.roomPathway = new Stack<>();
 			this.roomPathway.addAll(PathFinder.findIntraPath(invoker, this.moveLocation));
 		}
-	}
-
-	public void setMoveLocation(Ai invoker, double x, double y, ArrayList<LevelBlock> roomsToAvoid) throws PathNotFoundException {
-		this.moveLocation[0] = x;
-		this.moveLocation[1] = y;
-		
-		this.roomPathway = null;
-		
-		// Create new pathway if outside of current room
-		if(levelManager.getBlock(this.moveLocation) != this.residentBlock){
-			// try to create a pathway to the location
-			portalPathway = new Stack<>();
-			portalPathway.addAll(PathFinder.createPathway(this.getLocation(), moveLocation, this.residentBlock, levelManager.getBlock(this.moveLocation), roomsToAvoid, false));
-		}
-		// make the pathway null to avoid issues with ui drawing an old pathway
-		else{
-			portalPathway = null;
-			
-			this.roomPathway = new Stack<double[]>();
-			this.roomPathway.addAll(PathFinder.findIntraPath(invoker, this.moveLocation));
-		}		
 	}
 
 	public void setLocation(double x, double y) {
