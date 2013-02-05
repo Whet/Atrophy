@@ -29,117 +29,52 @@ public class TeamsCommander {
 	}
 
 	// Update for dead units to reassign
-	/**
-	 * The Constant UPDATE_MAX_GAP.
-	 */
 	private static final int UPDATE_MAX_GAP = 30;
 
 	// Update for danger of room
 	// can't be too short or a unit will think room is safe when they leave and are just looking at door
-	/**
-	 * The Constant COMMANDER_UPDATE_TURN_GAP.
-	 */
 	private static final int COMMANDER_UPDATE_TURN_GAP = 8;
 	
-	/**
-	 * The alliances.
-	 */
 	private Set<String> alliances;
 	
-	/**
-	 * The hated ai.
-	 */
 	private Set<Ai> hatedAi;
 	
-	/**
-	 * The teams.
-	 */
 	private ArrayList<ThinkingTeamObject> teams;
 	
-	/**
-	 * The team type.
-	 */
 	private HashMap<ThinkingTeamObject,JobTitle> teamType;
 	
-	/**
-	 * The team defend assignments.
-	 */
 	private HashMap<ThinkingTeamObject,LevelBlock> teamDefendAssignments;
 	
-	/**
-	 * The defend rooms.
-	 */
 	private ArrayList<LevelBlock> defendRooms;
 	
-	/**
-	 * The scout rooms.
-	 */
 	private ArrayList<LevelBlock> scoutRooms;
 	
-	/**
-	 * The enemy count in room.
-	 */
 	private Map<LevelBlock,int[]> enemyCountInRoom;
 	
-	/**
-	 * The looted ai.
-	 */
 	private Set<Ai> lootedAi;
 	
-	/**
-	 * The blocked portals.
-	 */
 	private ArrayList<Portal> blockedPortals;
 	
-	/**
-	 * The open portals.
-	 */
 	private ArrayList<Portal> openPortals;
 	
-	/**
-	 * The max layer defenders.
-	 */
 	private int maxLayerDefenders; 
 	
-	/**
-	 * The max room defenders.
-	 */
 	private int maxRoomDefenders; 
 	
-	/**
-	 * The target room.
-	 */
 	private LevelBlock targetRoom;
 	
-	/**
-	 * The faction.
-	 */
 	private String faction;
 	
-	/**
-	 * The job board.
-	 */
 	private int[] jobBoard;
 	
-	/**
-	 * The check for job stability.
-	 */
 	private boolean checkForJobStability;
 	
-	/**
-	 * The turns to next update.
-	 */
 	private int turnsToNextUpdate;
 
 	private TurnProcess turnProcess;
 
 	private LevelManager levelManager;
 	
-	/**
-	 * Instantiates a new teams commander.
-	 *
-	 * @param faction the faction
-	 */
 	public TeamsCommander(TurnProcess turnProcess, String faction, LevelManager levelManager){
 
 		this.faction = faction;
@@ -171,18 +106,6 @@ public class TeamsCommander {
 		this.turnProcess = turnProcess;
 	}
 	
-	/*
-	 * 0 = 1st layer defender
-	 * 1 = core defender, welds doors
-	 * 2 = hunter seeker
-	 * 
-	 */
-	
-	/**
-	 * Adds the team.
-	 *
-	 * @param team the team
-	 */
 	public void addTeam(ThinkingTeamObject team){
 		if(!this.teams.contains(team)){
 			this.teams.add(team);
@@ -190,12 +113,6 @@ public class TeamsCommander {
 		}
 	}
 	
-	/**
-	 * Gets the target room.
-	 *
-	 * @param team the team
-	 * @return the target room
-	 */
 	public LevelBlock getTargetRoom(ThinkingTeamObject team){
 		
 		LevelBlock returnBlock = null;
@@ -231,11 +148,6 @@ public class TeamsCommander {
 		return returnBlock;
 	}
 	
-	/**
-	 * Assign new job.
-	 *
-	 * @param team the team
-	 */
 	private void assignNewJob(ThinkingTeamObject team){
 			
 		team.removeAbilities();
@@ -255,12 +167,6 @@ public class TeamsCommander {
 		}
 	}
 	
-	/**
-	 * First layer defender.
-	 *
-	 * @param team the team
-	 * @return the level block
-	 */
 	private LevelBlock firstLayerDefender(ThinkingTeamObject team){
 		
 		if(this.teamDefendAssignments.containsKey(team)){
@@ -272,11 +178,6 @@ public class TeamsCommander {
 		return this.teamDefendAssignments.get(team);
 	}
 	
-	/**
-	 * Hunter seeker.
-	 *
-	 * @return the level block
-	 */
 	private LevelBlock hunterSeeker(){
 		
 		// return a room where enemies have been reported
@@ -293,18 +194,10 @@ public class TeamsCommander {
 		return notBannedRoom;
 	}
 	
-	/**
-	 * Gets the faction.
-	 *
-	 * @return the faction
-	 */
 	public String getFaction(){
 		return this.faction;
 	}
 	
-	/**
-	 * Update information.
-	 */
 	public void updateInformation(){
 		
 		this.turnsToNextUpdate --;
@@ -337,16 +230,10 @@ public class TeamsCommander {
 		
 	}
 	
-	/**
-	 * Check job stability.
-	 */
 	public void checkJobStability(){
 		this.checkForJobStability = true;
 	}
 	
-	/**
-	 * Computes the job stability.
-	 */
 	private void computeJobStability(){
 		boolean criticalJobLost = false;
 		
@@ -381,20 +268,12 @@ public class TeamsCommander {
 		}
 	}
 	
-	/**
-	 * Restart jobs.
-	 */
 	private void restartJobs(){
 		updateDefendRooms();
 		updateJobs();
 		updateTeams();
 	}
 	
-	/**
-	 * Removes the dead teams.
-	 *
-	 * @return true, if successful
-	 */
 	private boolean removeDeadTeams(){
 		
 		boolean editMade = false;
@@ -414,9 +293,6 @@ public class TeamsCommander {
 		return editMade;
 	}
 	
-	/**
-	 * Update jobs.
-	 */
 	private void updateJobs(){
 		
 		unemployAll();
@@ -428,9 +304,6 @@ public class TeamsCommander {
 		pickLeftOverTeams();
 	}
 	
-	/**
-	 * Pick left over teams.
-	 */
 	private void pickLeftOverTeams() {
 		for(ThinkingTeamObject team:this.teams){
 			if(!this.teamType.containsKey(team)){
@@ -451,9 +324,6 @@ public class TeamsCommander {
 		}
 	}
 
-	/**
-	 * Unemploy all.
-	 */
 	private void unemployAll(){
 		this.teamType.clear();
 		this.teamDefendAssignments.clear();
@@ -463,9 +333,6 @@ public class TeamsCommander {
 		jobBoard[2] = 0;
 	}
 	
-	/**
-	 * Pick priority teams.
-	 */
 	private void pickPriorityTeams(){
 		for(ThinkingTeamObject team:this.teams){
 			if(this.jobBoard[1] < maxRoomDefenders &&
@@ -486,9 +353,6 @@ public class TeamsCommander {
 		}
 	}
 	
-	/**
-	 * Update defend rooms.
-	 */
 	private void updateDefendRooms(){
 		
 		if(this.targetRoom != null){
@@ -519,39 +383,20 @@ public class TeamsCommander {
 		}
 	}
 	
-	/**
-	 * Update teams.
-	 */
 	private void updateTeams(){
 		for(ThinkingTeamObject team: this.teams){
 			team.setTargetRoom(getTargetRoom(team));
 		}
 	}
 	
-	/**
-	 * Gets the blocked portals.
-	 *
-	 * @return the blocked portals
-	 */
 	public ArrayList<Portal> getBlockedPortals(){
 		return this.blockedPortals;
 	}
 	
-	/**
-	 * Gets the open portals.
-	 *
-	 * @return the open portals
-	 */
 	public ArrayList<Portal> getOpenPortals(){
 		return this.openPortals;
 	}
 	
-	/**
-	 * Request door open.
-	 *
-	 * @param door the door
-	 * @return true, if successful
-	 */
 	public boolean requestDoorOpen(Portal door){
 		if(this.hasAbility(Abilities.WELDING)){
 			if(!this.openPortals.contains(door)){
@@ -563,13 +408,7 @@ public class TeamsCommander {
 		// the door will never be opened
 		return false;
 	}
-	
-	/**
-	 * Checks for ability.
-	 *
-	 * @param ability the ability
-	 * @return true, if successful
-	 */
+
 	public boolean hasAbility(String ability){
 		for(int i = 0; i < this.teams.size(); i++){
 			if(this.teams.get(i).hasAbility(ability)){
@@ -579,40 +418,18 @@ public class TeamsCommander {
 		return false;
 	}
 	
-	/**
-	 * Sets the target room.
-	 *
-	 * @param targetRoom the new target room
-	 */
 	protected void setTargetRoom(LevelBlock targetRoom){
 		this.targetRoom = targetRoom;
 	}
 	
-	/**
-	 * Gets the team number.
-	 *
-	 * @return the team number
-	 */
 	protected int getTeamNumber(){
 		return this.teams.size();
 	}
 	
-	/**
-	 * Gets the team.
-	 *
-	 * @param index the index
-	 * @return the team
-	 */
 	protected ThinkingTeamObject getTeam(int index){
 		return this.teams.get(index);
 	}
 
-	/**
-	 * Can pursue.
-	 *
-	 * @param thinkingTeamObject the thinking team object
-	 * @return true, if successful
-	 */
 	public boolean canPursue(ThinkingTeamObject thinkingTeamObject) {
 		if(teamType.get(thinkingTeamObject) == null){
 			this.assignNewJob(thinkingTeamObject);
@@ -623,13 +440,6 @@ public class TeamsCommander {
 		return false;
 	}
 
-	/**
-	 * Report units.
-	 *
-	 * @param enemyCount the enemy count
-	 * @param levelBlock the level block
-	 * @return true, if successful
-	 */
 	public boolean reportUnits(int enemyCount, LevelBlock levelBlock) {
 		boolean alreadyReported = this.scoutRooms.contains(levelBlock);
 		
@@ -652,32 +462,16 @@ public class TeamsCommander {
 		return !alreadyReported;
 	}
 	
-	/**
-	 * Adds the danger room.
-	 *
-	 * @param room the room
-	 */
 	protected void addDangerRoom(LevelBlock room){
 		if(!this.scoutRooms.contains(room)){
 			this.scoutRooms.add(room);
 		}
 	}
 	
-	/**
-	 * Gets the danger rooms.
-	 *
-	 * @return the danger rooms
-	 */
 	public ArrayList<LevelBlock> getDangerRooms(){
 		return new ArrayList<LevelBlock>(this.scoutRooms);
 	}
 	
-	/**
-	 * Gets the danger rooms.
-	 *
-	 * @param combatScore the combat score
-	 * @return the danger rooms
-	 */
 	public ArrayList<LevelBlock> getDangerRooms(int combatScore) {
 		
 		ArrayList<LevelBlock> dangerRooms = new ArrayList<LevelBlock>();
@@ -694,12 +488,6 @@ public class TeamsCommander {
 		return dangerRooms;
 	}
 	
-	/**
-	 * Gets the combat score.
-	 *
-	 * @param block the block
-	 * @return the combat score
-	 */
 	public int getCombatScore(LevelBlock block) {
 		if(this.scoutRooms.contains(block)){
 			return this.enemyCountInRoom.get(block)[0];
@@ -709,75 +497,34 @@ public class TeamsCommander {
 		}
 	}
 	
-	/**
-	 * Adds the looted ai.
-	 *
-	 * @param lootAi the loot ai
-	 */
 	public void addLootedAi(Ai lootAi) {
 		this.lootedAi.add(lootAi);
 	}
 	
-	/**
-	 * Checks if is ai looted.
-	 *
-	 * @param ai the ai
-	 * @return true, if is ai looted
-	 */
 	public boolean isAiLooted(Ai ai) {
 		return this.lootedAi.contains(ai);
 	}
 	
-	/**
-	 * Removes the alliance.
-	 *
-	 * @param faction the faction
-	 */
 	public void removeAlliance(String faction) {
 		this.alliances.remove(faction);
 	}
 
-	/**
-	 * Adds the alliance.
-	 *
-	 * @param faction the faction
-	 */
 	public void addAlliance(String faction) {
 		this.alliances.add(faction);
 	}
 	
-	/**
-	 * Checks if is allied with.
-	 *
-	 * @param faction the faction
-	 * @return true, if is allied with
-	 */
 	public boolean isAlliedWith(String faction) {
 		return this.alliances.contains(faction);
 	}
 	
-	/**
-	 * Adds the hated ai.
-	 *
-	 * @param hatedAi the hated ai
-	 */
 	public void addHatedAi(Ai hatedAi){
 		this.hatedAi.add(hatedAi);
 	}
 	
-	/**
-	 * Checks if is ai hated.
-	 *
-	 * @param ai the ai
-	 * @return true, if is ai hated
-	 */
 	public boolean isAiHated(Ai ai){
 		return this.hatedAi.contains(ai);
 	}
 	
-	/**
-	 * Purge.
-	 */
 	public void purge(){
 		this.blockedPortals = null;
 		this.defendRooms = null;
@@ -789,12 +536,6 @@ public class TeamsCommander {
 		this.scoutRooms = null;
 	}
 
-	/**
-	 * Gets the job.
-	 *
-	 * @param thinkingTeamObject the thinking team object
-	 * @return the job
-	 */
 	public JobTitle getJob(ThinkingTeamObject thinkingTeamObject) {
 		return this.teamType.get(thinkingTeamObject);
 	}
