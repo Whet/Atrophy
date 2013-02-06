@@ -56,6 +56,24 @@ public class CombatMembersManager {
 		return lonerCommander;
 	}
 	
+	public void addAi(Ai ai) {
+		switch(ai.getFaction()) {
+			case AiGenerator.BANDITS:
+				this.getCommander(AiGenerator.BANDITS).addAi((ThinkingAi) ai);
+			break;
+			case AiGenerator.LONER:
+				LonerCommander lonerCommander = this.createLonerCommander();
+				lonerCommander.addAi((ThinkingAi) ai);
+			break;
+			case AiGenerator.PLAYER:
+				this.playerTeam.add(ai);
+			break;
+			case AiGenerator.WHITE_VISTA:
+				this.getCommander(AiGenerator.WHITE_VISTA).addAi((ThinkingAi) ai);
+			break;
+		}
+	}
+	
 	public void lazyLoad(UiUpdaterSuite uiUpdaterSuite, MouseAbilityHandler mouseAbilityHandler){
 		this.uiUpdaterSuite = uiUpdaterSuite;
 		this.mouseAbilityHandler = mouseAbilityHandler;

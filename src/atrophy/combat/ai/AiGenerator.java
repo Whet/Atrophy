@@ -3,7 +3,6 @@
  */
 package atrophy.combat.ai;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -276,6 +275,8 @@ public class AiGenerator{
 			aiCrowd.addMask(aiImg);
 			
 			randomLocation = levelManager.randomInPosition(levelBlock);
+			
+			combatMembersManager.addAi(ai);
 		}
 	}
 	
@@ -311,6 +312,8 @@ public class AiGenerator{
 		
 		aiCrowd.addActor(ai);
 		aiCrowd.addMask(aiImg);
+		
+		combatMembersManager.addAi(ai);
 		
 	}
 	
@@ -372,6 +375,8 @@ public class AiGenerator{
 			aiCrowd.addMask(aiImg);
 			
 			randomLocation = levelManager.randomInPosition(spawnRoom);
+			
+			combatMembersManager.addAi(ai);
 		}
 	}
 	

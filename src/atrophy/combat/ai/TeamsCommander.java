@@ -327,4 +327,8 @@ public class TeamsCommander {
 		return this.jobAssignments.get(thinkingAi);
 	}
 
+	public void addAi(ThinkingAi ai) {
+		this.teamAi.add(ai);
+	}
+
 }
