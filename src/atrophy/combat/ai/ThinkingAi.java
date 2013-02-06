@@ -23,7 +23,6 @@ import atrophy.combat.ai.conversation.Topic;
 import atrophy.combat.combatEffects.MobileInvisibility;
 import atrophy.combat.combatEffects.Parrying;
 import atrophy.combat.combatEffects.SpeedBoost;
-import atrophy.combat.combatEffects.StationaryInvisibility;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.ui.FloatingIcons;
 import atrophy.combat.display.ui.MessageBox;
@@ -255,12 +254,7 @@ public class ThinkingAi extends Ai{
 				
 				this.setSwing(0);
 				
-				if(this.listeningToCommand){
- 					actUnderCommand();
-				}
-				else{
-					actIgnoreCommand();
-				}
+				actIgnoreCommand();
 			}
 			else if(this.aiMode.equals(AiMode.FLEEING)){ 
 				fleeingAction();
@@ -288,17 +282,7 @@ public class ThinkingAi extends Ai{
 			}
 		}
 		
-		// if the ai is the leader of a formation, slow down slightly to let others catch up
-		if(this.getTeamObject().getTeamSize() > 1 &&
-		   this.getTeamObject().getTeamFormation() != null &&
-		   this.getTeamObject().getTeamFormation().isLeader(this) &&
-		   this.isListeningToCommand()){
-			
-			this.setMoveDistance(this.getDefaultMoveDistance() - 5);
-		}
-		else{
-			this.resetMoveDistance();
-		}
+		this.resetMoveDistance();
 		
 		commitThoughts();
 	}
@@ -318,31 +302,13 @@ public class ThinkingAi extends Ai{
 				}
 			}
 		}
-		else if(this.getTeamObject().hasAbility(Abilities.WELDING)){
-			for(Ai ai : this.getTeamObject().getTeamMembers()){
-				if(ai.hasAbility(Abilities.WELDING) && ai.getTargetAi() == null){
-					for(int i = 0; i < this.getLevelBlock().getPortalCount(); i++){
-						
-						if(!this.getLevelBlock().getPortal(i).canUse() &&
-						   this.getPortalPathway().contains(this.getLevelBlock().getPortal(i))){
-							ai.setWeldingOpen(this.getLevelBlock().getPortal(i));
-							break;
-						}
-					}
-					break;
-				}
-			}
-		}
-		// can't unweld and no-one in team can so request it is opened 
-		else if(!this.getTeamObject().hasAbility(Abilities.WELDING)){
+		else {
 			for(int i = 0; i < this.getLevelBlock().getPortalCount(); i++){
 				
 				if(!this.getLevelBlock().getPortal(i).canUse() &&
 				   this.getPortalPathway().contains(this.getLevelBlock().getPortal(i))){
 					// if the request to get the door open is denied
-					if(!this.getTeamObject().requestDoorOpen(this.getLevelBlock().getPortal(i))){
-						// create a new target location
-					//	throw new PathNotFoundException(pnfe.getLevelBlock());
+					if(!this.getCommander().requestDoorOpen(this.getLevelBlock().getPortal(i))){
 						this.idle();
 					}
 					
@@ -352,9 +318,6 @@ public class ThinkingAi extends Ai{
 		}
 	}
 
-	/**
-	 * Idle.
-	 */
 	private void idle() {
 		this.aiMode = AiMode.CAMPING;
 		this.setMoveLocationToSelf();
@@ -368,7 +331,7 @@ public class ThinkingAi extends Ai{
 	 */
 	private void actIgnoreCommand() throws PathNotFoundException {
 		if(this.chaseAi != null){
-			if(this.emotionManager.getAggression() > 0 && (this.getTeamObject().canPursue() || this.chaseAi.getLevelBlock() == this.getLevelBlock())){
+			if(this.emotionManager.getAggression() > 0 && (this.getCommander().canPursue(this) || this.chaseAi.getLevelBlock() == this.getLevelBlock())){
 				chasetarget();
 			}
 			else{
@@ -412,8 +375,6 @@ public class ThinkingAi extends Ai{
 	 * @throws PathNotFoundException the path not found exception
 	 */
 	private void chasetarget() throws PathNotFoundException{
-		// call for help if strong enemy
-		this.getTeamObject().requestHelp(this.chaseAi.getLevelBlock());
 		// go invisible then chase
 		if(this.hasAbility(Abilities.STEALTH2) &&
 		   !this.hasActiveEffect(MobileInvisibility.NAME)){
@@ -606,7 +567,7 @@ public class ThinkingAi extends Ai{
 			listeningToCommand = true;
 		}
 		
-		if(this.getAction().equals("Loot") && this.getTeamObject().isAiLooted(this.getTargetAi())){
+		if(this.getAction().equals("Loot") && this.getCommander().isAiLooted(this.getTargetAi())){
 			this.removeOrdersWithoutUpdate(mouseAbilityHandler);
 			this.aiMode = AiMode.EMPTY;
 		}
@@ -645,7 +606,7 @@ public class ThinkingAi extends Ai{
 			if(canBeEngaged(shuffledAi.get(i))){
 				
 				// Prioritise hatedAi or ai aiming at ai
-				if(this.getTeamObject().isAiHated(shuffledAi.get(i)) || shuffledAi.get(i).getTargetAi() == this){
+				if(this.getCommander().isAiHated(shuffledAi.get(i)) || shuffledAi.get(i).getTargetAi() == this){
 					target = shuffledAi.get(i);
 					break;
 				}
@@ -667,7 +628,7 @@ public class ThinkingAi extends Ai{
 			
 			// report enemies to commander
 			// only speak if the area is not already reported
-			this.getTeamObject().reportUnits(enemyCount,this.getLevelBlock());
+			this.getCommander().reportUnits(enemyCount,this.getLevelBlock());
 		}
 		else{
 			
@@ -677,7 +638,7 @@ public class ThinkingAi extends Ai{
 			
 			// report enemies to commander
 			// only speak if the area is not already reported
-			this.getTeamObject().reportUnits(enemyCount,this.getLevelBlock());
+			this.getCommander().reportUnits(enemyCount,this.getLevelBlock());
 		}
 	}
 	
@@ -745,7 +706,7 @@ public class ThinkingAi extends Ai{
 		}
 		
 		// if being aimed at then engage
-		if(this.isBeingTargeted() || this.getTeamObject().isAiHated(target) && emotionManager.getAggression() > ThinkingAiEmotion.PASSIVE){
+		if(this.isBeingTargeted() || this.getCommander().isAiHated(target) && emotionManager.getAggression() > ThinkingAiEmotion.PASSIVE){
 			// if fight is possible then engage
 			if(friendlyCount >= enemyCount){
 				this.aiMode = AiMode.ENGAGING;
@@ -753,48 +714,24 @@ public class ThinkingAi extends Ai{
 				emotionManager.modifyAggression(ThinkingAiEmotion.AIMING_AGGRESSION);
 				chanceToParry();
 			}
-			// if a a minor difference in combat ability then call help
-			else if(enemyCount - friendlyCount < emotionManager.getCombatScoreThreshold() && this.getTeamObject().getTeamSizeInRoom(this.getLevelBlock()) < this.getTeamObject().getTeamSize()){
-				this.getTeamObject().requestHelp(this.getLevelBlock());
-				this.aiMode = AiMode.ENGAGING;
-				this.aim(target);
-				emotionManager.modifyAggression(ThinkingAiEmotion.AIMING_AGGRESSION);
-			}
-			// if more than minor difference and no grenades in room and this isn't a room the ai is defending
-			else if(this.hasAbility(Abilities.GRENADETHROWER) && this.getLevelBlock() != this.getTeamObject().getLevelBlock() &&
-					   !combatInorganicManager.isGrenadeInRoom(this.getLevelBlock()) ){
-				
-				this.throwGrenade(target.getLocation()[0], target.getLocation()[1]);
-			}
 			// low chance of winning, run
 			else{
-				getANewRoom();
-//				try {
-					// go invisible then flee
-					if(this.hasAbility(Abilities.STEALTH2) &&
-					   !this.hasActiveEffect(MobileInvisibility.NAME)){
-						this.addEffect(new MobileInvisibility(this.getSkillLevel(Abilities.STEALTH2)));
-						return;
-					}
-					// go fast then flee
-					else if(this.hasAbility(Abilities.SPEED_BOOSTER) &&
-						    !this.hasActiveEffect(SpeedBoost.NAME)){
-						this.addEffect(new SpeedBoost(this.getSkillLevel(Abilities.SPEED_BOOSTER)));
-						return;
-					}
-//					this.fleeCheckForEnemy();
-//				} 
-//				catch (PathNotFoundException pnfe) {
-//					// can't flee so stay and engage
-//					this.aiMode = "Engaging";
-//					this.aim(target);
-//					return;
-//				}
+				// go invisible then flee
+				if(this.hasAbility(Abilities.STEALTH2) &&
+				   !this.hasActiveEffect(MobileInvisibility.NAME)){
+					this.addEffect(new MobileInvisibility(this.getSkillLevel(Abilities.STEALTH2)));
+					return;
+				}
+				// go fast then flee
+				else if(this.hasAbility(Abilities.SPEED_BOOSTER) &&
+					    !this.hasActiveEffect(SpeedBoost.NAME)){
+					this.addEffect(new SpeedBoost(this.getSkillLevel(Abilities.SPEED_BOOSTER)));
+					return;
+				}
 			}
 		}
 		else{
 			if(friendlyCount < enemyCount){
-				getANewRoom();
 				try {
 					this.fleeCheckForEnemy();
 				} 
@@ -810,22 +747,6 @@ public class ThinkingAi extends Ai{
 			this.addEffect(new Parrying());
 	}
 
-	/**
-	 * Gets the a new room.
-	 *
-	 * @return the a new room
-	 */
-	protected void getANewRoom(){
-		this.getTeamObject().newRoom();
-	}
-
-	/**
-	 * Aggressive engage reaction.
-	 *
-	 * @param friendlyCount the friendly count
-	 * @param enemyCount the enemy count
-	 * @param target the target
-	 */
 	protected void aggressiveEngageReaction(int friendlyCount, int enemyCount, Ai target) {
 		
 		if(this.getWeapon().isMelee() && this.getWeapon().isInRange(this, target) && !this.hasActiveEffect(Parrying.NAME) && new Random().nextInt(4) > 1){
@@ -839,17 +760,9 @@ public class ThinkingAi extends Ai{
 			this.aim(target);
 		}
 		// if a a minor difference in combat ability then call help or shank if using melee
-		else if(enemyCount - friendlyCount < this.emotionManager.getCombatScoreThreshold() && ( ( this.getWeapon().isMelee() && this.getWeapon().isInRange(this, target) ) ||
-				                                                                this.getTeamObject().getTeamSizeInRoom(this.getLevelBlock()) < this.getTeamObject().getTeamSize())){
-			this.getTeamObject().requestHelp(this.getLevelBlock());
+		else if(enemyCount - friendlyCount < this.emotionManager.getCombatScoreThreshold() && ( ( this.getWeapon().isMelee() && this.getWeapon().isInRange(this, target)))){
 			this.aiMode = AiMode.ENGAGING;
 			this.aim(target);
-		}
-		// if more than minor difference and no grenades in room and this isn't a room the ai is defending
-		else if(this.hasAbility(Abilities.GRENADETHROWER) && this.getLevelBlock() != this.getTeamObject().getLevelBlock() &&
-			    !combatInorganicManager.isGrenadeInRoom(this.getLevelBlock()) ){
-			
-			this.throwGrenade(target.getLocation()[0], target.getLocation()[1]);
 		}
 		// low chance of winning
 		// engage if being targeted
@@ -863,101 +776,16 @@ public class ThinkingAi extends Ai{
 		}
 	}
 	
-	/**
-	 * Act under command.
-	 *
-	 * @throws PathNotFoundException the path not found exception
-	 */
-	private void actUnderCommand() throws PathNotFoundException{
-
-		this.getTeamObject().joinFormation(this);
-
-		if(this.getLevelBlock() == this.getTeamObject().getLevelBlock()){
-			this.aiMode = AiMode.CAMPING;
-			
-			if(this.getTeamObject().getTeamFormation() != null &&
-			   this.getTeamObject().getTeamFormation().isInFormation(this) &&
-			   this.aiMode.equals(this.getTeamObject().getTeamFormation().getFormationType())){
-				
-				this.aiMode = AiMode.CAMPING;
-				this.setMoveLocation(this.getTeamObject().getTeamFormation().getLocation(this));
-			}
-			else if(this.getTeamObject().getTeamFormation() == null && this.getLevelBlock().isInCover(this.getMoveLocation())){
-				this.aiMode = AiMode.CAMPING;
-			}
-			else{
-				this.aiMode = AiMode.CAMPING;
-				
-				if(this.getLevelBlock().getStealthRegion().size() > 0){
-					this.moveTowardsNearestRegion(this.getLevelBlock().getStealthRegion());
-				}
-				else{
-					this.moveTowardsNearestRegion(this.getLevelBlock().getCover());
-				}
-			}
-			
-			// if can weld then weld instead of camping
-			if(this.getAbilities().contains(Abilities.WELDING) &&
-			   this.getTeamObject().canUse(Abilities.WELDING)){
-				this.setWeldingShut(this.getTeamObject().getBlockedPortal());
-				
-				// if not welding, because no doors to weld shut, try to open some
-				if(!this.getAction().contains("Weld")){
-					this.setWeldingOpen(this.getTeamObject().getOpenPortal());
-				}
-			}
-			else if(this.getAbilities().contains(Abilities.XRAY_SCAN) &&
-					this.getWeapon().hasFullAmmo() &&
-					Maths.getDistance(this.getLocation(), this.getMoveLocation()) == 0){
-				this.xrayScan();
-			}
-			// check if has full ammo or abilities will stop reloading
-			else if(this.getAbilities().contains(Abilities.STEALTH1) &&
-					!this.hasActiveEffect(StationaryInvisibility.NAME) &&
-					Maths.getDistance(this.getLocation(), this.getMoveLocation()) == 0){
-				this.addEffect(new StationaryInvisibility(this.getSkillLevel(Abilities.STEALTH1)));
-			}
-		}
-		else{
-			if(this.getTeamObject().getTeamFormation() != null &&
-			   this.getTeamObject().getTeamFormation().isInFormation(this) &&
-			   !this.getTeamObject().getTeamFormation().isLeader(this) &&
-			   this.aiMode.equals(this.getTeamObject().getTeamFormation().getFormationType())){
-				
-				this.aiMode = AiMode.PATROLLING;
-				this.setMoveLocation(this.getTeamObject().getTeamFormation().getLocation(this));
-			}
-			else{
-				this.aiMode = AiMode.PATROLLING;
-				
-				// if not moving to room then move to room
-				if(levelManager.getBlock(this.getMoveLocation()) != this.getTeamObject().getLevelBlock()){
-					this.setMoveLocation(levelManager.randomInPosition(this.getTeamObject().getLevelBlock()));
-				}
-			}
-			
-		}
-	}
-
-	/**
-	 * Computes the when to fire.
-	 */
 	protected void computeWhenToFire(){
 		   
 		if(this.getSwing() > 0 &&
-		    // fire if 60% chance to hit
 		   (emotionManager.hasAccuracyForAggressionLevel(this) ||
 		    this.getSwing() == this.getWeapon().getMaxSwing())){
-//		    // or fire asap if the enemy has a good shot
-//		    this.getTargetAi().getSwing() * Weapon.SWING_BONUS + this.getTargetAi().getWeapon().getAccuracy() > 60)){
 			
 			this.setAction(AiCombatActions.SHOOTING);
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see atrophy.combat.ai.Ai#aim(atrophy.combat.ai.Ai)
-	 */
 	public void aim(Ai ai){
 		
 		this.setSwing(0);
@@ -966,8 +794,6 @@ public class ThinkingAi extends Ai{
 		
 		// remove portal pathway
 		this.deletePortalPathway();
-		
-		//System.out.println(this.getName() + " I'm aiming at "+ ai.getName() +"!");
 		
 		this.setTargetAi(ai);
 		chaseAi = ai;
@@ -979,61 +805,30 @@ public class ThinkingAi extends Ai{
 		}
 	}
 	
-	/**
-	 * Computes the look direction.
-	 */
 	protected void computeLookDirection(){
 		
 		if(this.aiMode.equals(AiMode.PATROLLING)){
-			
-			// if there isn't a formation or this is not in it or this is the leader of it
-			if(this.getTeamObject().getTeamFormation() == null ||
-					(
-							!this.getTeamObject().getTeamFormation().isInFormation(this) ||
-							this.getTeamObject().getTeamFormation().isLeader(this)) ||
-							!this.aiMode.equals(this.getTeamObject().getTeamFormation().getFormationType())
-					){
-				
-				// then look towards portal or look towards move point if in same room
-				if(this.getPortalPathway() == null){
-					this.setTrueLookAngle(this.getMoveLocation());
-				}
-				else{
-					this.setTrueLookAngle(this.getPortalPathway().get(this.getPortalPathway().size() - 1).getLocation());
-				}
+			// then look towards portal or look towards move point if in same room
+			if(this.getPortalPathway() == null){
+				this.setTrueLookAngle(this.getMoveLocation());
 			}
-			else if(this.getTeamObject().getTeamFormation() != null &&
-					this.aiMode.equals(this.getTeamObject().getTeamFormation().getFormationType())){
-				// find where to look in the formation
-				this.setTrueLookAngle(this.getTeamObject().getTeamFormation().getHeading(this));
+			else{
+				this.setTrueLookAngle(this.getPortalPathway().get(this.getPortalPathway().size() - 1).getLocation());
 			}
 		}
 		else if(this.aiMode.equals(AiMode.CAMPING)){
-			if(this.getTeamObject().getTeamFormation() == null ||
-					(
-					!this.getTeamObject().getTeamFormation().isInFormation(this) ||
-					this.getTeamObject().getTeamFormation().isLeader(this)) ||
-					!this.aiMode.equals(this.getTeamObject().getTeamFormation().getFormationType())
-			   ){
-				// look at a portal to this room or a corner
-				Random rand = new Random();
-				
-				if(rand.nextBoolean()){
-					// look at random portal
-					this.setTrueLookAngle(this.getLevelBlock().getPortal(rand.nextInt(this.getLevelBlock().getPortalCount())).getLocation());
-				}
-				else{
-					//look at corner
-					this.setTrueLookAngle(this.getLevelBlock().getHitBox().xpoints[rand.nextInt(this.getLevelBlock().getHitBox().npoints)],
-										  this.getLevelBlock().getHitBox().ypoints[rand.nextInt(this.getLevelBlock().getHitBox().npoints)]);
-				}
+			Random rand = new Random();
+			
+			if(rand.nextBoolean()){
+				// look at random portal
+				this.setTrueLookAngle(this.getLevelBlock().getPortal(rand.nextInt(this.getLevelBlock().getPortalCount())).getLocation());
 			}
-			else if(this.getTeamObject().getTeamFormation() != null &&
-					this.aiMode.equals(this.getTeamObject().getTeamFormation().getFormationType())){
-				// find where to look in the formation
-				this.setTrueLookAngle(this.getTeamObject().getTeamFormation().getHeading(this));
+			else{
+				//look at corner
+				this.setTrueLookAngle(this.getLevelBlock().getHitBox().xpoints[rand.nextInt(this.getLevelBlock().getHitBox().npoints)],
+									  this.getLevelBlock().getHitBox().ypoints[rand.nextInt(this.getLevelBlock().getHitBox().npoints)]);
 			}
-		}
+	}
 		else if(this.getTargetAi() != null && this.aiMode.equals(AiMode.LOOT)){
 			this.setTrueLookAngle(Maths.getDegrees(this.getLocation(), this.getTargetAi().getLocation()));
 		}
@@ -1043,9 +838,6 @@ public class ThinkingAi extends Ai{
 
 	}
 	
-	/* (non-Javadoc)
-	 * @see atrophy.combat.ai.Ai#lootTurnAction()
-	 */
 	@Override
 	protected void lootTurnAction(){
 		
@@ -1082,11 +874,6 @@ public class ThinkingAi extends Ai{
 
 	}
 	
-	/**
-	 * Computes the what to loot.
-	 *
-	 * @param targetAi the target ai
-	 */
 	private void computeWhatToLoot(Lootable targetAi) {
 		
 		if(targetAi.getWeapon() != null && this.getWeapon().isMelee() && !targetAi.getWeapon().isMelee()){
@@ -1118,32 +905,24 @@ public class ThinkingAi extends Ai{
 		}
 		
 		if(targetAi.getInventory().isEmpty()){
-			this.getTeamObject().addLootedAi(this.getTargetAi());
+			this.getCommander().addLootedAi(this.getTargetAi());
 		}
 	}
 	
-	/**
-	 * Ai in room to loot.
-	 *
-	 * @return true, if successful
-	 */
 	private boolean aiInRoomToLoot() {
 		if(!this.getInventory().isFull())
 		for(Ai ai : aiCrowd.getActors()){
-			if(ai.getLevelBlock() == this.getLevelBlock() && (ai.isDead() || (this.isTargetHostile(ai) && ai.getIncapTurns() > 0)) && !this.getTeamObject().isAiLooted(ai) && hasStuffToLoot(ai) && combatVisualManager.isAiInSight(ai, this.getFaction())){
+			if(ai.getLevelBlock() == this.getLevelBlock() && (ai.isDead() || (this.isTargetHostile(ai) && ai.getIncapTurns() > 0)) && !this.getCommander().isAiLooted(ai) && hasStuffToLoot(ai) && combatVisualManager.isAiInSight(ai, this.getFaction())){
 				return true;
 			}
 		}
 		return false;
 	}
 
-	/**
-	 * Loot ai in room.
-	 */
 	protected void lootAiInRoom() {
 		if(!this.getInventory().isFull())
 		for(Ai ai : aiCrowd.getActors()){
-			if(ai.getLevelBlock() == this.getLevelBlock() && (ai.isDead() || (this.isTargetHostile(ai) && ai.getIncapTurns() > 0)) && !this.getTeamObject().isAiLooted(ai) && hasStuffToLoot(ai) && combatVisualManager.isAiInSight(ai, this.getFaction())){
+			if(ai.getLevelBlock() == this.getLevelBlock() && (ai.isDead() || (this.isTargetHostile(ai) && ai.getIncapTurns() > 0)) && !this.getCommander().isAiLooted(ai) && hasStuffToLoot(ai) && combatVisualManager.isAiInSight(ai, this.getFaction())){
 				this.aiMode = AiMode.LOOT;
 				this.setAction("Loot");
 				this.loot(ai);
@@ -1159,21 +938,12 @@ public class ThinkingAi extends Ai{
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see atrophy.combat.ai.Ai#stashSearch()
-	 */
 	@Override
 	public Lootable stashSearch() {
 		Lootable loot = this.getLevelBlock().getStash(this.getLocation());
 		return loot;
 	}
 	
-	/**
-	 * Checks for stuff to loot.
-	 *
-	 * @param targetAi the target ai
-	 * @return true, if successful
-	 */
 	private boolean hasStuffToLoot(Ai targetAi){
 		
 		if(this.getWeapon().isMelee() && !targetAi.getWeapon().isMelee()){
@@ -1195,11 +965,6 @@ public class ThinkingAi extends Ai{
 		return false;
 	}
 
-	/**
-	 * Checks if is being targeted.
-	 *
-	 * @return true, if is being targeted
-	 */
 	protected boolean isBeingTargeted() {
 		for(Ai ai : aiCrowd.getActors()){
 			if(!ai.getFaction().equals(this.getFaction()) && 
@@ -1211,26 +976,12 @@ public class ThinkingAi extends Ai{
 		return false;
 	}
 
-	/**
-	 * Wait for turns.
-	 *
-	 * @param count the count
-	 */
 	public void waitForTurns(int count) {
 		this.turnCounter = count;
 		this.listeningToCommand = false;
 		this.aiMode = AiMode.CAMPING;
 	}
 	
-	// getters
-	/**
-	 * Gets the team object.
-	 *
-	 * @return the team object
-	 */
-	public ThinkingTeamObject getTeamObject(){
-		return (ThinkingTeamObject) combatMembersManager.getTeamObject(this);
-	}
 	
 	/**
 	 * Checks if is listening to command.
@@ -1249,7 +1000,7 @@ public class ThinkingAi extends Ai{
 		if( !target.isDead() &&
 		   (!this.getFaction().equals(target.getFaction())) &&
 		   // also checks for alliances
-		    !this.getTeamObject().isAlliedWith(target.getFaction())){
+		    !this.getCommander().isAlliedWith(target.getFaction())){
 			return true;
 		}
 		return false;
@@ -1266,7 +1017,6 @@ public class ThinkingAi extends Ai{
 		if(this.aiNode != null && !this.aiNode.hasPriority(this.getName())){
 			this.aiNode.releaseNode(this);
 			this.aiNode = null;
-			this.getTeamObject().aiReleasedNode(this);
 		}
 	}
 	
@@ -1532,8 +1282,12 @@ public class ThinkingAi extends Ai{
 			if(!thinks || this.behaviours.size() > 0){
 				if(!useDialogue(ai)){
 					
-					if(this.behaviours.contains(FOLLOW_PLAYER)){
-						ai.getTeamObject().setTargetRoomIgnoreSetting(ai.combatMembersManager.getCurrentAi().getLevelBlock());
+					if(this.behaviours.contains(FOLLOW_PLAYER) && ai.getLevelBlock() != ai.combatMembersManager.getCurrentAi().getLevelBlock()){
+						try {
+							ai.setMoveLocation(ai.combatMembersManager.getCurrentAi().getLocation());
+						} catch (PathNotFoundException e) {
+							// can't move to target
+						}
 					}
 
 					ai.gatherEnvironmentData();
