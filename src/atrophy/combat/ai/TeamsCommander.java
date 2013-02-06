@@ -39,11 +39,7 @@ public class TeamsCommander {
 	
 	private Set<Ai> hatedAi;
 	
-	private ArrayList<ThinkingTeamObject> teams;
-	
-	private HashMap<ThinkingTeamObject,JobTitle> teamType;
-	
-	private HashMap<ThinkingTeamObject,LevelBlock> teamDefendAssignments;
+	private Map<Ai, JobTitle> jobAssignments;
 	
 	private ArrayList<LevelBlock> defendRooms;
 	
@@ -80,17 +76,15 @@ public class TeamsCommander {
 		this.faction = faction;
 		this.levelManager = levelManager;
 		
-		teams = new ArrayList<ThinkingTeamObject>(2);
-		teamType = new HashMap<ThinkingTeamObject,JobTitle>(2);
 		defendRooms = new ArrayList<LevelBlock>(2);
 		blockedPortals = new ArrayList<Portal>(2);
 		openPortals = new ArrayList<Portal>(2);
-		teamDefendAssignments = new HashMap<ThinkingTeamObject,LevelBlock>(2);
 		scoutRooms = new ArrayList<LevelBlock>();
 		enemyCountInRoom = new HashMap<LevelBlock,int[]>();
 		lootedAi = new HashSet<Ai>();
 		alliances = new HashSet<String>();
 		hatedAi = new HashSet<Ai>();
+		jobAssignments = new HashMap<>();
 		
 		jobBoard = new int[3];
 		jobBoard[0] = 0;
@@ -430,9 +424,9 @@ public class TeamsCommander {
 		return this.teams.get(index);
 	}
 
-	public boolean canPursue(ThinkingTeamObject thinkingTeamObject) {
-		if(teamType.get(thinkingTeamObject) == null){
-			this.assignNewJob(thinkingTeamObject);
+	public boolean canPursue(ThinkingAi thinkingAi) {
+		if(teamType.get(thinkingAi) == null){
+			this.assignNewJob(thinkingAi);
 		}
 		if(this.targetRoom == null || teamType.get(thinkingTeamObject).equals(JobTitle.ROAMER) || teamType.get(thinkingTeamObject).equals(JobTitle.LAYER_DEFENDER)){
 			return true;
@@ -530,14 +524,11 @@ public class TeamsCommander {
 		this.defendRooms = null;
 		this.openPortals = null;
 		this.targetRoom = null;
-		this.teamDefendAssignments = null;
-		this.teams = null;
-		this.teamType = null;
 		this.scoutRooms = null;
 	}
 
-	public JobTitle getJob(ThinkingTeamObject thinkingTeamObject) {
-		return this.teamType.get(thinkingTeamObject);
+	public JobTitle getJob(ThinkingAi thinkingAi) {
+		return this.jobAssignments.get(thinkingAi);
 	}
 
 }
