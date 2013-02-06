@@ -491,29 +491,14 @@ public class AiActions {
 		if(Maths.getDistance(invoker.getLocation(), invoker.getTargetAi().getLocation()) <= MeleeWeapon1.RANGE){
 			
 			// break any alliances with the faction if visible
-			if(!invoker.getFaction().equals(AiGenerator.LONER) &&
-			   combatMembersManager.getTeamObject(invoker.getTargetAi()) instanceof ThinkingTeamObject &&
-			   combatVisualManager.isAiInSight(invoker, invoker.getTargetAi().getFaction())){
-				
-				((ThinkingTeamObject) combatMembersManager.getTeamObject(invoker.getTargetAi())).removeAlliance(invoker.getFaction());
-				
-			}
+			breakAlliance(invoker);
 			
 			invoker.getTargetAi().setStunnedTurns(2);
 			if(invoker.getSkillLevel(Abilities.STUNGRENADETHROWER) >= 2){
 				invoker.getTargetAi().setStunnedTurns(3);
 			}
 			
-			// break any alliances with the faction if visible
-			// check after move too
-			if(!invoker.getFaction().equals(AiGenerator.LONER) &&
-			   combatMembersManager.getTeamObject(invoker.getTargetAi()) instanceof ThinkingTeamObject &&
-			   combatVisualManager.isAiInSight(invoker, invoker.getTargetAi().getFaction())){
-				
-				((ThinkingTeamObject) combatMembersManager.getTeamObject(invoker.getTargetAi())).removeAlliance(invoker.getFaction());
-				combatMembersManager.getCommander(invoker.getTargetAi().getFaction()).addHatedAi(invoker);
-				
-			}
+			makeHatedWithTarget(invoker);
 			
 			invoker.setTargetAi(null);
 			this.setAction(NO_ACTION);
@@ -527,7 +512,7 @@ public class AiActions {
 		
 		this.setActionTurns(0);
 	}
-	
+
 	public void setBackstabTarget(Ai invoker, Ai targetAi){
 		invoker.setTargetAi(targetAi);
 		this.setAction(BACKSTAB);
@@ -538,14 +523,7 @@ public class AiActions {
 		if(Maths.getDistance(invoker.getLocation(), invoker.getTargetAi().getLocation()) <= invoker.getWeapon().getRange() + 10){
 			
 			// break any alliances with the faction if visible
-			if(!invoker.getFaction().equals(AiGenerator.LONER) &&
-			   combatMembersManager.getTeamObject(invoker.getTargetAi()) instanceof ThinkingTeamObject &&
-			   combatVisualManager.isAiInSight(invoker, invoker.getTargetAi().getFaction())){
-				
-				((ThinkingTeamObject) combatMembersManager.getTeamObject(invoker.getTargetAi())).removeAlliance(invoker.getFaction());
-				combatMembersManager.getCommander(invoker.getTargetAi().getFaction()).addHatedAi(invoker);
-				
-			}
+			makeHatedWithTarget(invoker);
 			
 			if(!CombatVisualManager.spotFovNoRadius(invoker.getTargetAi(),invoker.getLocation())){
 				invoker.getTargetAi().setDead(true);
@@ -553,16 +531,7 @@ public class AiActions {
 			
 			invoker.setLocation(invoker.getTargetAi().getLocation().clone());
 			
-			// break any alliances with the faction if visible
-			// check after move too
-			if(!invoker.getFaction().equals(AiGenerator.LONER) &&
-			   combatMembersManager.getTeamObject(invoker.getTargetAi()) instanceof ThinkingTeamObject &&
-			   combatVisualManager.isAiInSight(invoker, invoker.getTargetAi().getFaction())){
-				
-				((ThinkingTeamObject) combatMembersManager.getTeamObject(invoker.getTargetAi())).removeAlliance(invoker.getFaction());
-				combatMembersManager.getCommander(invoker.getTargetAi().getFaction()).addHatedAi(invoker);
-				
-			}
+			makeHatedWithTarget(invoker);
 			
 			invoker.setTargetAi(null);
 			this.setAction(NO_ACTION);
@@ -575,6 +544,27 @@ public class AiActions {
 		}
 		
 		this.setActionTurns(0);
+	}
+
+	private void breakAlliance(Ai invoker) {
+		if(!invoker.getFaction().equals(AiGenerator.LONER) &&
+		   invoker.getTargetAi() instanceof ThinkingAi &&
+		   combatVisualManager.isAiInSight(invoker, invoker.getTargetAi().getFaction())){
+			
+			((ThinkingAi) invoker.getTargetAi()).getCommander().removeAlliance(invoker.getFaction());
+			
+		}
+	}
+	
+	private void makeHatedWithTarget(Ai invoker) {
+		if(!invoker.getFaction().equals(AiGenerator.LONER) &&
+		   invoker.getTargetAi() instanceof ThinkingAi &&
+		   combatVisualManager.isAiInSight(invoker, invoker.getTargetAi().getFaction())){
+			
+			((ThinkingAi) invoker.getTargetAi()).getCommander().removeAlliance(invoker.getFaction());
+			combatMembersManager.getCommander(invoker.getTargetAi().getFaction()).addHatedAi(invoker);
+			
+		}
 	}
 	
 	public void specialActions(Ai invoker) {

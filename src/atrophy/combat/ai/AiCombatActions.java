@@ -51,7 +51,7 @@ public class AiCombatActions {
 			if(invoker.getWeapon().isInRange(invoker, this.getTargetAi())){
 				// break any alliances with the faction if visible
 				if(!invoker.getFaction().equals(AiGenerator.LONER) &&
-				   combatMembersManager.getTeamObject(targetAi) instanceof ThinkingTeamObject &&
+				   this.getTargetAi() instanceof ThinkingAi &&
 				   combatVisualManager.isAiInSight(invoker, targetAi.getFaction())){
 					
 					combatMembersManager.getCommander(targetAi.getFaction()).removeAlliance(invoker.getFaction());
