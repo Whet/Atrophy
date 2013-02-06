@@ -1282,9 +1282,9 @@ public class ThinkingAi extends Ai{
 			if(!thinks || this.behaviours.size() > 0){
 				if(!useDialogue(ai)){
 					
-					if(this.behaviours.contains(FOLLOW_PLAYER) && ai.getLevelBlock() != ai.combatMembersManager.getCurrentAi().getLevelBlock()){
+					if(this.behaviours.contains(FOLLOW_PLAYER) && ai.levelManager.getBlock(ai.getMoveLocation()) != ai.combatMembersManager.getCurrentAi().getLevelBlock()){
 						try {
-							ai.setMoveLocation(ai.combatMembersManager.getCurrentAi().getLocation());
+							ai.setMoveLocation(ai.levelManager.randomInPosition(ai.combatMembersManager.getCurrentAi().getLevelBlock()));
 						} catch (PathNotFoundException e) {
 							// can't move to target
 						}

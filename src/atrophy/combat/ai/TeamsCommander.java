@@ -39,8 +39,6 @@ public class TeamsCommander {
 	
 	private Map<Ai, JobTitle> jobAssignments;
 	
-	private ArrayList<LevelBlock> defendRooms;
-	
 	private ArrayList<LevelBlock> scoutRooms;
 	
 	private Map<LevelBlock,int[]> enemyCountInRoom;
@@ -61,8 +59,6 @@ public class TeamsCommander {
 	
 	private int[] jobBoard;
 	
-	private boolean checkForJobStability;
-	
 	private int turnsToNextUpdate;
 
 	private TurnProcess turnProcess;
@@ -74,7 +70,6 @@ public class TeamsCommander {
 		this.levelManager = levelManager;
 		
 		teamAi = new HashSet<ThinkingAi>();
-		defendRooms = new ArrayList<LevelBlock>(2);
 		blockedPortals = new ArrayList<Portal>(2);
 		openPortals = new ArrayList<Portal>(2);
 		scoutRooms = new ArrayList<LevelBlock>();
@@ -89,7 +84,6 @@ public class TeamsCommander {
 		jobBoard[1] = 0;
 		jobBoard[2] = 0;
 		
-		checkForJobStability = false;
 		
 		turnsToNextUpdate = 0;
 		
@@ -181,7 +175,6 @@ public class TeamsCommander {
 			
 			turnsToNextUpdate = new Random().nextInt(UPDATE_MAX_GAP);
 		
-			this.checkForJobStability = false;
 			
 			// check if a blocked portal was added to open portals
 			for(int i = 0; i < this.openPortals.size(); i++){
@@ -195,10 +188,6 @@ public class TeamsCommander {
 		
 		}
 		
-	}
-	
-	public void checkJobStability(){
-		this.checkForJobStability = true;
 	}
 	
 	public ArrayList<Portal> getBlockedPortals(){
@@ -317,7 +306,6 @@ public class TeamsCommander {
 	
 	public void purge(){
 		this.blockedPortals = null;
-		this.defendRooms = null;
 		this.openPortals = null;
 		this.targetRoom = null;
 		this.scoutRooms = null;
