@@ -18,10 +18,6 @@ import atrophy.combat.level.Portal;
 import atrophy.combat.mechanics.Abilities;
 import atrophy.combat.mechanics.TurnProcess;
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class TeamsCommander.
- */
 public class TeamsCommander {
 	
 	protected static enum JobTitle {
@@ -34,6 +30,8 @@ public class TeamsCommander {
 	// Update for danger of room
 	// can't be too short or a unit will think room is safe when they leave and are just looking at door
 	private static final int COMMANDER_UPDATE_TURN_GAP = 8;
+	
+	private Set<ThinkingAi> teamAi;
 	
 	private Set<String> alliances;
 	
@@ -68,7 +66,6 @@ public class TeamsCommander {
 	private int turnsToNextUpdate;
 
 	private TurnProcess turnProcess;
-
 	private LevelManager levelManager;
 	
 	public TeamsCommander(TurnProcess turnProcess, String faction, LevelManager levelManager){
@@ -76,6 +73,7 @@ public class TeamsCommander {
 		this.faction = faction;
 		this.levelManager = levelManager;
 		
+		teamAi = new HashSet<ThinkingAi>();
 		defendRooms = new ArrayList<LevelBlock>(2);
 		blockedPortals = new ArrayList<Portal>(2);
 		openPortals = new ArrayList<Portal>(2);
@@ -100,24 +98,17 @@ public class TeamsCommander {
 		this.turnProcess = turnProcess;
 	}
 	
-	public void addTeam(ThinkingTeamObject team){
-		if(!this.teams.contains(team)){
-			this.teams.add(team);
-			this.restartJobs();
-		}
-	}
-	
-	public LevelBlock getTargetRoom(ThinkingTeamObject team){
+	public LevelBlock getTargetRoom(ThinkingAi ai){
 		
 		LevelBlock returnBlock = null;
 		
 		if(targetRoom != null){
 			do{
-				if(teamType.get(team) != null){
+				if(jobAssignments.get(ai) != null){
 				
-					switch(teamType.get(team)){
+					switch(jobAssignments.get(ai)){
 						case LAYER_DEFENDER:
-							returnBlock = firstLayerDefender(team);
+							returnBlock = firstLayerDefender(ai);
 						break;
 						
 						case ROOM_DEFENDER:
@@ -130,46 +121,36 @@ public class TeamsCommander {
 					}
 				}
 				else{
-					this.assignNewJob(team);
+					this.assignNewJob(ai);
 				}
 				//loop to assign rooms to teams that were unemployed at start of function
 			}while(returnBlock == null);
 		}
 		else{
-			return levelManager.randomRoom(this.getFaction(), this.getDangerRooms(team.getCombatScore()));
+			return levelManager.randomRoom(this.getFaction(), this.getDangerRooms(ai.getCombatScore()));
 		}
 		
 		return returnBlock;
 	}
 	
-	private void assignNewJob(ThinkingTeamObject team){
+	private void assignNewJob(ThinkingAi ai){
 			
-		team.removeAbilities();
-		
 		if(jobBoard[1] < maxRoomDefenders){
 			jobBoard[1]++;
-			teamType.put(team, JobTitle.ROOM_DEFENDER);
-			team.addAbility(Abilities.WELDING);
+			jobAssignments.put(ai, JobTitle.ROOM_DEFENDER);
 		}
 		else if(jobBoard[0] < maxLayerDefenders){
 			jobBoard[0]++;
-			teamType.put(team, JobTitle.LAYER_DEFENDER);
+			jobAssignments.put(ai, JobTitle.LAYER_DEFENDER);
 		}
 		else{
 			jobBoard[2]++;
-			teamType.put(team, JobTitle.ROAMER);
+			jobAssignments.put(ai, JobTitle.ROAMER);
 		}
 	}
 	
-	private LevelBlock firstLayerDefender(ThinkingTeamObject team){
-		
-		if(this.teamDefendAssignments.containsKey(team)){
-			return this.teamDefendAssignments.get(team);
-		}
-		
-		this.teamDefendAssignments.put(team, this.defendRooms.get(0));
-		this.defendRooms.remove(0);
-		return this.teamDefendAssignments.get(team);
+	private LevelBlock firstLayerDefender(ThinkingAi ai){
+		return levelManager.randomRoom();
 	}
 	
 	private LevelBlock hunterSeeker(){
@@ -200,14 +181,6 @@ public class TeamsCommander {
 			
 			turnsToNextUpdate = new Random().nextInt(UPDATE_MAX_GAP);
 		
-			// if dead teams were removed then check for vital jobs		
-			if(this.removeDeadTeams() && !this.checkForJobStability && this.targetRoom != null){
-				restartJobs();
-			}
-			else if(this.checkForJobStability  && this.targetRoom != null){
-				this.computeJobStability();
-			}
-			
 			this.checkForJobStability = false;
 			
 			// check if a blocked portal was added to open portals
@@ -228,161 +201,6 @@ public class TeamsCommander {
 		this.checkForJobStability = true;
 	}
 	
-	private void computeJobStability(){
-		boolean criticalJobLost = false;
-		
-		// jobs are not critical if there is no target room
-		if(this.targetRoom != null){
-			// if a team lost a specialist, check to see if all high priority jobs are performing optimally
-			// if for instance a job which needs a welder, the team loses its welder, so see if there is a spare team with a welder to replace them
-			for(ThinkingTeamObject team : this.teams){
-				switch(this.teamType.get(team)){
-					case LAYER_DEFENDER:
-						if(!team.hasAbility(Abilities.WELDING) &&
-						   this.hasAbility(Abilities.WELDING)){
-							criticalJobLost = true;
-						}
-					break;
-					
-					case ROOM_DEFENDER:
-						if(!team.hasAbility(Abilities.XRAY_SCAN) &&
-						   this.hasAbility(Abilities.XRAY_SCAN)){
-							criticalJobLost = true;
-						}
-					break;
-					default:
-					break;
-				}
-				
-				if(criticalJobLost){
-					restartJobs();
-					return;
-				}
-			}
-		}
-	}
-	
-	private void restartJobs(){
-		updateDefendRooms();
-		updateJobs();
-		updateTeams();
-	}
-	
-	private boolean removeDeadTeams(){
-		
-		boolean editMade = false;
-		
-		ListIterator<ThinkingTeamObject> litr = teams.listIterator(); 
-		ThinkingTeamObject element;
-		while(litr.hasNext()) {
-
-			element = litr.next(); 
-		    
-		    if(element.isDead()){
-		    	litr.remove();
-		    	editMade = true;
-		    }
-		}
-		
-		return editMade;
-	}
-	
-	private void updateJobs(){
-		
-		unemployAll();
-		
-		maxLayerDefenders = this.defendRooms.size();
-		maxRoomDefenders = 1;
-		
-		pickPriorityTeams();
-		pickLeftOverTeams();
-	}
-	
-	private void pickLeftOverTeams() {
-		for(ThinkingTeamObject team:this.teams){
-			if(!this.teamType.containsKey(team)){
-				if(this.jobBoard[1] < maxRoomDefenders){
-					jobBoard[1]++;
-					teamType.put(team, JobTitle.ROOM_DEFENDER);
-					team.addAbility(Abilities.WELDING);
-				}
-				else if(this.jobBoard[0] < maxLayerDefenders){
-					jobBoard[0]++;
-					teamType.put(team, JobTitle.LAYER_DEFENDER);
-				}
-				else{
-					jobBoard[2]++;
-					teamType.put(team, JobTitle.ROAMER);
-				}
-			}
-		}
-	}
-
-	private void unemployAll(){
-		this.teamType.clear();
-		this.teamDefendAssignments.clear();
-		
-		jobBoard[0] = 0;
-		jobBoard[1] = 0;
-		jobBoard[2] = 0;
-	}
-	
-	private void pickPriorityTeams(){
-		for(ThinkingTeamObject team:this.teams){
-			if(this.jobBoard[1] < maxRoomDefenders &&
-			    team.hasAbility(Abilities.WELDING)){
-				jobBoard[1]++;
-				teamType.put(team, JobTitle.ROOM_DEFENDER);
-				team.addAbility(Abilities.WELDING);
-			}
-			else if(this.jobBoard[0] < maxLayerDefenders &&
-				team.hasAbility(Abilities.XRAY_SCAN)){
-				jobBoard[0]++;
-				teamType.put(team, JobTitle.LAYER_DEFENDER);
-			}
-			else if(team.hasAbility(Abilities.STEALTH1) || team.hasAbility(Abilities.STEALTH2)){
-				jobBoard[2]++;
-				teamType.put(team, JobTitle.ROAMER);
-			}
-		}
-	}
-	
-	private void updateDefendRooms(){
-		
-		if(this.targetRoom != null){
-			this.defendRooms.clear();
-			this.teamDefendAssignments.clear();
-			this.blockedPortals.clear();
-			
-			LevelBlock defendRoom;
-			// add rooms within 1 door of the target room
-			for(int i = 0; i < this.targetRoom.getPortalCount(); i++){
-				
-				defendRoom = this.targetRoom.getPortal(i).linksTo(this.targetRoom);
-				
-				// don't add dead ends
-				// unless the target room is a dead end
-				// or if the room connects to a large amount of rooms (likely to contain enemies)
-				if(!this.defendRooms.contains(defendRoom) &&
-					this.targetRoom.getPortalCount() == 1){
-					
-					if(!levelManager.isRoomBanned(this.getFaction(), defendRoom))
-						this.defendRooms.add(defendRoom);
-					
-					this.blockedPortals.add(this.targetRoom.getPortal(i));
-					//System.out.println(this.targetRoom.getPortal(i).getTag() + " BLOCK");
-					
-				}
-			}
-		}
-	}
-	
-	private void updateTeams(){
-		for(ThinkingTeamObject team: this.teams){
-			team.setTargetRoom(getTargetRoom(team));
-		}
-	}
-	
 	public ArrayList<Portal> getBlockedPortals(){
 		return this.blockedPortals;
 	}
@@ -392,43 +210,21 @@ public class TeamsCommander {
 	}
 	
 	public boolean requestDoorOpen(Portal door){
-		if(this.hasAbility(Abilities.WELDING)){
-			if(!this.openPortals.contains(door)){
-				this.openPortals.add(door);
-			}
-			return true;
-		}
+		// Send ai to open door
 		// there are no members of the faction with the weld ability
 		// the door will never be opened
 		return false;
 	}
 
-	public boolean hasAbility(String ability){
-		for(int i = 0; i < this.teams.size(); i++){
-			if(this.teams.get(i).hasAbility(ability)){
-				return true;
-			}
-		}
-		return false;
-	}
-	
 	protected void setTargetRoom(LevelBlock targetRoom){
 		this.targetRoom = targetRoom;
 	}
 	
-	protected int getTeamNumber(){
-		return this.teams.size();
-	}
-	
-	protected ThinkingTeamObject getTeam(int index){
-		return this.teams.get(index);
-	}
-
-	public boolean canPursue(ThinkingAi thinkingAi) {
-		if(teamType.get(thinkingAi) == null){
-			this.assignNewJob(thinkingAi);
+	public boolean canPursue(ThinkingAi ai) {
+		if(jobAssignments.get(ai) == null){
+			this.assignNewJob(ai);
 		}
-		if(this.targetRoom == null || teamType.get(thinkingTeamObject).equals(JobTitle.ROAMER) || teamType.get(thinkingTeamObject).equals(JobTitle.LAYER_DEFENDER)){
+		if(this.targetRoom == null || jobAssignments.get(ai).equals(JobTitle.ROAMER) || jobAssignments.get(ai).equals(JobTitle.LAYER_DEFENDER)){
 			return true;
 		}
 		return false;
