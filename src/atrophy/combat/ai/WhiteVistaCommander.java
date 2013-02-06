@@ -27,7 +27,7 @@ public class WhiteVistaCommander extends TeamsCommander{
 	 * @see atrophy.combat.ai.thinkingAi.TeamsCommander#canPursue(atrophy.combat.ai.thinkingAi.ThinkingTeamObject)
 	 */
 	@Override
-	public boolean canPursue(ThinkingTeamObject thinkingTeamObject) {
+	public boolean canPursue(ThinkingAi thinkingAi) {
 		return true;
 	}
 

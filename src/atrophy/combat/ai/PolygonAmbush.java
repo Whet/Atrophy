@@ -86,8 +86,8 @@ public class PolygonAmbush extends Formation {
 					catch (PathNotFoundException e) {}
 				}
 				else if(this.aiToRegion.containsKey(ai)){	
-					double[] loc = {this.aiToRegion.get(ai).getBounds2D().getCenterX() + ai.getTeamObject().getLevelBlock().getLocation()[0],
-							        this.aiToRegion.get(ai).getBounds2D().getCenterY() + ai.getTeamObject().getLevelBlock().getLocation()[1]};
+					double[] loc = {this.aiToRegion.get(ai).getBounds2D().getCenterX() + ai.getLevelBlock().getLocation()[0],
+							        this.aiToRegion.get(ai).getBounds2D().getCenterY() + ai.getLevelBlock().getLocation()[1]};
 					return loc;
 				}
 				
