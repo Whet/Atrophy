@@ -11,18 +11,17 @@ import java.util.Set;
 import atrophy.combat.actions.MouseAbilityHandler;
 import atrophy.combat.ai.Ai;
 import atrophy.combat.ai.AiGenerator;
+import atrophy.combat.ai.BanditCommander;
+import atrophy.combat.ai.LonerCommander;
 import atrophy.combat.ai.TeamsCommander;
 import atrophy.combat.ai.ThinkingAi;
+import atrophy.combat.ai.WhiteVistaCommander;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.ui.UiUpdaterSuite;
 import atrophy.combat.level.LevelBlock;
 import atrophy.combat.level.LevelManager;
 import atrophy.combat.mechanics.TurnProcess;
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class CombatMembersManager.
- */
 public class CombatMembersManager {
 
 	private Ai currentAi;
@@ -46,17 +45,26 @@ public class CombatMembersManager {
 		this.levelManager = levelManager;
 	}
 	
+	public void createCommanders() {
+		commanders.add(new WhiteVistaCommander(turnProcess, levelManager));
+		commanders.add(new BanditCommander(turnProcess, levelManager));
+	}
+	
+	public LonerCommander createLonerCommander() {
+		LonerCommander lonerCommander = new LonerCommander(turnProcess, levelManager);
+		commanders.add(lonerCommander);
+		return lonerCommander;
+	}
+	
 	public void lazyLoad(UiUpdaterSuite uiUpdaterSuite, MouseAbilityHandler mouseAbilityHandler){
 		this.uiUpdaterSuite = uiUpdaterSuite;
 		this.mouseAbilityHandler = mouseAbilityHandler;
 	}
 	
-	// getters
 	public Ai getCurrentAi(){
 		return currentAi;
 	}
 	
-	// get ally at position in arraylist or return current if there is not an ally there
 	public Ai getAlly(int i){
 		return this.playerTeam.get(i);
 	}
@@ -78,7 +86,6 @@ public class CombatMembersManager {
 		return this.commanders;
 	}
 	
-	// setters
 	public void setCurrentAi(Ai currentAi){
 		this.currentAi = currentAi;
 	}
@@ -203,5 +210,5 @@ public class CombatMembersManager {
 		}
 		return count;
 	}
-	
+
 }
