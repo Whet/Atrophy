@@ -6,6 +6,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import watoydoEngine.gubbinz.Maths;
+
 public class LevelBlockGrid {
     
     private static final int GRID_BLOCK_SIZE = 5;
@@ -24,10 +26,12 @@ public class LevelBlockGrid {
     
     public GridBlock getGridBlock(double[] location) {
         
-//        System.out.println("i " + (int) ((location[0] - startX) / GRID_BLOCK_SIZE));
-//        System.out.println("j " + (int) ((location[1] - startY) / GRID_BLOCK_SIZE));
+        int startIndex = (int) ((location[0] - startX) / GRID_BLOCK_SIZE);
+		
+        if(startIndex < 0)
+        	startIndex = 0;
         
-        for(int i = (int) ((location[0] - startX) / GRID_BLOCK_SIZE); i < blocks.size(); i++){
+        for(int i = startIndex; i < blocks.size(); i++){
             for(int j = 0; j < blocks.get(i).size(); j++){
                 if(blocks.get(i).get(j).contains(location[0], location[1]))
                     return blocks.get(i).get(j);
@@ -39,10 +43,12 @@ public class LevelBlockGrid {
     
     public GridBlock getGridBlock(double x, double y) {
         
-//        System.out.println("i " + (int) ((location[0] - startX) / GRID_BLOCK_SIZE));
-//        System.out.println("j " + (int) ((location[1] - startY) / GRID_BLOCK_SIZE));
+        int startIndex = (int) ((x - startX) / GRID_BLOCK_SIZE);
         
-        for(int i = (int) ((x - startX) / GRID_BLOCK_SIZE); i < blocks.size(); i++){
+        if(startIndex < 0)
+        	startIndex = 0;
+        
+		for(int i = startIndex; i < blocks.size(); i++){
             for(int j = 0; j < blocks.get(i).size(); j++){
                 if(blocks.get(i).get(j).contains(x, y))
                     return blocks.get(i).get(j);
@@ -51,6 +57,34 @@ public class LevelBlockGrid {
         
         return null;
     }
+    
+    public GridBlock getNearestGridBlock(double[] location) {
+    	
+    	 int startIndex = (int) ((location[0] - startX) / GRID_BLOCK_SIZE);
+ 		
+         if(startIndex < 0)
+         	startIndex = 0;
+         
+         for(int i = startIndex; i < blocks.size(); i++){
+             for(int j = 0; j < blocks.get(i).size(); j++){
+                 if(blocks.get(i).get(j).contains(location[0], location[1]))
+                     return blocks.get(i).get(j);
+             }
+         }
+         
+         double distance = Maths.getDistance(location, blocks.get(startIndex).get(0).getCentre());
+         
+         for(int j = 0; j < blocks.get(startIndex).size(); j++){
+             if(Maths.getDistance(location, blocks.get(startIndex).get(j).getCentre()) <= distance || j == blocks.get(startIndex).size()){
+            	 distance = Maths.getDistance(location, blocks.get(startIndex).get(j).getCentre());
+             }
+             else{
+            	 return blocks.get(startIndex).get(j - 1);
+             }
+         }
+         
+         return null;
+	}
     
     private void convertPolygonToBlocks(Polygon hitbox) {
 
@@ -174,5 +208,5 @@ public class LevelBlockGrid {
             }
         }    
     }
-    
+
 }

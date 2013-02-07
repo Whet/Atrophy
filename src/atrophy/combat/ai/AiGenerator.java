@@ -107,8 +107,6 @@ public class AiGenerator{
 	
 	public void generateAi(Crowd crowd, ItemMarket itemMarket, List<AiGeneratorInterface.GenerateCommand> generationCommands){
 		
-		combatMembersManager.createCommanders();
-		
 		int squadCount = 0;
 		
 		for(AiGeneratorInterface.GenerateCommand command : generationCommands){
@@ -126,7 +124,7 @@ public class AiGenerator{
 								 command.getAllowedItems(),
 								 command.getAllowedWeapons(),
 								 crowd,
-								 levelManager.getFactionRoom(WHITE_VISTA));
+								 combatMembersManager.getCommander(WHITE_VISTA).getSpawnRoom());
 				break;
 				case BANDITS:
 					generateTeam(Integer.toString(squadCount)+BANDITS,
@@ -134,12 +132,12 @@ public class AiGenerator{
 								 command.getAllowedItems(),
 								 command.getAllowedWeapons(),
 								 crowd,
-								 levelManager.getFactionRoom(BANDITS));
+								 combatMembersManager.getCommander(BANDITS).getSpawnRoom());
 				break;
 				case PLAYER:
 					generatePlayerTeam(crowd,
 									   command.getSquad(),
-									   levelManager.getFactionRoom(PLAYER));
+									   levelManager.getCurrentLevel().getPlayerSpawn());
 				break;
 				case LONER:
 				break;
@@ -158,7 +156,7 @@ public class AiGenerator{
 						  itemMarket.getLonerAllowedItems(),
 						  itemMarket.getLonerAllowedWeapons(), 
 					      crowd,
-					      levelManager.getFactionRoom(LONER));
+					      levelManager.randomRoom());
 			squadCount++;
 		}
 		
@@ -217,6 +215,8 @@ public class AiGenerator{
 			command.getAiNode().addPriorities(priority);
 			ai.setAiNode(command.getAiNode());
 		}
+		
+		combatMembersManager.addAi(ai);
 		
 	}
 

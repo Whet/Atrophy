@@ -5,6 +5,7 @@ package atrophy.combat.display.ui;
 
 import java.awt.Color;
 import java.util.ArrayList;
+import java.util.List;
 
 import atrophy.combat.level.LevelBlock;
 
@@ -41,7 +42,7 @@ public class Cartographer {
 	 * @param colour the colour
 	 * @param rooms the rooms
 	 */
-	public void markRooms(String description, Color colour, ArrayList<LevelBlock> rooms) {
+	public void markRooms(String description, Color colour, List<LevelBlock> rooms) {
 		for(LevelBlock room : rooms){
 			if(markers.size() < CartographerBox.MAX_MARKERS)
 			this.markers.add(new Marker(room, colour, description));

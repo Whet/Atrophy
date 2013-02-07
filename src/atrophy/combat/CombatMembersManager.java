@@ -159,9 +159,14 @@ public class CombatMembersManager {
 		}
 	}
 	
-	//TODO
 	public int getFactionStrength(String faction, LevelBlock levelBlock) {
 		int strength = 0;
+		
+		for(int i = 0; i < aiCrowd.getActorCount(); i++){
+			if(aiCrowd.getActor(i).getFaction().equals(faction) && aiCrowd.getActor(i).getLevelBlock() == levelBlock)
+				strength += aiCrowd.getActor(i).getCombatScore();
+		}
+		
 		return strength;
 	}
 	

@@ -11,97 +11,40 @@ import watoydoEngine.gubbinz.Maths;
 import atrophy.combat.ai.PathFinder;
 import atrophy.combat.ai.PathNotFoundException;
 
-// TODO: Auto-generated Javadoc
-// holds details about the current level
-/**
- * The Class LevelManager.
- */
 public class LevelManager {
 	
-	/**
-	 * The Constant MAX_RANDOM_ITERATIONS.
-	 */
 	private static final int MAX_RANDOM_ITERATIONS = 30;
 	
-	/**
-	 * The Constant CORNER_INDENT_RATIO.
-	 */
 	private static final double CORNER_INDENT_RATIO = 0.4;
 	
-	/**
-	 * The current level.
-	 */
 	private Level currentLevel;
 
-	/**
-	 * Instantiates a new level manager.
-	 */
 	public LevelManager(){}
 	
-	/**
-	 * Gets the current level.
-	 *
-	 * @return the current level
-	 */
 	public Level getCurrentLevel(){
 		return this.currentLevel;
 	}
 	
-	/**
-	 * Gets the block.
-	 *
-	 * @param location the location
-	 * @return the block
-	 */
 	public LevelBlock getBlock(double[] location){
 		return this.currentLevel.getBlockAt(location[0], location[1]);
 	}
 	
-	/**
-	 * Gets the block.
-	 *
-	 * @param x the x
-	 * @param y the y
-	 * @return the block
-	 */
 	public LevelBlock getBlock(double x, double y){
 		return this.currentLevel.getBlockAt(x,y);
 	}
 	
-	/**
-	 * Gets the block.
-	 *
-	 * @param i the i
-	 * @return the block
-	 */
 	public LevelBlock getBlock(int i){
 		return this.currentLevel.getBlock(i);
 	}
 	
-	/**
-	 * Gets the blocks.
-	 *
-	 * @return the blocks
-	 */
 	public LevelBlock[] getBlocks(){
 		return this.currentLevel.getBlocks();
 	}
 	
-	/**
-	 * Random position.
-	 *
-	 * @return the double[]
-	 */
 	public double[] randomPosition(){
 		return randomPosition(null);
 	}
 	
-	/**
-	 * Random position.
-	 *
-	 * @param exclude the exclude
-	 * @return the double[]
-	 */
 	public double[] randomPosition(LevelBlock exclude){
 		
 		int index = (int)(this.getCurrentLevel().getBlockCount() * Math.random());
@@ -120,12 +63,6 @@ public class LevelManager {
 		return randomInPosition(getBlock(index));
 	}
 	
-	/**
-	 * Random in position.
-	 *
-	 * @param room the room
-	 * @return the double[]
-	 */
 	public double[] randomInPosition(LevelBlock room){
 		
 		Random rand = new Random();
@@ -165,22 +102,11 @@ public class LevelManager {
 		return vertex;
 	}
 	
-	/**
-	 * Random room.
-	 *
-	 * @return the level block
-	 */
 	public LevelBlock randomRoom(){
 		Random rand = new Random();
 		return getBlock(rand.nextInt(this.currentLevel.getBlockCount()));
 	}
 	
-	/**
-	 * Random starting room.
-	 *
-	 * @param avoidRoom the avoid room
-	 * @return the level block
-	 */
 	public LevelBlock randomStartingRoom(LevelBlock avoidRoom){
 		for(int i = 0; i < this.currentLevel.getBlockCount(); i++){
 			try{
@@ -199,21 +125,10 @@ public class LevelManager {
 		return randomRoom();
 	}
 	
-	/**
-	 * Sets the current level.
-	 *
-	 * @param currentLevel the new current level
-	 */
 	public void setCurrentLevel(Level currentLevel) {
 		this.currentLevel = currentLevel;
 	}
 	
-	/**
-	 * Random room.
-	 *
-	 * @param bannedRooms the banned rooms
-	 * @return the level block
-	 */
 	public LevelBlock randomRoom(Set<LevelBlock> bannedRooms) {
 		int iterations = 0;
 		LevelBlock room = null;
@@ -229,13 +144,6 @@ public class LevelManager {
 		return room;
 	}
 
-	/**
-	 * Random room.
-	 *
-	 * @param faction the faction
-	 * @param bannedRooms the banned rooms
-	 * @return the level block
-	 */
 	public LevelBlock randomRoom(String faction, ArrayList<LevelBlock> bannedRooms) {
 		int iterations = 0;
 		LevelBlock room = null;
@@ -251,35 +159,8 @@ public class LevelManager {
 		return room;
 	}
 
-	/**
-	 * Gets the faction room.
-	 *
-	 * @param faction the faction
-	 * @return the faction room
-	 */
-	public LevelBlock getFactionRoom(String faction) {
-		return this.currentLevel.getFactionRoom(faction);
-	}
-
-	/**
-	 * Checks if is room banned.
-	 *
-	 * @param faction the faction
-	 * @param block the block
-	 * @return true, if is room banned
-	 */
 	public boolean isRoomBanned(String faction, LevelBlock block) {
 		return this.currentLevel.isBanned(block, faction);
-	}
-
-	/**
-	 * Gets the target block.
-	 *
-	 * @param faction the faction
-	 * @return the target block
-	 */
-	public LevelBlock getTargetBlock(String faction) {
-		return this.currentLevel.getTargetBlock(faction);
 	}
 
 	public boolean isInSaferoom(LevelBlock levelBlock) {

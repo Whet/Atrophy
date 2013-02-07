@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Stack;
 
 import watoydoEngine.io.ReadWriter;
+import atrophy.combat.CombatMembersManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.ai.AiGeneratorInterface;
@@ -28,14 +29,8 @@ import atrophy.combat.display.ui.loot.LootBox.Lootable;
 import atrophy.combat.mechanics.TurnProcess;
 import atrophy.gameMenu.saveFile.Missions;
 
-/**
- * The Class LevelIO.
- */
 public class LevelIO {
 	
-	/**
-	 * Creates the level folders.
-	 */
 	public static void createLevelFolders(){
 		
 		String homeLocation = System.getProperty("user.home");
@@ -102,29 +97,8 @@ public class LevelIO {
 		
 	}
 
-	/**
-	 * Load level.
-	 *
-	 * @param levelFile the level file
-	 * @param owner the owner
-	 * @param engineeringChance the engineering chance
-	 * @param medicalChance the medical chance
-	 * @param weaponChance the weapon chance
-	 * @param scienceChance the science chance
-	 * @param panningManager 
-	 * @param turnProcess 
-	 * @param messageBox 
-	 * @param aiCrowd 
-	 * @param levelManager 
-	 * @param missions 
-	 * @param missionsManager 
-	 * @param generationCommands 
-	 * @return the level
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 * @throws LevelFormatException the level format exception
-	 */
-	public static Level loadLevel(File levelFile, String owner, int engineeringChance, int medicalChance, int weaponChance, int scienceChance, PanningManager panningManager, TurnProcess turnProcess, MessageBox messageBox, AiCrowd aiCrowd, LevelManager levelManager, Missions missions, MissionManager missionsManager, List<GenerateCommand> generationCommands) throws IOException, LevelFormatException{
-		Level level = new Level(owner, levelManager);
+	public static Level loadLevel(File levelFile, String owner, int engineeringChance, int medicalChance, int weaponChance, int scienceChance, PanningManager panningManager, TurnProcess turnProcess, MessageBox messageBox, AiCrowd aiCrowd, CombatMembersManager combatMembersManager, Missions missions, MissionManager missionsManager, List<GenerateCommand> generationCommands) throws IOException, LevelFormatException{
+		Level level = new Level(owner);
 		
 		Stack<LevelBlock> blocksList = new Stack<LevelBlock>();
 		
@@ -143,7 +117,7 @@ public class LevelIO {
 			throw new LevelFormatException(0,"The size line is not correctly defined! It should be on line 0 and as '[width Min, -width Max, height Min, -height Max]' ");
 		}
 		
-		readBlocks(levelFile, level, blocksList, aiCrowd, messageBox, turnProcess, missions, missionsManager, generationCommands);
+		readBlocks(levelFile, level, blocksList, aiCrowd, messageBox, turnProcess, missions, missionsManager, generationCommands, combatMembersManager);
 		
 		readPortals(levelFile, portalData, portalSecurity);
 		// Place components into level object
@@ -164,23 +138,7 @@ public class LevelIO {
 		return level;
 	}
 
-	/**
-	 * Read blocks.
-	 *
-	 * @param levelFile the level file
-	 * @param level the level
-	 * @param blocksList the blocks list
-	 * @param aiCrowd 
-	 * @param messageBox 
-	 * @param messageBox 
-	 * @param turnProcess 
-	 * @param missions 
-	 * @param missionsManager 
-	 * @param generationCommands 
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 * @throws LevelFormatException the level format exception
-	 */
-	private static void readBlocks(File levelFile, Level level, Stack<LevelBlock> blocksList, AiCrowd aiCrowd, MessageBox messageBox, TurnProcess turnProcess, Missions missions, MissionManager missionsManager, List<AiGeneratorInterface.GenerateCommand> generationCommands) throws IOException, LevelFormatException {
+	private static void readBlocks(File levelFile, Level level, Stack<LevelBlock> blockStack, AiCrowd aiCrowd, MessageBox messageBox, TurnProcess turnProcess, Missions missions, MissionManager missionsManager, List<AiGeneratorInterface.GenerateCommand> generationCommands, CombatMembersManager combatMembersManager) throws IOException, LevelFormatException {
 		
 		int blockNumber = 0;
 		
@@ -197,7 +155,7 @@ public class LevelIO {
 			if(lineString.startsWith("BLOCK")){
 				LevelBlock block = new LevelBlock(blockNumber, missionsManager);
 				
-				blocksList.add(block);
+				blockStack.add(block);
 				
 				// Add verticies
 				int arraySize = ReadWriter.getArraySize(lineString);
@@ -222,7 +180,7 @@ public class LevelIO {
 			}
 			else if(lineString.startsWith("STASH") || lineString.startsWith("COVER")){
 				
-				if(blocksList.size() == 0){
+				if(blockStack.size() == 0){
 					throw new LevelFormatException(lineNumber,"A region is made before any rooms have been made!");
 				}
 				
@@ -247,30 +205,30 @@ public class LevelIO {
 				
 				// Add polygon to list
 				if(lineString.startsWith("COVER"))
-					blocksList.peek().addCover(region);
+					blockStack.peek().addCover(region);
 				
 				else if(lineString.startsWith("STASH"))
-					blocksList.peek().addStash(region);
+					blockStack.peek().addStash(region);
 				
 			}
 			else if(lineString.startsWith("SPAWN")){
 				
-				if(blocksList.size() == 0){
+				if(blockStack.size() == 0){
 					throw new LevelFormatException(lineNumber,"A region is made before any rooms have been made!");
 				}
 				
-				if(blocksList.peek().getStealthRegion().size() == 0){
+				if(blockStack.peek().getStealthRegion().size() == 0){
 					throw new LevelFormatException(lineNumber,"A spawn is defined before any stashes have been made!");
 				}
 				
-				Lootable stash = blocksList.peek().getStashLootAbles().get(blocksList.peek().getStealthRegion().size() - 1);
+				Lootable stash = blockStack.peek().getStashLootAbles().get(blockStack.peek().getStealthRegion().size() - 1);
 				
 				// Location is used to make the marker so takes into account where block is
 				double[] location = new double[]{
-						blocksList.peek().getStealthRegion().get(blocksList.peek().getStealthRegion().size() - 1).getBounds2D().getCenterX() +
-						blocksList.peek().getLocation()[0],
-						blocksList.peek().getStealthRegion().get(blocksList.peek().getStealthRegion().size() - 1).getBounds2D().getCenterY() +
-						blocksList.peek().getLocation()[1]};
+						blockStack.peek().getStealthRegion().get(blockStack.peek().getStealthRegion().size() - 1).getBounds2D().getCenterX() +
+						blockStack.peek().getLocation()[0],
+						blockStack.peek().getStealthRegion().get(blockStack.peek().getStealthRegion().size() - 1).getBounds2D().getCenterY() +
+						blockStack.peek().getLocation()[1]};
 				 
 				// SPAWN[tag,itemName,#TAGV]
 				if(ReadWriter.readFromArray(lineString, 2).startsWith("#")) {
@@ -284,7 +242,7 @@ public class LevelIO {
 			}
 			else if(lineString.startsWith("TEXTUREBLOCK")){
 				
-				if(blocksList.size() == 0){
+				if(blockStack.size() == 0){
 					throw new LevelFormatException(lineNumber,"A texture polygon is added before any rooms have been made!");
 				}
 				
@@ -306,29 +264,29 @@ public class LevelIO {
 					}
 				}
 				
-				blocksList.peek().addTexturePolygon(texturePoly);
+				blockStack.peek().addTexturePolygon(texturePoly);
 				
 			}
 			else if(lineString.startsWith("TEXTURE")){
 				
-				if(blocksList.size() == 0){
+				if(blockStack.size() == 0){
 					throw new LevelFormatException(lineNumber,"A texture is applied before any rooms have been made!");
 				}
 				
 				try{
-					if(blocksList.peek().getTexturePolygons().size() == 0)
-						blocksList.peek().setTextureCode(Integer.parseInt(ReadWriter.readFromArray(lineString, 0)));
+					if(blockStack.peek().getTexturePolygons().size() == 0)
+						blockStack.peek().setTextureCode(Integer.parseInt(ReadWriter.readFromArray(lineString, 0)));
 					else
-						blocksList.peek().getTextures().add((Integer.parseInt(ReadWriter.readFromArray(lineString, 0))));
+						blockStack.peek().getTextures().add((Integer.parseInt(ReadWriter.readFromArray(lineString, 0))));
 				}
 				catch(NumberFormatException e){
 					throw new LevelFormatException(lineNumber,"Texture was applied to block " + blockNumber + " with a non-integer code!");
 				}
 			}
-			else if(lineString.startsWith("TERRITORY") || lineString.startsWith("ZONE")){
+			else if(lineString.startsWith("ZONE")){
 				
-				if(blocksList.size() == 0){
-					throw new LevelFormatException(lineNumber,"A territory is applied before any rooms have been made!");
+				if(blockStack.size() == 0){
+					throw new LevelFormatException(lineNumber,"A zone is applied before any rooms have been made!");
 				}
 				
 				String[] factions = new String[ReadWriter.getArraySize(lineString)];
@@ -337,19 +295,30 @@ public class LevelIO {
 					factions[i] = ReadWriter.readFromArray(lineString, i);
 				}
 				
-				if(lineString.startsWith("TERRITORY"))
-					level.addFactionBlock(factions, blocksList.peek());
+				level.addBannedBlock(factions, blockStack.peek());
+				
+			}
+			else if(lineString.startsWith("TERRITORY")){
+				
+				if(blockStack.size() == 0){
+					throw new LevelFormatException(lineNumber,"A territory is applied before any rooms have been made!");
+				}
+				
+				String faction = ReadWriter.readFromArray(lineString, 0);
+				
+				if(faction.equals(AiGenerator.PLAYER))
+					level.addPlayerSpawn(blockStack.peek());
 				else
-					level.addBannedBlock(factions, blocksList.peek());
+					combatMembersManager.getCommander(faction).setBlockHeuristic(blockStack.peek(), Integer.parseInt(ReadWriter.readFromArray(lineString, 1)));
 				
 			}
 			else if(lineString.startsWith("SAFEROOM")) {
 				
-				if(blocksList.size() == 0){
+				if(blockStack.size() == 0){
 					throw new LevelFormatException(lineNumber,"A saferoom is applied before any rooms have been made!");
 				}
 				
-				level.addSaferoom(blocksList.peek());
+				level.addSaferoom(blockStack.peek());
 			}
 			else if(lineString.startsWith("LOCKEDNODE")){
 				double vertexX;
@@ -373,7 +342,7 @@ public class LevelIO {
 			}
 			else if(lineString.startsWith("NODE")){
 				
-				if(blocksList.size() == 0){
+				if(blockStack.size() == 0){
 					throw new LevelFormatException(lineNumber,"A node is added before any rooms have been made!");
 				}
 				
@@ -396,7 +365,7 @@ public class LevelIO {
 				
 				lastNode = new AiNode(aiCrowd, messageBox, turnProcess, missionsManager, vertexX,vertexY);
 				
-				blocksList.peek().addNode(lastNode);
+				blockStack.peek().addNode(lastNode);
 				
 				for(int i = 0; i < factions.length; i++){
 					lastNode.addUsableFaction(factions[i],level.getMapOwner());
@@ -474,81 +443,6 @@ public class LevelIO {
 				
 				lastNode.addPriorities(priorities);
 			}
-//			else if(lineString.startsWith("DIALOGUE")){
-//				
-//				if(lastNode == null){
-//					throw new LevelFormatException(lineNumber,"A dialogue is added before any nodes have been made!");
-//				}
-//				
-////				int tone;
-////				String targetFaction;
-//				String openingLine = null;
-//				String[] options = null;
-//				
-//				try{
-////					tone = Integer.parseInt(ReadWriter.readFromArray(lineString, 0));
-////					targetFaction = ReadWriter.readFromArray(lineString, 1);
-//				}
-//				catch(NumberFormatException e){
-//					throw new LevelFormatException(lineNumber,"Dialogue was applied to block " + blockNumber + " with a non-integer tone!");
-//				}
-//				
-//				openingLine = ReadWriter.readFromArray(lineString, 2);
-//				
-//				options = new String[ReadWriter.getArraySize(lineString) - 3];
-//				
-//				for(int i = 0; i < options.length; i++){
-//					options[i] = ReadWriter.readFromArray(lineString, i + 3);
-//				}
-//				
-//				Dialogue dialogue = messageBox.createDialogue(missions, missionsManager, 0, openingLine, options);
-//				lastNode.setDialogue(dialogue);
-//				lastNode.getDialogue().setTargetFaction(AiGenerator.PLAYER);
-//			}
-//			else if(lineString.startsWith("MESSAGE")){
-//				
-//				String name = ReadWriter.readFromArray(lineString, 0);
-//				List<String> speech = new ArrayList<>();
-//				List<String> speechRequirements = new ArrayList<>();
-//				
-//				for(int i = 1; i < ReadWriter.getArraySize(lineString); i++){
-//					if(ReadWriter.readFromArray(lineString, i).startsWith("REQ:"))
-//						speechRequirements.add(ReadWriter.readFromArray(lineString, i).substring(4));
-//					else
-//						speech.add(ReadWriter.readFromArray(lineString, i));
-//				}
-//				
-//				lastNode.getTopics().addLongSpeech(name,speech.toArray(new String[speech.size()]),speechRequirements.toArray(new String[speechRequirements.size()]));
-//			}
-//			else if(lineString.startsWith("TOPICS")){
-//				
-//				if(lastNode == null){
-//					throw new LevelFormatException(lineNumber,"A set of topics is added before any nodes have been made!");
-//				}
-//				
-//				String[] options = new String[ReadWriter.getArraySize(lineString)];
-//				
-//				for(int i = 0; i < options.length; i++){
-//					options[i] = ReadWriter.readFromArray(lineString, i);
-//				}
-//				
-//				lastNode.setTopics(messageBox.createDialogue(missions, missionsManager, 0, "", options));
-//			}
-//			else if(lineString.startsWith("TOPIC")){
-//
-//				String name = ReadWriter.readFromArray(lineString, 0);
-//				List<String> speech = new ArrayList<>();
-//				List<String> speechRequirements = new ArrayList<>();
-//				
-//				for(int i = 1; i < ReadWriter.getArraySize(lineString); i++){
-//					if(ReadWriter.readFromArray(lineString, i).startsWith("REQ:"))
-//						speechRequirements.add(ReadWriter.readFromArray(lineString, i).substring(4));
-//					else
-//						speech.add(ReadWriter.readFromArray(lineString, i));
-//				}
-//				
-//				lastNode.getTopics().addLongSpeech(name,speech.toArray(new String[speech.size()]),speechRequirements.toArray(new String[speechRequirements.size()]));
-//			}
 			else if(lineString.startsWith("TALKMAP")){
 				
 				String tag = ReadWriter.readFromArray(lineString, 0);
@@ -602,7 +496,7 @@ public class LevelIO {
 			}
 			else if(lineString.startsWith("TURRET")){
 
-				if(blocksList.size() == 0){
+				if(blockStack.size() == 0){
 					throw new LevelFormatException(lineNumber,"A turret is added before any rooms have been made!");
 				}
 				
@@ -618,8 +512,8 @@ public class LevelIO {
 				}
 				
 				
-				generationCommands.add(new TurretGenerateCommand(vertexX + blocksList.peek().getLocation()[0],
-																							   vertexY + blocksList.peek().getLocation()[1]));
+				generationCommands.add(new TurretGenerateCommand(vertexX + blockStack.peek().getLocation()[0],
+																							   vertexY + blockStack.peek().getLocation()[1]));
 				
 			}
 			else if(lineString.startsWith("MAPSPAWNS")){
@@ -635,7 +529,7 @@ public class LevelIO {
 			}
 			else if(lineString.startsWith("AISPAWN")){
 				
-				if(blocksList.size() == 0){
+				if(blockStack.size() == 0){
 					throw new LevelFormatException(lineNumber,"An ai spawn is added before any rooms have been made!");
 				}
 				
@@ -659,8 +553,8 @@ public class LevelIO {
 					items[i] = ReadWriter.readFromArray(lineString, i + 5);
 				}
 				
-				generationCommands.add(new SoloGenerateCommand(vertexX + blocksList.peek().getLocation()[0],
-																							 vertexY + blocksList.peek().getLocation()[1],
+				generationCommands.add(new SoloGenerateCommand(vertexX + blockStack.peek().getLocation()[0],
+																							 vertexY + blockStack.peek().getLocation()[1],
 																							 faction, name, weapon, items));
 			}
 			
@@ -669,15 +563,6 @@ public class LevelIO {
 		}
 	}
 
-	/**
-	 * Read portals.
-	 *
-	 * @param levelFile the level file
-	 * @param portalData the portal data
-	 * @param portalSecurity the portal security
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 * @throws LevelFormatException the level format exception
-	 */
 	private static void readPortals(File levelFile, ArrayList<double[]> portalData, ArrayList<String> portalSecurity) throws IOException, LevelFormatException {
 		
 		ArrayList<String> factions = new ArrayList<String>();
@@ -725,23 +610,11 @@ public class LevelIO {
 		}
 	}
 	
-	/**
-	 * The Class LevelFormatException.
-	 */
 	@SuppressWarnings("serial")
 	public static class LevelFormatException extends Exception{
 		
-		/**
-		 * The message.
-		 */
 		public String message;
 	
-		/**
-		 * Instantiates a new level format exception.
-		 *
-		 * @param lineNumber the line number
-		 * @param message the message
-		 */
 		public LevelFormatException(int lineNumber, String message){
 			this.message = "Error Line: " + lineNumber + " " + message;
 		}

@@ -162,14 +162,6 @@ public class AiPathing {
 							continue;
 						}
 						
-						// check to see if the next point is visible to make paths more efficient
-						int lookIndex = this.roomPathway.size() - 1;
-						while(lookIndex > 0 &&
-							  CombatVisualManager.isInSight(this.location[0], this.location[1], this.roomPathway.get(lookIndex - 1)[0],  this.roomPathway.get(lookIndex - 1)[1], this.getLevelBlock().getHitBox())){
-							this.roomPathway.remove(this.roomPathway.size() - 1);
-							lookIndex = this.roomPathway.size() - 1;
-						}
-						
 						moveIntra(invoker,roomPathway.get(roomPathway.size() - 1));
 						
 						// reset action

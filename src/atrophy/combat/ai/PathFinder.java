@@ -159,7 +159,7 @@ public class PathFinder {
 	    Set<GridBlock> closedSet = new HashSet<>();
 	    Set<GridBlock> openSet = new HashSet<>();
 	    
-	    GridBlock startBlock = navGrid.getGridBlock(mover.getLocation());
+	    GridBlock startBlock = navGrid.getNearestGridBlock(mover.getLocation());
         openSet.add(startBlock);
 	    startBlock.g = 0;
 	    startBlock.h = Maths.getDistance(startBlock.getCentre(), moveLocation);
