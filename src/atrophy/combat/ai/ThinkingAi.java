@@ -50,34 +50,17 @@ public class ThinkingAi extends Ai{
 		EMPTY, CAMPING, FLEEING, PATROLLING, ENGAGING, LOOT
 	}
 	
-	/**
-	 * The thinking node.
-	 */
 	private AiNode aiNode;
 	
-	/**
-	 * The ai mode.
-	 */
 	protected AiMode aiMode;
 	
-	/**
-	 * The turn counter.
-	 */
 	private int turnCounter;
 	
-	/**
-	 * The chase ai.
-	 */
 	private Ai chaseAi;
 	
-	/**
-	 * The listening to command.
-	 */
-	private boolean listeningToCommand;
+	private AiJob job;
+	private boolean doingJob;
 
-	/**
-	 * The block player convo.
-	 */
 	private boolean blockPlayerConvo;
 	
 	ThinkingAiEmotion emotionManager;
@@ -85,21 +68,12 @@ public class ThinkingAi extends Ai{
 	private LevelManager levelManager;
 
 	// set start location and name
-	/**
-	 * Instantiates a new thinking ai.
-	 *
-	 * @param name the name
-	 * @param x the x
-	 * @param y the y
-	 * @param levelManager 
-	 * @param combatInorganicManager 
-	 */
 	public ThinkingAi(PanningManager panningManager, CombatVisualManager combatVisualManager, TurnProcess turnProcess, FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, AiCrowd aiCrowd, CombatMembersManager combatMembersManager, String name, double x, double y, LevelManager levelManager, CombatInorganicManager combatInorganicManager, CombatUiManager combatUiManager, LootBox lootBox){
 		super(floatingIcons, mouseAbilityHandler, name,x,y, combatInorganicManager, levelManager, lootBox, combatMembersManager, combatUiManager, combatVisualManager, aiCrowd, panningManager, turnProcess);
 		aiMode = AiMode.EMPTY;
 		turnCounter = 0;
 		chaseAi = null;
-		listeningToCommand = true;
+		doingJob = true;
 		blockPlayerConvo = false;
 		this.combatMembersManager = combatMembersManager;
 		this.turnProcess = turnProcess;
@@ -111,13 +85,7 @@ public class ThinkingAi extends Ai{
 		this.emotionManager = new ThinkingAiEmotion(this);
 	}
 
-	/* (non-Javadoc)
-	 * @see atrophy.combat.ai.Ai#action()
-	 */
 	@Override
-	/**
-	 * Overrides the action function of Ai to implement think().
-	 */
 	public void action(){
 		
 		// reset movement units
@@ -136,9 +104,6 @@ public class ThinkingAi extends Ai{
 		}
 	}
 	
-	/**
-	 * Commit thoughts.
-	 */
 	private void commitThoughts(){
 		resetStates();
 		
@@ -181,12 +146,9 @@ public class ThinkingAi extends Ai{
 		turnProcess.currentAiDone(true);
 	}
 
-	/**
-	 * Think.
-	 */
 	private void think(){		
 		
-		if(this.aiNode != null && listeningToCommand){
+		if(this.aiNode != null && doingJob){
 			aiNode.think(this);
 			return;
 		}
@@ -194,9 +156,6 @@ public class ThinkingAi extends Ai{
 		this.gatherEnvironmentData();
 	}
 	
-	/**
-	 * Gather environment data.
-	 */
 	protected void gatherEnvironmentData(){
 		// since this is done during a turn some variables that are swept up at the end of the turn will be incorrect
 		// e.g aiming at a dead target
@@ -210,9 +169,6 @@ public class ThinkingAi extends Ai{
 		}
 	}
 	
-	/**
-	 * Respond to environment data.
-	 */
 	protected void respondToEnvironmentData(){
 		
 		computeAiMode();
@@ -237,9 +193,6 @@ public class ThinkingAi extends Ai{
 		this.emotionManager.setAggressionModified(false);
 	}
 
-	/**
-	 * Computes the ai mode.
-	 */
 	private void computeAiMode(){
 		
 		try{
@@ -287,9 +240,6 @@ public class ThinkingAi extends Ai{
 		commitThoughts();
 	}
 	
-	/**
-	 * Try to clear path.
-	 */
 	private void tryToClearPath() {
 		// if the path is blocked by a portal then open it
 		if(this.getAbilities().contains(Abilities.WELDING)){
@@ -321,14 +271,9 @@ public class ThinkingAi extends Ai{
 	private void idle() {
 		this.aiMode = AiMode.CAMPING;
 		this.setMoveLocationToSelf();
-		listeningToCommand = true;
+		doingJob = true;
 	}
 
-	/**
-	 * Act ignore command.
-	 *
-	 * @throws PathNotFoundException the path not found exception
-	 */
 	private void actIgnoreCommand() throws PathNotFoundException {
 		if(this.chaseAi != null){
 			if(this.emotionManager.getAggression() > 0 && (this.getCommander().canPursue(this) || this.chaseAi.getLevelBlock() == this.getLevelBlock())){
@@ -349,19 +294,16 @@ public class ThinkingAi extends Ai{
 		}
 		// do not set turnCounter == 0, otherwise it will be reset to a higher value and the ai will cycle in place
 		if(this.aiMode.equals(AiMode.CAMPING) && this.turnCounter == 1 && !this.getAction().startsWith("Applying:")){
-			listeningToCommand = true;
+			doingJob = true;
 		}
 	}
 
-	/**
-	 * Fleeing action.
-	 */
 	private void fleeingAction() {
 		if(this.turnCounter == 0){
 			this.turnCounter = 6;
 		}
 		else if(this.turnCounter == 1){
-			this.listeningToCommand = true;
+			this.doingJob = true;
 		}
 		
 		if(Maths.getDistance(this.getLocation(), this.getMoveLocation()) == 0){
@@ -369,11 +311,6 @@ public class ThinkingAi extends Ai{
 		}
 	}
 
-	/**
-	 * Chasetarget.
-	 *
-	 * @throws PathNotFoundException the path not found exception
-	 */
 	private void chasetarget() throws PathNotFoundException{
 		// go invisible then chase
 		if(this.hasAbility(Abilities.STEALTH2) &&
@@ -391,32 +328,14 @@ public class ThinkingAi extends Ai{
 		}
 	}
 
-	/**
-	 * Move towards nearest region.
-	 *
-	 * @param regions the regions
-	 * @throws PathNotFoundException the path not found exception
-	 */
 	public void moveTowardsNearestRegion(List<Polygon> regions) throws PathNotFoundException{
 		this.getLevelBlock().moveTowardsNearestRegion(this, regions);
 	}
 	
-	/**
-	 * Move towards random region.
-	 *
-	 * @param regions the regions
-	 * @return the polygon
-	 * @throws PathNotFoundException the path not found exception
-	 */
 	public Polygon moveTowardsRandomRegion(List<Polygon> regions) throws PathNotFoundException{
 		return this.getLevelBlock().moveTowardsRandomRegion(this, regions);
 	}
 
-	/**
-	 * Flee from grenades.
-	 *
-	 * @throws PathNotFoundException the path not found exception
-	 */
 	private void fleeFromGrenades() throws PathNotFoundException{
 		
 		if(!this.aiMode.equals(AiMode.FLEEING)){
@@ -454,11 +373,6 @@ public class ThinkingAi extends Ai{
 		}
 	}
 	
-	/**
-	 * Flee.
-	 *
-	 * @throws PathNotFoundException the path not found exception
-	 */
 	protected void flee() throws PathNotFoundException{
 		
 		// run through closest door
@@ -476,7 +390,7 @@ public class ThinkingAi extends Ai{
 		
 		if(fleePortal != null){
 			this.aiMode = AiMode.FLEEING;
-			this.listeningToCommand = false;
+			this.doingJob = false;
 			this.chaseAi = null;
 			this.setTargetAi(null);
 			this.setMoveLocation(levelManager.randomInPosition(fleePortal.linksTo(this.getLevelBlock())));
@@ -487,11 +401,6 @@ public class ThinkingAi extends Ai{
 		}
 	}
 	
-	/**
-	 * Flee check for enemy.
-	 *
-	 * @throws PathNotFoundException the path not found exception
-	 */
 	private void fleeCheckForEnemy() throws PathNotFoundException {
 		// run through closest door
 		Portal fleePortal = null;
@@ -520,7 +429,7 @@ public class ThinkingAi extends Ai{
 		
 		if(fleePortal != null){
 			this.aiMode = AiMode.FLEEING;
-			this.listeningToCommand = false;
+			this.doingJob = false;
 			this.chaseAi = null;
 			this.setTargetAi(null);
 			this.setMoveLocation(levelManager.randomInPosition(fleePortal.linksTo(this.getLevelBlock())));
@@ -531,13 +440,6 @@ public class ThinkingAi extends Ai{
 		}
 	}
 	
-	/**
-	 * Closest distance to point.
-	 *
-	 * @param units the units
-	 * @param location the location
-	 * @return the double
-	 */
 	private double closestDistanceToPoint(ArrayList<Ai> units, double[] location){
 		
 		Double distance = null;
@@ -551,20 +453,17 @@ public class ThinkingAi extends Ai{
 		return distance;
 	}
 	
-	/**
-	 * Cleanup intra turn vars.
-	 */
 	protected void cleanupIntraTurnVars(){
 		// chase an ai, ignore commander
 		if(this.getTargetAi() == null && this.chaseAi != null){
 			this.aiMode = AiMode.PATROLLING;
-			listeningToCommand = false;
+			doingJob = false;
 			this.setSwing(0);
 		}
 		// stops units stacking on corpse
 		if(this.chaseAi != null && this.chaseAi.isDead()){
 			this.chaseAi = null;
-			listeningToCommand = true;
+			doingJob = true;
 		}
 		
 		if(this.getAction().equals("Loot") && this.getCommander().isAiLooted(this.getTargetAi())){
@@ -579,18 +478,15 @@ public class ThinkingAi extends Ai{
 			// if else to stop ai running back into a room they ran from e.g grenade avoidance
 			if(this.turnCounter > 0){
 				this.aiMode = AiMode.CAMPING;
-				this.listeningToCommand = false;
+				this.doingJob = false;
 			}
 			else{
 				this.aiMode = AiMode.PATROLLING;
-				this.listeningToCommand = true;
+				this.doingJob = true;
 			}
 		}
 	}
 	
-	/**
-	 * Engage with hostiles.
-	 */
 	protected void engageWithHostiles(){
 
 		int enemyCount = 0;
@@ -642,12 +538,6 @@ public class ThinkingAi extends Ai{
 		}
 	}
 	
-	/**
-	 * Can be engaged.
-	 *
-	 * @param ai the ai
-	 * @return true, if successful
-	 */
 	protected boolean canBeEngaged(Ai ai) {
 		if(this.isTargetHostile(ai) &&
 		   ai.getLevelBlock() == this.getLevelBlock() &&
@@ -657,12 +547,6 @@ public class ThinkingAi extends Ai{
 		return false;
 	}
 
-	/**
-	 * Emotion engage reaction.
-	 *
-	 * @param enemyCount the enemy count
-	 * @param target the target
-	 */
 	protected void emotionEngageReaction(int enemyCount, Ai target) {
 		
 		// friendly count is mainly made up of what the individual's strength is
@@ -691,13 +575,6 @@ public class ThinkingAi extends Ai{
 		respondToEnvironmentData();
 	}
 
-	/**
-	 * Passive engage reaction.
-	 *
-	 * @param friendlyCount the friendly count
-	 * @param enemyCount the enemy count
-	 * @param target the target
-	 */
 	protected void passiveEngageReaction(int friendlyCount, int enemyCount, Ai target) {
 		
 		if(this.getWeapon().isMelee() && this.getWeapon().isInRange(this, target) && !this.hasActiveEffect(Parrying.NAME) && new Random().nextInt(4) > 1){
@@ -978,23 +855,14 @@ public class ThinkingAi extends Ai{
 
 	public void waitForTurns(int count) {
 		this.turnCounter = count;
-		this.listeningToCommand = false;
+		this.doingJob = false;
 		this.aiMode = AiMode.CAMPING;
 	}
 	
-	
-	/**
-	 * Checks if is listening to command.
-	 *
-	 * @return true, if is listening to command
-	 */
 	public boolean isListeningToCommand(){
-		return this.listeningToCommand;
+		return this.doingJob;
 	}
 	
-	/* (non-Javadoc)
-	 * @see atrophy.combat.ai.Ai#isTargetHostile(atrophy.combat.ai.Ai)
-	 */
 	@Override
 	public boolean isTargetHostile(Ai target){
 		if( !target.isDead() &&
@@ -1006,44 +874,25 @@ public class ThinkingAi extends Ai{
 		return false;
 	}
 	
-	// Remove smart nodes on room change
-	/* (non-Javadoc)
-	 * @see atrophy.combat.ai.Ai#setLevelBlock(atrophy.combat.level.LevelBlock)
-	 */
 	@Override
 	public void setLevelBlock(LevelBlock residentBlock) {
 		super.setLevelBlock(residentBlock);
 		
+		// Remove smart nodes on room change
 		if(this.aiNode != null && !this.aiNode.hasPriority(this.getName())){
 			this.aiNode.releaseNode(this);
 			this.aiNode = null;
 		}
 	}
 	
-	/**
-	 * Checks if is block player convo.
-	 *
-	 * @return true, if is block player convo
-	 */
 	public boolean isBlockPlayerConvo() {
 		return blockPlayerConvo;
 	}
 
-	/**
-	 * Sets the block player convo.
-	 *
-	 * @param blockPlayerConvo the new block player convo
-	 */
 	public void setBlockPlayerConvo(boolean blockPlayerConvo) {
 		this.blockPlayerConvo = blockPlayerConvo;
 	}
 	
-	/**
-	 * Respond to message.
-	 *
-	 * @param message the message
-	 * @param speaker the speaker
-	 */
 	public void respondToMessage(Topic message, Ai speaker) {
 		switch(message){
 			// Engage ai
@@ -1075,151 +924,64 @@ public class ThinkingAi extends Ai{
 		}
 	}
 	
-	/**
-	 * Will join player.
-	 *
-	 * @param player the player
-	 * @return true, if successful
-	 */
 	public boolean willJoinPlayer(@SuppressWarnings("unused") Ai player){
 		return false;
 	}
 
-	/**
-	 * Gets the thinking node.
-	 *
-	 * @return the thinking node
-	 */
 	public AiNode getThinkingNode() {
 		return aiNode;
 	}
 
-	/**
-	 * Sets the thinking node.
-	 *
-	 * @param thinkingNode the new thinking node
-	 */
 	public void setThinkingNode(AiNode thinkingNode) {
 		this.aiNode = thinkingNode;
 	}
 
-	/* (non-Javadoc)
-	 * @see atrophy.combat.ai.Ai#purge()
-	 */
 	@Override
 	public void purge() {
 		super.purge();
 		this.chaseAi = null;
 	}
 	
-	/* (non-Javadoc)
-	 * @see atrophy.combat.ai.Ai#isSkippingTurns()
-	 */
 	@Override
 	public boolean isSkippingTurns() {
 		return true;
 	}
 	
-	
-	/**
-	 * The Class AiNode.
-	 */
 	public static class AiNode{
 		
-		/**
-		 * The Constant PRI_STORY.
-		 */
 		public static final String PRI_STORY = "STORY";
-		
-		/**
-		 * The Constant PRI_HIGHWAYMAN.
-		 */
 		public static final String PRI_HIGHWAYMAN = "HIGHWAYMAN";
-		
-		/**
-		 * The Constant PRI_SHOPKEEP.
-		 */
 		public static final String PRI_SHOPKEEP = "SHOP";
-		
-		/**
-		 * The Constant PRI_DEFENDER.
-		 */
 		public static final String PRI_DEFENDER = "DEFENDER";
-
 		private static final String FOLLOW_PLAYER = "FOLLOW_PLAYER";
 		
-		/**
-		 * The location.
-		 */
 		private double[] location;
-		
-		/**
-		 * The angle.
-		 */
 		private double angle;
-		
-		/**
-		 * The useable factions.
-		 */
 		private Set<String> useableFactions;
-		
-		/**
-		 * The disabler.
-		 */
 		private String[] disabler;
 		
 		// Whether this node describes a behaviour that requires the ai to be at the location
 		// you can create a node which allows the to sell stuff but they don't have to be at the node
-		/**
-		 * The must be occupied.
-		 */
 		private boolean mustBeOccupied;
 		
 		private Set<String> talkMapTags;
 		
-		/**
-		 * The free think turns.
-		 */
 		private int freeThinkTurns;
-		
-		/**
-		 * The max users.
-		 */
 		private int maxUsers;
-		
-		/**
-		 * The users.
-		 */
 		private HashSet<ThinkingAi> users;
-		
-		/**
-		 * The priorities.
-		 */
+
 		private HashSet<String> priorities;
-		
 		private ArrayList<String> behaviours;
 		
 		// whether this node will think for the ai
 		// can be used to make nodes purely for dialogue
-		/**
-		 * The thinks.
-		 */
 		private boolean thinks;
 
 		private TurnProcess turnProcess;
-
 		private MessageBox messageBox;
-
 		private AiCrowd aiCrowd;
-
 		private MissionManager missionManager;
 
-		/**
-		 * Instantiates a new ai node.
-		 *
-		 * @param x the x
-		 * @param y the y
-		 */
 		public AiNode(AiCrowd aiCrowd, MessageBox messageBox, TurnProcess turnProcess, MissionManager missionManager, double x, double y){
 			this.location = new double[]{x,y};
 			
@@ -1249,12 +1011,6 @@ public class ThinkingAi extends Ai{
 			this.missionManager = missionManager;
 		}
 		
-		/**
-		 * Grab node.
-		 *
-		 * @param ai the ai
-		 * @return true, if successful
-		 */
 		public boolean grabNode(ThinkingAi ai){
 			if(users.size() < maxUsers || maxUsers == 0){
 				this.users.add(ai);
@@ -1263,20 +1019,10 @@ public class ThinkingAi extends Ai{
 			return false;
 		}
 		
-		/**
-		 * Release node.
-		 *
-		 * @param ai the ai
-		 */
 		public void releaseNode(ThinkingAi ai){
 			this.users.remove(ai);
 		}
 		
-		/**
-		 * Think.
-		 *
-		 * @param ai the ai
-		 */
 		public void think(ThinkingAi ai){
 			
 			if(!thinks || this.behaviours.size() > 0){
@@ -1336,12 +1082,6 @@ public class ThinkingAi extends Ai{
 				turnProcess.currentAiDone(true);
 		}
 
-		/**
-		 * Use dialogue.
-		 *
-		 * @param ai the ai
-		 * @return true, if successful
-		 */
 		private boolean useDialogue(ThinkingAi ai) {
 			if(hasDialogue()){
 				
@@ -1371,13 +1111,6 @@ public class ThinkingAi extends Ai{
 			return false;
 		}
 
-		// Check to see if the node is active
-		/**
-		 * Check for disable.
-		 *
-		 * @param ai the ai
-		 * @return true, if successful
-		 */
 		private boolean checkForDisable(ThinkingAi ai) {
 			
 			for(int i = 0; i < this.disabler.length; i++){
@@ -1426,13 +1159,6 @@ public class ThinkingAi extends Ai{
 			return false;
 		}
 
-		/**
-		 * Check for faction in block.
-		 *
-		 * @param levelBlock the level block
-		 * @param faction the faction
-		 * @return true, if successful
-		 */
 		private boolean checkForFactionInBlock(LevelBlock levelBlock, String faction) {
 			for(int i = 0; i < aiCrowd.getActorCount(); i++){
 				Ai ai = aiCrowd.getActor(i);
@@ -1443,58 +1169,26 @@ public class ThinkingAi extends Ai{
 			return false;
 		}
 
-		/**
-		 * Gets the location.
-		 *
-		 * @return the location
-		 */
 		public double[] getLocation() {
 			return location;
 		}
 
-		/**
-		 * Checks for angle.
-		 *
-		 * @return true, if successful
-		 */
 		public boolean hasAngle(){
 			return angle != 361;
 		}
 		
-		/**
-		 * Gets the angle.
-		 *
-		 * @return the angle
-		 */
 		public double getAngle() {
 			return angle;
 		}
 
-		/**
-		 * Can use.
-		 *
-		 * @param faction the faction
-		 * @return true, if successful
-		 */
 		public boolean canUse(String faction) {
 			return this.useableFactions.contains(faction);
 		}
 
-		/**
-		 * Sets the angle.
-		 *
-		 * @param angle the new angle
-		 */
 		public void setAngle(double angle) {
 			this.angle = angle;
 		}
 
-		/**
-		 * Adds the usable faction.
-		 *
-		 * @param faction the faction
-		 * @param mapOwner the map owner
-		 */
 		public void addUsableFaction(String faction, String mapOwner){
 			
 			// When loner is map owner: loner/white vista/bandits work
@@ -1526,29 +1220,14 @@ public class ThinkingAi extends Ai{
 			this.useableFactions.add(faction);
 		}
 
-		/**
-		 * Must be occupied.
-		 *
-		 * @return true, if successful
-		 */
 		public boolean mustBeOccupied() {
 			return mustBeOccupied;
 		}
 
-		/**
-		 * Sets the must be occupied.
-		 *
-		 * @param mustBeOccupied the new must be occupied
-		 */
 		public void setMustBeOccupied(boolean mustBeOccupied) {
 			this.mustBeOccupied = mustBeOccupied;
 		}
 		
-		/**
-		 * Checks for dialogue.
-		 *
-		 * @return true, if successful
-		 */
 		public boolean hasDialogue(){
 			for(String talkMap : talkMapTags){
 				if(missionManager.getTalkMap(talkMap).getDialogue().isInitiator())
@@ -1565,20 +1244,10 @@ public class ThinkingAi extends Ai{
 			return null;
 		}
 
-		/**
-		 * Sets the disabler.
-		 *
-		 * @param disabler the new disabler
-		 */
 		public void setDisabler(String[] disabler){
 			this.disabler = disabler;
 		}
 
-		/**
-		 * Finish.
-		 *
-		 * @param ai the ai
-		 */
 		public void finish(ThinkingAi ai) {
 			if(this.thinks){
 				turnProcess.currentAiDone(true);
@@ -1588,20 +1257,10 @@ public class ThinkingAi extends Ai{
 			}
 		}
 
-		/**
-		 * Sets the thinks.
-		 *
-		 * @param hasThoughts the new thinks
-		 */
 		public void setThinks(boolean hasThoughts) {
 			this.thinks = hasThoughts;
 		}
 
-		/**
-		 * Gets the topics.
-		 *
-		 * @return the topics
-		 */
 		public List<Dialogue> getTopics() {
 			List<Dialogue> topics = new ArrayList<>();
 			
@@ -1612,61 +1271,30 @@ public class ThinkingAi extends Ai{
 			return topics;
 		}
 
-		/**
-		 * Checks for topics.
-		 *
-		 * @return true, if successful
-		 */
 		public boolean hasTopics(){
 			return this.talkMapTags.size() > 0;
 		}
 
-		/**
-		 * Gets the max users.
-		 *
-		 * @return the max users
-		 */
 		public int getMaxUsers() {
 			return maxUsers;
 		}
 
-		/**
-		 * Sets the max users.
-		 *
-		 * @param maxUsers the new max users
-		 */
 		public void setMaxUsers(int maxUsers) {
 			this.maxUsers = maxUsers;
 		}
 
-		/**
-		 * Checks if is full.
-		 *
-		 * @return true, if is full
-		 */
 		public boolean isFull() {
 			if(this.users.size() < this.maxUsers)
 				return true;
 			return false;
 		}
 		
-		/**
-		 * Adds the priorities.
-		 *
-		 * @param priorities the priorities
-		 */
 		public void addPriorities(List<String> priorities){
 			for(int i = 0; i < priorities.size(); i++){
 				this.priorities.add(priorities.get(i));
 			}
 		}
 		
-		/**
-		 * Checks for priority.
-		 *
-		 * @param priority the priority
-		 * @return true, if successful
-		 */
 		public boolean hasPriority(String priority){
 			return this.priorities.contains(priority);
 		}
@@ -1684,20 +1312,10 @@ public class ThinkingAi extends Ai{
 	}
 
 
-	/**
-	 * Gets the ai node.
-	 *
-	 * @return the ai node
-	 */
 	public AiNode getAiNode() {
 		return this.aiNode;
 	}
 
-	/**
-	 * Sets the ai node.
-	 *
-	 * @param aiNode the new ai node
-	 */
 	public void setAiNode(AiNode aiNode) {
 		
 		// Only release a node if it isn't personalised
@@ -1707,11 +1325,6 @@ public class ThinkingAi extends Ai{
 		this.aiNode = aiNode;
 	}
 
-	/**
-	 * Stationary node.
-	 *
-	 * @return true, if successful
-	 */
 	public boolean stationaryNode() {
 		return this.aiNode.mustBeOccupied;
 	}
