@@ -104,6 +104,19 @@ public class ThinkingAi extends Ai{
 		}
 	}
 	
+	private void think(){		
+		
+		if(this.aiNode != null && doingJob){
+			aiNode.think(this);
+			return;
+		}
+		else if(doingJob && this.job == null) {
+			this.job = this.getCommander().getJob(this);
+		}
+		
+		this.gatherEnvironmentData();
+	}
+	
 	private void commitThoughts(){
 		resetStates();
 		
@@ -146,16 +159,6 @@ public class ThinkingAi extends Ai{
 		turnProcess.currentAiDone(true);
 	}
 
-	private void think(){		
-		
-		if(this.aiNode != null && doingJob){
-			aiNode.think(this);
-			return;
-		}
-		
-		this.gatherEnvironmentData();
-	}
-	
 	protected void gatherEnvironmentData(){
 		// since this is done during a turn some variables that are swept up at the end of the turn will be incorrect
 		// e.g aiming at a dead target
@@ -199,7 +202,6 @@ public class ThinkingAi extends Ai{
 			
 			fleeFromGrenades();
 			
-			// if not engaging then see if in correct room
 			if(!this.aiMode.equals(AiMode.ENGAGING) &&
 			   !this.aiMode.equals(AiMode.FLEEING) &&
 			   !this.aiMode.equals(AiMode.LOOT) &&
@@ -207,7 +209,7 @@ public class ThinkingAi extends Ai{
 				
 				this.setSwing(0);
 				
-				actIgnoreCommand();
+				act();
 			}
 			else if(this.aiMode.equals(AiMode.FLEEING)){ 
 				fleeingAction();
@@ -274,7 +276,7 @@ public class ThinkingAi extends Ai{
 		doingJob = true;
 	}
 
-	private void actIgnoreCommand() throws PathNotFoundException {
+	private void act() throws PathNotFoundException {
 		if(this.chaseAi != null){
 			if(this.emotionManager.getAggression() > 0 && (this.getCommander().canPursue(this) || this.chaseAi.getLevelBlock() == this.getLevelBlock())){
 				chasetarget();
@@ -286,11 +288,14 @@ public class ThinkingAi extends Ai{
 		else if(this.aiInRoomToLoot()){
 			this.lootAiInRoom();
 		}
-		else if(Maths.getDistance(this.getLocation(), this.getMoveLocation()) == 0 &&
-		   this.turnCounter == 0){
-			
-			this.aiMode = AiMode.CAMPING;
-			this.turnCounter = 6;
+		else if(Maths.getDistance(this.getLocation(), this.getMoveLocation()) == 0 && this.turnCounter == 0){
+			if(this.job != null && this.job.getJobBlock() == this.getLevelBlock()){
+				this.aiMode = AiMode.CAMPING;
+				this.turnCounter = 6;
+			}
+			else if(this.job != null){
+				this.setMoveLocation(levelManager.randomInPosition(job.getJobBlock()));
+			}
 		}
 		// do not set turnCounter == 0, otherwise it will be reset to a higher value and the ai will cycle in place
 		if(this.aiMode.equals(AiMode.CAMPING) && this.turnCounter == 1 && !this.getAction().startsWith("Applying:")){

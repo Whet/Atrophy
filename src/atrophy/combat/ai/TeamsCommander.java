@@ -4,12 +4,12 @@
 package atrophy.combat.ai;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.PriorityQueue;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import atrophy.combat.level.LevelBlock;
@@ -19,19 +19,18 @@ import atrophy.combat.mechanics.TurnProcess;
 
 public class TeamsCommander {
 	
+	private static final int UPDATE_GAP = 20;
+
+	private static final int ASSIGNMENT_MODIFIER = 10;
+	
 	private Set<ThinkingAi> teamAi;
 	private Set<String> alliances;
 	private Set<Ai> hatedAi;
-	
-	private Map<Ai, AiJob> jobAssignments;
-	
-	private Map<LevelBlock, DefenceHeuristic> defenceHeuristics;
-	private PriorityQueue<LevelBlock> priorityRoomQueue;
-	
 	private Set<Ai> lootedAi;
+	private Map<Ai, AiJob> jobAssignments;
+	private Map<LevelBlock, DefenceHeuristic> defenceHeuristics;
 	
 	private ArrayList<Portal> blockedPortals;
-	private ArrayList<Portal> openPortals;
 	
 	private String faction;
 	
@@ -46,24 +45,12 @@ public class TeamsCommander {
 		this.levelManager = levelManager;
 		
 		teamAi = new HashSet<ThinkingAi>();
-		blockedPortals = new ArrayList<Portal>(2);
-		openPortals = new ArrayList<Portal>(2);
+		blockedPortals = new ArrayList<Portal>();
 		lootedAi = new HashSet<Ai>();
 		alliances = new HashSet<String>();
 		hatedAi = new HashSet<Ai>();
 		jobAssignments = new HashMap<>();
 		defenceHeuristics = new HashMap<>();	
-		
-		Comparator<LevelBlock> comparator = new Comparator<LevelBlock>() {
-			
-			@Override
-			public int compare(LevelBlock o1, LevelBlock o2) {
-				if(defenceHeuristics.get(o1).getF() > defenceHeuristics.get(o2).getF()) return 1;
-				else if(defenceHeuristics.get(o1).getF() < defenceHeuristics.get(o2).getF()) return -1;
-				return 0;
-			}
-		};
-		priorityRoomQueue = new PriorityQueue<>(10, comparator );
 		
 		turnsToNextUpdate = 0;
 		
@@ -91,22 +78,96 @@ public class TeamsCommander {
 		
 		if(this.turnsToNextUpdate <= 0){
 			
-			for(int i = 0; i < this.openPortals.size(); i++){
-				if(this.openPortals.get(i).canUse()){
-					this.openPortals.remove(i);
-				}
-			}
+			removeDeadJobs();
+			updateAssignmentHeuristics();
+			updateDefenceHeuristics();
+			
+			this.turnsToNextUpdate = UPDATE_GAP;
 		
+		}
+	}
+	
+	private void removeDeadJobs() {
+		
+		Iterator<Entry<Ai, AiJob>> entryIt = this.jobAssignments.entrySet().iterator();
+		
+		while(entryIt.hasNext()) {
+			Entry<Ai, AiJob> entry = entryIt.next();
+			
+			if(entry.getKey().isDead()) {
+				entryIt.remove();
+			}
+		}
+	}
+
+	private void updateAssignmentHeuristics() {
+		
+		for(DefenceHeuristic heuristic : this.defenceHeuristics.values()) {
+			
+			heuristic.assignmentModifier = 0;
+			
+			for(AiJob job : this.jobAssignments.values()){
+				heuristic.assignmentModifier += ASSIGNMENT_MODIFIER;
+			}
+			
 		}
 		
 	}
 	
-	public ArrayList<Portal> getBlockedPortals(){
-		return this.blockedPortals;
+	private void updateDefenceHeuristics() {
+
+		Set<LevelBlock> missionImportantRooms = new HashSet<>();
+		
+		for(Entry<LevelBlock, DefenceHeuristic> entry : this.defenceHeuristics.entrySet()){
+			if(entry.getValue().missionH > 0)
+				missionImportantRooms.add(entry.getKey());
+		}
+		
+		// Make nearby rooms have higher defence values
+		for(LevelBlock room : missionImportantRooms){
+			for(LevelBlock adjacentRoom : room.getConnectedRooms()){
+				
+				if(!levelManager.isRoomBanned(this.getFaction(), adjacentRoom)){
+					checkForNullHeuristic(adjacentRoom);
+					
+					// This method allows defence bonuses to stack
+					this.defenceHeuristics.get(adjacentRoom).defenceH = this.defenceHeuristics.get(room).missionH / 4;
+				}
+			}
+		}
+		
+	}
+
+	private void checkForNullHeuristic(LevelBlock room) {
+		if(this.defenceHeuristics.get(room) == null) {
+			this.defenceHeuristics.put(room, new DefenceHeuristic());
+		}
 	}
 	
-	public ArrayList<Portal> getOpenPortals(){
-		return this.openPortals;
+	public AiJob getJob(ThinkingAi ai){
+		if(this.jobAssignments.get(ai) != null)
+			return this.jobAssignments.get(ai);
+		
+		return bestJob(ai);
+	}
+	
+	private AiJob bestJob(ThinkingAi ai) {
+		
+		LevelBlock highestPriorityRoom = getHighestPriorityRoom();
+		
+		checkForNullHeuristic(highestPriorityRoom);
+		
+		this.defenceHeuristics.get(highestPriorityRoom).assignmentModifier += ASSIGNMENT_MODIFIER;
+		
+		AiJob job = new AiJob(highestPriorityRoom);
+		
+		this.jobAssignments.put(ai, job);
+		
+		return job;
+	}
+
+	public ArrayList<Portal> getBlockedPortals(){
+		return this.blockedPortals;
 	}
 	
 	public boolean requestDoorOpen(Portal door){
@@ -119,10 +180,7 @@ public class TeamsCommander {
 
 	public boolean reportUnits(int enemyCount, LevelBlock levelBlock) {
 		
-		if(this.defenceHeuristics.get(levelBlock) == null) {
-			this.defenceHeuristics.put(levelBlock, new DefenceHeuristic());
-			this.priorityRoomQueue.add(levelBlock);
-		}
+		checkForNullHeuristic(levelBlock);
 		
 		if(this.defenceHeuristics.get(levelBlock).dangerH < enemyCount){
 			this.defenceHeuristics.get(levelBlock).dangerH = enemyCount;
@@ -133,9 +191,9 @@ public class TeamsCommander {
 	
 	public List<LevelBlock> getDangerRooms(int leastDangerLevel){
 		List<LevelBlock> blocks = new ArrayList<>();
-		for(LevelBlock block : this.priorityRoomQueue){
-			if(this.defenceHeuristics.get(block).dangerH >= leastDangerLevel)
-				blocks.add(block);
+		for(Entry<LevelBlock, DefenceHeuristic> entry : this.defenceHeuristics.entrySet()){
+			if(entry.getValue().dangerH >= leastDangerLevel)
+				blocks.add(entry.getKey());
 		}
 		return blocks;
 	}
@@ -168,26 +226,42 @@ public class TeamsCommander {
 		return this.hatedAi.contains(ai);
 	}
 	
-	public void purge(){
-		this.blockedPortals = null;
-		this.openPortals = null;
-	}
-
 	public void addAi(ThinkingAi ai) {
 		this.teamAi.add(ai);
 	}
 
 	public void setBlockHeuristic(LevelBlock levelBlock, int heuristicValue) {
-		if(this.defenceHeuristics.get(levelBlock) == null) {
-			this.defenceHeuristics.put(levelBlock, new DefenceHeuristic());
-			this.priorityRoomQueue.add(levelBlock);
-		}
+		checkForNullHeuristic(levelBlock);
 		
 		this.defenceHeuristics.get(levelBlock).missionH = heuristicValue;
 	}
 
 	public LevelBlock getSpawnRoom() {
-		return this.priorityRoomQueue.peek();
+		return this.getHighestPriorityRoom();
+	}
+
+	private LevelBlock getHighestPriorityRoom() {
+		Entry<LevelBlock, DefenceHeuristic> bestEntry = null;
+		for(Entry<LevelBlock, DefenceHeuristic> entry : this.defenceHeuristics.entrySet()){
+			if(bestEntry == null || entry.getValue().getFAfterAssignments() > bestEntry.getValue().getFAfterAssignments())
+				bestEntry = entry;
+		}
+		
+		if(bestEntry == null) {
+			
+			LevelBlock levelBlock;
+			
+			do{
+				levelBlock = levelManager.randomRoom();
+			}
+			while(levelManager.isRoomBanned(this.getFaction(), levelBlock));
+				
+			this.checkForNullHeuristic(levelBlock);
+			return levelBlock;
+		}
+			
+		
+		return bestEntry.getKey();
 	}
 
 }
