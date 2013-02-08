@@ -195,7 +195,8 @@ public class TurnProcess {
 				
 				currentAi.action();
 				aiCrowd.getActorMask(currentAi).updateTween();
-//				return;
+				// was commented out, don't know why
+				return;
 			}
 			else{
 				
