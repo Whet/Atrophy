@@ -10,12 +10,20 @@ public class DefenceHeuristic {
 		this.defenceH = 0;
 	}
 	
-	public int getF() {
-		return this.missionH + dangerH + defenceH;
+	public int getDefence() {
+		return this.missionH + defenceH;
 	}
 	
-	public int getFAfterAssignments() {
-		return getF() - assignmentModifier;
+	public int getDefenceAfterAssignment() {
+		return getDefence() - assignmentModifier;
+	}
+	
+	public int getDanger() {
+		return this.dangerH + this.defenceH;
+	}
+	
+	public int getDangerAfterAssignment() {
+		return this.getDanger() - assignmentModifier;
 	}
 	
 }

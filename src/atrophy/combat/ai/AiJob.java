@@ -7,12 +7,18 @@ import atrophy.combat.level.LevelBlock;
 
 public class AiJob {
 
-	private List<Ai> employees;
+	private JobType type;
+	
+	private int targetEmployeeCount;
 	private LevelBlock levelBlock;
 	
-	public AiJob(LevelBlock levelBlock){
+	private List<Ai> employees;
+	
+	public AiJob(int targetEmployeeCount, LevelBlock levelBlock, JobType type){
+		this.targetEmployeeCount = targetEmployeeCount;
 		this.levelBlock = levelBlock;
 		this.employees = new ArrayList<>();
+		this.type = type;
 	}
 
 	public LevelBlock getJobBlock() {
@@ -27,4 +33,24 @@ public class AiJob {
 		this.employees.remove(ai);
 	}
 	
+	public boolean isJobFilled(){
+		return this.employees.size() >= targetEmployeeCount;
+	}
+	
+	public boolean isOverFilled() {
+		return this.employees.size() > targetEmployeeCount;
+	}
+	
+	public JobType getType() {
+		return type;
+	}
+	
+	public void setTargetEmployeeCount(int targetEmployeeCount) {
+		this.targetEmployeeCount = targetEmployeeCount;
+	}
+
+	public static enum JobType {
+		SCOUT, DEFEND, OPEN_DOOR, SECURE
+	}
+
 }

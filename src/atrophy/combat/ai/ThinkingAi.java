@@ -110,7 +110,7 @@ public class ThinkingAi extends Ai{
 			aiNode.think(this);
 			return;
 		}
-		else if(doingJob && this.job == null) {
+		else if(doingJob) {
 			this.job = this.getCommander().getJob(this);
 		}
 		
