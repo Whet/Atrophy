@@ -67,7 +67,6 @@ public class ThinkingAi extends Ai{
 	private CombatInorganicManager combatInorganicManager;
 	private LevelManager levelManager;
 
-	// set start location and name
 	public ThinkingAi(PanningManager panningManager, CombatVisualManager combatVisualManager, TurnProcess turnProcess, FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, AiCrowd aiCrowd, CombatMembersManager combatMembersManager, String name, double x, double y, LevelManager levelManager, CombatInorganicManager combatInorganicManager, CombatUiManager combatUiManager, LootBox lootBox){
 		super(floatingIcons, mouseAbilityHandler, name,x,y, combatInorganicManager, levelManager, lootBox, combatMembersManager, combatUiManager, combatVisualManager, aiCrowd, panningManager, turnProcess);
 		aiMode = AiMode.EMPTY;
@@ -88,7 +87,6 @@ public class ThinkingAi extends Ai{
 	@Override
 	public void action(){
 		
-		// reset movement units
 		this.resetMoveUnits();
 		
 		if(turnCounter > 0){
@@ -112,6 +110,8 @@ public class ThinkingAi extends Ai{
 		}
 		else if(doingJob) {
 			this.job = this.getCommander().getJob(this);
+			if(this.getLevelBlock() == this.job.getJobBlock())
+				this.job.tickJob();
 		}
 		
 		this.gatherEnvironmentData();
@@ -522,23 +522,18 @@ public class ThinkingAi extends Ai{
 			}
 		}
 		
-		// Combat score of enemies in room and closest target has been established
 		if(target != null){
 			enemyCount = combatMembersManager.getFactionStrength(target.getFaction(), this.getLevelBlock());
 			this.emotionEngageReaction(enemyCount, target);
 			
-			// report enemies to commander
-			// only speak if the area is not already reported
 			this.getCommander().reportUnits(enemyCount,this.getLevelBlock());
 		}
 		else{
-			
+			enemyCount = 0;
 			this.lootAiInRoom();
 			
 			respondToEnvironmentData();
 			
-			// report enemies to commander
-			// only speak if the area is not already reported
 			this.getCommander().reportUnits(enemyCount,this.getLevelBlock());
 		}
 	}

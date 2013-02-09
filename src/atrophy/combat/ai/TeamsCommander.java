@@ -132,7 +132,6 @@ public class TeamsCommander {
 	}
 	
 	private void createJobs() {
-		
 		boolean jobExists;
 		
 		Set<LevelBlock> assignedRooms = new HashSet<>();
@@ -165,12 +164,12 @@ public class TeamsCommander {
 			if(!jobExists) {
 				if(entry.getValue().getDefence() > 0){
 					// Create a defence job
-					AiJob job = new AiJob(entry.getValue().getDefence(), entry.getKey(), JobType.DEFEND);
+					AiJob job = new AiJob(entry.getValue().getDefence() / 10, entry.getKey(), JobType.DEFEND, turnsToNextUpdate);
 					jobs.add(job);
 				}
 				else if(entry.getValue().getDanger() > 0){
 					// Create a job to secure area
-					AiJob job = new AiJob(entry.getValue().getDanger(), entry.getKey(), JobType.SECURE);
+					AiJob job = new AiJob.SecureJob(entry.getValue().getDanger(), entry.getKey(), turnsToNextUpdate);
 					jobs.add(job);
 				}
 			}
@@ -181,8 +180,8 @@ public class TeamsCommander {
 		// Create jobs to scout random rooms which don't have defence/secure jobs
 		for(int i = 0; i < SCOUT_JOBS; i++){
 			LevelBlock room = levelManager.randomRoom();
-			if(!assignedRooms.contains(room)) {
-				AiJob job = new AiJob(1, room, JobType.SCOUT);
+			if(!assignedRooms.contains(room) && !levelManager.isRoomBanned(this.getFaction(), room)) {
+				AiJob job = new AiJob(1, room, JobType.SCOUT, turnsToNextUpdate);
 				jobs.add(job);
 				this.checkForNullHeuristic(room);
 			}
@@ -196,10 +195,10 @@ public class TeamsCommander {
 	}
 	
 	public AiJob getJob(ThinkingAi ai){
-		if(this.jobAssignments.get(ai) != null && !this.jobAssignments.get(ai).isOverFilled())
+		if(this.jobAssignments.get(ai) != null && !this.jobAssignments.get(ai).isOverFilled() && !this.jobAssignments.get(ai).isExpired())
 			return this.jobAssignments.get(ai);
 		
-		else if(this.jobAssignments.get(ai) != null && this.jobAssignments.get(ai).isOverFilled())
+		else if(this.jobAssignments.get(ai) != null && (this.jobAssignments.get(ai).isOverFilled() || this.jobAssignments.get(ai).isExpired()))
 			this.jobAssignments.remove(ai);
 		
 		return bestJob(ai);
@@ -210,7 +209,23 @@ public class TeamsCommander {
 			if(!job.isJobFilled())
 				return takeJob(ai, job);
 		}
-		return null;
+		
+		// Make a random scout job so the ai stays busy
+		return takeJob(ai, createScoutJob());
+	}
+	
+	private AiJob createScoutJob() {
+		LevelBlock room = null;
+		do{
+			room = levelManager.randomRoom();
+		}
+		while(levelManager.isRoomBanned(this.getFaction(), room));
+		
+		AiJob job = new AiJob(1, room, JobType.SCOUT, turnsToNextUpdate);
+		jobs.add(job);
+		this.checkForNullHeuristic(room);
+		
+		return job;
 	}
 
 	private AiJob takeJob(ThinkingAi ai, AiJob job) {
@@ -238,7 +253,7 @@ public class TeamsCommander {
 	}
 
 	public boolean reportUnits(int enemyCount, LevelBlock levelBlock) {
-		
+//		System.out.println(this.getFaction() + "   " + enemyCount);
 		checkForNullHeuristic(levelBlock);
 		
 		if(this.defenceHeuristics.get(levelBlock).dangerH < enemyCount){

@@ -7,20 +7,31 @@ import atrophy.combat.level.LevelBlock;
 
 public class AiJob {
 
-	private JobType type;
+	protected JobType type;
 	
-	private int targetEmployeeCount;
-	private LevelBlock levelBlock;
+	protected int targetEmployeeCount;
+	protected LevelBlock levelBlock;
 	
-	private List<Ai> employees;
+	protected List<Ai> employees;
 	
-	public AiJob(int targetEmployeeCount, LevelBlock levelBlock, JobType type){
+	protected int duration;
+	
+	public AiJob(int targetEmployeeCount, LevelBlock levelBlock, JobType type, int duration){
 		this.targetEmployeeCount = targetEmployeeCount;
 		this.levelBlock = levelBlock;
 		this.employees = new ArrayList<>();
 		this.type = type;
+		this.duration = duration;
 	}
 
+	public void tickJob(){
+		this.duration--;
+	}
+	
+	public boolean isExpired(){
+		return this.duration == 0;
+	}
+	
 	public LevelBlock getJobBlock() {
 		return levelBlock;
 	}
@@ -53,4 +64,30 @@ public class AiJob {
 		SCOUT, DEFEND, OPEN_DOOR, SECURE
 	}
 
+	public static class SecureJob extends AiJob{
+		
+		public SecureJob(int targetCombatScore, LevelBlock levelBlock, int duration) {
+			super(targetCombatScore, levelBlock, JobType.SECURE, duration);
+		}
+		
+		public boolean isJobFilled(){
+			return this.getCombatScore() >= this.targetEmployeeCount;
+		}
+		
+		private int getCombatScore() {
+			int combatScore = 0;
+			
+			for(int i = 0; i < this.employees.size(); i++) {
+				combatScore += this.employees.get(i).getCombatScore();
+			}
+			
+			return combatScore;
+		}
+
+		public boolean isOverFilled() {
+			return false;
+		}
+		
+	}
+	
 }
