@@ -104,7 +104,7 @@ public class MouseAbilityHandler {
 	 */
 	public void applyAbility(Point mousePoint){
 		if(levelManager.getBlock(mousePoint.x - panningManager.getOffset()[0],
-											   mousePoint.y - panningManager.getOffset()[1]) != null){
+								 mousePoint.y - panningManager.getOffset()[1]) != null){
 			switch(abilityApplied){
 				case Abilities.GRENADETHROWER:
 					if(levelManager.getBlock(mousePoint.x - panningManager.getOffset()[0],
@@ -171,12 +171,15 @@ public class MouseAbilityHandler {
 					combatUiManager.getLargeEventText().flashText(targetAi.getName() + " Tagged", Color.yellow);
 				}
 			break;
-			
 			case "Hack":
 				TurretAi turret = getClosestTurretToMouse(mousePoint, 40, false);
 				
 				if(turret != null)
 					combatMembersManager.getCurrentAi().setHackTarget(turret);
+			break;
+			case "DebugKill":
+				targetAi = getClosestAiToMouse(mousePoint, 40, true);
+				targetAi.setDead(true);
 			break;
 				
 		}
