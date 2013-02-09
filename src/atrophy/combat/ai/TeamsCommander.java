@@ -6,7 +6,6 @@ package atrophy.combat.ai;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -73,7 +72,6 @@ public class TeamsCommander {
 		if(this.turnsToNextUpdate <= 0){
 			
 			removeDeadJobs();
-			updateAssignmentHeuristics();
 			updateDefenceHeuristics();
 			createJobs();
 			
@@ -83,31 +81,13 @@ public class TeamsCommander {
 	}
 	
 	private void removeDeadJobs() {
-		
-		Iterator<Entry<Ai, AiJob>> entryIt = this.jobAssignments.entrySet().iterator();
-		
-		while(entryIt.hasNext()) {
-			Entry<Ai, AiJob> entry = entryIt.next();
-			
-			if(entry.getKey().isDead()) {
-				entryIt.remove();
-			}
+		this.jobAssignments.clear();
+		this.jobs.clear();
+		for(DefenceHeuristic heuristic : this.defenceHeuristics.values()){
+			heuristic.assignmentModifier = 0;
 		}
 	}
 
-	private void updateAssignmentHeuristics() {
-		
-		for(Entry<LevelBlock, DefenceHeuristic> entry : this.defenceHeuristics.entrySet()) {
-			
-			entry.getValue().assignmentModifier = 0;
-			
-			for(AiJob job : this.jobAssignments.values()){
-				if(job.getJobBlock() == entry.getKey())
-					entry.getValue().assignmentModifier += ASSIGNMENT_MODIFIER;
-			}
-		}
-	}
-	
 	private void updateDefenceHeuristics() {
 
 		Set<LevelBlock> missionImportantRooms = new HashSet<>();
@@ -164,24 +144,25 @@ public class TeamsCommander {
 			if(!jobExists) {
 				if(entry.getValue().getDefence() > 0){
 					// Create a defence job
-					AiJob job = new AiJob(entry.getValue().getDefence() / 10, entry.getKey(), JobType.DEFEND, turnsToNextUpdate);
+					AiJob job = new AiJob(entry.getValue().getDefence() / 10, entry.getKey(), JobType.DEFEND, 30);
 					jobs.add(job);
+					assignedRooms.add(entry.getKey());
 				}
 				else if(entry.getValue().getDanger() > 0){
 					// Create a job to secure area
-					AiJob job = new AiJob.SecureJob(entry.getValue().getDanger(), entry.getKey(), turnsToNextUpdate);
+					AiJob job = new AiJob.SecureJob(entry.getValue().getDanger(), entry.getKey(), turnsToNextUpdate + 5);
 					jobs.add(job);
+					assignedRooms.add(entry.getKey());
 				}
 			}
 			
-			assignedRooms.add(entry.getKey());
 		}
 		
 		// Create jobs to scout random rooms which don't have defence/secure jobs
 		for(int i = 0; i < SCOUT_JOBS; i++){
 			LevelBlock room = levelManager.randomRoom();
 			if(!assignedRooms.contains(room) && !levelManager.isRoomBanned(this.getFaction(), room)) {
-				AiJob job = new AiJob(1, room, JobType.SCOUT, turnsToNextUpdate);
+				AiJob job = new AiJob(1, room, JobType.SCOUT, turnsToNextUpdate + 5);
 				jobs.add(job);
 				this.checkForNullHeuristic(room);
 			}
@@ -195,6 +176,7 @@ public class TeamsCommander {
 	}
 	
 	public AiJob getJob(ThinkingAi ai){
+		
 		if(this.jobAssignments.get(ai) != null && !this.jobAssignments.get(ai).isOverFilled() && !this.jobAssignments.get(ai).isExpired())
 			return this.jobAssignments.get(ai);
 		
@@ -221,7 +203,7 @@ public class TeamsCommander {
 		}
 		while(levelManager.isRoomBanned(this.getFaction(), room));
 		
-		AiJob job = new AiJob(1, room, JobType.SCOUT, turnsToNextUpdate);
+		AiJob job = new AiJob(1, room, JobType.SCOUT, turnsToNextUpdate + 5);
 		jobs.add(job);
 		this.checkForNullHeuristic(room);
 		

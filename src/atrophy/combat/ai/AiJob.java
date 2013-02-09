@@ -29,7 +29,7 @@ public class AiJob {
 	}
 	
 	public boolean isExpired(){
-		return this.duration == 0;
+		return this.duration <= 0;
 	}
 	
 	public LevelBlock getJobBlock() {
