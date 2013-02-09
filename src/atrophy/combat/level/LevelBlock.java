@@ -82,6 +82,8 @@ public class LevelBlock {
 	private boolean containsScience;
 
 	private MissionManager missionManager;
+
+	private boolean discovered;
 	
 	/**
 	 * Instantiates a new level block.
@@ -110,6 +112,8 @@ public class LevelBlock {
 		this.containsScience = false;
 		
 		this.missionManager = missionManager;
+		
+		this.discovered = false;
 		
 	}
 	
@@ -722,5 +726,13 @@ public class LevelBlock {
     public LevelBlockGrid getLevelBlockGrid() {
         return this.grid;
     }
+
+	public boolean isDiscovered() {
+		return this.discovered;
+	}
+
+	public void setDiscovered(boolean discovered) {
+		this.discovered = discovered;
+	}
 	
 }
