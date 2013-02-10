@@ -4,12 +4,14 @@
 package atrophy.combat.ai;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.PriorityQueue;
 import java.util.Set;
 
 import atrophy.combat.ai.AiJob.JobType;
@@ -30,7 +32,7 @@ public class TeamsCommander<E> {
 	private Set<String> alliances;
 	private Set<Ai> hatedAi;
 	private Set<Ai> lootedAi;
-	private Set<AiJob> jobs;
+	private PriorityQueue<AiJob> jobs;
 	private Map<Ai, AiJob> jobAssignments;
 	private Map<LevelBlock, DefenceHeuristic> defenceHeuristics;
 	
@@ -47,19 +49,97 @@ public class TeamsCommander<E> {
 
 		this.faction = faction;
 		this.levelManager = levelManager;
+		this.turnProcess = turnProcess;
 		
 		teamAi = new HashSet<ThinkingAi>();
 		blockedPortals = new ArrayList<Portal>();
 		lootedAi = new HashSet<Ai>();
 		alliances = new HashSet<String>();
 		hatedAi = new HashSet<Ai>();
-		this.jobs = new HashSet<>();
 		jobAssignments = new HashMap<>();
 		defenceHeuristics = new HashMap<>();	
 		
 		turnsToNextUpdate = 0;
 		
-		this.turnProcess = turnProcess;
+		Comparator<AiJob> comparator = new Comparator<AiJob>() {
+			
+			@Override
+			public int compare(AiJob job1, AiJob job2) {
+				
+				int compareInt = 0;
+				
+				// Defend and secure jobs are only equal if their heuristics are equal
+				if((job1.getType() == job2.getType() && job1.getType() != JobType.DEFEND && job1.getType() != JobType.SECURE) || job1.isJobFilled() && job2.isJobFilled())
+					return 0;
+				
+				if(job1.isJobFilled())
+					return 1;
+				
+				if(job2.isJobFilled())
+					return -1;
+				
+				switch(job1.getType()){
+					case DEFEND:
+						if(JobType.DEFEND == job2.getType()){
+							int job1Defence = defenceHeuristics.get(job1.getJobBlock()).getDefenceAfterAssignment();
+							int job2Defence = defenceHeuristics.get(job2.getJobBlock()).getDefenceAfterAssignment();
+							
+							if(job1Defence > job2Defence){
+								compareInt = -1;
+							}
+							else if(job1Defence < job2Defence){
+								compareInt = 1;
+							}
+							else{
+								compareInt = 0;
+							}
+						}
+						// High priority
+						compareInt = -1;
+					break;
+					case OPEN_DOOR:
+						// Low priority
+						compareInt = 1;
+					break;
+					case SCOUT:
+						// Low priority
+						if(job2.getType() != JobType.DEFEND && job2.getType() != JobType.SECURE)
+							compareInt = -1;
+						else
+							compareInt = 1;
+					break;
+					case SECURE:
+						if(JobType.SECURE == job2.getType()){
+							int job1Danger = defenceHeuristics.get(job1.getJobBlock()).getDangerAfterAssignment();
+							int job2Danger = defenceHeuristics.get(job2.getJobBlock()).getDangerAfterAssignment();
+							
+							if(job1Danger > job2Danger){
+								compareInt = -1;
+							}
+							else if(job1Danger < job2Danger){
+								compareInt = 1;
+							}
+							else{
+								compareInt = 0;
+							}
+						}
+						// Med priority
+						if(job2.getType() != JobType.DEFEND)
+							compareInt = -1;
+						else
+							compareInt = 1;
+							
+					break;
+					default:
+						compareInt = 0;
+					break;
+				}
+				
+				return compareInt;
+			}
+		};
+		
+		this.jobs = new PriorityQueue<AiJob>(10, comparator);
 	}
 	
 	public String getFaction(){
@@ -88,13 +168,23 @@ public class TeamsCommander<E> {
 		
 		while(entryIt.hasNext()){
 			Entry<Ai, AiJob> entry = entryIt.next();
-			if(entry.getValue().isExpired()) {
+			
+			if(entry.getValue().isExpired() || entry.getValue().isEmpty()) {
+				System.out.println(entry.getKey().getName() + "'s " + entry.getValue() + " job expired");
 				expiredJobs.add(entry.getValue());
 				entryIt.remove();
 			}
 		}
 		
 		this.jobs.removeAll(expiredJobs);
+		
+		for(Ai ai : this.teamAi){
+			if(ai.isDead() && this.jobAssignments.get(ai) != null){
+				System.out.println(ai.getName() + "'s " + this.jobAssignments.get(ai).getType() + " job is free since they died");
+				this.jobAssignments.get(ai).remove(ai);
+				this.jobAssignments.remove(ai);
+			}
+		}
 		
 		for(DefenceHeuristic heuristic : this.defenceHeuristics.values()){
 			heuristic.assignmentModifier = 0;
@@ -155,9 +245,14 @@ public class TeamsCommander<E> {
 			}
 			
 			if(!jobExists) {
-				if(entry.getValue().getDefence() > 0){
+				if(turnProcess.getTurnCount() == 0 && entry.getValue().getDefence() > 0){
 					// Create a defence job
-					AiJob job = new AiJob(entry.getValue().getDefence() / 10, entry.getKey(), JobType.DEFEND, UPDATE_GAP * 2);
+					int targetEmployeeCount = entry.getValue().getDefence() / 10;
+					
+					if(targetEmployeeCount <= 0)
+						targetEmployeeCount = 1;
+					
+					AiJob job = new AiJob.DefendJob(targetEmployeeCount, entry.getKey());
 					jobs.add(job);
 					assignedRooms.add(entry.getKey());
 				}
@@ -180,6 +275,12 @@ public class TeamsCommander<E> {
 				this.checkForNullHeuristic(room);
 			}
 		}
+		
+		if(this.getFaction().equals(AiGenerator.WHITE_VISTA)){
+			for(AiJob job : this.jobs){
+				System.out.println("Job Posting: " + job.getType() + " for " + job.getTargetEmployeeCount() + " people");
+			}
+		}
 	}
 
 	private void checkForNullHeuristic(LevelBlock room) {
@@ -190,23 +291,24 @@ public class TeamsCommander<E> {
 	
 	public AiJob getJob(ThinkingAi ai){
 		
-		if(this.jobAssignments.get(ai) != null && !this.jobAssignments.get(ai).isExpired())
+		if(this.jobAssignments.get(ai) != null)
 			return this.jobAssignments.get(ai);
-		
-		else if(this.jobAssignments.get(ai) != null && this.jobAssignments.get(ai).isExpired())
-			this.jobAssignments.remove(ai);
 		
 		return bestJob(ai);
 	}
 	
 	private AiJob bestJob(ThinkingAi ai) {
-		for(AiJob job : this.jobs){
-			if(!job.isJobFilled())
-				return takeJob(ai, job);
-		}
-		
+
 		// Make a random scout job so the ai stays busy
-		return takeJob(ai, createScoutJob());
+		if(allJobsFull())
+			return takeJob(ai, createScoutJob());
+		
+		AiJob bestJob = takeJob(ai, this.jobs.peek());
+		// Force re-ordering of jobs
+		this.jobs.remove();
+		this.jobs.add(bestJob);
+		
+		return bestJob;
 	}
 	
 	private AiJob createScoutJob() {
@@ -224,6 +326,7 @@ public class TeamsCommander<E> {
 	}
 
 	private AiJob takeJob(ThinkingAi ai, AiJob job) {
+		System.out.println(ai.getName() + " is taking job: " + job.getType());
 		job.addAi(ai);
 		this.jobAssignments.put(ai, job);
 		this.defenceHeuristics.get(job.getJobBlock()).assignmentModifier += ASSIGNMENT_MODIFIER;
@@ -248,7 +351,6 @@ public class TeamsCommander<E> {
 	}
 
 	public boolean reportUnits(int enemyCount, LevelBlock levelBlock) {
-//		System.out.println(this.getFaction() + "   " + enemyCount);
 		checkForNullHeuristic(levelBlock);
 		
 		if(this.defenceHeuristics.get(levelBlock).dangerH < enemyCount){
@@ -265,6 +367,14 @@ public class TeamsCommander<E> {
 				blocks.add(entry.getKey());
 		}
 		return blocks;
+	}
+	
+	private boolean allJobsFull() {
+		for(AiJob job : this.jobs){
+			if(!job.isJobFilled())
+				return false;
+		}
+		return true;
 	}
 	
 	public void addLootedAi(Ai lootAi) {

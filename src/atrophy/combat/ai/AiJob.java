@@ -52,6 +52,10 @@ public class AiJob {
 		return this.employees.size() > targetEmployeeCount;
 	}
 	
+	public boolean isEmpty() {
+		return this.employees.size() == 0;
+	}
+	
 	public JobType getType() {
 		return type;
 	}
@@ -59,9 +63,25 @@ public class AiJob {
 	public void setTargetEmployeeCount(int targetEmployeeCount) {
 		this.targetEmployeeCount = targetEmployeeCount;
 	}
+	
+	public int getTargetEmployeeCount() {
+		return targetEmployeeCount;
+	}
+
+
 
 	public static enum JobType {
 		SCOUT, DEFEND, OPEN_DOOR, SECURE
+	}
+	
+	public static class DefendJob extends AiJob{
+		public DefendJob(int targetEmployeeCount, LevelBlock levelBlock) {
+			super(targetEmployeeCount, levelBlock, JobType.DEFEND, 0);
+		}
+
+		public boolean isExpired(){
+			return false;
+		}
 	}
 
 	public static class SecureJob extends AiJob{
@@ -89,5 +109,5 @@ public class AiJob {
 		}
 		
 	}
-	
+
 }
