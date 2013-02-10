@@ -21,6 +21,8 @@ public class WhiteVistaCommander extends TeamsCommander{
 	 */
 	public WhiteVistaCommander(TurnProcess turnProcess, LevelManager levelManager) {
 		super(turnProcess, "White Vista", levelManager);
+		this.addAlliance(AiGenerator.PLAYER);
+		this.addAlliance(AiGenerator.LONER);
 	}
 
 	/* (non-Javadoc)

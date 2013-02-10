@@ -554,7 +554,6 @@ public class ThinkingAi extends Ai{
 			aggressiveEngageReaction(friendlyCount,enemyCount,target);
 		}
 		else if(this.emotionManager.getAggression() < 0){
-			
 			passiveEngageReaction(friendlyCount,enemyCount,target);
 		}
 		else{
@@ -600,10 +599,16 @@ public class ThinkingAi extends Ai{
 					this.addEffect(new SpeedBoost(this.getSkillLevel(Abilities.SPEED_BOOSTER)));
 					return;
 				}
+				try {
+					this.fleeCheckForEnemy();
+				} 
+				catch (PathNotFoundException e) {
+					// Act as normal
+				}
 			}
 		}
 		else{
-			if(friendlyCount < enemyCount){
+			if(friendlyCount * 2 < enemyCount){
 				try {
 					this.fleeCheckForEnemy();
 				} 
@@ -860,10 +865,7 @@ public class ThinkingAi extends Ai{
 	
 	@Override
 	public boolean isTargetHostile(Ai target){
-		if( !target.isDead() &&
-		   (!this.getFaction().equals(target.getFaction())) &&
-		   // also checks for alliances
-		    !this.getCommander().isAlliedWith(target.getFaction())){
+		if(!target.isDead() && !this.getFaction().equals(target.getFaction()) && !this.getCommander().isAlliedWith(target.getFaction())){
 			return true;
 		}
 		return false;

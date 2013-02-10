@@ -20,7 +20,7 @@ import atrophy.combat.level.LevelManager;
 import atrophy.combat.level.Portal;
 import atrophy.combat.mechanics.TurnProcess;
 
-public class TeamsCommander<E> {
+public class TeamsCommander {
 	
 	private static final int UPDATE_GAP = 20;
 
