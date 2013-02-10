@@ -59,7 +59,7 @@ public class LightStealthAction extends AbilityButton implements InfoTextDisplay
 	 * @see atrophy.combat.display.ui.InfoTextDisplayable#getUiHint()
 	 */
 	public String getUiHint(){
-		if(combatMembersManager.getCurrentAi().hasActiveEffect(StationaryInvisibility.NAME)){
+		if(combatMembersManager.getCurrentAi().hasEffect(StationaryInvisibility.NAME)){
 			return "Stationary Stealth Duration: "+combatMembersManager.getCurrentAi().getEffect(StationaryInvisibility.NAME).getDuration()+
 					"  Cooldown: "+combatMembersManager.getCurrentAi().getEffect(StationaryInvisibility.NAME).getCooldown();
 		}

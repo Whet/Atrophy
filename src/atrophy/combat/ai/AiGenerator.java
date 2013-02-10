@@ -218,6 +218,10 @@ public class AiGenerator{
 		
 		combatMembersManager.addAi(ai);
 		
+		String[] alliances = command.getAlliances();
+		for(int i = 0; i < alliances.length; i++){
+			ai.getCommander().addAlliance(alliances[i]);
+		}
 	}
 
 	private void generatePlayerTeam(Crowd crowd, ArrayList<Squaddie> squad, LevelBlock levelBlock) {

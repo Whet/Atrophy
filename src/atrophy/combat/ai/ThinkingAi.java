@@ -317,12 +317,12 @@ public class ThinkingAi extends Ai{
 	private void chasetarget() throws PathNotFoundException{
 		// go invisible then chase
 		if(this.hasAbility(Abilities.STEALTH2) &&
-		   !this.hasActiveEffect(MobileInvisibility.NAME)){
+		   !this.hasEffect(MobileInvisibility.NAME)){
 			this.addEffect(new MobileInvisibility(this.getSkillLevel(Abilities.STEALTH2)));
 		}
 		// go fast then chase
 		else if(this.hasAbility(Abilities.SPEED_BOOSTER) &&
-			    !this.hasActiveEffect(SpeedBoost.NAME)){
+			    !this.hasEffect(SpeedBoost.NAME)){
 			this.addEffect(new SpeedBoost(this.getSkillLevel(Abilities.SPEED_BOOSTER)));
 		}
 		else{
@@ -571,7 +571,7 @@ public class ThinkingAi extends Ai{
 
 	protected void passiveEngageReaction(int friendlyCount, int enemyCount, Ai target) {
 		
-		if(this.getWeapon().isMelee() && this.getWeapon().isInRange(this, target) && !this.hasActiveEffect(Parrying.NAME) && new Random().nextInt(4) > 1){
+		if(this.getWeapon().isMelee() && this.getWeapon().isInRange(this, target) && !this.hasEffect(Parrying.NAME) && new Random().nextInt(4) > 1){
 			this.addEffect(new Parrying());
 			return;
 		}
@@ -583,19 +583,18 @@ public class ThinkingAi extends Ai{
 				this.aiMode = AiMode.ENGAGING;
 				this.aim(target);
 				emotionManager.modifyAggression(ThinkingAiEmotion.AIMING_AGGRESSION);
-				chanceToParry();
 			}
 			// low chance of winning, run
 			else{
 				// go invisible then flee
 				if(this.hasAbility(Abilities.STEALTH2) &&
-				   !this.hasActiveEffect(MobileInvisibility.NAME)){
+				   !this.hasEffect(MobileInvisibility.NAME)){
 					this.addEffect(new MobileInvisibility(this.getSkillLevel(Abilities.STEALTH2)));
 					return;
 				}
 				// go fast then flee
 				else if(this.hasAbility(Abilities.SPEED_BOOSTER) &&
-					    !this.hasActiveEffect(SpeedBoost.NAME)){
+					    !this.hasEffect(SpeedBoost.NAME)){
 					this.addEffect(new SpeedBoost(this.getSkillLevel(Abilities.SPEED_BOOSTER)));
 					return;
 				}
@@ -619,14 +618,9 @@ public class ThinkingAi extends Ai{
 		}
 	}
 	
-	private void chanceToParry() {
-		if(!this.hasActiveEffect(Parrying.NAME) && new Random().nextInt(4) > 1)
-			this.addEffect(new Parrying());
-	}
-
 	protected void aggressiveEngageReaction(int friendlyCount, int enemyCount, Ai target) {
 		
-		if(this.getWeapon().isMelee() && this.getWeapon().isInRange(this, target) && !this.hasActiveEffect(Parrying.NAME) && new Random().nextInt(4) > 1){
+		if(this.getWeapon().isMelee() && this.getWeapon().isInRange(this, target) && !this.hasEffect(Parrying.NAME) && new Random().nextInt(4) > 1){
 			this.addEffect(new Parrying());
 			return;
 		}

@@ -533,6 +533,10 @@ public class Ai implements Lootable{
 		return this.aiData.hasActiveEffect(effectName);
 	}
 	
+	public boolean hasEffect(String effectName){
+		return this.aiData.hasEffect(effectName);
+	}
+	
 	public Effect getEffect(String effectName){
 		return this.aiData.getEffect(effectName);
 	}

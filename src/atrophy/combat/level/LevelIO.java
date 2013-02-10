@@ -557,10 +557,21 @@ public class LevelIO {
 																							 vertexY + blockStack.peek().getLocation()[1],
 																							 faction, name, weapon, items));
 			}
+			else if(lineString.startsWith("AIALLIANCE")){
+				SoloGenerateCommand command = (SoloGenerateCommand) generationCommands.get(generationCommands.size() - 1);
+				
+				String[] alliances = new String[ReadWriter.getArraySize(lineString)];
+				for(int i = 0; i < alliances.length; i++){
+					alliances[i] = ReadWriter.readFromArray(lineString, i);
+				}
+				
+				command.setAlliances(alliances);
+			}
 			
 			lineNumber++;
 			lineString = ReadWriter.readFromFile(levelFile, lineNumber);
 		}
+		
 	}
 
 	private static void readPortals(File levelFile, ArrayList<double[]> portalData, ArrayList<String> portalSecurity) throws IOException, LevelFormatException {

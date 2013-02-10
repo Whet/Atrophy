@@ -50,12 +50,11 @@ public class AiCombatActions {
 			
 			if(invoker.getWeapon().isInRange(invoker, this.getTargetAi())){
 				// break any alliances with the faction if visible
-				if(!invoker.getFaction().equals(AiGenerator.LONER) &&
-				   this.getTargetAi() instanceof ThinkingAi &&
+				if(this.getTargetAi() instanceof ThinkingAi &&
 				   combatVisualManager.isAiInSight(invoker, targetAi.getFaction())){
 					
-					combatMembersManager.getCommander(targetAi.getFaction()).removeAlliance(invoker.getFaction());
-					combatMembersManager.getCommander(targetAi.getFaction()).addHatedAi(invoker);
+					((ThinkingAi) this.getTargetAi()).getCommander().removeAlliance(invoker.getFaction());
+					((ThinkingAi) this.getTargetAi()).getCommander().addHatedAi(invoker);
 					
 				}
 				
@@ -148,7 +147,7 @@ public class AiCombatActions {
 			this.getTargetAi().setDead(true);
 			
 			// if the killer belongs to player faction then the kill is counted
-			if(invoker.getTeam().equals("1Player")){
+			if(invoker.getFaction().equals(AiGenerator.PLAYER)){
 				this.getTargetAi().bodyFound(true);
 			}
 			

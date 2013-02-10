@@ -59,7 +59,7 @@ public class SpeedBoosterAction extends AbilityButton implements InfoTextDisplay
 	 * @see atrophy.combat.display.ui.InfoTextDisplayable#getUiHint()
 	 */
 	public String getUiHint(){
-		if(combatMembersManager.getCurrentAi().hasActiveEffect(SpeedBoost.NAME)){
+		if(combatMembersManager.getCurrentAi().hasEffect(SpeedBoost.NAME)){
 			return "Speed Booster Duration: " + combatMembersManager.getCurrentAi().getEffect(SpeedBoost.NAME).getDuration()+
 					"  Cooldown: "+combatMembersManager.getCurrentAi().getEffect(SpeedBoost.NAME).getCooldown();
 		}
