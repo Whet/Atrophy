@@ -148,7 +148,7 @@ public class AiPathing {
 				else if(portalPathway != null){
 					
 					// If room pathway still exists move to next point
-					if(this.roomPathway != null){
+					if(this.roomPathway != null && this.roomPathway.size() > 0){
 						
 						targetPortal = portalPathway.peek();
 						
