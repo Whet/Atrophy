@@ -26,8 +26,6 @@ public class TeamsCommander<E> {
 
 	private static final int ASSIGNMENT_MODIFIER = 10;
 
-	private static final int SCOUT_JOBS = 3;
-	
 	private Set<ThinkingAi> teamAi;
 	private Set<String> alliances;
 	private Set<Ai> hatedAi;
@@ -170,7 +168,7 @@ public class TeamsCommander<E> {
 			Entry<Ai, AiJob> entry = entryIt.next();
 			
 			if(entry.getValue().isExpired() || entry.getValue().isEmpty()) {
-				System.out.println(entry.getKey().getName() + "'s " + entry.getValue() + " job expired");
+				System.out.println(entry.getKey().getName() + "'s " + entry.getValue().getType() + " job expired");
 				expiredJobs.add(entry.getValue());
 				entryIt.remove();
 			}
@@ -230,11 +228,16 @@ public class TeamsCommander<E> {
 					// Update job to new heuristics
 					switch(job.getType()){
 						case DEFEND:
-							job.setTargetEmployeeCount(entry.getValue().getDefence());
+							int targetEmployeeCount = entry.getValue().getDefence() / 10;
+							
+							if(targetEmployeeCount <= 0)
+								targetEmployeeCount = 1;
+							
+							job.setTargetEmployeeCount(targetEmployeeCount);
 						break;
 						case OPEN_DOOR:
 						break;
-						case SCOUT:
+						case SECURE:
 							job.setTargetEmployeeCount(entry.getValue().getDanger());
 						break;
 						default:
@@ -264,16 +267,6 @@ public class TeamsCommander<E> {
 				}
 			}
 			
-		}
-		
-		// Create jobs to scout random rooms which don't have defence/secure jobs
-		for(int i = 0; i < SCOUT_JOBS; i++){
-			LevelBlock room = levelManager.randomRoom();
-			if(!assignedRooms.contains(room) && !levelManager.isRoomBanned(this.getFaction(), room)) {
-				AiJob job = new AiJob(1, room, JobType.SCOUT, turnsToNextUpdate + 5);
-				jobs.add(job);
-				this.checkForNullHeuristic(room);
-			}
 		}
 		
 		if(this.getFaction().equals(AiGenerator.WHITE_VISTA)){

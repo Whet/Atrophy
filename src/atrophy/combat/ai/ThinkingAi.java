@@ -492,8 +492,6 @@ public class ThinkingAi extends Ai{
 	
 	protected void engageWithHostiles(){
 
-		int enemyCount = 0;
-		
 		Ai target = null;
 		
 		// Shuffle the ai so that one hated individual will not get targeted over others with groups of ai
@@ -521,18 +519,17 @@ public class ThinkingAi extends Ai{
 		}
 		
 		if(target != null){
-			enemyCount = combatMembersManager.getFactionStrength(target.getFaction(), this.getLevelBlock());
+			int enemyCount = combatMembersManager.getFactionStrength(target.getFaction(), this.getLevelBlock());
 			this.emotionEngageReaction(enemyCount, target);
 			
 			this.getCommander().reportUnits(enemyCount,this.getLevelBlock());
 		}
 		else{
-			enemyCount = 0;
 			this.lootAiInRoom();
 			
 			respondToEnvironmentData();
 			
-			this.getCommander().reportUnits(enemyCount,this.getLevelBlock());
+			this.getCommander().reportUnits(0,this.getLevelBlock());
 		}
 	}
 	
