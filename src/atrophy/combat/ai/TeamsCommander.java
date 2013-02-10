@@ -168,7 +168,7 @@ public class TeamsCommander {
 			Entry<Ai, AiJob> entry = entryIt.next();
 			
 			if(entry.getValue().isExpired() || entry.getValue().isEmpty()) {
-				System.out.println(entry.getKey().getName() + "'s " + entry.getValue().getType() + " job expired");
+//				System.out.println(entry.getKey().getName() + "'s " + entry.getValue().getType() + " job expired");
 				expiredJobs.add(entry.getValue());
 				entryIt.remove();
 			}
@@ -178,7 +178,7 @@ public class TeamsCommander {
 		
 		for(Ai ai : this.teamAi){
 			if(ai.isDead() && this.jobAssignments.get(ai) != null){
-				System.out.println(ai.getName() + "'s " + this.jobAssignments.get(ai).getType() + " job is free since they died");
+//				System.out.println(ai.getName() + "'s " + this.jobAssignments.get(ai).getType() + " job is free since they died");
 				this.jobAssignments.get(ai).remove(ai);
 				this.jobAssignments.remove(ai);
 			}
@@ -269,11 +269,6 @@ public class TeamsCommander {
 			
 		}
 		
-		if(this.getFaction().equals(AiGenerator.WHITE_VISTA)){
-			for(AiJob job : this.jobs){
-				System.out.println("Job Posting: " + job.getType() + " for " + job.getTargetEmployeeCount() + " people");
-			}
-		}
 	}
 
 	private void checkForNullHeuristic(LevelBlock room) {
@@ -319,7 +314,7 @@ public class TeamsCommander {
 	}
 
 	private AiJob takeJob(ThinkingAi ai, AiJob job) {
-		System.out.println(ai.getName() + " is taking job: " + job.getType());
+//		System.out.println(ai.getName() + " is taking job: " + job.getType());
 		job.addAi(ai);
 		this.jobAssignments.put(ai, job);
 		this.defenceHeuristics.get(job.getJobBlock()).assignmentModifier += ASSIGNMENT_MODIFIER;
