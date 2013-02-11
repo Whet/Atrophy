@@ -289,11 +289,18 @@ public class ThinkingAi extends Ai{
 			this.lootAiInRoom();
 		}
 		else if(this.job != null && levelManager.getBlock(this.getMoveLocation()) != this.job.getJobBlock()){
-			this.setMoveLocation(levelManager.randomInPosition(job.getJobBlock()));
+			this.job.getJobBlock().moveTowardsRandomRegion(this, this.job.getJobBlock().getCover());
 		}
 		else if(Maths.getDistance(this.getLocation(), this.getMoveLocation()) == 0 && this.turnCounter == 0){
 			this.aiMode = AiMode.CAMPING;
-			this.turnCounter = 6;
+			Random random = new Random();
+			this.turnCounter = random.nextInt(20) + 16;
+			if(random.nextInt(4) >= 3){
+				this.job.getJobBlock().moveTowardsRandomRegion(this, this.job.getJobBlock().getCover());
+			}
+			else{
+				this.setMoveLocation(levelManager.randomInPosition(this.getLevelBlock()));
+			}
 		}
 		// do not set turnCounter == 0, otherwise it will be reset to a higher value and the ai will cycle in place
 		if(this.aiMode.equals(AiMode.CAMPING) && this.turnCounter == 1 && !this.getAction().startsWith("Applying:")){
