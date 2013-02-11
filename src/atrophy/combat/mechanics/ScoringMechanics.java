@@ -28,7 +28,7 @@ public class ScoringMechanics {
 		if((hitTarget(ai, targetAi) || (!ai.getWeapon().isMelee() && ai.getWeapon().isInRange(ai, targetAi) && hitTarget(ai, targetAi)))){
 			
 			// Check for target defences
-			if(targetAi.hasActiveEffect(Parrying.NAME)) {
+			if(targetAi.hasActiveEffect(Parrying.NAME) && ai.getWeapon().isMelee()) {
 				ai.setStunnedTurns(Parrying.STUN_TURNS);
 				return false;
 			}
