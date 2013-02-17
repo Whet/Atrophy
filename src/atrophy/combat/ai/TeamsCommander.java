@@ -335,7 +335,7 @@ public class TeamsCommander {
 	}
 
 	public boolean canPursue(ThinkingAi ai) {
-		return false;
+		return true;
 	}
 
 	public boolean reportUnits(int enemyCount, LevelBlock levelBlock) {
