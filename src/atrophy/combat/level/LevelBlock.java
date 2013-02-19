@@ -734,5 +734,15 @@ public class LevelBlock {
 	public void setDiscovered(boolean discovered) {
 		this.discovered = discovered;
 	}
+
+	public Portal getPeekingPortal(Ai peeker, LevelBlock levelBlock) {
+		
+		for(Portal portal : this.portals){
+			if(portal.isInRadius(peeker.getLocation(), this) && CombatVisualManager.spotFovNoRadius(peeker, portal.getLocation()) && portal.connectsTo(levelBlock))
+				return portal;
+		}
+		
+		return null;
+	}
 	
 }

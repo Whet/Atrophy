@@ -110,21 +110,32 @@ public class CombatVisualManager {
 	 * Checks if is ai in sight.
 	 *
 	 * @param looker the looker
-	 * @param aiLookedAt the ai looked at
+	 * @param lookedAt the ai looked at
 	 * @return true, if is ai in sight
 	 */
-	public static boolean isAiInSight(Ai looker, Ai aiLookedAt){
+	public static boolean isAiInSight(Ai looker, Ai lookedAt){
 		// in fov && in same room as target
 		// in a radius && in same room
 		// or dead and kill counted
-		if(( (aiLookedAt.isDead() && aiLookedAt.isKillCounted()) || 
+		if(( (lookedAt.isDead() && lookedAt.isKillCounted()) || 
 		  
-		  (!looker.isDead() && looker.getStunnedTurns() == 0 &&  
-		  (looker.getLevelBlock() == aiLookedAt.getLevelBlock() && spotStealth(looker,aiLookedAt) && spotFov(looker,aiLookedAt,looker.isIgnoringLOS())) ) )){
+		  (!looker.isDead() && looker.getStunnedTurns() == 0 &&
+		  (
+		  (looker.getLevelBlock() == lookedAt.getLevelBlock() && spotStealth(looker,lookedAt) && spotFov(looker,lookedAt,looker.isIgnoringLOS())) ||
+		  // Peeking through door
+		  (isInDoorSight(looker, lookedAt) && spotStealth(looker,lookedAt) && spotFov(looker, lookedAt.getLocation()) && 
+		   ((looker.getTargetAi() == lookedAt && looker.getWeapon().ignoresLOS()) || 
+		   CombatVisualManager.isInFiringSight(looker.getLevelBlock().getPeekingPortal(looker, lookedAt.getLevelBlock()).getLocation()[0],
+				   							   looker.getLevelBlock().getPeekingPortal(looker, lookedAt.getLevelBlock()).getLocation()[1],
+				   							   lookedAt.getLocation()[0],
+				   							   lookedAt.getLocation()[1],
+				   							   lookedAt.getLevelBlock()) ))
+		  )
+		  ))){
 			
 			// if the corpse is in sight but not counted then count it
-			if(aiLookedAt.isDead() && looker.getFaction().equals("Player")){
-				aiLookedAt.bodyFound(true);
+			if(lookedAt.isDead() && looker.getFaction().equals("Player")){
+				lookedAt.bodyFound(true);
 			}
 			
 			return true;
@@ -222,12 +233,11 @@ public class CombatVisualManager {
 	 * @param faction the faction
 	 * @return true, if is ai in sight
 	 */
-	public  boolean isAiInSight(Ai aiLookedAt, String faction){
+	public boolean isAiInSight(Ai aiLookedAt, String faction){
 		for(int i = 0; i < aiCrowd.getActorCount(); i++){
 			if(!aiCrowd.getActor(i).isDead() &&
 			   aiCrowd.getActor(i).getFaction().equals(faction) &&
-			   (isAiInSight(aiCrowd.getActor(i), aiLookedAt) ||
-			    isAiInDoorSight(aiCrowd.getActor(i), aiLookedAt))){
+			   (isAiInSight(aiCrowd.getActor(i), aiLookedAt))){
 				
 				return true;
 			}
@@ -235,7 +245,7 @@ public class CombatVisualManager {
 		return false;
 	}
 	
-	private boolean isAiInDoorSight(Ai looker, Ai aiLookedAt) {
+	private static boolean isInDoorSight(Ai looker, Ai aiLookedAt) {
 		if(looker.getLevelBlock().getCloseConnectedRooms(looker).contains(aiLookedAt.getLevelBlock()) &&
 		   spotFovNoRadius(looker, aiLookedAt.getLocation()) &&
 		   spotStealth(looker,aiLookedAt)){
