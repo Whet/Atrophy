@@ -80,7 +80,6 @@ public class CombatVisualManager {
 	// Radio silence means only units this ai can see are visible
 	public void updateVisibleAi(){
 		for(int i = 0; i < aiCrowd.getActorCount(); i++){
-			// radio silence on
 			if(drawingIndividualSight){
 				if(aiCrowd.getActor(i) == combatMembersManager.getCurrentAi() || allRevealed ||
 				   aiCrowd.getActor(i).isBroadcastingLocation() ||
@@ -88,7 +87,6 @@ public class CombatVisualManager {
 					aiCrowd.getActorMask(aiCrowd.getActor(i)).setVisible(true);
 				}
 				else{
-					// set true to always have ai vis
 					aiCrowd.getActorMask(aiCrowd.getActor(i)).setVisible(false);
 				}
 			}
@@ -228,7 +226,8 @@ public class CombatVisualManager {
 		for(int i = 0; i < aiCrowd.getActorCount(); i++){
 			if(!aiCrowd.getActor(i).isDead() &&
 			   aiCrowd.getActor(i).getFaction().equals(faction) &&
-			   isAiInSight(aiCrowd.getActor(i), aiLookedAt)){
+			   (isAiInSight(aiCrowd.getActor(i), aiLookedAt) ||
+			    isAiInDoorSight(aiCrowd.getActor(i), aiLookedAt))){
 				
 				return true;
 			}
@@ -236,6 +235,15 @@ public class CombatVisualManager {
 		return false;
 	}
 	
+	private boolean isAiInDoorSight(Ai looker, Ai aiLookedAt) {
+		if(looker.getLevelBlock().getCloseConnectedRooms(looker).contains(aiLookedAt.getLevelBlock()) &&
+		   spotFovNoRadius(looker, aiLookedAt.getLocation()) &&
+		   spotStealth(looker,aiLookedAt)){
+			return true;
+		}
+		return false;
+	}
+
 	/**
 	 * Sets the table masks.
 	 *
