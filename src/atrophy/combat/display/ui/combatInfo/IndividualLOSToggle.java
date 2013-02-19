@@ -16,7 +16,7 @@ import atrophy.combat.display.ui.InfoTextDisplayable;
 /**
  * The Class RadioSilenceToggle.
  */
-public class RadioSilenceToggle extends ButtonMulti implements InfoTextDisplayable{
+public class IndividualLOSToggle extends ButtonMulti implements InfoTextDisplayable{
 
 	private CombatUiManager combatUiManager;
 	private CombatVisualManager combatVisualManager;
@@ -26,7 +26,7 @@ public class RadioSilenceToggle extends ButtonMulti implements InfoTextDisplayab
 	 *
 	 * @param image the image
 	 */
-	public RadioSilenceToggle(CombatVisualManager combatVisualManager, CombatUiManager combatUiManagers, BufferedImage[] image) {
+	public IndividualLOSToggle(CombatVisualManager combatVisualManager, CombatUiManager combatUiManagers, BufferedImage[] image) {
 		super(image);
 		this.combatVisualManager = combatVisualManager;
 		this.combatUiManager = combatUiManagers;
@@ -39,6 +39,7 @@ public class RadioSilenceToggle extends ButtonMulti implements InfoTextDisplayab
 	public boolean mC(Point mousePosition, MouseEvent e){
 		this.nextFrame(true);
 		combatVisualManager.toggleDrawingIndividualSight();
+		combatVisualManager.updateVisibleAi();
 		combatUiManager.updateUi();
 		
 		return true;
