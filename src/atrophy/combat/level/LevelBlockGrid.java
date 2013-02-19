@@ -10,7 +10,7 @@ import watoydoEngine.gubbinz.Maths;
 
 public class LevelBlockGrid {
     
-    private static final int GRID_BLOCK_SIZE = 5;
+    private static final float GRID_BLOCK_SIZE = 4f;
     
     private List<List<GridBlock>> blocks;
 
@@ -135,13 +135,13 @@ public class LevelBlockGrid {
 
    public static class GridBlock {
         
-        public int x, y, width, height;
+        public float x, y, width, height;
         public Set<GridBlock> nonDiagNeighbours;
         public Set<GridBlock> neighbours;
         public double g, h, f;
         public boolean picked;
         
-        public GridBlock(int x, int y, int width, int height){
+        public GridBlock(float x, float y, float width, float height){
             this.x = x;
             this.y = y;
             this.width = width;

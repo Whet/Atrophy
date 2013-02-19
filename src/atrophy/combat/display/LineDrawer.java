@@ -264,11 +264,11 @@ public class LineDrawer implements Displayable{
 	            
 	            if(gridBlock.picked) {
 	                drawShape.setColor(Color.red);
-	                drawShape.fillRect((int)(gridBlock.x - x), (int)(gridBlock.y - y), gridBlock.width, gridBlock.height);
+	                drawShape.fillRect((int)(gridBlock.x - x), (int)(gridBlock.y - y), (int)gridBlock.width, (int)gridBlock.height);
 	            }
 	            else {
 	                drawShape.setColor(Color.white);
-	                drawShape.drawRect((int)(gridBlock.x - x), (int)(gridBlock.y - y), gridBlock.width, gridBlock.height);
+	                drawShape.drawRect((int)(gridBlock.x - x), (int)(gridBlock.y - y), (int)gridBlock.width, (int)gridBlock.height);
 	            }
 	            
 	            
