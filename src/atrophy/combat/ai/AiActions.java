@@ -80,7 +80,7 @@ public class AiActions {
 		this.lootBox = lootBox;
 		this.combatMembersManager = combatMembersManager;
 		this.combatVisualManager = combatVisualManager;
-		this.aiCombatActions = new AiCombatActions(combatMembersManager, combatVisualManager, mouseAbilityHandler, floatingIcons, aiCrowd, panningManager);
+		this.aiCombatActions = new AiCombatActions(combatVisualManager, mouseAbilityHandler, floatingIcons, aiCrowd, panningManager);
 		this.combatUiManager = combatUiManager;
 		this.combatInorganicManager = combatInorganicManager;
 		this.levelManager = levelManager;

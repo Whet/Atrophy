@@ -1,6 +1,5 @@
 package atrophy.combat.ai;
 
-import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.actions.MouseAbilityHandler;
@@ -22,17 +21,15 @@ public class AiCombatActions {
 
 	private Ai oldTargetAi;
 
-	private CombatMembersManager combatMembersManager;
 	private CombatVisualManager combatVisualManager;
 	private MouseAbilityHandler mouseAbilityHandler;
 	private FloatingIcons floatingIcons;
 	private AiCrowd aiCrowd;
 	private PanningManager panningManager;
 	
-	public AiCombatActions(CombatMembersManager combatMembersManager, CombatVisualManager combatVisualManager, MouseAbilityHandler mouseAbilityHandler, FloatingIcons floatingIcons, AiCrowd aiCrowd, PanningManager panningManager){
+	public AiCombatActions(CombatVisualManager combatVisualManager, MouseAbilityHandler mouseAbilityHandler, FloatingIcons floatingIcons, AiCrowd aiCrowd, PanningManager panningManager){
 		this.swing = 0;
 		this.oldTargetSwing = 0;
-		this.combatMembersManager = combatMembersManager;
 		this.combatVisualManager = combatVisualManager;
 		this.mouseAbilityHandler = mouseAbilityHandler;
 		this.floatingIcons = floatingIcons;
