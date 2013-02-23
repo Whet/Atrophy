@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import atrophy.combat.level.LevelBlock;
+import atrophy.combat.level.Portal;
 
 public class AiJob {
 
@@ -106,6 +107,21 @@ public class AiJob {
 
 		public boolean isOverFilled() {
 			return false;
+		}
+		
+	}
+	
+	public static class OpenDoorJob extends AiJob{
+		
+		private Portal door;
+		
+		public OpenDoorJob(Portal door) {
+			super(1, door.getLinkedBlocks()[0], JobType.OPEN_DOOR, 30);
+			this.door = door;
+		}
+
+		public Portal getDoor() {
+			return door;
 		}
 		
 	}

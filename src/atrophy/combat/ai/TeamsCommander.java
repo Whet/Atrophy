@@ -15,6 +15,7 @@ import java.util.PriorityQueue;
 import java.util.Set;
 
 import atrophy.combat.ai.AiJob.JobType;
+import atrophy.combat.items.WeldingTorch;
 import atrophy.combat.level.LevelBlock;
 import atrophy.combat.level.LevelManager;
 import atrophy.combat.level.Portal;
@@ -30,19 +31,22 @@ public class TeamsCommander {
 	private Set<String> alliances;
 	private Set<Ai> hatedAi;
 	private Set<Ai> lootedAi;
-	private PriorityQueue<AiJob> jobs;
+	
 	private Map<Ai, AiJob> jobAssignments;
 	private Map<LevelBlock, DefenceHeuristic> defenceHeuristics;
+	
+	private PriorityQueue<AiJob> jobs;
 	
 	private ArrayList<Portal> blockedPortals;
 	
 	private String faction;
 	
 	private int turnsToNextUpdate;
+	private boolean specialistNeeded;
 
 	private TurnProcess turnProcess;
 	private LevelManager levelManager;
-	
+
 	public TeamsCommander(TurnProcess turnProcess, String faction, LevelManager levelManager){
 
 		this.faction = faction;
@@ -56,6 +60,8 @@ public class TeamsCommander {
 		hatedAi = new HashSet<Ai>();
 		jobAssignments = new HashMap<>();
 		defenceHeuristics = new HashMap<>();	
+		
+		specialistNeeded = false;
 		
 		turnsToNextUpdate = 0;
 		
@@ -168,7 +174,6 @@ public class TeamsCommander {
 			Entry<Ai, AiJob> entry = entryIt.next();
 			
 			if(entry.getValue().isExpired() || entry.getValue().isEmpty()) {
-//				System.out.println(entry.getKey().getName() + "'s " + entry.getValue().getType() + " job expired");
 				expiredJobs.add(entry.getValue());
 				entryIt.remove();
 			}
@@ -178,7 +183,6 @@ public class TeamsCommander {
 		
 		for(Ai ai : this.teamAi){
 			if(ai.isDead() && this.jobAssignments.get(ai) != null){
-//				System.out.println(ai.getName() + "'s " + this.jobAssignments.get(ai).getType() + " job is free since they died");
 				this.jobAssignments.get(ai).remove(ai);
 				this.jobAssignments.remove(ai);
 			}
@@ -187,6 +191,17 @@ public class TeamsCommander {
 		for(DefenceHeuristic heuristic : this.defenceHeuristics.values()){
 			heuristic.assignmentModifier = 0;
 		}
+		
+		// Check if there are any special jobs open
+		specialistNeeded = false;
+		
+		for(AiJob job : this.jobs) {
+			if(job.getType().equals(AiJob.JobType.OPEN_DOOR)) {
+				this.specialistNeeded = true;
+				break;
+			}
+		}
+		
 	}
 
 	private void updateDefenceHeuristics() {
@@ -279,7 +294,7 @@ public class TeamsCommander {
 	
 	public AiJob getJob(ThinkingAi ai){
 		
-		if(this.jobAssignments.get(ai) != null)
+		if(this.jobAssignments.get(ai) != null && (!this.specialistNeeded && this.isSpecialist(ai)))
 			return this.jobAssignments.get(ai);
 		
 		return bestJob(ai);
@@ -287,6 +302,16 @@ public class TeamsCommander {
 	
 	private AiJob bestJob(ThinkingAi ai) {
 
+		// Assign specialist job
+		if(this.hasItem(WeldingTorch.NAME)) {
+			for(AiJob job : this.jobs) {
+				if(job.getType().equals(JobType.OPEN_DOOR) && !job.isJobFilled()) {
+					this.takeJob(ai, job);
+					return job;
+				}
+			}
+		}
+		
 		// Make a random scout job so the ai stays busy
 		if(allJobsFull())
 			return takeJob(ai, createScoutJob());
@@ -314,7 +339,6 @@ public class TeamsCommander {
 	}
 
 	private AiJob takeJob(ThinkingAi ai, AiJob job) {
-//		System.out.println(ai.getName() + " is taking job: " + job.getType());
 		job.addAi(ai);
 		this.jobAssignments.put(ai, job);
 		this.defenceHeuristics.get(job.getJobBlock()).assignmentModifier += ASSIGNMENT_MODIFIER;
@@ -331,6 +355,13 @@ public class TeamsCommander {
 	}
 	
 	public boolean requestDoorOpen(Portal door){
+		if(this.hasItem(WeldingTorch.NAME)) {
+			AiJob job = new AiJob.OpenDoorJob(door);
+			jobs.add(job);
+			this.checkForNullHeuristic(door.getLinkedBlocks()[0]);
+			specialistNeeded = true;
+			return true;
+		}
 		return false;
 	}
 
@@ -363,6 +394,18 @@ public class TeamsCommander {
 				return false;
 		}
 		return true;
+	}
+	
+	private boolean isSpecialist(Ai ai) {
+		return ai.getInventory().hasItemByName(WeldingTorch.NAME);
+	}
+	
+	private boolean hasItem(String itemName) {
+		for(Ai ai : this.teamAi) {
+			if(ai.getInventory().hasItemByName(itemName))
+				return true;
+		}
+		return false;
 	}
 	
 	public void addLootedAi(Ai lootAi) {
