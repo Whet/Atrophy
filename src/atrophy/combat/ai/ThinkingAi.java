@@ -23,6 +23,7 @@ import atrophy.combat.ai.conversation.Topic;
 import atrophy.combat.combatEffects.MobileInvisibility;
 import atrophy.combat.combatEffects.Parrying;
 import atrophy.combat.combatEffects.SpeedBoost;
+import atrophy.combat.combatEffects.StationaryInvisibility;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.ui.FloatingIcons;
 import atrophy.combat.display.ui.MessageBox;
@@ -32,6 +33,7 @@ import atrophy.combat.items.GrenadeItem;
 import atrophy.combat.items.Item;
 import atrophy.combat.items.StunGrenadeItem;
 import atrophy.combat.items.Weapon;
+import atrophy.combat.items.WeldingTorch;
 import atrophy.combat.level.LevelBlock;
 import atrophy.combat.level.LevelManager;
 import atrophy.combat.level.MissionManager;
@@ -82,6 +84,8 @@ public class ThinkingAi extends Ai{
 		this.levelManager = levelManager;
 		
 		this.emotionManager = new ThinkingAiEmotion(this);
+		
+		this.getInventory().addItem(WeldingTorch.getInstance());
 	}
 
 	@Override
@@ -292,15 +296,38 @@ public class ThinkingAi extends Ai{
 			this.job.getJobBlock().moveTowardsRandomRegion(this, this.job.getJobBlock().getCover());
 		}
 		else if(Maths.getDistance(this.getLocation(), this.getMoveLocation()) == 0 && this.turnCounter == 0){
+		
 			this.aiMode = AiMode.CAMPING;
 			Random random = new Random();
 			this.turnCounter = random.nextInt(20) + 16;
-			if(random.nextInt(4) >= 3){
+			
+			// if can weld then weld instead of camping
+			if(this.getAbilities().contains(Abilities.WELDING)){
+				
+				for(Portal door : this.getLevelBlock().getPortals()) {
+					if(door.canUse())
+						this.setWeldingShut(door);
+				}
+				
+				// if not welding, because no doors to weld shut, try to open some
+//				if(!this.getAction().contains("Weld")){
+//					this.setWeldingOpen(this.getTeamObject().getOpenPortal());
+//				}
+			}
+			else if(this.getAbilities().contains(Abilities.XRAY_SCAN) && this.getWeapon().hasFullAmmo() && Maths.getDistance(this.getLocation(), this.getMoveLocation()) == 0){
+				this.xrayScan();
+			}
+			// check if has full ammo or abilities will stop reloading
+			else if(this.getAbilities().contains(Abilities.STEALTH1) && !this.hasActiveEffect(StationaryInvisibility.NAME) && Maths.getDistance(this.getLocation(), this.getMoveLocation()) == 0){
+				this.addEffect(new StationaryInvisibility(this.getSkillLevel(Abilities.STEALTH1)));
+			}
+			else if(random.nextInt(4) >= 3){
 				this.job.getJobBlock().moveTowardsRandomRegion(this, this.job.getJobBlock().getCover());
 			}
 			else{
 				this.setMoveLocation(levelManager.randomInPosition(this.getLevelBlock()));
 			}
+			
 		}
 		// do not set turnCounter == 0, otherwise it will be reset to a higher value and the ai will cycle in place
 		if(this.aiMode.equals(AiMode.CAMPING) && this.turnCounter == 1 && !this.getAction().startsWith("Applying:")){
