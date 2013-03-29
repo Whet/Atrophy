@@ -146,11 +146,11 @@ public class PathFinder {
 
 	// Intra room pathfinding
 	
-	public static ArrayList<double[]> findIntraPath(Ai mover, double[] moveLocation) throws PathNotFoundException{
-	    return findAStarPath(mover, moveLocation);
+	public static ArrayList<double[]> findIntraPath(Ai mover, double[] moveLocation, double moveDistance) throws PathNotFoundException{
+	    return findAStarPath(mover, moveLocation, moveDistance);
 	}
 	
-	public static ArrayList<double[]> findAStarPath(Ai mover, double[] moveLocation) throws PathNotFoundException{
+	public static ArrayList<double[]> findAStarPath(Ai mover, double[] moveLocation, double moveDistance) throws PathNotFoundException{
 	    
 	    LevelBlockGrid navGrid = mover.getLevelBlock().getLevelBlockGrid();
 	    
@@ -173,8 +173,8 @@ public class PathFinder {
 	        
 	        GridBlock current = lowestF(openSet);
 	        
-	        if(current == goal)
-	            return createAStarPath(cameFrom, goal, startBlock);
+	        if(current == goal || (goal == null && Maths.getDistance(current.getCentre(), moveLocation) <= moveDistance))
+	            return createAStarPath(cameFrom, current, startBlock);
 	        
 	        openSet.remove(current);
 	        closedSet.add(current);

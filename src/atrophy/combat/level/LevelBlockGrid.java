@@ -10,7 +10,7 @@ import watoydoEngine.gubbinz.Maths;
 
 public class LevelBlockGrid {
     
-    private static final float GRID_BLOCK_SIZE = 4f;
+    private static final float GRID_BLOCK_SIZE = 8f;
     
     private List<List<GridBlock>> blocks;
 
@@ -100,13 +100,13 @@ public class LevelBlockGrid {
             for(int j = 0; j < height; j ++){
                 // Check all corners are in the polygon
                 if(hitbox.contains(startX + (i * GRID_BLOCK_SIZE),
-                                   startY + (j * GRID_BLOCK_SIZE)) &&
+                                   startY + (j * GRID_BLOCK_SIZE)) ||
                         
                    hitbox.contains(startX + (i * GRID_BLOCK_SIZE),
-                                   startY + (j * GRID_BLOCK_SIZE) + GRID_BLOCK_SIZE) &&
+                                   startY + (j * GRID_BLOCK_SIZE) + GRID_BLOCK_SIZE) ||
                    
                    hitbox.contains(startX + (i * GRID_BLOCK_SIZE) + GRID_BLOCK_SIZE,
-                                   startY + (j * GRID_BLOCK_SIZE)) &&
+                                   startY + (j * GRID_BLOCK_SIZE)) ||
                    
                    hitbox.contains(startX + (i * GRID_BLOCK_SIZE) + GRID_BLOCK_SIZE,
                                    startY + (j * GRID_BLOCK_SIZE) + GRID_BLOCK_SIZE)){

@@ -82,10 +82,7 @@ public class ThinkingAi extends Ai{
 		this.combatVisualManager = combatVisualManager;
 		this.combatInorganicManager = combatInorganicManager;
 		this.levelManager = levelManager;
-		
 		this.emotionManager = new ThinkingAiEmotion(this);
-		
-		this.getInventory().addItem(WeldingTorch.getInstance());
 	}
 
 	@Override
@@ -299,7 +296,6 @@ public class ThinkingAi extends Ai{
 		
 			this.aiMode = AiMode.CAMPING;
 			Random random = new Random();
-			this.turnCounter = random.nextInt(20) + 16;
 			
 			// if can weld then weld instead of camping
 			if(this.getAbilities().contains(Abilities.WELDING)){
@@ -323,9 +319,11 @@ public class ThinkingAi extends Ai{
 			}
 			else if(random.nextInt(4) >= 3){
 				this.job.getJobBlock().moveTowardsRandomRegion(this, this.job.getJobBlock().getCover());
+				this.turnCounter = random.nextInt(20) + 16;
 			}
 			else{
 				this.setMoveLocation(levelManager.randomInPosition(this.getLevelBlock()));
+				this.turnCounter = random.nextInt(20) + 16;
 			}
 			
 		}

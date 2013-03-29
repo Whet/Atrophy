@@ -131,7 +131,7 @@ public class AiPathing {
 						
 						try {
 							this.roomPathway = new Stack<double[]>();
-							this.roomPathway.addAll(PathFinder.findIntraPath(invoker, this.moveLocation));
+							this.roomPathway.addAll(PathFinder.findIntraPath(invoker, this.moveLocation, this.moveDistance));
 						} 
 						catch (PathNotFoundException e) {
 							System.out.println("Bad internal path to target local");
@@ -184,21 +184,26 @@ public class AiPathing {
 						// create path to portal if inside of room
 						try {
 							this.roomPathway = new Stack<double[]>();
-							this.roomPathway.addAll(PathFinder.findIntraPath(invoker, targetPortal.getLocation(this.getLevelBlock())));
+							this.roomPathway.addAll(PathFinder.findIntraPath(invoker, targetPortal.getLocation(this.getLevelBlock()), moveUnitLast));
 						} 
 						catch (PathNotFoundException e) {
 							System.out.println("Bad internal path to portal " + invoker.getName());
 						}
 						
-						// commit movement
-						moveIntra(invoker, roomPathway.get(roomPathway.size() - 1));
-						
-						if(Maths.getDistance(this.getLocation(), this.roomPathway.peek()) == 0){
-							this.roomPathway.pop();
+						if(roomPathway.size() > 0) {
+							// commit movement
+							moveIntra(invoker, roomPathway.get(roomPathway.size() - 1));
 							
-							if(this.roomPathway.size() == 0){
-								this.roomPathway = null;
+							if(Maths.getDistance(this.getLocation(), this.roomPathway.peek()) == 0){
+								this.roomPathway.pop();
+								
+								if(this.roomPathway.size() == 0){
+									this.roomPathway = null;
+								}
 							}
+						}
+						else {
+							System.out.println("Pathway 0");
 						}
 					}
 					
@@ -305,7 +310,7 @@ public class AiPathing {
 			portalPathway = null;
 			
 			this.roomPathway = new Stack<>();
-			this.roomPathway.addAll(PathFinder.findIntraPath(invoker, this.moveLocation));
+			this.roomPathway.addAll(PathFinder.findIntraPath(invoker, this.moveLocation, this.moveDistance));
 		}
 	}
 
@@ -326,7 +331,7 @@ public class AiPathing {
 			portalPathway = null;
 			
 			this.roomPathway = new Stack<>();
-			this.roomPathway.addAll(PathFinder.findIntraPath(invoker, this.moveLocation));
+			this.roomPathway.addAll(PathFinder.findIntraPath(invoker, this.moveLocation, this.moveDistance));
 		}
 	}
 	
@@ -376,7 +381,7 @@ public class AiPathing {
 			portalPathway = null;
 			
 			this.roomPathway = new Stack<>();
-			this.roomPathway.addAll(PathFinder.findIntraPath(invoker, this.moveLocation));
+			this.roomPathway.addAll(PathFinder.findIntraPath(invoker, this.moveLocation, this.moveDistance));
 		}
 	}
 
