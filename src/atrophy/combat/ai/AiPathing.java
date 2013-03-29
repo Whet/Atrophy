@@ -430,7 +430,7 @@ public class AiPathing {
 		}		
 	}
 
-	public void moveWithinRadius(Ai invoker, double x, double y, double radius) {
+	public void moveWithinRadius(Ai invoker, double x, double y, double radius, boolean ignoreClosedDoors) {
 		double angleToPoint = Maths.getRads(this.getLocation()[0],this.getLocation()[1], x,y);
 		// +1 to cover rounding errors
 		double distance = Maths.getDistance(this.getLocation()[0],this.getLocation()[1], x,y) - radius + 1;
@@ -438,7 +438,8 @@ public class AiPathing {
 		if(distance > 0){
 			try{
 				invoker.setMoveLocation(this.getLocation()[0] + (distance * Math.cos(angleToPoint)),
-									(this.getLocation()[1] + (distance * Math.sin(angleToPoint))));
+									   (this.getLocation()[1] + (distance * Math.sin(angleToPoint))),
+									   ignoreClosedDoors);
 			}
 			catch(PathNotFoundException pnfe){
 				invoker.setMoveLocationToSelf();

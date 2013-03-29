@@ -1,5 +1,5 @@
 /*
- * All code unless credited otherwise is copyright 2012 Charles Sherman, all rights reserved
+ * 
  */
 package atrophy.combat.level;
 
@@ -461,9 +461,10 @@ public class LevelBlock {
 	 *
 	 * @param mover the mover
 	 * @param regions the regions
+	 * @param ignoreClosedDoors 
 	 * @throws PathNotFoundException the path not found exception
 	 */
-	public void moveTowardsNearestRegion(Ai mover, List<Polygon> regions)throws PathNotFoundException{
+	public void moveTowardsNearestRegion(Ai mover, List<Polygon> regions, boolean ignoreClosedDoors)throws PathNotFoundException{
 		// room has no regions
 		if(regions.size() == 0){
 			 return;
@@ -489,7 +490,8 @@ public class LevelBlock {
 		}
 		
 		mover.moveWithinRadius(centre[0] + this.getLocation()[0],
-							  centre[1] + this.getLocation()[1], distance);
+							   centre[1] + this.getLocation()[1],
+							   distance, ignoreClosedDoors);
 		
 		if(!this.isInRegion(regions, mover.getMoveLocation())){
 			mover.setMoveLocation(centre[0] + this.getLocation()[0],
@@ -502,10 +504,11 @@ public class LevelBlock {
 	 *
 	 * @param mover the mover
 	 * @param regions the regions
+	 * @param ignoreClosedDoors 
 	 * @return the polygon
 	 * @throws PathNotFoundException the path not found exception
 	 */
-	public Polygon moveTowardsRandomRegion(Ai mover, List<Polygon> regions)throws PathNotFoundException{
+	public Polygon moveTowardsRandomRegion(Ai mover, List<Polygon> regions, boolean ignoreClosedDoors)throws PathNotFoundException{
 		// room has no regions
 		if(regions.size() == 0){
 			 return null;
@@ -526,11 +529,13 @@ public class LevelBlock {
 		}
 		
 		mover.moveWithinRadius(centre[0] + this.getLocation()[0],
-							  centre[1] + this.getLocation()[1], distance);
+							   centre[1] + this.getLocation()[1],
+							   distance, ignoreClosedDoors);
 		
 		if(!this.isInRegion(regions, mover.getMoveLocation())){
 			mover.setMoveLocation(centre[0] + this.getLocation()[0],
-								  centre[1] + this.getLocation()[1]);
+								  centre[1] + this.getLocation()[1],
+								  true);
 		}
 		
 		return closestRegion;

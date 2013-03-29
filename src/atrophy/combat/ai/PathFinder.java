@@ -1,5 +1,5 @@
 /*
- * All code unless credited otherwise is copyright 2012 Charles Sherman, all rights reserved
+ * 
  */
 package atrophy.combat.ai;
 
@@ -39,7 +39,7 @@ public class PathFinder {
 	    
 	    // Populate with portals in this room
 	    for(Portal portal : startBlock.getPortals()){
-	    	if(portal == excludedPortal || (ignoreClosedDoors && !portal.canUse()))
+	    	if(portal == excludedPortal || (!ignoreClosedDoors && !portal.canUse()))
 	    		continue;
 	    	
 	    	PathingPortal pathingPortal = new PathingPortal(portal);
@@ -66,7 +66,7 @@ public class PathFinder {
 	        
 	        // Just loop through all portals on both sides of portal
 	        for(Portal neighbour : current.getAllNeighbours()){
-	            if(excludedPortal == neighbour || closedSet.contains(neighbour) || (ignoreClosedDoors && !neighbour.canUse()))
+	            if(excludedPortal == neighbour || closedSet.contains(neighbour) || (!ignoreClosedDoors && !neighbour.canUse()))
 	                continue;
 	            
 	            newG = current.g + Maths.getDistance(neighbour.getLocation(), current.portal.getLocation());

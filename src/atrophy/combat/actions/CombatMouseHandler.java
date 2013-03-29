@@ -1,5 +1,5 @@
 /*
- * All code unless credited otherwise is copyright 2012 Charles Sherman, all rights reserved
+ * 
  */
 package atrophy.combat.actions;
 
@@ -106,7 +106,7 @@ public class CombatMouseHandler extends ActionRegion {
 			
 			// set move flag position
 			combatUiManager.getMoveFlag().setAiMoveLocation(mousePosition.x - panningManager.getOffset()[0],
-																		  mousePosition.y - panningManager.getOffset()[1]);
+														    mousePosition.y - panningManager.getOffset()[1]);
 			SoundBoard.getInstance().playEffect("cancel");
 			return true;
 		}

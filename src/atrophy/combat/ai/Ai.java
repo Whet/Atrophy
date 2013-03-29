@@ -1,5 +1,5 @@
 /*
- * All code unless credited otherwise is copyright 2012 Charles Sherman, all rights reserved
+ * 
  */
 package atrophy.combat.ai;
 
@@ -285,8 +285,8 @@ public class Ai implements Lootable{
 		this.aiPathing.moveWithinRadius(this,location,radius);
 	}
 	
-	public void moveWithinRadius(double x, double y, double radius) {
-		this.aiPathing.moveWithinRadius(this,x,y,radius);
+	public void moveWithinRadius(double x, double y, double radius, boolean ignoreClosedDoors) {
+		this.aiPathing.moveWithinRadius(this,x,y,radius,ignoreClosedDoors);
 	}
 	
 	public void setWeldingShut(){

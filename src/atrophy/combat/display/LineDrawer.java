@@ -1,5 +1,5 @@
 /*
- * All code unless credited otherwise is copyright 2012 Charles Sherman, all rights reserved
+ * 
  */
 package atrophy.combat.display;
 
@@ -147,13 +147,13 @@ public class LineDrawer implements Displayable{
 					if(combatVisualManager.isTabled() &&
 					   aiCrowd.getMask(i).getAi() == combatVisualManager.getLastDraggableAi()){
 						drawFov(drawShape, aiCrowd.getMask(i).getAi());
-						drawFovArcLines(drawShape, aiCrowd.getMask(i).getAi(), aiCrowd.getMask(i).getAi().getEditLookAngle(), Color.green.darker());
+//						drawFovArcLines(drawShape, aiCrowd.getMask(i).getAi(), aiCrowd.getMask(i).getAi().getEditLookAngle(), Color.green.darker());
 					}
 					else{
 						
 						if(combatVisualManager.isDrawingFov() && 
 						   aiCrowd.getMask(i).getAi() == combatMembersManager.getCurrentAi()){
-							drawFovArcLines(drawShape, aiCrowd.getMask(i).getAi(), aiCrowd.getMask(i).getAi().getEditLookAngle(), Color.white.darker());
+//							drawFovArcLines(drawShape, aiCrowd.getMask(i).getAi(), aiCrowd.getMask(i).getAi().getEditLookAngle(), Color.white.darker());
 							drawOldFov(drawShape, aiCrowd.getMask(i).getAi());
 						}
 						

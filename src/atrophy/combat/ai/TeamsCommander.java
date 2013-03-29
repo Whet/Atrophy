@@ -1,5 +1,5 @@
 /*
- * All code unless credited otherwise is copyright 2012 Charles Sherman, all rights reserved
+ * 
  */
 package atrophy.combat.ai;
 
@@ -152,6 +152,9 @@ public class TeamsCommander {
 	
 	public void updateInformation(){
 		
+		if(this.teamAi.size() == 0)
+			return;
+		
 		this.turnsToNextUpdate --;
 		
 		if(this.turnsToNextUpdate <= 0){
@@ -186,6 +189,14 @@ public class TeamsCommander {
 				this.jobAssignments.get(ai).remove(ai);
 				this.jobAssignments.remove(ai);
 			}
+		}
+		
+		// Remove dead ai
+		for (Iterator<ThinkingAi> iterator = this.teamAi.iterator(); iterator.hasNext();) {
+			Ai ai = (Ai) iterator.next();
+			
+			if(ai.isDead())
+				iterator.remove();
 		}
 		
 		for(DefenceHeuristic heuristic : this.defenceHeuristics.values()){
@@ -283,6 +294,9 @@ public class TeamsCommander {
 			}
 			
 		}
+//		for (AiJob job : this.jobs) {
+//			System.out.println(this.getFaction() + ": " + job.getType().toString() + "  Population: " + job.getTargetEmployeeCount());
+//		}
 		
 	}
 
@@ -294,7 +308,7 @@ public class TeamsCommander {
 	
 	public AiJob getJob(ThinkingAi ai){
 		
-		if(this.jobAssignments.get(ai) != null && (!this.specialistNeeded && this.isSpecialist(ai)))
+		if(this.jobAssignments.get(ai) != null && (!this.isSpecialist(ai) || (this.isSpecialist(ai) && !this.specialistNeeded)))
 			return this.jobAssignments.get(ai);
 		
 		return bestJob(ai);

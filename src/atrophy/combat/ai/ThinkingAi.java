@@ -1,5 +1,5 @@
 /*
- * All code unless credited otherwise is copyright 2012 Charles Sherman, all rights reserved
+ * 
  */
 package atrophy.combat.ai;
 
@@ -290,25 +290,29 @@ public class ThinkingAi extends Ai{
 			this.lootAiInRoom();
 		}
 		else if(this.job != null && levelManager.getBlock(this.getMoveLocation()) != this.job.getJobBlock()){
-			this.job.getJobBlock().moveTowardsRandomRegion(this, this.job.getJobBlock().getCover());
+			this.job.getJobBlock().moveTowardsRandomRegion(this, this.job.getJobBlock().getCover(), true);
 		}
 		else if(Maths.getDistance(this.getLocation(), this.getMoveLocation()) == 0 && this.turnCounter == 0){
 		
 			this.aiMode = AiMode.CAMPING;
 			Random random = new Random();
+			boolean openDoor = false;
+			
+			for(Portal door : this.getLevelBlock().getPortals()) {
+				if(door.canUse()) {
+					openDoor = true;
+				}
+			}
 			
 			// if can weld then weld instead of camping
-			if(this.getAbilities().contains(Abilities.WELDING)){
+			if(openDoor && this.getAbilities().contains(Abilities.WELDING)){
 				
 				for(Portal door : this.getLevelBlock().getPortals()) {
-					if(door.canUse())
+					if(door.canUse()) {
 						this.setWeldingShut(door);
+						return;
+					}
 				}
-				
-				// if not welding, because no doors to weld shut, try to open some
-//				if(!this.getAction().contains("Weld")){
-//					this.setWeldingOpen(this.getTeamObject().getOpenPortal());
-//				}
 			}
 			else if(this.getAbilities().contains(Abilities.XRAY_SCAN) && this.getWeapon().hasFullAmmo() && Maths.getDistance(this.getLocation(), this.getMoveLocation()) == 0){
 				this.xrayScan();
@@ -318,7 +322,7 @@ public class ThinkingAi extends Ai{
 				this.addEffect(new StationaryInvisibility(this.getSkillLevel(Abilities.STEALTH1)));
 			}
 			else if(random.nextInt(4) >= 3){
-				this.job.getJobBlock().moveTowardsRandomRegion(this, this.job.getJobBlock().getCover());
+				this.job.getJobBlock().moveTowardsRandomRegion(this, this.job.getJobBlock().getCover(), false);
 				this.turnCounter = random.nextInt(20) + 16;
 			}
 			else{
@@ -364,11 +368,11 @@ public class ThinkingAi extends Ai{
 	}
 
 	public void moveTowardsNearestRegion(List<Polygon> regions) throws PathNotFoundException{
-		this.getLevelBlock().moveTowardsNearestRegion(this, regions);
+		this.getLevelBlock().moveTowardsNearestRegion(this, regions, true);
 	}
 	
 	public Polygon moveTowardsRandomRegion(List<Polygon> regions) throws PathNotFoundException{
-		return this.getLevelBlock().moveTowardsRandomRegion(this, regions);
+		return this.getLevelBlock().moveTowardsRandomRegion(this, regions, true);
 	}
 
 	private void fleeFromGrenades() throws PathNotFoundException{
