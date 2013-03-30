@@ -391,15 +391,26 @@ public class LineDrawer implements Displayable{
 		
 		int[] playerLoc = new int[]{(int) ai.getLocation()[0], (int) ai.getLocation()[1]};
 		
-		for(int i = 0; i < 360; i+= 1) {
-			int[] lastPoint = CombatVisualManager.getLastPoint(ai.getCoverObject(), playerLoc, Math.toRadians(i), ai.getLevelBlock(), 0.5);
-			int[] lastPointNoCover = CombatVisualManager.getLastPointOverCover(playerLoc, Math.toRadians(i), ai.getLevelBlock());
-			
-			if(CombatVisualManager.spotFovNoRadius(ai, new double[]{lastPoint[0], lastPoint[1]})) {			
-				lightPolygon.addPoint(lastPointNoCover[0], lastPointNoCover[1]);
+		for(int i = 0; i < 360; i++) {
+			if(ai.isIgnoringLOS()) {
+				int[] lastPointNoCover = CombatVisualManager.getLastPointNoCover(playerLoc, Math.toRadians(i), ai.getLevelBlock());
+				
+				if(CombatVisualManager.spotFovNoRadius(ai, new double[]{lastPointNoCover[0], lastPointNoCover[1]})) {			
+					lightPolygon.addPoint(lastPointNoCover[0], lastPointNoCover[1]);
+				}
+				else{
+					lightPolygon.addPoint(playerLoc[0], playerLoc[1]);
+				}
 			}
-			else{
-				lightPolygon.addPoint(playerLoc[0], playerLoc[1]);
+			else {
+				int[] lastPointOverCover = CombatVisualManager.getLastPointOverCover(playerLoc, Math.toRadians(i), ai.getLevelBlock());
+				if(CombatVisualManager.spotFovNoRadius(ai, new double[]{lastPointOverCover[0], lastPointOverCover[1]})) {		
+					
+					lightPolygon.addPoint(lastPointOverCover[0], lastPointOverCover[1]);
+				}
+				else{
+					lightPolygon.addPoint(playerLoc[0], playerLoc[1]);
+				}
 			}
 			
 		}
@@ -419,8 +430,7 @@ public class LineDrawer implements Displayable{
 		transform.setToTranslation(panningManager.getOffset()[0], panningManager.getOffset()[1]);
 		drawShape.setTransform(transform);
 		
-		drawShape.setColor(Color.black);
-		drawShape.setComposite(GraphicsFunctions.makeComposite(0.5f));
+		drawShape.setComposite(GraphicsFunctions.makeComposite(0.45f));
 		
 		Point2D center = new Point2D.Float((int)(ai.getLocation()[0]), (int)(ai.getLocation()[1]));
 		float radius = 50;
@@ -432,18 +442,31 @@ public class LineDrawer implements Displayable{
 		drawShape.setPaint(gp);
 		
 		drawShape.fillPolygon(shadowPolygon);
-
-	    radius = 400;
-	    dist = new float[]{0.0f, 0.8f};
-	    colors = new Color[]{Color.WHITE, Color.CYAN};
+		
+		
+	    radius = 420;
+	    dist = new float[]{0.0f, 0.9f};
+	    colors = new Color[]{Color.WHITE, new Color(20,20,90)};
 		
 		gp = new RadialGradientPaint(center, radius, dist, colors);
 		
 		drawShape.setPaint(gp);
 		
-		drawShape.setComposite(GraphicsFunctions.makeComposite(0.1f));
+		drawShape.setComposite(GraphicsFunctions.makeComposite(0.18f));
 		drawShape.fillPolygon(lightPolygon);
 		drawShape.setPaint(null);
+		
+		
+//		radius = 500;
+//	    dist = new float[]{0.0f, 0.9f};
+//	    colors = new Color[]{new Color(20,20,90), new Color(90,90,160)};
+//		
+//		gp = new RadialGradientPaint(center, radius, dist, colors);
+		
+		drawShape.setComposite(GraphicsFunctions.makeComposite(0.2f));
+//		drawShape.setPaint(gp);
+		drawShape.setColor(Color.cyan);
+		drawShape.drawPolygon(lightPolygon);
 		
 		transform.setToTranslation(0, 0);
 		drawShape.setTransform(transform);

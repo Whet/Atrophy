@@ -175,7 +175,7 @@ public class FloatingIcons extends Crowd{
 	 */
 	private void drawDoors(Graphics2D drawShape){
 		
-		drawShape.setComposite(GraphicsFunctions.makeComposite(0.5f));
+		drawShape.setComposite(GraphicsFunctions.makeComposite(0.4f));
 		
 //		if(drawingDoors && CombatVisualManager.allRevealed){
 //			drawAllDoors(drawShape);

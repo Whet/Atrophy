@@ -14,6 +14,7 @@ import watoydoEngine.gubbinz.GraphicsFunctions;
 import watoydoEngine.workings.DisplayManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.ai.Ai;
+import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.ui.Cartographer.Marker;
 import atrophy.combat.level.LevelManager;
@@ -95,7 +96,7 @@ public class MiniMap implements Displayable {
 		
 		// draw ai
 		for(int i = 0; i < aiCrowd.getActorCount(); i++){
-			if(aiCrowd.getActorMask(aiCrowd.getActor(i)).isVisible()){
+			if(aiCrowd.getActor(i).getFaction().equals(AiGenerator.PLAYER) || aiCrowd.getActorMask(aiCrowd.getActor(i)).isVisible()){
 				
 				this.drawAi.add(aiCrowd.getActor(i));
 				

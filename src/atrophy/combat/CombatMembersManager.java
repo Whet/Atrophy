@@ -110,6 +110,7 @@ public class CombatMembersManager {
 	public void setCurrentAi(Ai currentAi){
 		this.currentAi = currentAi;
 		lineDrawer.updateFovLight(currentAi);
+		lineDrawer.updateAlphas();
 	}
 
 	public void changeCurrentAi(Ai currentAi){
@@ -125,7 +126,7 @@ public class CombatMembersManager {
 		else{
 			uiUpdaterSuite.getLootBox().closeLootUi(false);
 		}
-		
+		lineDrawer.updateAlphas();
 	}
 
 	public void changeCurrentAi(int i){

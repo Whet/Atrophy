@@ -495,6 +495,25 @@ public class CombatVisualManager {
 			}
 		}
 	}
+	
+	public static int[] getLastPointNoCover(int[] is, double rads, LevelBlock room) {
+		double x,y;
+		
+		x = is[0];
+		y = is[1];
+		
+		double vector[] = {Math.cos(rads) * 0.1,
+						   Math.sin(rads) * 0.1};
+		
+		while(true){
+			x += vector[0];
+			y += vector[1];
+			
+			if(!room.getHitBox().contains(x,y)){
+				return new int[]{(int)(x - vector[0]),(int)(y - vector[1])};
+			}
+		}
+	}
 
 	public static int[] getLastPointInCover(int[] startLocation, double rads, LevelBlock room, int space) {
 		double x,y;

@@ -33,7 +33,6 @@ import atrophy.combat.items.GrenadeItem;
 import atrophy.combat.items.Item;
 import atrophy.combat.items.StunGrenadeItem;
 import atrophy.combat.items.Weapon;
-import atrophy.combat.items.WeldingTorch;
 import atrophy.combat.level.LevelBlock;
 import atrophy.combat.level.LevelManager;
 import atrophy.combat.level.MissionManager;
