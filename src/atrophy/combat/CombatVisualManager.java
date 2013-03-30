@@ -449,7 +449,7 @@ public class CombatVisualManager {
 		}
 	}
 
-	public static int[] getLastPoint(Polygon ignoreCoverObject, int[] is, double rads, LevelBlock room, int space) {
+	public static int[] getLastPoint(Polygon ignoreCoverObject, int[] is, double rads, LevelBlock room, double space) {
 		double x,y;
 		
 		x = is[0];
@@ -463,6 +463,34 @@ public class CombatVisualManager {
 			y += vector[1];
 			
 			if(!room.getHitBox().contains(x,y) || (room.getCoverObject(x,y) != null && room.getCoverObject(x,y) != ignoreCoverObject)){
+				return new int[]{(int)(x - vector[0]),(int)(y - vector[1])};
+			}
+		}
+	}
+	
+	public static int[] getLastPointOverCover(int[] is, double rads, LevelBlock room) {
+		double x,y;
+		
+		x = is[0];
+		y = is[1];
+		
+		double vector[] = {Math.cos(rads) * 0.1,
+						   Math.sin(rads) * 0.1};
+		
+		boolean inCover = false;
+		
+		while(true){
+			x += vector[0];
+			y += vector[1];
+			
+			if(!inCover && room.getCoverObject(x,y) != null && room.getCoverObject(x,y) != room.getCoverObject(is[0], is[1])) {
+				inCover = true;
+			}
+			else if(inCover && room.getCoverObject(x,y) == null) {
+				return new int[]{(int)(x - vector[0]),(int)(y - vector[1])};
+			}
+			
+			if(!room.getHitBox().contains(x,y)){
 				return new int[]{(int)(x - vector[0]),(int)(y - vector[1])};
 			}
 		}
@@ -609,5 +637,5 @@ public class CombatVisualManager {
 	public boolean isDrawingIndividualSight() {
 		return this.drawingIndividualSight;
 	}
-	
+
 }

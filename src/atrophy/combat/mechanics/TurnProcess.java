@@ -133,6 +133,7 @@ public class TurnProcess {
 			updateAiBrass();
 			updateAi();
 			lineDrawer.updateAlphas();
+			lineDrawer.updateFovLight(combatMembersManager.getCurrentAi());
 		}
 	}
 	

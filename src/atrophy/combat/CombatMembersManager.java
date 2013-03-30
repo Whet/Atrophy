@@ -17,6 +17,7 @@ import atrophy.combat.ai.TeamsCommander;
 import atrophy.combat.ai.ThinkingAi;
 import atrophy.combat.ai.WhiteVistaCommander;
 import atrophy.combat.display.AiCrowd;
+import atrophy.combat.display.LineDrawer;
 import atrophy.combat.display.ui.UiUpdaterSuite;
 import atrophy.combat.level.LevelBlock;
 import atrophy.combat.level.LevelManager;
@@ -34,6 +35,7 @@ public class CombatMembersManager {
 	private MouseAbilityHandler mouseAbilityHandler;
 	private CombatInorganicManager combatInorganicManager;
 	private LevelManager levelManager;
+	private LineDrawer lineDrawer;
 	
 	public CombatMembersManager(AiCrowd aiCrowd, TurnProcess turnProcess, LevelManager levelManager, CombatInorganicManager combatInorganicManager){
 		commanders = new ArrayList<TeamsCommander>(2);
@@ -77,6 +79,7 @@ public class CombatMembersManager {
 	public void lazyLoad(UiUpdaterSuite uiUpdaterSuite, MouseAbilityHandler mouseAbilityHandler){
 		this.uiUpdaterSuite = uiUpdaterSuite;
 		this.mouseAbilityHandler = mouseAbilityHandler;
+		this.lineDrawer = uiUpdaterSuite.getLineDrawer();
 	}
 	
 	public Ai getCurrentAi(){
@@ -106,6 +109,7 @@ public class CombatMembersManager {
 	
 	public void setCurrentAi(Ai currentAi){
 		this.currentAi = currentAi;
+		lineDrawer.updateFovLight(currentAi);
 	}
 
 	public void changeCurrentAi(Ai currentAi){
