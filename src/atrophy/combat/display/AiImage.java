@@ -16,32 +16,22 @@ import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.actions.CombatKeyboardHandler;
 import atrophy.combat.actions.MouseAbilityHandler;
+import atrophy.combat.ai.Ai;
 import atrophy.combat.display.ui.InfoTextDisplayable;
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class AiImage.
- */
 public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 	
 	private PanningManager panningManager;
 	private CombatUiManager combatUiManager;
 	private AiCrowd aiCrowd;
 	
-	/**
-	 * The dragging.
-	 */
 	private boolean dragging;
 	private CombatVisualManager combatVisualManager;
 	private MouseAbilityHandler mouseAbilityHandler;
 	
-	/**
-	 * Instantiates a new ai image.
-	 *
-	 * @param x the x
-	 * @param y the y
-	 * @param mouseAbilityHandler 
-	 */
+	private int frame, maxFrame;
+	private Animation animation;
+	
 	public AiImage(AiCrowd aiCrowd, CombatMembersManager combatMembersManager, CombatUiManager combatUiManager, CombatVisualManager combatVisualManager, PanningManager panningManager, double x, double y, MouseAbilityHandler mouseAbilityHandler){
 		super(aiCrowd, combatMembersManager, null, x, y);
 		this.setZ(2);
@@ -50,14 +40,12 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 		this.combatUiManager = combatUiManager;
 		this.combatVisualManager = combatVisualManager;
 		this.mouseAbilityHandler = mouseAbilityHandler;
+		
+		this.animation = Animation.IDLE;
+		this.frame = 0;
+		this.maxFrame = 1;
 	}
 	
-	// The Void
-	
-	// edited transformation to account for panning
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.AbstractButton#getTransformationForDrawing()
-	 */
 	@Override
 	public AffineTransform getTransformationForDrawing(){
 		super.getTransformation().setToTranslation(this.getLocation()[0] + panningManager.getOffset()[0],
@@ -67,14 +55,10 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 		
 		return super.getTransformation();
 	}
-	// Updates image to hold the mask of the this.getAi() and be at it's position
-	/**
-	 * Update image.
-	 */
+
 	public void updateImage(){
 		dragging = false;
 		combatVisualManager.setDraggableAi(null);
-		this.setImage(aiCrowd.getBankedImage(this.getAi().getImage()));
 		this.setLocation(this.getAi().getLocation()[0] - (this.getSize()[0] * 0.5), this.getAi().getLocation()[1] - (this.getSize()[1] * 0.68));
 		
 		if(this.getAi().isDead()){
@@ -85,13 +69,8 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 		
 		this.applyEffects();
 	}
-	// just changes mask
-	/* (non-Javadoc)
-	 * @see atrophy.combat.display.AiImageRoster#updateMask()
-	 */
+
 	public void updateMask(){
-		this.setImage(aiCrowd.getBankedImage(this.getAi().getImage()));
-		
 		if(this.getAi().isDead()){
 			this.setZ(1);
 			// Cancel stealth effect
@@ -101,16 +80,10 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 		this.applyEffects();
 	}
 	
-	/**
-	 * Update tween.
-	 */
 	public void updateTween(){
 		this.setTween(new MotionTween(this, this.getAi().getLocation()[0] - (this.getSize()[0] * 0.5), this.getAi().getLocation()[1] - (this.getSize()[1] * 0.68), 2400, true));
 	}
 	
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.AbstractButton#mI(java.awt.Point)
-	 */
 	@Override
 	public void mI(Point mousePosition){
 		if(this.isVisible()){
@@ -129,9 +102,6 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.AbstractButton#mO(java.awt.Point)
-	 */
 	@Override
 	public void mO(Point mousePosition){
 		combatUiManager.getInfoText().removeInfoText(this);
@@ -148,10 +118,6 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 		}
 	}
 	
-	// Interactions
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.AbstractButton#mD(java.awt.Point, java.awt.event.MouseEvent)
-	 */
 	public boolean mD(Point mousePosition, MouseEvent e){
 		if(combatVisualManager.isTabled() && CombatKeyboardHandler.SHIFT_DOWN && combatVisualManager.getDraggableAi() == null){
 			dragging = true;
@@ -161,9 +127,6 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 		return false;
 	}
 
-	/* (non-Javadoc)
-	 * @see atrophy.combat.display.AiImageRoster#mU(java.awt.Point, java.awt.event.MouseEvent)
-	 */
 	public boolean mU(Point mousePosition, MouseEvent e){
 		if(combatVisualManager.isTabled() && combatVisualManager.getDraggableAi() == this.getAi()){
 			dragging = false;
@@ -181,10 +144,6 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 		return false;	
 	}
 	
-	
-	/* (non-Javadoc)
-	 * @see atrophy.combat.display.AiImageRoster#mC(java.awt.Point, java.awt.event.MouseEvent)
-	 */
 	public boolean mC(Point mousePosition, MouseEvent e){
 		if(!mouseAbilityHandler.isSettingAbility()){
 			
@@ -215,12 +174,6 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 		return false;
 	}
 	
-	/**
-	 * Gets the ais near mouse.
-	 *
-	 * @param point the point
-	 * @return the ais near mouse
-	 */
 	private ArrayList<AiImage> getAisNearMouse(Point point) {
 		ArrayList<AiImage> ais = new ArrayList<AiImage>();
 		for(AiImage mask : aiCrowd.getMasks()){
@@ -234,48 +187,26 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 		return ais;
 	}
 
-	// Getters
-	// edited inbounds for panning
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.ButtonSingle#isInBounds(double, double)
-	 */
 	@Override
 	public boolean isInBounds(double x, double y){
 		return super.isInBounds(x - panningManager.getOffset()[0],
 								y - panningManager.getOffset()[1]);
 	}
 	
-	/* (non-Javadoc)
-	 * @see atrophy.combat.display.ui.InfoTextDisplayable#getUiHint()
-	 */
-	public String getUiHint(){/*
-		if(this.getAi() instanceof ThinkingAi){
-			return "Aggression: "+ ((ThinkingAi) this.getAi()).getAggression();
-		}*/
-		// Show ai name prefixed with faction
+	public String getUiHint(){
 		return this.getAi().getFaction() + ": " + this.getAi().getName();
 	}
 	
-	/* (non-Javadoc)
-	 * @see atrophy.combat.display.ui.InfoTextDisplayable#getHintLines()
-	 */
 	public int getHintLines(){
 		return 1;
 	}
 	
-	// Setters
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.AbstractButton#setVisible(boolean)
-	 */
 	@Override
 	public void setVisible(boolean visible){
 		super.setVisible(visible);
 		combatUiManager.getInfoText().removeInfoText(this);
 	}
 	
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.AbstractButton#isActive()
-	 */
 	@Override
 	public boolean isActive() {
 		if(!this.isVisible()){
@@ -284,9 +215,6 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 		return super.isActive();
 	}
 	
-	/**
-	 * Apply effects.
-	 */
 	private void applyEffects(){
 		if(this.getAi().isStealthed()){
 			this.setAlpha(0.5f);
@@ -294,6 +222,24 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 		else{
 			this.setAlpha(1.0f);
 		}
+	}
+	
+	@Override
+	public void setAi(Ai aiObject) {
+		super.setAi(aiObject);
+		updateAnimation();
+	}
+
+	public void updateAnimation() {
+		this.frame++;
+
+		if(this.frame == maxFrame) {
+			this.frame = 0;
+			this.animation = Animation.IDLE;
+			this.maxFrame = 4;
+		}
+		
+		this.setImage(aiCrowd.getBankedImage(this.getAi().getImage() + "Full", frame, animation));
 	}
 	
 }

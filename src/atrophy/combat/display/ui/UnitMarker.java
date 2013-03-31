@@ -65,8 +65,7 @@ public class UnitMarker extends ImageSingle {
 		if(combatMembersManager.getCurrentAi() != null){
 			this.setVisible(true);
 			// Update ai selection marker to highlight the mask of current ai
-			combatUiManager.getUnitMarker().setLocation(aiCrowd.getActorMask(combatMembersManager.getCurrentAi()).getLocation()[0]
-																	  - combatUiManager.getUnitMarker().getSize()[0] * 0.25,
+			this.setLocation(aiCrowd.getActorMask(combatMembersManager.getCurrentAi()).getLocation()[0],
 																	  aiCrowd.getActorMask(combatMembersManager.getCurrentAi()).getLocation()[1]
 																	  + aiCrowd.getActorMask(combatMembersManager.getCurrentAi()).getSize()[1] - 20);
 		}

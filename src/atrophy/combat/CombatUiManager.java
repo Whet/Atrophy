@@ -58,7 +58,7 @@ public class CombatUiManager{
 	/**
 	 * The unit marker.
 	 */
-	private ImageSingle unitMarker;
+//	private ImageSingle unitMarker;
 	
 	/**
 	 * The ally roster.
@@ -118,7 +118,7 @@ public class CombatUiManager{
 		try{
 			moveFlag = new MoveFlag(panningManager, this, combatMembersManager, ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/icons/moveMarker.png")), false);
 			
-			unitMarker = new UnitMarker(aiCrowd, panningManager, combatMembersManager, this, ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/selectedUnitMarker.png")));
+//			unitMarker = new UnitMarker(aiCrowd, panningManager, combatMembersManager, this, ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/selectedUnitMarker.png")));
 			
 			allyRoster = new AllyRoster(aiCrowd, combatMembersManager, turnProcess);
 		}
@@ -201,15 +201,6 @@ public class CombatUiManager{
 	 */
 	public LineDrawer getLineSurface(){
 		return this.lineSurface;
-	}
-	
-	/**
-	 * Gets the unit marker.
-	 *
-	 * @return the unit marker
-	 */
-	public ImageSingle getUnitMarker(){
-		return this.unitMarker;
 	}
 	
 	/**

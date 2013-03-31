@@ -69,7 +69,7 @@ public class CombatHardPane implements HardPaneDefineable{
 		// Add ui elements
 		crowd.addButton(uiUpdaterSuite.getCombatUiManager().getMoveFlag());
 		crowd.addDisplayItem(uiUpdaterSuite.getCombatUiManager().getLineSurface());
-		crowd.addDisplayItem(uiUpdaterSuite.getCombatUiManager().getUnitMarker());
+//		crowd.addDisplayItem(uiUpdaterSuite.getCombatUiManager().getUnitMarker());
 		crowd.addDisplayItem(uiUpdaterSuite.getCombatUiManager().getAllyRoster());
 		crowd.addMouseActionItem(uiUpdaterSuite.getCombatUiManager().getAllyRoster());
 		crowd.addCrowd(uiUpdaterSuite.getCombatUiManager().getCombatInfo());
@@ -97,7 +97,7 @@ public class CombatHardPane implements HardPaneDefineable{
 		
 		uiUpdaterSuite.getCombatUiManager().getLineSurface().setZ(-1);
 		
-		uiUpdaterSuite.getCombatUiManager().getUnitMarker().setZ(5);
+//		uiUpdaterSuite.getCombatUiManager().getUnitMarker().setZ(5);
 		uiUpdaterSuite.getCombatUiManager().getMoveFlag().setZ(5);
 		uiUpdaterSuite.getCombatUiManager().getFloatingIcons().setZ(5);
 		uiUpdaterSuite.getCombatUiManager().getActionText().setZ(5);
