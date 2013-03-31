@@ -430,44 +430,6 @@ public class CombatVisualManager {
 		return aiLastDragged;
 	}
 
-	public static int[] getLastPoint(int[] is, double rads, LevelBlock room) {
-		double x,y;
-		
-		x = is[0];
-		y = is[1];
-		
-		double vector[] = {Math.cos(rads),
-						   Math.sin(rads)};
-		
-		while(true){
-			x += vector[0];
-			y += vector[1];
-			
-			if(!room.getHitBox().contains(x,y) || room.getCoverObject(x,y) != null){
-				return new int[]{(int)(x - vector[0]),(int)(y - vector[1])};
-			}
-		}
-	}
-
-	public static int[] getLastPoint(Polygon ignoreCoverObject, int[] is, double rads, LevelBlock room, double space) {
-		double x,y;
-		
-		x = is[0];
-		y = is[1];
-		
-		double vector[] = {Math.cos(rads) * space,
-						   Math.sin(rads) * space};
-		
-		while(true){
-			x += vector[0];
-			y += vector[1];
-			
-			if(!room.getHitBox().contains(x,y) || (room.getCoverObject(x,y) != null && room.getCoverObject(x,y) != ignoreCoverObject)){
-				return new int[]{(int)(x - vector[0]),(int)(y - vector[1])};
-			}
-		}
-	}
-	
 	public static int[] getLastPointOverCover(int[] is, double rads, LevelBlock room) {
 		double x,y;
 		
@@ -515,83 +477,6 @@ public class CombatVisualManager {
 		}
 	}
 
-	public static int[] getLastPointInCover(int[] startLocation, double rads, LevelBlock room, int space) {
-		double x,y;
-		
-		x = startLocation[0];
-		y = startLocation[1];
-		
-		double vector[] = {Math.cos(rads) * space,
-						   Math.sin(rads) * space};
-		
-		while(true){
-			x += vector[0];
-			y += vector[1];
-			
-			if(!room.getHitBox().contains(x,y) || (room.getCoverObject(x,y) != null && room.getCoverObject(x,y) != room.getCoverObject(startLocation[0], startLocation[1])))
-				return new int[]{(int)(x - vector[0]),(int)(y - vector[1])};
-		}
-	}
-
-	public static int[] getLastPoint(int[] startLocation, double rads, LevelBlock room, int space) {
-		double x,y;
-		
-		x = startLocation[0];
-		y = startLocation[1];
-		
-		double vector[] = {Math.cos(rads) * space,
-						   Math.sin(rads) * space};
-		
-		while(true){
-			x += vector[0];
-			y += vector[1];
-			
-			if(!room.getHitBox().contains(x,y) || room.getCoverObject(x,y) != null){
-				return new int[]{(int)(x - vector[0]),(int)(y - vector[1])};
-			}
-		}
-	}
-
-	public static boolean isVertexSight(ArrayList<Polygon> cover, double x, double y, double x1, double y1, LevelBlock room) {
-		
-		double[] startLoc = {x,y};
-		
-		double vector[] = {Math.cos(Maths.getRads(x, y, x1, y1)),
-						   Math.sin(Maths.getRads(x, y, x1, y1))};
-		
-		while(Maths.getDistance(x,y,x1,y1) > 15){
-			x += vector[0];
-			y += vector[1];
-			
-			
-			if(!room.getHitBox().contains(x,y) || (room.getCoverObject(x,y) != room.getCoverObject(startLoc[0],startLoc[1]) && cover.contains(room.getCoverObject(x,y)))){
-				return false;
-			}
-		}
-		
-		return true;
-	}
-
-	public static boolean isVertexSight(double x, double y, double x1, double y1, LevelBlock room) {
-		
-		double[] startLoc = {x,y};
-		
-		double vector[] = {Math.cos(Maths.getRads(x, y, x1, y1)),
-						   Math.sin(Maths.getRads(x, y, x1, y1))};
-		
-		while(Maths.getDistance(x,y,x1,y1) > 15){
-			x += vector[0];
-			y += vector[1];
-			
-			
-			if(!room.getHitBox().contains(x,y) || room.getCoverObject(x,y) != room.getCoverObject(startLoc[0],startLoc[1])){
-				return false;
-			}
-		}
-		
-		return true;
-	}
-
 	public static boolean isInFiringSight(double x, double y, double x1, double y1, LevelBlock room){
 		
 		double[] startLoc = {x,y};
@@ -608,23 +493,6 @@ public class CombatVisualManager {
 			Polygon coverEnd = room.getCoverObject(startLoc[0],startLoc[1]);
 			
 			if(!room.getHitBox().contains(x,y) || (coverAtPoint != null && coverAtPoint != coverEnd && room.getCoverObject(x,y) != coverStart) ){
-				return false;
-			}
-		}
-		
-		return true;
-	}
-
-	public static boolean isInSight(double x, double y, double x1, double y1, Polygon room, int radiusOfSight){
-		
-		double vector[] = {Math.cos(Maths.getRads(x, y, x1, y1)) * 1,
-						   Math.sin(Maths.getRads(x, y, x1, y1)) * 1};
-		
-		while(Maths.getDistance(x,y,x1,y1) > radiusOfSight){
-			x += vector[0];
-			y += vector[1];
-			
-			if(!room.contains(x,y)){
 				return false;
 			}
 		}
