@@ -223,9 +223,9 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 			
 			// k DEBUG
 			case 75:
-//				combatMembersManager.getCurrentAi().setDead(true);
+				combatMembersManager.getCurrentAi().setDead(true);
 //				mouseAbilityHandler.setAbility("Hack");
-				mouseAbilityHandler.setAbility("DebugKill");
+//				mouseAbilityHandler.setAbility("DebugKill");
 			break;
 			
 			// X panning
