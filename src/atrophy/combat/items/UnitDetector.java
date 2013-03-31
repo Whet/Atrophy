@@ -37,7 +37,7 @@ public class UnitDetector extends Item {
 	 * Instantiates a new unit detector.
 	 */
 	private UnitDetector(){
-		super(NAME, "- Displays suits in use in the area. Can track inidivuals if they are tagged.");
+		super(NAME, "- Displays suits in use in the area. Can track individuals if they are tagged.");
 	}
 	
 }
