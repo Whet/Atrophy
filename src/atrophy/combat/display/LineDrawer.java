@@ -395,7 +395,7 @@ public class LineDrawer implements Displayable{
 		
 		int[] playerLoc = new int[]{(int) ai.getLocation()[0], (int) ai.getLocation()[1]};
 		
-		for(int i = 0; i < 360; i++) {
+		for(double i = 0; i < 360; i+=0.5) {
 			if(ai.isIgnoringLOS()) {
 				int[] lastPointNoCover = CombatVisualManager.getLastPointNoCover(playerLoc, Math.toRadians(i), ai.getLevelBlock());
 				

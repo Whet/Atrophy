@@ -15,6 +15,8 @@ public class CombatVisualManager {
 	
 	public static final double RING_SIZE = 0.3;
 	private static final int RING_GAP = 60;
+	private static final double MAX_TRACE_RESOLUTION = 0.01;
+	private static final double MIN_TRACE_RESOLUTION = 10;
 	
 	public boolean tabled = false;
 	public boolean drawFov = true;
@@ -268,7 +270,7 @@ public class CombatVisualManager {
 
 	public static int[] getLastPointOverCover(int[] is, double rads, LevelBlock room) {
 		
-		double spaceStep = 5;
+		double spaceStep = MIN_TRACE_RESOLUTION;
 		
 		double x,y;
 		
@@ -288,29 +290,59 @@ public class CombatVisualManager {
 				inCover = true;
 			}
 			else if(inCover && room.getCoverObject(x,y) == null) {
+				
+				if(spaceStep > MAX_TRACE_RESOLUTION) {
+					x -= vector[0];
+					y -= vector[1];
+					spaceStep = spaceStep / 10;
+					vector = new double[]{Math.cos(rads) * spaceStep, Math.sin(rads) * spaceStep};
+					continue;
+				}
+				
 				return new int[]{(int)(x - vector[0]),(int)(y - vector[1])};
 			}
 			
 			if(!room.getHitBox().contains(x,y)){
+				
+				if(spaceStep > MAX_TRACE_RESOLUTION) {
+					x -= vector[0];
+					y -= vector[1];
+					spaceStep = spaceStep / 10;
+					vector = new double[]{Math.cos(rads) * spaceStep, Math.sin(rads) * spaceStep};
+					continue;
+				}
+				
 				return new int[]{(int)(x - vector[0]),(int)(y - vector[1])};
 			}
 		}
 	}
 	
 	public static int[] getLastPointNoCover(int[] is, double rads, LevelBlock room) {
+		
+		double spaceStep = MIN_TRACE_RESOLUTION;
+		
 		double x,y;
 		
 		x = is[0];
 		y = is[1];
 		
-		double vector[] = {Math.cos(rads) * 0.1,
-						   Math.sin(rads) * 0.1};
+		double vector[] = {Math.cos(rads) * spaceStep,
+						   Math.sin(rads) * spaceStep};
 		
 		while(true){
 			x += vector[0];
 			y += vector[1];
 			
 			if(!room.getHitBox().contains(x,y)){
+				
+				if(spaceStep > MAX_TRACE_RESOLUTION) {
+					x -= vector[0];
+					y -= vector[1];
+					spaceStep = spaceStep / 10;
+					vector = new double[]{Math.cos(rads) * spaceStep, Math.sin(rads) * spaceStep};
+					continue;
+				}
+				
 				return new int[]{(int)(x - vector[0]),(int)(y - vector[1])};
 			}
 		}
