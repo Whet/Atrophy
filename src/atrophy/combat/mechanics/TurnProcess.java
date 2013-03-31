@@ -69,7 +69,6 @@ public class TurnProcess {
 	private CombatMembersManager combatMembersManager;
 	private CombatInorganicManager combatInorganicManager;
 	private LineDrawer lineDrawer;
-	private PanningManager panningManager;
 	
 	/**
 	 * Instantiates a new turn process.
@@ -98,8 +97,6 @@ public class TurnProcess {
 		this.combatMouseHandler = actionSuite.getCombatMouseHandler();
 		this.combatKeyboardHandler = actionSuite.getCombatKeyboardHandler();
 		this.mouseAbilityHandler = actionSuite.getMouseAbilityHandler();
-		
-		this.panningManager = uiUpdaterSuite.getPanningManager();
 		
 		shuffledAi = aiCrowd.getShuffledStack();
 		

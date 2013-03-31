@@ -261,6 +261,10 @@ public abstract class AbstractButton implements Displayable, MouseRespondable{
 		}
 	}
 	
+	public TweenDefinable getTween() {
+		return tween;
+	}
+
 	//Getters
 	/* (non-Javadoc)
 	 * @see watoydoEngine.designObjects.display.Displayable#isVisible()
