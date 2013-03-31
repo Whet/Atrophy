@@ -24,49 +24,20 @@ import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.AiImageRoster;
 import atrophy.combat.mechanics.TurnProcess;
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class AllyRoster.
- */
 public class AllyRoster extends Crowd {
 	
-	/**
-	 * The Constant PORTRAIT_SPACING_X.
-	 */
 	private static final int PORTRAIT_SPACING_X = 75;
-	
-	/**
-	 * The portrait x.
-	 */
 	private static int portraitX = 0;
-	
-	/**
-	 * The portrait y.
-	 */
 	private static int portraitY = 0;
-	
-	/**
-	 * The background image.
-	 */
 	private static BufferedImage backgroundImage;
-	
-	/**
-	 * The roster images.
-	 */
 	private ArrayList<AiImageRoster> rosterImages;
 	
-	/**
-	 * The roster text.
-	 */
 	private Map<AiImageRoster,Text> rosterText;
 	
 	private CombatMembersManager combatMembersManager;
 	private TurnProcess turnProcess;
 	private AiCrowd aiCrowd;
 	
-	/**
-	 * Instantiates a new ally roster.
-	 */
 	public AllyRoster(AiCrowd aiCrowd, CombatMembersManager combatMembersManager, TurnProcess turnProcess){
 		super(true);
 		
@@ -85,9 +56,6 @@ public class AllyRoster extends Crowd {
 		this.turnProcess = turnProcess;
 	}
 	
-	/**
-	 * Generate portraits.
-	 */
 	public void generatePortraits(){
 		
 		portraitY = 0;
@@ -120,7 +88,7 @@ public class AllyRoster extends Crowd {
 			this.addButton(rosterImages.get(i));
 			
 			// text to show hotkey to select ai
-			Text text = new Text( backdrop.getLocationCentre()[0] - 18,
+			Text text = new Text(backdrop.getLocationCentre()[0] - 18,
 								 backdrop.getSize()[1] + backdrop.getLocation()[1] - 8,
 								 new Integer(i + 1).toString());
 			rosterText.put(rosterImages.get(i),text);
@@ -130,13 +98,9 @@ public class AllyRoster extends Crowd {
 		}
 	}
 	
-	/**
-	 * Update masks.
-	 */
 	public void updateMasks(){
 		
 		Ai currentAi = turnProcess.getTopAi();
-		
 		
 		for(int i = 0; i < rosterImages.size(); i++){
 			rosterImages.get(i).updateMask();

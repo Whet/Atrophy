@@ -68,6 +68,10 @@ public class LineDrawer implements Displayable{
 		this.combatVisualManager = combatVisualManager;
 		this.combatMembersManager = combatMembersManager;
 		this.levelManager = levelManager;
+		
+		shadowPolygon = new Polygon();
+		lightPolygon = new Polygon();
+		
 	}
 
 	public void makeMap() {
@@ -386,8 +390,8 @@ public class LineDrawer implements Displayable{
 	
 	public void updateFovLight(Ai ai) {
 		
-		shadowPolygon = new Polygon();
-		lightPolygon = new Polygon();
+		shadowPolygon.reset();
+		lightPolygon.reset();
 		
 		int[] playerLoc = new int[]{(int) ai.getLocation()[0], (int) ai.getLocation()[1]};
 		
@@ -405,7 +409,6 @@ public class LineDrawer implements Displayable{
 			else {
 				int[] lastPointOverCover = CombatVisualManager.getLastPointOverCover(playerLoc, Math.toRadians(i), ai.getLevelBlock());
 				if(CombatVisualManager.spotFovNoRadius(ai, new double[]{lastPointOverCover[0], lastPointOverCover[1]})) {		
-					
 					lightPolygon.addPoint(lastPointOverCover[0], lastPointOverCover[1]);
 				}
 				else{

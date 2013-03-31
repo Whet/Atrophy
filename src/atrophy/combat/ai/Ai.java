@@ -213,7 +213,7 @@ public class Ai implements Lootable{
 		this.setOldAction(this.getAction());
 		this.setOldActionTurns(this.getActionTurns());
 		
-		turnProcess.currentAiDone(false);
+		turnProcess.currentAiDone(this.isSkippingTurns());
 	}
 
 	public int getIncapTurns() {
@@ -610,19 +610,16 @@ public class Ai implements Lootable{
 	}
 	
 	public void setDead(boolean dead) {
-		this.dead = dead;
-		
 		// Make sure dead unit show smashed helmet
-		if(this.dead){	
+		if(dead && !this.dead){	
 			
 			this.setTargetAi(null); 
 			this.setSkippingTurns(true);
 			
-			if(!this.image.endsWith("Dead")){
-				this.setImage(image + "Dead");
-				floatingIcons.addPendingPaint(MapPainter.BLOOD_TEXTURES[(new Random()).nextInt(MapPainter.BLOOD_TEXTURES.length)], this.getLocation(), 0.5 + (new Random().nextInt(5) * 0.1));
-			}
+			floatingIcons.addPendingPaint(MapPainter.BLOOD_TEXTURES[(new Random()).nextInt(MapPainter.BLOOD_TEXTURES.length)], this.getLocation(), 0.5 + (new Random().nextInt(5) * 0.1));
 		}
+		
+		this.dead = dead;
 		
 	}
 	

@@ -31,6 +31,7 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 	
 	private int frame, maxFrame;
 	private Animation animation;
+	private boolean imageChanged;
 	
 	public AiImage(AiCrowd aiCrowd, CombatMembersManager combatMembersManager, CombatUiManager combatUiManager, CombatVisualManager combatVisualManager, PanningManager panningManager, double x, double y, MouseAbilityHandler mouseAbilityHandler){
 		super(aiCrowd, combatMembersManager, null, x, y);
@@ -44,6 +45,7 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 		this.animation = Animation.IDLE;
 		this.frame = 0;
 		this.maxFrame = 1;
+		this.imageChanged = false;
 	}
 	
 	@Override
@@ -65,6 +67,7 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 			this.setZ(1);
 			// Cancel stealth effect
 			this.setAlpha(1.0f);
+			this.setAnimation(Animation.DEAD, 1);
 		}
 		
 		this.applyEffects();
@@ -75,6 +78,7 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 			this.setZ(1);
 			// Cancel stealth effect
 			this.setAlpha(1.0f);
+			this.setAnimation(Animation.DEAD, 1);
 		}
 		
 		this.applyEffects();
@@ -229,17 +233,29 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 		super.setAi(aiObject);
 		updateAnimation();
 	}
+	
+	private void setAnimation(Animation animation, int maxFrame) {
+		this.frame = 0;
+		this.maxFrame = maxFrame;
+		this.animation = animation;
+		this.imageChanged = true;
+	}
 
 	public void updateAnimation() {
-		this.frame++;
+		
+		if(!this.getAi().isDead())
+			this.frame++;
 
-		if(this.frame == maxFrame) {
-			this.frame = 0;
-			this.animation = Animation.IDLE;
-			this.maxFrame = 4;
+		if(this.frame == maxFrame && !this.getAi().isDead()) {
+			this.setAnimation(animation, 4);
 		}
 		
-		this.setImage(aiCrowd.getBankedImage(this.getAi().getImage() + "Full", frame, animation));
+		this.setImage(aiCrowd.getAnimationFrame(this.getAi().getImage() + "Full", frame, animation));
+		
+		if(imageChanged) {
+			this.imageChanged = false;
+			this.setLocation(this.getAi().getLocation()[0] - (this.getSize()[0] * 0.5), this.getAi().getLocation()[1] - (this.getSize()[1] * 0.68));
+		}
 	}
 	
 }

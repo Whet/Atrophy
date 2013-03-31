@@ -45,7 +45,12 @@ public class AiImageRoster extends ButtonSingle {
 	 * Update mask.
 	 */
 	public void updateMask(){
-		this.setImage(aiCrowd.getBankedImage(aiObject.getImage()));
+		String image = aiObject.getImage();
+		
+		if(aiObject.isDead())
+			image = image + "Dead";
+		
+		this.setImage(aiCrowd.getPortraitImage(image));
 	}
 	
 	/* (non-Javadoc)

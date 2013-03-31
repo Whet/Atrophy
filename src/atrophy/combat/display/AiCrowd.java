@@ -13,7 +13,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Random;
 import java.util.Stack;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -29,46 +28,23 @@ import atrophy.combat.ai.VehicleAi;
 import atrophy.gameMenu.saveFile.Squad;
 import atrophy.gameMenu.saveFile.Squad.Squaddie;
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class AiCrowd.
- */
 public class AiCrowd extends Crowd {
 	
 	private static final int ANIMATION_FRAME_LENGTH = 300;
 
-	/**
-	 * The actors.
-	 */
 	private ArrayList<Ai> actors;
-	
-	/**
-	 * The masks.
-	 */
 	private ArrayList<AiImage> masks;
 	
-	/**
-	 * The master stack.
-	 */
 	private Stack<Ai> masterStack;
-	
-	/**
-	 * The shuffled stack.
-	 */
 	private Stack<Ai> shuffledStack;
 	
-	private Squad squad;
-
 	private Map<String, BufferedImage> images;
-
 	private Map<String, AnimationBlob> animations;
+	
+	private Squad squad;
 	
 	private static Timer animationTimer;
 	
-	/**
-	 * Instantiates a new ai crowd.
-	 * @param squadMenu 
-	 */
 	public AiCrowd(Squad squad) {
 		super(false);
 		images = new HashMap<>();
@@ -179,53 +155,53 @@ public class AiCrowd extends Crowd {
 	private void loadAnimations() {
 		try{
 			
-			final Animation[] ANIMATION_ORDER = {Animation.IDLE};
+			final Animation[] ANIMATION_ORDER = {Animation.DEAD, Animation.IDLE};
 			
 			final int BODY_TILE_WIDTH = 33;
 			
 			final String AF = "images/atrophy/combat/heads/animations/";
 			
-			String[] head1Files = {AF+"idleSpritesheet.png"};
+			String[] head1Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet.png"};
 			AnimationBlob head1Blob = new AnimationBlob(ANIMATION_ORDER, head1Files, BODY_TILE_WIDTH);
 			this.animations.put("BeardHeadFull", head1Blob);
 			
-			String[] head2Files = {AF+"idleSpritesheet.png"};
+			String[] head2Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet.png"};
 			AnimationBlob head2Blob = new AnimationBlob(ANIMATION_ORDER, head2Files, BODY_TILE_WIDTH);
 			this.animations.put("MessyHeadFull", head2Blob);
 			
-			String[] head3Files = {AF+"idleSpritesheet.png"};
+			String[] head3Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet.png"};
 			AnimationBlob head3Blob = new AnimationBlob(ANIMATION_ORDER, head3Files, BODY_TILE_WIDTH);
 			this.animations.put("NazcaHeadFull", head3Blob);
 			
-			String[] head4Files = {AF+"idleSpriteSheet.png"};
+			String[] head4Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet.png"};
 			AnimationBlob head4Blob = new AnimationBlob(ANIMATION_ORDER, head4Files, BODY_TILE_WIDTH);
 			this.animations.put("PlainHeadFull", head4Blob);
 			
-			String[] head5Files = {AF+"idleSpritesheet.png"};
+			String[] head5Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet.png"};
 			AnimationBlob head5Blob = new AnimationBlob(ANIMATION_ORDER, head5Files, BODY_TILE_WIDTH);
 			this.animations.put("RazielFull", head5Blob);
 			
-			String[] head6Files = {AF+"idleSpritesheet.png"};
+			String[] head6Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet.png"};
 			AnimationBlob head6Blob = new AnimationBlob(ANIMATION_ORDER, head6Files, BODY_TILE_WIDTH);
 			this.animations.put("StripeHeadFull", head6Blob);
 			
-			String[] head7Files = {AF+"idleSpritesheet.png"};
+			String[] head7Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet.png"};
 			AnimationBlob head7Blob = new AnimationBlob(ANIMATION_ORDER, head7Files, BODY_TILE_WIDTH);
 			this.animations.put("EngineerFull", head7Blob);
 			
-			String[] head8Files = {AF+"idleSpritesheet.png"};
+			String[] head8Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet.png"};
 			AnimationBlob head8Blob = new AnimationBlob(ANIMATION_ORDER, head8Files, BODY_TILE_WIDTH);
 			this.animations.put("SensorFull", head8Blob);
 			
-			String[] head9Files = {AF+"idleSpritesheet.png"};
+			String[] head9Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet.png"};
 			AnimationBlob head9Blob = new AnimationBlob(ANIMATION_ORDER, head9Files, BODY_TILE_WIDTH);
 			this.animations.put("StealthedFull", head9Blob);
 			
-			String[] head10Files = {AF+"idleSpritesheet.png"};
+			String[] head10Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet.png"};
 			AnimationBlob head10Blob = new AnimationBlob(ANIMATION_ORDER, head10Files, BODY_TILE_WIDTH);
 			this.animations.put("ScoutFull", head10Blob);
 			
-			String[] head11Files = {AF+"idleSpritesheet.png"};
+			String[] head11Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet.png"};
 			AnimationBlob head11Blob = new AnimationBlob(ANIMATION_ORDER, head11Files, BODY_TILE_WIDTH);
 			this.animations.put("ArmourFull", head11Blob);
 			
@@ -250,11 +226,6 @@ public class AiCrowd extends Crowd {
 		return shuffledList;
 	}
 	
-	/**
-	 * Gets the shuffled stack.
-	 *
-	 * @return the shuffled stack
-	 */
 	public Stack<Ai> getShuffledStack() {
 		
 		if(this.masterStack == null || this.masterStack.size() == 0){
@@ -276,10 +247,6 @@ public class AiCrowd extends Crowd {
 		return shuffledStack;
 	}
 	
-	// Overriden method, makes it so each click only selects one unit
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Crowd#mC(java.awt.Point, java.awt.event.MouseEvent)
-	 */
 	@Override
 	public boolean mC(Point mousePosition, MouseEvent e) {
 		if(this.isActive()){
@@ -295,15 +262,6 @@ public class AiCrowd extends Crowd {
 		return false;
 	}
 	
-	// Getters
-	
-	// get actor by their name
-	/**
-	 * Gets the actor.
-	 *
-	 * @param tag the tag
-	 * @return the actor
-	 */
 	public Ai getActor(String tag){
 		int i;
 		
@@ -315,33 +273,15 @@ public class AiCrowd extends Crowd {
 		
 		return actors.get(i);
 	}
-	// get actor by position in array
-	/**
-	 * Gets the actor.
-	 *
-	 * @param i the i
-	 * @return the actor
-	 */
+
 	public Ai getActor(int i){
 		return actors.get(i);
 	}
 	
-	/**
-	 * Gets the actor count.
-	 *
-	 * @return the actor count
-	 */
 	public int getActorCount(){
 		return actors.size();
 	}
 	
-	// gets mask of an ai
-	/**
-	 * Gets the actor mask.
-	 *
-	 * @param ai the ai
-	 * @return the actor mask
-	 */
 	public AiImage getActorMask(Ai ai){
 		int i;
 		
@@ -354,73 +294,27 @@ public class AiCrowd extends Crowd {
 		return this.masks.get(i);
 	}
 	
-	/**
-	 * Gets the mask.
-	 *
-	 * @param i the i
-	 * @return the mask
-	 */
 	public AiImage getMask(int i){
 		return masks.get(i);
 	}
 	
-	/**
-	 * Gets the actors.
-	 *
-	 * @return the actors
-	 */
 	public ArrayList<Ai> getActors(){
 		return this.actors;
 	}
 	
-	
-	// Setters
-	/**
-	 * Adds the actor.
-	 *
-	 * @param ai the ai
-	 */
 	public void addActor(Ai ai){
 		actors.add(ai);
 	}
 	
-	/**
-	 * Adds the mask.
-	 *
-	 * @param aiImg the ai img
-	 */
 	public void addMask(AiImage aiImg){
 		masks.add(aiImg);
 		aiImg.updateImage();
 	}
 
-	/**
-	 * Gets the masks.
-	 *
-	 * @return the masks
-	 */
 	public ArrayList<AiImage> getMasks() {
 		return this.masks;
 	}
 
-	/**
-	 * Random ai.
-	 *
-	 * @param excludeAi the exclude ai
-	 * @return the ai
-	 */
-	public Ai randomAi(Ai excludeAi) {
-		Ai returnAi;
-		do{
-			returnAi = actors.get(new Random().nextInt(actors.size()));
-		}
-		while(returnAi == excludeAi);
-		return returnAi;
-	}
-
-	/**
-	 * Save to squad.
-	 */
 	public Squad saveToSquad() {
 		Squad squad = new Squad();
 		
@@ -458,12 +352,6 @@ public class AiCrowd extends Crowd {
 		
 	}
 
-	/**
-	 * Replace ai.
-	 *
-	 * @param thinkingAi the thinking ai
-	 * @param playerAi the player ai
-	 */
 	public void replaceAi(ThinkingAi thinkingAi, Ai playerAi) {
 		for(int i = 0; i < masterStack.size(); i++){
 			if(masterStack.get(i) == thinkingAi){
@@ -472,7 +360,7 @@ public class AiCrowd extends Crowd {
 		}
 	}
 
-	public BufferedImage getBankedImage(String image) {
+	public BufferedImage getPortraitImage(String image) {
 		return this.images.get(image);
 	}
 
@@ -482,7 +370,7 @@ public class AiCrowd extends Crowd {
 		}
 	}
 
-	public BufferedImage getBankedImage(String image, int frame, Animation animation) {
+	public BufferedImage getAnimationFrame(String image, int frame, Animation animation) {
 		return this.animations.get(image).getFrame(frame, animation);
 	}
 	
@@ -501,10 +389,18 @@ public class AiCrowd extends Crowd {
 				
 				BufferedImage spriteSheet = ImageIO.read(ReadWriter.getResourceAsInputStream(files[i]));
 				
-				img = new BufferedImage[spriteSheet.getWidth() / tileWidth];
-				
-				for(int k = 0; k < spriteSheet.getWidth(); k+= tileWidth) {
-					img[k / tileWidth] = spriteSheet.getSubimage(k, 0, tileWidth, spriteSheet.getHeight());
+				// Dead image comes first and is not animated
+				if(i > 0) {
+					img = new BufferedImage[spriteSheet.getWidth() / tileWidth];
+					
+					for(int k = 0; k < spriteSheet.getWidth(); k+= tileWidth) {
+						img[k / tileWidth] = spriteSheet.getSubimage(k, 0, tileWidth, spriteSheet.getHeight());
+					}
+					
+				}
+				else {
+					img = new BufferedImage[1];
+					img[0] = spriteSheet;
 				}
 				
 				this.animations.put(ANIMATION_ORDER[animationIndex], img);

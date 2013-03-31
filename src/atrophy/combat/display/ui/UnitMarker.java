@@ -9,7 +9,6 @@ import java.awt.image.BufferedImage;
 
 import watoydoEngine.designObjects.display.ImageSingle;
 import atrophy.combat.CombatMembersManager;
-import atrophy.combat.CombatUiManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.display.AiCrowd;
 
@@ -21,7 +20,6 @@ public class UnitMarker extends ImageSingle {
 
 	private PanningManager panningManager;
 	private CombatMembersManager combatMembersManager;
-	private CombatUiManager combatUiManager;
 	private AiCrowd aiCrowd;
 	
 	/**
@@ -29,11 +27,10 @@ public class UnitMarker extends ImageSingle {
 	 *
 	 * @param image the image
 	 */
-	public UnitMarker(AiCrowd aiCrowd, PanningManager panningManager, CombatMembersManager combatMembersManager, CombatUiManager combatUiManager, BufferedImage image){
+	public UnitMarker(AiCrowd aiCrowd, PanningManager panningManager, CombatMembersManager combatMembersManager, BufferedImage image){
 		super("UnitMarker",image,true);
 		this.panningManager = panningManager;
 		this.combatMembersManager = combatMembersManager;
-		this.combatUiManager = combatUiManager;
 		this.aiCrowd = aiCrowd;
 	}
 	
