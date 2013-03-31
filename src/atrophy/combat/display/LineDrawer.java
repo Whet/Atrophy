@@ -22,6 +22,7 @@ import javax.imageio.ImageIO;
 import watoydoEngine.designObjects.display.Displayable;
 import watoydoEngine.display.tweens.TweenDefinable;
 import watoydoEngine.gubbinz.GraphicsFunctions;
+import watoydoEngine.gubbinz.Maths;
 import watoydoEngine.io.ReadWriter;
 import watoydoEngine.workings.DisplayManager;
 import atrophy.combat.CombatMembersManager;
@@ -394,28 +395,34 @@ public class LineDrawer implements Displayable{
 		lightPolygon.reset();
 		
 		int[] playerLoc = new int[]{(int) ai.getLocation()[0], (int) ai.getLocation()[1]};
+		boolean placedAtPlayer = false;
 		
-		for(double i = 0; i < 360; i+=0.5) {
-			if(ai.isIgnoringLOS()) {
+		if(ai.isIgnoringLOS()) {
+			for(double i = 0; i < 360; i += 0.5) {
 				int[] lastPointNoCover = CombatVisualManager.getLastPointNoCover(playerLoc, Math.toRadians(i), ai.getLevelBlock());
 				
-				if(CombatVisualManager.spotFovNoRadius(ai, new double[]{lastPointNoCover[0], lastPointNoCover[1]})) {			
+				if(CombatVisualManager.spotFovNoRadius(ai, new double[]{lastPointNoCover[0], lastPointNoCover[1]})) {
 					lightPolygon.addPoint(lastPointNoCover[0], lastPointNoCover[1]);
+					placedAtPlayer = false;
 				}
-				else{
+				else if(!placedAtPlayer){
 					lightPolygon.addPoint(playerLoc[0], playerLoc[1]);
+					placedAtPlayer = true;
 				}
 			}
-			else {
+		}
+		else {
+			for(double i = 0; i < 360; i += 0.5) {
 				int[] lastPointOverCover = CombatVisualManager.getLastPointOverCover(playerLoc, Math.toRadians(i), ai.getLevelBlock());
-				if(CombatVisualManager.spotFovNoRadius(ai, new double[]{lastPointOverCover[0], lastPointOverCover[1]})) {		
+				if(CombatVisualManager.spotFovNoRadius(ai, new double[]{lastPointOverCover[0], lastPointOverCover[1]})) {
 					lightPolygon.addPoint(lastPointOverCover[0], lastPointOverCover[1]);
+					placedAtPlayer = false;
 				}
-				else{
+				else if(!placedAtPlayer){
 					lightPolygon.addPoint(playerLoc[0], playerLoc[1]);
+					placedAtPlayer = true;
 				}
 			}
-			
 		}
 		
 		for(int i = 0; i < ai.getLevelBlock().getHitBox().npoints; i++) {
@@ -423,6 +430,8 @@ public class LineDrawer implements Displayable{
 			int y = ai.getLevelBlock().getHitBox().ypoints[i];
 			shadowPolygon.addPoint(x, y);
 		}
+		
+		System.out.println("Lightpoly points: " + lightPolygon.npoints);
 		
 	}
 	
