@@ -204,14 +204,6 @@ public class CharacterCreateMenu extends Crowd{
 		TechTree techTree = new TechTree();
 		StashManager stashManager = new StashManager(null);
 		Missions missions = new Missions();
-		
-		for(int i = 0; i < 100; i++){
-			stashManager.addItem(WeaponSupply.NAME);
-			stashManager.addItem(ScienceSupply.NAME);
-			stashManager.addItem(MedicalSupply.NAME);
-			stashManager.addItem(EngineeringSupply.NAME);
-		}
-		
 		ActivePane.getInstance().changePane(new Crowd(new GameMenuHardPane(squad, techTree, stashManager, missions)));
 	}
 	
