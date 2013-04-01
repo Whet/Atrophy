@@ -7,6 +7,8 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import watoydoEngine.display.tweens.MotionTween;
 import watoydoEngine.gubbinz.Maths;
@@ -18,10 +20,35 @@ import atrophy.combat.actions.CombatKeyboardHandler;
 import atrophy.combat.actions.MouseAbilityHandler;
 import atrophy.combat.ai.Ai;
 import atrophy.combat.display.ui.InfoTextDisplayable;
+import atrophy.combat.items.Harpoon1;
+import atrophy.combat.items.Harpoon2;
+import atrophy.combat.items.MeleeWeapon1;
+import atrophy.combat.items.MeleeWeapon2;
+import atrophy.combat.items.Pistol1;
+import atrophy.combat.items.Pistol2;
+import atrophy.combat.items.Pistol3;
+import atrophy.combat.items.Pistol4;
+import atrophy.combat.items.Plasma1;
+import atrophy.combat.items.Plasma2;
+import atrophy.combat.items.Railgun;
+import atrophy.combat.items.Shotgun1;
 
 public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 	
-	private static final double Y_OFFSET_MULTIPLIER = 0.86;
+	private static final Map<Animation, double[]> ANIMATION_OFFSETS = new HashMap<>();
+	
+	{
+		ANIMATION_OFFSETS.put(Animation.DEAD, 		new double[]{0.5, 0.86});
+		ANIMATION_OFFSETS.put(Animation.WALK, 		new double[]{0.5, 0.86});
+		ANIMATION_OFFSETS.put(Animation.IDLE_MELEE, new double[]{0.5, 0.86});
+		ANIMATION_OFFSETS.put(Animation.IDLE_WEP1, 	new double[]{0.40, 0.86});
+		ANIMATION_OFFSETS.put(Animation.IDLE_WEP2, 	new double[]{0.28, 0.74});
+		ANIMATION_OFFSETS.put(Animation.IDLE_WEP3, 	new double[]{0.25, 0.74});
+	}
+	
+	private double xOffset = 0.5;
+	private double yOffset = 0.86;
+	
 	private PanningManager panningManager;
 	private CombatUiManager combatUiManager;
 	private AiCrowd aiCrowd;
@@ -42,8 +69,7 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 		this.combatUiManager = combatUiManager;
 		this.combatVisualManager = combatVisualManager;
 		this.mouseAbilityHandler = mouseAbilityHandler;
-		
-		this.animation = Animation.IDLE;
+		this.animation = Animation.IDLE_MELEE;
 		this.frame = 0;
 		this.maxFrame = 1;
 		this.imageChanged = false;
@@ -51,8 +77,8 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 	
 	@Override
 	public AffineTransform getTransformationForDrawing(){
-		super.getTransformation().setToTranslation(this.getLocation()[0] + panningManager.getOffset()[0],
-												   this.getLocation()[1] + panningManager.getOffset()[1]);
+		super.getTransformation().setToTranslation(this.getLocation()[0] - (this.getSize()[0] * xOffset) + panningManager.getOffset()[0],
+												   this.getLocation()[1] - (this.getSize()[1] * yOffset) + panningManager.getOffset()[1]);
 		super.getTransformation().scale(this.getScale(),this.getScale());
 		super.getTransformation().rotate(this.getRotation(), this.getSize()[0] / 2, this.getSize()[1] / 2);
 		
@@ -60,6 +86,7 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 	}
 
 	public void updateImage(){
+		this.setTween(null);
 		dragging = false;
 		combatVisualManager.setDraggableAi(null);
 		
@@ -73,7 +100,7 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 		}
 		
 		this.applyEffects();
-//		this.setLocation(this.getAi().getLocation()[0] - (this.getSize()[0] * 0.5), this.getAi().getLocation()[1] - (this.getSize()[1] * Y_OFFSET_MULTIPLIER));
+		this.setLocation(this.getAi().getLocation()[0], this.getAi().getLocation()[1]);
 	}
 	
 	public void updateMask(){
@@ -84,15 +111,18 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 			
 			this.setAnimation(Animation.DEAD, 1);
 			this.updateAnimation();
-			this.setLocation(this.getAi().getLocation()[0] - (this.getSize()[0] * 0.5), this.getAi().getLocation()[1] - (this.getSize()[1] * Y_OFFSET_MULTIPLIER));
+			this.setLocation(this.getAi().getLocation()[0], this.getAi().getLocation()[1]);
 		}
 		
 		this.applyEffects();
 	}
 	
 	public void updateTween(){
-		this.setTween(new MotionTween(this, this.getAi().getLocation()[0] - (this.getSize()[0] * 0.5), this.getAi().getLocation()[1] - (this.getSize()[1] * Y_OFFSET_MULTIPLIER), 24000, true));
-		this.setAnimation(Animation.WALK, 9);
+		if(Maths.getDistance(this.getLocation()[0], this.getLocation()[1],
+							 this.getAi().getLocation()[0], this.getAi().getLocation()[1]) > 1) {
+			this.setTween(new MotionTween(this, this.getAi().getLocation()[0], this.getAi().getLocation()[1], 18000, true));
+			this.setAnimation(Animation.WALK, 9);
+		}
 	}
 	
 	@Override
@@ -106,8 +136,8 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 			}
 			
 			if(dragging){
-				this.setLocation(mousePosition.x - this.getSize()[0] * 0.5 - panningManager.getOffset()[0],
-						         mousePosition.y - this.getSize()[1] * 0.5 - panningManager.getOffset()[1]);
+				this.setLocation(mousePosition.x - panningManager.getOffset()[0],
+						         mousePosition.y - panningManager.getOffset()[1]);
 				combatUiManager.updateUi();
 			}
 		}
@@ -123,8 +153,8 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 		}
 		
 		if(dragging){
-			this.setLocation(mousePosition.x - this.getSize()[0] * 0.5 - panningManager.getOffset()[0],
-					         mousePosition.y - this.getSize()[1] * 0.5 - panningManager.getOffset()[1]);
+			this.setLocation(mousePosition.x - panningManager.getOffset()[0],
+					         mousePosition.y - panningManager.getOffset()[1]);
 			combatUiManager.updateUi();
 		}
 	}
@@ -200,8 +230,14 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 
 	@Override
 	public boolean isInBounds(double x, double y){
-		return super.isInBounds(x - panningManager.getOffset()[0],
-								y - panningManager.getOffset()[1]);
+		return super.isInBounds(x + (this.getSize()[0] * xOffset) - panningManager.getOffset()[0],
+								y + (this.getSize()[1] * yOffset) - panningManager.getOffset()[1]);
+	}
+	
+	@Override
+	public double[] getLocationCentre(){
+		double editedLocation[] = {this.getLocation()[0] - (this.getSize()[0] * xOffset * 0.5), this.getLocation()[1] - (this.getSize()[1] * yOffset * 0.5)};
+		return editedLocation;
 	}
 	
 	public String getUiHint(){
@@ -245,11 +281,15 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 		this.frame = 0;
 		this.maxFrame = maxFrame;
 		
+		double[] animationOffset = ANIMATION_OFFSETS.get(animation);
+		this.xOffset = animationOffset[0];
+		this.yOffset = animationOffset[1];
+		
 		if(!this.animation.equals(animation) && !animation.equals(Animation.WALK)) {
+//			System.out.println("Animation change: " + this.animation + " -> " + animation);
 			this.imageChanged = true;
-			this.updateAnimation();
 			this.setTween(null);
-			this.setLocation(this.getAi().getLocation()[0] - (this.getSize()[0] * 0.5), this.getAi().getLocation()[1] - (this.getSize()[1] * Y_OFFSET_MULTIPLIER));
+			this.setLocation(this.getAi().getLocation()[0], this.getAi().getLocation()[1]);
 		}
 		
 		this.animation = animation;
@@ -261,14 +301,44 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 			this.frame++;
 
 		if(this.frame == maxFrame && !this.getAi().isDead()) {
-			this.setAnimation(Animation.IDLE, 4);
+			this.setAnimation(this.getIdleAnimation(), 4);
 		}
 		
 		this.setImage(aiCrowd.getAnimationFrame(this.getAi().getImage() + "Full", frame, animation));
 		
 		if(imageChanged) {
 			this.imageChanged = false;
-			this.setLocation(this.getAi().getLocation()[0] - (this.getSize()[0] * 0.5), this.getAi().getLocation()[1] - (this.getSize()[1] * Y_OFFSET_MULTIPLIER));
+			updateImage();
+		}
+	}
+
+	private Animation getIdleAnimation() {
+		String weapon = this.getAi().getWeapon().getName();
+		
+		switch(weapon) {
+			case MeleeWeapon1.NAME:
+			case MeleeWeapon2.NAME:
+				return Animation.IDLE_MELEE;
+				
+			case Harpoon1.NAME:
+			case Harpoon2.NAME:
+				return Animation.IDLE_WEP2;
+				
+			case Pistol1.NAME:
+			case Pistol2.NAME:
+			case Pistol3.NAME:
+			case Pistol4.NAME:
+				return Animation.IDLE_WEP1;
+				
+			case Plasma1.NAME:
+			case Plasma2.NAME:
+			case Shotgun1.NAME:
+			case Railgun.NAME:
+				return Animation.IDLE_WEP3;
+				
+			default:
+				return Animation.IDLE_MELEE;
+			
 		}
 	}
 	

@@ -155,54 +155,54 @@ public class AiCrowd extends Crowd {
 	private void loadAnimations() {
 		try{
 			
-			final Animation[] ANIMATION_ORDER = {Animation.DEAD, Animation.IDLE, Animation.WALK};
+			final Animation[] ANIMATION_ORDER = {Animation.DEAD, Animation.IDLE_MELEE, Animation.IDLE_WEP1, Animation.IDLE_WEP2, Animation.IDLE_WEP3, Animation.WALK};
 			
-			final int BODY_TILE_WIDTH = 33;
+			final int[] TILE_WIDTHS = {66, 43, 39, 72, 74, 33};
 			
 			final String AF = "images/atrophy/combat/heads/animations/";
 			
-			String[] head1Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet.png", AF+"walkSpriteSheet.png"};
-			AnimationBlob head1Blob = new AnimationBlob(ANIMATION_ORDER, head1Files, BODY_TILE_WIDTH);
+			String[] head1Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet1.png", AF+"idleSpritesheet2.png", AF+"idleSpritesheet3.png", AF+"idleSpritesheet4.png", AF+"walkSpriteSheet.png"};
+			AnimationBlob head1Blob = new AnimationBlob(ANIMATION_ORDER, head1Files, TILE_WIDTHS);
 			this.animations.put("BeardHeadFull", head1Blob);
 			
-			String[] head2Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet.png", AF+"walkSpriteSheet.png"};
-			AnimationBlob head2Blob = new AnimationBlob(ANIMATION_ORDER, head2Files, BODY_TILE_WIDTH);
+			String[] head2Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet1.png", AF+"idleSpritesheet2.png", AF+"idleSpritesheet3.png", AF+"idleSpritesheet4.png", AF+"walkSpriteSheet.png"};
+			AnimationBlob head2Blob = new AnimationBlob(ANIMATION_ORDER, head2Files, TILE_WIDTHS);
 			this.animations.put("MessyHeadFull", head2Blob);
 			
-			String[] head3Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet.png", AF+"walkSpriteSheet.png"};
-			AnimationBlob head3Blob = new AnimationBlob(ANIMATION_ORDER, head3Files, BODY_TILE_WIDTH);
+			String[] head3Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet1.png", AF+"idleSpritesheet2.png", AF+"idleSpritesheet3.png", AF+"idleSpritesheet4.png", AF+"walkSpriteSheet.png"};
+			AnimationBlob head3Blob = new AnimationBlob(ANIMATION_ORDER, head3Files, TILE_WIDTHS);
 			this.animations.put("NazcaHeadFull", head3Blob);
 			
-			String[] head4Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet.png", AF+"walkSpriteSheet.png"};
-			AnimationBlob head4Blob = new AnimationBlob(ANIMATION_ORDER, head4Files, BODY_TILE_WIDTH);
+			String[] head4Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet1.png", AF+"idleSpritesheet2.png", AF+"idleSpritesheet3.png", AF+"idleSpritesheet4.png", AF+"walkSpriteSheet.png"};
+			AnimationBlob head4Blob = new AnimationBlob(ANIMATION_ORDER, head4Files, TILE_WIDTHS);
 			this.animations.put("PlainHeadFull", head4Blob);
 			
-			String[] head5Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet.png", AF+"walkSpriteSheet.png"};
-			AnimationBlob head5Blob = new AnimationBlob(ANIMATION_ORDER, head5Files, BODY_TILE_WIDTH);
+			String[] head5Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet1.png", AF+"idleSpritesheet2.png", AF+"idleSpritesheet3.png", AF+"idleSpritesheet4.png", AF+"walkSpriteSheet.png"};
+			AnimationBlob head5Blob = new AnimationBlob(ANIMATION_ORDER, head5Files, TILE_WIDTHS);
 			this.animations.put("RazielFull", head5Blob);
 			
-			String[] head6Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet.png", AF+"walkSpriteSheet.png"};
-			AnimationBlob head6Blob = new AnimationBlob(ANIMATION_ORDER, head6Files, BODY_TILE_WIDTH);
+			String[] head6Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet1.png", AF+"idleSpritesheet2.png", AF+"idleSpritesheet3.png", AF+"idleSpritesheet4.png", AF+"walkSpriteSheet.png"};
+			AnimationBlob head6Blob = new AnimationBlob(ANIMATION_ORDER, head6Files, TILE_WIDTHS);
 			this.animations.put("StripeHeadFull", head6Blob);
 			
-			String[] head7Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet.png", AF+"walkSpriteSheet.png"};
-			AnimationBlob head7Blob = new AnimationBlob(ANIMATION_ORDER, head7Files, BODY_TILE_WIDTH);
+			String[] head7Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet1.png", AF+"idleSpritesheet2.png", AF+"idleSpritesheet3.png", AF+"idleSpritesheet4.png", AF+"walkSpriteSheet.png"};
+			AnimationBlob head7Blob = new AnimationBlob(ANIMATION_ORDER, head7Files, TILE_WIDTHS);
 			this.animations.put("EngineerFull", head7Blob);
 			
-			String[] head8Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet.png", AF+"walkSpriteSheet.png"};
-			AnimationBlob head8Blob = new AnimationBlob(ANIMATION_ORDER, head8Files, BODY_TILE_WIDTH);
+			String[] head8Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet1.png", AF+"idleSpritesheet2.png", AF+"idleSpritesheet3.png", AF+"idleSpritesheet4.png", AF+"walkSpriteSheet.png"};
+			AnimationBlob head8Blob = new AnimationBlob(ANIMATION_ORDER, head8Files, TILE_WIDTHS);
 			this.animations.put("SensorFull", head8Blob);
 			
-			String[] head9Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet.png", AF+"walkSpriteSheet.png"};
-			AnimationBlob head9Blob = new AnimationBlob(ANIMATION_ORDER, head9Files, BODY_TILE_WIDTH);
+			String[] head9Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet1.png", AF+"idleSpritesheet2.png", AF+"idleSpritesheet3.png", AF+"idleSpritesheet4.png", AF+"walkSpriteSheet.png"};
+			AnimationBlob head9Blob = new AnimationBlob(ANIMATION_ORDER, head9Files, TILE_WIDTHS);
 			this.animations.put("StealthedFull", head9Blob);
 			
-			String[] head10Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet.png", AF+"walkSpriteSheet.png"};
-			AnimationBlob head10Blob = new AnimationBlob(ANIMATION_ORDER, head10Files, BODY_TILE_WIDTH);
+			String[] head10Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet1.png", AF+"idleSpritesheet2.png", AF+"idleSpritesheet3.png", AF+"idleSpritesheet4.png", AF+"walkSpriteSheet.png"};
+			AnimationBlob head10Blob = new AnimationBlob(ANIMATION_ORDER, head10Files, TILE_WIDTHS);
 			this.animations.put("ScoutFull", head10Blob);
 			
-			String[] head11Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet.png", AF+"walkSpriteSheet.png"};
-			AnimationBlob head11Blob = new AnimationBlob(ANIMATION_ORDER, head11Files, BODY_TILE_WIDTH);
+			String[] head11Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet1.png", AF+"idleSpritesheet2.png", AF+"idleSpritesheet3.png", AF+"idleSpritesheet4.png", AF+"walkSpriteSheet.png"};
+			AnimationBlob head11Blob = new AnimationBlob(ANIMATION_ORDER, head11Files, TILE_WIDTHS);
 			this.animations.put("ArmourFull", head11Blob);
 			
 		}
@@ -378,7 +378,7 @@ public class AiCrowd extends Crowd {
 		
 		private Map<Animation, BufferedImage[]> animations;
 		
-		public AnimationBlob(final Animation[] ANIMATION_ORDER, String[] files, int tileWidth) throws FileNotFoundException, IOException {
+		public AnimationBlob(final Animation[] ANIMATION_ORDER, String[] files, int[] tileWidths) throws FileNotFoundException, IOException {
 			this.animations = new HashMap<>();
 			
 			int animationIndex = 0;
@@ -389,18 +389,12 @@ public class AiCrowd extends Crowd {
 				
 				BufferedImage spriteSheet = ImageIO.read(ReadWriter.getResourceAsInputStream(files[i]));
 				
-				// Dead image comes first and is not animated
-				if(i > 0) {
-					img = new BufferedImage[spriteSheet.getWidth() / tileWidth];
-					
-					for(int k = 0; k < spriteSheet.getWidth(); k+= tileWidth) {
-						img[k / tileWidth] = spriteSheet.getSubimage(k, 0, tileWidth, spriteSheet.getHeight());
-					}
-					
-				}
-				else {
-					img = new BufferedImage[1];
-					img[0] = spriteSheet;
+				int tileWidth = tileWidths[animationIndex];
+				
+				img = new BufferedImage[spriteSheet.getWidth() / tileWidth];
+				
+				for(int k = 0; k < spriteSheet.getWidth(); k+= tileWidth) {
+					img[k / tileWidth] = spriteSheet.getSubimage(k, 0, tileWidth, spriteSheet.getHeight());
 				}
 				
 				this.animations.put(ANIMATION_ORDER[animationIndex], img);

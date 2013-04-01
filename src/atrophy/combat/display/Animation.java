@@ -2,6 +2,6 @@ package atrophy.combat.display;
 
 public enum Animation {
 
-	IDLE, DEAD, WALK
+	DEAD, WALK, IDLE_MELEE, IDLE_WEP1, IDLE_WEP2, IDLE_WEP3
 	
 }
