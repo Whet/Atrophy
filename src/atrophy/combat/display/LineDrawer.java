@@ -47,6 +47,7 @@ public class LineDrawer implements Displayable{
 	private static final Color STEALTH_COLOUR = Color.gray;
 	private static final float OCCUPIED_ALPHA = 1.0f;
 	private static final float PEEKING_ALPHA = 0.3f;
+	private static final double ANGLE_TOLERANCE = 0;
 	
 	private MapDrawBlock map[];
 	
@@ -397,30 +398,100 @@ public class LineDrawer implements Displayable{
 		int[] playerLoc = new int[]{(int) ai.getLocation()[0], (int) ai.getLocation()[1]};
 		boolean placedAtPlayer = false;
 		
+		int[] lastPlacedPoint = null;
+		int[] previousPoint = null;
+		
 		if(ai.isIgnoringLOS()) {
 			for(double i = 0; i < 360; i += 0.5) {
 				int[] lastPointNoCover = CombatVisualManager.getLastPointNoCover(playerLoc, Math.toRadians(i), ai.getLevelBlock());
 				
 				if(CombatVisualManager.spotFovNoRadius(ai, new double[]{lastPointNoCover[0], lastPointNoCover[1]})) {
-					lightPolygon.addPoint(lastPointNoCover[0], lastPointNoCover[1]);
-					placedAtPlayer = false;
+					
+					double oldAngle = 0;
+					double newAngle = 0;
+					
+					if(previousPoint != null && lastPlacedPoint != null) {
+						oldAngle = Maths.getDegrees(lastPlacedPoint, previousPoint);
+						newAngle = Maths.getDegrees(lastPlacedPoint, lastPointNoCover);
+					}
+					
+					if(lastPlacedPoint == null || Maths.angleDifference(oldAngle, newAngle) > ANGLE_TOLERANCE) {
+						
+						placedAtPlayer = false;
+						
+						if(previousPoint == null) {
+							previousPoint = lastPointNoCover;
+							continue;
+						}
+						else
+							lightPolygon.addPoint(previousPoint[0], previousPoint[1]);
+						
+						lightPolygon.addPoint(lastPointNoCover[0], lastPointNoCover[1]);
+						lastPlacedPoint = lastPointNoCover;
+					}
+					
+					if(lastPlacedPoint == lastPointNoCover)
+						previousPoint = null;
+					else
+						previousPoint = lastPointNoCover;
 				}
 				else if(!placedAtPlayer){
+
+					if(previousPoint != null)
+						lightPolygon.addPoint(previousPoint[0], previousPoint[1]);
+					
 					lightPolygon.addPoint(playerLoc[0], playerLoc[1]);
 					placedAtPlayer = true;
+					
+					previousPoint = playerLoc;
+					lastPlacedPoint = playerLoc;
 				}
 			}
 		}
 		else {
 			for(double i = 0; i < 360; i += 0.5) {
 				int[] lastPointOverCover = CombatVisualManager.getLastPointOverCover(playerLoc, Math.toRadians(i), ai.getLevelBlock());
+				
 				if(CombatVisualManager.spotFovNoRadius(ai, new double[]{lastPointOverCover[0], lastPointOverCover[1]})) {
-					lightPolygon.addPoint(lastPointOverCover[0], lastPointOverCover[1]);
-					placedAtPlayer = false;
+					
+					double oldAngle = 0;
+					double newAngle = 0;
+					
+					if(previousPoint != null && lastPlacedPoint != null) {
+						oldAngle = Maths.getDegrees(lastPlacedPoint, previousPoint);
+						newAngle = Maths.getDegrees(lastPlacedPoint, lastPointOverCover);
+					}
+					
+					if(lastPlacedPoint == null || Maths.angleDifference(oldAngle, newAngle) > ANGLE_TOLERANCE) {
+						
+						placedAtPlayer = false;
+						
+						if(previousPoint == null) {
+							previousPoint = lastPointOverCover;
+							continue;
+						}
+						else
+							lightPolygon.addPoint(previousPoint[0], previousPoint[1]);
+						
+						lightPolygon.addPoint(lastPointOverCover[0], lastPointOverCover[1]);
+						lastPlacedPoint = lastPointOverCover;
+					}
+					
+					if(lastPlacedPoint == lastPointOverCover)
+						previousPoint = null;
+					else
+						previousPoint = lastPointOverCover;
 				}
 				else if(!placedAtPlayer){
+					
+					if(previousPoint != null)
+						lightPolygon.addPoint(previousPoint[0], previousPoint[1]);
+					
 					lightPolygon.addPoint(playerLoc[0], playerLoc[1]);
 					placedAtPlayer = true;
+					
+					previousPoint = playerLoc;
+					lastPlacedPoint = playerLoc;
 				}
 			}
 		}
