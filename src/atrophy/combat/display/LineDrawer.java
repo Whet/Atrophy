@@ -47,7 +47,7 @@ public class LineDrawer implements Displayable{
 	private static final Color STEALTH_COLOUR = Color.gray;
 	private static final float OCCUPIED_ALPHA = 1.0f;
 	private static final float PEEKING_ALPHA = 0.3f;
-	private static final double ANGLE_TOLERANCE = 0;
+	private static final double ANGLE_TOLERANCE = 0.1;
 	
 	private MapDrawBlock map[];
 	
@@ -460,6 +460,7 @@ public class LineDrawer implements Displayable{
 					if(previousPoint != null && lastPlacedPoint != null) {
 						oldAngle = Maths.getDegrees(lastPlacedPoint, previousPoint);
 						newAngle = Maths.getDegrees(lastPlacedPoint, lastPointOverCover);
+//						System.out.println("O: " + oldAngle + "  N: " + newAngle + "  Diff: " + Maths.angleDifference(oldAngle, newAngle));
 					}
 					
 					if(lastPlacedPoint == null || Maths.angleDifference(oldAngle, newAngle) > ANGLE_TOLERANCE) {
@@ -494,6 +495,8 @@ public class LineDrawer implements Displayable{
 					lastPlacedPoint = playerLoc;
 				}
 			}
+//			if(previousPoint != null)
+//				lightPolygon.addPoint(previousPoint[0], previousPoint[1]);
 		}
 		
 		for(int i = 0; i < ai.getLevelBlock().getHitBox().npoints; i++) {
@@ -502,7 +505,7 @@ public class LineDrawer implements Displayable{
 			shadowPolygon.addPoint(x, y);
 		}
 		
-		System.out.println("Lightpoly points: " + lightPolygon.npoints);
+//		System.out.println("Lightpoly points: " + lightPolygon.npoints);
 		
 	}
 	

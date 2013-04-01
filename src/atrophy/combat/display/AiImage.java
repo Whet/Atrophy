@@ -21,6 +21,7 @@ import atrophy.combat.display.ui.InfoTextDisplayable;
 
 public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 	
+	private static final double Y_OFFSET_MULTIPLIER = 0.86;
 	private PanningManager panningManager;
 	private CombatUiManager combatUiManager;
 	private AiCrowd aiCrowd;
@@ -72,7 +73,7 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 		}
 		
 		this.applyEffects();
-		this.setLocation(this.getAi().getLocation()[0] - (this.getSize()[0] * 0.5), this.getAi().getLocation()[1] - (this.getSize()[1] * 0.68));
+//		this.setLocation(this.getAi().getLocation()[0] - (this.getSize()[0] * 0.5), this.getAi().getLocation()[1] - (this.getSize()[1] * Y_OFFSET_MULTIPLIER));
 	}
 	
 	public void updateMask(){
@@ -83,14 +84,15 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 			
 			this.setAnimation(Animation.DEAD, 1);
 			this.updateAnimation();
-			this.setLocation(this.getAi().getLocation()[0] - (this.getSize()[0] * 0.5), this.getAi().getLocation()[1] - (this.getSize()[1] * 0.68));
+			this.setLocation(this.getAi().getLocation()[0] - (this.getSize()[0] * 0.5), this.getAi().getLocation()[1] - (this.getSize()[1] * Y_OFFSET_MULTIPLIER));
 		}
 		
 		this.applyEffects();
 	}
 	
 	public void updateTween(){
-		this.setTween(new MotionTween(this, this.getAi().getLocation()[0] - (this.getSize()[0] * 0.5), this.getAi().getLocation()[1] - (this.getSize()[1] * 0.68), 2400, true));
+		this.setTween(new MotionTween(this, this.getAi().getLocation()[0] - (this.getSize()[0] * 0.5), this.getAi().getLocation()[1] - (this.getSize()[1] * Y_OFFSET_MULTIPLIER), 24000, true));
+		this.setAnimation(Animation.WALK, 9);
 	}
 	
 	@Override
@@ -243,11 +245,11 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 		this.frame = 0;
 		this.maxFrame = maxFrame;
 		
-		if(!this.animation.equals(animation)) {
+		if(!this.animation.equals(animation) && !animation.equals(Animation.WALK)) {
 			this.imageChanged = true;
 			this.updateAnimation();
 			this.setTween(null);
-			this.setLocation(this.getAi().getLocation()[0] - (this.getSize()[0] * 0.5), this.getAi().getLocation()[1] - (this.getSize()[1] * 0.68));
+			this.setLocation(this.getAi().getLocation()[0] - (this.getSize()[0] * 0.5), this.getAi().getLocation()[1] - (this.getSize()[1] * Y_OFFSET_MULTIPLIER));
 		}
 		
 		this.animation = animation;
@@ -259,14 +261,14 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 			this.frame++;
 
 		if(this.frame == maxFrame && !this.getAi().isDead()) {
-			this.setAnimation(animation, 4);
+			this.setAnimation(Animation.IDLE, 4);
 		}
 		
 		this.setImage(aiCrowd.getAnimationFrame(this.getAi().getImage() + "Full", frame, animation));
 		
 		if(imageChanged) {
 			this.imageChanged = false;
-			this.setLocation(this.getAi().getLocation()[0] - (this.getSize()[0] * 0.5), this.getAi().getLocation()[1] - (this.getSize()[1] * 0.68));
+			this.setLocation(this.getAi().getLocation()[0] - (this.getSize()[0] * 0.5), this.getAi().getLocation()[1] - (this.getSize()[1] * Y_OFFSET_MULTIPLIER));
 		}
 	}
 	

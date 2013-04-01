@@ -155,53 +155,53 @@ public class AiCrowd extends Crowd {
 	private void loadAnimations() {
 		try{
 			
-			final Animation[] ANIMATION_ORDER = {Animation.DEAD, Animation.IDLE};
+			final Animation[] ANIMATION_ORDER = {Animation.DEAD, Animation.IDLE, Animation.WALK};
 			
 			final int BODY_TILE_WIDTH = 33;
 			
 			final String AF = "images/atrophy/combat/heads/animations/";
 			
-			String[] head1Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet.png"};
+			String[] head1Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet.png", AF+"walkSpriteSheet.png"};
 			AnimationBlob head1Blob = new AnimationBlob(ANIMATION_ORDER, head1Files, BODY_TILE_WIDTH);
 			this.animations.put("BeardHeadFull", head1Blob);
 			
-			String[] head2Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet.png"};
+			String[] head2Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet.png", AF+"walkSpriteSheet.png"};
 			AnimationBlob head2Blob = new AnimationBlob(ANIMATION_ORDER, head2Files, BODY_TILE_WIDTH);
 			this.animations.put("MessyHeadFull", head2Blob);
 			
-			String[] head3Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet.png"};
+			String[] head3Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet.png", AF+"walkSpriteSheet.png"};
 			AnimationBlob head3Blob = new AnimationBlob(ANIMATION_ORDER, head3Files, BODY_TILE_WIDTH);
 			this.animations.put("NazcaHeadFull", head3Blob);
 			
-			String[] head4Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet.png"};
+			String[] head4Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet.png", AF+"walkSpriteSheet.png"};
 			AnimationBlob head4Blob = new AnimationBlob(ANIMATION_ORDER, head4Files, BODY_TILE_WIDTH);
 			this.animations.put("PlainHeadFull", head4Blob);
 			
-			String[] head5Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet.png"};
+			String[] head5Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet.png", AF+"walkSpriteSheet.png"};
 			AnimationBlob head5Blob = new AnimationBlob(ANIMATION_ORDER, head5Files, BODY_TILE_WIDTH);
 			this.animations.put("RazielFull", head5Blob);
 			
-			String[] head6Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet.png"};
+			String[] head6Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet.png", AF+"walkSpriteSheet.png"};
 			AnimationBlob head6Blob = new AnimationBlob(ANIMATION_ORDER, head6Files, BODY_TILE_WIDTH);
 			this.animations.put("StripeHeadFull", head6Blob);
 			
-			String[] head7Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet.png"};
+			String[] head7Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet.png", AF+"walkSpriteSheet.png"};
 			AnimationBlob head7Blob = new AnimationBlob(ANIMATION_ORDER, head7Files, BODY_TILE_WIDTH);
 			this.animations.put("EngineerFull", head7Blob);
 			
-			String[] head8Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet.png"};
+			String[] head8Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet.png", AF+"walkSpriteSheet.png"};
 			AnimationBlob head8Blob = new AnimationBlob(ANIMATION_ORDER, head8Files, BODY_TILE_WIDTH);
 			this.animations.put("SensorFull", head8Blob);
 			
-			String[] head9Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet.png"};
+			String[] head9Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet.png", AF+"walkSpriteSheet.png"};
 			AnimationBlob head9Blob = new AnimationBlob(ANIMATION_ORDER, head9Files, BODY_TILE_WIDTH);
 			this.animations.put("StealthedFull", head9Blob);
 			
-			String[] head10Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet.png"};
+			String[] head10Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet.png", AF+"walkSpriteSheet.png"};
 			AnimationBlob head10Blob = new AnimationBlob(ANIMATION_ORDER, head10Files, BODY_TILE_WIDTH);
 			this.animations.put("ScoutFull", head10Blob);
 			
-			String[] head11Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet.png"};
+			String[] head11Files = {AF+"deadSpriteSheet.png", AF+"idleSpritesheet.png", AF+"walkSpriteSheet.png"};
 			AnimationBlob head11Blob = new AnimationBlob(ANIMATION_ORDER, head11Files, BODY_TILE_WIDTH);
 			this.animations.put("ArmourFull", head11Blob);
 			
