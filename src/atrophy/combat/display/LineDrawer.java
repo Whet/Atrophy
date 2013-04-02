@@ -62,6 +62,8 @@ public class LineDrawer implements Displayable{
 	
 	private Polygon shadowPolygon;
 	private Polygon lightPolygon;
+	private double oldLookAngle;
+	private double[] oldLookLocation;
 	
 	public LineDrawer(AiCrowd aiCrowd, PanningManager panningManager, CombatVisualManager combatVisualManager, CombatMembersManager combatMembersManager, LevelManager levelManager){
 		visible = true;
@@ -73,6 +75,8 @@ public class LineDrawer implements Displayable{
 		
 		shadowPolygon = new Polygon();
 		lightPolygon = new Polygon();
+		
+		oldLookLocation = null;
 		
 	}
 
@@ -392,6 +396,14 @@ public class LineDrawer implements Displayable{
 	
 	public void updateFovLight(Ai ai) {
 		
+		if(oldLookLocation != null && ai.getLookAngle() == oldLookAngle && ai.getLocation()[0] == oldLookLocation[0] && ai.getLocation()[1] == oldLookLocation[1])
+			return;
+					
+		oldLookAngle = ai.getLookAngle();
+		oldLookLocation = new double[2];
+		oldLookLocation[0] = ai.getLocation()[0];
+		oldLookLocation[1] = ai.getLocation()[1];
+		
 		shadowPolygon.reset();
 		lightPolygon.reset();
 		
@@ -495,8 +507,8 @@ public class LineDrawer implements Displayable{
 					lastPlacedPoint = playerLoc;
 				}
 			}
-//			if(previousPoint != null)
-//				lightPolygon.addPoint(previousPoint[0], previousPoint[1]);
+			if(previousPoint != null)
+				lightPolygon.addPoint(previousPoint[0], previousPoint[1]);
 		}
 		
 		for(int i = 0; i < ai.getLevelBlock().getHitBox().npoints; i++) {
