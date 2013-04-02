@@ -5,7 +5,6 @@ import atrophy.combat.CombatInorganicManager;
 import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
-import atrophy.combat.PanningManager;
 import atrophy.combat.actions.MouseAbilityHandler;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.ui.FloatingIcons;
@@ -67,7 +66,7 @@ public class AiActions {
 	private CombatInorganicManager combatInorganicManager;
 	private LevelManager levelManager;
 	
-	public AiActions(AiCrowd aiCrowd, CombatVisualManager combatVisualManager, CombatUiManager combatUiManager, CombatMembersManager combatMembersManager, CombatInorganicManager combatInorganicManager, FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, LootBox lootBox, LevelManager levelManager, PanningManager panningManager){
+	public AiActions(AiCrowd aiCrowd, CombatVisualManager combatVisualManager, CombatUiManager combatUiManager, CombatMembersManager combatMembersManager, CombatInorganicManager combatInorganicManager, FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, LootBox lootBox, LevelManager levelManager){
 		actionTurns = 0;
 		oldActionTurns = 0;
 		oldAction = NO_ACTION;
@@ -80,7 +79,7 @@ public class AiActions {
 		this.lootBox = lootBox;
 		this.combatMembersManager = combatMembersManager;
 		this.combatVisualManager = combatVisualManager;
-		this.aiCombatActions = new AiCombatActions(combatVisualManager, mouseAbilityHandler, floatingIcons, aiCrowd, panningManager);
+		this.aiCombatActions = new AiCombatActions(combatVisualManager, mouseAbilityHandler, aiCrowd);
 		this.combatUiManager = combatUiManager;
 		this.combatInorganicManager = combatInorganicManager;
 		this.levelManager = levelManager;

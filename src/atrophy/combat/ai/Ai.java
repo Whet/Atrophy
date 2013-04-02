@@ -7,7 +7,6 @@ import java.awt.Color;
 import java.awt.Polygon;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Random;
 import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -21,7 +20,6 @@ import atrophy.combat.PanningManager;
 import atrophy.combat.actions.MouseAbilityHandler;
 import atrophy.combat.combatEffects.Effect;
 import atrophy.combat.display.AiCrowd;
-import atrophy.combat.display.MapPainter;
 import atrophy.combat.display.ui.FloatingIcons;
 import atrophy.combat.display.ui.loot.LootBox;
 import atrophy.combat.display.ui.loot.LootBox.Lootable;
@@ -109,7 +107,7 @@ public class Ai implements Lootable{
 		this.lootBox = lootBox;
 		this.panningManager = panningManager;
 		
-		aiActions = new AiActions(aiCrowd, combatVisualManager, combatUiManager, combatMembersManager, combatInorganicManager, floatingIcons, mouseAbilityHandler, lootBox, levelManager, panningManager);
+		aiActions = new AiActions(aiCrowd, combatVisualManager, combatUiManager, combatMembersManager, combatInorganicManager, floatingIcons, mouseAbilityHandler, lootBox, levelManager);
 		aiPathing = new AiPathing(levelManager, x,y);
 		aiData = new AiData(mouseAbilityHandler, this, new MeleeWeapon1());
 		
@@ -140,7 +138,7 @@ public class Ai implements Lootable{
 		ignoreLOS = false;
 
 		skippingTurns = false;
-		aiActions = new AiActions(thinkingAi.aiCrowd, thinkingAi.combatVisualManager, thinkingAi.combatUiManager, thinkingAi.combatMembersManager, combatInorganicManager, floatingIcons, mouseAbilityHandler, thinkingAi.lootBox, levelManager, thinkingAi.panningManager);
+		aiActions = new AiActions(thinkingAi.aiCrowd, thinkingAi.combatVisualManager, thinkingAi.combatUiManager, thinkingAi.combatMembersManager, combatInorganicManager, floatingIcons, mouseAbilityHandler, thinkingAi.lootBox, levelManager);
 		aiPathing = new AiPathing(levelManager, thinkingAi.getLocation()[0], thinkingAi.getLocation()[1]);
 		aiData = new AiData(mouseAbilityHandler, thinkingAi, thinkingAi.getWeapon());
 		
@@ -612,11 +610,8 @@ public class Ai implements Lootable{
 	public void setDead(boolean dead) {
 		// Make sure dead unit show smashed helmet
 		if(dead && !this.dead){	
-			
 			this.setTargetAi(null); 
 			this.setSkippingTurns(true);
-			
-			floatingIcons.addPendingPaint(MapPainter.BLOOD_TEXTURES[(new Random()).nextInt(MapPainter.BLOOD_TEXTURES.length)], this.getLocation(), 0.5 + (new Random().nextInt(5) * 0.1));
 		}
 		
 		this.dead = dead;

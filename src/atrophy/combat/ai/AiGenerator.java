@@ -170,7 +170,7 @@ public class AiGenerator{
 		
 		double[] location = new double[]{command.x, command.y};
 		
-		AiImage aiImg = new AiImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, 0,0, mouseAbilityHandler);
+		AiImage aiImg = new AiImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, 0,0, mouseAbilityHandler, floatingIcons);
 		ThinkingAi ai = null;
 		
 		switch(command.getFaction()){
@@ -233,7 +233,7 @@ public class AiGenerator{
 			AiImage aiImg = null;
 			
 			if(squad.get(i).isVehicle()){
-				aiImg = new VehicleImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, 100,100, mouseAbilityHandler);
+				aiImg = new VehicleImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, 100,100, mouseAbilityHandler, floatingIcons);
 				
 				switch(squad.get(i).getVehicleType()){
 					case MuleAi.MULE:
@@ -245,7 +245,7 @@ public class AiGenerator{
 				ai.setTeam("1Player");
 			}
 			else{
-				aiImg = new AiImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, 100,100, mouseAbilityHandler);
+				aiImg = new AiImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, 100,100, mouseAbilityHandler, floatingIcons);
 				
 				ai = new Ai(floatingIcons, mouseAbilityHandler, squad.get(i).getName(),randomLocation[0],randomLocation[1], combatInorganicManager, levelManager, lootbox, combatMembersManager, combatUiManager, combatVisualManager, aiCrowd, panningManager, turnProcess);
 				ai.setImage(squad.get(i).getImage());
@@ -298,7 +298,7 @@ public class AiGenerator{
 		
 		double[] randomLocation = levelManager.randomInPosition(room);
 		
-		AiImage aiImg = new AiImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, 0,0, mouseAbilityHandler);
+		AiImage aiImg = new AiImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, 0,0, mouseAbilityHandler, floatingIcons);
 		ThinkingAi ai;
 		
 		ai = new LonerAi(panningManager, aiCrowd, combatVisualManager, turnProcess, floatingIcons, mouseAbilityHandler, combatMembersManager, randomName(),randomLocation[0],randomLocation[1], levelManager, combatInorganicManager, combatUiManager, lootbox);
@@ -323,7 +323,7 @@ public class AiGenerator{
 	
 	private void generateTurrets(String team, Crowd crowd, double x, double y){
 		
-		AiImage aiImg = new AiImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, 0,0, mouseAbilityHandler);
+		AiImage aiImg = new AiImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, 0,0, mouseAbilityHandler, floatingIcons);
 		ThinkingAi ai;
 		
 		ai = new TurretAi(panningManager, aiCrowd, combatVisualManager, turnProcess, floatingIcons, mouseAbilityHandler, combatMembersManager, x,y, levelManager, combatInorganicManager, combatUiManager, lootbox);
@@ -350,7 +350,7 @@ public class AiGenerator{
 		numberMatcher.find();
 		
 		for(int i = 0; i < members; i++){
-			AiImage aiImg = new AiImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, 0,0, mouseAbilityHandler);
+			AiImage aiImg = new AiImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, 0,0, mouseAbilityHandler, floatingIcons);
 			
 			ThinkingAi ai = new ThinkingAi(panningManager, combatVisualManager, turnProcess, floatingIcons, mouseAbilityHandler, aiCrowd, combatMembersManager, randomName(),randomLocation[0],randomLocation[1], levelManager, combatInorganicManager, combatUiManager, lootbox);
 			

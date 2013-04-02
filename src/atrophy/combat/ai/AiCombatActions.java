@@ -1,10 +1,9 @@
 package atrophy.combat.ai;
 
 import atrophy.combat.CombatVisualManager;
-import atrophy.combat.PanningManager;
 import atrophy.combat.actions.MouseAbilityHandler;
 import atrophy.combat.display.AiCrowd;
-import atrophy.combat.display.ui.FloatingIcons;
+import atrophy.combat.display.AiImage;
 import atrophy.combat.mechanics.ScoringMechanics;
 
 public class AiCombatActions {
@@ -23,21 +22,18 @@ public class AiCombatActions {
 
 	private CombatVisualManager combatVisualManager;
 	private MouseAbilityHandler mouseAbilityHandler;
-	private FloatingIcons floatingIcons;
 	private AiCrowd aiCrowd;
-	private PanningManager panningManager;
 	
-	public AiCombatActions(CombatVisualManager combatVisualManager, MouseAbilityHandler mouseAbilityHandler, FloatingIcons floatingIcons, AiCrowd aiCrowd, PanningManager panningManager){
+	public AiCombatActions(CombatVisualManager combatVisualManager, MouseAbilityHandler mouseAbilityHandler, AiCrowd aiCrowd){
 		this.swing = 0;
 		this.oldTargetSwing = 0;
 		this.combatVisualManager = combatVisualManager;
 		this.mouseAbilityHandler = mouseAbilityHandler;
-		this.floatingIcons = floatingIcons;
 		this.aiCrowd = aiCrowd;
-		this.panningManager = panningManager;
 	}
 
 	public void attack(Ai invoker) {
+		
 		// if the target is still in the same room engage
 		if(this.targetAi != null && this.targetAi.getLevelBlock() == invoker.getLevelBlock() && invoker.getWeapon().ignoresLOS() ||(
 		   (!this.targetAi.isStealthed() || CombatVisualManager.spotStealth(invoker, this.targetAi)) && CombatVisualManager.isInFiringSight(invoker.getLocation()[0],
@@ -121,13 +117,13 @@ public class AiCombatActions {
 
 
 	public void shoot(Ai invoker) {
+		
+		AiImage actorMask = aiCrowd.getActorMask(invoker);
+		actorMask.setAttackingAnimation(invoker.getTargetAi());
+		
 		// Update aggression of ai
 		if(this.getTargetAi() instanceof ThinkingAi){
 			((ThinkingAi) this.getTargetAi()).modifyAggression(ThinkingAiEmotion.SHOT_AT);
-		}
-		
-		if(aiCrowd.getActorMask(invoker).isVisible()){
-			floatingIcons.addEffect(invoker.getWeapon().getFireEffect(panningManager, invoker.getLocation(), this.targetAi.getLocation()));
 		}
 		
 		// look at target
