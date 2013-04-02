@@ -218,12 +218,12 @@ public class AiPathing {
 				}
 				
 				// couldn't move anywhere
-				if(this.moveUnits == moveUnitLast){
-					//return;
-					invoker.setMoveLocationToSelf();
-					invoker.setAction("");
-					return;
-				}
+//				if(this.moveUnits == moveUnitLast){
+//					//return;
+//					invoker.setMoveLocationToSelf();
+//					invoker.setAction("");
+//					return;
+//				}
 				moveUnitLast = this.moveUnits;
 			}
 			
