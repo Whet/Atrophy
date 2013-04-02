@@ -72,11 +72,11 @@ public class LevelBlockGrid {
              }
          }
          
-         double distance = Maths.getDistance(location, blocks.get(startIndex).get(0).getCentre());
+         double distance = Maths.getDistance(location, blocks.get(startIndex).get(0).getPathLocation());
          
          for(int j = 0; j < blocks.get(startIndex).size(); j++){
-             if(Maths.getDistance(location, blocks.get(startIndex).get(j).getCentre()) <= distance || j == blocks.get(startIndex).size()){
-            	 distance = Maths.getDistance(location, blocks.get(startIndex).get(j).getCentre());
+             if(Maths.getDistance(location, blocks.get(startIndex).get(j).getPathLocation()) <= distance || j == blocks.get(startIndex).size()){
+            	 distance = Maths.getDistance(location, blocks.get(startIndex).get(j).getPathLocation());
              }
              else{
             	 return blocks.get(startIndex).get(j - 1);
@@ -113,7 +113,7 @@ public class LevelBlockGrid {
                     
                     column.add(new GridBlock(startX + (i * GRID_BLOCK_SIZE),
                                              startY + (j * GRID_BLOCK_SIZE),
-                                             GRID_BLOCK_SIZE, GRID_BLOCK_SIZE));
+                                             GRID_BLOCK_SIZE, GRID_BLOCK_SIZE, hitbox));
                     
                 }
             }
@@ -141,7 +141,9 @@ public class LevelBlockGrid {
         public double g, h, f;
         public boolean picked;
         
-        public GridBlock(float x, float y, float width, float height){
+        public double[] pathLocation;
+        
+        public GridBlock(float x, float y, float width, float height, Polygon hitbox){
             this.x = x;
             this.y = y;
             this.width = width;
@@ -149,6 +151,26 @@ public class LevelBlockGrid {
             neighbours = new HashSet<>();
             nonDiagNeighbours = new HashSet<>();
             picked = false;
+            
+            if(hitbox.contains(x, y) &&
+			   hitbox.contains(x,y + GRID_BLOCK_SIZE) &&
+			   hitbox.contains(x + GRID_BLOCK_SIZE, y) &&
+			   hitbox.contains(x + GRID_BLOCK_SIZE, y + GRID_BLOCK_SIZE)){
+            	pathLocation = new double[]{x + width / 2, y + height / 2};
+            }
+            else if(hitbox.contains(x, y)) {
+            	pathLocation = new double[]{x, y};
+            }
+            else if(hitbox.contains(x, y + GRID_BLOCK_SIZE)){
+            	pathLocation = new double[]{x, y + GRID_BLOCK_SIZE};
+            }
+            else if(hitbox.contains(x + GRID_BLOCK_SIZE, y)) {
+            	pathLocation = new double[]{x + GRID_BLOCK_SIZE, y};
+            }
+            else if(hitbox.contains(x + GRID_BLOCK_SIZE, y + GRID_BLOCK_SIZE)) {
+            	pathLocation = new double[]{x + GRID_BLOCK_SIZE, y + GRID_BLOCK_SIZE};
+            }
+            
         }
         
         public void calculateNeighbours(LevelBlockGrid grid) {
@@ -193,8 +215,8 @@ public class LevelBlockGrid {
             return this.x <= location[0] && this.x + width >= location[0] && this.y <= location[1] && this.y + height >= location[1];
         }
 
-        public double[] getCentre() {
-            return new double[]{x + width / 2, y + height / 2};
+        public double[] getPathLocation() {
+            return this.pathLocation;
         }
         
     }
