@@ -294,9 +294,14 @@ public class TeamsCommander {
 			}
 			
 		}
-//		for (AiJob job : this.jobs) {
-//			System.out.println(this.getFaction() + ": " + job.getType().toString() + "  Population: " + job.getTargetEmployeeCount());
-//		}
+		for (AiJob job : this.jobs) {
+			System.out.println(this.getFaction() + ": " + job.getType().toString() + "  Population: " + job.getTargetEmployeeCount());
+		}
+		
+		// After jobs have been made set danger to 0 so that old dangers get removed if nothing happens
+		for(DefenceHeuristic dh : this.defenceHeuristics.values()) {
+			dh.dangerH = 0;
+		}
 		
 	}
 
@@ -308,8 +313,10 @@ public class TeamsCommander {
 	
 	public AiJob getJob(ThinkingAi ai){
 		
-		if(this.jobAssignments.get(ai) != null && (!this.isSpecialist(ai) || (this.isSpecialist(ai) && !this.specialistNeeded)))
+		if(this.jobAssignments.get(ai) != null && (!this.isSpecialist(ai) || (this.isSpecialist(ai) && !this.specialistNeeded))) {
+//			System.out.println(ai.getName() + " is doing job: " + this.jobAssignments.get(ai).getType());
 			return this.jobAssignments.get(ai);
+		}
 		
 		return bestJob(ai);
 	}
@@ -342,8 +349,9 @@ public class TeamsCommander {
 		LevelBlock room = null;
 		do{
 			room = levelManager.randomRoom();
+			checkForNullHeuristic(room);
 		}
-		while(levelManager.isRoomBanned(this.getFaction(), room));
+		while(levelManager.isRoomBanned(this.getFaction(), room) || this.defenceHeuristics.get(room).getDefence() > 0);
 		
 		AiJob job = new AiJob(1, room, JobType.SCOUT, turnsToNextUpdate + 15);
 		jobs.add(job);

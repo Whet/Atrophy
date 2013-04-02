@@ -564,7 +564,7 @@ public class ThinkingAi extends Ai{
 			
 			respondToEnvironmentData();
 			
-			this.getCommander().reportUnits(0,this.getLevelBlock());
+			this.getCommander().reportUnits(0, this.getLevelBlock());
 		}
 	}
 	
