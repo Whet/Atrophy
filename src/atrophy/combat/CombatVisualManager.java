@@ -229,7 +229,8 @@ public class CombatVisualManager {
 	}
 	
 	public void revealAll(){
-		allRevealed = true;
+//		allRevealed = true;
+		allRevealed = !allRevealed;
 	}
 	
 	public boolean isDrawingObjLines(){

@@ -11,6 +11,7 @@ import java.util.Stack;
 import watoydoEngine.designObjects.display.Crowd;
 import watoydoEngine.designObjects.display.TextButton;
 import watoydoEngine.gubbinz.Maths;
+import watoydoEngine.sounds.SoundBoard;
 import watoydoEngine.workings.DisplayManager;
 import watoydoEngine.workings.displayActivity.ActivePane;
 import atrophy.combat.CombatInorganicManager;
@@ -69,6 +70,7 @@ public class TurnProcess {
 	private CombatMembersManager combatMembersManager;
 	private CombatInorganicManager combatInorganicManager;
 	private LineDrawer lineDrawer;
+	private PanningManager panningManager;
 	
 	/**
 	 * Instantiates a new turn process.
@@ -81,6 +83,8 @@ public class TurnProcess {
 	}
 	
 	public void lazyLoad(AiManagementSuite aiManagementSuite, UiUpdaterSuite uiUpdaterSuite, CombatInorganicManager combatInorganicManager, ActionSuite actionSuite){
+		
+		this.panningManager = uiUpdaterSuite.getPanningManager();
 		
 		this.aiCrowd = aiManagementSuite.getAiCrowd();
 		this.combatMembersManager = aiManagementSuite.getCombatMembersManager();
@@ -221,11 +225,7 @@ public class TurnProcess {
 			currentAiDone(true);
 		}
 		
-		if(checkGameOver()){
-			lastAiUpdated();
-			endGame();
-			combatUiManager.getLargeEventText().flashText("Game Over, Turn: " + turnCount, Color.red.darker());
-		}
+		lastAiUpdated();
 	}
 	
 	// checks if all player controlled units are skipping turns to stop infinite looping
@@ -266,7 +266,6 @@ public class TurnProcess {
 		
 		combatMouseHandler.setActive(true);
 		combatKeyboardHandler.setFocus(true);
-		combatUiManager.getActionsBar().setVisible(true);
 		
 		for(int i = 0; i < aiCrowd.getActorCount(); i++){
 			aiCrowd.getMask(i).setActive(true);
@@ -280,7 +279,8 @@ public class TurnProcess {
 	private void updateUi(){
 		
 		// Set control to topAi
-		combatMembersManager.setCurrentAi(getTopAi());
+		if(getTopAi().getFaction().equals(AiGenerator.PLAYER))
+			combatMembersManager.setCurrentAi(getTopAi());
 		
 		// Update any graphics or settings since all actors have done their actions
 		for(int i = 0; i < aiCrowd.getActorCount(); i++){
@@ -331,12 +331,22 @@ public class TurnProcess {
 	 * End game.
 	 */
 	private void endGame(){
+		
+		SoundBoard.getInstance().startMusic("watoydoEngine/mods/sounds/music/Ave.ogg", true);
+		
+		panningManager.panToPlayer();
+		combatUiManager.getAllyRoster().setVisible(false);
+		combatUiManager.getActionText().setVisible(false);
+		combatUiManager.getActionsBar().setVisible(false);
+		combatUiManager.getCombatInfo().setVisible(false);
+		combatMouseHandler.setActive(false);
+		
 		combatVisualManager.revealAll();
 		
 		TextButton newGame = new TextButton(Color.yellow, Color.red) {
 			
 			{
-				this.setText("To Splash Screen");
+				this.setText("To Title Screen");
 				this.setVisible(true);
 			}
 			
@@ -351,53 +361,6 @@ public class TurnProcess {
 		ActivePane.getInstance().getPane().addMouseActionItem(newGame);
 		ActivePane.getInstance().getPane().addDisplayItem(newGame);
 		
-//		TextButton newGame = new TextButton("New Game", Color.yellow, Color.red) {
-//			
-//			{
-//				this.setText("New Game");
-//				this.setVisible(true);
-//			}
-//			
-//			@Override
-//			public boolean mD(Point mousePosition, MouseEvent e) {
-//				ActivePane.getInstance().changePane(new Crowd("CurrentPane",false,new CharacterCreatePane()));
-//				return true;
-//			}
-//		};
-//		
-//		newGame.setLocation(DisplayManager.getInstance().getResolution()[0] /2 - 40, DisplayManager.getInstance().getResolution()[1] /2 + 30);
-//		ActivePane.getInstance().getPane().addMouseActionItem(newGame);
-//		ActivePane.getInstance().getPane().addDisplayItem(newGame);
-		
-//		TextButton loadGame = new TextButton("Load", Color.yellow, Color.red) {
-//			
-//			{
-//				this.setText("Load");
-//				this.setVisible(true);
-//			}
-//			
-//			@Override
-//			public boolean mD(Point mousePosition, MouseEvent e) {
-//				
-//				ActivePane.getInstance().setVisible(false);
-//				
-//				JFileChooser chooser = new JFileChooser(new File(System.getProperty("user.home") + "/Atrophy"));
-//				int returnValue = chooser.showOpenDialog(new JFrame());
-//				
-//				if(returnValue == JFileChooser.APPROVE_OPTION){
-//					ActivePane.getInstance().changePane(new Crowd("CurrentPane",false,new GameMenuHardPane()));
-//					SaveFile.loadGame(chooser.getSelectedFile());
-//				}
-//				
-//				ActivePane.getInstance().setVisible(true);
-//				
-//				return true;
-//			}
-//		};
-//		
-//		loadGame.setLocation(DisplayManager.getInstance().getResolution()[0] /2 - 40, DisplayManager.getInstance().getResolution()[1] /2 + 60);
-//		ActivePane.getInstance().getPane().addMouseActionItem(loadGame);
-//		ActivePane.getInstance().getPane().addDisplayItem(loadGame);
 	}
 	
 	/**
