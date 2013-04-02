@@ -1,5 +1,5 @@
 /*
- * All code unless credited otherwise is copyright 2012 Charles Sherman, all rights reserved
+ * 
  */
 package atrophy.combat.ai;
 
@@ -205,7 +205,7 @@ public class AiGeneratorInterface {
 	public static class SoloGenerateCommand extends GenerateCommand{
 		
 		private String name, weapon;
-		private String[] items;
+		private String[] items, alliances;
 		private AiNode aiNode;
 		
 		public SoloGenerateCommand(double x, double y, String faction, String name, String weapon, String[] items){
@@ -236,6 +236,14 @@ public class AiGeneratorInterface {
 
 		public AiNode getAiNode() {
 			return aiNode;
+		}
+
+		public void setAlliances(String[] alliances) {
+			this.alliances = alliances;
+		}
+
+		public String[] getAlliances() {
+			return alliances;
 		}
 		
 	}

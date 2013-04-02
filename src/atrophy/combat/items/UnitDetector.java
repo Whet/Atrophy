@@ -1,5 +1,5 @@
 /*
- * All code unless credited otherwise is copyright 2012 Charles Sherman, all rights reserved
+ * 
  */
 package atrophy.combat.items;
 
@@ -37,7 +37,7 @@ public class UnitDetector extends Item {
 	 * Instantiates a new unit detector.
 	 */
 	private UnitDetector(){
-		super(NAME, "- Displays suits in use in the area. Can track inidivuals if they are tagged.");
+		super(NAME, "- Displays suits in use in the area. Can track individuals if they are tagged.");
 	}
 	
 }

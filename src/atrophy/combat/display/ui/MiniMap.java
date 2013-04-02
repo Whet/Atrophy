@@ -1,5 +1,5 @@
 /*
- * All code unless credited otherwise is copyright 2012 Charles Sherman, all rights reserved
+ * 
  */
 package atrophy.combat.display.ui;
 
@@ -14,94 +14,33 @@ import watoydoEngine.gubbinz.GraphicsFunctions;
 import watoydoEngine.workings.DisplayManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.ai.Ai;
+import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.ui.Cartographer.Marker;
 import atrophy.combat.level.LevelManager;
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class MiniMap.
- */
+
 public class MiniMap implements Displayable {
 	
-	/**
-	 * The Constant MAP_BORDER.
-	 */
+	
 	private static final Color MAP_BORDER = Color.white;
 	
-	/**
-	 * The Constant DOT_SIZE.
-	 */
+	
 	private static final int DOT_SIZE = 2;
-
-	/**
-	 * The Constant HEIGHT.
-	 */
 	private static final double HEIGHT = 120;
-
-	/**
-	 * The Constant WIDTH.
-	 */
 	private static final double WIDTH = 120;
-
-	/**
-	 * The Constant WIDTH_BUFFER.
-	 */
 	private static final int WIDTH_BUFFER = 40;
-
-	/**
-	 * The Constant HEIGHT_BUFFER.
-	 */
 	private static final double HEIGHT_BUFFER = 40;
 	
-	/**
-	 * The map alpha.
-	 */
 	private float mapAlpha;
-	
-	/**
-	 * The start location.
-	 */
 	private double[] startLocation;
-	
-	/**
-	 * The default scale.
-	 */
 	private double defaultScale;
-	
-	/**
-	 * The location.
-	 */
 	private double[] location;
-	
-	/**
-	 * The visible.
-	 */
 	private boolean visible;
-	
-	/**
-	 * The scale.
-	 */
 	private double scale;
-	
-	/**
-	 * The size.
-	 */
 	private double[] size;
-	
-	/**
-	 * The z.
-	 */
 	private int z;
-	
-	/**
-	 * The draw ai.
-	 */
 	private ArrayList<Ai> drawAi;
-	
-	/**
-	 * The ai colours.
-	 */
 	private HashMap<Ai,Color> aiColours;
 	
 	private AiCrowd aiCrowd;
@@ -109,9 +48,7 @@ public class MiniMap implements Displayable {
 	private Cartographer cartographer;
 	private LevelManager levelManager;
 	
-	/**
-	 * Instantiates a new mini map.
-	 */
+	
 	public MiniMap(Cartographer cartographer, AiCrowd aiCrowd, PanningManager panningManager, LevelManager levelManager){
 		
 		this.aiCrowd = aiCrowd;
@@ -127,8 +64,6 @@ public class MiniMap implements Displayable {
 		
 		drawAi = new ArrayList<Ai>();
 		aiColours = new HashMap<Ai,Color>();
-		
-		//levelBlocks = new double[levelManager.getBlocks().length][4];
 		
 	}
 	
@@ -147,17 +82,13 @@ public class MiniMap implements Displayable {
 		setDefaultScale();
 	}
 	
-	/**
-	 * Sets the default scale.
-	 */
+	
 	public void setDefaultScale(){
 		this.scale = this.defaultScale;
 		this.setLocation(this.startLocation[0], this.startLocation[1]);
 	}
 	
-	/**
-	 * Update ai drawing.
-	 */
+	
 	public void updateAiDrawing(){
 		
 		this.drawAi.clear();
@@ -165,7 +96,7 @@ public class MiniMap implements Displayable {
 		
 		// draw ai
 		for(int i = 0; i < aiCrowd.getActorCount(); i++){
-			if(aiCrowd.getActorMask(aiCrowd.getActor(i)).isVisible()){
+			if(aiCrowd.getActor(i).getFaction().equals(AiGenerator.PLAYER) || aiCrowd.getActorMask(aiCrowd.getActor(i)).isVisible()){
 				
 				this.drawAi.add(aiCrowd.getActor(i));
 				
@@ -195,24 +126,18 @@ public class MiniMap implements Displayable {
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Displayable#move(double, double)
-	 */
+	
 	@Override
 	public void move(double x, double y) {
 		this.location[0] += x;
 		this.location[1] += y;
 	}
 
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Displayable#kickTween()
-	 */
+	
 	@Override
 	public void kickTween() {}
 
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Displayable#drawMethod(java.awt.Graphics2D)
-	 */
+	
 	@Override
 	public void drawMethod(Graphics2D drawShape) {
 		
@@ -246,11 +171,7 @@ public class MiniMap implements Displayable {
 				           (int)(DisplayManager.getInstance().getResolution()[1] * this.scale));
 	}
 	
-	/**
-	 * Draw level blocks.
-	 *
-	 * @param drawShape the draw shape
-	 */
+	
 	private void drawLevelBlocks(Graphics2D drawShape){
 		
 		drawShape.setComposite(GraphicsFunctions.makeComposite(this.mapAlpha));
@@ -258,18 +179,21 @@ public class MiniMap implements Displayable {
 		
 		for(int i = 0; i < levelManager.getCurrentLevel().getBlockCount(); i++){
 			
-			for(int j = 1; j < levelManager.getCurrentLevel().getBlock(i).getHitBox().npoints; j++){
-				
-				drawShape.drawLine((int)(this.getLocation()[0] + levelManager.getCurrentLevel().getBlock(i).getHitBox().xpoints[j - 1] * this.scale), 
-								   (int)(this.getLocation()[1] + levelManager.getCurrentLevel().getBlock(i).getHitBox().ypoints[j - 1] * this.scale), 
-								   (int)(this.getLocation()[0] + levelManager.getCurrentLevel().getBlock(i).getHitBox().xpoints[j] * this.scale), 
-								   (int)(this.getLocation()[1] + levelManager.getCurrentLevel().getBlock(i).getHitBox().ypoints[j] * this.scale));
-			}
+			if(levelManager.getBlock(i).isDiscovered()) {
 			
-			drawShape.drawLine((int)(this.getLocation()[0] + levelManager.getCurrentLevel().getBlock(i).getHitBox().xpoints[0] * this.scale), 
-							   (int)(this.getLocation()[1] + levelManager.getCurrentLevel().getBlock(i).getHitBox().ypoints[0] * this.scale), 
-							   (int)(this.getLocation()[0] + levelManager.getCurrentLevel().getBlock(i).getHitBox().xpoints[levelManager.getCurrentLevel().getBlock(i).getHitBox().npoints - 1] * this.scale), 
-							   (int)(this.getLocation()[1] + levelManager.getCurrentLevel().getBlock(i).getHitBox().ypoints[levelManager.getCurrentLevel().getBlock(i).getHitBox().npoints - 1] * this.scale));
+				for(int j = 1; j < levelManager.getCurrentLevel().getBlock(i).getHitBox().npoints; j++){
+					
+					drawShape.drawLine((int)(this.getLocation()[0] + levelManager.getCurrentLevel().getBlock(i).getHitBox().xpoints[j - 1] * this.scale), 
+									   (int)(this.getLocation()[1] + levelManager.getCurrentLevel().getBlock(i).getHitBox().ypoints[j - 1] * this.scale), 
+									   (int)(this.getLocation()[0] + levelManager.getCurrentLevel().getBlock(i).getHitBox().xpoints[j] * this.scale), 
+									   (int)(this.getLocation()[1] + levelManager.getCurrentLevel().getBlock(i).getHitBox().ypoints[j] * this.scale));
+				}
+				
+				drawShape.drawLine((int)(this.getLocation()[0] + levelManager.getCurrentLevel().getBlock(i).getHitBox().xpoints[0] * this.scale), 
+								   (int)(this.getLocation()[1] + levelManager.getCurrentLevel().getBlock(i).getHitBox().ypoints[0] * this.scale), 
+								   (int)(this.getLocation()[0] + levelManager.getCurrentLevel().getBlock(i).getHitBox().xpoints[levelManager.getCurrentLevel().getBlock(i).getHitBox().npoints - 1] * this.scale), 
+								   (int)(this.getLocation()[1] + levelManager.getCurrentLevel().getBlock(i).getHitBox().ypoints[levelManager.getCurrentLevel().getBlock(i).getHitBox().npoints - 1] * this.scale));
+			}
 			
 		}
 		
@@ -277,49 +201,37 @@ public class MiniMap implements Displayable {
 		
 	}
 
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Displayable#isVisible()
-	 */
+	
 	@Override
 	public boolean isVisible() {
 		return this.visible;
 	}
 
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Displayable#getScale()
-	 */
+	
 	@Override
 	public double getScale() {
 		return scale;
 	}
 
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Displayable#getLocation()
-	 */
+	
 	@Override
 	public double[] getLocation() {
 		return this.location;
 	}
 
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Displayable#getZ()
-	 */
+	
 	@Override
 	public int getZ() {
 		return this.z;
 	}
 
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Displayable#getSize()
-	 */
+	
 	@Override
 	public double[] getSize() {
 		return this.size;
 	}
 
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Displayable#compareTo(watoydoEngine.designObjects.display.Displayable)
-	 */
+	
 	@Override
 	public int compareTo(Displayable otherDisplay) {
 		if(otherDisplay.getZ() > this.getZ()){
@@ -331,17 +243,13 @@ public class MiniMap implements Displayable {
 		return 0;
 	}
 
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Displayable#setVisible(boolean)
-	 */
+	
 	@Override
 	public void setVisible(boolean visible) {
 		this.visible = visible;
 	}
 
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Displayable#setScale(double)
-	 */
+	
 	@Override
 	public void setScale(double scale) {
 		
@@ -352,34 +260,24 @@ public class MiniMap implements Displayable {
 		
 	}
 
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Displayable#setLocation(double, double)
-	 */
+	
 	@Override
 	public void setLocation(double x, double y) {
 		this.location[0] = x;
 		this.location[1] = y;
 	}
 
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Displayable#setZ(int)
-	 */
+	
 	@Override
 	public void setZ(int z) {
 		this.z = z;
 	}
 
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Displayable#setTween(watoydoEngine.display.tweens.TweenDefinable)
-	 */
+	
 	@Override
 	public void setTween(TweenDefinable tween) {}
 	
-	/**
-	 * Sets the alpha.
-	 *
-	 * @param alpha the new alpha
-	 */
+	
 	public void setAlpha(float alpha){
 		this.mapAlpha = alpha;
 	}

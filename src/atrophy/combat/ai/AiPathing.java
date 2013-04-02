@@ -1,10 +1,9 @@
 package atrophy.combat.ai;
 
-import java.util.ArrayList;
 import java.util.Stack;
 
 import watoydoEngine.gubbinz.Maths;
-
+import atrophy.combat.CombatVisualManager;
 import atrophy.combat.level.LevelBlock;
 import atrophy.combat.level.LevelManager;
 import atrophy.combat.level.Portal;
@@ -70,7 +69,7 @@ public class AiPathing {
 					if(movedIntoPortal == 0){
 						// if entry of portal successful then remove it from the portal pathway
 						this.portalPathway.pop();
-						
+						targetPortal = null;
 						// remove the current room pathway
 						this.roomPathway = null;
 						
@@ -103,33 +102,28 @@ public class AiPathing {
 					if(this.roomPathway != null){
 						
 						// can see move location
-						if(PathFinder.isInSight(this.location[0], this.location[1], this.moveLocation[0],  this.moveLocation[1], this.getLevelBlock().getHitBox())){
-							roomPathway = null;
+						if(CombatVisualManager.isInSight(this.location[0], this.location[1], this.moveLocation[0],  this.moveLocation[1], this.getLevelBlock().getHitBox())){
+							moveIntra(invoker, this.moveLocation);
 							continue;
 						}
-						
-						// check to see if the next point is visible to make paths more efficient
-						int lookIndex = this.roomPathway.size() - 1;
-						while(lookIndex > 0 &&
-							  PathFinder.isInSight(this.location[0], this.location[1], this.roomPathway.get(lookIndex - 1)[0],  this.roomPathway.get(lookIndex - 1)[1], this.getLevelBlock().getHitBox())){
-							this.roomPathway.pop();
-							lookIndex = this.roomPathway.size() - 1;
-						}
-						
-						if(this.roomPathway.size() == 0){
-							this.roomPathway = null;
-							continue;
-						}
-						
-						moveIntra(invoker,roomPathway.peek());
-						// reset action
-						invoker.setAction("Move");
-						if(Maths.getDistance(this.getLocation(), this.roomPathway.peek()) == 0){
-							this.roomPathway.pop();
+						else {
 							
 							if(this.roomPathway.size() == 0){
 								this.roomPathway = null;
-								invoker.setAction("");
+								continue;
+							}
+							
+							moveIntra(invoker,roomPathway.peek());
+							
+							// reset action
+							invoker.setAction("Move");
+							if(Maths.getDistance(this.getLocation(), this.roomPathway.peek()) == 0){
+								this.roomPathway.pop();
+								
+								if(this.roomPathway.size() == 0){
+									this.roomPathway = null;
+									invoker.setAction("");
+								}
 							}
 						}
 					}
@@ -137,7 +131,7 @@ public class AiPathing {
 						
 						try {
 							this.roomPathway = new Stack<double[]>();
-							this.roomPathway.addAll(PathFinder.findIntraPath(invoker, this.moveLocation));
+							this.roomPathway.addAll(PathFinder.findIntraPath(invoker, this.moveLocation, this.moveDistance));
 						} 
 						catch (PathNotFoundException e) {
 							System.out.println("Bad internal path to target local");
@@ -154,26 +148,18 @@ public class AiPathing {
 				else if(portalPathway != null){
 					
 					// If room pathway still exists move to next point
-					if(this.roomPathway != null){
+					if(this.roomPathway != null && this.roomPathway.size() > 0){
 						
 						targetPortal = portalPathway.peek();
 						
 						// can see move location
-						if(PathFinder.isInSight(this.location[0],
+						if(CombatVisualManager.isInSight(this.location[0],
 								                this.location[1],
 								                targetPortal.getLocation(this.getLevelBlock())[0],
 								                targetPortal.getLocation(this.getLevelBlock())[1], this.getLevelBlock().getHitBox())){
 							
 							roomPathway = null;
 							continue;
-						}
-						
-						// check to see if the next point is visible to make paths more efficient
-						int lookIndex = this.roomPathway.size() - 1;
-						while(lookIndex > 0 &&
-							  PathFinder.isInSight(this.location[0], this.location[1], this.roomPathway.get(lookIndex - 1)[0],  this.roomPathway.get(lookIndex - 1)[1], this.getLevelBlock().getHitBox())){
-							this.roomPathway.remove(this.roomPathway.size() - 1);
-							lookIndex = this.roomPathway.size() - 1;
 						}
 						
 						moveIntra(invoker,roomPathway.get(roomPathway.size() - 1));
@@ -198,21 +184,26 @@ public class AiPathing {
 						// create path to portal if inside of room
 						try {
 							this.roomPathway = new Stack<double[]>();
-							this.roomPathway.addAll(PathFinder.findIntraPath(invoker, targetPortal.getLocation(this.getLevelBlock())));
+							this.roomPathway.addAll(PathFinder.findIntraPath(invoker, targetPortal.getLocation(this.getLevelBlock()), moveUnitLast));
 						} 
 						catch (PathNotFoundException e) {
 							System.out.println("Bad internal path to portal " + invoker.getName());
 						}
 						
-						// commit movement
-						moveIntra(invoker, roomPathway.get(roomPathway.size() - 1));
-						
-						if(Maths.getDistance(this.getLocation(), this.roomPathway.peek()) == 0){
-							this.roomPathway.pop();
+						if(roomPathway.size() > 0) {
+							// commit movement
+							moveIntra(invoker, roomPathway.get(roomPathway.size() - 1));
 							
-							if(this.roomPathway.size() == 0){
-								this.roomPathway = null;
+							if(Maths.getDistance(this.getLocation(), this.roomPathway.peek()) == 0){
+								this.roomPathway.pop();
+								
+								if(this.roomPathway.size() == 0){
+									this.roomPathway = null;
+								}
 							}
+						}
+						else {
+							System.out.println("Pathway 0");
 						}
 					}
 					
@@ -319,11 +310,11 @@ public class AiPathing {
 			portalPathway = null;
 			
 			this.roomPathway = new Stack<>();
-			this.roomPathway.addAll(PathFinder.findIntraPath(invoker, this.moveLocation));
+			this.roomPathway.addAll(PathFinder.findIntraPath(invoker, this.moveLocation, this.moveDistance));
 		}
 	}
 
-	public void setMoveLocation(Ai invoker, double[] location,	ArrayList<LevelBlock> roomsToAvoid) throws PathNotFoundException {
+	public void setMoveLocation(Ai invoker, double[] location) throws PathNotFoundException {
 		this.moveLocation[0] = location[0];
 		this.moveLocation[1] = location[1];
 		
@@ -333,14 +324,14 @@ public class AiPathing {
 		if(levelManager.getBlock(this.moveLocation) != this.residentBlock){
 			// try to create a pathway to the location
 			portalPathway = new Stack<>();
-			portalPathway.addAll(PathFinder.createPathway(this.getLocation(), moveLocation, this.residentBlock, levelManager.getBlock(this.moveLocation), roomsToAvoid, false));
+			portalPathway.addAll(PathFinder.createPathway(this.getLocation(), moveLocation, this.residentBlock, levelManager.getBlock(this.moveLocation), false));
 		}
 		// make the pathway null to avoid issues with ui drawing an old pathway
 		else{
 			portalPathway = null;
 			
 			this.roomPathway = new Stack<>();
-			this.roomPathway.addAll(PathFinder.findIntraPath(invoker, this.moveLocation));
+			this.roomPathway.addAll(PathFinder.findIntraPath(invoker, this.moveLocation, this.moveDistance));
 		}
 	}
 	
@@ -390,29 +381,8 @@ public class AiPathing {
 			portalPathway = null;
 			
 			this.roomPathway = new Stack<>();
-			this.roomPathway.addAll(PathFinder.findIntraPath(invoker, this.moveLocation));
+			this.roomPathway.addAll(PathFinder.findIntraPath(invoker, this.moveLocation, this.moveDistance));
 		}
-	}
-
-	public void setMoveLocation(Ai invoker, double x, double y, ArrayList<LevelBlock> roomsToAvoid) throws PathNotFoundException {
-		this.moveLocation[0] = x;
-		this.moveLocation[1] = y;
-		
-		this.roomPathway = null;
-		
-		// Create new pathway if outside of current room
-		if(levelManager.getBlock(this.moveLocation) != this.residentBlock){
-			// try to create a pathway to the location
-			portalPathway = new Stack<>();
-			portalPathway.addAll(PathFinder.createPathway(this.getLocation(), moveLocation, this.residentBlock, levelManager.getBlock(this.moveLocation), roomsToAvoid, false));
-		}
-		// make the pathway null to avoid issues with ui drawing an old pathway
-		else{
-			portalPathway = null;
-			
-			this.roomPathway = new Stack<double[]>();
-			this.roomPathway.addAll(PathFinder.findIntraPath(invoker, this.moveLocation));
-		}		
 	}
 
 	public void setLocation(double x, double y) {
@@ -460,7 +430,7 @@ public class AiPathing {
 		}		
 	}
 
-	public void moveWithinRadius(Ai invoker, double x, double y, double radius) {
+	public void moveWithinRadius(Ai invoker, double x, double y, double radius, boolean ignoreClosedDoors) {
 		double angleToPoint = Maths.getRads(this.getLocation()[0],this.getLocation()[1], x,y);
 		// +1 to cover rounding errors
 		double distance = Maths.getDistance(this.getLocation()[0],this.getLocation()[1], x,y) - radius + 1;
@@ -468,7 +438,8 @@ public class AiPathing {
 		if(distance > 0){
 			try{
 				invoker.setMoveLocation(this.getLocation()[0] + (distance * Math.cos(angleToPoint)),
-									(this.getLocation()[1] + (distance * Math.sin(angleToPoint))));
+									   (this.getLocation()[1] + (distance * Math.sin(angleToPoint))),
+									   ignoreClosedDoors);
 			}
 			catch(PathNotFoundException pnfe){
 				invoker.setMoveLocationToSelf();

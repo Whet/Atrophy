@@ -1,12 +1,15 @@
 /*
- * All code unless credited otherwise is copyright 2012 Charles Sherman, all rights reserved
+ * 
  */
 package atrophy.gameMenu.ui;
 
 import java.util.ArrayList;
 
 import atrophy.combat.items.EngineeringSupply;
+import atrophy.combat.items.Harpoon1;
 import atrophy.combat.items.MedicalSupply;
+import atrophy.combat.items.MeleeWeapon1;
+import atrophy.combat.items.Plasma1;
 import atrophy.combat.items.ScienceSupply;
 import atrophy.combat.items.Weapon;
 import atrophy.combat.items.WeaponSupply;
@@ -42,6 +45,10 @@ public class StashManager {
 			this.items.add(MedicalSupply.NAME);
 			this.items.add(WeaponSupply.NAME);
 		}
+		
+		this.items.add(MeleeWeapon1.NAME);
+		this.items.add(Plasma1.NAME);
+		this.items.add(Harpoon1.NAME);
 	}
 	
 	public void lazyLoad(ShopManager shopManager) {

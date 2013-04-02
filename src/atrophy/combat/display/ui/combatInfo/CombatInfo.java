@@ -1,5 +1,5 @@
 /*
- * All code unless credited otherwise is copyright 2012 Charles Sherman, all rights reserved
+ * 
  */
 package atrophy.combat.display.ui.combatInfo;
 
@@ -99,7 +99,7 @@ public class CombatInfo extends Crowd {
 			BufferedImage[] radioSilenceIcons = {ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/radioEnabled.png")),
 												 ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/radioDisabled.png"))};
 			
-			combatButtons[0] = new RadioSilenceToggle(combatMembersManager, combatUiManager, radioSilenceIcons);
+			combatButtons[0] = new IndividualLOSToggle(combatVisualManager, combatUiManager, radioSilenceIcons);
 			
 			combatButtons[0].setLocation(DisplayManager.getInstance().getResolution()[0] - 40,
 								 		 DisplayManager.getInstance().getResolution()[1] - 170);

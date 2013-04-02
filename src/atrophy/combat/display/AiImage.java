@@ -1,5 +1,5 @@
 /*
- * All code unless credited otherwise is copyright 2012 Charles Sherman, all rights reserved
+ * 
  */
 package atrophy.combat.display;
 
@@ -7,6 +7,8 @@ import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 import watoydoEngine.display.tweens.MotionTween;
 import watoydoEngine.gubbinz.Maths;
@@ -16,66 +18,91 @@ import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.actions.CombatKeyboardHandler;
 import atrophy.combat.actions.MouseAbilityHandler;
+import atrophy.combat.ai.Ai;
+import atrophy.combat.display.ui.FloatingIcons;
 import atrophy.combat.display.ui.InfoTextDisplayable;
+import atrophy.combat.items.Harpoon1;
+import atrophy.combat.items.Harpoon2;
+import atrophy.combat.items.MeleeWeapon1;
+import atrophy.combat.items.MeleeWeapon2;
+import atrophy.combat.items.Pistol1;
+import atrophy.combat.items.Pistol2;
+import atrophy.combat.items.Pistol3;
+import atrophy.combat.items.Pistol4;
+import atrophy.combat.items.Plasma1;
+import atrophy.combat.items.Plasma2;
+import atrophy.combat.items.Railgun;
+import atrophy.combat.items.Shotgun1;
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class AiImage.
- */
 public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 	
+	private static final Map<Animation, double[]> ANIMATION_OFFSETS = new HashMap<>();
+	private static final int ATTACK_FRAME = 5;
+	
+	{
+		ANIMATION_OFFSETS.put(Animation.DEAD, 			new double[]{0.5, 0.86});
+		ANIMATION_OFFSETS.put(Animation.WALK, 			new double[]{0.5, 0.86});
+		
+		ANIMATION_OFFSETS.put(Animation.IDLE_MELEE, 	new double[]{0.5, 0.86});
+		ANIMATION_OFFSETS.put(Animation.IDLE_WEP1, 		new double[]{0.40, 0.86});
+		ANIMATION_OFFSETS.put(Animation.IDLE_WEP2, 		new double[]{0.28, 0.74});
+		ANIMATION_OFFSETS.put(Animation.IDLE_WEP3, 		new double[]{0.25, 0.74});
+		
+		ANIMATION_OFFSETS.put(Animation.ATTACK_MELEE, 	new double[]{0.3, 0.74});
+		ANIMATION_OFFSETS.put(Animation.ATTACK_WEP1, 	new double[]{0.24, 0.73});
+		ANIMATION_OFFSETS.put(Animation.ATTACK_WEP2, 	new double[]{0.28, 0.74});
+		ANIMATION_OFFSETS.put(Animation.ATTACK_WEP3, 	new double[]{0.25, 0.74});
+	}
+	
+	private double xOffset = 0.5;
+	private double yOffset = 0.86;
+	
+	private FloatingIcons floatingIcons;
 	private PanningManager panningManager;
 	private CombatUiManager combatUiManager;
 	private AiCrowd aiCrowd;
 	
-	/**
-	 * The dragging.
-	 */
 	private boolean dragging;
 	private CombatVisualManager combatVisualManager;
 	private MouseAbilityHandler mouseAbilityHandler;
 	
-	/**
-	 * Instantiates a new ai image.
-	 *
-	 * @param x the x
-	 * @param y the y
-	 * @param mouseAbilityHandler 
-	 */
-	public AiImage(AiCrowd aiCrowd, CombatMembersManager combatMembersManager, CombatUiManager combatUiManager, CombatVisualManager combatVisualManager, PanningManager panningManager, double x, double y, MouseAbilityHandler mouseAbilityHandler){
+	private int deathFrame, frame, maxFrame;
+	private Animation animation;
+	private boolean imageChanged;
+	private Ai attackTarget;
+	
+	public AiImage(AiCrowd aiCrowd, CombatMembersManager combatMembersManager, CombatUiManager combatUiManager, CombatVisualManager combatVisualManager, PanningManager panningManager, double x, double y, MouseAbilityHandler mouseAbilityHandler, FloatingIcons floatingIcons){
 		super(aiCrowd, combatMembersManager, null, x, y);
 		this.setZ(2);
+		
 		this.panningManager = panningManager;
 		this.aiCrowd = aiCrowd;
 		this.combatUiManager = combatUiManager;
 		this.combatVisualManager = combatVisualManager;
 		this.mouseAbilityHandler = mouseAbilityHandler;
+		this.floatingIcons = floatingIcons;
+		
+		this.animation = Animation.IDLE_MELEE;
+		this.deathFrame = 0;
+		this.frame = 0;
+		this.maxFrame = 1;
+		this.imageChanged = false;
 	}
 	
-	// The Void
-	
-	// edited transformation to account for panning
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.AbstractButton#getTransformationForDrawing()
-	 */
 	@Override
 	public AffineTransform getTransformationForDrawing(){
-		super.getTransformation().setToTranslation(this.getLocation()[0] + panningManager.getOffset()[0],
-												   this.getLocation()[1] + panningManager.getOffset()[1]);
+		super.getTransformation().setToTranslation((int)(this.getLocation()[0] - (this.getSize()[0] * xOffset) + panningManager.getOffset()[0]),
+												   (int)(this.getLocation()[1] - (this.getSize()[1] * yOffset) + panningManager.getOffset()[1]));
 		super.getTransformation().scale(this.getScale(),this.getScale());
 		super.getTransformation().rotate(this.getRotation(), this.getSize()[0] / 2, this.getSize()[1] / 2);
 		
 		return super.getTransformation();
 	}
-	// Updates image to hold the mask of the this.getAi() and be at it's position
-	/**
-	 * Update image.
-	 */
+
 	public void updateImage(){
+		this.setTween(null);
 		dragging = false;
 		combatVisualManager.setDraggableAi(null);
-		this.setImage(aiCrowd.getBankedImage(this.getAi().getImage()));
-		this.setLocation(this.getAi().getLocation()[0] - (this.getSize()[0] * 0.5), this.getAi().getLocation()[1] - (this.getSize()[1] * 0.68));
 		
 		if(this.getAi().isDead()){
 			this.setZ(1);
@@ -84,33 +111,28 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 		}
 		
 		this.applyEffects();
+		this.setLocation(this.getAi().getLocation()[0], this.getAi().getLocation()[1]);
 	}
-	// just changes mask
-	/* (non-Javadoc)
-	 * @see atrophy.combat.display.AiImageRoster#updateMask()
-	 */
+	
 	public void updateMask(){
-		this.setImage(aiCrowd.getBankedImage(this.getAi().getImage()));
-		
 		if(this.getAi().isDead()){
 			this.setZ(1);
 			// Cancel stealth effect
 			this.setAlpha(1.0f);
+			this.setLocation(this.getAi().getLocation()[0], this.getAi().getLocation()[1]);
 		}
 		
 		this.applyEffects();
 	}
 	
-	/**
-	 * Update tween.
-	 */
 	public void updateTween(){
-		this.setTween(new MotionTween(this, this.getAi().getLocation()[0] - (this.getSize()[0] * 0.5), this.getAi().getLocation()[1] - (this.getSize()[1] * 0.68), 2400, true));
+		if(Maths.getDistance(this.getLocation()[0], this.getLocation()[1],
+							 this.getAi().getLocation()[0], this.getAi().getLocation()[1]) > 1) {
+			this.setTween(new MotionTween(this, this.getAi().getLocation()[0], this.getAi().getLocation()[1], 1200, true));
+//			this.setAnimation(Animation.WALK, 9);
+		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.AbstractButton#mI(java.awt.Point)
-	 */
 	@Override
 	public void mI(Point mousePosition){
 		if(this.isVisible()){
@@ -122,16 +144,13 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 			}
 			
 			if(dragging){
-				this.setLocation(mousePosition.x - this.getSize()[0] * 0.5 - panningManager.getOffset()[0],
-						         mousePosition.y - this.getSize()[1] * 0.5 - panningManager.getOffset()[1]);
+				this.setLocation(mousePosition.x - panningManager.getOffset()[0],
+						         mousePosition.y - panningManager.getOffset()[1]);
 				combatUiManager.updateUi();
 			}
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.AbstractButton#mO(java.awt.Point)
-	 */
 	@Override
 	public void mO(Point mousePosition){
 		combatUiManager.getInfoText().removeInfoText(this);
@@ -142,16 +161,12 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 		}
 		
 		if(dragging){
-			this.setLocation(mousePosition.x - this.getSize()[0] * 0.5 - panningManager.getOffset()[0],
-					         mousePosition.y - this.getSize()[1] * 0.5 - panningManager.getOffset()[1]);
+			this.setLocation(mousePosition.x - panningManager.getOffset()[0],
+					         mousePosition.y - panningManager.getOffset()[1]);
 			combatUiManager.updateUi();
 		}
 	}
 	
-	// Interactions
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.AbstractButton#mD(java.awt.Point, java.awt.event.MouseEvent)
-	 */
 	public boolean mD(Point mousePosition, MouseEvent e){
 		if(combatVisualManager.isTabled() && CombatKeyboardHandler.SHIFT_DOWN && combatVisualManager.getDraggableAi() == null){
 			dragging = true;
@@ -161,9 +176,6 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 		return false;
 	}
 
-	/* (non-Javadoc)
-	 * @see atrophy.combat.display.AiImageRoster#mU(java.awt.Point, java.awt.event.MouseEvent)
-	 */
 	public boolean mU(Point mousePosition, MouseEvent e){
 		if(combatVisualManager.isTabled() && combatVisualManager.getDraggableAi() == this.getAi()){
 			dragging = false;
@@ -181,21 +193,16 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 		return false;	
 	}
 	
-	
-	/* (non-Javadoc)
-	 * @see atrophy.combat.display.AiImageRoster#mC(java.awt.Point, java.awt.event.MouseEvent)
-	 */
 	public boolean mC(Point mousePosition, MouseEvent e){
 		if(!mouseAbilityHandler.isSettingAbility()){
 			
 			// Not dead and not ally and in the same room, aim weapon at this ai
 			if(!this.getAi().isDead() && !this.getAi().getFaction().equals("Player")){
 				
-				for(int i = 0; i < combatMembersManager.getCurrentAis().size(); i++){
-					if(combatMembersManager.getCurrentAi(i).getLevelBlock() == this.getAi().getLevelBlock()){
-						combatMembersManager.getCurrentAi(i).aim(this.getAi());
-					}
-			   }
+				if(CombatVisualManager.isInFiringSight(combatMembersManager.getCurrentAi().getLocation()[0], combatMembersManager.getCurrentAi().getLocation()[1], this.getAi().getLocation()[0], this.getAi().getLocation()[1], this.getAi().getLevelBlock())){
+					combatMembersManager.getCurrentAi().aim(this.getAi());
+				}
+				
 			}
 			// if not dead and ally then select them as current ai
 			else if(!this.getAi().isDead() && this.getAi().getFaction().equals("Player")){
@@ -216,12 +223,6 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 		return false;
 	}
 	
-	/**
-	 * Gets the ais near mouse.
-	 *
-	 * @param point the point
-	 * @return the ais near mouse
-	 */
 	private ArrayList<AiImage> getAisNearMouse(Point point) {
 		ArrayList<AiImage> ais = new ArrayList<AiImage>();
 		for(AiImage mask : aiCrowd.getMasks()){
@@ -235,48 +236,32 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 		return ais;
 	}
 
-	// Getters
-	// edited inbounds for panning
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.ButtonSingle#isInBounds(double, double)
-	 */
 	@Override
 	public boolean isInBounds(double x, double y){
-		return super.isInBounds(x - panningManager.getOffset()[0],
-								y - panningManager.getOffset()[1]);
+		return super.isInBounds(x + (this.getSize()[0] * xOffset) - panningManager.getOffset()[0],
+								y + (this.getSize()[1] * yOffset) - panningManager.getOffset()[1]);
 	}
 	
-	/* (non-Javadoc)
-	 * @see atrophy.combat.display.ui.InfoTextDisplayable#getUiHint()
-	 */
-	public String getUiHint(){/*
-		if(this.getAi() instanceof ThinkingAi){
-			return "Aggression: "+ ((ThinkingAi) this.getAi()).getAggression();
-		}*/
-		// Show ai name prefixed with faction
+	@Override
+	public double[] getLocationCentre(){
+		double editedLocation[] = {this.getLocation()[0] - (this.getSize()[0] * xOffset * 0.5), this.getLocation()[1] - (this.getSize()[1] * yOffset * 0.5)};
+		return editedLocation;
+	}
+	
+	public String getUiHint(){
 		return this.getAi().getFaction() + ": " + this.getAi().getName();
 	}
 	
-	/* (non-Javadoc)
-	 * @see atrophy.combat.display.ui.InfoTextDisplayable#getHintLines()
-	 */
 	public int getHintLines(){
 		return 1;
 	}
 	
-	// Setters
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.AbstractButton#setVisible(boolean)
-	 */
 	@Override
 	public void setVisible(boolean visible){
 		super.setVisible(visible);
 		combatUiManager.getInfoText().removeInfoText(this);
 	}
 	
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.AbstractButton#isActive()
-	 */
 	@Override
 	public boolean isActive() {
 		if(!this.isVisible()){
@@ -285,15 +270,140 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 		return super.isActive();
 	}
 	
-	/**
-	 * Apply effects.
-	 */
 	private void applyEffects(){
 		if(this.getAi().isStealthed()){
 			this.setAlpha(0.5f);
 		}
 		else{
 			this.setAlpha(1.0f);
+		}
+	}
+	
+	@Override
+	public void setAi(Ai aiObject) {
+		super.setAi(aiObject);
+		updateAnimation();
+	}
+	
+	public void setAnimation(Animation animation, int maxFrame) {
+		this.frame = 0;
+		this.maxFrame = maxFrame;
+		
+		if(!this.animation.equals(animation) && !animation.equals(Animation.WALK)) {
+			this.animation = animation;
+			this.imageChanged = true;
+			this.setTween(null);
+			this.setLocation(this.getAi().getLocation()[0], this.getAi().getLocation()[1]);
+			updateAnimation();
+		}
+		
+		this.animation = animation;
+		
+		double[] animationOffset = ANIMATION_OFFSETS.get(animation);
+		this.xOffset = animationOffset[0];
+		this.yOffset = animationOffset[1];
+	}
+
+	public void updateAnimation() {
+		
+		if(!this.getAi().isDead())
+			this.frame++;
+		else if(deathFrame < ATTACK_FRAME)
+			deathFrame++;
+		
+		if(this.frame == maxFrame && !this.getAi().isDead()) {
+			this.setAnimation(this.getIdleAnimation(), 4);
+		}
+		
+		this.setImage(aiCrowd.getAnimationFrame(this.getAi().getImage() + "Full", frame, animation));
+		
+		if(deathFrame == ATTACK_FRAME && !this.animation.equals(Animation.DEAD)) {
+//			floatingIcons.addPendingPaint(MapPainter.BLOOD_TEXTURES[(new Random()).nextInt(MapPainter.BLOOD_TEXTURES.length)], this.getAi().getLocation(), 0.5 + (new Random().nextInt(5) * 0.1));
+			this.setAnimation(Animation.DEAD, 1);
+			this.updateAnimation();
+		}
+		
+		if(this.isVisible() && this.frame == ATTACK_FRAME &&
+		  (this.animation.equals(Animation.ATTACK_MELEE) || this.animation.equals(Animation.ATTACK_WEP1) || this.animation.equals(Animation.ATTACK_WEP2) || this.animation.equals(Animation.ATTACK_WEP3))){
+			floatingIcons.addEffect(this.getAi().getWeapon().getFireEffect(panningManager, this.getAi().getLocation(), attackTarget.getLocation()));
+			attackTarget = null;
+		}
+		
+		if(imageChanged) {
+			this.imageChanged = false;
+			updateImage();
+		}
+	}
+
+	private Animation getIdleAnimation() {
+		String weapon = this.getAi().getWeapon().getName();
+		
+		switch(weapon) {
+			case MeleeWeapon1.NAME:
+			case MeleeWeapon2.NAME:
+				return Animation.IDLE_MELEE;
+				
+			case Harpoon1.NAME:
+			case Harpoon2.NAME:
+				return Animation.IDLE_WEP2;
+				
+			case Pistol1.NAME:
+			case Pistol2.NAME:
+			case Pistol3.NAME:
+			case Pistol4.NAME:
+				return Animation.IDLE_WEP1;
+				
+			case Plasma1.NAME:
+			case Plasma2.NAME:
+			case Shotgun1.NAME:
+			case Railgun.NAME:
+				return Animation.IDLE_WEP3;
+				
+			default:
+				return Animation.IDLE_MELEE;
+			
+		}
+	}
+	
+	public void setAttackingAnimation(Ai targetAi) {
+		
+		this.attackTarget = targetAi;
+		
+		int maxFrame = 6;
+		
+		if(this.getAi().getWeapon().isMelee())
+			maxFrame = 5;
+		
+		this.setAnimation(getAttackAnimation(), maxFrame);
+	}
+	
+	private Animation getAttackAnimation() {
+		String weapon = this.getAi().getWeapon().getName();
+		
+		switch(weapon) {
+			case MeleeWeapon1.NAME:
+			case MeleeWeapon2.NAME:
+				return Animation.ATTACK_MELEE;
+				
+			case Harpoon1.NAME:
+			case Harpoon2.NAME:
+				return Animation.ATTACK_WEP2;
+				
+			case Pistol1.NAME:
+			case Pistol2.NAME:
+			case Pistol3.NAME:
+			case Pistol4.NAME:
+				return Animation.ATTACK_WEP1;
+				
+			case Plasma1.NAME:
+			case Plasma2.NAME:
+			case Shotgun1.NAME:
+			case Railgun.NAME:
+				return Animation.ATTACK_WEP3;
+				
+			default:
+				return Animation.IDLE_MELEE;
+			
 		}
 	}
 	

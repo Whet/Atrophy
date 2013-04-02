@@ -1,5 +1,5 @@
 /*
- * All code unless credited otherwise is copyright 2012 Charles Sherman, all rights reserved
+ * 
  */
 package atrophy.combat.display.ui;
 
@@ -175,7 +175,7 @@ public class FloatingIcons extends Crowd{
 	 */
 	private void drawDoors(Graphics2D drawShape){
 		
-		drawShape.setComposite(GraphicsFunctions.makeComposite(0.23f));
+		drawShape.setComposite(GraphicsFunctions.makeComposite(0.4f));
 		
 //		if(drawingDoors && CombatVisualManager.allRevealed){
 //			drawAllDoors(drawShape);

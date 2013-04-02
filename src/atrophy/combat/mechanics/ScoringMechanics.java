@@ -1,5 +1,5 @@
 /*
- * All code unless credited otherwise is copyright 2012 Charles Sherman, all rights reserved
+ * 
  */
 package atrophy.combat.mechanics;
 
@@ -24,14 +24,15 @@ public class ScoringMechanics {
 	 * @return true, if successful
 	 */
 	public static boolean killedTarget(Ai ai, Ai targetAi) {
+		
+		// Check for target defences
+		if(targetAi.hasActiveEffect(Parrying.NAME) && ai.getWeapon().isMelee()) {
+			ai.setStunnedTurns(Parrying.STUN_TURNS);
+			return false;
+		}
+		
 		// if the target misses, they can re-roll if in range and not melee
 		if((hitTarget(ai, targetAi) || (!ai.getWeapon().isMelee() && ai.getWeapon().isInRange(ai, targetAi) && hitTarget(ai, targetAi)))){
-			
-			// Check for target defences
-			if(targetAi.hasActiveEffect(Parrying.NAME)) {
-				ai.setStunnedTurns(Parrying.STUN_TURNS);
-				return false;
-			}
 			
 			if(damagedtarget(ai,targetAi)){
 				return true;

@@ -1,5 +1,5 @@
 /*
- * All code unless credited otherwise is copyright 2012 Charles Sherman, all rights reserved
+ * 
  */
 package atrophy.combat.display.ui.abilities;
 
@@ -58,7 +58,7 @@ public class ParryAction extends AbilityButton implements InfoTextDisplayable{
 	 * @see atrophy.combat.display.ui.InfoTextDisplayable#getUiHint()
 	 */
 	public String getUiHint(){
-		if(combatMembersManager.getCurrentAi().hasActiveEffect(Parrying.NAME)){
+		if(combatMembersManager.getCurrentAi().hasEffect(Parrying.NAME)){
 			return "Parrying Duration: "+combatMembersManager.getCurrentAi().getEffect(Parrying.NAME).getDuration()+
 					"  Cooldown: "+combatMembersManager.getCurrentAi().getEffect(Parrying.NAME).getCooldown();
 		}

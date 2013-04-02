@@ -1,5 +1,5 @@
 /*
- * All code unless credited otherwise is copyright 2012 Charles Sherman, all rights reserved
+ * 
  */
 package atrophy.combat.ai;
 
@@ -46,7 +46,7 @@ public class LonerAi extends ThinkingAi{
 	 */
 	@Override
 	public boolean isTargetHostile(Ai target) {
-		return !target.isDead() && target != this;
+		return !target.isDead() && target != this && !this.getCommander().isAlliedWith(target.getFaction());
 	}
 	
 	/* (non-Javadoc)
@@ -93,7 +93,7 @@ public class LonerAi extends ThinkingAi{
 			if(canBeEngaged(shuffledAi.get(i))){
 				
 				// Prioritise hatedAi or ai aiming at ai
-				if(this.getTeamObject().isAiHated(shuffledAi.get(i)) || shuffledAi.get(i).getTargetAi() == this){
+				if(this.getCommander().isAiHated(shuffledAi.get(i)) || shuffledAi.get(i).getTargetAi() == this){
 					target = shuffledAi.get(i);
 					break;
 				}
@@ -110,7 +110,7 @@ public class LonerAi extends ThinkingAi{
 		
 		// report enemies to commander
 		// only speak if the area is not already reported
-		this.getTeamObject().reportUnits(enemyCount,this.getLevelBlock());
+		this.getCommander().reportUnits(enemyCount,this.getLevelBlock());
 		
 		// Combat score of enemies in room and closest target has been established
 		if(target != null){

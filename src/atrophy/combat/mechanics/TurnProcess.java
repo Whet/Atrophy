@@ -1,5 +1,5 @@
 /*
- * All code unless credited otherwise is copyright 2012 Charles Sherman, all rights reserved
+ * 
  */
 package atrophy.combat.mechanics;
 
@@ -17,6 +17,7 @@ import atrophy.combat.CombatInorganicManager;
 import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
+import atrophy.combat.PanningManager;
 import atrophy.combat.actions.ActionSuite;
 import atrophy.combat.actions.CombatKeyboardHandler;
 import atrophy.combat.actions.CombatMouseHandler;
@@ -105,7 +106,7 @@ public class TurnProcess {
 	 * End turn.
 	 */
 	public synchronized void endTurn(){
-		if(!turnInProgress){
+		if(!turnInProgress && !allPlayersWaiting()){
 			turnInProgress = true;
 			combatMouseHandler.setActive(false);
 			combatKeyboardHandler.setFocus(false);
@@ -115,14 +116,12 @@ public class TurnProcess {
 				aiCrowd.getMask(i).setActive(false);
 			}
 		
-			if(!allPlayersWaiting()){
 				
-				if(turnCount > 0 && turnCount%20 == 0){
-					combatUiManager.getLargeEventText().flashText("Turn " + turnCount, Color.white);
-				}
-				
-				turnCount++;
+			if(turnCount > 0 && turnCount%20 == 0){
+				combatUiManager.getLargeEventText().flashText("Turn " + turnCount, Color.white);
 			}
+			
+			turnCount++;
 			
 			messageBox.setVisible(false);
 			lootBox.setVisible(false);
@@ -133,6 +132,7 @@ public class TurnProcess {
 			updateAiBrass();
 			updateAi();
 			lineDrawer.updateAlphas();
+			lineDrawer.updateFovLight(combatMembersManager.getCurrentAi());
 		}
 	}
 	
@@ -160,7 +160,6 @@ public class TurnProcess {
 	 */
 	private void updateAiBrass(){
 		combatMembersManager.updateCommanders();
-		combatMembersManager.updateTeams();
 	}
 	
 	/**
@@ -171,21 +170,21 @@ public class TurnProcess {
 		if(shuffledAi.size() == 0)
 			shuffledAi = aiCrowd.getShuffledStack();
 
-		currentAiDone(shuffledAi.peek().isSkippingTurns());
+		currentAiDone(false);
 	}
 	
 	/**
 	 * Current ai done.
 	 *
-	 * @param aiEnd the ai end
+	 * @param lastUnitWasSkippingTurns the ai end
 	 */
-	public void currentAiDone(boolean aiEnd){
-		
+	public void currentAiDone(boolean lastUnitWasSkippingTurns){
+
 		while(shuffledAi.size() > 0 && !allPlayersWaiting()){
 			
 			if(!shuffledAi.peek().isDead()){
 				
-				if(aiEnd && !shuffledAi.peek().isSkippingTurns()){
+				if(lastUnitWasSkippingTurns && !shuffledAi.peek().isSkippingTurns()){
 					lastAiUpdated();
 					return;
 				}
@@ -196,7 +195,7 @@ public class TurnProcess {
 				
 				currentAi.action();
 				aiCrowd.getActorMask(currentAi).updateTween();
-//				return;
+				return;
 			}
 			else{
 				
@@ -280,6 +279,9 @@ public class TurnProcess {
 	 */
 	private void updateUi(){
 		
+		// Set control to topAi
+		combatMembersManager.setCurrentAi(getTopAi());
+		
 		// Update any graphics or settings since all actors have done their actions
 		for(int i = 0; i < aiCrowd.getActorCount(); i++){
 			
@@ -288,12 +290,9 @@ public class TurnProcess {
 			
 			// If a target was killed/went out of room, all ai aiming at the target need to be updated
 			if((aiCrowd.getActor(i).getAction().equals("Aim") || aiCrowd.getActor(i).getAction().equals("Fire")) &&
-					
 			   (aiCrowd.getActor(i).getTargetAi() == null || aiCrowd.getActor(i).getTargetAi().isDead() || 
-			  
-			   aiCrowd.getActor(i).getTargetAi().getLevelBlock() != aiCrowd.getActor(i).getLevelBlock())
-			   
-				){
+			    aiCrowd.getActor(i).getTargetAi().getLevelBlock() != aiCrowd.getActor(i).getLevelBlock())){
+				
 				aiCrowd.getActor(i).setAction("");
 				aiCrowd.getActor(i).setTargetAi(null);
 				aiCrowd.getActor(i).setSwing(0);
@@ -303,13 +302,9 @@ public class TurnProcess {
 		combatVisualManager.updateVisibleAi();
 		
 		// If player is at target then remove marker
-		if(combatMembersManager.getCurrentAi() != null &&
-		   Maths.getDistance(combatMembersManager.getCurrentAi().getLocation(), combatMembersManager.getCurrentAi().getMoveLocation()) == 0){
+		if(combatMembersManager.getCurrentAi() != null && Maths.getDistance(combatMembersManager.getCurrentAi().getLocation(), combatMembersManager.getCurrentAi().getMoveLocation()) == 0)
 			combatUiManager.getMoveFlag().setVisible(false);
-		}
 	
-		combatMembersManager.removeDeadSelectedAi();
-		
 		// Update help text as some items might be displaying old information
 		combatUiManager.updateUi();
 		combatUiManager.getMiniMap().updateAiDrawing();

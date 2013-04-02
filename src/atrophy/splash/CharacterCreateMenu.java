@@ -1,5 +1,5 @@
 /*
- * All code unless credited otherwise is copyright 2012 Charles Sherman, all rights reserved
+ * 
  */
 package atrophy.splash;
 
@@ -19,12 +19,16 @@ import watoydoEngine.designObjects.display.TextButton;
 import watoydoEngine.designObjects.display.TextInput;
 import watoydoEngine.io.ReadWriter;
 import watoydoEngine.workings.displayActivity.ActivePane;
+import atrophy.combat.items.EngineeringSupply;
 import atrophy.combat.items.KillTags;
+import atrophy.combat.items.MedicalSupply;
 import atrophy.combat.items.MeleeWeapon2;
 import atrophy.combat.items.Pistol1;
 import atrophy.combat.items.ScienceScanner;
+import atrophy.combat.items.ScienceSupply;
 import atrophy.combat.items.SensorSuite;
 import atrophy.combat.items.UnitDetector;
+import atrophy.combat.items.WeaponSupply;
 import atrophy.combat.items.WeldingTorch;
 import atrophy.combat.mechanics.Abilities;
 import atrophy.gameMenu.saveFile.Missions;
@@ -39,7 +43,7 @@ import atrophy.hardPanes.GameMenuHardPane;
  */
 public class CharacterCreateMenu extends Crowd{
 
-	private static final int START_ADVANCE = 300;
+	private static final int START_ADVANCE = 99999999;
 
 	/**
 	 * The name.
@@ -200,7 +204,6 @@ public class CharacterCreateMenu extends Crowd{
 		TechTree techTree = new TechTree();
 		StashManager stashManager = new StashManager(null);
 		Missions missions = new Missions();
-		
 		ActivePane.getInstance().changePane(new Crowd(new GameMenuHardPane(squad, techTree, stashManager, missions)));
 	}
 	

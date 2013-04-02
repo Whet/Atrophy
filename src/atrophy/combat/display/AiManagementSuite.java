@@ -16,6 +16,7 @@ public class AiManagementSuite {
 	public AiManagementSuite(TurnProcess turnProcess, CombatInorganicManager combatInorganicManager, LevelManager levelManager, Squad squad){
 		aiCrowd = new AiCrowd(squad);
 		combatMembersManager = new CombatMembersManager(aiCrowd, turnProcess, levelManager, combatInorganicManager);
+		combatMembersManager.createCommanders();
 	}
 
 	public AiCrowd getAiCrowd() {

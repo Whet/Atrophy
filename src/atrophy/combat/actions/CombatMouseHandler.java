@@ -1,5 +1,5 @@
 /*
- * All code unless credited otherwise is copyright 2012 Charles Sherman, all rights reserved
+ * 
  */
 package atrophy.combat.actions;
 
@@ -75,9 +75,7 @@ public class CombatMouseHandler extends ActionRegion {
 			double pointDouble[] = {mousePosition.x - panningManager.getOffset()[0],
 									mousePosition.y - panningManager.getOffset()[1]};
 			
-			for(int i = 0; i < combatMembersManager.getCurrentAis().size(); i++){
-				combatMembersManager.getCurrentAi(i).setLookAngle(pointDouble);
-			}
+			combatMembersManager.getCurrentAi().setLookAngle(pointDouble);
 			
 			mouseAbilityHandler.cancelAbilitySetting();
 		}
@@ -108,7 +106,7 @@ public class CombatMouseHandler extends ActionRegion {
 			
 			// set move flag position
 			combatUiManager.getMoveFlag().setAiMoveLocation(mousePosition.x - panningManager.getOffset()[0],
-																		  mousePosition.y - panningManager.getOffset()[1]);
+														    mousePosition.y - panningManager.getOffset()[1]);
 			SoundBoard.getInstance().playEffect("cancel");
 			return true;
 		}
@@ -121,11 +119,9 @@ public class CombatMouseHandler extends ActionRegion {
 	@Override
 	public boolean mMC(Point mousePosition, MouseEvent e) {
 		double pointDouble[] = {mousePosition.x - panningManager.getOffset()[0],
-				mousePosition.y - panningManager.getOffset()[1]};
+								mousePosition.y - panningManager.getOffset()[1]};
 
-		for(int i = 0; i < combatMembersManager.getCurrentAis().size(); i++){
-			combatMembersManager.getCurrentAi(i).setLookAngle(pointDouble);
-		}
+		combatMembersManager.getCurrentAi().setLookAngle(pointDouble);
 		
 		mouseAbilityHandler.cancelAbilitySetting();
 		

@@ -89,7 +89,7 @@ public class TurretAi extends LonerAi {
 			respondToEnvironmentData();
 		}
 		
-		turnProcess.currentAiDone(true);
+		turnProcess.currentAiDone(this.isSkippingTurns());
 	}
 	
 	@Override

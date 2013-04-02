@@ -14,21 +14,21 @@ import atrophy.combat.display.ui.InfoTextDisplayable;
 
 // TODO: Auto-generated Javadoc
 /**
- * The Class DrawObjLineToggle.
+ * The Class RadioSilenceToggle.
  */
-public class DrawObjLineToggle extends ButtonMulti implements InfoTextDisplayable{
+public class IndividualLOSToggle extends ButtonMulti implements InfoTextDisplayable{
 
 	private CombatUiManager combatUiManager;
 	private CombatVisualManager combatVisualManager;
 
 	/**
-	 * Instantiates a new draw obj line toggle.
+	 * Instantiates a new radio silence toggle.
 	 *
 	 * @param image the image
 	 */
-	public DrawObjLineToggle(CombatVisualManager combatVisualManagers, CombatUiManager combatUiManagers, BufferedImage[] image) {
+	public IndividualLOSToggle(CombatVisualManager combatVisualManager, CombatUiManager combatUiManagers, BufferedImage[] image) {
 		super(image);
-		this.combatVisualManager = combatVisualManagers;
+		this.combatVisualManager = combatVisualManager;
 		this.combatUiManager = combatUiManagers;
 	}
 	
@@ -38,14 +38,8 @@ public class DrawObjLineToggle extends ButtonMulti implements InfoTextDisplayabl
 	@Override
 	public boolean mC(Point mousePosition, MouseEvent e){
 		this.nextFrame(true);
-		if(this.getFrame() == 0){
-			combatVisualManager.setDrawingObjLines(false);
-		}
-		else{
-			combatVisualManager.setDrawingObjLines(true);
-		}
-		
-		// update Ui to reflect whether radio silence is in effect
+		combatVisualManager.toggleDrawingIndividualSight();
+		combatVisualManager.updateVisibleAi();
 		combatUiManager.updateUi();
 		
 		return true;
@@ -72,10 +66,10 @@ public class DrawObjLineToggle extends ButtonMulti implements InfoTextDisplayabl
 	 */
 	public String getUiHint(){
 		// Show if radio silence engaged
-		if(combatVisualManager.isDrawingObjLines()){
-			return "Drawing lines to objectives";
+		if(!combatVisualManager.isDrawingIndividualSight()){
+			return "Draw Individual Sight";
 		}
-		return "Not drawing lines to objectives";
+		return "Draw Game Sight";
 	}
 	
 	/* (non-Javadoc)
@@ -84,5 +78,4 @@ public class DrawObjLineToggle extends ButtonMulti implements InfoTextDisplayabl
 	public int getHintLines(){
 		return 1;
 	}
-	
 }

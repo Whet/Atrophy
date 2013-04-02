@@ -1,5 +1,5 @@
 /*
- * All code unless credited otherwise is copyright 2012 Charles Sherman, all rights reserved
+ * 
  */
 package atrophy.combat.display;
 
@@ -21,7 +21,7 @@ public class MapPainter {
 	/**
 	 * The BLOO d_ textures.
 	 */
-	public static BufferedImage[] BLOOD_TEXTURES;
+//	public static BufferedImage[] BLOOD_TEXTURES;
 	
 	/**
 	 * The EFFEC t_ scars.
@@ -33,14 +33,14 @@ public class MapPainter {
 	 */
 	public static void loadTextures(){
 		
-		BLOOD_TEXTURES = new BufferedImage[4];
+//		BLOOD_TEXTURES = new BufferedImage[4];
 		EFFECT_SCARS = new BufferedImage[1];
 		
 		try {
-			BLOOD_TEXTURES[0] = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/effects/blood0.png"));
-			BLOOD_TEXTURES[1] = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/effects/blood1.png"));
-			BLOOD_TEXTURES[2] = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/effects/blood2.png"));
-			BLOOD_TEXTURES[3] = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/effects/blood3.png"));
+//			BLOOD_TEXTURES[0] = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/effects/blood0.png"));
+//			BLOOD_TEXTURES[1] = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/effects/blood1.png"));
+//			BLOOD_TEXTURES[2] = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/effects/blood2.png"));
+//			BLOOD_TEXTURES[3] = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/effects/blood3.png"));
 			
 			EFFECT_SCARS[0] = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/effects/explosion.png"));
 			

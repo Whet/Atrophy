@@ -1,5 +1,5 @@
 /*
- * All code unless credited otherwise is copyright 2012 Charles Sherman, all rights reserved
+ * 
  */
 package watoydoEngine.gubbinz;
 
@@ -152,6 +152,10 @@ public class Maths {
 		return Math.toDegrees(getRads(x1,y1,x2,y2));
 	}
 	
+	public static double getDegrees(int[] pos1, int[] pos2) {
+		return Math.toDegrees(getRads(pos1, pos2));
+	}
+	
 	// gets the difference in two angles in degrees
 	/**
 	 * Angle difference.
@@ -167,6 +171,13 @@ public class Maths {
 		if(difference > 180){
 			difference = 360 - difference;
 		}
+
+	    return difference;
+	}
+	
+	public static double angleDifferenceOneWay(double angle1, double angle2){
+
+		double difference = Math.abs(angle1 - angle2) % 360;
 
 	    return difference;
 	}

@@ -1,5 +1,5 @@
 /*
- * All code unless credited otherwise is copyright 2012 Charles Sherman, all rights reserved
+ * 
  */
 package atrophy.combat.items;
 
@@ -136,7 +136,7 @@ public class Plasma2 extends Weapon {
 	 */
 	@Override
 	public VisualEffect getFireEffect(PanningManager panningManagers, double[] location, double[] targetLocation) {
-		return new VisualEffect.ShotgunBullet(panningManagers, location, targetLocation, Color.green, 18);
+		return new VisualEffect.ShotgunBullet(panningManagers, location, targetLocation, Color.cyan, 18);
 	}
 	
 	/* (non-Javadoc)

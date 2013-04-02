@@ -1,12 +1,12 @@
 /*
- * All code unless credited otherwise is copyright 2012 Charles Sherman, all rights reserved
+ * 
  */
 package atrophy.combat.levelAssets;
 
 import java.awt.image.BufferedImage;
 
+import atrophy.combat.CombatVisualManager;
 import atrophy.combat.ai.Ai;
-import atrophy.combat.ai.PathFinder;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.MapPainter;
 import atrophy.combat.display.ui.FloatingIcons;
@@ -181,7 +181,7 @@ public class Grenade implements LevelAsset{
 		
 		for(int i = 0; i < aiCrowd.getActorCount(); i++){
 			if(aiCrowd.getActor(i).getLevelBlock() == this.room && ScoringMechanics.grenadeDamage(aiCrowd.getActor(i), skillLevel) && 
-			   PathFinder.isInFiringSight(this.getLocation()[0], this.getLocation()[1], aiCrowd.getActor(i).getLocation()[0], aiCrowd.getActor(i).getLocation()[1], this.room)){
+			   CombatVisualManager.isInFiringSight(this.getLocation()[0], this.getLocation()[1], aiCrowd.getActor(i).getLocation()[0], aiCrowd.getActor(i).getLocation()[1], this.room)){
 				
 				aiCrowd.getActor(i).setDead(true);
 			}

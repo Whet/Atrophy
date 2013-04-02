@@ -1,5 +1,5 @@
 /*
- * All code unless credited otherwise is copyright 2012 Charles Sherman, all rights reserved
+ * 
  */
 package watoydoEngine.designObjects.display;
 
@@ -261,6 +261,10 @@ public abstract class AbstractButton implements Displayable, MouseRespondable{
 		}
 	}
 	
+	public TweenDefinable getTween() {
+		return tween;
+	}
+
 	//Getters
 	/* (non-Javadoc)
 	 * @see watoydoEngine.designObjects.display.Displayable#isVisible()

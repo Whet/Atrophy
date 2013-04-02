@@ -1,5 +1,5 @@
 /*
- * All code unless credited otherwise is copyright 2012 Charles Sherman, all rights reserved
+ * 
  */
 package atrophy.combat.actions;
 
@@ -104,7 +104,7 @@ public class MouseAbilityHandler {
 	 */
 	public void applyAbility(Point mousePoint){
 		if(levelManager.getBlock(mousePoint.x - panningManager.getOffset()[0],
-											   mousePoint.y - panningManager.getOffset()[1]) != null){
+								 mousePoint.y - panningManager.getOffset()[1]) != null){
 			switch(abilityApplied){
 				case Abilities.GRENADETHROWER:
 					if(levelManager.getBlock(mousePoint.x - panningManager.getOffset()[0],
@@ -125,10 +125,12 @@ public class MouseAbilityHandler {
 			}
 		}
 		
+		final int AI_CLICK_RADIUS = 60;
+		
 		// abilities that don't need to be in a room
 		switch(abilityApplied){
 			case Abilities.SPEECH:
-				Ai speechAi = getClosestAiToMouse(mousePoint, 40);
+				Ai speechAi = getClosestAiToMouse(mousePoint, AI_CLICK_RADIUS);
 				if(speechAi != null && !(speechAi instanceof TurretAi) && speechAi.getStunnedTurns() == 0 && speechAi.getLevelBlock() == combatMembersManager.getCurrentAi().getLevelBlock() &&
 				   !speechAi.getFaction().equals(AiGenerator.PLAYER) && ( !(speechAi instanceof ThinkingAi) || !((ThinkingAi)speechAi).isBlockPlayerConvo())){
 					
@@ -139,19 +141,19 @@ public class MouseAbilityHandler {
 				}
 			break;
 			case Abilities.STUN_MELEE:
-				Ai targetAi = getClosestAiToMouse(mousePoint, 40);
+				Ai targetAi = getClosestAiToMouse(mousePoint, AI_CLICK_RADIUS);
 				if(targetAi != null && !(targetAi instanceof TurretAi) && !targetAi.getFaction().equals(AiGenerator.PLAYER)){
 					combatMembersManager.getCurrentAi().setStunTarget(targetAi);
 				}
 			break;
 			case Abilities.SLIT_MELEE:
-				targetAi = getClosestAiToMouse(mousePoint, 40);
+				targetAi = getClosestAiToMouse(mousePoint, AI_CLICK_RADIUS);
 				if(targetAi != null && !(targetAi instanceof TurretAi)  && !targetAi.getFaction().equals(AiGenerator.PLAYER)){
 					combatMembersManager.getCurrentAi().setBackstabTarget(targetAi);
 				}
 			break;
 			case "LookAtInventory":
-				Ai invAi = getClosestAiToMouse(mousePoint, 40);
+				Ai invAi = getClosestAiToMouse(mousePoint, AI_CLICK_RADIUS);
 				if(invAi != null){
 					lootBox.loadInventoryDisplay(invAi, false);
 				}
@@ -161,7 +163,7 @@ public class MouseAbilityHandler {
 				return;
 				
 			case "CadTag":
-				targetAi = getClosestAiToMouse(mousePoint, 40, true);
+				targetAi = getClosestAiToMouse(mousePoint, AI_CLICK_RADIUS, true);
 				if(targetAi != null && 
 				   !(targetAi instanceof TurretAi) &&
 				   targetAi.isDead() &&
@@ -171,12 +173,15 @@ public class MouseAbilityHandler {
 					combatUiManager.getLargeEventText().flashText(targetAi.getName() + " Tagged", Color.yellow);
 				}
 			break;
-			
 			case "Hack":
-				TurretAi turret = getClosestTurretToMouse(mousePoint, 40, false);
+				TurretAi turret = getClosestTurretToMouse(mousePoint, AI_CLICK_RADIUS, false);
 				
 				if(turret != null)
 					combatMembersManager.getCurrentAi().setHackTarget(turret);
+			break;
+			case "DebugKill":
+				targetAi = getClosestAiToMouse(mousePoint, AI_CLICK_RADIUS, true);
+				targetAi.setDead(true);
 			break;
 				
 		}

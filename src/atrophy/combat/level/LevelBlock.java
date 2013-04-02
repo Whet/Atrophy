@@ -1,5 +1,5 @@
 /*
- * All code unless credited otherwise is copyright 2012 Charles Sherman, all rights reserved
+ * 
  */
 package atrophy.combat.level;
 
@@ -64,6 +64,8 @@ public class LevelBlock {
 	 */
 	private List<AiNode> nodes;
 	
+	private LevelBlockGrid grid;
+	
 	/**
 	 * The code.
 	 */
@@ -80,6 +82,8 @@ public class LevelBlock {
 	private boolean containsScience;
 
 	private MissionManager missionManager;
+
+	private boolean discovered;
 	
 	/**
 	 * Instantiates a new level block.
@@ -108,6 +112,13 @@ public class LevelBlock {
 		this.containsScience = false;
 		
 		this.missionManager = missionManager;
+		
+		this.discovered = false;
+		
+	}
+	
+	public void createNavigationGrid(){
+	    this.grid = new LevelBlockGrid(this.hitbox);
 	}
 	
 	// The Void
@@ -450,9 +461,10 @@ public class LevelBlock {
 	 *
 	 * @param mover the mover
 	 * @param regions the regions
+	 * @param ignoreClosedDoors 
 	 * @throws PathNotFoundException the path not found exception
 	 */
-	public void moveTowardsNearestRegion(Ai mover, List<Polygon> regions)throws PathNotFoundException{
+	public void moveTowardsNearestRegion(Ai mover, List<Polygon> regions, boolean ignoreClosedDoors)throws PathNotFoundException{
 		// room has no regions
 		if(regions.size() == 0){
 			 return;
@@ -478,7 +490,8 @@ public class LevelBlock {
 		}
 		
 		mover.moveWithinRadius(centre[0] + this.getLocation()[0],
-							  centre[1] + this.getLocation()[1], distance);
+							   centre[1] + this.getLocation()[1],
+							   distance, ignoreClosedDoors);
 		
 		if(!this.isInRegion(regions, mover.getMoveLocation())){
 			mover.setMoveLocation(centre[0] + this.getLocation()[0],
@@ -491,10 +504,11 @@ public class LevelBlock {
 	 *
 	 * @param mover the mover
 	 * @param regions the regions
+	 * @param ignoreClosedDoors 
 	 * @return the polygon
 	 * @throws PathNotFoundException the path not found exception
 	 */
-	public Polygon moveTowardsRandomRegion(Ai mover, List<Polygon> regions)throws PathNotFoundException{
+	public Polygon moveTowardsRandomRegion(Ai mover, List<Polygon> regions, boolean ignoreClosedDoors)throws PathNotFoundException{
 		// room has no regions
 		if(regions.size() == 0){
 			 return null;
@@ -515,11 +529,13 @@ public class LevelBlock {
 		}
 		
 		mover.moveWithinRadius(centre[0] + this.getLocation()[0],
-							  centre[1] + this.getLocation()[1], distance);
+							   centre[1] + this.getLocation()[1],
+							   distance, ignoreClosedDoors);
 		
 		if(!this.isInRegion(regions, mover.getMoveLocation())){
 			mover.setMoveLocation(centre[0] + this.getLocation()[0],
-								  centre[1] + this.getLocation()[1]);
+								  centre[1] + this.getLocation()[1],
+								  true);
 		}
 		
 		return closestRegion;
@@ -712,4 +728,26 @@ public class LevelBlock {
 		return connectedRooms;
 	}
 
+    public LevelBlockGrid getLevelBlockGrid() {
+        return this.grid;
+    }
+
+	public boolean isDiscovered() {
+		return this.discovered;
+	}
+
+	public void setDiscovered(boolean discovered) {
+		this.discovered = discovered;
+	}
+
+	public Portal getPeekingPortal(Ai peeker, LevelBlock levelBlock) {
+		
+		for(Portal portal : this.portals){
+			if(portal.isInRadius(peeker.getLocation(), this) && CombatVisualManager.spotFovNoRadius(peeker, portal.getLocation()) && portal.connectsTo(levelBlock))
+				return portal;
+		}
+		
+		return null;
+	}
+	
 }

@@ -146,7 +146,6 @@ public class AiData {
 			this.abilities.add(Abilities.PARRY);
 		}
 		else if(this.getWeapon() instanceof MeleeWeapon2){
-//			this.abilities.add(Abilities.SLIT_MELEE);
 			this.abilities.add(Abilities.PARRY);
 		}
 		
@@ -185,9 +184,10 @@ public class AiData {
 	}
 	
 	public void handleEffects(Ai invoker, String action){
+		
 		if(this.queuedEffect != null &&
 		   action.startsWith("Applying:") &&
-		   !hasActiveEffect(queuedEffect.getName())){
+		   !hasEffect(queuedEffect.getName())){
 			
 			this.activeEffects.add(queuedEffect);
 		}
@@ -207,9 +207,18 @@ public class AiData {
 		} 
 	}
 
-	public boolean hasActiveEffect(String effectName){
+	public boolean hasEffect(String effectName){
 		for(Effect loopEffect: this.activeEffects){
 			if(effectName.equals(loopEffect.getName())){
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	public boolean hasActiveEffect(String effectName) {
+		for(Effect loopEffect: this.activeEffects){
+			if(effectName.equals(loopEffect.getName()) && loopEffect.getDuration() > 0){
 				return true;
 			}
 		}
@@ -352,13 +361,11 @@ public class AiData {
 	}
 
 	public void addEffect(Ai invoker, Effect effect) {
-		if(!this.hasActiveEffect(effect.getName())){
+		if(!this.hasEffect(effect.getName())){
 			invoker.removeOrdersWithoutUpdate(mouseAbilityHandler);
 			invoker.setAction("Applying: "+effect.getName());
 			setQueuedEffect(effect);
 		}
 	}
-	
-	
-	
+
 }

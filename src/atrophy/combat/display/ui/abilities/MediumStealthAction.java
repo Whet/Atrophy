@@ -1,5 +1,5 @@
 /*
- * All code unless credited otherwise is copyright 2012 Charles Sherman, all rights reserved
+ * 
  */
 package atrophy.combat.display.ui.abilities;
 
@@ -59,7 +59,7 @@ public class MediumStealthAction extends AbilityButton implements InfoTextDispla
 	 * @see atrophy.combat.display.ui.InfoTextDisplayable#getUiHint()
 	 */
 	public String getUiHint(){
-		if(combatMembersManager.getCurrentAi().hasActiveEffect(MobileInvisibility.NAME)){
+		if(combatMembersManager.getCurrentAi().hasEffect(MobileInvisibility.NAME)){
 			return "Medium Stealth Duration: "+combatMembersManager.getCurrentAi().getEffect(MobileInvisibility.NAME).getDuration()+
 					"  Cooldown: "+combatMembersManager.getCurrentAi().getEffect(MobileInvisibility.NAME).getCooldown();
 		}

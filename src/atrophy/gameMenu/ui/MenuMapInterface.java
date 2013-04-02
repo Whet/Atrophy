@@ -1,5 +1,5 @@
 /*
- * All code unless credited otherwise is copyright 2012 Charles Sherman, all rights reserved
+ * 
  */
 package atrophy.gameMenu.ui;
 
@@ -34,27 +34,6 @@ import atrophy.hardPanes.CombatHardPane;
  */
 public class MenuMapInterface {
 	
-	/**
-	 * Load level.
-	 *
-	 * @param chosenLevel the chosen level
-	 * @param owner the owner
-	 * @param engineeringChance the engineering chance
-	 * @param medicalChance the medical chance
-	 * @param weaponChance the weapon chance
-	 * @param scienceChance the science chance
-	 * @param missions 
-	 * @param itemMarket 
-	 * @param techTree 
-	 * @param stashManager 
-	 * @param missionManager 
-	 * @param levelManager 
-	 * @param panningManager 
-	 * @param aiCrowd 
-	 * @param turnProcess 
-	 * @param combatVisualManager 
-	 * @param messageBox 
-	 */
 	public static void loadLevel(File chosenLevel, String owner, Squad squad, int engineeringChance, int medicalChance, int weaponChance, int scienceChance, Missions missions, ItemMarket itemMarket, TechTree techTree, StashManager stashManager){
 
 		List<AiGeneratorInterface.GenerateCommand> generationCommands = new ArrayList<AiGeneratorInterface.GenerateCommand>();
@@ -68,19 +47,19 @@ public class MenuMapInterface {
 		MissionManager missionManager = new MissionManager(missions);
 		
 		try {
-			levelManager.setCurrentLevel(LevelIO.loadLevel(chosenLevel, owner, engineeringChance, medicalChance, weaponChance, scienceChance, uiUpdaterSuite.getPanningManager(), turnProcess, uiUpdaterSuite.getMessageBox(), aiManagementSuite.getAiCrowd(), levelManager, missions, missionManager, generationCommands));
-			aiManagementSuite.lazyLoad(uiUpdaterSuite, actionSuite.getMouseAbilityHandler());
+			// A.
+			levelManager.setCurrentLevel(LevelIO.loadLevel(chosenLevel, owner, engineeringChance, medicalChance, weaponChance, scienceChance, uiUpdaterSuite.getPanningManager(), turnProcess, uiUpdaterSuite.getMessageBox(), aiManagementSuite.getAiCrowd(), aiManagementSuite.getCombatMembersManager(), missions, missionManager, generationCommands));
 			uiUpdaterSuite.lazyLoad(actionSuite.getMouseAbilityHandler(), aiManagementSuite.getAiCrowd(), levelManager);
+			// Moved from A. without checking		
+			aiManagementSuite.lazyLoad(uiUpdaterSuite, actionSuite.getMouseAbilityHandler());
 			setSpawns(owner, levelManager, squad, itemMarket, generationCommands);
 			turnProcess.lazyLoad(aiManagementSuite, uiUpdaterSuite, combatInorganicManager, actionSuite);
 		} 
 		catch (IOException e) {
-//			JOptionPane.showMessageDialog(DevMenu.getInstance(), "File could not be loaded");
 			System.err.println("Level could not be loaded");
 			return;
 		} 
 		catch (LevelFormatException e) {
-//			JOptionPane.showMessageDialog(DevMenu.getInstance(), e.message);
 			System.err.println(e.message);
 			return;
 		}

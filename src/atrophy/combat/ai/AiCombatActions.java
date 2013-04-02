@@ -1,11 +1,9 @@
 package atrophy.combat.ai;
 
-import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatVisualManager;
-import atrophy.combat.PanningManager;
 import atrophy.combat.actions.MouseAbilityHandler;
 import atrophy.combat.display.AiCrowd;
-import atrophy.combat.display.ui.FloatingIcons;
+import atrophy.combat.display.AiImage;
 import atrophy.combat.mechanics.ScoringMechanics;
 
 public class AiCombatActions {
@@ -22,40 +20,34 @@ public class AiCombatActions {
 
 	private Ai oldTargetAi;
 
-	private CombatMembersManager combatMembersManager;
 	private CombatVisualManager combatVisualManager;
 	private MouseAbilityHandler mouseAbilityHandler;
-	private FloatingIcons floatingIcons;
 	private AiCrowd aiCrowd;
-	private PanningManager panningManager;
 	
-	public AiCombatActions(CombatMembersManager combatMembersManager, CombatVisualManager combatVisualManager, MouseAbilityHandler mouseAbilityHandler, FloatingIcons floatingIcons, AiCrowd aiCrowd, PanningManager panningManager){
+	public AiCombatActions(CombatVisualManager combatVisualManager, MouseAbilityHandler mouseAbilityHandler, AiCrowd aiCrowd){
 		this.swing = 0;
 		this.oldTargetSwing = 0;
-		this.combatMembersManager = combatMembersManager;
 		this.combatVisualManager = combatVisualManager;
 		this.mouseAbilityHandler = mouseAbilityHandler;
-		this.floatingIcons = floatingIcons;
 		this.aiCrowd = aiCrowd;
-		this.panningManager = panningManager;
 	}
 
 	public void attack(Ai invoker) {
+		
 		// if the target is still in the same room engage
 		if(this.targetAi != null && this.targetAi.getLevelBlock() == invoker.getLevelBlock() && invoker.getWeapon().ignoresLOS() ||(
-		   (!this.targetAi.isStealthed() || CombatVisualManager.spotStealth(invoker, this.targetAi)) && PathFinder.isInFiringSight(invoker.getLocation()[0],
+		   (!this.targetAi.isStealthed() || CombatVisualManager.spotStealth(invoker, this.targetAi)) && CombatVisualManager.isInFiringSight(invoker.getLocation()[0],
 				   																												   invoker.getLocation()[1], 
 					   																										       this.targetAi.getLocation()[0], 
 					   																										       this.targetAi.getLocation()[1], invoker.getLevelBlock()))){
 			
 			if(invoker.getWeapon().isInRange(invoker, this.getTargetAi())){
 				// break any alliances with the faction if visible
-				if(!invoker.getFaction().equals(AiGenerator.LONER) &&
-				   combatMembersManager.getTeamObject(targetAi) instanceof ThinkingTeamObject &&
+				if(this.getTargetAi() instanceof ThinkingAi &&
 				   combatVisualManager.isAiInSight(invoker, targetAi.getFaction())){
 					
-					combatMembersManager.getCommander(targetAi.getFaction()).removeAlliance(invoker.getFaction());
-					combatMembersManager.getCommander(targetAi.getFaction()).addHatedAi(invoker);
+					((ThinkingAi) this.getTargetAi()).getCommander().removeAlliance(invoker.getFaction());
+					((ThinkingAi) this.getTargetAi()).getCommander().addHatedAi(invoker);
 					
 				}
 				
@@ -125,13 +117,13 @@ public class AiCombatActions {
 
 
 	public void shoot(Ai invoker) {
+		
+		AiImage actorMask = aiCrowd.getActorMask(invoker);
+		actorMask.setAttackingAnimation(invoker.getTargetAi());
+		
 		// Update aggression of ai
 		if(this.getTargetAi() instanceof ThinkingAi){
 			((ThinkingAi) this.getTargetAi()).modifyAggression(ThinkingAiEmotion.SHOT_AT);
-		}
-		
-		if(aiCrowd.getActorMask(invoker).isVisible()){
-			floatingIcons.addEffect(invoker.getWeapon().getFireEffect(panningManager, invoker.getLocation(), this.targetAi.getLocation()));
 		}
 		
 		// look at target
@@ -148,7 +140,7 @@ public class AiCombatActions {
 			this.getTargetAi().setDead(true);
 			
 			// if the killer belongs to player faction then the kill is counted
-			if(invoker.getTeam().equals("1Player")){
+			if(invoker.getFaction().equals(AiGenerator.PLAYER)){
 				this.getTargetAi().bodyFound(true);
 			}
 			

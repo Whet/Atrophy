@@ -5,7 +5,6 @@ import atrophy.combat.CombatInorganicManager;
 import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
-import atrophy.combat.PanningManager;
 import atrophy.combat.actions.MouseAbilityHandler;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.ui.FloatingIcons;
@@ -67,7 +66,7 @@ public class AiActions {
 	private CombatInorganicManager combatInorganicManager;
 	private LevelManager levelManager;
 	
-	public AiActions(AiCrowd aiCrowd, CombatVisualManager combatVisualManager, CombatUiManager combatUiManager, CombatMembersManager combatMembersManager, CombatInorganicManager combatInorganicManager, FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, LootBox lootBox, LevelManager levelManager, PanningManager panningManager){
+	public AiActions(AiCrowd aiCrowd, CombatVisualManager combatVisualManager, CombatUiManager combatUiManager, CombatMembersManager combatMembersManager, CombatInorganicManager combatInorganicManager, FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, LootBox lootBox, LevelManager levelManager){
 		actionTurns = 0;
 		oldActionTurns = 0;
 		oldAction = NO_ACTION;
@@ -80,7 +79,7 @@ public class AiActions {
 		this.lootBox = lootBox;
 		this.combatMembersManager = combatMembersManager;
 		this.combatVisualManager = combatVisualManager;
-		this.aiCombatActions = new AiCombatActions(combatMembersManager, combatVisualManager, mouseAbilityHandler, floatingIcons, aiCrowd, panningManager);
+		this.aiCombatActions = new AiCombatActions(combatVisualManager, mouseAbilityHandler, aiCrowd);
 		this.combatUiManager = combatUiManager;
 		this.combatInorganicManager = combatInorganicManager;
 		this.levelManager = levelManager;
@@ -135,9 +134,6 @@ public class AiActions {
 		this.actionLocation[1] = y;
 	}
 
-	/**
-	 * Sets the welding shut.
-	 */
 	public void setWeldingShut(Ai invoker){
 		
 		invoker.removeOrdersWithoutUpdate(mouseAbilityHandler);
@@ -173,11 +169,6 @@ public class AiActions {
 		
 	}
 	
-	/**
-	 * Sets the welding shut.
-	 *
-	 * @param blockPortal the new welding shut
-	 */
 	public void setWeldingShut(Ai invoker, Portal blockPortal){
 		
 		if(blockPortal != null){
@@ -200,11 +191,6 @@ public class AiActions {
 		}
 	}
 	
-	/**
-	 * Sets the welding open.
-	 *
-	 * @param blockPortal the new welding open
-	 */
 	public void setWeldingOpen(Ai invoker, Portal blockPortal){
 		
 		if(blockPortal != null){
@@ -227,9 +213,6 @@ public class AiActions {
 		}
 	}
 	
-	/**
-	 * Sets the welding.
-	 */
 	public void setWelding(Ai invoker){
 		
 		invoker.removeOrdersWithoutUpdate(mouseAbilityHandler);
@@ -271,9 +254,6 @@ public class AiActions {
 		
 	}
 	
-	/**
-	 * Weld turn action.
-	 */
 	public void weldTurnAction(Ai invoker){
 		if(Maths.getDistance(invoker.getLocation(), invoker.getMoveLocation()) > 0){
 			invoker.moveIntra(invoker.getMoveLocation());
@@ -293,11 +273,6 @@ public class AiActions {
 		invoker.setLookAngle(this.actionLocation);
 	}
 	
-	/**
-	 * Weld turn action.
-	 *
-	 * @param openDoor the open door
-	 */
 	public void weldTurnAction(Ai invoker, boolean openDoor){
 		if(Maths.getDistance(invoker.getLocation(), invoker.getMoveLocation()) > 0){
 			invoker.moveIntra(invoker.getMoveLocation());
@@ -325,10 +300,6 @@ public class AiActions {
 		invoker.setLookAngle(this.actionLocation);
 	}
 	
-	/**
-	 * Weld action.
-	 * @param invoker 
-	 */
 	public void weldAction(Ai invoker){
 		Portal targetPortal = null;
 		
@@ -353,11 +324,6 @@ public class AiActions {
 		}
 	}
 	
-	/**
-	 * Weld action.
-	 *
-	 * @param openDoor the open door
-	 */
 	public void weldAction(Ai invoker, boolean openDoor){
 		Portal targetPortal = null;
 		
@@ -384,23 +350,12 @@ public class AiActions {
 		}
 	}
 	
-	/**
-	 * Throw grenade.
-	 *
-	 * @param x the x
-	 * @param y the y
-	 */
 	public void throwGrenade(Ai invoker, double x, double y){
 		invoker.removeOrdersWithoutUpdate(mouseAbilityHandler);
 		invoker.setAbilityLocation(x, y);
 		this.setAction(THROW_GRENADE);
 	}
 	
-	/**
-	 * Throw grenade action.
-	 *
-	 * @param skillLevel the skill level
-	 */
 	public void throwGrenadeAction(Ai invoker, int skillLevel){
 		combatInorganicManager.addLevelAsset(new Grenade(aiCrowd, floatingIcons, levelManager, 
 														invoker,
@@ -415,23 +370,12 @@ public class AiActions {
 		this.setActionTurns(0);
 	}
 	
-	/**
-	 * Throw stun grenade.
-	 *
-	 * @param x the x
-	 * @param y the y
-	 */
 	public void throwStunGrenade(Ai invoker, double x, double y){
 		invoker.removeOrdersWithoutUpdate(mouseAbilityHandler);
 		invoker.setAbilityLocation(x, y);
 		this.setAction(THROW_STUN_GRENADE);
 	}
 	
-	/**
-	 * Throw stun grenade turn action.
-	 *
-	 * @param skillLevel the skill level
-	 */
 	public void throwStunGrenadeTurnAction(Ai invoker, int skillLevel){
 		combatInorganicManager.addLevelAsset(new StunGrenade(aiCrowd, floatingIcons, levelManager,
 															invoker,
@@ -446,27 +390,16 @@ public class AiActions {
 		this.setActionTurns(0);
 	}
 	
-	/**
-	 * Scan area.
-	 */
 	public void xrayScan(Ai invoker){
 		invoker.removeOrdersWithoutUpdate(mouseAbilityHandler);
 		this.setAction(Abilities.XRAY_SCAN);
 	}
 	
-	/**
-	 * Scan objective.
-	 */
 	public void scanScience(Ai invoker){
 		invoker.removeOrdersWithoutUpdate(mouseAbilityHandler);
 		this.setAction(Abilities.SCAN_SCIENCE);
 	}
 	
-	/**
-	 * Loot.
-	 *
-	 * @param lootAi the loot ai
-	 */
 	public void loot(Ai invoker, Ai lootAi){
 		
 		if(lootAi == invoker.getOldTargetAi() && this.getOldAction().equals(LOOTING)){
@@ -518,20 +451,12 @@ public class AiActions {
 		}
 	}
 	
-	/**
-	 * Stash search.
-	 *
-	 * @return the lootable
-	 */
 	public Lootable stashSearch(Ai invoker) {
 		Lootable loot = invoker.getLevelBlock().getStash(invoker.getLocation());
 		lootBox.loadLootDisplay(invoker, loot, true);
 		return null;
 	}
 	
-	/**
-	 * Trade with closest ally.
-	 */
 	public void tradeWithClosestAlly(Ai invoker){
 		
 		Ai closestAlly = null;
@@ -551,11 +476,6 @@ public class AiActions {
 		}
 	}
 	
-	/**
-	 * Trade with ally.
-	 *
-	 * @param closestAlly the closest ally
-	 */
 	public void tradeWithAlly(Ai invoker, Ai closestAlly){
 		invoker.loot(closestAlly);
 	}
@@ -565,39 +485,19 @@ public class AiActions {
 		this.setAction(STUN_TARGET);
 	}
 	
-	/**
-	 * Stun target.
-	 */
 	public void stunTarget(Ai invoker){
 		
 		if(Maths.getDistance(invoker.getLocation(), invoker.getTargetAi().getLocation()) <= MeleeWeapon1.RANGE){
 			
 			// break any alliances with the faction if visible
-			if(!invoker.getFaction().equals(AiGenerator.LONER) &&
-			   combatMembersManager.getTeamObject(invoker.getTargetAi()) instanceof ThinkingTeamObject &&
-			   combatVisualManager.isAiInSight(invoker, invoker.getTargetAi().getFaction())){
-				
-				((ThinkingTeamObject) combatMembersManager.getTeamObject(invoker.getTargetAi())).removeAlliance(invoker.getFaction());
-				
-			}
+			breakAlliance(invoker);
 			
 			invoker.getTargetAi().setStunnedTurns(2);
 			if(invoker.getSkillLevel(Abilities.STUNGRENADETHROWER) >= 2){
 				invoker.getTargetAi().setStunnedTurns(3);
 			}
 			
-//			invoker.setLocation(invoker.getTargetAi().getLocation().clone());
-			
-			// break any alliances with the faction if visible
-			// check after move too
-			if(!invoker.getFaction().equals(AiGenerator.LONER) &&
-			   combatMembersManager.getTeamObject(invoker.getTargetAi()) instanceof ThinkingTeamObject &&
-			   combatVisualManager.isAiInSight(invoker, invoker.getTargetAi().getFaction())){
-				
-				((ThinkingTeamObject) combatMembersManager.getTeamObject(invoker.getTargetAi())).removeAlliance(invoker.getFaction());
-				combatMembersManager.getCommander(invoker.getTargetAi().getFaction()).addHatedAi(invoker);
-				
-			}
+			makeHatedWithTarget(invoker);
 			
 			invoker.setTargetAi(null);
 			this.setAction(NO_ACTION);
@@ -611,33 +511,18 @@ public class AiActions {
 		
 		this.setActionTurns(0);
 	}
-	
-	/**
-	 * Sets the backstab target.
-	 *
-	 * @param targetAi the new backstab target
-	 */
+
 	public void setBackstabTarget(Ai invoker, Ai targetAi){
 		invoker.setTargetAi(targetAi);
 		this.setAction(BACKSTAB);
 	}
 	
-	/**
-	 * Backstab target.
-	 */
 	public void backstabTarget(Ai invoker){
 		
 		if(Maths.getDistance(invoker.getLocation(), invoker.getTargetAi().getLocation()) <= invoker.getWeapon().getRange() + 10){
 			
 			// break any alliances with the faction if visible
-			if(!invoker.getFaction().equals(AiGenerator.LONER) &&
-			   combatMembersManager.getTeamObject(invoker.getTargetAi()) instanceof ThinkingTeamObject &&
-			   combatVisualManager.isAiInSight(invoker, invoker.getTargetAi().getFaction())){
-				
-				((ThinkingTeamObject) combatMembersManager.getTeamObject(invoker.getTargetAi())).removeAlliance(invoker.getFaction());
-				combatMembersManager.getCommander(invoker.getTargetAi().getFaction()).addHatedAi(invoker);
-				
-			}
+			makeHatedWithTarget(invoker);
 			
 			if(!CombatVisualManager.spotFovNoRadius(invoker.getTargetAi(),invoker.getLocation())){
 				invoker.getTargetAi().setDead(true);
@@ -645,16 +530,7 @@ public class AiActions {
 			
 			invoker.setLocation(invoker.getTargetAi().getLocation().clone());
 			
-			// break any alliances with the faction if visible
-			// check after move too
-			if(!invoker.getFaction().equals(AiGenerator.LONER) &&
-			   combatMembersManager.getTeamObject(invoker.getTargetAi()) instanceof ThinkingTeamObject &&
-			   combatVisualManager.isAiInSight(invoker, invoker.getTargetAi().getFaction())){
-				
-				((ThinkingTeamObject) combatMembersManager.getTeamObject(invoker.getTargetAi())).removeAlliance(invoker.getFaction());
-				combatMembersManager.getCommander(invoker.getTargetAi().getFaction()).addHatedAi(invoker);
-				
-			}
+			makeHatedWithTarget(invoker);
 			
 			invoker.setTargetAi(null);
 			this.setAction(NO_ACTION);
@@ -667,6 +543,27 @@ public class AiActions {
 		}
 		
 		this.setActionTurns(0);
+	}
+
+	private void breakAlliance(Ai invoker) {
+		if(!invoker.getFaction().equals(AiGenerator.LONER) &&
+		   invoker.getTargetAi() instanceof ThinkingAi &&
+		   combatVisualManager.isAiInSight(invoker, invoker.getTargetAi().getFaction())){
+			
+			((ThinkingAi) invoker.getTargetAi()).getCommander().removeAlliance(invoker.getFaction());
+			
+		}
+	}
+	
+	private void makeHatedWithTarget(Ai invoker) {
+		if(!invoker.getFaction().equals(AiGenerator.LONER) &&
+		   invoker.getTargetAi() instanceof ThinkingAi &&
+		   combatVisualManager.isAiInSight(invoker, invoker.getTargetAi().getFaction())){
+			
+			((ThinkingAi) invoker.getTargetAi()).getCommander().removeAlliance(invoker.getFaction());
+			combatMembersManager.getCommander(invoker.getTargetAi().getFaction()).addHatedAi(invoker);
+			
+		}
 	}
 	
 	public void specialActions(Ai invoker) {

@@ -1,12 +1,12 @@
 /*
- * All code unless credited otherwise is copyright 2012 Charles Sherman, all rights reserved
+ * 
  */
 package atrophy.combat.ai;
 
+import java.awt.Color;
 import java.awt.Polygon;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Random;
 import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -20,7 +20,6 @@ import atrophy.combat.PanningManager;
 import atrophy.combat.actions.MouseAbilityHandler;
 import atrophy.combat.combatEffects.Effect;
 import atrophy.combat.display.AiCrowd;
-import atrophy.combat.display.MapPainter;
 import atrophy.combat.display.ui.FloatingIcons;
 import atrophy.combat.display.ui.loot.LootBox;
 import atrophy.combat.display.ui.loot.LootBox.Lootable;
@@ -108,7 +107,7 @@ public class Ai implements Lootable{
 		this.lootBox = lootBox;
 		this.panningManager = panningManager;
 		
-		aiActions = new AiActions(aiCrowd, combatVisualManager, combatUiManager, combatMembersManager, combatInorganicManager, floatingIcons, mouseAbilityHandler, lootBox, levelManager, panningManager);
+		aiActions = new AiActions(aiCrowd, combatVisualManager, combatUiManager, combatMembersManager, combatInorganicManager, floatingIcons, mouseAbilityHandler, lootBox, levelManager);
 		aiPathing = new AiPathing(levelManager, x,y);
 		aiData = new AiData(mouseAbilityHandler, this, new MeleeWeapon1());
 		
@@ -139,7 +138,7 @@ public class Ai implements Lootable{
 		ignoreLOS = false;
 
 		skippingTurns = false;
-		aiActions = new AiActions(thinkingAi.aiCrowd, thinkingAi.combatVisualManager, thinkingAi.combatUiManager, thinkingAi.combatMembersManager, combatInorganicManager, floatingIcons, mouseAbilityHandler, thinkingAi.lootBox, levelManager, thinkingAi.panningManager);
+		aiActions = new AiActions(thinkingAi.aiCrowd, thinkingAi.combatVisualManager, thinkingAi.combatUiManager, thinkingAi.combatMembersManager, combatInorganicManager, floatingIcons, mouseAbilityHandler, thinkingAi.lootBox, levelManager);
 		aiPathing = new AiPathing(levelManager, thinkingAi.getLocation()[0], thinkingAi.getLocation()[1]);
 		aiData = new AiData(mouseAbilityHandler, thinkingAi, thinkingAi.getWeapon());
 		
@@ -212,7 +211,7 @@ public class Ai implements Lootable{
 		this.setOldAction(this.getAction());
 		this.setOldActionTurns(this.getActionTurns());
 		
-		turnProcess.currentAiDone(false);
+		turnProcess.currentAiDone(this.isSkippingTurns());
 	}
 
 	public int getIncapTurns() {
@@ -284,8 +283,8 @@ public class Ai implements Lootable{
 		this.aiPathing.moveWithinRadius(this,location,radius);
 	}
 	
-	public void moveWithinRadius(double x, double y, double radius) {
-		this.aiPathing.moveWithinRadius(this,x,y,radius);
+	public void moveWithinRadius(double x, double y, double radius, boolean ignoreClosedDoors) {
+		this.aiPathing.moveWithinRadius(this,x,y,radius,ignoreClosedDoors);
 	}
 	
 	public void setWeldingShut(){
@@ -532,6 +531,10 @@ public class Ai implements Lootable{
 		return this.aiData.hasActiveEffect(effectName);
 	}
 	
+	public boolean hasEffect(String effectName){
+		return this.aiData.hasEffect(effectName);
+	}
+	
 	public Effect getEffect(String effectName){
 		return this.aiData.getEffect(effectName);
 	}
@@ -580,18 +583,6 @@ public class Ai implements Lootable{
 		setMoveLocation(location[0],location[1],ignoreBlockedDoors);
 	}
 	
-	public void setMoveLocation(double[] location, ArrayList<LevelBlock> roomsToAvoid) throws PathNotFoundException {
-		this.removeOrdersWithoutUpdate(mouseAbilityHandler);
-		
-		this.aiPathing.setMoveLocation(this, location, roomsToAvoid);
-	}
-	
-	public void setMoveLocation(double x, double y, ArrayList<LevelBlock> roomsToAvoid) throws PathNotFoundException {
-		this.removeOrdersWithoutUpdate(mouseAbilityHandler);
-		
-		this.aiPathing.setMoveLocation(this,x,y,roomsToAvoid);
-	}
-	
 	public void setMoveLocation(double x, double y, boolean ignoreBlockedDoors)throws PathNotFoundException{
 		
 		this.removeOrdersWithoutUpdate(mouseAbilityHandler);
@@ -617,19 +608,13 @@ public class Ai implements Lootable{
 	}
 	
 	public void setDead(boolean dead) {
-		this.dead = dead;
-		
 		// Make sure dead unit show smashed helmet
-		if(this.dead){	
-			
+		if(dead && !this.dead){	
 			this.setTargetAi(null); 
 			this.setSkippingTurns(true);
-			
-			if(!this.image.endsWith("Dead")){
-				this.setImage(image + "Dead");
-				floatingIcons.addPendingPaint(MapPainter.BLOOD_TEXTURES[(new Random()).nextInt(MapPainter.BLOOD_TEXTURES.length)], this.getLocation(), 0.5 + (new Random().nextInt(5) * 0.1));
-			}
 		}
+		
+		this.dead = dead;
 		
 	}
 	
@@ -809,6 +794,25 @@ public class Ai implements Lootable{
 
 	public int getAccuracyBoost() {
 		return this.aiData.getAccuracyBoost();
+	}
+
+	public Color getTeamColour() {
+		Color returnColour = null;
+		switch(this.getFaction()){
+			case AiGenerator.BANDITS:
+				returnColour = Color.red;
+			break;
+			case AiGenerator.WHITE_VISTA:
+				returnColour = Color.white;
+			break;
+			case AiGenerator.LONER:
+				returnColour = Color.gray;
+			break;
+			case AiGenerator.PLAYER:
+				returnColour = Color.green;
+			break;
+		}
+		return returnColour;
 	}
 
 }

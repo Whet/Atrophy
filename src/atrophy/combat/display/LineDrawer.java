@@ -1,20 +1,19 @@
 /*
- * All code unless credited otherwise is copyright 2012 Charles Sherman, all rights reserved
+ * 
  */
 package atrophy.combat.display;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
+import java.awt.RadialGradientPaint;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
@@ -31,8 +30,9 @@ import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.ai.Ai;
 import atrophy.combat.ai.AiGenerator;
-import atrophy.combat.ai.PathFinder;
 import atrophy.combat.level.LevelBlock;
+import atrophy.combat.level.LevelBlockGrid;
+import atrophy.combat.level.LevelBlockGrid.GridBlock;
 import atrophy.combat.level.LevelManager;
 
 // TODO: Auto-generated Javadoc
@@ -42,39 +42,16 @@ import atrophy.combat.level.LevelManager;
  */
 public class LineDrawer implements Displayable{
 	
-	/**
-	 * The Constant FOV_ARC_LENGTH.
-	 */
 	private static final int FOV_ARC_LENGTH = 100;
-
-	/**
-	 * The Constant MAP_LINE_COLOUR.
-	 */
-	public static final Color MAP_LINE_COLOUR = Color.black;
-
-	/**
-	 * The Constant COVER_COLOUR.
-	 */
 	private static final Color COVER_COLOUR = Color.white;
-
-	/**
-	 * The Constant STEALTH_COLOUR.
-	 */
 	private static final Color STEALTH_COLOUR = Color.gray;
+	private static final float OCCUPIED_ALPHA = 1.0f;
+	private static final float PEEKING_ALPHA = 0.3f;
+	private static final double ANGLE_TOLERANCE = 0.1;
 	
-	/**
-	 * The map.
-	 */
 	private MapDrawBlock map[];
 	
-	/**
-	 * The visible.
-	 */
 	private boolean visible;
-	
-	/**
-	 * The z.
-	 */
 	private int z;
 	
 	private AiCrowd aiCrowd;
@@ -83,10 +60,9 @@ public class LineDrawer implements Displayable{
 	private CombatMembersManager combatMembersManager;
 	private LevelManager levelManager;
 	
-	/**
-	 * Instantiates a new line drawer.
-	 * @param levelManager 
-	 */
+	private Polygon shadowPolygon;
+	private Polygon lightPolygon;
+	
 	public LineDrawer(AiCrowd aiCrowd, PanningManager panningManager, CombatVisualManager combatVisualManager, CombatMembersManager combatMembersManager, LevelManager levelManager){
 		visible = true;
 		this.aiCrowd = aiCrowd;
@@ -94,11 +70,12 @@ public class LineDrawer implements Displayable{
 		this.combatVisualManager = combatVisualManager;
 		this.combatMembersManager = combatMembersManager;
 		this.levelManager = levelManager;
+		
+		shadowPolygon = new Polygon();
+		lightPolygon = new Polygon();
+		
 	}
 
-	/**
-	 * Make map.
-	 */
 	public void makeMap() {
 		if(map == null){
 			
@@ -119,8 +96,7 @@ public class LineDrawer implements Displayable{
 			
 			for(LevelBlock levelBlock : levelManager.getCurrentLevel().getBlocks()){
 			
-				map[mapNumber] = new MapDrawBlock(panningManager, new BufferedImage((int)levelBlock.getSize()[0],(int)levelBlock.getSize()[1], BufferedImage.TYPE_INT_ARGB),
-												  levelBlock);
+				map[mapNumber] = new MapDrawBlock(panningManager, new BufferedImage((int)levelBlock.getSize()[0],(int)levelBlock.getSize()[1], BufferedImage.TYPE_INT_ARGB),levelBlock);
 				
 				BufferedImage texture = floorTextures[levelBlock.getFloorTextureCode()];
 				MapPainter.applyMapTexture(texture, levelBlock, map[mapNumber].getImage());
@@ -146,9 +122,6 @@ public class LineDrawer implements Displayable{
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Displayable#drawMethod(java.awt.Graphics2D)
-	 */
 	@Override
 	public void drawMethod(Graphics2D drawShape) {
 		
@@ -183,13 +156,13 @@ public class LineDrawer implements Displayable{
 					if(combatVisualManager.isTabled() &&
 					   aiCrowd.getMask(i).getAi() == combatVisualManager.getLastDraggableAi()){
 						drawFov(drawShape, aiCrowd.getMask(i).getAi());
-						drawFovArcLines(drawShape, aiCrowd.getMask(i).getAi(), aiCrowd.getMask(i).getAi().getEditLookAngle(), Color.green.darker());
+						drawFovLight(drawShape, aiCrowd.getMask(i).getAi());
 					}
 					else{
 						
 						if(combatVisualManager.isDrawingFov() && 
 						   aiCrowd.getMask(i).getAi() == combatMembersManager.getCurrentAi()){
-							drawFovArcLines(drawShape, aiCrowd.getMask(i).getAi(), aiCrowd.getMask(i).getAi().getEditLookAngle(), Color.white.darker());
+							drawFovLight(drawShape, aiCrowd.getMask(i).getAi());
 							drawOldFov(drawShape, aiCrowd.getMask(i).getAi());
 						}
 						
@@ -202,23 +175,10 @@ public class LineDrawer implements Displayable{
 				}
 			}
 		}
+		
 		drawKillRadius(drawShape);
 	}
-	
 
-	/**
-	 * The Constant OCCUPIED_ALPHA.
-	 */
-	private static final float OCCUPIED_ALPHA = 1.0f;
-	
-	/**
-	 * The Constant UNOCCUPIED_ALPHA.
-	 */
-	private static final float UNOCCUPIED_ALPHA = 0.3f;
-
-	/**
-	 * Update alphas.
-	 */
 	public void updateAlphas(){
 		Set<LevelBlock> occupiedRooms = new HashSet<LevelBlock>();
 		Set<LevelBlock> connectedRooms = new HashSet<>();
@@ -241,9 +201,11 @@ public class LineDrawer implements Displayable{
 			
 			if(occupiedRooms.contains(block)){
 				map[i].setAlpha(OCCUPIED_ALPHA);
+				block.setDiscovered(true);
 			}
 			else if(connectedRooms.contains(block)){
-				map[i].setAlpha(UNOCCUPIED_ALPHA);
+				map[i].setAlpha(PEEKING_ALPHA);
+				block.setDiscovered(true);
 			}
 			else{
 				map[i].setAlpha(0.f);
@@ -251,11 +213,6 @@ public class LineDrawer implements Displayable{
 		}
 	}
 	
-	/**
-	 * Draw map.
-	 *
-	 * @param drawShape the draw shape
-	 */
 	private void drawMap(Graphics2D drawShape) {
 		
 		AffineTransform panTransform = new AffineTransform();
@@ -284,6 +241,9 @@ public class LineDrawer implements Displayable{
 					drawShape.drawPolygon(mapDraw.getStealthRegions().get(i));
 				}
 				
+				// Debug
+//				drawPathGrid(drawShape, levelManager.getBlock(mapDraw.levelBlockCode).getLevelBlockGrid(), mapDraw.getLocation()[0], mapDraw.getLocation()[1]);
+				
 				if(combatVisualManager.isTabled() && levelManager.getBlock(mapDraw.levelBlockCode) == combatVisualManager.getLastDraggableAi().getLevelBlock()){
 					
 					drawShape.setColor(Color.gray);
@@ -300,11 +260,29 @@ public class LineDrawer implements Displayable{
 		drawShape.setTransform(new AffineTransform());
 	}
 
-	/**
-	 * Draw kill radius.
-	 *
-	 * @param drawShape the draw shape
-	 */
+	@SuppressWarnings("unused")
+    private void drawPathGrid(Graphics2D drawShape, LevelBlockGrid levelBlockGrid, double x, double y) {
+	    
+	    for(int i = 0; i < levelBlockGrid.getBlocks().size(); i++){
+	        for(int j = 0; j < levelBlockGrid.getBlocks().get(i).size(); j++){
+	            
+	            GridBlock gridBlock = levelBlockGrid.getBlocks().get(i).get(j);
+	            
+	            if(gridBlock.picked) {
+	                drawShape.setColor(Color.red);
+	                drawShape.fillRect((int)(gridBlock.x - x), (int)(gridBlock.y - y), (int)gridBlock.width, (int)gridBlock.height);
+	            }
+	            else {
+	                drawShape.setColor(Color.white);
+	                drawShape.drawRect((int)(gridBlock.x - x), (int)(gridBlock.y - y), (int)gridBlock.width, (int)gridBlock.height);
+	            }
+	            
+	            
+	        }
+	    }
+	    
+    }
+
 	private void drawKillRadius(Graphics2D drawShape){
 		if(combatMembersManager.getCurrentAi() != null){
 			drawShape.setComposite(GraphicsFunctions.makeComposite(0.2f));
@@ -319,28 +297,16 @@ public class LineDrawer implements Displayable{
 		}
 	}
 	
-	/**
-	 * Draw lines mask to ai.
-	 *
-	 * @param drawShape the draw shape
-	 * @param ai the ai
-	 */
 	private void drawLinesMaskToAi(Graphics2D drawShape, Ai ai){
 		GraphicsFunctions.drawArrowLine(drawShape,
 										aiCrowd.getActorMask(ai).getLocationCentre()[0] + panningManager.getOffset()[0],
 										aiCrowd.getActorMask(ai).getLocationCentre()[1] + panningManager.getOffset()[1],
 										ai.getLocation()[0] + panningManager.getOffset()[0],
 										ai.getLocation()[1] + panningManager.getOffset()[1],
-										combatMembersManager.getTeamObject(ai.getTeam()).getFactionColour(),
+										ai.getTeamColour(),
 										0.4f);
 	}
 	
-	/**
-	 * Draw shooting lines.
-	 *
-	 * @param drawShape the draw shape
-	 * @param ai the ai
-	 */
 	private void drawShootingLines(Graphics2D drawShape, Ai ai){
 		// if aiObject is targeting an ai draw line between them
 		if(ai.getTargetAi() != null && !ai.getAction().equals("Loot")){
@@ -366,12 +332,6 @@ public class LineDrawer implements Displayable{
 		drawFov(drawShape, ai, ai.getLookAngle(), Color.orange);
 	}
 	
-	/**
-	 * Draw fov.
-	 *
-	 * @param drawShape the draw shape
-	 * @param ai the ai
-	 */
 	private void drawFov(Graphics2D drawShape, Ai ai, double angle, Color lineColour){
 		
 		drawShape.setComposite(GraphicsFunctions.makeComposite(0.4f));
@@ -430,140 +390,174 @@ public class LineDrawer implements Displayable{
 		drawShape.setComposite(GraphicsFunctions.makeComposite(1f));
 	}
 	
-	/**
-	 * Draw fov arc lines.
-	 *
-	 * @param drawShape the draw shape
-	 * @param ai the ai
-	 * @param angle the angle
-	 * @param colour the colour
-	 */
-	private void drawFovArcLines(Graphics2D drawShape, Ai ai, double angle, Color colour){
+	public void updateFovLight(Ai ai) {
 		
-		// All points in the fov arc
-		List<int[]> realPoints = new ArrayList<>();
-		// All room verticies not in fov arc
-		List<int[]> outOfFOVRoomPoints = new ArrayList<>();
+		shadowPolygon.reset();
+		lightPolygon.reset();
 		
-		populateRealPoints(realPoints, outOfFOVRoomPoints, angle, ai);
+		int[] playerLoc = new int[]{(int) ai.getLocation()[0], (int) ai.getLocation()[1]};
+		boolean placedAtPlayer = false;
 		
-		Iterator<int[]> pointsIt = realPoints.iterator();
+		int[] lastPlacedPoint = null;
+		int[] previousPoint = null;
 		
-		ArrayList<Polygon> cover = new ArrayList<Polygon>();
-		
-		cover.addAll(ai.getLevelBlock().getCover());
-		
-		cover.remove(ai.getCoverObject());
-		
-		List<int[]> outOfLOSRoomPoints = new ArrayList<>();
-		
-		while(pointsIt.hasNext()){
-			int[] point = pointsIt.next();
-			if(!PathFinder.isVertexSight(cover, ai.getLocation()[0], ai.getLocation()[1], point[0], point[1], ai.getLevelBlock())){
-				outOfLOSRoomPoints.add(point);
-				pointsIt.remove();
-			}
-		}
-		
-		// points now ones that are in line of sight
-		
-		// second arraylist to store where the los is lost for each point
-		Map<int[], int[]> shadowPoints = new HashMap<int[], int[]>(realPoints.size());
-		
-		// add points for max left/right
-		shadowPoints.put(realPoints.get(0), 
-					PathFinder.getLastPointInCover(realPoints.get(0),
-												   Math.toRadians(ai.getEditLookAngle()) + Math.toRadians(ai.getFov()) * 0.5,
-												   ai.getLevelBlock(),2));
-		
-		shadowPoints.put(realPoints.get(1), 
-					PathFinder.getLastPointInCover(realPoints.get(1),
-												   Math.toRadians(ai.getEditLookAngle()) - Math.toRadians(ai.getFov()) * 0.5,
-												   ai.getLevelBlock(),2));
-		
-		for(int i = 2; i < realPoints.size(); i++){
-			int[] lastPoint = PathFinder.getLastPoint(realPoints.get(i), Maths.getRads(ai.getLocation(), realPoints.get(i)), ai.getLevelBlock(),5);
-			
-			if(Maths.getDistance(lastPoint, realPoints.get(i)) > 1)
-				shadowPoints.put(realPoints.get(i), lastPoint);
-		}
-		
-		drawShape.setColor(colour);
-		drawShape.setComposite(GraphicsFunctions.makeComposite(0.8f));
-		
-		for(int[] startLoc : shadowPoints.keySet()){
-			drawShape.drawLine(startLoc[0] + (int)panningManager.getOffset()[0],
-							   startLoc[1] + (int)panningManager.getOffset()[1],
-							   shadowPoints.get(startLoc)[0] + (int)panningManager.getOffset()[0],
-							   shadowPoints.get(startLoc)[1] + (int)panningManager.getOffset()[1]);
-		}
-		
-//		Polygon behindShadowPoly = new Polygon();
-//		
-//		behindShadowPoly.addPoint((int)ai.getLocation()[0] + (int)panningManager.getOffset()[0], (int)ai.getLocation()[1] + (int)panningManager.getOffset()[1]);
-//		
-//		behindShadowPoly.addPoint(shadowPoints.get(realPoints.get(0))[0] + (int)panningManager.getOffset()[0], shadowPoints.get(realPoints.get(0))[1] + (int)panningManager.getOffset()[1]);
-//		
-//		for(int[] nonVisPoint : outOfFOVRoomPoints){
-//			behindShadowPoly.addPoint(nonVisPoint[0] + (int)panningManager.getOffset()[0], nonVisPoint[1] + (int)panningManager.getOffset()[1]);
-//		}
-//		
-//		behindShadowPoly.addPoint(shadowPoints.get(realPoints.get(1))[0] + (int)panningManager.getOffset()[0], shadowPoints.get(realPoints.get(1))[1] + (int)panningManager.getOffset()[1]);
-//		
-//		
-//		drawShape.setColor(Color.black);
-//		drawShape.setComposite(GraphicsFunctions.makeComposite(0.9f));
-//		drawShape.fillPolygon(behindShadowPoly);
-		
-		drawShape.setComposite(GraphicsFunctions.makeComposite(1.0f));
-		
-	}
-	
-	
-	private void populateRealPoints(List<int[]> realPoints, List<int[]> nonVisRealPoints, double angle, Ai ai) {
-		
-		// add two points for the start location for max left and max right angle
-		realPoints.add(new int[]{(int)ai.getLocation()[0], (int) ai.getLocation()[1]});
-		realPoints.add(new int[]{(int)ai.getLocation()[0], (int) ai.getLocation()[1]});
-		
-		// Cover Vetex
-		for(int i = 0; i < ai.getLevelBlock().getCover().size(); i++){
-			Polygon cover = ai.getLevelBlock().getCover().get(i);
-			for(int j = 0; j < cover.npoints; j++){
-				if(cover != ai.getCoverObject() &&
-						CombatVisualManager.spotNoRadiusFov(ai, angle, new double[]{cover.xpoints[j] + ai.getLevelBlock().getLocation()[0], cover.ypoints[j] + ai.getLevelBlock().getLocation()[1]})){
+		if(ai.isIgnoringLOS()) {
+			for(double i = 0; i < 360; i += 0.5) {
+				int[] lastPointNoCover = CombatVisualManager.getLastPointNoCover(playerLoc, Math.toRadians(i), ai.getLevelBlock());
+				
+				if(CombatVisualManager.spotFovNoRadius(ai, new double[]{lastPointNoCover[0], lastPointNoCover[1]})) {
 					
-					realPoints.add(new int[]{cover.xpoints[j] + (int)ai.getLevelBlock().getLocation()[0],
-							             cover.ypoints[j] + (int)ai.getLevelBlock().getLocation()[1]});
+					double oldAngle = 0;
+					double newAngle = 0;
+					
+					if(previousPoint != null && lastPlacedPoint != null) {
+						oldAngle = Maths.getDegrees(lastPlacedPoint, previousPoint);
+						newAngle = Maths.getDegrees(lastPlacedPoint, lastPointNoCover);
+					}
+					
+					if(lastPlacedPoint == null || Maths.angleDifference(oldAngle, newAngle) > ANGLE_TOLERANCE) {
+						
+						placedAtPlayer = false;
+						
+						if(previousPoint == null) {
+							previousPoint = lastPointNoCover;
+							continue;
+						}
+						else
+							lightPolygon.addPoint(previousPoint[0], previousPoint[1]);
+						
+						lightPolygon.addPoint(lastPointNoCover[0], lastPointNoCover[1]);
+						lastPlacedPoint = lastPointNoCover;
+					}
+					
+					if(lastPlacedPoint == lastPointNoCover)
+						previousPoint = null;
+					else
+						previousPoint = lastPointNoCover;
+				}
+				else if(!placedAtPlayer){
+
+					if(previousPoint != null)
+						lightPolygon.addPoint(previousPoint[0], previousPoint[1]);
+					
+					lightPolygon.addPoint(playerLoc[0], playerLoc[1]);
+					placedAtPlayer = true;
+					
+					previousPoint = playerLoc;
+					lastPlacedPoint = playerLoc;
 				}
 			}
 		}
-		
-		// Room Vertex
-		for(int i = 0; i < ai.getLevelBlock().getHitBox().npoints; i++){
-			
-			Polygon roomPoly = ai.getLevelBlock().getHitBox();
-			
-			int[] roomPoint = new int[]{roomPoly.xpoints[i], roomPoly.ypoints[i]};
-			
-			if(roomPoly != ai.getLevelBlock().getCoverObject(ai.getLocation()) && 
-					CombatVisualManager.spotNoRadiusFov(ai, ai.getEditLookAngle(), new double[]{roomPoly.xpoints[i], roomPoly.ypoints[i]})){
-
-				realPoints.add(roomPoint);
-			
+		else {
+			for(double i = 0; i < 360; i += 0.5) {
+				int[] lastPointOverCover = CombatVisualManager.getLastPointOverCover(playerLoc, Math.toRadians(i), ai.getLevelBlock());
+				
+				if(CombatVisualManager.spotFovNoRadius(ai, new double[]{lastPointOverCover[0], lastPointOverCover[1]})) {
+					
+					double oldAngle = 0;
+					double newAngle = 0;
+					
+					if(previousPoint != null && lastPlacedPoint != null) {
+						oldAngle = Maths.getDegrees(lastPlacedPoint, previousPoint);
+						newAngle = Maths.getDegrees(lastPlacedPoint, lastPointOverCover);
+//						System.out.println("O: " + oldAngle + "  N: " + newAngle + "  Diff: " + Maths.angleDifference(oldAngle, newAngle));
+					}
+					
+					if(lastPlacedPoint == null || Maths.angleDifference(oldAngle, newAngle) > ANGLE_TOLERANCE) {
+						
+						placedAtPlayer = false;
+						
+						if(previousPoint == null) {
+							previousPoint = lastPointOverCover;
+							continue;
+						}
+						else
+							lightPolygon.addPoint(previousPoint[0], previousPoint[1]);
+						
+						lightPolygon.addPoint(lastPointOverCover[0], lastPointOverCover[1]);
+						lastPlacedPoint = lastPointOverCover;
+					}
+					
+					if(lastPlacedPoint == lastPointOverCover)
+						previousPoint = null;
+					else
+						previousPoint = lastPointOverCover;
+				}
+				else if(!placedAtPlayer){
+					
+					if(previousPoint != null)
+						lightPolygon.addPoint(previousPoint[0], previousPoint[1]);
+					
+					lightPolygon.addPoint(playerLoc[0], playerLoc[1]);
+					placedAtPlayer = true;
+					
+					previousPoint = playerLoc;
+					lastPlacedPoint = playerLoc;
+				}
 			}
-			else{
-				nonVisRealPoints.add(roomPoint);
-			}
+//			if(previousPoint != null)
+//				lightPolygon.addPoint(previousPoint[0], previousPoint[1]);
 		}
+		
+		for(int i = 0; i < ai.getLevelBlock().getHitBox().npoints; i++) {
+			int x = ai.getLevelBlock().getHitBox().xpoints[i];
+			int y = ai.getLevelBlock().getHitBox().ypoints[i];
+			shadowPolygon.addPoint(x, y);
+		}
+		
+//		System.out.println("Lightpoly points: " + lightPolygon.npoints);
+		
 	}
+	
+	private void drawFovLight(Graphics2D drawShape, final Ai ai){
 
-	/**
-	 * Draw ai path.
-	 *
-	 * @param drawShape the draw shape
-	 * @param ai the ai
-	 */
+		AffineTransform transform = drawShape.getTransform();
+		
+		transform.setToTranslation(panningManager.getOffset()[0], panningManager.getOffset()[1]);
+		drawShape.setTransform(transform);
+		
+		drawShape.setComposite(GraphicsFunctions.makeComposite(0.45f));
+		
+		Point2D center = new Point2D.Float((int)(ai.getLocation()[0]), (int)(ai.getLocation()[1]));
+		float radius = 50;
+		float[] dist = {0.0f, 0.5f, 0.8f};
+		Color[] colors = {new Color(80, 80, 80), new Color(50, 50, 50), new Color(0, 0, 0)};
+		
+		RadialGradientPaint gp = new RadialGradientPaint(center, radius, dist, colors);
+		
+		drawShape.setPaint(gp);
+		
+		drawShape.fillPolygon(shadowPolygon);
+		
+		
+	    radius = 420;
+	    dist = new float[]{0.0f, 0.9f};
+	    colors = new Color[]{Color.WHITE, new Color(20,20,90)};
+		
+		gp = new RadialGradientPaint(center, radius, dist, colors);
+		
+		drawShape.setPaint(gp);
+		
+		drawShape.setComposite(GraphicsFunctions.makeComposite(0.18f));
+		drawShape.fillPolygon(lightPolygon);
+		drawShape.setPaint(null);
+		
+		
+//		radius = 500;
+//	    dist = new float[]{0.0f, 0.9f};
+//	    colors = new Color[]{new Color(20,20,90), new Color(90,90,160)};
+//		
+//		gp = new RadialGradientPaint(center, radius, dist, colors);
+		
+		drawShape.setComposite(GraphicsFunctions.makeComposite(0.2f));
+//		drawShape.setPaint(gp);
+		drawShape.setColor(Color.cyan);
+		drawShape.drawPolygon(lightPolygon);
+		
+		transform.setToTranslation(0, 0);
+		drawShape.setTransform(transform);
+	}
+	
 	private void drawAiPath(Graphics2D drawShape, Ai ai){
 		
 		if(ai.getPortalPathway() != null){
@@ -574,7 +568,7 @@ public class LineDrawer implements Displayable{
 									        + panningManager.getOffset()[0],  
 									        ai.getPortalPathway().get(ai.getPortalPathway().size() - 1).getLocation()[1]
 									        + panningManager.getOffset()[1],
-									        combatMembersManager.getTeamObject(ai.getTeam()).getFactionColour(),
+									        Color.white,
 									        1.0f);
 			
 			// draw lines between portals
@@ -584,7 +578,7 @@ public class LineDrawer implements Displayable{
 									            ai.getPortalPathway().get(i).getLocation()[1] + panningManager.getOffset()[1],
 									            ai.getPortalPathway().get(i - 1).getLocation()[0] + panningManager.getOffset()[0],  
 									            ai.getPortalPathway().get(i - 1).getLocation()[1] + panningManager.getOffset()[1],
-									            combatMembersManager.getTeamObject(ai.getTeam()).getFactionColour(),
+									            Color.white,
 									            1.0f);
 			}
 			
@@ -594,18 +588,12 @@ public class LineDrawer implements Displayable{
 								            ai.getPortalPathway().get(0).getLocation()[1] + panningManager.getOffset()[1],
 								            ai.getMoveLocation()[0] + panningManager.getOffset()[0],  
 								            ai.getMoveLocation()[1] + panningManager.getOffset()[1],
-								            combatMembersManager.getTeamObject(ai.getTeam()).getFactionColour(),
+								            Color.white,
 									        1.0f);
 		}
 			
 	}
 
-	/**
-	 * Draw selected ai icons.
-	 *
-	 * @param drawShape the draw shape
-	 * @param location the location
-	 */
 	private void drawSelectedAiIcons(Graphics2D drawShape, double[] location){
 		drawShape.setComposite(GraphicsFunctions.makeComposite(0.5f));
 		drawShape.setColor(Color.green.darker());
@@ -616,25 +604,16 @@ public class LineDrawer implements Displayable{
 		drawShape.setComposite(GraphicsFunctions.makeComposite(1.0f));
 	}
 	
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Displayable#getZ()
-	 */
 	@Override
 	public int getZ() {
 		return this.z;
 	}
 
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Displayable#isVisible()
-	 */
 	@Override
 	public boolean isVisible() {
 		return this.visible;
 	}
 	
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Displayable#compareTo(watoydoEngine.designObjects.display.Displayable)
-	 */
 	@Override
 	public int compareTo(Displayable otherDisplay) {
 		if(otherDisplay.getZ() > this.getZ()){
@@ -646,97 +625,55 @@ public class LineDrawer implements Displayable{
 		return 0;
 	}
 
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Displayable#setVisible(boolean)
-	 */
 	@Override
 	public void setVisible(boolean visible) {
 		this.visible = visible;
 	}
 	
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Displayable#setZ(int)
-	 */
 	@Override
 	public void setZ(int z) {
 		this.z = z;
 	}
 	
-	// Unused Methods
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Displayable#getScale()
-	 */
 	@Override
 	public double getScale() {
 		return 0;
 	}
 	
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Displayable#move(double, double)
-	 */
 	@Override
 	public void move(double x, double y) {
 	}
 
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Displayable#kickTween()
-	 */
 	@Override
 	public void kickTween() {
 	}
 
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Displayable#getLocation()
-	 */
 	@Override
 	public double[] getLocation() {
 		return null;
 	}
 	
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Displayable#getSize()
-	 */
 	@Override
 	public double[] getSize() {
 		return null;
 	}
 
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Displayable#setScale(double)
-	 */
 	@Override
 	public void setScale(double scale) {
 	}
 
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Displayable#setLocation(double, double)
-	 */
 	@Override
 	public void setLocation(double x, double y) {
 	}
 
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Displayable#setTween(watoydoEngine.display.tweens.TweenDefinable)
-	 */
 	@Override
 	public void setTween(TweenDefinable tween) {
 	}
 
-	/**
-	 * Gets the map image.
-	 *
-	 * @return the map image
-	 */
 	public MapDrawBlock[] getMapImage() {
 		return map;
 	}
 	
-	/**
-	 * Gets the map draw block.
-	 *
-	 * @param location the location
-	 * @return the map draw block
-	 */
 	public MapDrawBlock getMapDrawBlock(double[] location){
 		for(MapDrawBlock drawBlock : map){
 			if(drawBlock.getHitbox().contains(location[0],location[1])){
@@ -746,64 +683,22 @@ public class LineDrawer implements Displayable{
 		return null;
 	}
 	
-	/**
-	 * The Class MapDrawBlock.
-	 */
 	public class MapDrawBlock{
 
-		/**
-		 * Draw occupied.
-		 *
-		 * @param drawShape the draw shape
-		 */
 		public void drawOccupied(Graphics2D drawShape) {
 			drawShape.setColor(Color.green);
 			drawShape.drawPolygon(levelManager.getBlock(this.levelBlockCode).getHitBox());
 		}
 
-		/**
-		 * The hitbox.
-		 */
 		private Polygon hitbox;
-		
-		/**
-		 * The image.
-		 */
 		private BufferedImage image;
-		
-		/**
-		 * The location.
-		 */
 		private double[] location;
-		
-		/**
-		 * The alpha.
-		 */
 		private float alpha;
-		
-		/**
-		 * The cover.
-		 */
 		private final List<Polygon> cover;
-		
-		/**
-		 * The stealth regions.
-		 */
 		private final List<Polygon> stealthRegions;
-		
-		/**
-		 * The level block code.
-		 */
 		private final int levelBlockCode;
-
 		private PanningManager panningManager;
 
-		/**
-		 * Instantiates a new map draw block.
-		 *
-		 * @param bufferedImage the buffered image
-		 * @param levelBlock the level block
-		 */
 		public MapDrawBlock(PanningManager panningManager, BufferedImage bufferedImage, LevelBlock levelBlock) {
 			this.image = bufferedImage;
 			this.hitbox = levelBlock.getHitBox();
@@ -818,11 +713,6 @@ public class LineDrawer implements Displayable{
 			this.panningManager = panningManager;
 		}
 		
-		/**
-		 * Checks if is in frame.
-		 *
-		 * @return true, if is in frame
-		 */
 		public boolean isVisible() {
 			if(alpha == 0 ||
 			   (this.location[0] + panningManager.getOffset()[0] > DisplayManager.getInstance().getResolution()[0] ||
@@ -834,11 +724,6 @@ public class LineDrawer implements Displayable{
 			return true;
 		}
 
-		/**
-		 * Draw regions.
-		 *
-		 * @param block the block
-		 */
 		protected void drawRegions(LevelBlock block) {
 			
 			BufferedImage[] STASH_HOLES = new BufferedImage[3];
@@ -888,113 +773,55 @@ public class LineDrawer implements Displayable{
 		}
 		
 
-		/**
-		 * Gets the alpha.
-		 *
-		 * @return the alpha
-		 */
 		public float getAlpha() {
 			return alpha;
 		}
 
-		/**
-		 * Sets the alpha.
-		 *
-		 * @param alpha the new alpha
-		 */
 		public void setAlpha(float alpha) {
 			this.alpha = alpha;
 		}
 
-		/**
-		 * Gets the hitbox.
-		 *
-		 * @return the hitbox
-		 */
 		public Polygon getHitbox() {
 			return hitbox;
 		}
 
-		/**
-		 * Sets the hitbox.
-		 *
-		 * @param hitbox the new hitbox
-		 */
 		public void setHitbox(Polygon hitbox) {
 			this.hitbox = hitbox;
 		}
 
-		/**
-		 * Gets the image.
-		 *
-		 * @return the image
-		 */
 		public BufferedImage getImage() {
 			return image;
 		}
 
-		/**
-		 * Gets the location.
-		 *
-		 * @return the location
-		 */
 		public double[] getLocation() {
 			return location;
 		}
 		
-		/**
-		 * Gets the location centre.
-		 *
-		 * @return the location centre
-		 */
 		public double[] getLocationCentre() {
 			double[] centre = {hitbox.getBounds2D().getCenterX(), hitbox.getBounds2D().getCenterY()};
 			return centre;
 		}
 
-		/**
-		 * Sets the image.
-		 *
-		 * @param image the new image
-		 */
 		public void setImage(BufferedImage image) {
 			this.image = image;
 		}
 
-		/**
-		 * Sets the location.
-		 *
-		 * @param location the new location
-		 */
 		public void setLocation(double[] location) {
 			this.location = location;
 		}
 		
-		/**
-		 * Flush.
-		 */
 		public void flush(){
 			this.image.flush();
 		}
 		
-		/**
-		 * Gets the cover.
-		 *
-		 * @return the cover
-		 */
 		public List<Polygon> getCover() {
 			return cover;
 		}
 		
-		/**
-		 * Gets the stealth regions.
-		 *
-		 * @return the stealth regions
-		 */
 		public List<Polygon> getStealthRegions() {
 			return stealthRegions;
 		}
-		
+
 	}
 	
 }

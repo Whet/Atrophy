@@ -1,5 +1,5 @@
 /*
- * All code unless credited otherwise is copyright 2012 Charles Sherman, all rights reserved
+ * 
  */
 package atrophy.combat.display.ui;
 
@@ -9,7 +9,6 @@ import java.awt.image.BufferedImage;
 
 import watoydoEngine.designObjects.display.ImageSingle;
 import atrophy.combat.CombatMembersManager;
-import atrophy.combat.CombatUiManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.display.AiCrowd;
 
@@ -21,7 +20,6 @@ public class UnitMarker extends ImageSingle {
 
 	private PanningManager panningManager;
 	private CombatMembersManager combatMembersManager;
-	private CombatUiManager combatUiManager;
 	private AiCrowd aiCrowd;
 	
 	/**
@@ -29,11 +27,10 @@ public class UnitMarker extends ImageSingle {
 	 *
 	 * @param image the image
 	 */
-	public UnitMarker(AiCrowd aiCrowd, PanningManager panningManager, CombatMembersManager combatMembersManager, CombatUiManager combatUiManager, BufferedImage image){
+	public UnitMarker(AiCrowd aiCrowd, PanningManager panningManager, CombatMembersManager combatMembersManager, BufferedImage image){
 		super("UnitMarker",image,true);
 		this.panningManager = panningManager;
 		this.combatMembersManager = combatMembersManager;
-		this.combatUiManager = combatUiManager;
 		this.aiCrowd = aiCrowd;
 	}
 	
@@ -65,8 +62,7 @@ public class UnitMarker extends ImageSingle {
 		if(combatMembersManager.getCurrentAi() != null){
 			this.setVisible(true);
 			// Update ai selection marker to highlight the mask of current ai
-			combatUiManager.getUnitMarker().setLocation(aiCrowd.getActorMask(combatMembersManager.getCurrentAi()).getLocation()[0]
-																	  - combatUiManager.getUnitMarker().getSize()[0] * 0.25,
+			this.setLocation(aiCrowd.getActorMask(combatMembersManager.getCurrentAi()).getLocation()[0],
 																	  aiCrowd.getActorMask(combatMembersManager.getCurrentAi()).getLocation()[1]
 																	  + aiCrowd.getActorMask(combatMembersManager.getCurrentAi()).getSize()[1] - 20);
 		}
