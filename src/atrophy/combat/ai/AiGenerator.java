@@ -105,14 +105,14 @@ public class AiGenerator{
 		this.lootbox = lootbox;
 	}
 	
-	public void generateAi(Crowd crowd, ItemMarket itemMarket, List<AiGeneratorInterface.GenerateCommand> generationCommands){
+	public void generateAi(ItemMarket itemMarket, List<AiGeneratorInterface.GenerateCommand> generationCommands){
 		
 		int squadCount = 0;
 		
 		for(AiGeneratorInterface.GenerateCommand command : generationCommands){
 			
 			if(command instanceof SoloGenerateCommand){
-				generateSoloAi(crowd, (SoloGenerateCommand)command, squadCount);
+				generateSoloAi((SoloGenerateCommand)command, squadCount);
 				squadCount++;
 				continue;
 			}
@@ -123,7 +123,6 @@ public class AiGenerator{
 								 command.getTeamSize(),
 								 command.getAllowedItems(),
 								 command.getAllowedWeapons(),
-								 crowd,
 								 combatMembersManager.getCommander(WHITE_VISTA).getSpawnRoom());
 				break;
 				case BANDITS:
@@ -131,19 +130,16 @@ public class AiGenerator{
 								 command.getTeamSize(),
 								 command.getAllowedItems(),
 								 command.getAllowedWeapons(),
-								 crowd,
 								 combatMembersManager.getCommander(BANDITS).getSpawnRoom());
 				break;
 				case PLAYER:
-					generatePlayerTeam(crowd,
-									   command.getSquad(),
+					generatePlayerTeam(command.getSquad(),
 									   levelManager.getCurrentLevel().getPlayerSpawn());
 				break;
 				case LONER:
 				break;
 				case TURRET:
 					generateTurrets(squadCount+LONER,
-									crowd,
 									command.getX(),
 									command.getY());
 				break;
@@ -155,7 +151,6 @@ public class AiGenerator{
 			generateLoner(Integer.toString(squadCount)+LONER,
 						  itemMarket.getLonerAllowedItems(),
 						  itemMarket.getLonerAllowedWeapons(), 
-					      crowd,
 					      levelManager.randomRoom());
 			squadCount++;
 		}
@@ -166,7 +161,7 @@ public class AiGenerator{
 		
 	}
 	
-	private void generateSoloAi(Crowd crowd, SoloGenerateCommand command, int team) {
+	private void generateSoloAi(SoloGenerateCommand command, int team) {
 		
 		double[] location = new double[]{command.x, command.y};
 		
@@ -203,7 +198,7 @@ public class AiGenerator{
 		ai.assignAbilities();
 		aiImg.setAi(ai);
 		
-		crowd.addDisplayItem(aiImg);
+		aiCrowd.addDisplayItem(aiImg);
 		aiCrowd.addMouseActionItem(aiImg);
 		
 		aiCrowd.addActor(ai);
@@ -224,7 +219,7 @@ public class AiGenerator{
 		}
 	}
 
-	private void generatePlayerTeam(Crowd crowd, ArrayList<Squaddie> squad, LevelBlock levelBlock) {
+	private void generatePlayerTeam(ArrayList<Squaddie> squad, LevelBlock levelBlock) {
 		double[] randomLocation = levelManager.randomInPosition(levelBlock);
 		
 		for(int i = 0; i < squad.size(); i++){
@@ -271,7 +266,7 @@ public class AiGenerator{
 			
 			ai.assignAbilities();
 			aiImg.setAi(ai);
-			crowd.addDisplayItem(aiImg);
+			aiCrowd.addDisplayItem(aiImg);
 			aiCrowd.addMouseActionItem(aiImg);
 			
 			
@@ -294,7 +289,7 @@ public class AiGenerator{
 		}
 	}
 	
-	private void generateLoner(String team, ArrayList<String> allowedItems, ArrayList<String> allowedWeapons, Crowd crowd, LevelBlock room){
+	private void generateLoner(String team, ArrayList<String> allowedItems, ArrayList<String> allowedWeapons, LevelBlock room){
 		
 		double[] randomLocation = levelManager.randomInPosition(room);
 		
@@ -311,7 +306,7 @@ public class AiGenerator{
 		ai.assignAbilities();
 		aiImg.setAi(ai);
 		
-		crowd.addDisplayItem(aiImg);
+		aiCrowd.addDisplayItem(aiImg);
 		aiCrowd.addMouseActionItem(aiImg);
 		
 		aiCrowd.addActor(ai);
@@ -321,7 +316,7 @@ public class AiGenerator{
 		
 	}
 	
-	private void generateTurrets(String team, Crowd crowd, double x, double y){
+	private void generateTurrets(String team, double x, double y){
 		
 		AiImage aiImg = new AiImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, 0,0, mouseAbilityHandler, floatingIcons);
 		ThinkingAi ai;
@@ -333,14 +328,14 @@ public class AiGenerator{
 		ai.assignAbilities();
 		aiImg.setAi(ai);
 		
-		crowd.addDisplayItem(aiImg);
+		aiCrowd.addDisplayItem(aiImg);
 		aiCrowd.addMouseActionItem(aiImg);
 		
 		aiCrowd.addActor(ai);
 		aiCrowd.addMask(aiImg);
 	}
 	
-	private void generateTeam(String team, int members, ArrayList<String> allowedItems, ArrayList<String> allowedWeapons, Crowd crowd, LevelBlock spawnRoom){
+	private void generateTeam(String team, int members, ArrayList<String> allowedItems, ArrayList<String> allowedWeapons, LevelBlock spawnRoom){
 		
 		double[] randomLocation = levelManager.randomInPosition(spawnRoom);
 		
@@ -372,7 +367,7 @@ public class AiGenerator{
 			
 			ai.assignAbilities();
 			aiImg.setAi(ai);
-			crowd.addDisplayItem(aiImg);
+			aiCrowd.addDisplayItem(aiImg);
 			aiCrowd.addMouseActionItem(aiImg);
 			
 			aiCrowd.addActor(ai);

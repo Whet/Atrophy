@@ -51,7 +51,7 @@ public class CombatHardPane implements HardPaneDefineable{
 		this.itemMarket = itemMarket;
 		this.generationCommands = generationCommands;
 	}
-
+	
 	/* (non-Javadoc)
 	 * @see watoydoEngine.hardPanes.ModdableHardPane#load(java.lang.String, watoydoEngine.designObjects.display.Crowd)
 	 */
@@ -61,15 +61,15 @@ public class CombatHardPane implements HardPaneDefineable{
 		MapPainter.loadTextures();
 		
 		AiGenerator aiGenerator = new AiGenerator(aiManagementSuite.getAiCrowd(), aiManagementSuite.getCombatMembersManager(), uiUpdaterSuite.getCombatUiManager(), uiUpdaterSuite.getCombatVisualManager(), levelManager, uiUpdaterSuite.getPanningManager(), actionSuite.getMouseAbilityHandler(), turnProcess, uiUpdaterSuite.getFloatingIcons(), combatInorganicManager, uiUpdaterSuite.getLootBox());
-		aiGenerator.generateAi(crowd, itemMarket, generationCommands);
+		aiGenerator.generateAi(itemMarket, generationCommands);
 		aiCrowd.getShuffledStack();
 		
-		crowd.addCrowd(aiManagementSuite.getAiCrowd());
+		crowd.addCrowd(aiCrowd);
+		aiCrowd.setVisible(true);
 		
 		// Add ui elements
 		crowd.addButton(uiUpdaterSuite.getCombatUiManager().getMoveFlag());
 		crowd.addDisplayItem(uiUpdaterSuite.getCombatUiManager().getLineSurface());
-//		crowd.addDisplayItem(uiUpdaterSuite.getCombatUiManager().getUnitMarker());
 		crowd.addDisplayItem(uiUpdaterSuite.getCombatUiManager().getAllyRoster());
 		crowd.addMouseActionItem(uiUpdaterSuite.getCombatUiManager().getAllyRoster());
 		crowd.addCrowd(uiUpdaterSuite.getCombatUiManager().getCombatInfo());
@@ -86,8 +86,6 @@ public class CombatHardPane implements HardPaneDefineable{
 		
 		crowd.addCrowd(uiUpdaterSuite.getCartographerBox());
 		
-//		crowd.addCrowd(uiUpdaterSuite.getan);
-		
 		crowd.addDisplayItem(uiUpdaterSuite.getCombatUiManager().getLargeEventText());
 		
 		crowd.addMouseActionItem(actionSuite.getCombatMouseHandler());
@@ -97,7 +95,8 @@ public class CombatHardPane implements HardPaneDefineable{
 		
 		uiUpdaterSuite.getCombatUiManager().getLineSurface().setZ(-1);
 		
-//		uiUpdaterSuite.getCombatUiManager().getUnitMarker().setZ(5);
+		aiCrowd.setZ(10);
+		
 		uiUpdaterSuite.getCombatUiManager().getMoveFlag().setZ(5);
 		uiUpdaterSuite.getCombatUiManager().getFloatingIcons().setZ(5);
 		uiUpdaterSuite.getCombatUiManager().getActionText().setZ(5);
@@ -116,8 +115,6 @@ public class CombatHardPane implements HardPaneDefineable{
 		uiUpdaterSuite.getCartographerBox().setZ(7);
 		uiUpdaterSuite.getCartographerBox().setActionZ(-2);
 		uiUpdaterSuite.getLootBox().setActionZ(-2);
-//		antebar.setZ(7);
-//		antebar.setActionZ(-1);
 		
 		actionSuite.getCombatMouseHandler().setActionZ(-2);
 		

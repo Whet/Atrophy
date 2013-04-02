@@ -3,6 +3,7 @@
  */
 package atrophy.combat.display;
 
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -32,8 +33,8 @@ public class AiCrowd extends Crowd {
 	
 	private static final int ANIMATION_FRAME_LENGTH = 300;
 
-	private ArrayList<Ai> actors;
-	private ArrayList<AiImage> masks;
+	private volatile ArrayList<Ai> actors;
+	private volatile ArrayList<AiImage> masks;
 	
 	private Stack<Ai> masterStack;
 	private Stack<Ai> shuffledStack;
@@ -369,11 +370,18 @@ public class AiCrowd extends Crowd {
 	public BufferedImage getPortraitImage(String image) {
 		return this.images.get(image);
 	}
+	
+	@Override
+	public void drawMethod(Graphics2D drawShape) {
+		super.drawMethod(drawShape);
+	}
 
 	public void updateAnimations() {
 		for(AiImage image : this.masks) {
 			image.updateAnimation();
+			image.setZ((int) image.getLocation()[1]);
 		}
+		computeZOrder();
 	}
 
 	public BufferedImage getAnimationFrame(String image, int frame, Animation animation) {
