@@ -168,4 +168,9 @@ public class MeleeWeapon1 extends Weapon {
 	public boolean isMelee() {
 		return true;
 	}
+	
+	@Override
+	public boolean ignoresCover() {
+		return true;
+	}
 }
