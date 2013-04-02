@@ -162,7 +162,7 @@ public class PathFinder {
 	    GridBlock startBlock = navGrid.getNearestGridBlock(mover.getLocation());
         openSet.add(startBlock);
 	    startBlock.g = 0;
-	    startBlock.h = Maths.getDistance(startBlock.getCentre(), moveLocation);
+	    startBlock.h = Maths.getDistance(startBlock.getPathLocation(), moveLocation);
 	    startBlock.f = startBlock.g + startBlock.h;
         
 	    Map<GridBlock, GridBlock> cameFrom = new HashMap<>();
@@ -173,7 +173,7 @@ public class PathFinder {
 	        
 	        GridBlock current = lowestF(openSet);
 	        
-	        if(current == goal || (goal == null && Maths.getDistance(current.getCentre(), moveLocation) <= moveDistance))
+	        if(current == goal || (goal == null && Maths.getDistance(current.getPathLocation(), moveLocation) <= moveDistance))
 	            return createAStarPath(cameFrom, current, startBlock);
 	        
 	        openSet.remove(current);
@@ -193,7 +193,7 @@ public class PathFinder {
 	            if(!openSet.contains(neighbour) || newG < neighbour.g ) {
 	                cameFrom.put(neighbour, current);
 	                neighbour.g = newG;
-	                neighbour.h = Maths.getDistance(startBlock.getCentre(), moveLocation);
+	                neighbour.h = Maths.getDistance(startBlock.getPathLocation(), moveLocation);
 	                neighbour.f = neighbour.g + neighbour.h;
 	                
 	                openSet.add(neighbour);
@@ -224,7 +224,7 @@ public class PathFinder {
         
         while(current != start) {
             current.picked = true;
-            path.add(current.getCentre());
+            path.add(current.getPathLocation());
             current = cameFrom.get(current);
         }
         
