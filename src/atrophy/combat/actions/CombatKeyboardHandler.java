@@ -253,7 +253,8 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 			
 			// Space bar ends turn
 			case 32:
-				turnProcess.endTurn();
+				if(!messageBox.isVisible())
+					turnProcess.endTurn();
 			break;
 			
 			// 1
@@ -261,6 +262,9 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 				combatMembersManager.changeCurrentAi(0);
 				panningManager.panToPlayer();
 				SoundBoard.getInstance().playEffect("tick");
+				
+				if(messageBox.isVisible())
+					combatUiManager.getActionsBar().setVisible(false);
 			break;
 			
 			// 2
@@ -268,6 +272,9 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 				combatMembersManager.changeCurrentAi(1);
 				panningManager.panToPlayer();
 				SoundBoard.getInstance().playEffect("tick");
+				
+				if(messageBox.isVisible())
+					combatUiManager.getActionsBar().setVisible(false);
 			break;
 			
 			// 3
@@ -275,6 +282,9 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 				combatMembersManager.changeCurrentAi(2);
 				panningManager.panToPlayer();
 				SoundBoard.getInstance().playEffect("tick");
+				
+				if(messageBox.isVisible())
+					combatUiManager.getActionsBar().setVisible(false);
 			break;
 			
 			// 4
@@ -282,6 +292,9 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 				combatMembersManager.changeCurrentAi(3);
 				panningManager.panToPlayer();
 				SoundBoard.getInstance().playEffect("tick");
+				
+				if(messageBox.isVisible())
+					combatUiManager.getActionsBar().setVisible(false);
 			break;
 			
 			// 5
@@ -289,6 +302,9 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 				combatMembersManager.changeCurrentAi(4);
 				panningManager.panToPlayer();
 				SoundBoard.getInstance().playEffect("tick");
+				
+				if(messageBox.isVisible())
+					combatUiManager.getActionsBar().setVisible(false);
 			break;
 			
 			// 6
@@ -296,6 +312,9 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 				combatMembersManager.changeCurrentAi(5);
 				panningManager.panToPlayer();
 				SoundBoard.getInstance().playEffect("tick");
+				
+				if(messageBox.isVisible())
+					combatUiManager.getActionsBar().setVisible(false);
 			break;
 			
 			// 7
@@ -303,6 +322,9 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 				combatMembersManager.changeCurrentAi(6);
 				panningManager.panToPlayer();
 				SoundBoard.getInstance().playEffect("tick");
+				
+				if(messageBox.isVisible())
+					combatUiManager.getActionsBar().setVisible(false);
 			break;
 			
 			// 8
@@ -310,6 +332,9 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 				combatMembersManager.changeCurrentAi(7);
 				panningManager.panToPlayer();
 				SoundBoard.getInstance().playEffect("tick");
+				
+				if(messageBox.isVisible())
+					combatUiManager.getActionsBar().setVisible(false);
 			break;
 			
 			// 9
@@ -317,6 +342,9 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 				combatMembersManager.changeCurrentAi(8);
 				panningManager.panToPlayer();
 				SoundBoard.getInstance().playEffect("tick");
+				
+				if(messageBox.isVisible())
+					combatUiManager.getActionsBar().setVisible(false);
 			break;
 			
 			// Num 7

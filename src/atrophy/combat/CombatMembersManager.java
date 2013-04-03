@@ -130,7 +130,7 @@ public class CombatMembersManager {
 	}
 
 	public void changeCurrentAi(int i){
-		if(this.getAlly(i) != null){
+		if(i < this.getAllyCount() && this.getAlly(i) != null){
 			
 			this.changeCurrentAi(this.getAlly(i));
 			

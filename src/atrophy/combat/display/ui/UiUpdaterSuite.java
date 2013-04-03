@@ -4,6 +4,7 @@ import atrophy.combat.CombatInorganicManager;
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
+import atrophy.combat.actions.CombatMouseHandler;
 import atrophy.combat.actions.MouseAbilityHandler;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.AiManagementSuite;
@@ -29,8 +30,8 @@ public class UiUpdaterSuite {
 		this.cartographer = new Cartographer();
 		this.combatUiManager = new CombatUiManager(cartographer, aiManagementSuite.getCombatMembersManager(), panningManager, aiManagementSuite.getAiCrowd(), turnProcess, levelManager);
 		this.combatVisualManager = new CombatVisualManager(aiManagementSuite.getAiCrowd(), combatUiManager, aiManagementSuite.getCombatMembersManager(), levelManager);
-		this.messageBox = new MessageBox(combatUiManager, turnProcess, aiManagementSuite.getCombatMembersManager(), combatVisualManager, cartographer);
 		this.cartographerBox = new CartographerBox(panningManager, cartographer);
+		this.messageBox = new MessageBox(combatUiManager, turnProcess, aiManagementSuite.getCombatMembersManager(), combatVisualManager, cartographer, cartographerBox, aiManagementSuite.getAiCrowd());
 		this.lootBox = new LootBox(combatUiManager, messageBox, cartographerBox);
 		this.floatingIcons = new FloatingIcons(aiManagementSuite.getCombatMembersManager(), panningManager, aiManagementSuite.getAiCrowd(), combatVisualManager, combatInorganicManager, levelManager);
 		
@@ -68,9 +69,10 @@ public class UiUpdaterSuite {
 		return floatingIcons;
 	}
 
-	public void lazyLoad(MouseAbilityHandler mouseAbilityHandler, AiCrowd aiCrowd, LevelManager levelManager) {
+	public void lazyLoad(MouseAbilityHandler mouseAbilityHandler, AiCrowd aiCrowd, LevelManager levelManager, CombatMouseHandler combatMouseHandler) {
 		combatUiManager.lazyLoad(mouseAbilityHandler, combatUiManager, floatingIcons, combatVisualManager, lootBox, levelManager, aiCrowd, panningManager);
 		floatingIcons.lazyLoad(combatUiManager.getLineSurface());
+		messageBox.lazyLoad(combatMouseHandler);
 	}
 
 	public LineDrawer getLineDrawer() {

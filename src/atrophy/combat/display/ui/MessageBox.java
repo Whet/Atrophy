@@ -26,8 +26,10 @@ import watoydoEngine.io.ReadWriter;
 import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
+import atrophy.combat.actions.CombatMouseHandler;
 import atrophy.combat.ai.Ai;
 import atrophy.combat.ai.conversation.Dialogue;
+import atrophy.combat.display.AiCrowd;
 import atrophy.combat.level.MissionManager;
 import atrophy.combat.mechanics.TurnProcess;
 import atrophy.gameMenu.saveFile.Missions;
@@ -120,17 +122,28 @@ public class MessageBox extends Crowd{
 	private CombatUiManager combatUiManager;
 	private TurnProcess turnProcess;
 	private Cartographer cartographer;
+
+	private CartographerBox cartographerBox;
+
+	private AiCrowd aiCrowd;
+	private CombatMouseHandler combatMouseHandler;
 	
 	/**
 	 * Instantiates a new message box.
+	 * @param cartographerBox 
+	 * @param aiCrowd 
+	 * @param combatMouseHandler 
+	 * @param lootBox 
 	 */
-	public MessageBox(CombatUiManager combatUiManager, TurnProcess turnProcess, CombatMembersManager combatMembersManager, CombatVisualManager combatVisualManager, Cartographer cartographer){
+	public MessageBox(CombatUiManager combatUiManager, TurnProcess turnProcess, CombatMembersManager combatMembersManager, CombatVisualManager combatVisualManager, Cartographer cartographer, CartographerBox cartographerBox, AiCrowd aiCrowd){
 		
 		super(false);
 		
 		this.combatUiManager = combatUiManager;
 		this.turnProcess = turnProcess;
 		this.cartographer = cartographer;
+		this.cartographerBox = cartographerBox;
+		this.aiCrowd = aiCrowd;
 		
 		messages = new LinkedList<Message>();
 		
@@ -219,6 +232,10 @@ public class MessageBox extends Crowd{
 		computeZOrder();
 	}
 
+	public void lazyLoad(CombatMouseHandler combatMouseHandler) {
+		this.combatMouseHandler = combatMouseHandler;
+	}
+	
 	/**
 	 * Load buttons.
 	 */
@@ -392,6 +409,16 @@ public class MessageBox extends Crowd{
 			this.conversers[0] = null;
 			this.conversers[1] = null;
 			this.messageManager.resetTopics();
+			combatUiManager.getAllyRoster().setVisible(true);
+			aiCrowd.setActive(true);
+			combatMouseHandler.setActive(true);
+		}
+		else {
+			combatUiManager.getActionsBar().setVisible(false);
+			combatUiManager.getAllyRoster().setVisible(false);
+			cartographerBox.setVisible(false);
+			aiCrowd.setActive(false);
+			combatMouseHandler.setActive(false);
 		}
 	}
 

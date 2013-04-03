@@ -134,10 +134,11 @@ public class MouseAbilityHandler {
 				if(speechAi != null && !(speechAi instanceof TurretAi) && speechAi.getStunnedTurns() == 0 && speechAi.getLevelBlock() == combatMembersManager.getCurrentAi().getLevelBlock() &&
 				   !speechAi.getFaction().equals(AiGenerator.PLAYER) && ( !(speechAi instanceof ThinkingAi) || !((ThinkingAi)speechAi).isBlockPlayerConvo())){
 					
-					messageBox.setVisible(true);
-					combatUiManager.getActionsBar().setVisible(false);
 					messageBox.setConversation(combatMembersManager.getCurrentAi(), speechAi);
 					lootBox.closeLootUi(lootBox.isVisible());
+					messageBox.setVisible(true);
+					this.cancelAbilitySetting();
+					return;
 				}
 			break;
 			case Abilities.STUN_MELEE:
