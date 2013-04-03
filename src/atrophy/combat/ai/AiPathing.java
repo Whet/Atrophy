@@ -159,6 +159,7 @@ public class AiPathing {
 								                targetPortal.getLocation(this.getLevelBlock())[1], this.getLevelBlock().getHitBox())){
 							
 							roomPathway = null;
+							moveIntra(invoker,targetPortal.getLocation(this.getLevelBlock()));
 							continue;
 						}
 						

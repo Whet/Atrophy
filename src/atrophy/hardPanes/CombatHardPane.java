@@ -95,7 +95,7 @@ public class CombatHardPane implements HardPaneDefineable{
 		
 		uiUpdaterSuite.getCombatUiManager().getLineSurface().setZ(-1);
 		
-		aiCrowd.setZ(10);
+		aiCrowd.setZ(2);
 		
 		uiUpdaterSuite.getCombatUiManager().getMoveFlag().setZ(5);
 		uiUpdaterSuite.getCombatUiManager().getFloatingIcons().setZ(5);
