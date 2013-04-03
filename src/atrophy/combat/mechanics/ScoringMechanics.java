@@ -14,7 +14,7 @@ public class ScoringMechanics {
 		
 		// Check for target defences
 		if(targetAi.hasActiveEffect(Parrying.NAME) && ai.getWeapon().isMelee()) {
-			ai.setStunnedTurns(Parrying.STUN_TURNS);
+			ai.setIncapTurns(Parrying.STUN_TURNS);
 			return false;
 		}
 		

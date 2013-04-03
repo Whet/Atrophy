@@ -21,6 +21,7 @@ import atrophy.combat.actions.MouseAbilityHandler;
 import atrophy.combat.ai.Ai;
 import atrophy.combat.display.ui.FloatingIcons;
 import atrophy.combat.display.ui.InfoTextDisplayable;
+import atrophy.combat.items.DaemonWeapon;
 import atrophy.combat.items.Harpoon1;
 import atrophy.combat.items.Harpoon2;
 import atrophy.combat.items.MeleeWeapon1;
@@ -313,18 +314,18 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 		else if(deathFrame < attackFrame)
 			deathFrame++;
 		
-		if(this.frame == maxFrame && !this.getAi().isDead()) {
+		if(this.frame >= maxFrame && !this.getAi().isDead()) {
 			this.setAnimation(this.getIdleAnimation(), 4);
 		}
 		
 		this.setImage(aiCrowd.getAnimationFrame(this.getAi().getImage() + "Full", frame, animation));
 		
-		if(deathFrame == attackFrame && !this.animation.equals(Animation.DEAD)) {
+		if(deathFrame >= attackFrame && !this.animation.equals(Animation.DEAD)) {
 			this.setAnimation(Animation.DEAD, 1);
 			this.updateAnimation();
 		}
 		
-		if(this.isVisible() && this.frame == attackFrame &&
+		if(this.isVisible() && this.frame >= attackFrame &&
 		  (this.animation.equals(Animation.ATTACK_MELEE) || this.animation.equals(Animation.ATTACK_WEP1) || this.animation.equals(Animation.ATTACK_WEP2) || this.animation.equals(Animation.ATTACK_WEP3))){
 			floatingIcons.addEffect(this.getAi().getWeapon().getFireEffect(panningManager, this.getAi().getLocation(), attackTarget.getLocation()));
 			attackTarget = null;
@@ -342,6 +343,7 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 		switch(weapon) {
 			case MeleeWeapon1.NAME:
 			case MeleeWeapon2.NAME:
+			case DaemonWeapon.NAME: 
 				return Animation.IDLE_MELEE;
 				
 			case Harpoon1.NAME:

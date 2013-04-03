@@ -30,7 +30,7 @@ public class MeleeWeapon1 extends Weapon {
 	/**
 	 * The Constant ACCURACY.
 	 */
-	public static final int ACCURACY = 10;
+	public static final int ACCURACY = 20;
 	
 	/**
 	 * The Constant TURNS_TO_RELOAD.

@@ -55,12 +55,9 @@ public class DaemonImage extends AiImage {
 		
 		this.attackTarget = targetAi;
 		
-		int maxFrame = 6;
-		
-		if(this.getAi().getWeapon().isMelee())
-			maxFrame = 7;
+		maxFrame = 7;
 
-		this.setAnimation(getAttackAnimation(), maxFrame);
+		this.setAnimation(Animation.ATTACK_MELEE, maxFrame);
 	}
 	
 	public void updateAnimation() {
@@ -70,20 +67,19 @@ public class DaemonImage extends AiImage {
 		else if(deathFrame < attackFrame)
 			deathFrame++;
 		
-		if(this.frame == maxFrame && !this.getAi().isDead()) {
+		if(this.frame >= maxFrame && !this.getAi().isDead()) {
 			this.setAnimation(this.getIdleAnimation(), 4);
 		}
 		
 		this.setImage(aiCrowd.getAnimationFrame("DaemonFull", frame, animation));
 		
-		if(deathFrame == attackFrame && !this.animation.equals(Animation.DEAD)) {
+		if(deathFrame >= attackFrame && !this.animation.equals(Animation.DEAD)) {
 			this.setAnimation(Animation.DEAD, 1);
 			this.updateAnimation();
 		}
 		
-		if(this.isVisible() && this.frame == attackFrame &&
-		  (this.animation.equals(Animation.ATTACK_MELEE) || this.animation.equals(Animation.ATTACK_WEP1) || this.animation.equals(Animation.ATTACK_WEP2) || this.animation.equals(Animation.ATTACK_WEP3))){
-			floatingIcons.addEffect(this.getAi().getWeapon().getFireEffect(panningManager, this.getAi().getLocation(), attackTarget.getLocation()));
+		if(this.isVisible() && this.frame >= attackFrame &&
+		  (this.animation.equals(Animation.ATTACK_MELEE))){
 			attackTarget = null;
 		}
 		

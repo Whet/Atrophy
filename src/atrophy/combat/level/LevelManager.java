@@ -97,7 +97,7 @@ public class LevelManager {
 			else{
 				vertex[1] = vertex[1] + ((CORNER_INDENT_RATIO + constRatioAddition) * dy);
 			}
-		}while(this.getBlock(vertex) == null);
+		}while(this.getBlock(vertex) != room || this.getBlock(vertex).getLevelBlockGrid().getNearestGridBlock(vertex) == null);
 		
 		return vertex;
 	}

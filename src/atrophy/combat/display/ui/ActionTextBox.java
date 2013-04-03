@@ -9,6 +9,7 @@ import java.awt.Graphics2D;
 
 import watoydoEngine.designObjects.display.Text;
 import watoydoEngine.fonts.FontList;
+import watoydoEngine.gubbinz.GraphicsFunctions;
 import atrophy.combat.CombatMembersManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.ai.AiActions;
@@ -51,6 +52,7 @@ public class ActionTextBox extends Text{
 	 * @see watoydoEngine.designObjects.display.Text#drawMethod(java.awt.Graphics2D)
 	 */
 	public void drawMethod(Graphics2D drawShape){
+		drawShape.setComposite(GraphicsFunctions.makeComposite(0.6f));
 		
 		this.updateMode();
 		

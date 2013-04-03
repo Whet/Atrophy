@@ -16,12 +16,12 @@ import atrophy.combat.display.ui.VisualEffect;
 /**
  * The Class MeleeWeapon2.
  */
-public class MeleeWeapon2 extends Weapon {
+public class DaemonWeapon extends Weapon {
 	
 	/**
 	 * The Constant NAME.
 	 */
-	public static final String NAME = "Shank";
+	public static final String NAME = "Daemonic Hammer";
 	
 	/**
 	 * The Constant RANGE.
@@ -51,7 +51,7 @@ public class MeleeWeapon2 extends Weapon {
 	/**
 	 * The Constant DAMAGE.
 	 */
-	public static final int DAMAGE = 8;
+	public static final int DAMAGE = 30;
 	
 	/**
 	 * The Constant DESCRIPTION.
@@ -62,7 +62,7 @@ public class MeleeWeapon2 extends Weapon {
 	/**
 	 * Instantiates a new melee weapon2.
 	 */
-	public MeleeWeapon2(){
+	public DaemonWeapon(){
 		super(NAME,DESCRIPTION,MAGAZINE_SIZE);
 	}
 	
