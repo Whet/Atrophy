@@ -22,6 +22,7 @@ import atrophy.combat.actions.MouseAbilityHandler;
 import atrophy.combat.ai.AiGeneratorInterface.SoloGenerateCommand;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.AiImage;
+import atrophy.combat.display.DaemonImage;
 import atrophy.combat.display.VehicleImage;
 import atrophy.combat.display.ui.FloatingIcons;
 import atrophy.combat.display.ui.loot.LootBox;

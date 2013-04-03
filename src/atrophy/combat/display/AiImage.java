@@ -37,7 +37,7 @@ import atrophy.combat.items.Shotgun1;
 public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 	
 	private static final Map<Animation, double[]> ANIMATION_OFFSETS = new HashMap<>();
-	private static final int ATTACK_FRAME = 5;
+	protected int attackFrame = 5;
 	
 	{
 		ANIMATION_OFFSETS.put(Animation.DEAD, 			new double[]{0.5, 0.86});
@@ -54,22 +54,24 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 		ANIMATION_OFFSETS.put(Animation.ATTACK_WEP3, 	new double[]{0.25, 0.74});
 	}
 	
-	private double xOffset = 0.5;
-	private double yOffset = 0.86;
+	protected double xOffset = 0.5;
+	protected double yOffset = 0.86;
 	
-	private FloatingIcons floatingIcons;
-	private PanningManager panningManager;
+	protected FloatingIcons floatingIcons;
+	protected PanningManager panningManager;
 	private CombatUiManager combatUiManager;
-	private AiCrowd aiCrowd;
+	protected AiCrowd aiCrowd;
 	
 	private boolean dragging;
 	private CombatVisualManager combatVisualManager;
 	private MouseAbilityHandler mouseAbilityHandler;
 	
-	private int deathFrame, frame, maxFrame;
-	private Animation animation;
-	private boolean imageChanged;
-	private Ai attackTarget;
+	protected int deathFrame;
+	protected int frame;
+	protected int maxFrame;
+	protected Animation animation;
+	protected boolean imageChanged;
+	protected Ai attackTarget;
 	
 	public AiImage(AiCrowd aiCrowd, CombatMembersManager combatMembersManager, CombatUiManager combatUiManager, CombatVisualManager combatVisualManager, PanningManager panningManager, double x, double y, MouseAbilityHandler mouseAbilityHandler, FloatingIcons floatingIcons){
 		super(aiCrowd, combatMembersManager, null, x, y);
@@ -308,7 +310,7 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 		
 		if(!this.getAi().isDead())
 			this.frame++;
-		else if(deathFrame < ATTACK_FRAME)
+		else if(deathFrame < attackFrame)
 			deathFrame++;
 		
 		if(this.frame == maxFrame && !this.getAi().isDead()) {
@@ -317,13 +319,12 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 		
 		this.setImage(aiCrowd.getAnimationFrame(this.getAi().getImage() + "Full", frame, animation));
 		
-		if(deathFrame == ATTACK_FRAME && !this.animation.equals(Animation.DEAD)) {
-//			floatingIcons.addPendingPaint(MapPainter.BLOOD_TEXTURES[(new Random()).nextInt(MapPainter.BLOOD_TEXTURES.length)], this.getAi().getLocation(), 0.5 + (new Random().nextInt(5) * 0.1));
+		if(deathFrame == attackFrame && !this.animation.equals(Animation.DEAD)) {
 			this.setAnimation(Animation.DEAD, 1);
 			this.updateAnimation();
 		}
 		
-		if(this.isVisible() && this.frame == ATTACK_FRAME &&
+		if(this.isVisible() && this.frame == attackFrame &&
 		  (this.animation.equals(Animation.ATTACK_MELEE) || this.animation.equals(Animation.ATTACK_WEP1) || this.animation.equals(Animation.ATTACK_WEP2) || this.animation.equals(Animation.ATTACK_WEP3))){
 			floatingIcons.addEffect(this.getAi().getWeapon().getFireEffect(panningManager, this.getAi().getLocation(), attackTarget.getLocation()));
 			attackTarget = null;
@@ -335,7 +336,7 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 		}
 	}
 
-	private Animation getIdleAnimation() {
+	protected Animation getIdleAnimation() {
 		String weapon = this.getAi().getWeapon().getName();
 		
 		switch(weapon) {
@@ -373,11 +374,11 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 		
 		if(this.getAi().getWeapon().isMelee())
 			maxFrame = 5;
-		
+
 		this.setAnimation(getAttackAnimation(), maxFrame);
 	}
 	
-	private Animation getAttackAnimation() {
+	protected Animation getAttackAnimation() {
 		String weapon = this.getAi().getWeapon().getName();
 		
 		switch(weapon) {

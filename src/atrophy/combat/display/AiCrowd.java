@@ -156,6 +156,12 @@ public class AiCrowd extends Crowd {
 	private void loadAnimations() {
 		try{
 			
+			final String AF = "images/atrophy/combat/heads/animations/";
+			
+			String[] daemonFiles = {AF+"daemonIdleSpriteSheet.png", AF+"daemonAttackSpriteSheet.png"};
+			AnimationBlob daemonBlob = new AnimationBlob(new Animation[]{Animation.IDLE_MELEE, Animation.ATTACK_MELEE}, daemonFiles, new int[]{62, 79});
+			this.animations.put("DaemonFull", daemonBlob);
+			
 			final Animation[] ANIMATION_ORDER = {Animation.DEAD,
 												 Animation.IDLE_MELEE, Animation.IDLE_WEP1, Animation.IDLE_WEP2, Animation.IDLE_WEP3,
 												 Animation.ATTACK_MELEE, Animation.ATTACK_WEP1, Animation.ATTACK_WEP2, Animation.ATTACK_WEP3,
@@ -166,51 +172,20 @@ public class AiCrowd extends Crowd {
 									   68, 64, 72, 74,
 									   33};
 			
-			final String AF = "images/atrophy/combat/heads/animations/";
 			
 			String[] head1Files = {AF+"deadSpriteSheet.png", AF+"idleSpriteSheet1.png", AF+"idleSpriteSheet2.png", AF+"idleSpriteSheet3.png", AF+"idleSpriteSheet4.png", AF+"attackSpriteSheet1.png", AF+"attackSpriteSheet2.png", AF+"attackSpriteSheet3.png", AF+"attackSpriteSheet4.png", AF+"walkSpriteSheet.png"};
 			AnimationBlob head1Blob = new AnimationBlob(ANIMATION_ORDER, head1Files, TILE_WIDTHS);
 			this.animations.put("BeardHeadFull", head1Blob);
-			
-			String[] head2Files = {AF+"deadSpriteSheet.png", AF+"idleSpriteSheet1.png", AF+"idleSpriteSheet2.png", AF+"idleSpriteSheet3.png", AF+"idleSpriteSheet4.png", AF+"attackSpriteSheet1.png", AF+"attackSpriteSheet2.png", AF+"attackSpriteSheet3.png", AF+"attackSpriteSheet4.png", AF+"walkSpriteSheet.png"};
-			AnimationBlob head2Blob = new AnimationBlob(ANIMATION_ORDER, head2Files, TILE_WIDTHS);
-			this.animations.put("MessyHeadFull", head2Blob);
-			
-			String[] head3Files = {AF+"deadSpriteSheet.png", AF+"idleSpriteSheet1.png", AF+"idleSpriteSheet2.png", AF+"idleSpriteSheet3.png", AF+"idleSpriteSheet4.png", AF+"attackSpriteSheet1.png", AF+"attackSpriteSheet2.png", AF+"attackSpriteSheet3.png", AF+"attackSpriteSheet4.png", AF+"walkSpriteSheet.png"};
-			AnimationBlob head3Blob = new AnimationBlob(ANIMATION_ORDER, head3Files, TILE_WIDTHS);
-			this.animations.put("NazcaHeadFull", head3Blob);
-			
-			String[] head4Files = {AF+"deadSpriteSheet.png", AF+"idleSpriteSheet1.png", AF+"idleSpriteSheet2.png", AF+"idleSpriteSheet3.png", AF+"idleSpriteSheet4.png", AF+"attackSpriteSheet1.png", AF+"attackSpriteSheet2.png", AF+"attackSpriteSheet3.png", AF+"attackSpriteSheet4.png", AF+"walkSpriteSheet.png"};
-			AnimationBlob head4Blob = new AnimationBlob(ANIMATION_ORDER, head4Files, TILE_WIDTHS);
-			this.animations.put("PlainHeadFull", head4Blob);
-			
-			String[] head5Files = {AF+"deadSpriteSheet.png", AF+"idleSpriteSheet1.png", AF+"idleSpriteSheet2.png", AF+"idleSpriteSheet3.png", AF+"idleSpriteSheet4.png", AF+"attackSpriteSheet1.png", AF+"attackSpriteSheet2.png", AF+"attackSpriteSheet3.png", AF+"attackSpriteSheet4.png", AF+"walkSpriteSheet.png"};
-			AnimationBlob head5Blob = new AnimationBlob(ANIMATION_ORDER, head5Files, TILE_WIDTHS);
-			this.animations.put("RazielFull", head5Blob);
-			
-			String[] head6Files = {AF+"deadSpriteSheet.png", AF+"idleSpriteSheet1.png", AF+"idleSpriteSheet2.png", AF+"idleSpriteSheet3.png", AF+"idleSpriteSheet4.png", AF+"attackSpriteSheet1.png", AF+"attackSpriteSheet2.png", AF+"attackSpriteSheet3.png", AF+"attackSpriteSheet4.png", AF+"walkSpriteSheet.png"};
-			AnimationBlob head6Blob = new AnimationBlob(ANIMATION_ORDER, head6Files, TILE_WIDTHS);
-			this.animations.put("StripeHeadFull", head6Blob);
-			
-			String[] head7Files = {AF+"deadSpriteSheet.png", AF+"idleSpriteSheet1.png", AF+"idleSpriteSheet2.png", AF+"idleSpriteSheet3.png", AF+"idleSpriteSheet4.png", AF+"attackSpriteSheet1.png", AF+"attackSpriteSheet2.png", AF+"attackSpriteSheet3.png", AF+"attackSpriteSheet4.png", AF+"walkSpriteSheet.png"};
-			AnimationBlob head7Blob = new AnimationBlob(ANIMATION_ORDER, head7Files, TILE_WIDTHS);
-			this.animations.put("EngineerFull", head7Blob);
-			
-			String[] head8Files = {AF+"deadSpriteSheet.png", AF+"idleSpriteSheet1.png", AF+"idleSpriteSheet2.png", AF+"idleSpriteSheet3.png", AF+"idleSpriteSheet4.png", AF+"attackSpriteSheet1.png", AF+"attackSpriteSheet2.png", AF+"attackSpriteSheet3.png", AF+"attackSpriteSheet4.png", AF+"walkSpriteSheet.png"};
-			AnimationBlob head8Blob = new AnimationBlob(ANIMATION_ORDER, head8Files, TILE_WIDTHS);
-			this.animations.put("SensorFull", head8Blob);
-			
-			String[] head9Files = {AF+"deadSpriteSheet.png", AF+"idleSpriteSheet1.png", AF+"idleSpriteSheet2.png", AF+"idleSpriteSheet3.png", AF+"idleSpriteSheet4.png", AF+"attackSpriteSheet1.png", AF+"attackSpriteSheet2.png", AF+"attackSpriteSheet3.png", AF+"attackSpriteSheet4.png", AF+"walkSpriteSheet.png"};
-			AnimationBlob head9Blob = new AnimationBlob(ANIMATION_ORDER, head9Files, TILE_WIDTHS);
-			this.animations.put("StealthedFull", head9Blob);
-			
-			String[] head10Files = {AF+"deadSpriteSheet.png", AF+"idleSpriteSheet1.png", AF+"idleSpriteSheet2.png", AF+"idleSpriteSheet3.png", AF+"idleSpriteSheet4.png", AF+"attackSpriteSheet1.png", AF+"attackSpriteSheet2.png", AF+"attackSpriteSheet3.png", AF+"attackSpriteSheet4.png", AF+"walkSpriteSheet.png"};
-			AnimationBlob head10Blob = new AnimationBlob(ANIMATION_ORDER, head10Files, TILE_WIDTHS);
-			this.animations.put("ScoutFull", head10Blob);
-			
-			String[] head11Files = {AF+"deadSpriteSheet.png", AF+"idleSpriteSheet1.png", AF+"idleSpriteSheet2.png", AF+"idleSpriteSheet3.png", AF+"idleSpriteSheet4.png", AF+"attackSpriteSheet1.png", AF+"attackSpriteSheet2.png", AF+"attackSpriteSheet3.png", AF+"attackSpriteSheet4.png", AF+"walkSpriteSheet.png"};
-			AnimationBlob head11Blob = new AnimationBlob(ANIMATION_ORDER, head11Files, TILE_WIDTHS);
-			this.animations.put("ArmourFull", head11Blob);
+			this.animations.put("MessyHeadFull", head1Blob);
+			this.animations.put("NazcaHeadFull", head1Blob);
+			this.animations.put("PlainHeadFull", head1Blob);
+			this.animations.put("RazielFull", head1Blob);
+			this.animations.put("StripeHeadFull", head1Blob);
+			this.animations.put("EngineerFull", head1Blob);
+			this.animations.put("SensorFull", head1Blob);
+			this.animations.put("StealthedFull", head1Blob);
+			this.animations.put("ScoutFull", head1Blob);
+			this.animations.put("ArmourFull", head1Blob);
 			
 		}
 		catch(IOException ioexcept){
