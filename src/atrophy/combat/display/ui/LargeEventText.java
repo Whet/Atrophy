@@ -62,6 +62,19 @@ public class LargeEventText extends Text {
 		flashTimer.schedule(new flashTimerEvent(string), TIMER_TIME);
 	}
 	
+	public void flashText(String string, Color colour, int time) {
+		this.setText(string);
+		this.setColour(colour);
+		flashTimer.schedule(new flashTimerEvent(string), time);
+	}
+	
+	public void holdText(String string, Color colour) {
+		flashTimer.cancel();
+		flashTimer.purge();
+		this.setText(string);
+		this.setColour(colour);
+	}
+	
 	/* (non-Javadoc)
 	 * @see watoydoEngine.designObjects.display.Text#drawMethod(java.awt.Graphics2D)
 	 */

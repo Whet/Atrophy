@@ -294,9 +294,9 @@ public class TeamsCommander {
 			}
 			
 		}
-		for (AiJob job : this.jobs) {
-			System.out.println(this.getFaction() + ": " + job.getType().toString() + "  Population: " + job.getTargetEmployeeCount());
-		}
+//		for (AiJob job : this.jobs) {
+//			System.out.println(this.getFaction() + ": " + job.getType().toString() + "  Population: " + job.getTargetEmployeeCount());
+//		}
 		
 		// After jobs have been made set danger to 0 so that old dangers get removed if nothing happens
 		for(DefenceHeuristic dh : this.defenceHeuristics.values()) {

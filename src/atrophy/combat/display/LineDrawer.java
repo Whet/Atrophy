@@ -188,8 +188,9 @@ public class LineDrawer implements Displayable{
 		Set<LevelBlock> connectedRooms = new HashSet<>();
 		
 		for(Ai ai : aiCrowd.getActors()){
-			if(aiCrowd.getActorMask(ai).isVisible() && !ai.isDead() &&
-			  (ai.getFaction().equals(AiGenerator.PLAYER) || (combatVisualManager.isAllRevealed()))){
+			if(combatVisualManager.isAllRevealed() ||
+			   (aiCrowd.getActorMask(ai).isVisible() && !ai.isDead() &&
+			   ai.getFaction().equals(AiGenerator.PLAYER))){
 				
 				occupiedRooms.add(ai.getLevelBlock());
 				

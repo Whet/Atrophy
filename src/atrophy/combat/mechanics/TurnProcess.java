@@ -24,6 +24,7 @@ import atrophy.combat.actions.CombatKeyboardHandler;
 import atrophy.combat.actions.CombatMouseHandler;
 import atrophy.combat.actions.MouseAbilityHandler;
 import atrophy.combat.ai.Ai;
+import atrophy.combat.ai.AiCombatActions;
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.ai.ThinkingAi;
 import atrophy.combat.display.AiCrowd;
@@ -258,7 +259,8 @@ public class TurnProcess {
 		
 		if(checkGameOver()){
 			endGame();
-			combatUiManager.getLargeEventText().flashText("Game Over, Turn: " + turnCount, Color.red.darker());
+			combatUiManager.getLargeEventText().holdText("Defeated", new Color(186,17,18));
+			return;
 		}
 		
 		floatingIcons.updatePending();
@@ -286,16 +288,22 @@ public class TurnProcess {
 		for(int i = 0; i < aiCrowd.getActorCount(); i++){
 			
 			//Update images to reflect any effects that happened in the turn
-			aiCrowd.getActorMask(aiCrowd.getActor(i)).updateMask();
+			Ai actor = aiCrowd.getActor(i);
+			aiCrowd.getActorMask(actor).updateMask();
 			
 			// If a target was killed/went out of room, all ai aiming at the target need to be updated
-			if((aiCrowd.getActor(i).getAction().equals("Aim") || aiCrowd.getActor(i).getAction().equals("Fire")) &&
-			   (aiCrowd.getActor(i).getTargetAi() == null || aiCrowd.getActor(i).getTargetAi().isDead() || 
-			    aiCrowd.getActor(i).getTargetAi().getLevelBlock() != aiCrowd.getActor(i).getLevelBlock())){
+			if((actor.getAction().equals(AiCombatActions.AIMING) || actor.getAction().equals(AiCombatActions.SHOOTING)) &&
+			   (actor.getTargetAi() == null || actor.getTargetAi().isDead() || 
+			    actor.getTargetAi().getLevelBlock() != actor.getLevelBlock() ||
+			    !CombatVisualManager.isInFiringSight(actor.getLocation()[0],
+			    									 actor.getLocation()[1], 
+											         actor.getTargetAi().getLocation()[0], 
+											         actor.getTargetAi().getLocation()[1],
+											         actor.getLevelBlock()))){
 				
-				aiCrowd.getActor(i).setAction("");
-				aiCrowd.getActor(i).setTargetAi(null);
-				aiCrowd.getActor(i).setSwing(0);
+				actor.setAction("");
+				actor.setTargetAi(null);
+				actor.setSwing(0);
 			}
 		}
 		
@@ -339,7 +347,6 @@ public class TurnProcess {
 		combatUiManager.getActionText().setVisible(false);
 		combatUiManager.getActionsBar().setVisible(false);
 		combatUiManager.getCombatInfo().setVisible(false);
-		combatMouseHandler.setActive(false);
 		
 		combatVisualManager.revealAll();
 		
@@ -361,6 +368,8 @@ public class TurnProcess {
 		ActivePane.getInstance().getPane().addMouseActionItem(newGame);
 		ActivePane.getInstance().getPane().addDisplayItem(newGame);
 		
+		combatKeyboardHandler.setFocus(true);
+		lineDrawer.updateAlphas();
 	}
 	
 	/**
