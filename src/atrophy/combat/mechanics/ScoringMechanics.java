@@ -46,7 +46,7 @@ public class ScoringMechanics {
 		if(ai.getWeapon().ignoresCover() || targetAi.getCoverObject() == null || ai.getCoverObject() == targetAi.getCoverObject()){
 			
 			// If the ai has a melee weapon and is not visible to the targetAi then it autohits
-			if(ai.getWeapon().isMelee() && (targetAi.getStunnedTurns() > 0 || !CombatVisualManager.spotFovNoRadius(targetAi, ai.getLocation())))
+			if(ai.getWeapon().isMelee() && (targetAi.getStunnedTurns() > 0 || targetAi.getIncapTurns() > 0 || !CombatVisualManager.spotFovNoRadius(targetAi, ai.getLocation())))
 				return true;
 			
 			// Uncovered roll
