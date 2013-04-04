@@ -6,11 +6,13 @@ package atrophy.gameMenu.ui;
 import java.util.ArrayList;
 
 import atrophy.combat.items.EngineeringSupply;
+import atrophy.combat.items.GrenadeItem;
 import atrophy.combat.items.Harpoon1;
 import atrophy.combat.items.MedicalSupply;
 import atrophy.combat.items.MeleeWeapon1;
 import atrophy.combat.items.Plasma1;
 import atrophy.combat.items.ScienceSupply;
+import atrophy.combat.items.StunGrenadeItem;
 import atrophy.combat.items.Weapon;
 import atrophy.combat.items.WeaponSupply;
 import atrophy.gameMenu.saveFile.Squad.Squaddie;
@@ -49,6 +51,11 @@ public class StashManager {
 		this.items.add(MeleeWeapon1.NAME);
 		this.items.add(Plasma1.NAME);
 		this.items.add(Harpoon1.NAME);
+		this.items.add(StunGrenadeItem.NAME);
+		this.items.add(StunGrenadeItem.NAME);
+		this.items.add(GrenadeItem.NAME);
+		this.items.add(GrenadeItem.NAME);
+		this.items.add(GrenadeItem.NAME);
 	}
 	
 	public void lazyLoad(ShopManager shopManager) {

@@ -133,6 +133,12 @@ public class TurnProcess {
 		if(shuffledAi.size() == 0) {
 			shuffledAi = aiCrowd.getShuffledStack();
 			combatInorganicManager.updateAssets();
+			
+			if(checkGameOver()){
+				endGame();
+				combatUiManager.getLargeEventText().holdText("Defeated", new Color(186,17,18));
+				return;
+			}
 		}
 
 		Ai chainStart = nextNonDeadAi();
@@ -144,6 +150,10 @@ public class TurnProcess {
 		
 		do {
 			nextAi = nextNonDeadAi();
+			
+			// Gameover
+			if(nextAi == null)
+				return;
 			
 			if(!nextAi.isSkippingTurns()) {
 				shuffledAi.add(nextAi);
@@ -171,6 +181,12 @@ public class TurnProcess {
 			if(shuffledAi.size() == 0) {
 				shuffledAi = aiCrowd.getShuffledStack();
 				combatInorganicManager.updateAssets();
+				
+				if(checkGameOver()){
+					endGame();
+					combatUiManager.getLargeEventText().holdText("Defeated", new Color(186,17,18));
+					return null;
+				}
 			}
 			
 			ai = shuffledAi.pop();
