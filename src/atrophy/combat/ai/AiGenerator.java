@@ -26,6 +26,7 @@ import atrophy.combat.display.DaemonImage;
 import atrophy.combat.display.VehicleImage;
 import atrophy.combat.display.ui.FloatingIcons;
 import atrophy.combat.display.ui.loot.LootBox;
+import atrophy.combat.items.DaemonWeapon;
 import atrophy.combat.items.GrenadeItem;
 import atrophy.combat.items.Item;
 import atrophy.combat.items.StunGrenadeItem;
@@ -170,9 +171,16 @@ public class AiGenerator{
 		
 		switch(command.getFaction()){
 			case AiGenerator.LONER:
-				ai = new LonerAi(panningManager, aiCrowd, combatVisualManager, turnProcess, floatingIcons, mouseAbilityHandler, combatMembersManager, command.getName(),location[0],location[1], levelManager, combatInorganicManager, combatUiManager, lootbox);
-				ai.setBaseAggression(ThinkingAiEmotion.PASSIVE_RESPOND);
-				ai.setImage(randomImage());
+				if(command.isDaemon()) {
+					ai = new DaemonAi(panningManager, combatVisualManager, turnProcess, floatingIcons, mouseAbilityHandler, aiCrowd, combatMembersManager, command.getName(),location[0],location[1], levelManager, combatInorganicManager, combatUiManager, lootbox);
+					ai.setBaseAggression(ThinkingAiEmotion.MINDLESS_TERROR);
+					aiImg = new DaemonImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager,location[0],location[1], mouseAbilityHandler, floatingIcons);
+				}
+				else {
+					ai = new LonerAi(panningManager, aiCrowd, combatVisualManager, turnProcess, floatingIcons, mouseAbilityHandler, combatMembersManager, command.getName(),location[0],location[1], levelManager, combatInorganicManager, combatUiManager, lootbox);
+					ai.setBaseAggression(ThinkingAiEmotion.PASSIVE_RESPOND);
+					ai.setImage(randomImage());
+				}
 				ai.setTeam(team+LONER);
 			break;
 			case AiGenerator.WHITE_VISTA:
@@ -189,10 +197,15 @@ public class AiGenerator{
 			break;
 		}
 		
-		ai.setWeapon(Weapon.stringToWeapon(command.getWeapon()));
-		
-		for(int i = 0; i < command.getItems().length; i++){
-			ai.addItem(Item.stringToItem(command.getItems()[i]));
+		if(command.isDaemon()) {
+			ai.setWeapon(new DaemonWeapon());
+		}
+		else {
+			ai.setWeapon(Weapon.stringToWeapon(command.getWeapon()));
+			
+			for(int i = 0; i < command.getItems().length; i++){
+				ai.addItem(Item.stringToItem(command.getItems()[i]));
+			}
 		}
 		
 		ai.assignAbilities();

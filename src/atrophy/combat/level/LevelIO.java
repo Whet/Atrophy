@@ -546,16 +546,17 @@ public class LevelIO {
 				
 				String name = ReadWriter.readFromArray(lineString, 2);
 				String faction = ReadWriter.readFromArray(lineString, 3);
-				String weapon = ReadWriter.readFromArray(lineString, 4);
-				String[] items = new String[ReadWriter.getArraySize(lineString) - 5];
+				String isDaemon = ReadWriter.readFromArray(lineString, 4);
+				String weapon = ReadWriter.readFromArray(lineString, 5);
+				String[] items = new String[ReadWriter.getArraySize(lineString) - 6];
 				
 				for(int i = 0; i < items.length; i++){
-					items[i] = ReadWriter.readFromArray(lineString, i + 5);
+					items[i] = ReadWriter.readFromArray(lineString, i + 6);
 				}
 				
 				generationCommands.add(new SoloGenerateCommand(vertexX + blockStack.peek().getLocation()[0],
 																							 vertexY + blockStack.peek().getLocation()[1],
-																							 faction, name, weapon, items));
+																							 faction, Boolean.parseBoolean(isDaemon), name, weapon, items));
 			}
 			else if(lineString.startsWith("AIALLIANCE")){
 				SoloGenerateCommand command = (SoloGenerateCommand) generationCommands.get(generationCommands.size() - 1);

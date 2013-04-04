@@ -207,15 +207,21 @@ public class AiGeneratorInterface {
 		private String name, weapon;
 		private String[] items, alliances;
 		private AiNode aiNode;
+		private boolean isDaemon;
 		
-		public SoloGenerateCommand(double x, double y, String faction, String name, String weapon, String[] items){
+		public SoloGenerateCommand(double x, double y, String faction, boolean isDaemon, String name, String weapon, String[] items){
 			super(1, 1, null, null, faction);
 			this.x = x;
 			this.y = y;
 			
+			this.isDaemon = isDaemon;
 			this.name = name;
 			this.weapon = weapon;
 			this.items = items;
+		}
+		
+		public boolean isDaemon() {
+			return isDaemon;
 		}
 
 		public String getName() {

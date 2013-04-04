@@ -13,21 +13,21 @@ import atrophy.combat.level.LevelBlock;
 import atrophy.combat.level.LevelManager;
 import atrophy.combat.mechanics.TurnProcess;
 
-public class DaemonAi extends Ai {
+public class DaemonAi extends ThinkingAi {
 
 	private LevelManager levelManager;
 
-	public DaemonAi(FloatingIcons floatingIcons,
-			MouseAbilityHandler mouseAbilityHandler, String name, double x,
-			double y, CombatNCEManager combatInorganicManager,
-			LevelManager levelManager, LootBox lootBox,
-			CombatMembersManager combatMembersManager,
-			CombatUiManager combatUiManager,
-			CombatVisualManager combatVisualManager, AiCrowd aiCrowd,
-			PanningManager panningManager, TurnProcess turnProcess) {
-		super(floatingIcons, mouseAbilityHandler, name, x, y, combatInorganicManager,
-				levelManager, lootBox, combatMembersManager, combatUiManager,
-				combatVisualManager, aiCrowd, panningManager, turnProcess);
+	public DaemonAi(PanningManager panningManager,
+			CombatVisualManager combatVisualManager, TurnProcess turnProcess,
+			FloatingIcons floatingIcons,
+			MouseAbilityHandler mouseAbilityHandler, AiCrowd aiCrowd,
+			CombatMembersManager combatMembersManager, String name, double x,
+			double y, LevelManager levelManager,
+			CombatNCEManager combatInorganicManager,
+			CombatUiManager combatUiManager, LootBox lootBox) {
+		super(panningManager, combatVisualManager, turnProcess, floatingIcons,
+				mouseAbilityHandler, aiCrowd, combatMembersManager, name, x, y,
+				levelManager, combatInorganicManager, combatUiManager, lootBox);
 		this.levelManager = levelManager;
 	}
 	
