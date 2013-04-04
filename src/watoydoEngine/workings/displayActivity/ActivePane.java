@@ -33,6 +33,7 @@ import watoydoEngine.designObjects.display.Displayable;
 import watoydoEngine.fonts.FontList;
 import watoydoEngine.io.ReadWriter;
 import watoydoEngine.workings.DisplayManager;
+import atrophy.combat.display.AiImage;
 import atrophy.hardPanes.SplashPane;
 
 import com.sun.corba.se.impl.orbutil.concurrent.Mutex;
@@ -478,6 +479,9 @@ public class ActivePane extends JFrame implements MouseListener, KeyListener, Wi
 	public void draw(ArrayList<Displayable> displayList){
 		for(int i = 0; i < displayList.size(); i++){
 			
+			if(displayList.get(i) instanceof AiImage)
+				System.out.println("");
+			
 			// Kicks tweens to their next step in animation
 			displayList.get(i).kickTween();
 			
@@ -494,9 +498,9 @@ public class ActivePane extends JFrame implements MouseListener, KeyListener, Wi
 	 * @param crowd the crowd
 	 */
 	public void drawCrowd(Crowd crowd){
-		for(int j = 0; j < crowd.getDisplayList().size(); j++){
+//		for(int j = 0; j < crowd.getDisplayList().size(); j++){
 			draw(crowd.getDisplayList());
-		}
+//		}
 	}
 	
 	// Getters

@@ -94,7 +94,6 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 	
 	@Override
 	public AffineTransform getTransformationForDrawing(){
-		
 		super.getTransformation().setToTranslation((int)(this.getLocation()[0] - (this.getSize()[0] * xOffset) + panningManager.getOffset()[0]),
 												   (int)(this.getLocation()[1] - (this.getSize()[1] * yOffset) + panningManager.getOffset()[1]));
 		super.getTransformation().scale(this.getScale(),this.getScale());
@@ -265,7 +264,7 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 	}
 	
 	private void applyEffects(){
-		if(this.getAi().isStealthed()){
+		if(this.getAi().isStealthed() && !this.getAi().isDead()){
 			this.setAlpha(0.5f);
 		}
 		else{
