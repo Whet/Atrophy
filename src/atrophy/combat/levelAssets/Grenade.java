@@ -19,7 +19,7 @@ import atrophy.combat.mechanics.ScoringMechanics;
 /**
  * The Class Grenade.
  */
-public class Grenade implements LevelAsset{
+public class Grenade implements NonCharacterEntity{
 	
 	/**
 	 * The Constant FUSE_TIME.

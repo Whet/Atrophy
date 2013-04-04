@@ -6,7 +6,7 @@ package atrophy.combat.ai;
 import java.util.ArrayList;
 
 import watoydoEngine.gubbinz.Maths;
-import atrophy.combat.CombatInorganicManager;
+import atrophy.combat.CombatNCEManager;
 import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
@@ -35,7 +35,7 @@ public class LonerAi extends ThinkingAi{
 	 * @param d the d
 	 * @param e the e
 	 */
-	public LonerAi(PanningManager panningManager, AiCrowd aiCrowd,CombatVisualManager combatVisualManager, TurnProcess turnProcess, FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, CombatMembersManager combatMembersManager, String randomName, double x, double y, LevelManager levelManager, CombatInorganicManager combatInorganicManager, CombatUiManager combatUiManager, LootBox lootBox) {
+	public LonerAi(PanningManager panningManager, AiCrowd aiCrowd,CombatVisualManager combatVisualManager, TurnProcess turnProcess, FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, CombatMembersManager combatMembersManager, String randomName, double x, double y, LevelManager levelManager, CombatNCEManager combatInorganicManager, CombatUiManager combatUiManager, LootBox lootBox) {
 		super(panningManager, combatVisualManager, turnProcess, floatingIcons, mouseAbilityHandler, aiCrowd, combatMembersManager, randomName,x,y, levelManager, combatInorganicManager, combatUiManager, lootBox);
 		this.aiCrowd = aiCrowd;
 		this.combatMembersManager = combatMembersManager;

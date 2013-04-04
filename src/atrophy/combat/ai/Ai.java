@@ -12,7 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import watoydoEngine.gubbinz.Maths;
-import atrophy.combat.CombatInorganicManager;
+import atrophy.combat.CombatNCEManager;
 import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
@@ -81,7 +81,7 @@ public class Ai implements Lootable{
 	protected PanningManager panningManager;
 	private Ai nextAi;
 
-	public Ai(FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, String name, double x, double y, CombatInorganicManager combatInorganicManager, LevelManager levelManager, LootBox lootBox, CombatMembersManager combatMembersManager, CombatUiManager combatUiManager, CombatVisualManager combatVisualManager, AiCrowd aiCrowd, PanningManager panningManager, TurnProcess turnProcess){
+	public Ai(FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, String name, double x, double y, CombatNCEManager combatInorganicManager, LevelManager levelManager, LootBox lootBox, CombatMembersManager combatMembersManager, CombatUiManager combatUiManager, CombatVisualManager combatVisualManager, AiCrowd aiCrowd, PanningManager panningManager, TurnProcess turnProcess){
 		this.name = name;
 		image = "";
 		
@@ -118,7 +118,7 @@ public class Ai implements Lootable{
 		
 	}
 	
-	public Ai(ThinkingAi thinkingAi, LevelManager levelManager, CombatInorganicManager combatInorganicManager) {
+	public Ai(ThinkingAi thinkingAi, LevelManager levelManager, CombatNCEManager combatInorganicManager) {
 		this.name = thinkingAi.getName();
 		image = thinkingAi.getImage();
 		

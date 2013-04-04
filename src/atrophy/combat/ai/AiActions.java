@@ -1,7 +1,7 @@
 package atrophy.combat.ai;
 
 import watoydoEngine.gubbinz.Maths;
-import atrophy.combat.CombatInorganicManager;
+import atrophy.combat.CombatNCEManager;
 import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
@@ -63,10 +63,10 @@ public class AiActions {
 	private CombatMembersManager combatMembersManager;
 	private CombatVisualManager combatVisualManager;
 	private CombatUiManager combatUiManager;
-	private CombatInorganicManager combatInorganicManager;
+	private CombatNCEManager combatInorganicManager;
 	private LevelManager levelManager;
 	
-	public AiActions(AiCrowd aiCrowd, CombatVisualManager combatVisualManager, CombatUiManager combatUiManager, CombatMembersManager combatMembersManager, CombatInorganicManager combatInorganicManager, FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, LootBox lootBox, LevelManager levelManager){
+	public AiActions(AiCrowd aiCrowd, CombatVisualManager combatVisualManager, CombatUiManager combatUiManager, CombatMembersManager combatMembersManager, CombatNCEManager combatInorganicManager, FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, LootBox lootBox, LevelManager levelManager){
 		actionTurns = 0;
 		oldActionTurns = 0;
 		oldAction = NO_ACTION;

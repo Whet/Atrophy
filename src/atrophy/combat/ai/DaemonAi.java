@@ -1,6 +1,6 @@
 package atrophy.combat.ai;
 
-import atrophy.combat.CombatInorganicManager;
+import atrophy.combat.CombatNCEManager;
 import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
@@ -19,7 +19,7 @@ public class DaemonAi extends Ai {
 
 	public DaemonAi(FloatingIcons floatingIcons,
 			MouseAbilityHandler mouseAbilityHandler, String name, double x,
-			double y, CombatInorganicManager combatInorganicManager,
+			double y, CombatNCEManager combatInorganicManager,
 			LevelManager levelManager, LootBox lootBox,
 			CombatMembersManager combatMembersManager,
 			CombatUiManager combatUiManager,

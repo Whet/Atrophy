@@ -33,11 +33,11 @@ public class CombatMembersManager {
 	private TurnProcess turnProcess;
 	private UiUpdaterSuite uiUpdaterSuite;
 	private MouseAbilityHandler mouseAbilityHandler;
-	private CombatInorganicManager combatInorganicManager;
+	private CombatNCEManager combatInorganicManager;
 	private LevelManager levelManager;
 	private LineDrawer lineDrawer;
 	
-	public CombatMembersManager(AiCrowd aiCrowd, TurnProcess turnProcess, LevelManager levelManager, CombatInorganicManager combatInorganicManager){
+	public CombatMembersManager(AiCrowd aiCrowd, TurnProcess turnProcess, LevelManager levelManager, CombatNCEManager combatInorganicManager){
 		commanders = new ArrayList<TeamsCommander>(2);
 		playerTeam = new ArrayList<Ai>(1);
 		

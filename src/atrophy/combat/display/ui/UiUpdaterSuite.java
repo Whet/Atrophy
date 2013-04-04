@@ -1,6 +1,6 @@
 package atrophy.combat.display.ui;
 
-import atrophy.combat.CombatInorganicManager;
+import atrophy.combat.CombatNCEManager;
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
@@ -24,7 +24,7 @@ public class UiUpdaterSuite {
 	private Cartographer cartographer;
 	private FloatingIcons floatingIcons;
 	
-	public UiUpdaterSuite(AiManagementSuite aiManagementSuite, TurnProcess turnProcess, LevelManager levelManager, CombatInorganicManager combatInorganicManager){
+	public UiUpdaterSuite(AiManagementSuite aiManagementSuite, TurnProcess turnProcess, LevelManager levelManager, CombatNCEManager combatInorganicManager){
 		
 		this.panningManager = new PanningManager(aiManagementSuite.getAiCrowd(), aiManagementSuite.getCombatMembersManager());
 		this.cartographer = new Cartographer();

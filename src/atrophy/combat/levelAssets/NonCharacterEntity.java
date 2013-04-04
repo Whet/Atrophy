@@ -11,7 +11,7 @@ import atrophy.combat.ai.Ai;
 /**
  * The Interface LevelAsset.
  */
-public interface LevelAsset {
+public interface NonCharacterEntity {
 	
 	/**
 	 * Gets the location.

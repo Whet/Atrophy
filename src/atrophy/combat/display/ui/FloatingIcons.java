@@ -19,7 +19,7 @@ import watoydoEngine.fonts.FontList;
 import watoydoEngine.gubbinz.GraphicsFunctions;
 import watoydoEngine.gubbinz.Maths;
 import watoydoEngine.io.ReadWriter;
-import atrophy.combat.CombatInorganicManager;
+import atrophy.combat.CombatNCEManager;
 import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
@@ -31,7 +31,7 @@ import atrophy.combat.items.GrenadeItem;
 import atrophy.combat.items.StunGrenadeItem;
 import atrophy.combat.level.LevelBlock;
 import atrophy.combat.level.LevelManager;
-import atrophy.combat.levelAssets.LevelAsset;
+import atrophy.combat.levelAssets.NonCharacterEntity;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -65,7 +65,7 @@ public class FloatingIcons extends Crowd{
 	private CombatVisualManager combatVisualManager;
 	private LineDrawer lineDrawer;
 	private LevelManager levelManager;
-	private CombatInorganicManager combatInorganicManager;
+	private CombatNCEManager combatInorganicManager;
 	
 	private BufferedImage imageBlockedDoor;
 	private BufferedImage imageOpenDoor;
@@ -78,7 +78,7 @@ public class FloatingIcons extends Crowd{
 	 * @param combatInorganicManager 
 	 * @param levelManager 
 	 */
-	public FloatingIcons(CombatMembersManager combatMembersManager, PanningManager panningManager, AiCrowd aiCrowd, CombatVisualManager combatVisualManager, CombatInorganicManager combatInorganicManager, LevelManager levelManager) {
+	public FloatingIcons(CombatMembersManager combatMembersManager, PanningManager panningManager, AiCrowd aiCrowd, CombatVisualManager combatVisualManager, CombatNCEManager combatInorganicManager, LevelManager levelManager) {
 		super(true);
 		
 		this.combatMembersManager = combatMembersManager;
@@ -231,7 +231,7 @@ public class FloatingIcons extends Crowd{
 	 */
 	private void drawAssets(Graphics2D drawShape){
 		
-		LevelAsset asset = null;
+		NonCharacterEntity asset = null;
 		
 		for(int i = 0; i < combatInorganicManager.getLevelAssets().size(); i++){
 			

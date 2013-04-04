@@ -5,7 +5,7 @@ import java.util.Random;
 import java.util.Set;
 
 import watoydoEngine.gubbinz.Maths;
-import atrophy.combat.CombatInorganicManager;
+import atrophy.combat.CombatNCEManager;
 import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
@@ -34,7 +34,7 @@ public class TurretAi extends LonerAi {
 	private AiCrowd aiCrowd;
 	private TeamsCommander commander;
 	
-	public TurretAi(PanningManager panningManager, AiCrowd aiCrowd, CombatVisualManager combatVisualManager, TurnProcess turnProcess, FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, CombatMembersManager combatMembersManager, double x, double y, LevelManager levelManager, CombatInorganicManager combatInorganicManager, CombatUiManager combatUiManager, LootBox lootBox) {
+	public TurretAi(PanningManager panningManager, AiCrowd aiCrowd, CombatVisualManager combatVisualManager, TurnProcess turnProcess, FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, CombatMembersManager combatMembersManager, double x, double y, LevelManager levelManager, CombatNCEManager combatInorganicManager, CombatUiManager combatUiManager, LootBox lootBox) {
 		super(panningManager, aiCrowd, combatVisualManager, turnProcess, floatingIcons, mouseAbilityHandler, combatMembersManager, AiGenerator.TURRET, x, y, levelManager, combatInorganicManager, combatUiManager, lootBox);
 		this.aiMode = AiMode.EMPTY;
 		

@@ -13,7 +13,7 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import atrophy.combat.CombatInorganicManager;
+import atrophy.combat.CombatNCEManager;
 import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
@@ -61,7 +61,7 @@ public class AiGenerator{
 	private FloatingIcons floatingIcons;
 	private MouseAbilityHandler mouseAbilityHandler;
 	private LevelManager levelManager;
-	private CombatInorganicManager combatInorganicManager;
+	private CombatNCEManager combatInorganicManager;
 	private LootBox lootbox;
 	
 	static {
@@ -91,7 +91,7 @@ public class AiGenerator{
 		surnameHashMap.put(10,"Mussorgsky");	surnameHashMap.put(21,"Kingsly");		surnameHashMap.put(32, "Simon");
     }
 	
-	public AiGenerator(AiCrowd aiCrowd, CombatMembersManager combatMembersManager, CombatUiManager combatUiManager, CombatVisualManager combatVisualManager, LevelManager levelManager, PanningManager panningManager, MouseAbilityHandler mouseAbilityHandler, TurnProcess turnProcess, FloatingIcons floatingIcons, CombatInorganicManager combatInorganicManager, LootBox lootbox) {
+	public AiGenerator(AiCrowd aiCrowd, CombatMembersManager combatMembersManager, CombatUiManager combatUiManager, CombatVisualManager combatVisualManager, LevelManager levelManager, PanningManager panningManager, MouseAbilityHandler mouseAbilityHandler, TurnProcess turnProcess, FloatingIcons floatingIcons, CombatNCEManager combatInorganicManager, LootBox lootbox) {
 		this.combatMembersManager = combatMembersManager; 
 		this.aiCrowd = aiCrowd;
 		this.combatUiManager = combatUiManager;

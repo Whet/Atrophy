@@ -13,7 +13,7 @@ import watoydoEngine.gubbinz.Maths;
 import watoydoEngine.sounds.SoundBoard;
 import watoydoEngine.workings.DisplayManager;
 import watoydoEngine.workings.displayActivity.ActivePane;
-import atrophy.combat.CombatInorganicManager;
+import atrophy.combat.CombatNCEManager;
 import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
@@ -55,7 +55,7 @@ public class TurnProcess {
 	private MouseAbilityHandler mouseAbilityHandler;
 	private CombatVisualManager combatVisualManager;
 	private CombatMembersManager combatMembersManager;
-	private CombatInorganicManager combatInorganicManager;
+	private CombatNCEManager combatInorganicManager;
 	private LineDrawer lineDrawer;
 	private PanningManager panningManager;
 	
@@ -66,7 +66,7 @@ public class TurnProcess {
 		
 	}
 	
-	public void lazyLoad(AiManagementSuite aiManagementSuite, UiUpdaterSuite uiUpdaterSuite, CombatInorganicManager combatInorganicManager, ActionSuite actionSuite){
+	public void lazyLoad(AiManagementSuite aiManagementSuite, UiUpdaterSuite uiUpdaterSuite, CombatNCEManager combatInorganicManager, ActionSuite actionSuite){
 		
 		this.panningManager = uiUpdaterSuite.getPanningManager();
 		
@@ -122,10 +122,6 @@ public class TurnProcess {
 		}
 	}
 	
-	public void updateAssets(Ai originator){
-		combatInorganicManager.updateAssets(originator);
-	}
-	
 	private void updateAiBrass(){
 		combatMembersManager.updateCommanders();
 	}
@@ -134,8 +130,10 @@ public class TurnProcess {
 		
 		List<Ai> chain = new ArrayList<>();
 		
-		if(shuffledAi.size() == 0)
+		if(shuffledAi.size() == 0) {
 			shuffledAi = aiCrowd.getShuffledStack();
+			combatInorganicManager.updateAssets();
+		}
 
 		Ai chainStart = nextNonDeadAi();
 		
@@ -170,12 +168,13 @@ public class TurnProcess {
 		Ai ai;
 		do {
 			
-			if(shuffledAi.size() == 0)
+			if(shuffledAi.size() == 0) {
 				shuffledAi = aiCrowd.getShuffledStack();
+				combatInorganicManager.updateAssets();
+			}
 			
 			ai = shuffledAi.pop();
 			
-			updateAssets(ai);
 		}
 		while(ai.isDead());
 		
@@ -195,6 +194,7 @@ public class TurnProcess {
 		
 		if(shuffledAi.size() == 0){
 			shuffledAi = aiCrowd.getShuffledStack();
+			combatInorganicManager.updateAssets();
 		}
 		
 		combatUiManager.getActionsBar().setVisible(true);

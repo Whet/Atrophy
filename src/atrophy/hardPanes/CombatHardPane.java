@@ -7,7 +7,7 @@ import java.util.List;
 
 import watoydoEngine.designObjects.display.Crowd;
 import watoydoEngine.hardPanes.HardPaneDefineable;
-import atrophy.combat.CombatInorganicManager;
+import atrophy.combat.CombatNCEManager;
 import atrophy.combat.actions.ActionSuite;
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.ai.AiGeneratorInterface;
@@ -36,11 +36,11 @@ public class CombatHardPane implements HardPaneDefineable{
 	private ActionSuite actionSuite;
 	private LevelManager levelManager;
 	private AiCrowd aiCrowd;
-	private CombatInorganicManager combatInorganicManager;
+	private CombatNCEManager combatInorganicManager;
 	private ItemMarket itemMarket;
 	private List<AiGeneratorInterface.GenerateCommand> generationCommands;
 	
-	public CombatHardPane(TurnProcess turnProcess, AiManagementSuite aiManagementSuite, UiUpdaterSuite uiUpdaterSuite, ActionSuite actionSuite, LevelManager levelManager, AiCrowd aiCrowd, CombatInorganicManager combatInorganicManager, ItemMarket itemMarket, List<GenerateCommand> generationCommands) {
+	public CombatHardPane(TurnProcess turnProcess, AiManagementSuite aiManagementSuite, UiUpdaterSuite uiUpdaterSuite, ActionSuite actionSuite, LevelManager levelManager, AiCrowd aiCrowd, CombatNCEManager combatInorganicManager, ItemMarket itemMarket, List<GenerateCommand> generationCommands) {
 		this.turnProcess = turnProcess;
 		this.aiManagementSuite = aiManagementSuite;
 		this.uiUpdaterSuite = uiUpdaterSuite;

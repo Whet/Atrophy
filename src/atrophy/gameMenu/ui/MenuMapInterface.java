@@ -11,7 +11,7 @@ import java.util.Random;
 
 import watoydoEngine.designObjects.display.Crowd;
 import watoydoEngine.workings.displayActivity.ActivePane;
-import atrophy.combat.CombatInorganicManager;
+import atrophy.combat.CombatNCEManager;
 import atrophy.combat.actions.ActionSuite;
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.ai.AiGeneratorInterface;
@@ -40,7 +40,7 @@ public class MenuMapInterface {
 		
 		TurnProcess turnProcess = new TurnProcess();
 		LevelManager levelManager = new LevelManager();
-		CombatInorganicManager combatInorganicManager = new CombatInorganicManager(levelManager);
+		CombatNCEManager combatInorganicManager = new CombatNCEManager(levelManager);
 		AiManagementSuite aiManagementSuite = new AiManagementSuite(turnProcess, combatInorganicManager, levelManager, squad);
 		UiUpdaterSuite uiUpdaterSuite = new UiUpdaterSuite(aiManagementSuite, turnProcess, levelManager, combatInorganicManager);
 		ActionSuite actionSuite = new ActionSuite(aiManagementSuite, uiUpdaterSuite, turnProcess, levelManager, squad, techTree, stashManager, missions);
