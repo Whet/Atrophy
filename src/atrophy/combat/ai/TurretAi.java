@@ -140,9 +140,10 @@ public class TurretAi extends LonerAi {
 		
 		if(!hacked) {
 			if(!target.isDead() &&
-			  (!this.getFaction().equals(target.getFaction())) &&
-               !this.commander.isAlliedWith(target.getFaction()) &&
-               !target.getFaction().equals(AiGenerator.LONER))
+			   !this.getFaction().equals(target.getFaction()) &&
+			   (this.getFaction().equals(AiGenerator.LONER)) ||
+                !this.commander.isAlliedWith(target.getFaction())
+               )
 				return true;
 		}
 		else {

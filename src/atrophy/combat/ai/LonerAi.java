@@ -139,4 +139,9 @@ public class LonerAi extends ThinkingAi{
 		return false;
 	}
 	
+	@Override
+	public TeamsCommander getCommander() {
+		return combatMembersManager.getCommander(this);
+	}
+	
 }

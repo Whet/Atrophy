@@ -510,4 +510,8 @@ public class TeamsCommander {
 		return this.friends.contains(ai);
 	}
 
+	public boolean hasAi(LonerAi ai) {
+		return this.teamAi.contains(ai);
+	}
+
 }

@@ -12,6 +12,7 @@ import atrophy.combat.actions.MouseAbilityHandler;
 import atrophy.combat.ai.Ai;
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.ai.BanditCommander;
+import atrophy.combat.ai.LonerAi;
 import atrophy.combat.ai.LonerCommander;
 import atrophy.combat.ai.TeamsCommander;
 import atrophy.combat.ai.ThinkingAi;
@@ -95,8 +96,18 @@ public class CombatMembersManager {
 	}
 
 	public TeamsCommander getCommander(String faction) {
+		
 		for(TeamsCommander commander : this.commanders){
 			if(commander.getFaction().equals(faction)){
+				return commander;
+			}
+		}
+		return null;
+	}
+	
+	public TeamsCommander getCommander(LonerAi ai) {
+		for(TeamsCommander commander : this.commanders){
+			if(commander.hasAi(ai)){
 				return commander;
 			}
 		}
