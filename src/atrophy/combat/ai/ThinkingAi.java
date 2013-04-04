@@ -93,7 +93,7 @@ public class ThinkingAi extends Ai{
 			turnCounter -= 1;
 		}
 		
-		if(this.getStunnedTurns() == 0){
+		if(this.getStunnedTurns() == 0 && this.getIncapTurns() == 0){
 			think();
 		}
 		else if(this.getStunnedTurns() > 0){
