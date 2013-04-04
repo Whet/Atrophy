@@ -117,10 +117,7 @@ public class TurnProcess {
 			combatKeyboardHandler.setFocus(false);
 			mouseAbilityHandler.cancelAbilitySetting();
 			combatUiManager.getActionsBar().setVisible(false);
-			for(int i = 0; i < aiCrowd.getActorCount(); i++){
-				aiCrowd.getMask(i).setActive(false);
-			}
-		
+			aiCrowd.setActive(false);
 				
 			if(turnCount > 0 && turnCount%20 == 0){
 				combatUiManager.getLargeEventText().flashText("Turn " + turnCount, Color.white);
