@@ -123,7 +123,7 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 	public void updateTween(){
 		if(Maths.getDistance(this.getLocation()[0], this.getLocation()[1],
 							 this.getAi().getLocation()[0], this.getAi().getLocation()[1]) > 1) {
-			this.setTween(new MotionTween(this, this.getAi().getLocation()[0], this.getAi().getLocation()[1], 10000, true));
+			this.setTween(new MotionTween(this, this.getAi().getLocation()[0], this.getAi().getLocation()[1], 6000, true));
 		}
 	}
 	

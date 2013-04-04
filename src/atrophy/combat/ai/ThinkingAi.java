@@ -98,7 +98,7 @@ public class ThinkingAi extends Ai{
 		}
 		else{
 			this.setStunnedTurns(this.getStunnedTurns() - 1);
-			turnProcess.currentAiDone(this.isSkippingTurns());
+			endTurn();
 		}
 	}
 	
@@ -156,7 +156,7 @@ public class ThinkingAi extends Ai{
 		
 		this.setOldAction(this.getAction());
 		this.setOldActionTurns(this.getActionTurns());
-		turnProcess.currentAiDone(this.isSkippingTurns());
+		endTurn();
 	}
 
 	protected void gatherEnvironmentData(){
@@ -1105,7 +1105,7 @@ public class ThinkingAi extends Ai{
 			}
 
 			if(!useDialogue(ai))
-				turnProcess.currentAiDone(ai.isSkippingTurns());
+				ai.endTurn();
 		}
 
 		private boolean useDialogue(ThinkingAi ai) {
@@ -1276,7 +1276,7 @@ public class ThinkingAi extends Ai{
 
 		public void finish(ThinkingAi ai) {
 			if(this.thinks){
-				turnProcess.currentAiDone(ai.isSkippingTurns());
+				ai.endTurn();
 			}
 			else{
 				ai.gatherEnvironmentData();

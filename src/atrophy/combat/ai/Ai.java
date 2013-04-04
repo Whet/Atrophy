@@ -79,6 +79,7 @@ public class Ai implements Lootable{
 	protected TurnProcess turnProcess;
 	protected LootBox lootBox;
 	protected PanningManager panningManager;
+	private Ai nextAi;
 
 	public Ai(FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, String name, double x, double y, CombatInorganicManager combatInorganicManager, LevelManager levelManager, LootBox lootBox, CombatMembersManager combatMembersManager, CombatUiManager combatUiManager, CombatVisualManager combatVisualManager, AiCrowd aiCrowd, PanningManager panningManager, TurnProcess turnProcess){
 		this.name = name;
@@ -168,6 +169,11 @@ public class Ai implements Lootable{
 	
 	public void action(){
 		
+		if(this.isDead()) {
+			endTurn();
+			return;
+		}
+		
 		resetMoveUnits();
 		
 		resetStates();
@@ -210,8 +216,19 @@ public class Ai implements Lootable{
 		
 		this.setOldAction(this.getAction());
 		this.setOldActionTurns(this.getActionTurns());
+		endTurn();
+	}
+	
+	protected void endTurn() {
 		
-		turnProcess.currentAiDone(this.isSkippingTurns());
+		if(nextAi == null || nextAi == this) {
+			turnProcess.lastAiUpdated();
+			this.nextAi = null;
+		}
+		else {
+			nextAi.action();
+			this.nextAi = null;
+		}
 	}
 
 	public int getIncapTurns() {
@@ -813,6 +830,10 @@ public class Ai implements Lootable{
 			break;
 		}
 		return returnColour;
+	}
+
+	public void setNextAi(Ai nextAi) {
+		this.nextAi = nextAi;
 	}
 
 }

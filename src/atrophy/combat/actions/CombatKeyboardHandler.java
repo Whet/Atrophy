@@ -215,7 +215,7 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 			
 			// F
 			case 70:
-				if(combatMembersManager.getCurrentAi() != null){
+				if(combatMembersManager.getCurrentAi() != null && !combatMembersManager.getCurrentAi().isDead()){
 					combatMembersManager.getCurrentAi().setSkippingTurns(!combatMembersManager.getCurrentAi().isSkippingTurns());
 					combatUiManager.getAllyRoster().updateMasks();
 				}

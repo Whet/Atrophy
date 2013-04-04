@@ -1,11 +1,10 @@
-/*
- * 
- */
 package atrophy.combat.mechanics;
 
 import java.awt.Color;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Stack;
 
 import watoydoEngine.designObjects.display.Crowd;
@@ -37,25 +36,12 @@ import atrophy.combat.display.ui.UiUpdaterSuite;
 import atrophy.combat.display.ui.loot.LootBox;
 import atrophy.hardPanes.SplashPane;
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class TurnProcess.
- */
 public class TurnProcess {
 	
-	/**
-	 * The turn count.
-	 */
 	private int turnCount;
 	
-	/**
-	 * The shuffled ai.
-	 */
 	private Stack<Ai> shuffledAi;
 	
-	/**
-	 * The turn in progress.
-	 */
 	private boolean turnInProgress;
 
 	private AiCrowd aiCrowd;
@@ -73,9 +59,6 @@ public class TurnProcess {
 	private LineDrawer lineDrawer;
 	private PanningManager panningManager;
 	
-	/**
-	 * Instantiates a new turn process.
-	 */
 	public TurnProcess(){
 		
 		turnCount = 0;
@@ -107,9 +90,6 @@ public class TurnProcess {
 		
 	}
 	
-	/**
-	 * End turn.
-	 */
 	public synchronized void endTurn(){
 		if(!turnInProgress && !allPlayersWaiting()){
 			turnInProgress = true;
@@ -130,108 +110,78 @@ public class TurnProcess {
 			cartographerBox.setVisible(false);
 			
 			combatVisualManager.setTableMasks(false);
-			updateTweens();
+			updateAiLocations();
 			updateAiBrass();
 			updateAi();
-			lineDrawer.updateAlphas();
-			lineDrawer.updateFovLight(combatMembersManager.getCurrentAi());
 		}
 	}
 	
-	/**
-	 * Update tweens.
-	 */
-	private void updateTweens(){
+	private void updateAiLocations(){
 		for(int i = 0; i < aiCrowd.getActorCount(); i++){
-			// If images haven't tweened to their target then skip them to their location
 			aiCrowd.getMask(i).updateImage();
 		}
 	}
 	
-	/**
-	 * Update assets.
-	 *
-	 * @param originator the originator
-	 */
-	private void updateAssets(Ai originator){
+	public void updateAssets(Ai originator){
 		combatInorganicManager.updateAssets(originator);
 	}
 	
-	/**
-	 * Update ai brass.
-	 */
 	private void updateAiBrass(){
 		combatMembersManager.updateCommanders();
 	}
 	
-	/**
-	 * Update ai.
-	 */
 	private void updateAi(){
+		
+		List<Ai> chain = new ArrayList<>();
 		
 		if(shuffledAi.size() == 0)
 			shuffledAi = aiCrowd.getShuffledStack();
 
-		currentAiDone(false);
-	}
-	
-	/**
-	 * Current ai done.
-	 *
-	 * @param lastUnitWasSkippingTurns the ai end
-	 */
-	public void currentAiDone(boolean lastUnitWasSkippingTurns){
-
-		while(shuffledAi.size() > 0 && !allPlayersWaiting()){
-			
-			if(!shuffledAi.peek().isDead()){
-				
-				if(lastUnitWasSkippingTurns && !shuffledAi.peek().isSkippingTurns()){
-					lastAiUpdated();
-					return;
-				}
-				
-				updateAssets(shuffledAi.peek());
-				
-				Ai currentAi = shuffledAi.pop();
-				
-				currentAi.action();
-				aiCrowd.getActorMask(currentAi).updateTween();
-				return;
-			}
-			else{
-				
-				updateAssets(shuffledAi.peek());
-				
-				// remove dead ai from stack
-				shuffledAi.pop();
-			}
-			
-			if(shuffledAi.size() == 0){
-				shuffledAi = aiCrowd.getShuffledStack();
-			}
-			
-			// if the next ai is a player then stop auto cycling
-			if(!shuffledAi.peek().isSkippingTurns()){
-				lastAiUpdated();
-				return;
-			}
-		}
-	
-		if(shuffledAi.size() == 0){
-			shuffledAi = aiCrowd.getShuffledStack();
-			currentAiDone(true);
-		}
+		Ai chainStart = nextNonDeadAi();
 		
-		lastAiUpdated();
+		Ai ai = chainStart;
+		Ai nextAi;
+		
+		chain.add(ai);
+		
+		do {
+			nextAi = nextNonDeadAi();
+			
+			if(!nextAi.isSkippingTurns()) {
+				shuffledAi.add(nextAi);
+				break;
+			}
+			chain.add(nextAi);
+			ai.setNextAi(nextAi);
+			ai = nextAi;
+		}
+		while(nextAi.isSkippingTurns());
+		
+//		for (Ai aiN : chain) {
+//			System.out.print(aiN.getName() + ", ");
+//		}
+//		System.out.println("");
+		
+		chainStart.action();
+
 	}
 	
-	// checks if all player controlled units are skipping turns to stop infinite looping
-	/**
-	 * All players waiting.
-	 *
-	 * @return true, if successful
-	 */
+	private Ai nextNonDeadAi() {
+		Ai ai;
+		do {
+			
+			if(shuffledAi.size() == 0)
+				shuffledAi = aiCrowd.getShuffledStack();
+			
+			ai = shuffledAi.pop();
+			
+			updateAssets(ai);
+		}
+		while(ai.isDead());
+		
+		return ai;
+	}
+
 	private boolean allPlayersWaiting() {
 		for(int i = 0; i < aiCrowd.getActorCount(); i++){
 			if(aiCrowd.getActor(i).getFaction().equals(AiGenerator.PLAYER) && !aiCrowd.getActor(i).isSkippingTurns() && !aiCrowd.getActor(i).isDead()){
@@ -241,16 +191,12 @@ public class TurnProcess {
 		return true;
 	}
 
-	/**
-	 * Last ai updated.
-	 */
-	private void lastAiUpdated(){
+	public void lastAiUpdated(){
 		
 		if(shuffledAi.size() == 0){
 			shuffledAi = aiCrowd.getShuffledStack();
 		}
 		
-		turnInProgress = false;
 		combatUiManager.getActionsBar().setVisible(true);
 		updateUi();
 		
@@ -269,12 +215,20 @@ public class TurnProcess {
 		for(int i = 0; i < aiCrowd.getActorCount(); i++){
 			aiCrowd.getMask(i).setActive(true);
 		}
+		
 		lineDrawer.updateAlphas();
+		lineDrawer.updateFovLight(combatMembersManager.getCurrentAi());
+		turnInProgress = false;
+		
+		updateTweens();
 	}
 	
-	/**
-	 * Update ui.
-	 */
+	private void updateTweens() {
+		for(int i = 0; i < aiCrowd.getActorCount(); i++){
+			aiCrowd.getMask(i).updateTween();
+		}
+	}
+
 	private void updateUi(){
 		
 		// Set control to topAi
@@ -319,9 +273,6 @@ public class TurnProcess {
 		ActivePane.getInstance().getPane().computeZOrder();
 	}
 	
-	/**
-	 * Check game over.
-	 */
 	private boolean checkGameOver(){
 		for(int i = 0; i < aiCrowd.getActorCount(); i++){
 			if(!aiCrowd.getActor(i).isDead() &&
@@ -332,9 +283,6 @@ public class TurnProcess {
 		return true;
 	}
 	
-	/**
-	 * End game.
-	 */
 	private void endGame(){
 		
 		SoundBoard.getInstance().startMusic("watoydoEngine/mods/sounds/music/Ave.ogg", true);
@@ -368,40 +316,15 @@ public class TurnProcess {
 		combatKeyboardHandler.setFocus(true);
 		lineDrawer.updateAlphas();
 	}
-	
-	/**
-	 * Sets the turn count.
-	 *
-	 * @param turnCount the new turn count
-	 */
-	public void setTurnCount(int turnCount) {
-		this.turnCount = turnCount;
-	}
 
-	/**
-	 * Gets the turn count.
-	 *
-	 * @return the turn count
-	 */
 	public int getTurnCount() {
 		return turnCount;
 	}
 	
-	/**
-	 * Gets the top ai.
-	 *
-	 * @return the top ai
-	 */
 	public Ai getTopAi() {
 		return this.shuffledAi.peek();
 	}
 
-	/**
-	 * Replace ai.
-	 *
-	 * @param thinkingAi the thinking ai
-	 * @param playerAi the player ai
-	 */
 	public void replaceAi(ThinkingAi thinkingAi, Ai playerAi) {
 		for(int i = 0; i < shuffledAi.size(); i++){
 			if(shuffledAi.get(i) == thinkingAi){
