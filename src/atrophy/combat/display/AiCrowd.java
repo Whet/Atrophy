@@ -31,7 +31,7 @@ import atrophy.gameMenu.saveFile.Squad.Squaddie;
 
 public class AiCrowd extends Crowd {
 	
-	private static final int ANIMATION_FRAME_LENGTH = 300;
+	private static final int ANIMATION_FRAME_LENGTH = 200;
 
 	private volatile ArrayList<Ai> actors;
 	private volatile ArrayList<AiImage> masks;

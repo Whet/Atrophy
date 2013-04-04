@@ -94,6 +94,7 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 	
 	@Override
 	public AffineTransform getTransformationForDrawing(){
+		
 		super.getTransformation().setToTranslation((int)(this.getLocation()[0] - (this.getSize()[0] * xOffset) + panningManager.getOffset()[0]),
 												   (int)(this.getLocation()[1] - (this.getSize()[1] * yOffset) + panningManager.getOffset()[1]));
 		super.getTransformation().scale(this.getScale(),this.getScale());
@@ -107,21 +108,12 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 		dragging = false;
 		combatVisualManager.setDraggableAi(null);
 		
-		if(this.getAi().isDead()){
-			this.setZ(1);
-			// Cancel stealth effect
-			this.setAlpha(1.0f);
-		}
-		
 		this.applyEffects();
 		this.setLocation(this.getAi().getLocation()[0], this.getAi().getLocation()[1]);
 	}
 	
 	public void updateMask(){
 		if(this.getAi().isDead()){
-			this.setZ(1);
-			// Cancel stealth effect
-			this.setAlpha(1.0f);
 			this.setLocation(this.getAi().getLocation()[0], this.getAi().getLocation()[1]);
 		}
 		
@@ -132,7 +124,6 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 		if(Maths.getDistance(this.getLocation()[0], this.getLocation()[1],
 							 this.getAi().getLocation()[0], this.getAi().getLocation()[1]) > 1) {
 			this.setTween(new MotionTween(this, this.getAi().getLocation()[0], this.getAi().getLocation()[1], 10000, true));
-//			this.setAnimation(Animation.WALK, 9);
 		}
 	}
 	
