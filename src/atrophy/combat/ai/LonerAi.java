@@ -46,7 +46,7 @@ public class LonerAi extends ThinkingAi{
 	 */
 	@Override
 	public boolean isTargetHostile(Ai target) {
-		return !target.isDead() && target != this && !this.getCommander().isAlliedWith(target.getFaction());
+		return !target.isDead() && target != this && !this.getCommander().isAlliedWith(target.getFaction()) && !this.getCommander().isAiFriend(target);
 	}
 	
 	/* (non-Javadoc)

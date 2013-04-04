@@ -96,8 +96,13 @@ public class ThinkingAi extends Ai{
 		if(this.getStunnedTurns() == 0){
 			think();
 		}
-		else{
-			this.setStunnedTurns(this.getStunnedTurns() - 1);
+		else if(this.getStunnedTurns() > 0){
+			this.setStunnedTurns(getStunnedTurns() - 1);
+			this.setIncapTurns(0);
+			endTurn();
+		}
+		else if(this.getIncapTurns() > 0){
+			this.setIncapTurns(this.getIncapTurns() - 1);
 			endTurn();
 		}
 	}
@@ -148,10 +153,6 @@ public class ThinkingAi extends Ai{
 			if(this.getAction().startsWith("Applying:")){
 				this.setAction("");
 			}
-		}
-		
-		if(this.getIncapTurns() > 0){
-			this.setIncapTurns(this.getIncapTurns() - 1);
 		}
 		
 		this.setOldAction(this.getAction());
@@ -894,7 +895,7 @@ public class ThinkingAi extends Ai{
 	
 	@Override
 	public boolean isTargetHostile(Ai target){
-		if(!target.isDead() && !this.getFaction().equals(target.getFaction()) && !this.getCommander().isAlliedWith(target.getFaction())){
+		if(!target.isDead() && !this.getFaction().equals(target.getFaction()) && !this.getCommander().isAlliedWith(target.getFaction()) && !this.getCommander().isAiFriend(target)){
 			return true;
 		}
 		return false;

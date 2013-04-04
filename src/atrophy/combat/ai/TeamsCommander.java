@@ -30,6 +30,7 @@ public class TeamsCommander {
 	private Set<ThinkingAi> teamAi;
 	private Set<String> alliances;
 	private Set<Ai> hatedAi;
+	private Set<Ai> friends;
 	private Set<Ai> lootedAi;
 	
 	private Map<Ai, AiJob> jobAssignments;
@@ -58,6 +59,7 @@ public class TeamsCommander {
 		lootedAi = new HashSet<Ai>();
 		alliances = new HashSet<String>();
 		hatedAi = new HashSet<Ai>();
+		friends = new HashSet<Ai>();
 		jobAssignments = new HashMap<>();
 		defenceHeuristics = new HashMap<>();	
 		
@@ -494,6 +496,18 @@ public class TeamsCommander {
 			
 		
 		return bestEntry.getKey();
+	}
+
+	public void addFriend(Ai ai) {
+		this.friends.add(ai);
+	}
+	
+	public void removeFriend(Ai ai) {
+		this.friends.remove(ai);
+	}
+	
+	public boolean isAiFriend(Ai ai) {
+		return this.friends.contains(ai);
 	}
 
 }
