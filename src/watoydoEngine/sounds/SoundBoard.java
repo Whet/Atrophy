@@ -1,6 +1,3 @@
-/*
- * 
- */
 package watoydoEngine.sounds;
 
 import java.util.Random;
@@ -11,22 +8,10 @@ import org.newdawn.slick.SlickException;
 import org.newdawn.slick.Sound;
 
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class SoundBoard.
- */
 public class SoundBoard {
 	
-	/**
-	 * The instance.
-	 */
 	private static SoundBoard instance;
 	
-	/**
-	 * Gets the single instance of SoundBoard.
-	 *
-	 * @return single instance of SoundBoard
-	 */
 	public static SoundBoard getInstance(){
 		if(instance == null){
 			instance = new SoundBoard();
@@ -35,39 +20,14 @@ public class SoundBoard {
 		return instance;
 	}
 	
-	/**
-	 * The music volume.
-	 */
 	private float musicVolume;
-	
-	/**
-	 * The effect volume.
-	 */
 	private float effectVolume;
 	
-	/**
-	 * The mixer.
-	 */
 	private MusicMix mixer;
-	
-	/**
-	 * The music.
-	 */
 	private Music music;
-	
-	/**
-	 * The music track.
-	 */
 	private String musicTrack;
-	
-	/**
-	 * The music collection.
-	 */
 	private String musicCollection[];
-	
-	/**
-	 * Instantiates a new sound board.
-	 */
+
 	private SoundBoard(){
 		musicCollection = new String[4];
 		
@@ -79,12 +39,9 @@ public class SoundBoard {
 		musicVolume = 0.1f;
 		effectVolume = 0.5f;
 		
-		mixer = new MusicMix();
+//		isSwappedMusic = false;
 	}
 	
-	/**
-	 * Start music.
-	 */
 	public void startMusic(){
 		pickRandomTrack();
 	}
@@ -123,9 +80,6 @@ public class SoundBoard {
 		catch(SlickException e){}
 	}
 	
-	/**
-	 * Pick random track.
-	 */
 	private void pickRandomTrack(){
 		Random rand = new Random();
 		
@@ -136,11 +90,6 @@ public class SoundBoard {
 		playTrack(pickedTrack);
 	}
 	
-	/**
-	 * Pick random track.
-	 *
-	 * @param excludeTrack the exclude track
-	 */
 	private void pickRandomTrack(String excludeTrack){
 		Random rand = new Random();
 		
@@ -154,18 +103,8 @@ public class SoundBoard {
 		playTrack(pickedTrack);
 	}
 	
-	/**
-	 * Play track.
-	 *
-	 * @param musicTrack the music track
-	 */
 	private void playTrack(String musicTrack){
-		
-		// Remove last music without triggering listener
-		if(this.music != null){
-			this.music.removeListener(mixer);
-			this.music.stop();
-		}
+//		isSwappedMusic = true;
 		
 		Music music = null;
 		try {
@@ -178,6 +117,8 @@ public class SoundBoard {
 		
 		this.music = music;
 		
+		mixer = new MusicMix();
+		
 		music.addListener(mixer);
 		music.play(1,musicVolume);
 		
@@ -186,12 +127,6 @@ public class SoundBoard {
 	}
 	
 	private void playTrack(String musicTrack, boolean stream){
-		
-		// Remove last music without triggering listener
-		if(this.music != null){
-			this.music.removeListener(mixer);
-			this.music.stop();
-		}
 		
 		Music music = null;
 		try {
@@ -204,6 +139,7 @@ public class SoundBoard {
 		
 		this.music = music;
 		
+		mixer = new MusicMix();
 		music.addListener(mixer);
 		music.play(1,musicVolume);
 		
@@ -211,51 +147,35 @@ public class SoundBoard {
 		
 	}
 	
-	/**
-	 * The Class MusicMix.
-	 */
 	private class MusicMix implements MusicListener{
 
-		/* (non-Javadoc)
-		 * @see org.newdawn.slick.MusicListener#musicEnded(org.newdawn.slick.Music)
-		 */
+		boolean wasSwapped = false;
+		
 		@Override
 		public void musicEnded(Music music) {
-			music.removeListener(this);
+			if(wasSwapped)
+				return;
+			
+			System.out.println("Music ended");
 			pickRandomTrack(musicTrack);
 		}
 
-		/* (non-Javadoc)
-		 * @see org.newdawn.slick.MusicListener#musicSwapped(org.newdawn.slick.Music, org.newdawn.slick.Music)
-		 */
 		@Override
-		public void musicSwapped(Music music, Music newMusic){}
+		public void musicSwapped(Music music, Music newMusic){
+			System.out.println("Music swapped");
+			wasSwapped = true;
+		}
 		
 	}
 	
-	/**
-	 * Sets the music volume.
-	 *
-	 * @param musicVolume the new music volume
-	 */
 	public void setMusicVolume(float musicVolume){
 		this.musicVolume = musicVolume;
 	}
 	
-	/**
-	 * Sets the effect volume.
-	 *
-	 * @param effectVolume the new effect volume
-	 */
 	public void setEffectVolume(float effectVolume){
 		this.effectVolume = effectVolume;
 	}
 	
-	/**
-	 * Modify music volume.
-	 *
-	 * @param modifier the modifier
-	 */
 	public void modifyMusicVolume(float modifier){
 		this.musicVolume += modifier;
 		
@@ -270,11 +190,6 @@ public class SoundBoard {
 		System.out.println(this.musicVolume);
 	}
 	
-	/**
-	 * Modify effect volume.
-	 *
-	 * @param modifier the modifier
-	 */
 	public void modifyEffectVolume(float modifier){
 		this.effectVolume += modifier;
 		
