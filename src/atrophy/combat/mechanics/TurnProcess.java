@@ -331,6 +331,8 @@ public class TurnProcess {
 		
 		combatKeyboardHandler.setFocus(true);
 		lineDrawer.updateAlphas();
+		updateTweens();
+		combatVisualManager.updateVisibleAi();
 	}
 
 	public int getTurnCount() {
