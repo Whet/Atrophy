@@ -12,6 +12,7 @@ import atrophy.combat.actions.ActionSuite;
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.ai.AiGeneratorInterface;
 import atrophy.combat.ai.AiGeneratorInterface.GenerateCommand;
+import atrophy.combat.combatEffects.PowerManager;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.AiManagementSuite;
 import atrophy.combat.display.MapPainter;
@@ -25,7 +26,7 @@ import atrophy.gameMenu.saveFile.ItemMarket;
 /**
  * The Class CombatHardPane.
  */
-public class CombatHardPane implements HardPaneDefineable{
+public class CombatHardPane implements HardPaneDefineable {
 	
 	/**
 	 * The Constant NAME.
@@ -66,6 +67,11 @@ public class CombatHardPane implements HardPaneDefineable{
 		
 		crowd.addCrowd(aiCrowd);
 		aiCrowd.setVisible(true);
+		
+		PowerManager powerManager = new PowerManager(aiCrowd.getSquad(), aiGenerator);
+		
+		turnProcess.setPowerManager(powerManager);
+		actionSuite.getCombatKeyboardHandler().setPowerManager(powerManager);
 		
 		// Add ui elements
 		crowd.addButton(uiUpdaterSuite.getCombatUiManager().getMoveFlag());

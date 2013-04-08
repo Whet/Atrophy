@@ -1,5 +1,6 @@
 package atrophy.combat.actions;
 
+import atrophy.combat.combatEffects.PowerManager;
 import atrophy.combat.display.AiManagementSuite;
 import atrophy.combat.display.ui.UiUpdaterSuite;
 import atrophy.combat.level.LevelManager;

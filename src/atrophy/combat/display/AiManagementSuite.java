@@ -1,7 +1,7 @@
 package atrophy.combat.display;
 
-import atrophy.combat.CombatNCEManager;
 import atrophy.combat.CombatMembersManager;
+import atrophy.combat.CombatNCEManager;
 import atrophy.combat.actions.MouseAbilityHandler;
 import atrophy.combat.display.ui.UiUpdaterSuite;
 import atrophy.combat.level.LevelManager;

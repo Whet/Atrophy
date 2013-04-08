@@ -19,6 +19,7 @@ import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.actions.MouseAbilityHandler;
+import atrophy.combat.ai.AiGeneratorInterface.GenerateCommand;
 import atrophy.combat.ai.AiGeneratorInterface.SoloGenerateCommand;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.AiImage;
@@ -64,6 +65,8 @@ public class AiGenerator{
 	private LevelManager levelManager;
 	private CombatNCEManager combatInorganicManager;
 	private LootBox lootbox;
+
+	private int squadCount;
 	
 	static {
 
@@ -108,7 +111,7 @@ public class AiGenerator{
 	
 	public void generateAi(ItemMarket itemMarket, List<AiGeneratorInterface.GenerateCommand> generationCommands){
 		
-		int squadCount = 0;
+		squadCount = 0;
 		
 		for(AiGeneratorInterface.GenerateCommand command : generationCommands){
 			
@@ -159,6 +162,42 @@ public class AiGenerator{
 		combatMembersManager.pickStartingAi();
 		generateRosters();
 		combatUiManager.getAllyRoster().generatePortraits();
+		
+	}
+	
+	public void spawnAi(GenerateCommand command) {
+		// Create ai while game is in progress
+		
+		if(command instanceof SoloGenerateCommand){
+			generateSoloAi((SoloGenerateCommand)command, squadCount);
+			squadCount++;
+			return;
+		}
+		
+		switch(command.getFaction()){
+			case WHITE_VISTA:
+				generateTeam(Integer.toString(squadCount)+WHITE_VISTA,
+							 command.getTeamSize(),
+							 command.getAllowedItems(),
+							 command.getAllowedWeapons(),
+							 combatMembersManager.getCommander(WHITE_VISTA).getSpawnRoom());
+			break;
+			case BANDITS:
+				generateTeam(Integer.toString(squadCount)+BANDITS,
+							 command.getTeamSize(),
+							 command.getAllowedItems(),
+							 command.getAllowedWeapons(),
+							 combatMembersManager.getCommander(BANDITS).getSpawnRoom());
+			break;
+			case LONER:
+			break;
+			case TURRET:
+				generateTurrets(squadCount+LONER,
+								command.getX(),
+								command.getY());
+			break;
+		}
+		squadCount++;
 		
 	}
 	
@@ -217,7 +256,7 @@ public class AiGenerator{
 		aiCrowd.addActor(ai);
 		aiCrowd.addMask(aiImg);
 		
-		if(command != null){
+		if(command.getAiNode() != null){
 			List<String> priority = new ArrayList<String>(1);
 			priority.add(ai.getName());
 			command.getAiNode().addPriorities(priority);

@@ -15,6 +15,8 @@ import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.ai.AiGenerator;
+import atrophy.combat.combatEffects.Power;
+import atrophy.combat.combatEffects.PowerManager;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.AiManagementSuite;
 import atrophy.combat.display.ui.CartographerBox;
@@ -49,6 +51,7 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 	private TechTree techTree;
 	private StashManager stashManager;
 	private Missions missions;
+	private PowerManager powerManager;
 	
 	public CombatKeyboardHandler(LevelManager levelManager, MouseAbilityHandler mouseAbilityHandler, TurnProcess turnProcess, AiManagementSuite aiManagementSuite, UiUpdaterSuite uiUpdaterSuite, TechTree techTree, StashManager stashManager, Missions missions){
 		
@@ -223,9 +226,10 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 			
 			// k DEBUG
 			case 75:
-				combatMembersManager.getCurrentAi().setDead(true);
+//				combatMembersManager.getCurrentAi().setDead(true);
 //				mouseAbilityHandler.setAbility("Hack");
 //				mouseAbilityHandler.setAbility("DebugKill");
+				powerManager.usePower(Power.KILL, combatMembersManager.getCurrentAi());
 			break;
 			
 			// X panning
@@ -416,6 +420,10 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 			break;
 		}
 		return true;
+	}
+
+	public void setPowerManager(PowerManager powerManager) {
+		this.powerManager = powerManager;
 	}
 
 }

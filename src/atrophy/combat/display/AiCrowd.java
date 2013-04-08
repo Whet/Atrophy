@@ -1,6 +1,3 @@
-/*
- * 
- */
 package atrophy.combat.display;
 
 import java.awt.Graphics2D;
@@ -64,6 +61,9 @@ public class AiCrowd extends Crowd {
 		
 		animationTimer = new Timer();
 		animationTimer.scheduleAtFixedRate(new AnimationTimerEvent(this), 0, ANIMATION_FRAME_LENGTH);
+		
+		this.masterStack = new Stack<Ai>();
+		
 	}
 	
 	private static class AnimationTimerEvent extends TimerTask {
@@ -210,14 +210,6 @@ public class AiCrowd extends Crowd {
 	
 	public Stack<Ai> getShuffledStack() {
 		
-		if(this.masterStack == null || this.masterStack.size() == 0){
-			masterStack = new Stack<Ai>();
-			
-			masterStack.addAll(this.actors);
-			
-			Collections.shuffle(masterStack);
-		}
-		
 		if(this.shuffledStack == null){
 			this.shuffledStack = new Stack<Ai>(); 
 		}
@@ -286,6 +278,9 @@ public class AiCrowd extends Crowd {
 	
 	public void addActor(Ai ai){
 		actors.add(ai);
+		
+		this.masterStack.push(ai);
+		Collections.shuffle(masterStack);
 	}
 	
 	public void addMask(AiImage aiImg){
@@ -295,6 +290,10 @@ public class AiCrowd extends Crowd {
 
 	public ArrayList<AiImage> getMasks() {
 		return this.masks;
+	}
+
+	public Squad getSquad() {
+		return squad;
 	}
 
 	public Squad saveToSquad() {

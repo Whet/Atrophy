@@ -26,6 +26,7 @@ import atrophy.combat.ai.Ai;
 import atrophy.combat.ai.AiCombatActions;
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.ai.ThinkingAi;
+import atrophy.combat.combatEffects.PowerManager;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.AiManagementSuite;
 import atrophy.combat.display.LineDrawer;
@@ -58,6 +59,7 @@ public class TurnProcess {
 	private CombatNCEManager combatInorganicManager;
 	private LineDrawer lineDrawer;
 	private PanningManager panningManager;
+	private PowerManager powerManager;
 	
 	public TurnProcess(){
 		
@@ -133,6 +135,7 @@ public class TurnProcess {
 		if(shuffledAi.size() == 0) {
 			shuffledAi = aiCrowd.getShuffledStack();
 			combatInorganicManager.updateAssets();
+			powerManager.tickPowers();
 			
 			if(checkGameOver()){
 				endGame();
@@ -181,6 +184,7 @@ public class TurnProcess {
 			if(shuffledAi.size() == 0) {
 				shuffledAi = aiCrowd.getShuffledStack();
 				combatInorganicManager.updateAssets();
+				powerManager.tickPowers();
 				
 				if(checkGameOver()){
 					endGame();
@@ -211,6 +215,7 @@ public class TurnProcess {
 		if(shuffledAi.size() == 0){
 			shuffledAi = aiCrowd.getShuffledStack();
 			combatInorganicManager.updateAssets();
+			powerManager.tickPowers();
 		}
 		
 		combatUiManager.getActionsBar().setVisible(true);
@@ -349,6 +354,10 @@ public class TurnProcess {
 				shuffledAi.set(i, playerAi);
 			}
 		}
+	}
+
+	public void setPowerManager(PowerManager powerManager) {
+		this.powerManager = powerManager;
 	}
 	
 }
