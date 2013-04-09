@@ -1,6 +1,3 @@
-/*
- * 
- */
 package atrophy.combat.levelAssets;
 
 import java.awt.image.BufferedImage;
@@ -15,77 +12,24 @@ import atrophy.combat.level.LevelBlock;
 import atrophy.combat.level.LevelManager;
 import atrophy.combat.mechanics.ScoringMechanics;
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class Grenade.
- */
 public class Grenade implements NonCharacterEntity{
 	
-	/**
-	 * The Constant FUSE_TIME.
-	 */
 	public static final int FUSE_TIME = 5;
 	
-	/**
-	 * The expired.
-	 */
 	private boolean expired;
-	
-	/**
-	 * The location.
-	 */
 	private double[] location;
-	
-	/**
-	 * The angle heading.
-	 */
 	private double angleHeading;
-	
-	/**
-	 * The momentum.
-	 */
 	private double momentum;
-	
-	/**
-	 * The room.
-	 */
 	protected LevelBlock room;
-	
-	/**
-	 * The counter.
-	 */
 	private byte counter;
-	
-	/**
-	 * The skill level.
-	 */
 	private int skillLevel;
-	
-	/**
-	 * The originator.
-	 */
 	protected Ai originator;
-	
 	protected AiCrowd aiCrowd;
 	protected FloatingIcons floatingIcons;
 	private LevelManager levelManager;
 
-	private BufferedImage image;
-	
-	/**
-	 * Instantiates a new grenade.
-	 *
-	 * @param originator the originator
-	 * @param location the location
-	 * @param angleHeading the angle heading
-	 * @param momentum the momentum
-	 * @param skillLevel the skill level
-	 * @param levelManager 
-	 */
 	public Grenade(AiCrowd aiCrowd, FloatingIcons floatingIcons, LevelManager levelManager, Ai originator, double[] location, double angleHeading, double momentum, int skillLevel){
 
-		this.image = floatingIcons.getImage(GrenadeItem.NAME);
-		
 		this.originator = originator;
 		this.location = location;
 		this.angleHeading = angleHeading;
@@ -104,18 +48,7 @@ public class Grenade implements NonCharacterEntity{
 		this.levelManager = levelManager;
 	}
 
-	/**
-	 * Instantiates a new grenade.
-	 *
-	 * @param originator the originator
-	 * @param location the location
-	 * @param angleHeading the angle heading
-	 * @param momentum the momentum
-	 * @param fuseTime the fuse time
-	 */
-	protected Grenade(String imageName, AiCrowd aiCrowd, FloatingIcons floatingIcons, LevelManager levelManager, Ai originator, double[] location, double angleHeading, double momentum, byte fuseTime) {
-		
-		this.image = floatingIcons.getImage(imageName);
+	protected Grenade(AiCrowd aiCrowd, FloatingIcons floatingIcons, LevelManager levelManager, Ai originator, double[] location, double angleHeading, double momentum, byte fuseTime) {
 		
 		this.location = location;
 		this.angleHeading = angleHeading;
@@ -203,7 +136,7 @@ public class Grenade implements NonCharacterEntity{
 	 * @see atrophy.combat.levelAssets.LevelAsset#getImageName()
 	 */
 	public BufferedImage getImage(){
-		return this.image;
+		return floatingIcons.getImage(GrenadeItem.NAME);
 	}
 	
 	/**
