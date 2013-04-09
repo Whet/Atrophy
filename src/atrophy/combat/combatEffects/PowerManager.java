@@ -30,9 +30,12 @@ public class PowerManager {
 			case HELP:
 			break;
 			case KILL:
-				this.powers.add(new KillEffect(this, (Ai) target, aiGenerator, getRankedStability()));
+				if(!((Ai) target).isDead())
+					this.powers.add(new KillEffect(this, (Ai) target, aiGenerator, getRankedStability()));
 			break;
 			case PROTECT:
+				if(!((Ai) target).isDead())
+					this.powers.add(new ProtectEffect(this, (Ai) target, getRankedStability()));
 			break;
 			default:
 			break;
@@ -123,7 +126,21 @@ public class PowerManager {
 				aiGenerator.spawnAi(daemonCommand );
 			}
 		}
+	}
+	
+	private static class ProtectEffect extends PowerEffect {
+
+		private Ai target;
 		
+		public ProtectEffect(PowerManager powerManager, Ai target, int stability) {
+			super(powerManager, Power.PROTECT, stability);
+			this.target = target;
+			
+			target.addEffect(new ProtectPowerEffect(stability));
+		}
+
+		@Override
+		protected void tickEffect() {}
 		
 	}
 	

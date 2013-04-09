@@ -19,6 +19,7 @@ import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.actions.MouseAbilityHandler;
 import atrophy.combat.combatEffects.Effect;
+import atrophy.combat.combatEffects.ProtectPowerEffect;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.ui.FloatingIcons;
 import atrophy.combat.display.ui.loot.LootBox;
@@ -625,6 +626,16 @@ public class Ai implements Lootable{
 	}
 	
 	public void setDead(boolean dead) {
+		
+		if(this.hasActiveEffect(ProtectPowerEffect.NAME)) {
+			
+			Effect effect = this.getEffect(ProtectPowerEffect.NAME);
+			if(effect.getSkillLevel() == 0)
+				effect.stopEffect();
+			
+			return;
+		}
+		
 		// Make sure dead unit show smashed helmet
 		if(dead && !this.dead){	
 			this.setTargetAi(null); 
