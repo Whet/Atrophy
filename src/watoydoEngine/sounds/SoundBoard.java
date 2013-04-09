@@ -39,7 +39,6 @@ public class SoundBoard {
 		musicVolume = 0.1f;
 		effectVolume = 0.5f;
 		
-//		isSwappedMusic = false;
 	}
 	
 	public void startMusic(){
@@ -104,7 +103,6 @@ public class SoundBoard {
 	}
 	
 	private void playTrack(String musicTrack){
-//		isSwappedMusic = true;
 		
 		Music music = null;
 		try {

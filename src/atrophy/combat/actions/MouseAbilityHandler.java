@@ -16,6 +16,8 @@ import atrophy.combat.ai.AiData;
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.ai.ThinkingAi;
 import atrophy.combat.ai.TurretAi;
+import atrophy.combat.combatEffects.Power;
+import atrophy.combat.combatEffects.PowerManager;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.AiImage;
 import atrophy.combat.display.AiManagementSuite;
@@ -50,6 +52,7 @@ public class MouseAbilityHandler {
 	private AiCrowd aiCrowd;
 	private LevelManager levelManager;
 	private Squad squad;
+	private PowerManager powerManager;
 	
 	/**
 	 * Instantiates a new mouse ability handler.
@@ -69,6 +72,10 @@ public class MouseAbilityHandler {
 		this.levelManager = levelManager;
 		
 		this.squad = squad;
+	}
+	
+	public void setPowerManager(PowerManager powerManager) {
+		this.powerManager = powerManager;
 	}
 	
 	/**
@@ -184,7 +191,14 @@ public class MouseAbilityHandler {
 				targetAi = getClosestAiToMouse(mousePoint, AI_CLICK_RADIUS, true);
 				targetAi.setDead(true);
 			break;
-				
+			case "PowerKill":
+				targetAi = getClosestAiToMouse(mousePoint, AI_CLICK_RADIUS, true);
+				powerManager.usePower(Power.KILL, targetAi);
+			break;
+			case "PowerProtect":
+			break;
+			case "PowerHelp":
+			break;
 		}
 		
 		SoundBoard.getInstance().playEffect("cancel");

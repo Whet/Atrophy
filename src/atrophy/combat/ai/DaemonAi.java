@@ -45,5 +45,10 @@ public class DaemonAi extends ThinkingAi {
 			this.setMoveLocationToSelf();
 		}
 	}
+	
+	@Override
+	public boolean isTargetHostile(Ai target) {
+		return !target.isDead() && target != this;
+	}
 
 }

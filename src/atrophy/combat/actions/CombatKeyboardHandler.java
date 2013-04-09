@@ -229,7 +229,7 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 //				combatMembersManager.getCurrentAi().setDead(true);
 //				mouseAbilityHandler.setAbility("Hack");
 //				mouseAbilityHandler.setAbility("DebugKill");
-				powerManager.usePower(Power.KILL, combatMembersManager.getCurrentAi());
+				mouseAbilityHandler.setAbility("PowerKill");
 			break;
 			
 			// X panning

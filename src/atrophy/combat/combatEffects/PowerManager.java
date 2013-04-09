@@ -30,7 +30,7 @@ public class PowerManager {
 			case HELP:
 			break;
 			case KILL:
-				this.powers.add(new KillEffect((Ai) target, aiGenerator, squad.getStability()));
+				this.powers.add(new KillEffect(this, (Ai) target, aiGenerator, getRankedStability()));
 			break;
 			case PROTECT:
 			break;
@@ -59,6 +59,15 @@ public class PowerManager {
 		if(squad.getStability() > Squad.MAX_STABILITY)
 			squad.setStability(Squad.MAX_STABILITY);
 	}
+	
+	private int getRankedStability() {
+		if(squad.getStability() > 80)
+			return 2;
+		else if(squad.getStability() > 20)
+			return 1;
+		
+		return 0;
+	}
 
 	private static abstract class PowerEffect {
 		
@@ -67,11 +76,13 @@ public class PowerManager {
 		
 		// 0 = no stability, 1 = med, 2 = high stability
 		protected int stability;
+		protected PowerManager powerManager;
 		
-		public PowerEffect(Power type, int life, int stability) {
+		public PowerEffect(PowerManager powerManager, Power type, int life) {
+			this.powerManager = powerManager;
 			this.type = type;
 			this.life = life;
-			this.stability = stability;
+			this.stability = powerManager.getRankedStability();
 		}
 		
 		public final void tick() {
@@ -92,8 +103,8 @@ public class PowerManager {
 		private AiGenerator aiGenerator;
 		private Ai target;
 		
-		public KillEffect(Ai target, AiGenerator aiGenerator, int stability) {
-			super(Power.KILL, STABILITY_LIFE[stability], stability);
+		public KillEffect(PowerManager powerManager, Ai target, AiGenerator aiGenerator, int rankedStability) {
+			super(powerManager, Power.KILL, STABILITY_LIFE[rankedStability]);
 			this.target = target;
 			this.aiGenerator = aiGenerator;
 		}
@@ -101,7 +112,9 @@ public class PowerManager {
 		@Override
 		protected void tickEffect() {
 			
-//			this.target.setDead(true);
+			powerManager.modifyStability(-40);
+			
+			this.target.setDead(true);
 			
 			if(stability == 0) {
 				// Summon daemon
