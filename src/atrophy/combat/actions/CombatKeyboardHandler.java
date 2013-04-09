@@ -51,7 +51,6 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 	private TechTree techTree;
 	private StashManager stashManager;
 	private Missions missions;
-	private PowerManager powerManager;
 	
 	public CombatKeyboardHandler(LevelManager levelManager, MouseAbilityHandler mouseAbilityHandler, TurnProcess turnProcess, AiManagementSuite aiManagementSuite, UiUpdaterSuite uiUpdaterSuite, TechTree techTree, StashManager stashManager, Missions missions){
 		
@@ -229,7 +228,8 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 //				combatMembersManager.getCurrentAi().setDead(true);
 //				mouseAbilityHandler.setAbility("Hack");
 //				mouseAbilityHandler.setAbility("DebugKill");
-				mouseAbilityHandler.setAbility("PowerKill");
+//				mouseAbilityHandler.setAbility("PowerKill");
+				mouseAbilityHandler.setAbility("PowerProtect");
 			break;
 			
 			// X panning
@@ -420,10 +420,6 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 			break;
 		}
 		return true;
-	}
-
-	public void setPowerManager(PowerManager powerManager) {
-		this.powerManager = powerManager;
 	}
 
 }

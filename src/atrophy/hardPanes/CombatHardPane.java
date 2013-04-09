@@ -71,7 +71,6 @@ public class CombatHardPane implements HardPaneDefineable {
 		PowerManager powerManager = new PowerManager(aiCrowd.getSquad(), aiGenerator);
 		
 		turnProcess.setPowerManager(powerManager);
-		actionSuite.getCombatKeyboardHandler().setPowerManager(powerManager);
 		actionSuite.getMouseAbilityHandler().setPowerManager(powerManager);
 		
 		// Add ui elements

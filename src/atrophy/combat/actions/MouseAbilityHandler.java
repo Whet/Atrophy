@@ -196,6 +196,8 @@ public class MouseAbilityHandler {
 				powerManager.usePower(Power.KILL, targetAi);
 			break;
 			case "PowerProtect":
+				targetAi = getClosestAiToMouse(mousePoint, AI_CLICK_RADIUS, true);
+				powerManager.usePower(Power.PROTECT, targetAi);
 			break;
 			case "PowerHelp":
 			break;
