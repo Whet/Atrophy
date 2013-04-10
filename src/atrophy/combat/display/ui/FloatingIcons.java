@@ -1,6 +1,3 @@
-/*
- * 
- */
 package atrophy.combat.display.ui;
 
 import java.awt.Color;
@@ -19,10 +16,15 @@ import watoydoEngine.fonts.FontList;
 import watoydoEngine.gubbinz.GraphicsFunctions;
 import watoydoEngine.gubbinz.Maths;
 import watoydoEngine.io.ReadWriter;
-import atrophy.combat.CombatNCEManager;
 import atrophy.combat.CombatMembersManager;
+import atrophy.combat.CombatNCEManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
+import atrophy.combat.ai.Ai;
+import atrophy.combat.combatEffects.Power;
+import atrophy.combat.combatEffects.PowerManager;
+import atrophy.combat.combatEffects.ProtectPowerEffect;
+import atrophy.combat.combatEffects.PowerManager.PowerEffect;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.AiImage;
 import atrophy.combat.display.LineDrawer;
@@ -33,30 +35,11 @@ import atrophy.combat.level.LevelBlock;
 import atrophy.combat.level.LevelManager;
 import atrophy.combat.levelAssets.NonCharacterEntity;
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class FloatingIcons.
- */
 public class FloatingIcons extends Crowd{
 	
-	/**
-	 * The stacked icons markers.
-	 */
 	private ArrayList<double[]> stackedIconsMarkers;
-	
-	/**
-	 * The effects.
-	 */
 	private ArrayList<VisualEffect> effects;
-	
-	/**
-	 * The pending paint.
-	 */
 	private ArrayList<PendingPaint> pendingPaint;
-	
-	/**
-	 * The drawing doors.
-	 */
 	private boolean drawingDoors;
 	
 	private CombatMembersManager combatMembersManager;
@@ -71,13 +54,8 @@ public class FloatingIcons extends Crowd{
 	private BufferedImage imageOpenDoor;
 
 	private Map<String, BufferedImage> images;
+	private PowerManager powerManager;
 	
-	/**
-	 * Instantiates a new floating icons.
-	 * @param lineDrawer 
-	 * @param combatInorganicManager 
-	 * @param levelManager 
-	 */
 	public FloatingIcons(CombatMembersManager combatMembersManager, PanningManager panningManager, AiCrowd aiCrowd, CombatVisualManager combatVisualManager, CombatNCEManager combatInorganicManager, LevelManager levelManager) {
 		super(true);
 		
@@ -113,20 +91,19 @@ public class FloatingIcons extends Crowd{
 		this.lineDrawer = lineDrawer;		
 	}
 	
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Crowd#drawMethod(java.awt.Graphics2D)
-	 */
+	public void setPowerManager(PowerManager powerManager) {
+		this.powerManager = powerManager;
+	}
+
 	@Override
 	public void drawMethod(Graphics2D drawShape){
 		drawDoors(drawShape);
 		drawAssets(drawShape);
 		drawStackedmarkers(drawShape);
 		drawEffects(drawShape);
+		drawAiEffects(drawShape);
 	}
 	
-	/**
-	 * Update pending.
-	 */
 	public void updatePending() {
 		ListIterator<PendingPaint> pendingIt = pendingPaint.listIterator();
 		
@@ -149,11 +126,6 @@ public class FloatingIcons extends Crowd{
 		}
 	}
 
-	/**
-	 * Draw effects.
-	 *
-	 * @param drawShape the draw shape
-	 */
 	private void drawEffects(Graphics2D drawShape) {
 		ListIterator<VisualEffect> effectIt = this.effects.listIterator();
 		
@@ -168,11 +140,6 @@ public class FloatingIcons extends Crowd{
 		}
 	}
 
-	/**
-	 * Draw doors.
-	 *
-	 * @param drawShape the draw shape
-	 */
 	private void drawDoors(Graphics2D drawShape){
 		
 		drawShape.setComposite(GraphicsFunctions.makeComposite(0.4f));
@@ -188,11 +155,6 @@ public class FloatingIcons extends Crowd{
 		drawShape.setComposite(GraphicsFunctions.makeComposite(1.0f));
 	}
 	
-	/**
-	 * Draw visible doors.
-	 *
-	 * @param drawShape the draw shape
-	 */
 	private void drawVisibleDoors(Graphics2D drawShape){
 		
 		ArrayList<LevelBlock> drawnRooms = new ArrayList<LevelBlock>(combatMembersManager.getAllyCount()); 
@@ -224,11 +186,6 @@ public class FloatingIcons extends Crowd{
 	}
 	
 	
-	/**
-	 * Draw assets.
-	 *
-	 * @param drawShape the draw shape
-	 */
 	private void drawAssets(Graphics2D drawShape){
 		
 		NonCharacterEntity asset = null;
@@ -261,11 +218,6 @@ public class FloatingIcons extends Crowd{
 		}
 	}
 	
-	/**
-	 * Draw stackedmarkers.
-	 *
-	 * @param drawShape the draw shape
-	 */
 	private void drawStackedmarkers(Graphics2D drawShape){
 		drawShape.setFont(FontList.AUD14);
 		for(int i = 0; i < this.stackedIconsMarkers.size(); i++){
@@ -290,20 +242,39 @@ public class FloatingIcons extends Crowd{
 		drawShape.setComposite(GraphicsFunctions.makeComposite(1.0f));
 	}
 	
-	/**
-	 * Adds the stacked icon markers.
-	 *
-	 * @param stackedIconsMarkers the stacked icons markers
-	 */
+	private void drawAiEffects(Graphics2D drawShape) {
+
+		for(Ai ai : aiCrowd.getActors()) {
+			
+			if(ai.hasActiveEffect(ProtectPowerEffect.NAME)) {
+				drawShape.setComposite(GraphicsFunctions.makeComposite(0.5f));
+				drawShape.setColor(Color.green);
+				drawShape.fillOval((int)(ai.getLocation()[0] + panningManager.getOffset()[0]) + 5, (int)(ai.getLocation()[1] + panningManager.getOffset()[1]) + 5, 8, 8);
+			}
+				
+			for(PowerEffect power: powerManager.getPowers()) {
+				if(power.getTarget() != ai)
+					continue;
+				
+				if(power.getType().equals(Power.KILL)) {
+					drawShape.setComposite(GraphicsFunctions.makeComposite(0.5f));
+					drawShape.setColor(Color.red);
+					drawShape.fillOval((int)(ai.getLocation()[0] + panningManager.getOffset()[0]) + 5, (int)(ai.getLocation()[1] + panningManager.getOffset()[1]) + 5, 8, 8);
+				}
+			}
+			
+			//TODO
+			
+		}
+		
+	}
+	
 	public void addStackedIconMarkers(double[] stackedIconsMarkers){
 		if(stackedIconsMarkers != null){
 			this.stackedIconsMarkers.add(stackedIconsMarkers);
 		}
 	}
 
-	/**
-	 * Update overlapping icons.
-	 */
 	public void updateOverlappingIcons() {
 		
 		this.stackedIconsMarkers.clear();
@@ -335,111 +306,46 @@ public class FloatingIcons extends Crowd{
 		}
 	}
 	
-	/**
-	 * Adds the effect.
-	 *
-	 * @param effect the effect
-	 */
 	public void addEffect(VisualEffect effect){
 		this.effects.add(effect);
 	}
 	
-	/**
-	 * Adds the pending paint.
-	 *
-	 * @param image the image
-	 * @param location the location
-	 * @param alpha the alpha
-	 */
 	public void addPendingPaint(BufferedImage image, double[] location, double alpha){
 		this.pendingPaint.add(new PendingPaint(image, location, alpha));
 	}
 	
-	/**
-	 * The Class PendingPaint.
-	 */
 	private static class PendingPaint{
 		
-		/**
-		 * The image.
-		 */
 		private BufferedImage image;
-		
-		/**
-		 * The location.
-		 */
 		private double[] location;
-		
-		/**
-		 * The alpha.
-		 */
 		private double alpha;
-		/*
-		public PendingPaint(BufferedImage image, double[] location){
-			this.image = image;
-			this.location = location;
-			alpha = 1;
-		}*/
-		
-		/**
-		 * Instantiates a new pending paint.
-		 *
-		 * @param image the image
-		 * @param location the location
-		 * @param alpha the alpha
-		 */
+
 		public PendingPaint(BufferedImage image, double[] location, double alpha){
 			this.image = image;
 			this.location = location;
 			this.alpha = alpha;
 		}
 
-		/**
-		 * Gets the alpha.
-		 *
-		 * @return the alpha
-		 */
 		public double getAlpha() {
 			return this.alpha;
 		}
 
-		/**
-		 * Gets the image.
-		 *
-		 * @return the image
-		 */
 		public BufferedImage getImage() {
 			return image;
 		}
 
-		/**
-		 * Gets the location.
-		 *
-		 * @return the location
-		 */
 		public double[] getLocation() {
 			return location;
 		}
 	}
 	
-	/**
-	 * Sets the drawing doors.
-	 *
-	 * @param b the new drawing doors
-	 */
 	public void setDrawingDoors(boolean b) {
 		drawingDoors = b;
 	}
 
-	/**
-	 * Checks if is drawing doors.
-	 *
-	 * @return true, if is drawing doors
-	 */
 	public boolean isDrawingDoors() {
 		return drawingDoors;
 	}
-
 
 	public BufferedImage getImage(String image) {
 		return this.images.get(image);

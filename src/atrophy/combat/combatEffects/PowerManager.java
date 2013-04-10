@@ -72,7 +72,7 @@ public class PowerManager {
 		return 0;
 	}
 
-	private static abstract class PowerEffect {
+	public static abstract class PowerEffect {
 		
 		private int life;
 		protected Power type;
@@ -96,7 +96,13 @@ public class PowerManager {
 		}
 
 		protected abstract void tickEffect();
-		
+
+		public abstract Object getTarget();
+
+		public Power getType() {
+			return type;
+		}
+
 	}
 	
 	private static class KillEffect extends PowerEffect {
@@ -126,6 +132,11 @@ public class PowerManager {
 				aiGenerator.spawnAi(daemonCommand );
 			}
 		}
+
+		@Override
+		public Object getTarget() {
+			return target;
+		}
 	}
 	
 	private static class ProtectEffect extends PowerEffect {
@@ -133,15 +144,25 @@ public class PowerManager {
 		private Ai target;
 		
 		public ProtectEffect(PowerManager powerManager, Ai target, int stability) {
-			super(powerManager, Power.PROTECT, stability);
+			super(powerManager, Power.PROTECT, 0);
 			this.target = target;
-			
+			this.stability = stability;
 			target.addEffect(new ProtectPowerEffect(stability));
 		}
 
 		@Override
-		protected void tickEffect() {}
+		protected void tickEffect() {
+		}
+
+		@Override
+		public Object getTarget() {
+			return target;
+		}
 		
+	}
+
+	public List<PowerEffect> getPowers() {
+		return this.powers;
 	}
 	
 }

@@ -627,14 +627,8 @@ public class Ai implements Lootable{
 	
 	public void setDead(boolean dead) {
 		
-		if(this.hasActiveEffect(ProtectPowerEffect.NAME)) {
-			
-			Effect effect = this.getEffect(ProtectPowerEffect.NAME);
-			if(effect.getSkillLevel() == 0)
-				effect.stopEffect();
-			
+		if(this.hasActiveEffect(ProtectPowerEffect.NAME))
 			return;
-		}
 		
 		// Make sure dead unit show smashed helmet
 		if(dead && !this.dead){	

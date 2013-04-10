@@ -15,8 +15,6 @@ import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.ai.AiGenerator;
-import atrophy.combat.combatEffects.Power;
-import atrophy.combat.combatEffects.PowerManager;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.AiManagementSuite;
 import atrophy.combat.display.ui.CartographerBox;
@@ -119,7 +117,6 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 	 */
 	@Override
 	public boolean kU(KeyEvent e) {
-	//	System.out.println(e.getKeyCode());
 		switch(e.getKeyCode()){
 			
 			//[
@@ -176,21 +173,21 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 				
 			break;
 		
-			// t
+			// T
 			case 84:
 				if(combatMembersManager.getCurrentAi() != null){
 					combatMembersManager.getCurrentAi().tradeWithClosestAlly();
 				}
 			break;
 			
-			// u
+			// U
 			case 85:
 				cartographerBox.setVisible(!cartographerBox.isVisible());
 				lootBox.closeLootUi(lootBox.isVisible());
 				messageBox.setVisible(false);
 			break;
 		
-			// i
+			// I
 			case 73:
 				if(combatMembersManager.getCurrentAi() != null && 
 				   !combatMembersManager.getCurrentAi().equals("Looting")){
@@ -228,8 +225,21 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 //				combatMembersManager.getCurrentAi().setDead(true);
 //				mouseAbilityHandler.setAbility("Hack");
 //				mouseAbilityHandler.setAbility("DebugKill");
-//				mouseAbilityHandler.setAbility("PowerKill");
+			break;
+			
+			// Z
+			case 90:
+				mouseAbilityHandler.setAbility("PowerKill");
+			break;
+			
+			// X
+			case 88:
 				mouseAbilityHandler.setAbility("PowerProtect");
+			break;
+			
+			// C
+			case 67:
+				mouseAbilityHandler.setAbility("PowerHelp");
 			break;
 			
 			// X panning
@@ -247,7 +257,7 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 				panningManager.panY(0);
 			break;
 		
-			// backspace clears all actions
+			// backspace
 			case 8:
 				if(combatMembersManager.getCurrentAi() != null){
 					combatMembersManager.getCurrentAi().removeOrders(mouseAbilityHandler);
@@ -255,7 +265,7 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 				}
 			break;
 			
-			// Space bar ends turn
+			// Space bar
 			case 32:
 				if(!messageBox.isVisible())
 					turnProcess.endTurn();
@@ -417,6 +427,10 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 			// shift
 			case 16:
 				SHIFT_DOWN = false;
+			break;
+			
+			default:
+				System.out.println(e.getKeyCode());
 			break;
 		}
 		return true;
