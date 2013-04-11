@@ -9,6 +9,7 @@ import watoydoEngine.designObjects.display.Crowd;
 import watoydoEngine.hardPanes.HardPaneDefineable;
 import atrophy.combat.CombatNCEManager;
 import atrophy.combat.actions.ActionSuite;
+import atrophy.combat.actions.CombatMouseHandler;
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.ai.AiGeneratorInterface;
 import atrophy.combat.ai.AiGeneratorInterface.GenerateCommand;
@@ -73,6 +74,8 @@ public class CombatHardPane implements HardPaneDefineable {
 		turnProcess.setPowerManager(powerManager);
 		actionSuite.getMouseAbilityHandler().setPowerManager(powerManager);
 		uiUpdaterSuite.getFloatingIcons().setPowerManager(powerManager);
+		uiUpdaterSuite.getCombatUiManager().getActionsBar().setPowerManager(powerManager);
+		actionSuite.getCombatKeyboardHandler().setPowerManager(powerManager);
 		
 		// Add ui elements
 		crowd.addButton(uiUpdaterSuite.getCombatUiManager().getMoveFlag());

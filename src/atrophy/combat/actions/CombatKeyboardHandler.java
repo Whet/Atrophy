@@ -15,6 +15,7 @@ import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.ai.AiGenerator;
+import atrophy.combat.combatEffects.PowerManager;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.AiManagementSuite;
 import atrophy.combat.display.ui.CartographerBox;
@@ -49,6 +50,7 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 	private TechTree techTree;
 	private StashManager stashManager;
 	private Missions missions;
+	private PowerManager powerManager;
 	
 	public CombatKeyboardHandler(LevelManager levelManager, MouseAbilityHandler mouseAbilityHandler, TurnProcess turnProcess, AiManagementSuite aiManagementSuite, UiUpdaterSuite uiUpdaterSuite, TechTree techTree, StashManager stashManager, Missions missions){
 		
@@ -72,14 +74,12 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 		
 	}
 	
-	/**
-	 * The SHIF t_ down.
-	 */
+	public void setPowerManager(PowerManager powerManager) {
+		this.powerManager = powerManager;
+	}
+
 	public static boolean SHIFT_DOWN = false;
 	
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.actions.KeyboardHandler#kD(java.awt.event.KeyEvent)
-	 */
 	@Override
 	public boolean kD(KeyEvent e) {
 		switch(e.getKeyCode()){
@@ -112,9 +112,6 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 		return true;
 	}
 	
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.actions.KeyboardHandler#kU(java.awt.event.KeyEvent)
-	 */
 	@Override
 	public boolean kU(KeyEvent e) {
 		switch(e.getKeyCode()){
@@ -240,6 +237,11 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 			// C
 			case 67:
 				mouseAbilityHandler.setAbility("PowerHelp");
+			break;
+			
+			// V
+			case 86:
+				powerManager.clearBuffer();
 			break;
 			
 			// X panning

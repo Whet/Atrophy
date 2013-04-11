@@ -3,6 +3,7 @@
  */
 package atrophy.combat.display.ui.abilities;
 
+import java.awt.Point;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,6 +11,7 @@ import java.util.Map;
 
 import javax.imageio.ImageIO;
 
+import watoydoEngine.designObjects.actions.ActionRegion;
 import watoydoEngine.designObjects.actions.MouseRespondable;
 import watoydoEngine.designObjects.display.ButtonSingle;
 import watoydoEngine.designObjects.display.Crowd;
@@ -20,6 +22,8 @@ import watoydoEngine.workings.DisplayManager;
 import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.actions.MouseAbilityHandler;
+import atrophy.combat.combatEffects.PowerManager;
+import atrophy.combat.display.ui.InfoTextDisplayable;
 import atrophy.combat.mechanics.Abilities;
 
 // TODO: Auto-generated Javadoc
@@ -57,10 +61,13 @@ public class ActionsBar extends Crowd{
 	
 	private Map<String, AbilityButton> actionButtonMap;
 	
-	private ImageSingle abilityBack; 
+	private ImageSingle abilityBack;
+
+	private PowerMouseRegion item; 
 	
 	/**
 	 * Instantiates a new actions bar.
+	 * @param combatUiManager 
 	 */
 	public ActionsBar(CombatMembersManager combatMembersManager) {
 		super(true);
@@ -147,10 +154,16 @@ public class ActionsBar extends Crowd{
 		visibleButtons = new ArrayList<ButtonSingle>(9);
 		
 		// move abilities background to bottom left corner
-		abilityBack.setLocation(0,
-							   DisplayManager.getInstance().getResolution()[1] - abilityBack.getSize()[1]);
+		abilityBack.setLocation(0, DisplayManager.getInstance().getResolution()[1] - abilityBack.getSize()[1]);
 		abilityBack.setVisible(true);
 		
+		
+		item = new PowerMouseRegion(0, DisplayManager.getInstance().getResolution()[1] - abilityBack.getSize()[1], abilityBack.getSize()[0], 30);
+		this.addMouseActionItem(item);
+	}
+	
+	public void setPowerManager(PowerManager powerManager) {
+		item.setPowerManager(powerManager);
 	}
 	
 	/**
@@ -287,11 +300,50 @@ public class ActionsBar extends Crowd{
 				((AbilityButton) button).setCombatUiManager(combatUiManager);
 			}
 		}
+		
+		item.setCombatUiManager(combatUiManager);
 	}
 	
 	@Override
 	public double[] getSize() {
 		return new double[]{0,this.abilityBack.getSize()[1]};
+	}
+	
+	private static class PowerMouseRegion extends ActionRegion implements InfoTextDisplayable {
+
+		private CombatUiManager combatUiManager;
+		private PowerManager powerManager;
+		
+		public PowerMouseRegion(double x, double y, double width, double height) {
+			super(x, y, width, height);
+		}
+		
+		public void setCombatUiManager(CombatUiManager combatUiManager) {
+			this.combatUiManager = combatUiManager;
+		}
+
+		public void setPowerManager(PowerManager powerManager) {
+			this.powerManager = powerManager;			
+		}
+
+		@Override
+		public void mI(Point mousePosition){
+			combatUiManager.getInfoText().setInfoText(this);
+		}
+		
+		@Override
+		public void mO(Point mousePosition){
+			combatUiManager.getInfoText().removeInfoText(this);
+		}
+		
+		public String getUiHint(){
+			return "Z - Kill, X - Protect, C - Help     Stability: " + powerManager.getStability() + " (" + powerManager.getRankedStability() + ")";
+		}
+		
+		public int getHintLines(){
+			return 1;
+		}
+		
 	}
 	
 }

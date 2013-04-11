@@ -16,6 +16,7 @@ public class PowerManager {
 	private AiGenerator aiGenerator;
 	private Squad squad;
 	
+	private List<PowerEffect> powerBuffer;
 	private List<PowerEffect> powers;
 	
 	public PowerManager(Squad squad, AiGenerator aiGenerator) {
@@ -23,6 +24,7 @@ public class PowerManager {
 		this.squad = squad;
 		
 		this.powers = new ArrayList<>();
+		this.powerBuffer = new ArrayList<>();
 	}
 	
 	public void usePower(Power power, Object target) {
@@ -31,18 +33,27 @@ public class PowerManager {
 			break;
 			case KILL:
 				if(!((Ai) target).isDead())
-					this.powers.add(new KillEffect(this, (Ai) target, aiGenerator, getRankedStability()));
+					this.powerBuffer.add(new KillEffect(this, (Ai) target, aiGenerator, getRankedStability()));
 			break;
 			case PROTECT:
 				if(!((Ai) target).isDead())
-					this.powers.add(new ProtectEffect(this, (Ai) target, getRankedStability()));
+					this.powerBuffer.add(new ProtectEffect(this, (Ai) target, getRankedStability()));
 			break;
 			default:
 			break;
 		}
 	}
 	
+	public void clearBuffer() {
+		this.powerBuffer.clear();
+	}
+	
 	public void tickPowers() {
+		
+		// Add powers to list for ticking and clear buffer
+		this.powers.addAll(powerBuffer);
+		powerBuffer.clear();
+		
 		Iterator<PowerEffect> it = powers.iterator();
 		while (it.hasNext()) {
 			PowerManager.PowerEffect powerEffect = (PowerManager.PowerEffect) it.next();
@@ -63,7 +74,7 @@ public class PowerManager {
 			squad.setStability(Squad.MAX_STABILITY);
 	}
 	
-	private int getRankedStability() {
+	public int getRankedStability() {
 		if(squad.getStability() > 80)
 			return 2;
 		else if(squad.getStability() > 20)
@@ -162,7 +173,16 @@ public class PowerManager {
 	}
 
 	public List<PowerEffect> getPowers() {
-		return this.powers;
+		List<PowerEffect> powers = new ArrayList<>();
+		
+		powers.addAll(this.powers);
+		powers.addAll(this.powerBuffer);
+		
+		return powers;
+	}
+
+	public int getStability() {
+		return this.squad.getStability();
 	}
 	
 }
