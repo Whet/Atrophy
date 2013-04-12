@@ -1,9 +1,7 @@
-/*
- * 
- */
 package atrophy.combat.display.ui.abilities;
 
 import java.awt.Point;
+import java.awt.event.MouseEvent;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -26,49 +24,19 @@ import atrophy.combat.combatEffects.PowerManager;
 import atrophy.combat.display.ui.InfoTextDisplayable;
 import atrophy.combat.mechanics.Abilities;
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class ActionsBar.
- */
 public class ActionsBar extends Crowd{
 	
-	/**
-	 * The Constant BUTTON_SPACING_Y.
-	 */
 	private static final int BUTTON_SPACING_Y = 40;
-	
-	/**
-	 * The Constant BUTTON_SPACING_X.
-	 */
 	private static final int BUTTON_SPACING_X = 50;
-	
-	/**
-	 * The Constant BUTTON_X.
-	 */
 	private static final int BUTTON_X = 13;
-	
-	/**
-	 * The Constant BUTTON_Y_START.
-	 */
 	private static final int BUTTON_Y_START = 118;
 	
-	/**
-	 * The visible buttons.
-	 */
 	private ArrayList<ButtonSingle> visibleButtons;
-	
 	private CombatMembersManager combatMembersManager;
-	
 	private Map<String, AbilityButton> actionButtonMap;
-	
 	private ImageSingle abilityBack;
-
 	private PowerMouseRegion item; 
 	
-	/**
-	 * Instantiates a new actions bar.
-	 * @param combatUiManager 
-	 */
 	public ActionsBar(CombatMembersManager combatMembersManager) {
 		super(true);
 		
@@ -160,15 +128,39 @@ public class ActionsBar extends Crowd{
 		
 		item = new PowerMouseRegion(0, DisplayManager.getInstance().getResolution()[1] - abilityBack.getSize()[1], abilityBack.getSize()[0], 30);
 		this.addMouseActionItem(item);
+		
+	}
+	
+	public void lazyLoad(final MouseAbilityHandler mouseAbilityHandler) {
+		this.addMouseActionItem(new ActionRegion(10, DisplayManager.getInstance().getResolution()[1] - abilityBack.getSize()[1] + 2, 30, 30) {
+			@Override
+			public boolean mU(Point mousePosition, MouseEvent e) {
+				mouseAbilityHandler.setAbility("PowerKill");
+				return true;
+			}
+		});
+		
+		this.addMouseActionItem(new ActionRegion(57, DisplayManager.getInstance().getResolution()[1] - abilityBack.getSize()[1] + 2, 30, 30) {
+			@Override
+			public boolean mU(Point mousePosition, MouseEvent e) {
+				mouseAbilityHandler.setAbility("PowerProtect");
+				return true;
+			}
+		});
+		
+		this.addMouseActionItem(new ActionRegion(104, DisplayManager.getInstance().getResolution()[1] - abilityBack.getSize()[1] + 2, 30, 30) {
+			@Override
+			public boolean mU(Point mousePosition, MouseEvent e) {
+				mouseAbilityHandler.setAbility("PowerHelp");
+				return true;
+			}
+		});
 	}
 	
 	public void setPowerManager(PowerManager powerManager) {
 		item.setPowerManager(powerManager);
 	}
 	
-	/**
-	 * Update visible buttons.
-	 */
 	public void updateVisibleButtons(){
 		this.visibleButtons.clear();
 		
@@ -242,9 +234,6 @@ public class ActionsBar extends Crowd{
 		placeButtons();
 	}
 	
-	/**
-	 * Place buttons.
-	 */
 	private void placeButtons(){
 		int xCounter = 0;
 		int yCounter = 0;
@@ -263,20 +252,12 @@ public class ActionsBar extends Crowd{
 		}
 	}
 	
-	/**
-	 * Activate button.
-	 *
-	 * @param button the button
-	 */
 	public void activateButton(int button){
 		if(button < this.visibleButtons.size()){
 			this.visibleButtons.get(button).mC(null,null);
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Crowd#setVisible(boolean)
-	 */
 	@Override
 	public void setVisible(boolean visible){
 		super.setVisible(visible);
@@ -337,7 +318,7 @@ public class ActionsBar extends Crowd{
 		}
 		
 		public String getUiHint(){
-			return "Z - Kill, X - Protect, C - Help     Stability: " + powerManager.getStability() + " (" + powerManager.getRankedStability() + ")";
+			return "Stability: " + powerManager.getStability() + " (" + powerManager.getRankedStability() + ")";
 		}
 		
 		public int getHintLines(){

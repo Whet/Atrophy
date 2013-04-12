@@ -71,6 +71,7 @@ public class CombatUiManager{
 		this.floatingIcons = floatingIcons;
 		combatInfo = new CombatInfo(combatMembersManager, this, floatingIcons, combatVisualManager);
 		this.lootBox = lootBox;
+		this.actionsBar.lazyLoad(mouseAbilityHandler);
 	}
 	
 	public void updateUi(){
