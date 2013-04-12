@@ -280,7 +280,6 @@ public class AiCrowd extends Crowd {
 		actors.add(ai);
 		
 		this.masterStack.push(ai);
-		Collections.shuffle(masterStack);
 	}
 	
 	public void addMask(AiImage aiImg){
@@ -394,6 +393,10 @@ public class AiCrowd extends Crowd {
 			return this.animations.get(animation)[frame];
 		}
 		
+	}
+
+	public void shuffleAi() {
+		Collections.shuffle(this.masterStack);
 	}
 	
 }

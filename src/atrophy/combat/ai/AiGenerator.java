@@ -162,7 +162,7 @@ public class AiGenerator{
 		combatMembersManager.pickStartingAi();
 		generateRosters();
 		combatUiManager.getAllyRoster().generatePortraits();
-		
+		aiCrowd.shuffleAi();
 	}
 	
 	public void spawnAi(GenerateCommand command) {
