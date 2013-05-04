@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
+import javax.swing.SwingUtilities;
+
 import watoydoEngine.designObjects.display.Crowd;
 import watoydoEngine.workings.displayActivity.ActivePane;
 import atrophy.combat.CombatNCEManager;
@@ -34,37 +36,46 @@ import atrophy.hardPanes.CombatHardPane;
  */
 public class MenuMapInterface {
 	
-	public static void loadLevel(File chosenLevel, String owner, Squad squad, int engineeringChance, int medicalChance, int weaponChance, int scienceChance, Missions missions, ItemMarket itemMarket, TechTree techTree, StashManager stashManager){
+	public static void loadLevel(final File chosenLevel, final String owner, final Squad squad, final int engineeringChance, final int medicalChance, final int weaponChance, final int scienceChance, final Missions missions, final ItemMarket itemMarket, final TechTree techTree, final StashManager stashManager) {
 
-		List<AiGeneratorInterface.GenerateCommand> generationCommands = new ArrayList<AiGeneratorInterface.GenerateCommand>();
+		ActivePane.getInstance().showLoading();
 		
-		TurnProcess turnProcess = new TurnProcess();
-		LevelManager levelManager = new LevelManager();
-		CombatNCEManager combatInorganicManager = new CombatNCEManager(levelManager);
-		AiManagementSuite aiManagementSuite = new AiManagementSuite(turnProcess, combatInorganicManager, levelManager, squad);
-		UiUpdaterSuite uiUpdaterSuite = new UiUpdaterSuite(aiManagementSuite, turnProcess, levelManager, combatInorganicManager);
-		ActionSuite actionSuite = new ActionSuite(aiManagementSuite, uiUpdaterSuite, turnProcess, levelManager, squad, techTree, stashManager, missions);
-		MissionManager missionManager = new MissionManager(missions);
+		SwingUtilities.invokeLater(new Runnable() {
+			
+			@Override
+			public void run() {
+				List<AiGeneratorInterface.GenerateCommand> generationCommands = new ArrayList<AiGeneratorInterface.GenerateCommand>();
+				
+				TurnProcess turnProcess = new TurnProcess();
+				LevelManager levelManager = new LevelManager();
+				CombatNCEManager combatInorganicManager = new CombatNCEManager(levelManager);
+				AiManagementSuite aiManagementSuite = new AiManagementSuite(turnProcess, combatInorganicManager, levelManager, squad);
+				UiUpdaterSuite uiUpdaterSuite = new UiUpdaterSuite(aiManagementSuite, turnProcess, levelManager, combatInorganicManager);
+				ActionSuite actionSuite = new ActionSuite(aiManagementSuite, uiUpdaterSuite, turnProcess, levelManager, squad, techTree, stashManager, missions);
+				MissionManager missionManager = new MissionManager(missions);
+				
+				try {
+					// A.
+					levelManager.setCurrentLevel(LevelIO.loadLevel(chosenLevel, owner, engineeringChance, medicalChance, weaponChance, scienceChance, uiUpdaterSuite.getPanningManager(), turnProcess, uiUpdaterSuite.getMessageBox(), aiManagementSuite.getAiCrowd(), aiManagementSuite.getCombatMembersManager(), missions, missionManager, generationCommands));
+					uiUpdaterSuite.lazyLoad(actionSuite.getMouseAbilityHandler(), aiManagementSuite.getAiCrowd(), levelManager, actionSuite.getCombatMouseHandler());
+					// Moved from A. without checking		
+					aiManagementSuite.lazyLoad(uiUpdaterSuite, actionSuite.getMouseAbilityHandler());
+					setSpawns(owner, levelManager, squad, itemMarket, generationCommands);
+					turnProcess.lazyLoad(aiManagementSuite, uiUpdaterSuite, combatInorganicManager, actionSuite);
+				} 
+				catch (IOException e) {
+					System.err.println("Level could not be loaded");
+					return;
+				} 
+				catch (LevelFormatException e) {
+					System.err.println(e.message);
+					return;
+				}
+				
+				ActivePane.getInstance().changePane(new Crowd(new CombatHardPane(turnProcess, aiManagementSuite, uiUpdaterSuite, actionSuite, levelManager, aiManagementSuite.getAiCrowd(), combatInorganicManager, itemMarket, generationCommands)));
+			}
+		});
 		
-		try {
-			// A.
-			levelManager.setCurrentLevel(LevelIO.loadLevel(chosenLevel, owner, engineeringChance, medicalChance, weaponChance, scienceChance, uiUpdaterSuite.getPanningManager(), turnProcess, uiUpdaterSuite.getMessageBox(), aiManagementSuite.getAiCrowd(), aiManagementSuite.getCombatMembersManager(), missions, missionManager, generationCommands));
-			uiUpdaterSuite.lazyLoad(actionSuite.getMouseAbilityHandler(), aiManagementSuite.getAiCrowd(), levelManager, actionSuite.getCombatMouseHandler());
-			// Moved from A. without checking		
-			aiManagementSuite.lazyLoad(uiUpdaterSuite, actionSuite.getMouseAbilityHandler());
-			setSpawns(owner, levelManager, squad, itemMarket, generationCommands);
-			turnProcess.lazyLoad(aiManagementSuite, uiUpdaterSuite, combatInorganicManager, actionSuite);
-		} 
-		catch (IOException e) {
-			System.err.println("Level could not be loaded");
-			return;
-		} 
-		catch (LevelFormatException e) {
-			System.err.println(e.message);
-			return;
-		}
-		
-		ActivePane.getInstance().changePane(new Crowd(new CombatHardPane(turnProcess, aiManagementSuite, uiUpdaterSuite, actionSuite, levelManager, aiManagementSuite.getAiCrowd(), combatInorganicManager, itemMarket, generationCommands)));
 	}
 
 	/**

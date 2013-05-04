@@ -237,20 +237,33 @@ public class ActivePane extends JFrame implements MouseListener, KeyListener, Wi
 	 *
 	 * @param pane the pane
 	 */
-	public void changePane(Crowd pane){
+	public void changePane(final Crowd pane){
 		this.loaded = false;
 		this.repaint();
-		try {
-			loadedMutex.acquire();
-			this.currentPane = pane;
-			this.loaded = true;
-		//	DevMenu.getInstance().setVisible(true);
-			loadedMutex.release();
-		} 
-		catch (InterruptedException e1) {
-			System.err.println("interrupedWIndowClose");
-			Thread.currentThread().interrupt();
-		}
+		SwingUtilities.invokeLater(
+		new Thread() {
+			public void run() {
+				try {
+					loadedMutex.acquire();
+					currentPane = pane;
+					loaded = true;
+					loadedMutex.release();
+				}
+				catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+			};
+		});
+	}
+	
+	public void showLoading() {
+		this.loaded = false;
+		this.repaint();
+	}
+	
+	public void cancelLoading() {
+		this.loaded = true;
+		this.repaint();		
 	}
 	
 	// Listeners
@@ -585,5 +598,6 @@ public class ActivePane extends JFrame implements MouseListener, KeyListener, Wi
 	 */
 	@Override
 	public void windowOpened(WindowEvent e) {}
+	
 
 }
