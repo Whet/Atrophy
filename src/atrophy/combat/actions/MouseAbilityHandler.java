@@ -13,6 +13,7 @@ import atrophy.combat.CombatUiManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.ai.Ai;
 import atrophy.combat.ai.AiData;
+import atrophy.combat.ai.AiDebugger;
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.ai.ThinkingAi;
 import atrophy.combat.ai.TurretAi;
@@ -200,6 +201,10 @@ public class MouseAbilityHandler {
 				powerManager.usePower(Power.PROTECT, targetAi);
 			break;
 			case "PowerHelp":
+			break;
+			case "DebugAi":
+				targetAi = getClosestAiToMouse(mousePoint, AI_CLICK_RADIUS, true);
+				AiDebugger d = new AiDebugger(mousePoint.x, mousePoint.y, targetAi);
 			break;
 		}
 		
