@@ -279,7 +279,7 @@ public class ThinkingAi extends Ai{
 
 	private void act() throws PathNotFoundException {
 		if(this.chaseAi != null){
-			if(this.emotionManager.getAggression() > 0 && (this.getCommander().canPursue(this) || this.chaseAi.getLevelBlock() == this.getLevelBlock())){
+			if(this.emotionManager.getAggression() > 0 && !(this.chaseAi instanceof DaemonAi) && (this.getCommander().canPursue(this) || this.chaseAi.getLevelBlock() == this.getLevelBlock())){
 				chasetarget();
 			}
 			else{
