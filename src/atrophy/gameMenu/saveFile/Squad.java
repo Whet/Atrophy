@@ -28,7 +28,7 @@ public class Squad implements Serializable {
 	public Squad(){
 		this.squadMembers = new ArrayList<Squaddie>(5);
 		this.kills = new HashMap<>();
-		this.stability = 0;
+		this.stability = 1;
 	}
 	
 	public ArrayList<Squaddie> getSquad(){

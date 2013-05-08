@@ -65,10 +65,12 @@ public class MenuMapInterface {
 				} 
 				catch (IOException e) {
 					System.err.println("Level could not be loaded");
+					ActivePane.getInstance().cancelLoading();
 					return;
 				} 
 				catch (LevelFormatException e) {
 					System.err.println(e.message);
+					ActivePane.getInstance().cancelLoading();
 					return;
 				}
 				

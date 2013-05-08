@@ -35,7 +35,7 @@ public class ActionsBar extends Crowd{
 	private CombatMembersManager combatMembersManager;
 	private Map<String, AbilityButton> actionButtonMap;
 	private ImageSingle abilityBack;
-	private PowerMouseRegion item; 
+	private PowerMouseRegion powerMouseRegion; 
 	
 	public ActionsBar(CombatMembersManager combatMembersManager) {
 		super(true);
@@ -125,14 +125,13 @@ public class ActionsBar extends Crowd{
 		abilityBack.setLocation(0, DisplayManager.getInstance().getResolution()[1] - abilityBack.getSize()[1]);
 		abilityBack.setVisible(true);
 		
-		
-		item = new PowerMouseRegion(0, DisplayManager.getInstance().getResolution()[1] - abilityBack.getSize()[1], abilityBack.getSize()[0], 30);
-		this.addMouseActionItem(item);
+		powerMouseRegion = new PowerMouseRegion(0, DisplayManager.getInstance().getResolution()[1] - abilityBack.getSize()[1], abilityBack.getSize()[0], 50);
+		this.addMouseActionItem(powerMouseRegion);
 		
 	}
 	
-	public void lazyLoad(final MouseAbilityHandler mouseAbilityHandler) {
-		this.addMouseActionItem(new ActionRegion(10, DisplayManager.getInstance().getResolution()[1] - abilityBack.getSize()[1] + 2, 30, 30) {
+	public void lazyLoad(final MouseAbilityHandler mouseAbilityHandler, CombatUiManager combatUiManager) {
+		this.addMouseActionItem(new KillPowerButton(10, DisplayManager.getInstance().getResolution()[1] - abilityBack.getSize()[1] + 2, 30, 30, combatUiManager) {
 			@Override
 			public boolean mU(Point mousePosition, MouseEvent e) {
 				mouseAbilityHandler.setAbility("PowerKill");
@@ -140,7 +139,7 @@ public class ActionsBar extends Crowd{
 			}
 		});
 		
-		this.addMouseActionItem(new ActionRegion(57, DisplayManager.getInstance().getResolution()[1] - abilityBack.getSize()[1] + 2, 30, 30) {
+		this.addMouseActionItem(new ProtectPowerButton(57, DisplayManager.getInstance().getResolution()[1] - abilityBack.getSize()[1] + 2, 30, 30, combatUiManager) {
 			@Override
 			public boolean mU(Point mousePosition, MouseEvent e) {
 				mouseAbilityHandler.setAbility("PowerProtect");
@@ -148,7 +147,7 @@ public class ActionsBar extends Crowd{
 			}
 		});
 		
-		this.addMouseActionItem(new ActionRegion(104, DisplayManager.getInstance().getResolution()[1] - abilityBack.getSize()[1] + 2, 30, 30) {
+		this.addMouseActionItem(new HelpPowerButton(104, DisplayManager.getInstance().getResolution()[1] - abilityBack.getSize()[1] + 2, 30, 30, combatUiManager) {
 			@Override
 			public boolean mU(Point mousePosition, MouseEvent e) {
 				mouseAbilityHandler.setAbility("PowerHelp");
@@ -158,7 +157,7 @@ public class ActionsBar extends Crowd{
 	}
 	
 	public void setPowerManager(PowerManager powerManager) {
-		item.setPowerManager(powerManager);
+		powerMouseRegion.setPowerManager(powerManager);
 	}
 	
 	public void updateVisibleButtons(){
@@ -282,7 +281,7 @@ public class ActionsBar extends Crowd{
 			}
 		}
 		
-		item.setCombatUiManager(combatUiManager);
+		powerMouseRegion.setCombatUiManager(combatUiManager);
 	}
 	
 	@Override
@@ -323,6 +322,99 @@ public class ActionsBar extends Crowd{
 		
 		public int getHintLines(){
 			return 1;
+		}
+		
+	}
+	
+	private static class KillPowerButton extends ActionRegion implements InfoTextDisplayable {
+
+		private CombatUiManager combatUiManager;
+
+		public KillPowerButton(double x, double y, double width, double height, CombatUiManager combatUiManager) {
+			super(x, y, width, height);
+			this.combatUiManager = combatUiManager;
+		}
+
+		@Override
+		public String getUiHint() {
+			return "Kill Power";
+		}
+
+		@Override
+		public int getHintLines() {
+			return 1;
+		}
+		
+		@Override
+		public void mI(Point mousePosition){
+			combatUiManager.getInfoText().setInfoText(this);
+		}
+		
+		@Override
+		public void mO(Point mousePosition){
+			combatUiManager.getInfoText().removeInfoText(this);
+		}
+		
+	}
+	
+	private static class ProtectPowerButton extends ActionRegion implements InfoTextDisplayable {
+
+		private CombatUiManager combatUiManager;
+
+		public ProtectPowerButton(double x, double y, double width, double height, CombatUiManager combatUiManager) {
+			super(x, y, width, height);
+			this.combatUiManager = combatUiManager;
+		}
+
+		@Override
+		public String getUiHint() {
+			return "Protect Power";
+		}
+
+		@Override
+		public int getHintLines() {
+			return 1;
+		}
+		
+		@Override
+		public void mI(Point mousePosition){
+			combatUiManager.getInfoText().setInfoText(this);
+		}
+		
+		@Override
+		public void mO(Point mousePosition){
+			combatUiManager.getInfoText().removeInfoText(this);
+		}
+		
+	}
+	
+	private static class HelpPowerButton extends ActionRegion implements InfoTextDisplayable {
+
+		private CombatUiManager combatUiManager;
+
+		public HelpPowerButton(double x, double y, double width, double height, CombatUiManager combatUiManager) {
+			super(x, y, width, height);
+			this.combatUiManager = combatUiManager;
+		}
+
+		@Override
+		public String getUiHint() {
+			return "Help Power";
+		}
+
+		@Override
+		public int getHintLines() {
+			return 1;
+		}
+		
+		@Override
+		public void mI(Point mousePosition){
+			combatUiManager.getInfoText().setInfoText(this);
+		}
+		
+		@Override
+		public void mO(Point mousePosition){
+			combatUiManager.getInfoText().removeInfoText(this);
 		}
 		
 	}

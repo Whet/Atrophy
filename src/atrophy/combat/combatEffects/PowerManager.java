@@ -13,6 +13,8 @@ import atrophy.gameMenu.saveFile.Squad;
 
 public class PowerManager {
 
+	private static final int POWER_STABILITY_DEDUCTION = 20;
+	
 	private AiGenerator aiGenerator;
 	private Squad squad;
 	
@@ -28,6 +30,11 @@ public class PowerManager {
 	}
 	
 	public void usePower(Power power, Object target) {
+		
+		// Must have stability greater than 0
+		if(squad.getStability() - (powerBuffer.size() * POWER_STABILITY_DEDUCTION) <= 0)
+			return;
+		
 		switch(power) {
 			case HELP:
 			break;
@@ -51,7 +58,11 @@ public class PowerManager {
 	public void tickPowers() {
 		
 		// Add powers to list for ticking and clear buffer
-		this.powers.addAll(powerBuffer);
+		for(PowerEffect power : powerBuffer) {
+			this.modifyStability(-POWER_STABILITY_DEDUCTION);
+			this.powers.add(power);
+		}
+		
 		powerBuffer.clear();
 		
 		Iterator<PowerEffect> it = powers.iterator();
@@ -131,8 +142,6 @@ public class PowerManager {
 
 		@Override
 		protected void tickEffect() {
-			
-			powerManager.modifyStability(-40);
 			
 			this.target.setDead(true);
 			
