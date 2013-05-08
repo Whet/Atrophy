@@ -1004,6 +1004,7 @@ public class ThinkingAi extends Ai{
 		// can be used to make nodes purely for dialogue
 		private boolean thinks;
 
+		@SuppressWarnings("unused")
 		private TurnProcess turnProcess;
 		private MessageBox messageBox;
 		private AiCrowd aiCrowd;
