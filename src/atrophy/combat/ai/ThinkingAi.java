@@ -87,6 +87,9 @@ public class ThinkingAi extends Ai{
 	@Override
 	public void action(){
 		
+		if(this.getName().equals("Silent Mussorgsky"))
+//			System.out.println();
+		
 		this.resetMoveUnits();
 		
 		if(turnCounter > 0){
@@ -290,7 +293,8 @@ public class ThinkingAi extends Ai{
 			this.lootAiInRoom();
 		}
 		else if(this.job != null && levelManager.getBlock(this.getMoveLocation()) != this.job.getJobBlock()){
-			this.job.getJobBlock().moveTowardsRandomRegion(this, this.job.getJobBlock().getCover(), true);
+			this.setMoveLocation(levelManager.randomInPosition(this.job.getJobBlock()));
+//			this.job.getJobBlock().moveTowardsRandomRegion(this, this.job.getJobBlock().getCover(), true);
 		}
 		else if(Maths.getDistance(this.getLocation(), this.getMoveLocation()) == 0 && this.turnCounter == 0){
 		
@@ -1371,5 +1375,9 @@ public class ThinkingAi extends Ai{
 
 	public TeamsCommander getCommander() {
 		return combatMembersManager.getCommander(this.getFaction());
+	}
+
+	protected AiJob getJob() {
+		return this.job;
 	}
 }

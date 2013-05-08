@@ -4,6 +4,7 @@
 package atrophy.combat.ai;
 
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Polygon;
 import java.util.ArrayList;
 import java.util.Map;
