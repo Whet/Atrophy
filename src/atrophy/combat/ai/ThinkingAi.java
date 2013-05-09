@@ -87,8 +87,8 @@ public class ThinkingAi extends Ai{
 	@Override
 	public void action(){
 		
-		if(this.getName().equals("Silent Mussorgsky"))
-//			System.out.println();
+		if(this.getName().equals("Sorrowful Solovich"))
+			System.out.println();
 		
 		this.resetMoveUnits();
 		
@@ -292,9 +292,8 @@ public class ThinkingAi extends Ai{
 		else if(this.aiInRoomToLoot()){
 			this.lootAiInRoom();
 		}
-		else if(this.job != null && levelManager.getBlock(this.getMoveLocation()) != this.job.getJobBlock()){
+		else if(this.job != null && this.getLevelBlock() != this.job.getJobBlock()){
 			this.setMoveLocation(levelManager.randomInPosition(this.job.getJobBlock()));
-//			this.job.getJobBlock().moveTowardsRandomRegion(this, this.job.getJobBlock().getCover(), true);
 		}
 		else if(Maths.getDistance(this.getLocation(), this.getMoveLocation()) == 0 && this.turnCounter == 0){
 		
@@ -325,7 +324,7 @@ public class ThinkingAi extends Ai{
 			else if(this.getAbilities().contains(Abilities.STEALTH1) && !this.hasActiveEffect(StationaryInvisibility.NAME) && Maths.getDistance(this.getLocation(), this.getMoveLocation()) == 0){
 				this.addEffect(new StationaryInvisibility(this.getSkillLevel(Abilities.STEALTH1)));
 			}
-			else if(random.nextInt(4) >= 3){
+			else if(this.job != null && random.nextInt(4) >= 3){
 				this.job.getJobBlock().moveTowardsRandomRegion(this, this.job.getJobBlock().getCover(), false);
 				this.turnCounter = random.nextInt(20) + 16;
 			}
