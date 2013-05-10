@@ -220,7 +220,7 @@ public class MouseAbilityHandler {
 	 * @param minRadius the min radius
 	 * @return the closest ai to mouse
 	 */
-	private Ai getClosestAiToMouse(Point mousePosition, int minRadius){
+	public Ai getClosestAiToMouse(Point mousePosition, int minRadius){
 		return this.getClosestAiToMouse(mousePosition, minRadius, false);
 	}
 	

@@ -34,6 +34,10 @@ public class CombatMouseHandler extends ActionRegion {
 	private MouseAbilityHandler mouseAbilityHandler;
 	private CombatVisualManager combatVisualManager;
 	private LevelManager levelManager;
+
+	private double[] panAtClick;
+	private Point mousePanClickPoint;
+	private boolean mousePanning;
 	
 	/**
 	 * Instantiates a new combat mouse handler.
@@ -49,6 +53,8 @@ public class CombatMouseHandler extends ActionRegion {
 		this.combatUiManager = uiUpdaterSuite.getCombatUiManager();
 		this.mouseAbilityHandler = mouseAbilityHandler;
 		
+		mousePanning = false;
+		
 	}
 	
 	/* (non-Javadoc)
@@ -56,14 +62,28 @@ public class CombatMouseHandler extends ActionRegion {
 	 */
 	@Override
 	public void mI(Point mousePosition){
-		panningManager.updatePan();
+		if(mousePanning)
+			panningManager.updatePan(this.mousePanClickPoint, mousePosition, panAtClick);
+		else
+			panningManager.updatePan();
 	}
 	
 	/* (non-Javadoc)
 	 * @see watoydoEngine.designObjects.actions.ActionRegion#mD(java.awt.Point, java.awt.event.MouseEvent)
 	 */
 	@Override
-	public boolean mD(Point mousePosition, MouseEvent e){return false;}
+	public boolean mD(Point mousePosition, MouseEvent e){
+		if(!mousePanning && !CombatKeyboardHandler.SHIFT_DOWN && mouseAbilityHandler.getClosestAiToMouse(mousePosition, 30) == null) {
+			this.mousePanning = true;
+			mousePanClickPoint = mousePosition;
+			panAtClick = panningManager.getOffset().clone();
+			return true;
+		}
+		else if(mousePanning) {
+			return true;
+		}
+		return false;
+	}
 	
 	/* (non-Javadoc)
 	 * @see watoydoEngine.designObjects.actions.ActionRegion#mU(java.awt.Point, java.awt.event.MouseEvent)
@@ -84,6 +104,10 @@ public class CombatMouseHandler extends ActionRegion {
 		else if(mouseAbilityHandler.isSettingAbility()){
 				mouseAbilityHandler.applyAbility(mousePosition);
 				return true;
+		}
+		else if(mousePanning) {
+			this.mousePanning = false;
+			return true;
 		}
 		
 		return false;

@@ -3,6 +3,8 @@
  */
 package atrophy.combat;
 
+import java.awt.Point;
+
 import watoydoEngine.workings.DisplayManager;
 import atrophy.combat.display.AiCrowd;
 
@@ -223,6 +225,14 @@ public class PanningManager {
 	 */
 	public void setMaxOffsets(int[] maxOffsets){
 		this.maxOffsets = maxOffsets;
+	}
+
+	public void updatePan(Point oldPoint, Point newPoint, double[] panAtClick) {
+		this.panningOffset[0] = panAtClick[0];
+		this.panningOffset[1] = panAtClick[1];
+		
+		this.panningOffset[0] += newPoint.x - oldPoint.x;
+		this.panningOffset[1] += newPoint.y - oldPoint.y;
 	}
 	
 }
