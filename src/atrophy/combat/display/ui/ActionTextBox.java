@@ -42,7 +42,7 @@ public class ActionTextBox extends Text{
 	 * Instantiates a new action text box.
 	 */
 	public ActionTextBox(PanningManager panningManager, AiCrowd aiCrowd, CombatMembersManager combatMembersManager) {
-		this.setFont(FontList.AUD18);
+		this.setFont(FontList.AUD14);
 		this.panningManager = panningManager;
 		this.aiCrowd = aiCrowd;
 		this.combatMembersManager = combatMembersManager;
@@ -103,10 +103,18 @@ public class ActionTextBox extends Text{
 			break;
 			
 			case AiCombatActions.AIMING:
-				this.setColour(Color.orange.darker());
-				this.setText("Aim");
-				this.setLocation(aiCrowd.getActorMask(combatMembersManager.getCurrentAi().getTargetAi()).getLocation()[0], 
-								 aiCrowd.getActorMask(combatMembersManager.getCurrentAi().getTargetAi()).getLocation()[1] - 25);
+				if(combatMembersManager.getCurrentAi().getSwing() > 0) {
+					this.setColour(Color.orange);
+					this.setText("Aim - Click to Shoot");
+					this.setLocation(aiCrowd.getActorMask(combatMembersManager.getCurrentAi().getTargetAi()).getLocation()[0], 
+									 aiCrowd.getActorMask(combatMembersManager.getCurrentAi().getTargetAi()).getLocation()[1] - 25);
+				}
+				else {
+					this.setColour(Color.orange.darker());
+					this.setText("Aim");
+					this.setLocation(aiCrowd.getActorMask(combatMembersManager.getCurrentAi().getTargetAi()).getLocation()[0], 
+									 aiCrowd.getActorMask(combatMembersManager.getCurrentAi().getTargetAi()).getLocation()[1] - 25);
+				}
 			break;
 			
 			case AiCombatActions.SHOOTING:
