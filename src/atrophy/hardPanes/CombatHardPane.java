@@ -10,6 +10,7 @@ import watoydoEngine.hardPanes.HardPaneDefineable;
 import atrophy.combat.CombatNCEManager;
 import atrophy.combat.actions.ActionSuite;
 import atrophy.combat.actions.CombatMouseHandler;
+import atrophy.combat.actions.MousePanner;
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.ai.AiGeneratorInterface;
 import atrophy.combat.ai.AiGeneratorInterface.GenerateCommand;
@@ -99,7 +100,8 @@ public class CombatHardPane implements HardPaneDefineable {
 		crowd.addDisplayItem(uiUpdaterSuite.getCombatUiManager().getLargeEventText());
 		
 		crowd.addMouseActionItem(actionSuite.getCombatMouseHandler());
-		
+		MousePanner mousePanner = new MousePanner(uiUpdaterSuite.getPanningManager());
+		crowd.addMouseActionItem(mousePanner);
 		// Order Z, higher numbers on top
 		// ai images at 2, dead ones at 1
 		
@@ -127,6 +129,8 @@ public class CombatHardPane implements HardPaneDefineable {
 		uiUpdaterSuite.getLootBox().setActionZ(-2);
 		
 		actionSuite.getCombatMouseHandler().setActionZ(-2);
+		
+		mousePanner.setActionZ(8);
 		
 		uiUpdaterSuite.getCombatUiManager().getLargeEventText().setZ(10);
 		

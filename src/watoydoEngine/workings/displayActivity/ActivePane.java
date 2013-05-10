@@ -107,6 +107,8 @@ public class ActivePane extends JFrame implements MouseListener, KeyListener, Wi
 	 */
 	private static final Mutex loadedMutex = new Mutex();
 	
+	public static boolean L_MOUSE_DOWN = false;
+	
 	/**
 	 * Instantiates a new active pane.
 	 */
@@ -280,6 +282,7 @@ public class ActivePane extends JFrame implements MouseListener, KeyListener, Wi
 		
 		// Mouse 1
 		if(e.getButton() == MouseEvent.BUTTON1){
+			L_MOUSE_DOWN = true;
 			for(int i = 0; i < currentPane.getMouseActionList().size(); i++){
 				// if the mouse click is in the hitbox then peform the action
 				if(currentPane.getMouseActionList().get(i).isActive() && currentPane.getMouseActionList().get(i).isInBounds(mousePosition.x,mousePosition.y)){
@@ -320,6 +323,7 @@ public class ActivePane extends JFrame implements MouseListener, KeyListener, Wi
     	
 		// Mouse 1
 		if(e.getButton() == MouseEvent.BUTTON1){
+			L_MOUSE_DOWN = false;
 			for(int i = 0; i < currentPane.getMouseActionList().size(); i++){
 				// if the mouse click is in the hitbox then peform the action
 				if(currentPane.getMouseActionList().get(i).isActive() && currentPane.getMouseActionList().get(i).isInBounds(mousePosition.x,mousePosition.y)){
