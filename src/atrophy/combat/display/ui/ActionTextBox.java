@@ -36,6 +36,7 @@ public class ActionTextBox extends Text{
 	private static final Color ACTION_COLOUR = 		new Color(56, 134, 64);
 	private static final Color APPLYING_COLOUR = 	new Color(208, 142, 219);
 	private static final Color STUNNED_COLOUR = 	new Color(109, 112, 106);
+	private static final Color TEXT_COLOUR = 		Color.white;
 	
 	/**
 	 * The metrics.
@@ -79,10 +80,19 @@ public class ActionTextBox extends Text{
 						   (int) (metrics.getStringBounds(this.getText(), drawShape).getWidth()) + BOX_MARGIN * 2,
 						   20);
 		
-		// Draw text
+		drawShape.setColor(this.getColour().darker());
 		
+		drawShape.drawRect((int) (this.getLocation()[0] + panningManager.getOffset()[0] - 
+		                		 (metrics.getStringBounds(this.getText(), drawShape).getWidth() * 0.5)),
+						   (int) (this.getLocation()[1] - 15 + panningManager.getOffset()[1]),
+						   
+						   (int) (metrics.getStringBounds(this.getText(), drawShape).getWidth()) + BOX_MARGIN * 2,
+						   20);
+		
+		// Draw text
+		drawShape.setComposite(GraphicsFunctions.makeComposite(1.0f));
+		drawShape.setColor(TEXT_COLOUR);
 		pointInText = 0;
-		drawShape.setColor(Color.white);
 		while(pointInText < this.getText().length()){
 			drawShape.drawString(computeLines(),(int)(this.getLocation()[0] + BOX_MARGIN + panningManager.getOffset()[0] - 
 													 (metrics.getStringBounds(this.getText(), drawShape).getWidth() * 0.5)),
