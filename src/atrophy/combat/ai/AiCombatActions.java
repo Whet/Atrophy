@@ -60,11 +60,12 @@ public class AiCombatActions {
 				else if(invoker.getAction().equals(AIMING) && invoker.getWeapon().hasAmmo()){
 	
 					swing++;
-					oldTargetSwing = swing;
 					
 					if(swing > invoker.getWeapon().getMaxSwing()){
 						this.swing = invoker.getWeapon().getMaxSwing();
 					}
+					
+					oldTargetSwing = swing;
 					
 					// look at target
 					invoker.setTrueLookAngle(this.targetAi.getLocation());
