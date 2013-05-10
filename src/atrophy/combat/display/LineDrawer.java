@@ -157,12 +157,12 @@ public class LineDrawer implements Displayable{
 				
 				if(aiCrowd.getMask(i).getAi().getFov() > 0 && !aiCrowd.getMask(i).getAi().isDead()){
 					
-					if(combatVisualManager.isTabled() &&
-					   aiCrowd.getMask(i).getAi() == combatVisualManager.getLastDraggableAi()){
-						drawFov(drawShape, aiCrowd.getMask(i).getAi());
-						drawFovLight(drawShape, aiCrowd.getMask(i).getAi());
-					}
-					else{
+//					if(combatVisualManager.isTabled() &&
+//					   aiCrowd.getMask(i).getAi() == combatVisualManager.getLastDraggableAi()){
+//						drawFov(drawShape, aiCrowd.getMask(i).getAi());
+//						drawFovLight(drawShape, aiCrowd.getMask(i).getAi());
+//					}
+//					else{
 						
 						if(combatVisualManager.isDrawingFov() && 
 						   aiCrowd.getMask(i).getAi() == combatMembersManager.getCurrentAi()){
@@ -171,7 +171,7 @@ public class LineDrawer implements Displayable{
 						}
 						
 						drawFov(drawShape, aiCrowd.getMask(i).getAi());
-					}
+//					}
 				}
 				
 				if(combatMembersManager.isSelected(aiCrowd.getMask(i).getAi())){
@@ -309,7 +309,7 @@ public class LineDrawer implements Displayable{
 										ai.getLocation()[0] + panningManager.getOffset()[0],
 										ai.getLocation()[1] + panningManager.getOffset()[1],
 										ai.getTeamColour(),
-										0.4f);
+										1.0f);
 	}
 	
 	private void drawShootingLines(Graphics2D drawShape, Ai ai){
