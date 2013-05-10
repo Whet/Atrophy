@@ -28,6 +28,14 @@ public class ActionTextBox extends Text{
 	 * The Constant BOX_MARGIN.
 	 */
 	private static final int BOX_MARGIN = 10;
+
+	private static final Color MOVE_COLOUR = 		new Color(11, 119, 195);
+	private static final Color AIM_COLOUR_SHOOT = 	new Color(233, 95, 62);
+	private static final Color AIM_COLOUR = 		new Color(188, 113, 62);
+	private static final Color SHOOT_COLOUR = 		new Color(232, 22, 0);
+	private static final Color ACTION_COLOUR = 		new Color(56, 134, 64);
+	private static final Color APPLYING_COLOUR = 	new Color(208, 142, 219);
+	private static final Color STUNNED_COLOUR = 	new Color(109, 112, 106);
 	
 	/**
 	 * The metrics.
@@ -95,7 +103,7 @@ public class ActionTextBox extends Text{
 			switch(action){
 			
 			case "Move":
-				this.setColour(Color.blue);
+				this.setColour(MOVE_COLOUR);
 				this.setText("Move");
 				// for some reason only move is out of location for x?
 				this.setLocation(combatMembersManager.getCurrentAi().getMoveLocation()[0] - BOX_MARGIN, 
@@ -104,13 +112,13 @@ public class ActionTextBox extends Text{
 			
 			case AiCombatActions.AIMING:
 				if(combatMembersManager.getCurrentAi().getSwing() > 0) {
-					this.setColour(Color.orange);
+					this.setColour(AIM_COLOUR_SHOOT);
 					this.setText("Aim - Click to Shoot");
 					this.setLocation(aiCrowd.getActorMask(combatMembersManager.getCurrentAi().getTargetAi()).getLocation()[0], 
 									 aiCrowd.getActorMask(combatMembersManager.getCurrentAi().getTargetAi()).getLocation()[1] - 25);
 				}
 				else {
-					this.setColour(Color.orange.darker());
+					this.setColour(AIM_COLOUR);
 					this.setText("Aim");
 					this.setLocation(aiCrowd.getActorMask(combatMembersManager.getCurrentAi().getTargetAi()).getLocation()[0], 
 									 aiCrowd.getActorMask(combatMembersManager.getCurrentAi().getTargetAi()).getLocation()[1] - 25);
@@ -118,7 +126,7 @@ public class ActionTextBox extends Text{
 			break;
 			
 			case AiCombatActions.SHOOTING:
-				this.setColour(Color.red.darker());
+				this.setColour(SHOOT_COLOUR);
 				this.setText("Shoot");
 				this.setLocation(aiCrowd.getActorMask(combatMembersManager.getCurrentAi().getTargetAi()).getLocation()[0], 
 							     aiCrowd.getActorMask(combatMembersManager.getCurrentAi().getTargetAi()).getLocation()[1] - 25);
@@ -127,7 +135,7 @@ public class ActionTextBox extends Text{
 			case AiActions.WELD_TOGGLE:
 			case AiActions.WELD_OPEN:
 			case AiActions.WELD_SHUT:
-				this.setColour(Color.green.darker());
+				this.setColour(ACTION_COLOUR);
 				this.setText("Weld " + combatMembersManager.getCurrentAi().getActionTurns() +"/"+ 
 				            (Abilities.turnsToDo(Abilities.WELDING, combatMembersManager.getCurrentAi().getSkillLevel(Abilities.WELDING)) + 2));
 				
@@ -137,21 +145,21 @@ public class ActionTextBox extends Text{
 			
 			case AiActions.THROW_GRENADE:
 			case AiActions.THROW_STUN_GRENADE:
-				this.setColour(Color.green.darker());
+				this.setColour(ACTION_COLOUR);
 				this.setText("Grenade");
 				this.setLocation(combatMembersManager.getCurrentAi().getAbilityLocation()[0], 
 								 combatMembersManager.getCurrentAi().getAbilityLocation()[1] - 25);
 			break;
 			
 			case Abilities.XRAY_SCAN:
-				this.setColour(Color.green.darker());
+				this.setColour(ACTION_COLOUR);
 				this.setText("Scan");
 				this.setLocation(aiCrowd.getActorMask(combatMembersManager.getCurrentAi()).getLocation()[0], 
 								 aiCrowd.getActorMask(combatMembersManager.getCurrentAi()).getLocation()[1] - 25);
 			break;
 			
 			case Abilities.SCAN_SCIENCE:
-				this.setColour(Color.green.darker());
+				this.setColour(ACTION_COLOUR);
 				this.setText("Scanning " + combatMembersManager.getCurrentAi().getActionTurns() +"/"+
 							(Abilities.turnsToDo(Abilities.SCAN_SCIENCE, combatMembersManager.getCurrentAi().getSkillLevel(Abilities.SCAN_SCIENCE)) + 2));
 				
@@ -160,7 +168,7 @@ public class ActionTextBox extends Text{
 			break;
 			
 			case Abilities.HACK:
-				this.setColour(Color.green.darker());
+				this.setColour(ACTION_COLOUR);
 				this.setText("Hacking " + combatMembersManager.getCurrentAi().getActionTurns() +"/"+
 							(Abilities.turnsToDo(Abilities.HACK, combatMembersManager.getCurrentAi().getSkillLevel(Abilities.SCAN_SCIENCE)) + 2));
 				
@@ -169,28 +177,28 @@ public class ActionTextBox extends Text{
 			break;
 			
 			case "Stealthed":
-				this.setColour(Color.green.darker());
+				this.setColour(ACTION_COLOUR);
 				this.setText("Stealthed");
 				this.setLocation(aiCrowd.getActorMask(combatMembersManager.getCurrentAi()).getLocation()[0], 
 								 aiCrowd.getActorMask(combatMembersManager.getCurrentAi()).getLocation()[1] - 25);
 			break;
 			
 			case AiActions.LOOT:
-				this.setColour(Color.green.darker());
+				this.setColour(ACTION_COLOUR);
 				this.setText("Looting " + combatMembersManager.getCurrentAi().getActionTurns() +"/"+ (Abilities.TURNS_TO_LOOT + 2));
 				this.setLocation(aiCrowd.getActorMask(combatMembersManager.getCurrentAi()).getLocation()[0], 
 								 aiCrowd.getActorMask(combatMembersManager.getCurrentAi()).getLocation()[1] - 25);
 			break;
 			
 			case AiActions.BACKSTAB:
-				this.setColour(Color.red.darker());
+				this.setColour(SHOOT_COLOUR);
 				this.setText("Backstab");
 				this.setLocation(aiCrowd.getActorMask(combatMembersManager.getCurrentAi().getTargetAi()).getLocation()[0], 
 								 aiCrowd.getActorMask(combatMembersManager.getCurrentAi().getTargetAi()).getLocation()[1] - 25);
 			break;
 			
 			case AiActions.STUN_TARGET:
-				this.setColour(Color.red.darker());
+				this.setColour(SHOOT_COLOUR);
 				this.setText("Stun Target");
 				this.setLocation(aiCrowd.getActorMask(combatMembersManager.getCurrentAi().getTargetAi()).getLocation()[0], 
 						 		 aiCrowd.getActorMask(combatMembersManager.getCurrentAi().getTargetAi()).getLocation()[1] - 25);
@@ -203,7 +211,7 @@ public class ActionTextBox extends Text{
 			}
 			
 			if(action.startsWith("Applying:")){
-				this.setColour(Color.red.darker());
+				this.setColour(APPLYING_COLOUR);
 				this.setText(action.substring(10));
 				this.setLocation(aiCrowd.getActorMask(combatMembersManager.getCurrentAi()).getLocation()[0], 
 								 aiCrowd.getActorMask(combatMembersManager.getCurrentAi()).getLocation()[1] - 25);
@@ -211,7 +219,7 @@ public class ActionTextBox extends Text{
 			}
 			
 			if(combatMembersManager.getCurrentAi().getStunnedTurns() > 0){
-				this.setColour(Color.red.darker());
+				this.setColour(STUNNED_COLOUR);
 				this.setText("Stunned " + combatMembersManager.getCurrentAi().getStunnedTurns());
 				this.setLocation(aiCrowd.getActorMask(combatMembersManager.getCurrentAi()).getLocation()[0], 
 								 aiCrowd.getActorMask(combatMembersManager.getCurrentAi()).getLocation()[1] - 25);
