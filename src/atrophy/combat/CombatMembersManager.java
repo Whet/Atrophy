@@ -12,6 +12,8 @@ import atrophy.combat.actions.MouseAbilityHandler;
 import atrophy.combat.ai.Ai;
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.ai.BanditCommander;
+import atrophy.combat.ai.DaemonAi;
+import atrophy.combat.ai.DaemonCommander;
 import atrophy.combat.ai.LonerAi;
 import atrophy.combat.ai.LonerCommander;
 import atrophy.combat.ai.TeamsCommander;
@@ -59,10 +61,20 @@ public class CombatMembersManager {
 		return lonerCommander;
 	}
 	
+	private DaemonCommander createDaemonCommander() {
+		DaemonCommander daemonCommander = new DaemonCommander(turnProcess, levelManager);
+		commanders.add(daemonCommander);
+		return daemonCommander;
+	}
+	
 	public void addAi(Ai ai) {
 		switch(ai.getFaction()) {
 			case AiGenerator.BANDITS:
 				this.getCommander(AiGenerator.BANDITS).addAi((ThinkingAi) ai);
+			break;
+			case AiGenerator.DAEMON:
+				DaemonCommander daemonCommander = this.createDaemonCommander();
+				daemonCommander.addAi((ThinkingAi) ai);
 			break;
 			case AiGenerator.LONER:
 				LonerCommander lonerCommander = this.createLonerCommander();
@@ -106,6 +118,15 @@ public class CombatMembersManager {
 	}
 	
 	public TeamsCommander getCommander(LonerAi ai) {
+		for(TeamsCommander commander : this.commanders){
+			if(commander.hasAi(ai)){
+				return commander;
+			}
+		}
+		return null;
+	}
+	
+	public TeamsCommander getCommander(DaemonAi ai) {
 		for(TeamsCommander commander : this.commanders){
 			if(commander.hasAi(ai)){
 				return commander;

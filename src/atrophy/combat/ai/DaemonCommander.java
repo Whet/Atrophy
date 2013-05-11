@@ -6,10 +6,10 @@ package atrophy.combat.ai;
 import atrophy.combat.level.LevelManager;
 import atrophy.combat.mechanics.TurnProcess;
 
-public class LonerCommander extends TeamsCommander{
+public class DaemonCommander extends TeamsCommander{
 	
-	public LonerCommander(TurnProcess turnProcess, LevelManager levelManager) {
-		super(turnProcess, AiGenerator.LONER, levelManager);
+	public DaemonCommander(TurnProcess turnProcess, LevelManager levelManager) {
+		super(turnProcess, AiGenerator.DAEMON, levelManager);
 	}
 	
 	@Override

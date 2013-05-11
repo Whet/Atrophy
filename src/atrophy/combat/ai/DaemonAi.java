@@ -50,5 +50,10 @@ public class DaemonAi extends ThinkingAi {
 	public boolean isTargetHostile(Ai target) {
 		return !target.isDead() && target != this;
 	}
+	
+	@Override
+	public TeamsCommander getCommander() {
+		return combatMembersManager.getCommander(this);
+	}
 
 }

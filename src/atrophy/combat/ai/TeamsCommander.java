@@ -513,5 +513,9 @@ public class TeamsCommander {
 	public boolean hasAi(LonerAi ai) {
 		return this.teamAi.contains(ai);
 	}
+	
+	public boolean hasAi(DaemonAi ai) {
+		return this.teamAi.contains(ai);
+	}
 
 }

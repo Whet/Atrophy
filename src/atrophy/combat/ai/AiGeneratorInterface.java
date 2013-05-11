@@ -253,5 +253,15 @@ public class AiGeneratorInterface {
 		}
 		
 	}
+	
+	public static class DaemonRandomSpawn extends GenerateCommand {
+
+		public static final String AXE = "Axe";
+		
+		public DaemonRandomSpawn(String daemonType) {
+			super(1, 1, null, null, AiGenerator.DAEMON);
+		}
+		
+	}
 
 }

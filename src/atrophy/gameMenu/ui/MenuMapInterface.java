@@ -36,6 +36,8 @@ import atrophy.hardPanes.CombatHardPane;
  */
 public class MenuMapInterface {
 	
+	private static final int DAEMON_SPAWN_CHANCE = 2;
+
 	public static void loadLevel(final File chosenLevel, final String owner, final Squad squad, final int engineeringChance, final int medicalChance, final int weaponChance, final int scienceChance, final Missions missions, final ItemMarket itemMarket, final TechTree techTree, final StashManager stashManager) {
 
 		ActivePane.getInstance().showLoading();
@@ -90,6 +92,14 @@ public class MenuMapInterface {
 	 * @param generationCommands 
 	 */
 	private static void setSpawns(String owner, LevelManager levelManager, Squad squad, ItemMarket itemMarket, List<AiGeneratorInterface.GenerateCommand> generationCommands) {
+		
+		if(new Random().nextInt(10) < DAEMON_SPAWN_CHANCE) {
+			// Spawn daemon only map
+			generationCommands.add(new AiGeneratorInterface.DaemonRandomSpawn(AiGeneratorInterface.DaemonRandomSpawn.AXE));
+			AiGeneratorInterface.LONER_SPAWN_AMOUNT = 0;
+			generationCommands.add(new GenerateCommand(squad.getSquad(), AiGenerator.PLAYER));
+			return;
+		}
 		
 		int banditTeamSpawn = new Random().nextInt((levelManager.getBlocks().length / 5) + 1);
 		

@@ -19,6 +19,7 @@ import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.actions.MouseAbilityHandler;
+import atrophy.combat.ai.AiGeneratorInterface.DaemonRandomSpawn;
 import atrophy.combat.ai.AiGeneratorInterface.GenerateCommand;
 import atrophy.combat.ai.AiGeneratorInterface.SoloGenerateCommand;
 import atrophy.combat.display.AiCrowd;
@@ -114,6 +115,12 @@ public class AiGenerator{
 		squadCount = 0;
 		
 		for(AiGeneratorInterface.GenerateCommand command : generationCommands){
+			
+			if(command instanceof DaemonRandomSpawn) {
+				generateSoloAi((DaemonRandomSpawn)command, squadCount);
+				squadCount++;
+				continue;
+			}
 			
 			if(command instanceof SoloGenerateCommand){
 				generateSoloAi((SoloGenerateCommand)command, squadCount);
@@ -270,6 +277,31 @@ public class AiGenerator{
 			for(int i = 0; i < alliances.length; i++){
 				ai.getCommander().addAlliance(alliances[i]);
 			}
+	}
+	
+	private void generateSoloAi(DaemonRandomSpawn command, int squadCount) {
+		double[] location = levelManager.randomPosition();
+		
+		AiImage aiImg = new AiImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, 0,0, mouseAbilityHandler, floatingIcons);
+		ThinkingAi ai = null;
+		
+		ai = new DaemonAi(panningManager, combatVisualManager, turnProcess, floatingIcons, mouseAbilityHandler, aiCrowd, combatMembersManager, randomDaemonName(),location[0],location[1], levelManager, combatInorganicManager, combatUiManager, lootbox);
+		ai.setBaseAggression(ThinkingAiEmotion.MINDLESS_TERROR);
+		aiImg = new DaemonImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager,location[0],location[1], mouseAbilityHandler, floatingIcons);
+		ai.setTeam(squadCount+DAEMON);
+		
+		ai.setWeapon(new DaemonWeapon());
+		
+		ai.assignAbilities();
+		aiImg.setAi(ai);
+		
+		aiCrowd.addDisplayItem(aiImg);
+		aiCrowd.addMouseActionItem(aiImg);
+		
+		aiCrowd.addActor(ai);
+		aiCrowd.addMask(aiImg);
+		
+		combatMembersManager.addAi(ai);
 	}
 
 	private void generatePlayerTeam(ArrayList<Squaddie> squad, LevelBlock levelBlock) {
@@ -469,6 +501,10 @@ public class AiGenerator{
 		surname = surnameHashMap.get(rand.nextInt(surnameHashMap.size()));
 		
 		return name+" "+surname;
+	}
+	
+	private String randomDaemonName() {
+		return nameHashMap.get(new Random().nextInt(nameHashMap.size()));
 	}
 	
 	public static String randomImage(){
