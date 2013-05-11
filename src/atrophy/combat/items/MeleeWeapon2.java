@@ -26,7 +26,7 @@ public class MeleeWeapon2 extends Weapon {
 	/**
 	 * The Constant RANGE.
 	 */
-	public static final int RANGE = 60;
+	public static final int RANGE = 40;
 	
 	/**
 	 * The Constant ACCURACY.

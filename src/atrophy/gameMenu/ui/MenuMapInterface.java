@@ -59,7 +59,7 @@ public class MenuMapInterface {
 				try {
 					// A.
 					levelManager.setCurrentLevel(LevelIO.loadLevel(chosenLevel, owner, engineeringChance, medicalChance, weaponChance, scienceChance, uiUpdaterSuite.getPanningManager(), turnProcess, uiUpdaterSuite.getMessageBox(), aiManagementSuite.getAiCrowd(), aiManagementSuite.getCombatMembersManager(), missions, missionManager, generationCommands));
-					uiUpdaterSuite.lazyLoad(actionSuite.getMouseAbilityHandler(), aiManagementSuite.getAiCrowd(), levelManager, actionSuite.getCombatMouseHandler());
+					uiUpdaterSuite.lazyLoad(actionSuite.getMouseAbilityHandler(), aiManagementSuite.getAiCrowd(), levelManager, actionSuite.getCombatMouseHandler(), turnProcess);
 					// Moved from A. without checking		
 					aiManagementSuite.lazyLoad(uiUpdaterSuite, actionSuite.getMouseAbilityHandler());
 					setSpawns(owner, levelManager, squad, itemMarket, generationCommands);
@@ -100,9 +100,9 @@ public class MenuMapInterface {
 			return;
 		}
 		
-		int banditTeamSpawn = new Random().nextInt((levelManager.getBlocks().length / 5) + 1);
+		int banditTeamSpawn = new Random().nextInt(3);
 		
-		int whiteVistaTeamSpawn = new Random().nextInt((levelManager.getBlocks().length / 5) + 1);
+		int whiteVistaTeamSpawn = new Random().nextInt(3);
 		
 		int lonerTeamSpawn = new Random().nextInt(4);
 		
