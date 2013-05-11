@@ -618,7 +618,7 @@ public class ThinkingAi extends Ai{
 		// if being aimed at then engage
 		if(this.isBeingTargeted() || this.getCommander().isAiHated(target) && emotionManager.getAggression() > ThinkingAiEmotion.PASSIVE){
 			// if fight is possible then engage
-			if(friendlyCount >= enemyCount){
+			if(friendlyCount >= enemyCount || target.getStunnedTurns() > 0 || target.getIncapTurns() > 0){
 				this.aiMode = AiMode.ENGAGING;
 				this.aim(target);
 				emotionManager.modifyAggression(ThinkingAiEmotion.AIMING_AGGRESSION);
@@ -665,7 +665,7 @@ public class ThinkingAi extends Ai{
 		}
 		
 		// if fight is possible then engage
-		if(friendlyCount >= enemyCount || emotionManager.getAggression() >= ThinkingAiEmotion.MINDLESS_TERROR){
+		if(friendlyCount >= enemyCount || emotionManager.getAggression() >= ThinkingAiEmotion.MINDLESS_TERROR || target.getStunnedTurns() > 0 || target.getIncapTurns() > 0){
 			this.aiMode = AiMode.ENGAGING;
 			this.aim(target);
 		}

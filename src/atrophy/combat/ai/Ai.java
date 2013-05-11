@@ -392,6 +392,10 @@ public class Ai implements Lootable{
 		this.aiActions.setStunTarget(this, targetAi);
 	}
 	
+	public void setGrappleTarget(Ai targetAi) {
+		this.aiActions.setGrappleTarget(this, targetAi);		
+	}
+	
 	public void setBackstabTarget(Ai targetAi){
 		this.aiActions.setBackstabTarget(this, targetAi);
 	}

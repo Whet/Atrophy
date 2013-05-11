@@ -139,7 +139,7 @@ public class MouseAbilityHandler {
 		switch(abilityApplied){
 			case Abilities.SPEECH:
 				Ai speechAi = getClosestAiToMouse(mousePoint, AI_CLICK_RADIUS);
-				if(speechAi != null && !(speechAi instanceof TurretAi) && speechAi.getStunnedTurns() == 0 && speechAi.getLevelBlock() == combatMembersManager.getCurrentAi().getLevelBlock() &&
+				if(speechAi != null && !(speechAi instanceof TurretAi) && speechAi.getLevelBlock() == combatMembersManager.getCurrentAi().getLevelBlock() &&
 				   !speechAi.getFaction().equals(AiGenerator.PLAYER) && ( !(speechAi instanceof ThinkingAi) || !((ThinkingAi)speechAi).isBlockPlayerConvo())){
 					
 					messageBox.setConversation(combatMembersManager.getCurrentAi(), speechAi);
@@ -153,6 +153,12 @@ public class MouseAbilityHandler {
 				Ai targetAi = getClosestAiToMouse(mousePoint, AI_CLICK_RADIUS);
 				if(targetAi != null && !(targetAi instanceof TurretAi) && !targetAi.getFaction().equals(AiGenerator.PLAYER)){
 					combatMembersManager.getCurrentAi().setStunTarget(targetAi);
+				}
+			break;
+			case Abilities.GRAPPLE:
+				targetAi = getClosestAiToMouse(mousePoint, AI_CLICK_RADIUS);
+				if(targetAi != null && !(targetAi instanceof TurretAi) && !targetAi.getFaction().equals(AiGenerator.PLAYER)){
+					combatMembersManager.getCurrentAi().setGrappleTarget(targetAi);
 				}
 			break;
 			case Abilities.SLIT_MELEE:

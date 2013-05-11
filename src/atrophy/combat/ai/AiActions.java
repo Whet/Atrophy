@@ -1,5 +1,7 @@
 package atrophy.combat.ai;
 
+import java.util.Random;
+
 import watoydoEngine.gubbinz.Maths;
 import atrophy.combat.CombatNCEManager;
 import atrophy.combat.CombatMembersManager;
@@ -39,6 +41,8 @@ public class AiActions {
 	public static final String LOOT = "Loot";
 
 	public static final String LOOTING = "Looting";
+
+	private static final String GRAPPLE_TARGET = "Grapple";
 
 	private int actionTurns;
 	
@@ -485,7 +489,41 @@ public class AiActions {
 		this.setAction(STUN_TARGET);
 	}
 	
+	public void setGrappleTarget(Ai invoker, Ai targetAi) {
+		invoker.setTargetAi(targetAi);
+		this.setAction(GRAPPLE_TARGET);
+	}
+	
 	public void stunTarget(Ai invoker){
+		
+		if(invoker.getTargetAi() != null && Maths.getDistance(invoker.getLocation(), invoker.getTargetAi().getLocation()) <= MeleeWeapon1.RANGE){
+			
+			// break any alliances with the faction if visible
+			breakAlliance(invoker);
+			
+			makeHatedWithTarget(invoker);
+			
+			if(new Random().nextInt(5) < 2)
+				invoker.getTargetAi().setStunnedTurns(3);
+			
+			invoker.setTargetAi(null);
+			this.setAction(NO_ACTION);
+			invoker.setMoveLocationToSelf();
+			
+			
+		}
+		else {
+			Ai targetAi = invoker.getTargetAi();
+			invoker.moveWithinRadius(invoker.getTargetAi().getLocation(), invoker.getWeapon().getRange());
+			invoker.aiPathing.move(invoker);
+			this.setAction(STUN_TARGET);
+			invoker.setTargetAi(targetAi);
+		}
+		
+		this.setActionTurns(0);
+	}
+	
+	public void grappleTarget(Ai invoker){
 		
 		if(Maths.getDistance(invoker.getLocation(), invoker.getTargetAi().getLocation()) <= MeleeWeapon1.RANGE){
 			
@@ -506,7 +544,7 @@ public class AiActions {
 		else{
 			invoker.moveWithinRadius(invoker.getTargetAi().getLocation(), invoker.getWeapon().getRange());
 			invoker.aiPathing.move(invoker);
-			this.setAction(STUN_TARGET);
+			this.setAction(GRAPPLE_TARGET);
 		}
 		
 		this.setActionTurns(0);
@@ -555,8 +593,7 @@ public class AiActions {
 	}
 	
 	private void makeHatedWithTarget(Ai invoker) {
-		if(invoker.getTargetAi() instanceof ThinkingAi &&
-		   combatVisualManager.isAiInSight(invoker, invoker.getTargetAi().getFaction())){
+		if(invoker.getTargetAi() instanceof ThinkingAi && combatVisualManager.isAiInSight(invoker, invoker.getTargetAi().getFaction())){
 			
 			TeamsCommander commander = ((ThinkingAi) invoker.getTargetAi()).getCommander();
 			commander.removeAlliance(invoker.getFaction());
@@ -577,6 +614,9 @@ public class AiActions {
 			break;
 			case STUN_TARGET:
 				stunTarget(invoker);
+			break;
+			case GRAPPLE_TARGET:
+				grappleTarget(invoker);
 			break;
 			case WELD_TOGGLE:
 				weldTurnAction(invoker);
@@ -681,7 +721,5 @@ public class AiActions {
 		invoker.setTargetAi(targetAi);
 		this.setAction(Abilities.HACK);
 	}
-	
-	
-	
+
 }

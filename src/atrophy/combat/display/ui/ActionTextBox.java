@@ -210,8 +210,9 @@ public class ActionTextBox extends Text{
 			case AiActions.STUN_TARGET:
 				this.setColour(SHOOT_COLOUR);
 				this.setText("Stun Target");
-				this.setLocation(aiCrowd.getActorMask(combatMembersManager.getCurrentAi().getTargetAi()).getLocation()[0], 
-						 		 aiCrowd.getActorMask(combatMembersManager.getCurrentAi().getTargetAi()).getLocation()[1] - 25);
+				if(combatMembersManager.getCurrentAi().getTargetAi() != null)
+					this.setLocation(aiCrowd.getActorMask(combatMembersManager.getCurrentAi().getTargetAi()).getLocation()[0], 
+							 		 aiCrowd.getActorMask(combatMembersManager.getCurrentAi().getTargetAi()).getLocation()[1] - 25);
 			break;
 			
 			default:

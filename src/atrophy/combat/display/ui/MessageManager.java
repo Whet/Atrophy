@@ -112,7 +112,7 @@ public class MessageManager{
 		
 		greetingTopic();
 		
-		intimidated = false;
+		intimidated = ai2.getStunnedTurns() > 0;
 		
 		if(ai1.getFaction().equals(ai2.getFaction())){
 			tone = -2;

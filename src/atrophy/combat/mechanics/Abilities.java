@@ -145,6 +145,8 @@ public class Abilities{
 	public static final int TURNS_TO_HACK[] = {12,11,10,8,6};
 
 	public static final String PARRY = "Parry";
+
+	public static final String GRAPPLE = "Grapple";
 	
 	/**
 	 * Turns to do.

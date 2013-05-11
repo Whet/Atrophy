@@ -147,6 +147,7 @@ public class AiData {
 		}
 		else if(this.getWeapon() instanceof MeleeWeapon2){
 			this.abilities.add(Abilities.PARRY);
+			this.abilities.add(Abilities.STUN_MELEE);
 		}
 		
 		// Armour
