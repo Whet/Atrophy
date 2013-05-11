@@ -110,7 +110,7 @@ public class AiGenerator{
 		this.lootbox = lootbox;
 	}
 	
-	public void generateAi(ItemMarket itemMarket, List<AiGeneratorInterface.GenerateCommand> generationCommands){
+	public void generateAi(List<AiGeneratorInterface.GenerateCommand> generationCommands){
 		
 		squadCount = 0;
 		
@@ -161,14 +161,6 @@ public class AiGenerator{
 			}
 			squadCount++;
 		}
-		
-//		for(int i = 0; i < AiGeneratorInterface.LONER_SPAWN_AMOUNT; i++){
-//			generateLoner(Integer.toString(squadCount)+LONER,
-//						  itemMarket.getLonerAllowedItems(),
-//						  itemMarket.getLonerAllowedWeapons(), 
-//					      levelManager.randomRoom());
-//			squadCount++;
-//		}
 		
 		combatMembersManager.pickStartingAi();
 		generateRosters();

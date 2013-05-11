@@ -40,10 +40,9 @@ public class CombatHardPane implements HardPaneDefineable {
 	private LevelManager levelManager;
 	private AiCrowd aiCrowd;
 	private CombatNCEManager combatInorganicManager;
-	private ItemMarket itemMarket;
 	private List<AiGeneratorInterface.GenerateCommand> generationCommands;
 	
-	public CombatHardPane(TurnProcess turnProcess, AiManagementSuite aiManagementSuite, UiUpdaterSuite uiUpdaterSuite, ActionSuite actionSuite, LevelManager levelManager, AiCrowd aiCrowd, CombatNCEManager combatInorganicManager, ItemMarket itemMarket, List<GenerateCommand> generationCommands) {
+	public CombatHardPane(TurnProcess turnProcess, AiManagementSuite aiManagementSuite, UiUpdaterSuite uiUpdaterSuite, ActionSuite actionSuite, LevelManager levelManager, AiCrowd aiCrowd, CombatNCEManager combatInorganicManager, List<GenerateCommand> generationCommands) {
 		this.turnProcess = turnProcess;
 		this.aiManagementSuite = aiManagementSuite;
 		this.uiUpdaterSuite = uiUpdaterSuite;
@@ -51,7 +50,6 @@ public class CombatHardPane implements HardPaneDefineable {
 		this.levelManager = levelManager;
 		this.aiCrowd = aiCrowd;
 		this.combatInorganicManager = combatInorganicManager;
-		this.itemMarket = itemMarket;
 		this.generationCommands = generationCommands;
 	}
 	
@@ -64,7 +62,7 @@ public class CombatHardPane implements HardPaneDefineable {
 		MapPainter.loadTextures();
 		
 		AiGenerator aiGenerator = new AiGenerator(aiManagementSuite.getAiCrowd(), aiManagementSuite.getCombatMembersManager(), uiUpdaterSuite.getCombatUiManager(), uiUpdaterSuite.getCombatVisualManager(), levelManager, uiUpdaterSuite.getPanningManager(), actionSuite.getMouseAbilityHandler(), turnProcess, uiUpdaterSuite.getFloatingIcons(), combatInorganicManager, uiUpdaterSuite.getLootBox());
-		aiGenerator.generateAi(itemMarket, generationCommands);
+		aiGenerator.generateAi(generationCommands);
 		aiCrowd.getShuffledStack();
 		
 		crowd.addCrowd(aiCrowd);
