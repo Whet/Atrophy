@@ -107,48 +107,46 @@ public class CombatInfo extends Crowd {
 			
 			combatButtons[0] = new IndividualLOSToggle(combatVisualManager, combatUiManager, radioSilenceIcons);
 			
-			combatButtons[0].setLocation(DisplayManager.getInstance().getResolution()[0] - 40,
-								 		 DisplayManager.getInstance().getResolution()[1] - 170);
+			combatButtons[0].setLocation(DisplayManager.getInstance().getResolution()[0] - 40, 240);
 			
 			this.addButton(combatButtons[0]);
 			
-			BufferedImage[] drawFovIcons = {ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/fovEnabled.png")),
-					 						ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/fovDisabled.png"))};
-
-			combatButtons[1] = new DrawFovToggle(combatVisualManager, combatUiManager, drawFovIcons);
-			
-			combatButtons[1].setLocation(DisplayManager.getInstance().getResolution()[0] - 40,
-				 		 				 DisplayManager.getInstance().getResolution()[1] - 210);
-			
-			this.addButton(combatButtons[1]);
-			
-			BufferedImage[] drawObjLines = {ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/objLineDisabled.png")),
-					                        ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/objLineEnabled.png"))};
-
-			combatButtons[2] = new DrawObjLineToggle(combatVisualManager, combatUiManager, drawObjLines);
-			
-			combatButtons[2].setLocation(DisplayManager.getInstance().getResolution()[0] - 40,
-				 		 				 DisplayManager.getInstance().getResolution()[1] - 250);
-			
-			this.addButton(combatButtons[2]);
-			
-			BufferedImage[] drawDoors = {ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/doorsEnabled.png")),
-										 ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/doorsDisabled.png"))};
-
-			combatButtons[3] = new DrawDoorToggle(floatingIcons, combatUiManager, drawDoors);
-			
-			combatButtons[3].setLocation(DisplayManager.getInstance().getResolution()[0] - 40,
-										 DisplayManager.getInstance().getResolution()[1] - 290);
-			
-			this.addButton(combatButtons[3]);
+//			BufferedImage[] drawFovIcons = {ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/fovEnabled.png")),
+//					 						ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/fovDisabled.png"))};
+//
+//			combatButtons[1] = new DrawFovToggle(combatVisualManager, combatUiManager, drawFovIcons);
+//			
+//			combatButtons[1].setLocation(DisplayManager.getInstance().getResolution()[0] - 40,
+//				 		 				 DisplayManager.getInstance().getResolution()[1] - 210);
+//			
+//			this.addButton(combatButtons[1]);
+//			
+//			BufferedImage[] drawObjLines = {ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/objLineDisabled.png")),
+//					                        ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/objLineEnabled.png"))};
+//
+//			combatButtons[2] = new DrawObjLineToggle(combatVisualManager, combatUiManager, drawObjLines);
+//			
+//			combatButtons[2].setLocation(DisplayManager.getInstance().getResolution()[0] - 40,
+//				 		 				 DisplayManager.getInstance().getResolution()[1] - 250);
+//			
+//			this.addButton(combatButtons[2]);
+//			
+//			BufferedImage[] drawDoors = {ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/doorsEnabled.png")),
+//										 ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/doorsDisabled.png"))};
+//
+//			combatButtons[3] = new DrawDoorToggle(floatingIcons, combatUiManager, drawDoors);
+//			
+//			combatButtons[3].setLocation(DisplayManager.getInstance().getResolution()[0] - 40,
+//										 DisplayManager.getInstance().getResolution()[1] - 290);
+//			
+//			this.addButton(combatButtons[3]);
 			
 			BufferedImage[] drawMiniMap = {ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/miniMapEnabled.png")),
                     					   ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/miniMapDisabled.png"))};
 
 			combatButtons[4] = new MiniMapVisibleToggle(combatUiManager, drawMiniMap);
 			
-			combatButtons[4].setLocation(DisplayManager.getInstance().getResolution()[0] - 40,
-										 DisplayManager.getInstance().getResolution()[1] - 330);
+			combatButtons[4].setLocation(DisplayManager.getInstance().getResolution()[0] - 40, 200);
 			
 			this.addButton(combatButtons[4]);
 			
