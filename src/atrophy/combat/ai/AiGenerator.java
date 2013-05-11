@@ -148,6 +148,10 @@ public class AiGenerator{
 									   levelManager.getCurrentLevel().getPlayerSpawn());
 				break;
 				case LONER:
+					generateLoner(Integer.toString(squadCount)+LONER,
+								  command.getAllowedItems(),
+								  command.getAllowedWeapons(),
+							      levelManager.randomRoom());
 				break;
 				case TURRET:
 					generateTurrets(squadCount+LONER,
@@ -158,13 +162,13 @@ public class AiGenerator{
 			squadCount++;
 		}
 		
-		for(int i = 0; i < AiGeneratorInterface.LONER_SPAWN_AMOUNT; i++){
-			generateLoner(Integer.toString(squadCount)+LONER,
-						  itemMarket.getLonerAllowedItems(),
-						  itemMarket.getLonerAllowedWeapons(), 
-					      levelManager.randomRoom());
-			squadCount++;
-		}
+//		for(int i = 0; i < AiGeneratorInterface.LONER_SPAWN_AMOUNT; i++){
+//			generateLoner(Integer.toString(squadCount)+LONER,
+//						  itemMarket.getLonerAllowedItems(),
+//						  itemMarket.getLonerAllowedWeapons(), 
+//					      levelManager.randomRoom());
+//			squadCount++;
+//		}
 		
 		combatMembersManager.pickStartingAi();
 		generateRosters();

@@ -96,7 +96,6 @@ public class MenuMapInterface {
 		if(new Random().nextInt(10) < DAEMON_SPAWN_CHANCE) {
 			// Spawn daemon only map
 			generationCommands.add(new AiGeneratorInterface.DaemonRandomSpawn(AiGeneratorInterface.DaemonRandomSpawn.AXE));
-			AiGeneratorInterface.LONER_SPAWN_AMOUNT = 0;
 			generationCommands.add(new GenerateCommand(squad.getSquad(), AiGenerator.PLAYER));
 			return;
 		}
@@ -105,7 +104,7 @@ public class MenuMapInterface {
 		
 		int whiteVistaTeamSpawn = new Random().nextInt((levelManager.getBlocks().length / 5) + 1);
 		
-		AiGeneratorInterface.LONER_SPAWN_AMOUNT = new Random().nextInt(4) + 1;
+		int lonerTeamSpawn = new Random().nextInt(4);
 		
 		ArrayList<String> targetFactions =  new ArrayList<String>();
 		
@@ -134,13 +133,16 @@ public class MenuMapInterface {
 			whiteVistaTeamSpawn = 0;
 		
 		if(!levelManager.getCurrentLevel().allowedSpawn(AiGenerator.LONER))
-			AiGeneratorInterface.LONER_SPAWN_AMOUNT = 0;
+			lonerTeamSpawn = 0;
 		
 		for(int i = 0; i < banditTeamSpawn; i++){
 			generationCommands.add(new GenerateCommand(2, 4, itemMarket.getBanditsAllowedItems(), itemMarket.getBanditsAllowedWeapons(), AiGenerator.BANDITS));
 		}
-		for(int i = 0; i <whiteVistaTeamSpawn; i++){
+		for(int i = 0; i < whiteVistaTeamSpawn; i++){
 			generationCommands.add(new GenerateCommand(2, 4, itemMarket.getWhiteVistaAllowedItems(), itemMarket.getWhiteVistaAllowedWeapons(), AiGenerator.WHITE_VISTA));
+		}
+		for(int i = 0; i < lonerTeamSpawn; i++){
+			generationCommands.add(new GenerateCommand(2, 4, itemMarket.getLonerAllowedItems(), itemMarket.getLonerAllowedWeapons(), AiGenerator.LONER));
 		}
 
 		generationCommands.add(new GenerateCommand(squad.getSquad(), AiGenerator.PLAYER));

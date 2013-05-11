@@ -19,14 +19,6 @@ public class AiGeneratorInterface {
 	 */
 	private ArrayList<GenerateCommand> commands;
 	
-	/**
-	 * The LONE r_ spaw n_ amount.
-	 */
-	public static int LONER_SPAWN_AMOUNT = 4;
-	
-	/**
-	 * Instantiates a new ai generator interface.
-	 */
 	private AiGeneratorInterface(){
 		commands = new ArrayList<GenerateCommand>();
 	}
