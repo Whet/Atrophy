@@ -412,6 +412,7 @@ public class MessageBox extends Crowd{
 			combatUiManager.getAllyRoster().setVisible(true);
 			aiCrowd.setActive(true);
 			combatMouseHandler.setActive(true);
+			combatUiManager.getCombatInfo().getTurnButton().setVisible(true);
 		}
 		else {
 			combatUiManager.getActionsBar().setVisible(false);
@@ -419,6 +420,7 @@ public class MessageBox extends Crowd{
 			cartographerBox.setVisible(false);
 			aiCrowd.setActive(false);
 			combatMouseHandler.setActive(false);
+			combatUiManager.getCombatInfo().getTurnButton().setVisible(false);
 		}
 	}
 

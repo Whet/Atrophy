@@ -9,6 +9,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import watoydoEngine.designObjects.display.AbstractButton;
 import watoydoEngine.designObjects.display.ButtonMulti;
 import watoydoEngine.designObjects.display.Crowd;
 import watoydoEngine.designObjects.display.ImageSingle;
@@ -16,11 +17,13 @@ import watoydoEngine.designObjects.display.Text;
 import watoydoEngine.fonts.FontList;
 import watoydoEngine.io.ReadWriter;
 import watoydoEngine.workings.DisplayManager;
+import watoydoEngine.workings.displayActivity.ActivePane;
 import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.display.ui.FloatingIcons;
 import atrophy.combat.items.Weapon;
+import atrophy.combat.mechanics.TurnProcess;
 
 
 // TODO: Auto-generated Javadoc
@@ -50,6 +53,8 @@ public class CombatInfo extends Crowd {
 	private ButtonMulti combatButtons[];
 
 	private CombatMembersManager combatMembersManager;
+
+	private EndTurnButton endTurnButton;
 	
 	
 	// handles counter at bottom right fo screen with target info
@@ -59,8 +64,9 @@ public class CombatInfo extends Crowd {
 	 * @param combatUiManager 
 	 * @param floatingIcons 
 	 * @param combatVisualManager 
+	 * @param turnProcess 
 	 */
-	public CombatInfo(CombatMembersManager combatMembersManager, CombatUiManager combatUiManager, FloatingIcons floatingIcons, CombatVisualManager combatVisualManager){
+	public CombatInfo(CombatMembersManager combatMembersManager, CombatUiManager combatUiManager, FloatingIcons floatingIcons, CombatVisualManager combatVisualManager, TurnProcess turnProcess){
 		super(true);
 		
 		this.combatMembersManager = combatMembersManager;
@@ -145,6 +151,14 @@ public class CombatInfo extends Crowd {
 										 DisplayManager.getInstance().getResolution()[1] - 330);
 			
 			this.addButton(combatButtons[4]);
+			
+			BufferedImage[] endTurnImages = {ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/endTurnButton.png")),
+											 ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/endTurnButtonOn.png"))};
+
+			
+			endTurnButton = new EndTurnButton(endTurnImages, turnProcess);
+			endTurnButton.setLocation(DisplayManager.getInstance().getResolution()[0] / 2 - endTurnButton.getSize()[0] / 2, ActivePane.getInstance().getInsets().top);
+			this.addButton(endTurnButton);
 		}
 		catch(IOException ioExcept){
 			System.err.println("Could not load combatinfo image. Terminating.");
@@ -223,6 +237,10 @@ public class CombatInfo extends Crowd {
 	 */
 	public Text getSwingText(){
 		return this.swingText;
+	}
+
+	public AbstractButton getTurnButton() {
+		return this.endTurnButton;
 	}
 	
 }

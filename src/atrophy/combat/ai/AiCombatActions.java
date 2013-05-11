@@ -114,7 +114,7 @@ public class AiCombatActions {
 			
 			invoker.setAction(AiActions.NO_ACTION);
 		}
-	}
+ 	}
 
 
 	public void shoot(Ai invoker) {

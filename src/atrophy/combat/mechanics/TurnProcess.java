@@ -329,10 +329,12 @@ public class TurnProcess {
 				return true;
 			}
 		};
-		
+		newGame.setZ(10);
+		newGame.setActionZ(-30);
 		newGame.setLocation(DisplayManager.getInstance().getResolution()[0] /2 - 40, DisplayManager.getInstance().getResolution()[1] /2 + 30);
 		ActivePane.getInstance().getPane().addMouseActionItem(newGame);
 		ActivePane.getInstance().getPane().addDisplayItem(newGame);
+		ActivePane.getInstance().getPane().computeZOrder();
 		
 		combatKeyboardHandler.setFocus(true);
 		lineDrawer.updateAlphas();

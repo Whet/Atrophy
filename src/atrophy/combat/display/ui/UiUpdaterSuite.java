@@ -69,8 +69,8 @@ public class UiUpdaterSuite {
 		return floatingIcons;
 	}
 
-	public void lazyLoad(MouseAbilityHandler mouseAbilityHandler, AiCrowd aiCrowd, LevelManager levelManager, CombatMouseHandler combatMouseHandler) {
-		combatUiManager.lazyLoad(mouseAbilityHandler, combatUiManager, floatingIcons, combatVisualManager, lootBox, levelManager, aiCrowd, panningManager);
+	public void lazyLoad(MouseAbilityHandler mouseAbilityHandler, AiCrowd aiCrowd, LevelManager levelManager, CombatMouseHandler combatMouseHandler, TurnProcess turnProcess) {
+		combatUiManager.lazyLoad(mouseAbilityHandler, combatUiManager, floatingIcons, combatVisualManager, lootBox, levelManager, aiCrowd, panningManager, turnProcess);
 		floatingIcons.lazyLoad(combatUiManager.getLineSurface());
 		messageBox.lazyLoad(combatMouseHandler);
 	}
