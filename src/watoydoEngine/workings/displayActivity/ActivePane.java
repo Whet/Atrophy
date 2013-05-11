@@ -18,7 +18,9 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
+import java.awt.geom.AffineTransform;
 import java.awt.image.BufferStrategy;
+import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -130,6 +132,14 @@ public class ActivePane extends JFrame implements MouseListener, KeyListener, Wi
 		
 		// Stops unneeded looping before displaylist has been populated
 		loaded = false;
+		
+		try {
+			loadingImage = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/LoadingImage.png"));
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 
 	}
 	
@@ -431,19 +441,6 @@ public class ActivePane extends JFrame implements MouseListener, KeyListener, Wi
     	}
 	}
     
-	// Draw
-    /* (non-Javadoc)
-	 * @see javax.swing.JFrame#update(java.awt.Graphics)
-	 */
-	public void update(Graphics g){
-		paint(g);
-    }
-    
-   // private long timeStart;
-    
-	/* (non-Javadoc)
-    * @see java.awt.Window#paint(java.awt.Graphics)
-    */
    public void paint(Graphics g){
 	   // dBuffer is a 2dGraphics because affineTranform is used in display classes
 	   dBuffer = (Graphics2D) bufferS.getDrawGraphics();
@@ -467,15 +464,17 @@ public class ActivePane extends JFrame implements MouseListener, KeyListener, Wi
 	   dBuffer.dispose();
    }
 	
-	/**
-	 * Draw loading.
-	 */
+   	private BufferedImage loadingImage;
+   
 	private void drawLoading() {
 		dBuffer.setColor(Color.black);
 		dBuffer.fillRect(0, 0, res[0], res[1]);
 		dBuffer.setFont(FontList.AUD24);
 		dBuffer.setColor(Color.white);
 		dBuffer.drawString("Loading", 5, res[1] - 10);
+//		AffineTransform transform = new AffineTransform();
+//		transform.setToTranslation(this.getWidth() - loadingImage.getWidth(), this.getHeight() - loadingImage.getHeight());
+//		dBuffer.drawImage(loadingImage,transform ,null);
 	}
 
 
