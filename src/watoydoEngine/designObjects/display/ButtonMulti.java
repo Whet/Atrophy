@@ -173,7 +173,7 @@ public abstract class ButtonMulti extends AbstractButton implements ImageDisplay
 	 * @param frame the new frame
 	 */
 	public void setFrame(int frame){
-		if(frame < image.length - 1){
+		if(frame <= image.length - 1){
 			this.frame = frame;
 		}
 	}
