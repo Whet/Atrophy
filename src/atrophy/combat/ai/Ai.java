@@ -635,6 +635,9 @@ public class Ai implements Lootable{
 		if(this.hasActiveEffect(ProtectPowerEffect.NAME))
 			return;
 		
+		// Check with aiDirector to see if death passes
+		dead = aiCrowd.getDirector().judge(dead, this);
+		
 		// Make sure dead unit show smashed helmet
 		if(dead && !this.dead){	
 			this.setTargetAi(null); 

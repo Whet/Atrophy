@@ -23,6 +23,7 @@ import atrophy.combat.ai.Ai;
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.ai.ThinkingAi;
 import atrophy.combat.ai.VehicleAi;
+import atrophy.combat.ai.director.HealthDirector;
 import atrophy.gameMenu.saveFile.Squad;
 import atrophy.gameMenu.saveFile.Squad.Squaddie;
 
@@ -40,6 +41,8 @@ public class AiCrowd extends Crowd {
 	private Map<String, AnimationBlob> animations;
 	
 	private Squad squad;
+	
+	private HealthDirector director;
 	
 	private static Timer animationTimer;
 	
@@ -64,8 +67,14 @@ public class AiCrowd extends Crowd {
 		
 		this.masterStack = new Stack<Ai>();
 		
+		this.director = new HealthDirector();
+		
 	}
 	
+	public HealthDirector getDirector() {
+		return director;
+	}
+
 	private static class AnimationTimerEvent extends TimerTask {
 
 		private AiCrowd aiCrowd;
