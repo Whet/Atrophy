@@ -1,6 +1,3 @@
-/*
- * 
- */
 package watoydoEngine.workings;
 import java.awt.Dimension;
 import java.awt.DisplayMode;
@@ -10,24 +7,10 @@ import java.awt.GraphicsEnvironment;
 import watoydoEngine.workings.displayActivity.ActivePane;
 
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class DisplayManager.
- */
 public class DisplayManager{
 	
-	// Singleton code
-	/**
-	 * The instance.
-	 */
 	private static DisplayManager instance;
 	
-	// returns instance
-	/**
-	 * Gets the single instance of DisplayManager.
-	 *
-	 * @return single instance of DisplayManager
-	 */
 	public static DisplayManager getInstance(){
 		if(instance == null){
 			instance = new DisplayManager();
@@ -35,25 +18,10 @@ public class DisplayManager{
 		return instance;
 	}
 	
-	/**
-	 * The dm.
-	 */
 	private DisplayMode dm;
-	
-	/**
-	 * The main device.
-	 */
 	private GraphicsDevice mainDevice;
-	
-	// resolution of active pane
-	/**
-	 * The resolution.
-	 */
 	private int[] resolution;
 	
-	/**
-	 * Instantiates a new display manager.
-	 */
 	private DisplayManager(){
 		
 		resolution = new int[2];
@@ -65,13 +33,6 @@ public class DisplayManager{
 	}
 	
 	// Sets up active pane to be fullscreen/windowed at correct resolution
-	/**
-	 * Sets the frame to screen.
-	 *
-	 * @param window the window
-	 * @param windowed the windowed
-	 * @param resolution the resolution
-	 */
 	public void setFrameToScreen(ActivePane window,boolean windowed, int[] resolution){
 		
 		this.resolution[0] = resolution[0];
@@ -99,9 +60,6 @@ public class DisplayManager{
 	}
 	
 	// if not windowed will close fullscreen
-	/**
-	 * End display.
-	 */
 	public void endDisplay(){
 		if(!ActivePane.getInstance().isWindowed()){
 			mainDevice.getFullScreenWindow().dispose();
@@ -109,11 +67,6 @@ public class DisplayManager{
 		}
 	}
 	
-	/**
-	 * Gets the resolution.
-	 *
-	 * @return the resolution
-	 */
 	public int[] getResolution(){
 		return this.resolution;
 	}
