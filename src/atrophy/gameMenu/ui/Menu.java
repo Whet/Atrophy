@@ -153,7 +153,7 @@ public abstract class Menu extends Crowd{
 			
 			this.setZ(DEFAULT_WINDOW_Z);
 			this.setActionZ(-DEFAULT_WINDOW_Z);
-			ActivePane.getInstance().getPane().computeZOrder();
+			ActivePane.getInstance().getRootCrowd().computeZOrder();
 		}
 	}
 	

@@ -54,7 +54,7 @@ public class SplashMenu extends Crowd {
 			
 			@Override
 			public boolean mD(Point mousePosition, MouseEvent e) {
-				ActivePane.getInstance().changePane(new Crowd(new CharacterCreatePane()));
+				ActivePane.getInstance().changeRootCrowd(new Crowd(new CharacterCreatePane()));
 				return true;
 			}
 		};
@@ -95,7 +95,7 @@ public class SplashMenu extends Crowd {
 					stashManager.lazyLoad(shopManager);
 					missions.lazyLoad(squad, stashManager, itemMarket, techTree);
 					
-					ActivePane.getInstance().changePane(new Crowd(new GameMenuHardPane(squad, techTree, stashManager, missions)));
+					ActivePane.getInstance().changeRootCrowd(new Crowd(new GameMenuHardPane(squad, techTree, stashManager, missions)));
 				}
 				
 				ActivePane.getInstance().setVisible(true);

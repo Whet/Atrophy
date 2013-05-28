@@ -103,7 +103,7 @@ public class DisplayManager{
 	 * End display.
 	 */
 	public void endDisplay(){
-		if(!ActivePane.getInstance().getWindowed()){
+		if(!ActivePane.getInstance().isWindowed()){
 			mainDevice.getFullScreenWindow().dispose();
 			mainDevice.setFullScreenWindow(null);
 		}

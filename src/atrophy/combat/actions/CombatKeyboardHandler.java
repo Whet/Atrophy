@@ -165,7 +165,7 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 					LargeEventText.flashTimer.cancel();
 					LargeEventText.flashTimer.purge();
 					
-					ActivePane.getInstance().changePane(new Crowd(new GameMenuHardPane(aiCrowd.saveToSquad(), techTree, stashManager, missions)));
+					ActivePane.getInstance().changeRootCrowd(new Crowd(new GameMenuHardPane(aiCrowd.saveToSquad(), techTree, stashManager, missions)));
 				}
 				
 			break;

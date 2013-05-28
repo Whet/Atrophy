@@ -291,7 +291,7 @@ public class TurnProcess {
 		combatUiManager.getFloatingIcons().updateOverlappingIcons();
 		
 		// reorder z in case units died
-		ActivePane.getInstance().getPane().computeZOrder();
+		ActivePane.getInstance().getRootCrowd().computeZOrder();
 	}
 	
 	private boolean checkGameOver(){
@@ -325,16 +325,16 @@ public class TurnProcess {
 			
 			@Override
 			public boolean mD(Point mousePosition, MouseEvent e) {
-				ActivePane.getInstance().changePane(new Crowd(new SplashPane()));
+				ActivePane.getInstance().changeRootCrowd(new Crowd(new SplashPane()));
 				return true;
 			}
 		};
 		newGame.setZ(10);
 		newGame.setActionZ(-30);
 		newGame.setLocation(DisplayManager.getInstance().getResolution()[0] /2 - 40, DisplayManager.getInstance().getResolution()[1] /2 + 30);
-		ActivePane.getInstance().getPane().addMouseActionItem(newGame);
-		ActivePane.getInstance().getPane().addDisplayItem(newGame);
-		ActivePane.getInstance().getPane().computeZOrder();
+		ActivePane.getInstance().getRootCrowd().addMouseActionItem(newGame);
+		ActivePane.getInstance().getRootCrowd().addDisplayItem(newGame);
+		ActivePane.getInstance().getRootCrowd().computeZOrder();
 		
 		combatKeyboardHandler.setFocus(true);
 		lineDrawer.updateAlphas();

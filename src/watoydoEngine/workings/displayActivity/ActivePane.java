@@ -1,6 +1,3 @@
-/*
- * 
- */
 package watoydoEngine.workings.displayActivity;
 import java.awt.Color;
 import java.awt.Cursor;
@@ -18,9 +15,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
-import java.awt.geom.AffineTransform;
 import java.awt.image.BufferStrategy;
-import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -39,25 +34,11 @@ import atrophy.hardPanes.SplashPane;
 
 import com.sun.corba.se.impl.orbutil.concurrent.Mutex;
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class ActivePane.
- */
 @SuppressWarnings("serial")
 public class ActivePane extends JFrame implements MouseListener, KeyListener, WindowListener{
 	
-	// Singleton code
-	/**
-	 * The instance.
-	 */
 	private static ActivePane instance;
 	
-	// returns instance
-	/**
-	 * Gets the single instance of ActivePane.
-	 *
-	 * @return single instance of ActivePane
-	 */
 	public static ActivePane getInstance(){
 		if(instance == null){
 			instance = new ActivePane();
@@ -65,98 +46,56 @@ public class ActivePane extends JFrame implements MouseListener, KeyListener, Wi
 		return instance;
 	}
 
-	// This app uses one Pane but future ones will allow you to swap them around so this variable gives you a reference to the shown pane
-	// this is used in HiLo game to grab text boxes and buttons from the pane and reference them locally
-	/**
-	 * The current pane.
-	 */
-	private Crowd currentPane;
+	private Crowd rootCrowd;
 	
-	// Information about the display settings
-	/**
-	 * The windowed.
-	 */
 	private boolean windowed;
+	private int[] resolution;
 	
-	/**
-	 * The res.
-	 */
-	private int[] res;
+	private boolean rootCrowdLoaded;
 	
-	// Vars used in drawing things to the screen
-	/**
-	 * The loaded.
-	 */
-	private boolean loaded;
-	
-	/**
-	 * The buffer s.
-	 */
 	private BufferStrategy bufferS;
-	
-	/**
-	 * The d buffer.
-	 */
 	private Graphics2D dBuffer;
 	
-	/**
-	 * The background colour.
-	 */
 	private Color backgroundColour;
 	
-	/**
-	 * The Constant loadedMutex.
-	 */
 	private static final Mutex loadedMutex = new Mutex();
 	
 	public static boolean L_MOUSE_DOWN = false;
 	
-	/**
-	 * Instantiates a new active pane.
-	 */
 	private ActivePane(){
 		
 		// Display settings
-		res = new int[2];
-		res[0] = 1280;
-		res[1] = 720;
+		resolution = new int[2];
+		resolution[0] = 1280;
+		resolution[1] = 720;
 		windowed = false;
 
 		
 		// Although the program can run windowed we position buttons by resolution sometimes
-		// To save effort of resizing everytime the user does the window, it is kept constant
+		// To save effort of resizing every time the user does the window, it is kept constant
 		this.setResizable(false);
 		this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		
 		backgroundColour = new Color(0,0,0);
 		
 		// Stops unneeded looping before displaylist has been populated
-		loaded = false;
+		rootCrowdLoaded = false;
 		
-		try {
-			loadingImage = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/LoadingImage.png"));
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+//		try {
+//			loadingImage = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/LoadingImage.png"));
+//		} catch (FileNotFoundException e) {
+//			e.printStackTrace();
+//		} catch (IOException e) {
+//			e.printStackTrace();
+//		}
 
 	}
 	
 	
-	// The Void
-	
-	// This sets up the frame with its window size and resolution so when it goes to the dm.setFrameToScreen method it is set up as the user specified
-	/**
-	 * Sets the mode.
-	 *
-	 * @param res the res
-	 * @param windowed the windowed
-	 */
-	public void setMode(int[] res, boolean windowed){
+	public void setMode(int[] resolution, boolean windowed){
 		
-		this.res[0] = res[0];
-		this.res[1] = res[1];
+		this.resolution[0] = resolution[0];
+		this.resolution[1] = resolution[1];
 		
 		this.windowed = windowed;
 		// If windowed then leave decorations on
@@ -164,9 +103,6 @@ public class ActivePane extends JFrame implements MouseListener, KeyListener, Wi
 	}
 	
 	// Set display up when config menu closes, run once
-	/**
-	 * Sets the display.
-	 */
 	public void setDisplay(){
 		
 		// Sets window icon to watoydo logo
@@ -194,10 +130,10 @@ public class ActivePane extends JFrame implements MouseListener, KeyListener, Wi
 		Cursor customCursor = toolkit.createCustomCursor(cursorImage, cursorHotSpot, "Cursor");
 		this.setCursor(customCursor);
 		
-		DisplayManager.getInstance().setFrameToScreen(this,windowed,this.res);
+		DisplayManager.getInstance().setFrameToScreen(this,windowed,this.resolution);
 		
-		this.setLocation((int)(GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint().x - res[0] * 0.5)
-						,(int)(GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint().y - res[1] * 0.5));
+		this.setLocation((int)(GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint().x - resolution[0] * 0.5)
+						,(int)(GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint().y - resolution[1] * 0.5));
 		
 		this.setVisible(true);
 		
@@ -206,32 +142,27 @@ public class ActivePane extends JFrame implements MouseListener, KeyListener, Wi
 		bufferS = this.getBufferStrategy();
 	}
 	
-	// Sets up a pane
-	/**
-	 * Setup.
-	 */
-	public void setup(){
+	// Load
+	protected void setup(){
 		
 		removeMouseListener(this);
 		removeKeyListener(this);
 		removeWindowListener(this);
 		
-		loaded = false;
+		rootCrowdLoaded = false;
 		
 		Thread loadFrame = new Thread(){
 			public void run() {
 				// Load the first frame
-				Crowd intro  = new Crowd(new SplashPane());
-				currentPane = intro;
+				Crowd initialRootCrowd  = new Crowd(new SplashPane());
+				rootCrowd = initialRootCrowd;
 				
-				loaded = true;
+				rootCrowdLoaded = true;
 				
 				// Add listeners again
 				// The whole frame has a listener for click events, further down you can see their implementation in the action list loops
 				addMouseListener(instance);
-				
 				addWindowListener(instance);
-				
 				setFocusable(true);
 				addKeyListener(instance);
 				
@@ -244,21 +175,16 @@ public class ActivePane extends JFrame implements MouseListener, KeyListener, Wi
 		SwingUtilities.invokeLater(loadFrame);
 	}
 	
-	/**
-	 * Change pane.
-	 *
-	 * @param pane the pane
-	 */
-	public void changePane(final Crowd pane){
-		this.loaded = false;
+	public void changeRootCrowd(final Crowd crowd){
+		this.rootCrowdLoaded = false;
 		this.repaint();
 		SwingUtilities.invokeLater(
 		new Thread() {
 			public void run() {
 				try {
 					loadedMutex.acquire();
-					currentPane = pane;
-					loaded = true;
+					rootCrowd = crowd;
+					rootCrowdLoaded = true;
 					loadedMutex.release();
 				}
 				catch (InterruptedException e) {
@@ -269,20 +195,15 @@ public class ActivePane extends JFrame implements MouseListener, KeyListener, Wi
 	}
 	
 	public void showLoading() {
-		this.loaded = false;
+		this.rootCrowdLoaded = false;
 		this.repaint();
 	}
 	
 	public void cancelLoading() {
-		this.loaded = true;
+		this.rootCrowdLoaded = true;
 		this.repaint();		
 	}
 	
-	// Listeners
-	// ALthough the whole screen is listening, only certain regions that contain buttons will act upon the event
-	/* (non-Javadoc)
-	 * @see java.awt.event.MouseListener#mousePressed(java.awt.event.MouseEvent)
-	 */
 	public void mousePressed(MouseEvent e){
 		
 		requestFocus();
@@ -293,39 +214,36 @@ public class ActivePane extends JFrame implements MouseListener, KeyListener, Wi
 		// Mouse 1
 		if(e.getButton() == MouseEvent.BUTTON1){
 			L_MOUSE_DOWN = true;
-			for(int i = 0; i < currentPane.getMouseActionList().size(); i++){
+			for(int i = 0; i < rootCrowd.getMouseActionList().size(); i++){
 				// if the mouse click is in the hitbox then peform the action
-				if(currentPane.getMouseActionList().get(i).isActive() && currentPane.getMouseActionList().get(i).isInBounds(mousePosition.x,mousePosition.y)){
-					if(currentPane.getMouseActionList().get(i).mD(mousePosition, e))
+				if(rootCrowd.getMouseActionList().get(i).isActive() && rootCrowd.getMouseActionList().get(i).isInBounds(mousePosition.x,mousePosition.y)){
+					if(rootCrowd.getMouseActionList().get(i).mD(mousePosition, e))
 						return;
 				}
 			}
 		}
 		// Mouse 2, BUTTON2 is middle mouse 
 		else if(e.getButton() == MouseEvent.BUTTON3){
-			for(int i = 0; i < currentPane.getMouseActionList().size(); i++){
+			for(int i = 0; i < rootCrowd.getMouseActionList().size(); i++){
 				// if the mouse click is in the hitbox then peform the action
-				if(currentPane.getMouseActionList().get(i).isActive() && currentPane.getMouseActionList().get(i).isInBounds(mousePosition.x,mousePosition.y)){
-					if(currentPane.getMouseActionList().get(i).rMD(mousePosition, e))
+				if(rootCrowd.getMouseActionList().get(i).isActive() && rootCrowd.getMouseActionList().get(i).isInBounds(mousePosition.x,mousePosition.y)){
+					if(rootCrowd.getMouseActionList().get(i).rMD(mousePosition, e))
 						return;
 				}
 			}
 		}
 		// middle mouse
 		else if(e.getButton() == MouseEvent.BUTTON2){
-			for(int i = 0; i < currentPane.getMouseActionList().size(); i++){
+			for(int i = 0; i < rootCrowd.getMouseActionList().size(); i++){
 				// if the mouse click is in the hitbox then peform the action
-				if(currentPane.getMouseActionList().get(i).isActive() && currentPane.getMouseActionList().get(i).isInBounds(mousePosition.x,mousePosition.y)){
-					if(currentPane.getMouseActionList().get(i).mMC(mousePosition, e))
+				if(rootCrowd.getMouseActionList().get(i).isActive() && rootCrowd.getMouseActionList().get(i).isInBounds(mousePosition.x,mousePosition.y)){
+					if(rootCrowd.getMouseActionList().get(i).mMC(mousePosition, e))
 						return;
 				}
 			}
 		}
     }
 	
-    /* (non-Javadoc)
-     * @see java.awt.event.MouseListener#mouseReleased(java.awt.event.MouseEvent)
-     */
     public void mouseReleased(MouseEvent e){
     	
     	Point mousePosition = new Point(MouseInfo.getPointerInfo().getLocation());
@@ -334,64 +252,46 @@ public class ActivePane extends JFrame implements MouseListener, KeyListener, Wi
 		// Mouse 1
 		if(e.getButton() == MouseEvent.BUTTON1){
 			L_MOUSE_DOWN = false;
-			for(int i = 0; i < currentPane.getMouseActionList().size(); i++){
+			for(int i = 0; i < rootCrowd.getMouseActionList().size(); i++){
 				// if the mouse click is in the hitbox then peform the action
-				if(currentPane.getMouseActionList().get(i).isActive() && currentPane.getMouseActionList().get(i).isInBounds(mousePosition.x,mousePosition.y)){
-					if(currentPane.getMouseActionList().get(i).mU(mousePosition, e))
+				if(rootCrowd.getMouseActionList().get(i).isActive() && rootCrowd.getMouseActionList().get(i).isInBounds(mousePosition.x,mousePosition.y)){
+					if(rootCrowd.getMouseActionList().get(i).mU(mousePosition, e))
 						return;
 				}
 			}
 		}
 		// Mouse 2, BUTTON2 is middle mouse 
 		else if(e.getButton() == MouseEvent.BUTTON3){
-			for(int i = 0; i < currentPane.getMouseActionList().size(); i++){
+			for(int i = 0; i < rootCrowd.getMouseActionList().size(); i++){
 				// if the mouse click is in the hitbox then peform the action
-				if(currentPane.getMouseActionList().get(i).isActive() && currentPane.getMouseActionList().get(i).isInBounds(mousePosition.x,mousePosition.y)){
-					if(currentPane.getMouseActionList().get(i).rMU(mousePosition, e))
+				if(rootCrowd.getMouseActionList().get(i).isActive() && rootCrowd.getMouseActionList().get(i).isInBounds(mousePosition.x,mousePosition.y)){
+					if(rootCrowd.getMouseActionList().get(i).rMU(mousePosition, e))
 						return;
 				}
 			}
 		}
     }
     
-    // Mouse Events
-    
-    // not used but have to be mentioned due to interface
-    /* (non-Javadoc)
-     * @see java.awt.event.MouseListener#mouseEntered(java.awt.event.MouseEvent)
-     */
-    public void mouseEntered(MouseEvent e){
-    }
+    public void mouseEntered(MouseEvent e){}
 
-    /* (non-Javadoc)
-     * @see java.awt.event.MouseListener#mouseExited(java.awt.event.MouseEvent)
-     */
-    public void mouseExited(MouseEvent e){
-    }
+    public void mouseExited(MouseEvent e){}
 
-    /* (non-Javadoc)
-     * @see java.awt.event.MouseListener#mouseClicked(java.awt.event.MouseEvent)
-     */
     public void mouseClicked(MouseEvent e){}
     
-    // Special mouseEntered/Out listener for individual components
-    /**
-     * Mouse entered.
-     */
     public void mouseEntered(){
     	try {
 			loadedMutex.acquire();
-			if(loaded){
+			if(rootCrowdLoaded){
 		    	Point mousePosition = new Point(MouseInfo.getPointerInfo().getLocation());
 				SwingUtilities.convertPointFromScreen(mousePosition, this);
 				
-				for(int i = 0; i < currentPane.getMouseActionList().size(); i++){
+				for(int i = 0; i < rootCrowd.getMouseActionList().size(); i++){
 					// if the mouse click is in the hitbox then peform the action
-					if(currentPane.getMouseActionList().get(i).isActive() && currentPane.getMouseActionList().get(i).isInBounds(mousePosition.x,mousePosition.y)){
-						currentPane.getMouseActionList().get(i).mI(mousePosition);
+					if(rootCrowd.getMouseActionList().get(i).isActive() && rootCrowd.getMouseActionList().get(i).isInBounds(mousePosition.x,mousePosition.y)){
+						rootCrowd.getMouseActionList().get(i).mI(mousePosition);
 					}
-					else if(currentPane.getMouseActionList().get(i).isActive() && !currentPane.getMouseActionList().get(i).isInBounds(mousePosition.x,mousePosition.y)){
-						currentPane.getMouseActionList().get(i).mO(mousePosition);
+					else if(rootCrowd.getMouseActionList().get(i).isActive() && !rootCrowd.getMouseActionList().get(i).isInBounds(mousePosition.x,mousePosition.y)){
+						rootCrowd.getMouseActionList().get(i).mO(mousePosition);
 					}
 				}
 			}
@@ -403,56 +303,47 @@ public class ActivePane extends JFrame implements MouseListener, KeyListener, Wi
     	}
     }
     
-    // Key Events
-    // keyup
-    /* (non-Javadoc)
-     * @see java.awt.event.KeyListener#keyReleased(java.awt.event.KeyEvent)
-     */
     public void keyReleased(KeyEvent e){
-    	for(int i = 0; i < currentPane.getKeyboardActionList().size(); i++){
-    		if(currentPane.getKeyboardActionList().get(i).isFocused()){
-    			if(currentPane.getKeyboardActionList().get(i).kU(e))
-					return;
-    		}
-    	}
-    }
-    // keydown
-    /* (non-Javadoc)
-     * @see java.awt.event.KeyListener#keyPressed(java.awt.event.KeyEvent)
-     */
-    public void keyPressed(KeyEvent e){
-    	for(int i = 0; i < currentPane.getKeyboardActionList().size(); i++){
-    		if(currentPane.getKeyboardActionList().get(i).isFocused()){
-    			if(currentPane.getKeyboardActionList().get(i).kD(e))
+    	for(int i = 0; i < rootCrowd.getKeyboardActionList().size(); i++){
+    		if(rootCrowd.getKeyboardActionList().get(i).isFocused()){
+    			if(rootCrowd.getKeyboardActionList().get(i).kU(e))
 					return;
     		}
     	}
     }
 
-	/* (non-Javadoc)
-	 * @see java.awt.event.KeyListener#keyTyped(java.awt.event.KeyEvent)
-	 */
+    public void keyPressed(KeyEvent e){
+    	for(int i = 0; i < rootCrowd.getKeyboardActionList().size(); i++){
+    		if(rootCrowd.getKeyboardActionList().get(i).isFocused()){
+    			if(rootCrowd.getKeyboardActionList().get(i).kD(e))
+					return;
+    		}
+    	}
+    }
+
 	public void keyTyped(KeyEvent e){
-		for(int i = 0; i < currentPane.getKeyboardActionList().size(); i++){
-			if(currentPane.getKeyboardActionList().get(i).isFocused()){
-				if(currentPane.getKeyboardActionList().get(i).kP(e))
+		for(int i = 0; i < rootCrowd.getKeyboardActionList().size(); i++){
+			if(rootCrowd.getKeyboardActionList().get(i).isFocused()){
+				if(rootCrowd.getKeyboardActionList().get(i).kP(e))
 					return;
 			}
     	}
 	}
     
    public void paint(Graphics g){
-	   // dBuffer is a 2dGraphics because affineTranform is used in display classes
+
 	   dBuffer = (Graphics2D) bufferS.getDrawGraphics();
 
+	   // Draw background
 	   dBuffer.setColor(backgroundColour);
-	   dBuffer.fillRect(0,0,res[0],res[1]);
+	   dBuffer.fillRect(0,0,resolution[0],resolution[1]);
 	   
 	   dBuffer.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	   dBuffer.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
+	   
 	   // If lists are loaded then draw to buffer
-	   if(loaded){
-		   draw(currentPane.getDisplayList());
+	   if(rootCrowdLoaded){
+		   draw(rootCrowd.getDisplayList());
 	   }
 	   else{
 		   drawLoading();
@@ -464,33 +355,23 @@ public class ActivePane extends JFrame implements MouseListener, KeyListener, Wi
 	   dBuffer.dispose();
    }
 	
-   	private BufferedImage loadingImage;
+//   	private BufferedImage loadingImage;
    
 	private void drawLoading() {
 		dBuffer.setColor(Color.black);
-		dBuffer.fillRect(0, 0, res[0], res[1]);
+		dBuffer.fillRect(0, 0, resolution[0], resolution[1]);
 		dBuffer.setFont(FontList.AUD24);
 		dBuffer.setColor(Color.white);
-		dBuffer.drawString("Loading", 5, res[1] - 10);
+		dBuffer.drawString("Loading", 5, resolution[1] - 10);
 //		AffineTransform transform = new AffineTransform();
 //		transform.setToTranslation(this.getWidth() - loadingImage.getWidth(), this.getHeight() - loadingImage.getHeight());
 //		dBuffer.drawImage(loadingImage,transform ,null);
 	}
 
-
-	/**
-	 * Reload display.
-	 */
 	public void reloadDisplay(){
 		this.repaint();
 	}
 	
-	// Draws a crowd or a pane
-	/**
-	 * Draw.
-	 *
-	 * @param displayList the display list
-	 */
 	public void draw(ArrayList<Displayable> displayList){
 		for(int i = 0; i < displayList.size(); i++){
 			
@@ -504,60 +385,29 @@ public class ActivePane extends JFrame implements MouseListener, KeyListener, Wi
 		}
 	}
 	
-	/**
-	 * Draw crowd.
-	 *
-	 * @param crowd the crowd
-	 */
 	public void drawCrowd(Crowd crowd){
 		draw(crowd.getDisplayList());
 	}
 	
-	// Getters
-	/**
-	 * Gets the windowed.
-	 *
-	 * @return the windowed
-	 */
-	public boolean getWindowed(){
+	public boolean isWindowed(){
 		return windowed;
 	}
 	
-	/**
-	 * Gets the pane.
-	 *
-	 * @return the pane
-	 */
-	public Crowd getPane(){
-		return currentPane;
+	public Crowd getRootCrowd(){
+		return rootCrowd;
 	}
 	
-	/* (non-Javadoc)
-	 * @see java.awt.event.WindowListener#windowActivated(java.awt.event.WindowEvent)
-	 */
 	@Override
 	public void windowActivated(WindowEvent e) {}
 
-
-	/* (non-Javadoc)
-	 * @see java.awt.event.WindowListener#windowClosed(java.awt.event.WindowEvent)
-	 */
 	@Override
 	public void windowClosed(WindowEvent e) {}
 
-
-	/* (non-Javadoc)
-	 * @see java.awt.event.WindowListener#windowClosing(java.awt.event.WindowEvent)
-	 */
 	@Override
 	public void windowClosing(WindowEvent e) {
 		closeWindow();
 	}
 
-
-	/**
-	 * Close window.
-	 */
 	public void closeWindow() {
 		try {
 			loadedMutex.acquire();/*
@@ -574,31 +424,15 @@ public class ActivePane extends JFrame implements MouseListener, KeyListener, Wi
 		}
 	}
 
-
-	/* (non-Javadoc)
-	 * @see java.awt.event.WindowListener#windowDeactivated(java.awt.event.WindowEvent)
-	 */
 	@Override
 	public void windowDeactivated(WindowEvent e) {}
 
-
-	/* (non-Javadoc)
-	 * @see java.awt.event.WindowListener#windowDeiconified(java.awt.event.WindowEvent)
-	 */
 	@Override
 	public void windowDeiconified(WindowEvent e) {}
 
-
-	/* (non-Javadoc)
-	 * @see java.awt.event.WindowListener#windowIconified(java.awt.event.WindowEvent)
-	 */
 	@Override
 	public void windowIconified(WindowEvent e) {}
 
-
-	/* (non-Javadoc)
-	 * @see java.awt.event.WindowListener#windowOpened(java.awt.event.WindowEvent)
-	 */
 	@Override
 	public void windowOpened(WindowEvent e) {}
 	
