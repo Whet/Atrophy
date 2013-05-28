@@ -1,7 +1,7 @@
 package atrophy.combat.ai;
 
 import atrophy.combat.items.Weapon;
-import watoydoEngine.gubbinz.Maths;
+import watoydoEngine.utils.Maths;
 
 public class ThinkingAiEmotion {
 

@@ -10,7 +10,7 @@ import java.util.HashMap;
 
 import watoydoEngine.designObjects.display.Displayable;
 import watoydoEngine.display.tweens.TweenDefinable;
-import watoydoEngine.gubbinz.GraphicsFunctions;
+import watoydoEngine.utils.GraphicsFunctions;
 import watoydoEngine.workings.DisplayManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.ai.Ai;

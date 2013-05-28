@@ -5,7 +5,7 @@ package atrophy.combat.level;
 
 import java.util.HashMap;
 
-import watoydoEngine.gubbinz.Maths;
+import watoydoEngine.utils.Maths;
 import atrophy.combat.ai.Ai;
 
 // TODO: Auto-generated Javadoc

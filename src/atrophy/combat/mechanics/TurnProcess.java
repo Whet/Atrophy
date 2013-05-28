@@ -9,8 +9,8 @@ import java.util.Stack;
 
 import watoydoEngine.designObjects.display.Crowd;
 import watoydoEngine.designObjects.display.TextButton;
-import watoydoEngine.gubbinz.Maths;
 import watoydoEngine.sounds.SoundBoard;
+import watoydoEngine.utils.Maths;
 import watoydoEngine.workings.DisplayManager;
 import watoydoEngine.workings.displayActivity.ActivePane;
 import atrophy.combat.CombatNCEManager;

@@ -6,7 +6,7 @@ package watoydoEngine.designObjects.display;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 
-import watoydoEngine.gubbinz.GraphicsFunctions;
+import watoydoEngine.utils.GraphicsFunctions;
 
 
 // TODO: Auto-generated Javadoc

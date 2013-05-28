@@ -6,7 +6,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import watoydoEngine.gubbinz.Maths;
+import watoydoEngine.utils.Maths;
 
 public class LevelBlockGrid {
     

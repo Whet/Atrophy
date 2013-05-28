@@ -10,8 +10,8 @@ import java.awt.event.MouseEvent;
 
 import watoydoEngine.designObjects.display.Crowd;
 import watoydoEngine.display.tweens.TweenDefinable;
-import watoydoEngine.gubbinz.GraphicsFunctions;
 import watoydoEngine.sounds.SoundBoard;
+import watoydoEngine.utils.GraphicsFunctions;
 import watoydoEngine.workings.displayActivity.ActivePane;
 
 /**

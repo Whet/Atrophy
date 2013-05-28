@@ -7,7 +7,7 @@ import java.awt.Polygon;
 import java.util.HashMap;
 import java.util.Random;
 
-import watoydoEngine.gubbinz.Maths;
+import watoydoEngine.utils.Maths;
 import atrophy.combat.ai.ThinkingAi.AiMode;
 import atrophy.combat.mechanics.Abilities;
 

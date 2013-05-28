@@ -6,7 +6,7 @@ import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.actions.MouseAbilityHandler;
 import atrophy.combat.display.ui.FloatingIcons;
-import watoydoEngine.gubbinz.Maths;
+import watoydoEngine.utils.Maths;
 
 public class VehicleImage extends AiImage {
 

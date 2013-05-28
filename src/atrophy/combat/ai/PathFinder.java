@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.Set;
 
-import watoydoEngine.gubbinz.Maths;
+import watoydoEngine.utils.Maths;
 import atrophy.combat.level.LevelBlock;
 import atrophy.combat.level.LevelBlockGrid;
 import atrophy.combat.level.LevelBlockGrid.GridBlock;

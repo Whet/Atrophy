@@ -5,7 +5,7 @@ package atrophy.combat.ai;
 
 import java.util.ArrayList;
 
-import watoydoEngine.gubbinz.Maths;
+import watoydoEngine.utils.Maths;
 import atrophy.combat.CombatNCEManager;
 import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatUiManager;

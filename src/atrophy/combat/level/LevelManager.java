@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Set;
 
-import watoydoEngine.gubbinz.Maths;
+import watoydoEngine.utils.Maths;
 import atrophy.combat.ai.PathFinder;
 import atrophy.combat.ai.PathNotFoundException;
 

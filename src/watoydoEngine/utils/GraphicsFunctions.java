@@ -1,7 +1,7 @@
 /*
  * 
  */
-package watoydoEngine.gubbinz;
+package watoydoEngine.utils;
 
 import java.awt.AlphaComposite;
 import java.awt.Color;

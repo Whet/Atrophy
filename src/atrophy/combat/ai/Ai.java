@@ -11,7 +11,7 @@ import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import watoydoEngine.gubbinz.Maths;
+import watoydoEngine.utils.Maths;
 import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatNCEManager;
 import atrophy.combat.CombatUiManager;

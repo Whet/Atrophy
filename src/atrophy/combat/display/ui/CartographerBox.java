@@ -12,7 +12,7 @@ import watoydoEngine.designObjects.actions.ActionRegion;
 import watoydoEngine.designObjects.display.Crowd;
 import watoydoEngine.designObjects.display.TextButton;
 import watoydoEngine.designObjects.display.TextInput;
-import watoydoEngine.gubbinz.GraphicsFunctions;
+import watoydoEngine.utils.GraphicsFunctions;
 import watoydoEngine.workings.displayActivity.ActivePane;
 import atrophy.combat.PanningManager;
 

@@ -3,7 +3,7 @@ package atrophy.combat;
 import java.awt.Polygon;
 import java.util.ArrayList;
 
-import watoydoEngine.gubbinz.Maths;
+import watoydoEngine.utils.Maths;
 import atrophy.combat.ai.Ai;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.AiImage;

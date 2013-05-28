@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import watoydoEngine.display.tweens.MotionTween;
-import watoydoEngine.gubbinz.Maths;
+import watoydoEngine.utils.Maths;
 import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;

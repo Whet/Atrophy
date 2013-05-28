@@ -9,7 +9,7 @@ import java.awt.Graphics2D;
 
 import watoydoEngine.designObjects.display.Text;
 import watoydoEngine.fonts.FontList;
-import watoydoEngine.gubbinz.GraphicsFunctions;
+import watoydoEngine.utils.GraphicsFunctions;
 import atrophy.combat.CombatMembersManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.ai.AiActions;

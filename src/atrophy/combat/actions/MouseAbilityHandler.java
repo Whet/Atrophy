@@ -6,8 +6,8 @@ package atrophy.combat.actions;
 import java.awt.Color;
 import java.awt.Point;
 
-import watoydoEngine.gubbinz.Maths;
 import watoydoEngine.sounds.SoundBoard;
+import watoydoEngine.utils.Maths;
 import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.PanningManager;

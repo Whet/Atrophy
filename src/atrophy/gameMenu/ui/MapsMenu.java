@@ -12,8 +12,8 @@ import java.util.ArrayList;
 
 import watoydoEngine.designObjects.display.Text;
 import watoydoEngine.designObjects.display.TextButton;
-import watoydoEngine.gubbinz.GraphicsFunctions;
 import watoydoEngine.io.ReadWriter;
+import watoydoEngine.utils.GraphicsFunctions;
 import atrophy.combat.ai.AiGenerator;
 import atrophy.gameMenu.saveFile.ItemMarket;
 import atrophy.gameMenu.saveFile.MapManager.Sector;

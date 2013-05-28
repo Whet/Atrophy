@@ -2,7 +2,7 @@ package atrophy.combat.ai;
 
 import java.util.Stack;
 
-import watoydoEngine.gubbinz.Maths;
+import watoydoEngine.utils.Maths;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.level.LevelBlock;
 import atrophy.combat.level.LevelManager;

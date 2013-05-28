@@ -13,9 +13,9 @@ import javax.imageio.ImageIO;
 
 import watoydoEngine.designObjects.display.Crowd;
 import watoydoEngine.fonts.FontList;
-import watoydoEngine.gubbinz.GraphicsFunctions;
-import watoydoEngine.gubbinz.Maths;
 import watoydoEngine.io.ReadWriter;
+import watoydoEngine.utils.GraphicsFunctions;
+import watoydoEngine.utils.Maths;
 import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatNCEManager;
 import atrophy.combat.CombatVisualManager;

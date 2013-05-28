@@ -21,9 +21,9 @@ import javax.imageio.ImageIO;
 
 import watoydoEngine.designObjects.display.Displayable;
 import watoydoEngine.display.tweens.TweenDefinable;
-import watoydoEngine.gubbinz.GraphicsFunctions;
-import watoydoEngine.gubbinz.Maths;
 import watoydoEngine.io.ReadWriter;
+import watoydoEngine.utils.GraphicsFunctions;
+import watoydoEngine.utils.Maths;
 import watoydoEngine.workings.DisplayManager;
 import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatVisualManager;

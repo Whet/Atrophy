@@ -1,7 +1,7 @@
 /*
  * 
  */
-package watoydoEngine.gubbinz;
+package watoydoEngine.utils;
 
 
 // TODO: Auto-generated Javadoc

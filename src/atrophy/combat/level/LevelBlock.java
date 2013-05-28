@@ -11,7 +11,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.Stack;
 
-import watoydoEngine.gubbinz.Maths;
+import watoydoEngine.utils.Maths;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.ai.Ai;
 import atrophy.combat.ai.PathNotFoundException;

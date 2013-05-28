@@ -1,55 +1,32 @@
-/*
- * 
- */
 package atrophy.combat.display.ui;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import watoydoEngine.designObjects.display.Text;
 import watoydoEngine.fonts.FontList;
-import watoydoEngine.gubbinz.LimitedArrayList;
 import watoydoEngine.workings.DisplayManager;
 import atrophy.combat.CombatUiManager;
 
 import com.sun.corba.se.impl.orbutil.concurrent.Mutex;
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class InfoText.
- */
 public class InfoText extends Text {
 	
-	/**
-	 * The Constant MAX_HINTS.
-	 */
-	private static final byte MAX_HINTS = 10;
 	
-	/**
-	 * The Constant hintEditMutex.
-	 */
-//	private static final Semaphore hintEditTickets = new Semaphore(1,true);
 	private static final Mutex hintEditMutex = new Mutex();
 	
-	/**
-	 * The hints.
-	 */
-	private LimitedArrayList<InfoTextDisplayable> hints;
+	private List<InfoTextDisplayable> hints;
 	
 	private CombatUiManager combatUiManager;
 	
-	/**
-	 * Instantiates a new info text.
-	 */
 	public InfoText(CombatUiManager combatUiManager) {
 		super(0,0,"");
-		hints = new LimitedArrayList<InfoTextDisplayable>(MAX_HINTS);
+		hints = new ArrayList<InfoTextDisplayable>();
 		this.setFont(FontList.AUD16);
 		
 		this.combatUiManager = combatUiManager;
 	}
 	
-	// The Void
-	/**
-	 * Draw hints.
-	 */
 	private void drawHints(){
 		
 		this.setText("");
@@ -63,11 +40,6 @@ public class InfoText extends Text {
 		hintEditMutex.release();
 	}
 	
-	/**
-	 * Hint lines.
-	 *
-	 * @return the int
-	 */
 	private int hintLines(){
 		int totalLines = 0;
 		for(InfoTextDisplayable hint : this.hints){
@@ -76,9 +48,6 @@ public class InfoText extends Text {
 		return totalLines;
 	}
 	
-	/**
-	 * Update info text.
-	 */
 	public void updateInfoText(){
 		try{
 			hintEditMutex.acquire();
@@ -90,12 +59,6 @@ public class InfoText extends Text {
 		}
 	}
 	
-	// Setters
-	/**
-	 * Sets the info text.
-	 *
-	 * @param textDisplayer the new info text
-	 */
 	public void setInfoText(InfoTextDisplayable textDisplayer){
 		try{
 			if(!hints.contains(textDisplayer)){
@@ -110,11 +73,6 @@ public class InfoText extends Text {
 		}
 	}
 	
-	/**
-	 * Removes the info text.
-	 *
-	 * @param textDisplayer the text displayer
-	 */
 	public void removeInfoText(InfoTextDisplayable textDisplayer){
 		try{
 			if(hints.contains(textDisplayer)){
@@ -129,11 +87,6 @@ public class InfoText extends Text {
 		}
 	}
 	
-	/**
-	 * Update info text.
-	 *
-	 * @param textDisplayer the text displayer
-	 */
 	public void updateInfoText(InfoTextDisplayable textDisplayer){
 		try{
 			if(hints.contains(textDisplayer)){

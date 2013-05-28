@@ -5,7 +5,7 @@ package atrophy.combat.items;
 
 import java.awt.Color;
 
-import watoydoEngine.gubbinz.Maths;
+import watoydoEngine.utils.Maths;
 import atrophy.combat.PanningManager;
 import atrophy.combat.ai.Ai;
 import atrophy.combat.display.ui.VisualEffect;
