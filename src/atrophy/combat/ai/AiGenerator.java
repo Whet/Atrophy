@@ -22,6 +22,8 @@ import atrophy.combat.actions.MouseAbilityHandler;
 import atrophy.combat.ai.AiGeneratorInterface.DaemonRandomSpawn;
 import atrophy.combat.ai.AiGeneratorInterface.GenerateCommand;
 import atrophy.combat.ai.AiGeneratorInterface.SoloGenerateCommand;
+import atrophy.combat.ai.director.DirectorArchetype;
+import atrophy.combat.ai.director.DirectorClassification;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.AiImage;
 import atrophy.combat.display.DaemonImage;
@@ -117,7 +119,7 @@ public class AiGenerator{
 		for(AiGeneratorInterface.GenerateCommand command : generationCommands){
 			
 			if(command instanceof DaemonRandomSpawn) {
-				generateSoloAi((DaemonRandomSpawn)command, squadCount);
+				generateDaemonAi((DaemonRandomSpawn)command, squadCount);
 				squadCount++;
 				continue;
 			}
@@ -256,7 +258,7 @@ public class AiGenerator{
 		aiCrowd.addDisplayItem(aiImg);
 		aiCrowd.addMouseActionItem(aiImg);
 		
-		aiCrowd.addActor(ai);
+		aiCrowd.addActor(ai, new DirectorClassification(DirectorArchetype.UNDECIDED));
 		aiCrowd.addMask(aiImg);
 		
 		if(command.getAiNode() != null){
@@ -275,7 +277,7 @@ public class AiGenerator{
 			}
 	}
 	
-	private void generateSoloAi(DaemonRandomSpawn command, int squadCount) {
+	private void generateDaemonAi(DaemonRandomSpawn command, int squadCount) {
 		double[] location = levelManager.randomPosition();
 		
 		AiImage aiImg = new AiImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, 0,0, mouseAbilityHandler, floatingIcons);
@@ -294,7 +296,7 @@ public class AiGenerator{
 		aiCrowd.addDisplayItem(aiImg);
 		aiCrowd.addMouseActionItem(aiImg);
 		
-		aiCrowd.addActor(ai);
+		aiCrowd.addActor(ai, new DirectorClassification(DirectorArchetype.UNDECIDED));
 		aiCrowd.addMask(aiImg);
 		
 		combatMembersManager.addAi(ai);
@@ -348,7 +350,7 @@ public class AiGenerator{
 			aiCrowd.addMouseActionItem(aiImg);
 			
 			
-			aiCrowd.addActor(ai);
+			aiCrowd.addActor(ai, new DirectorClassification(DirectorArchetype.PLAYER));
 			aiCrowd.addMask(aiImg);
 			
 			randomLocation = levelManager.randomInPosition(levelBlock);
@@ -387,7 +389,7 @@ public class AiGenerator{
 		aiCrowd.addDisplayItem(aiImg);
 		aiCrowd.addMouseActionItem(aiImg);
 		
-		aiCrowd.addActor(ai);
+		aiCrowd.addActor(ai, new DirectorClassification(DirectorArchetype.UNDECIDED));
 		aiCrowd.addMask(aiImg);
 		
 		combatMembersManager.addAi(ai);
@@ -409,7 +411,7 @@ public class AiGenerator{
 		aiCrowd.addDisplayItem(aiImg);
 		aiCrowd.addMouseActionItem(aiImg);
 		
-		aiCrowd.addActor(ai);
+		aiCrowd.addActor(ai, new DirectorClassification(DirectorArchetype.UNDECIDED));
 		aiCrowd.addMask(aiImg);
 	}
 	
@@ -448,7 +450,7 @@ public class AiGenerator{
 			aiCrowd.addDisplayItem(aiImg);
 			aiCrowd.addMouseActionItem(aiImg);
 			
-			aiCrowd.addActor(ai);
+			aiCrowd.addActor(ai, new DirectorClassification(DirectorArchetype.UNDECIDED));
 			aiCrowd.addMask(aiImg);
 			
 			randomLocation = levelManager.randomInPosition(spawnRoom);

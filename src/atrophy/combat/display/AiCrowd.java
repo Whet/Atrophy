@@ -23,6 +23,7 @@ import atrophy.combat.ai.Ai;
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.ai.ThinkingAi;
 import atrophy.combat.ai.VehicleAi;
+import atrophy.combat.ai.director.DirectorClassification;
 import atrophy.combat.ai.director.HealthDirector;
 import atrophy.gameMenu.saveFile.Squad;
 import atrophy.gameMenu.saveFile.Squad.Squaddie;
@@ -285,10 +286,12 @@ public class AiCrowd extends Crowd {
 		return this.actors;
 	}
 	
-	public void addActor(Ai ai){
+	public void addActor(Ai ai, DirectorClassification aiClass){
 		actors.add(ai);
 		
 		this.masterStack.push(ai);
+		
+		this.director.addAi(ai, aiClass);
 	}
 	
 	public void addMask(AiImage aiImg){

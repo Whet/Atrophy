@@ -4,7 +4,6 @@
 package atrophy.combat.ai;
 
 import java.awt.Color;
-import java.awt.Component;
 import java.awt.Polygon;
 import java.util.ArrayList;
 import java.util.Map;
@@ -13,8 +12,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import watoydoEngine.gubbinz.Maths;
-import atrophy.combat.CombatNCEManager;
 import atrophy.combat.CombatMembersManager;
+import atrophy.combat.CombatNCEManager;
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
