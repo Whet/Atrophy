@@ -1,6 +1,3 @@
-/*
- * 
- */
 package watoydoEngine.workings.displayActivity;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -23,25 +20,11 @@ import javax.swing.JPanel;
 import watoydoEngine.io.ReadWriter;
 
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class SetupWindow.
- */
 @SuppressWarnings("serial")
 public class SetupWindow extends JFrame{
 	
-	// Singleton code
-	/**
-	 * The instance.
-	 */
 	private static SetupWindow instance;
 	
-	// returns instance
-	/**
-	 * Gets the single instance of SetupWindow.
-	 *
-	 * @return single instance of SetupWindow
-	 */
 	public static SetupWindow getInstance(){
 		if(instance == null){
 			instance = new SetupWindow();
@@ -49,35 +32,12 @@ public class SetupWindow extends JFrame{
 		return instance;
 	}
 	
-	/**
-	 * The start.
-	 */
 	private JButton windowed, start;
-	
-	/**
-	 * The resolution.
-	 */
 	private JComboBox<String> resolution;
-	
-	/**
-	 * The windowed mode.
-	 */
 	private boolean windowedMode;
-	
-	/**
-	 * The resolution mode.
-	 */
 	private int[] resolutionMode;
-	
-	// set the size of window here
-	/**
-	 * The DIMENSIONS.
-	 */
 	private final int[] DIMENSIONS = {340,150};
-	
-	/**
-	 * Instantiates a new setup window.
-	 */
+
 	private SetupWindow(){
 		
 		windowedMode = true;
@@ -159,14 +119,8 @@ public class SetupWindow extends JFrame{
 	}
 	
 	
-	/**
-	 * The Class ChangeWindowed.
-	 */
 	private class ChangeWindowed implements ActionListener{
 		
-		/* (non-Javadoc)
-		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-		 */
 		public void actionPerformed(ActionEvent e){
 			
 			windowedMode = !windowedMode;
@@ -181,14 +135,8 @@ public class SetupWindow extends JFrame{
 		}
 	}
 	
-	/**
-	 * The Class ChangeResolution.
-	 */
 	private class ChangeResolution implements ActionListener{
 
-		/* (non-Javadoc)
-		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-		 */
 		@Override
 		public void actionPerformed(ActionEvent e) {
 			switch((String)resolution.getSelectedItem()){
@@ -214,16 +162,9 @@ public class SetupWindow extends JFrame{
 	}
 	
 	// Happens when start is pressed, applies the graphical settings where needed
-	/**
-	 * The Class StartGame.
-	 */
 	private class StartGame implements ActionListener{
 		
-		/* (non-Javadoc)
-		 * @see java.awt.event.ActionListener#actionPerformed(java.awt.event.ActionEvent)
-		 */
 		public void actionPerformed(ActionEvent e){
-//			DevMenu.getInstance();
 			ActivePane.getInstance().setDisplay();
 			ActivePane.getInstance().setup();
 			setVisible(false);
