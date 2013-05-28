@@ -28,7 +28,7 @@ public class UnitMarker extends ImageSingle {
 	 * @param image the image
 	 */
 	public UnitMarker(AiCrowd aiCrowd, PanningManager panningManager, CombatMembersManager combatMembersManager, BufferedImage image){
-		super("UnitMarker",image,true);
+		super(image,true);
 		this.panningManager = panningManager;
 		this.combatMembersManager = combatMembersManager;
 		this.aiCrowd = aiCrowd;

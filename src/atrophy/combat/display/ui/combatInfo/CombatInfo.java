@@ -75,7 +75,7 @@ public class CombatInfo extends Crowd {
 		ImageSingle combatBack = null;
 		
 		try{
-			combatBack = new ImageSingle("CombatInfoBackground",ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/combatInfo.png")));
+			combatBack = new ImageSingle(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/combatInfo.png")));
 			this.addDisplayItem(combatBack);
 			
 			// add swing counter and ammo counter text

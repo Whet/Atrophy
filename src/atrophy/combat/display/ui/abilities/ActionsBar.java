@@ -46,7 +46,7 @@ public class ActionsBar extends Crowd{
 		
 		try{
 			
-			abilityBack = new ImageSingle("abilityBarBackground",ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/abilityGrid.png")));
+			abilityBack = new ImageSingle(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/abilityGrid.png")));
 			
 			this.addDisplayItem(abilityBack);
 			
