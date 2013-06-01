@@ -1,6 +1,3 @@
-/*
- * 
- */
 package atrophy.combat.display.ui;
 
 import java.awt.Color;
@@ -10,7 +7,6 @@ import java.util.HashMap;
 
 import watoydoEngine.designObjects.display.Displayable;
 import watoydoEngine.display.tweens.TweenDefinable;
-import watoydoEngine.utils.GraphicsFunctions;
 import watoydoEngine.workings.DisplayManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.ai.Ai;
@@ -22,22 +18,16 @@ import atrophy.combat.level.LevelManager;
 
 public class MiniMap implements Displayable {
 	
-	
-	private static final Color MAP_BORDER = Color.white;
-	
-	
 	private static final int DOT_SIZE = 2;
-	private static final double HEIGHT = 120;
-	private static final double WIDTH = 120;
+	private static final int HEIGHT = 120;
+	private static final int WIDTH = 120;
 	private static final int WIDTH_BUFFER = 40;
-	private static final double HEIGHT_BUFFER = 40;
+	private static final int HEIGHT_BUFFER = 40;
 	
-	private float mapAlpha;
 	private double[] startLocation;
-	private double defaultScale;
+	private float defaultScale;
 	private double[] location;
 	private boolean visible;
-	private double scale;
 	private double[] size;
 	private int z;
 	private ArrayList<Ai> drawAi;
@@ -47,6 +37,7 @@ public class MiniMap implements Displayable {
 	private PanningManager panningManager;
 	private Cartographer cartographer;
 	private LevelManager levelManager;
+	private MiniMapLines miniMapLines;
 	
 	
 	public MiniMap(Cartographer cartographer, AiCrowd aiCrowd, PanningManager panningManager, LevelManager levelManager){
@@ -73,18 +64,18 @@ public class MiniMap implements Displayable {
 		
 		this.defaultScale = WIDTH / (float)(levelManager.getCurrentLevel().getSize()[0] -levelManager.getCurrentLevel().getSize()[1]);
 		
-		mapAlpha = 0.4f;
-		
 		this.location[0] = DisplayManager.getInstance().getResolution()[0] - WIDTH - WIDTH_BUFFER;
 		this.location[1] = HEIGHT_BUFFER;
 		this.startLocation = this.location.clone();
 		
 		setDefaultScale();
+		
+		this.miniMapLines = new MiniMapLines(defaultScale, this.levelManager.getCurrentLevel());
+		this.miniMapLines.setLocation(this.getLocation()[0], this.getLocation()[1]);
 	}
 	
 	
 	public void setDefaultScale(){
-		this.scale = this.defaultScale;
 		this.setLocation(this.startLocation[0], this.startLocation[1]);
 	}
 	
@@ -141,66 +132,34 @@ public class MiniMap implements Displayable {
 	@Override
 	public void drawMethod(Graphics2D drawShape) {
 		
-		this.drawLevelBlocks(drawShape);
-		
-		drawShape.setComposite(GraphicsFunctions.makeComposite(1.0f));
+		this.miniMapLines.drawMethod(drawShape);
 		
 		// draw ai
 		for(int i = 0; i < this.drawAi.size(); i++){
 			
 			drawShape.setColor(this.aiColours.get(this.drawAi.get(i)));
 			
-			drawShape.fillRect((int)(this.getLocation()[0] - DOT_SIZE + this.drawAi.get(i).getLocation()[0] * this.scale), 
-							   (int)(this.getLocation()[1] - DOT_SIZE + this.drawAi.get(i).getLocation()[1] * this.scale),
+			drawShape.fillRect((int)(this.getLocation()[0] - DOT_SIZE + this.drawAi.get(i).getLocation()[0] * this.defaultScale), 
+							   (int)(this.getLocation()[1] - DOT_SIZE + this.drawAi.get(i).getLocation()[1] * this.defaultScale),
 							         DOT_SIZE * 2, DOT_SIZE * 2);
 		}
 		
 		// draw markers
 		for(Marker marker : cartographer.getMarkers()){
 			drawShape.setColor(marker.getColour());
-			drawShape.fillRect((int)(this.getLocation()[0] - DOT_SIZE + (marker.getLocation()[0] * this.scale)), 
-					   		   (int)(this.getLocation()[1] - DOT_SIZE + (marker.getLocation()[1] * this.scale)),
+			drawShape.fillRect((int)(this.getLocation()[0] - DOT_SIZE + (marker.getLocation()[0] * this.defaultScale)), 
+					   		   (int)(this.getLocation()[1] - DOT_SIZE + (marker.getLocation()[1] * this.defaultScale)),
 					                 DOT_SIZE * 2, DOT_SIZE * 2);
 		}
 		
 		// draw box to show where player looking
 		drawShape.setColor(Color.white);
-		drawShape.drawRect((int)(this.getLocation()[0] - panningManager.getOffset()[0] * this.scale), 
-				           (int)(this.getLocation()[1] - panningManager.getOffset()[1] * this.scale),
-				           (int)(DisplayManager.getInstance().getResolution()[0] * this.scale),
-				           (int)(DisplayManager.getInstance().getResolution()[1] * this.scale));
+		drawShape.drawRect((int)(this.getLocation()[0] - panningManager.getOffset()[0] * this.defaultScale), 
+				           (int)(this.getLocation()[1] - panningManager.getOffset()[1] * this.defaultScale),
+				           (int)(DisplayManager.getInstance().getResolution()[0] * this.defaultScale),
+				           (int)(DisplayManager.getInstance().getResolution()[1] * this.defaultScale));
 	}
 	
-	
-	private void drawLevelBlocks(Graphics2D drawShape){
-		
-		drawShape.setComposite(GraphicsFunctions.makeComposite(this.mapAlpha));
-		drawShape.setColor(MAP_BORDER);
-		
-		for(int i = 0; i < levelManager.getCurrentLevel().getBlockCount(); i++){
-			
-			if(levelManager.getBlock(i).isDiscovered()) {
-			
-				for(int j = 1; j < levelManager.getCurrentLevel().getBlock(i).getHitBox().npoints; j++){
-					
-					drawShape.drawLine((int)(this.getLocation()[0] + levelManager.getCurrentLevel().getBlock(i).getHitBox().xpoints[j - 1] * this.scale), 
-									   (int)(this.getLocation()[1] + levelManager.getCurrentLevel().getBlock(i).getHitBox().ypoints[j - 1] * this.scale), 
-									   (int)(this.getLocation()[0] + levelManager.getCurrentLevel().getBlock(i).getHitBox().xpoints[j] * this.scale), 
-									   (int)(this.getLocation()[1] + levelManager.getCurrentLevel().getBlock(i).getHitBox().ypoints[j] * this.scale));
-				}
-				
-				drawShape.drawLine((int)(this.getLocation()[0] + levelManager.getCurrentLevel().getBlock(i).getHitBox().xpoints[0] * this.scale), 
-								   (int)(this.getLocation()[1] + levelManager.getCurrentLevel().getBlock(i).getHitBox().ypoints[0] * this.scale), 
-								   (int)(this.getLocation()[0] + levelManager.getCurrentLevel().getBlock(i).getHitBox().xpoints[levelManager.getCurrentLevel().getBlock(i).getHitBox().npoints - 1] * this.scale), 
-								   (int)(this.getLocation()[1] + levelManager.getCurrentLevel().getBlock(i).getHitBox().ypoints[levelManager.getCurrentLevel().getBlock(i).getHitBox().npoints - 1] * this.scale));
-			}
-			
-		}
-		
-		drawShape.setComposite(GraphicsFunctions.makeComposite(1.0f));
-		
-	}
-
 	
 	@Override
 	public boolean isVisible() {
@@ -210,7 +169,7 @@ public class MiniMap implements Displayable {
 	
 	@Override
 	public double getScale() {
-		return scale;
+		return 1;
 	}
 
 	
@@ -251,14 +210,7 @@ public class MiniMap implements Displayable {
 
 	
 	@Override
-	public void setScale(double scale) {
-		
-		this.scale = scale;
-		this.location[0] = this.startLocation[0] - (this.getSize()[0] / this.defaultScale) * scale - WIDTH_BUFFER;
-		
-		updateAiDrawing();
-		
-	}
+	public void setScale(double scale) {}
 
 	
 	@Override
@@ -278,8 +230,6 @@ public class MiniMap implements Displayable {
 	public void setTween(TweenDefinable tween) {}
 	
 	
-	public void setAlpha(float alpha){
-		this.mapAlpha = alpha;
-	}
+	public void setAlpha(float alpha){}
 
 }

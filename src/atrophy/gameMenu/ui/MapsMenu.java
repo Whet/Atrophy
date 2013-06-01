@@ -7,6 +7,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -15,6 +16,10 @@ import watoydoEngine.designObjects.display.TextButton;
 import watoydoEngine.io.ReadWriter;
 import watoydoEngine.utils.GraphicsFunctions;
 import atrophy.combat.ai.AiGenerator;
+import atrophy.combat.display.ui.MiniMapLines;
+import atrophy.combat.level.Level;
+import atrophy.combat.level.LevelIO;
+import atrophy.combat.level.LevelIO.LevelFormatException;
 import atrophy.gameMenu.saveFile.ItemMarket;
 import atrophy.gameMenu.saveFile.MapManager.Sector;
 import atrophy.gameMenu.saveFile.Missions;
@@ -27,30 +32,12 @@ import atrophy.gameMenu.ui.popups.ErrorPopup;
  */
 public class MapsMenu extends Menu {
 
-	/**
-	 * The Constant MAX_ITEMS.
-	 */
 	private static final int MAX_ITEMS = 10;
-	
-	/**
-	 * The page.
-	 */
 	private int page;
-	
-	/**
-	 * The buttons.
-	 */
 	private ArrayList<TextButton> buttons;
-	
-	/**
-	 * The map owners.
-	 */
 	private ArrayList<Text> mapOwners;
-	
-	/**
-	 * The sector.
-	 */
 	private Sector sector;
+	private MiniMapLines miniMapLines;
 	
 	/**
 	 * Instantiates a new maps menu.
@@ -63,7 +50,8 @@ public class MapsMenu extends Menu {
 	 * @param squadMenu 
 	 */
 	public MapsMenu(WindowManager windowManager, Missions missions, Squad squad, Sector sector, ItemMarket itemMarket, TechTree techTree, StashManager stashManager){
-		super(windowManager, new double[]{380,270});
+//		super(windowManager, new double[]{380,270});
+		super(windowManager, new double[]{820,270});
 		page = 0;
 		addComponents(squad, missions, itemMarket, techTree, stashManager);
 		this.sector = sector;
@@ -79,8 +67,11 @@ public class MapsMenu extends Menu {
 			final int ind = i;
 			TextButton tb = new TextButton(Color.yellow, Color.red) {
 				
+				boolean mapMade;
+				
 				{
 					this.setLocation((int)this.getLocation()[0] + 11, (int)this.getLocation()[1] + 41 + 20 * ind);
+					this.mapMade = false;
 				}
 				
 				
@@ -97,6 +88,39 @@ public class MapsMenu extends Menu {
 						windowManager.addPopup(MapsMenu.this,popup);
 					}
 					return true;
+				}
+				
+				@Override
+				public void mI(Point mousePosition) {
+					super.mI(mousePosition);
+
+					if(mapMade)
+						return;
+					
+					this.mapMade = true;
+					Level currentLevel;
+					try {
+						currentLevel = LevelIO.loadLevelBlocks(ReadWriter.getRootFile("Maps/" + sector.getMap(ind + (page * MAX_ITEMS))));
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+						return;
+					} catch (IOException e) {
+						e.printStackTrace();
+						return;
+					} catch (LevelFormatException e) {
+						e.printStackTrace();
+						return;
+					}
+					
+					float scale = 200 / (float)(currentLevel.getSize()[0] - currentLevel.getSize()[1]);
+					miniMapLines = new MiniMapLines(scale, currentLevel);
+					miniMapLines.setLocation(MapsMenu.this.getLocation()[0] + 400, MapsMenu.this.getLocation()[1] + 10);
+				}
+				
+				@Override
+				public void mO(Point mousePosition) {
+					super.mO(mousePosition);
+					this.mapMade = false;
 				}
 			};
 			
@@ -186,6 +210,8 @@ public class MapsMenu extends Menu {
 	protected void drawContents(Graphics2D drawShape) {
 //		drawTitle(drawShape);
 		drawComponents(drawShape);
+		if(miniMapLines != null)
+			miniMapLines.drawMethod(drawShape);
 	}
 
 	/**
@@ -213,7 +239,6 @@ public class MapsMenu extends Menu {
 	@Override
 	public void mI(Point mousePosition) {
 		super.mI(mousePosition);
-//		updateText();
 	}
 	
 	/* (non-Javadoc)
@@ -251,6 +276,14 @@ public class MapsMenu extends Menu {
 				mapOwners.get(i).setColour(Color.gray);
 			}
 		}
+	}
+	
+	@Override
+	public void move(double x, double y) {
+		super.move(x, y);
+		
+		if(miniMapLines!= null)
+			miniMapLines.move(x, y);
 	}
 
 }
