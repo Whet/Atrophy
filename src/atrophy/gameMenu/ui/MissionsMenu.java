@@ -67,7 +67,7 @@ public class MissionsMenu extends Menu{
 				public boolean mD(Point mousePosition, MouseEvent e) {;
 				
 					if(!this.getText().isEmpty()){
-						windowManager.addWindow(new MissionMenu(windowManager, missions, stashManager, ind + MAX_ITEMS * page));
+						windowManager.addWindow(MissionsMenu.this, new MissionMenu(windowManager, missions, stashManager, ind + MAX_ITEMS * page));
 						SoundBoard.getInstance().playEffect("tick");
 					}
 					return true;

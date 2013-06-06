@@ -7,6 +7,7 @@ import java.awt.AWTException;
 import java.awt.Robot;
 
 import watoydoEngine.designObjects.display.Crowd;
+import watoydoEngine.designObjects.display.Displayable;
 import watoydoEngine.workings.DisplayManager;
 import watoydoEngine.workings.displayActivity.ActivePane;
 import atrophy.gameMenu.ui.popups.Popup;
@@ -53,11 +54,14 @@ public class WindowManager extends Crowd{
 	 *
 	 * @param menu the menu
 	 */
-	public void addWindow(Menu menu){
+	public void addWindow(Displayable parent, Menu menu){
 		this.addDisplayItem(menu);
 		this.addMouseActionItem(menu);
 		menu.setVisible(true);
-		menu.moveAll(100, 200);
+		menu.moveAll(parent.getLocation()[0] + 20, parent.getLocation()[1] + 5);
+		
+		this.releaseWindowKey();
+		this.requestWindowKey(menu);
 		this.computeZOrder();
 	}
 	

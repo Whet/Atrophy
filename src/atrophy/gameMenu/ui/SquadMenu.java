@@ -18,8 +18,8 @@ import atrophy.combat.ai.MuleAi;
 import atrophy.combat.items.MeleeWeapon1;
 import atrophy.combat.items.UnarmedWeapon;
 import atrophy.gameMenu.saveFile.Squad;
-import atrophy.gameMenu.saveFile.TechTree;
 import atrophy.gameMenu.saveFile.Squad.Squaddie;
+import atrophy.gameMenu.saveFile.TechTree;
 
 /**
  * The Class SquadMenu.
@@ -69,7 +69,7 @@ public class SquadMenu extends Menu{
 			@Override
 			public boolean mD(Point mousePosition, MouseEvent e) {
 				StashMenu menu = new StashMenu(windowManager, stashManager);
-				windowManager.addWindow(menu);
+				windowManager.addWindow(SquadMenu.this, menu);
 				SoundBoard.getInstance().playEffect("invOpen");
 				return true;
 			}
@@ -86,7 +86,7 @@ public class SquadMenu extends Menu{
 			@Override
 			public boolean mD(Point mousePosition, MouseEvent e) {
 				ShopMenu menu = new ShopMenu(windowManager, shopManager, stashManager);
-				windowManager.addWindow(menu);
+				windowManager.addWindow(SquadMenu.this, menu);
 				SoundBoard.getInstance().playEffect("invOpen");
 				return true;
 			}
@@ -174,7 +174,7 @@ public class SquadMenu extends Menu{
 						@Override
 						public boolean mD(Point mousePosition, MouseEvent e) {
 							SquadMemberMenu menu = new SquadMemberMenu(windowManager, squad, stashManager, index);
-							windowManager.addWindow(menu);
+							windowManager.addWindow(SquadMenu.this, menu);
 							SoundBoard.getInstance().playEffect("invOpen");
 							return true;
 						}

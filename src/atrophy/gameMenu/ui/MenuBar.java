@@ -60,7 +60,7 @@ public class MenuBar extends Crowd{
 			@Override
 			public boolean mU(Point mousePosition, MouseEvent e) {
 				SectorsMenu menu = new SectorsMenu(mapWar, windowManager, missions, squad, itemMarket, techTree, stashManager);
-				windowManager.addWindow(menu);
+				windowManager.addWindow(MenuBar.this, menu);
 				SoundBoard.getInstance().playEffect("tick");
 				return true;
 			}
@@ -79,7 +79,7 @@ public class MenuBar extends Crowd{
 			@Override
 			public boolean mU(Point mousePosition, MouseEvent e) {
 				SquadMenu menu = new SquadMenu(windowManager, shopManager, stashManager, squad, techTree);
-				windowManager.addWindow(menu);
+				windowManager.addWindow(MenuBar.this, menu);
 				SoundBoard.getInstance().playEffect("tick");
 				return true;
 			}
@@ -97,7 +97,7 @@ public class MenuBar extends Crowd{
 			
 			@Override
 			public boolean mU(Point mousePosition, MouseEvent e) {
-				windowManager.addWindow(new MissionsMenu(windowManager, missions, stashManager));
+				windowManager.addWindow(MenuBar.this, new MissionsMenu(windowManager, missions, stashManager));
 				SoundBoard.getInstance().playEffect("tick");
 				return true;
 			}

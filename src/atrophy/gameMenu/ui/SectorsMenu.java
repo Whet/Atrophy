@@ -58,7 +58,7 @@ public class SectorsMenu extends Menu{
 				@Override
 				public boolean mD(Point mousePosition, MouseEvent e) {
 					MapsMenu menu = new MapsMenu(windowManager, missions, squad, mapWar.getSector(ind), itemMarket, techTree, stashManager);
-					windowManager.addWindow(menu);
+					windowManager.addWindow(SectorsMenu.this, menu);
 					SoundBoard.getInstance().playEffect("tick");
 					return true;
 				}
