@@ -28,8 +28,8 @@ public class MuleAi extends VehicleAi {
 		super(panningManager, floatingIcons, mouseAbilityHandler, name, MuleAi.MULE, x, y, levelManager, combatInorganicManager, lootBox, combatMembersManager, combatUiManager, combatVisualManager, aiCrowd, turnProcess);
 		this.setArmour(ARMOUR);
 		this.setDefaultArmour(ARMOUR);
-		this.setFov(0);
-		this.setDefaultFov(0);
+		this.setFov(20);
+		this.setDefaultFov(20);
 		this.setMoveDistance(34);
 		this.setDefaultMoveDistance(34);
 		

@@ -173,9 +173,9 @@ public class TurretAi extends LonerAi {
 			this.setTargetAi(null); 
 			this.setSkippingTurns(true);
 			
-			if(!this.getImage().endsWith("Dead")){
-				this.setImage(this.getImage() + "Dead");
-			}
+//			if(!this.getImage().endsWith("Dead")){
+//				this.setImage(this.getImage() + "Dead");
+//			}
 			
 			// Add a random goodie for kill
 			if(new Random().nextBoolean()){

@@ -31,9 +31,9 @@ public class VehicleAi extends Ai {
 			this.setTargetAi(null); 
 			this.setSkippingTurns(true);
 			
-			if(!this.getImage().endsWith("Dead")){
-				this.setImage(getImage() + "Dead");
-			}
+//			if(!this.getImage().endsWith("Dead")){
+//				this.setImage(getImage() + "Dead");
+//			}
 		}
 		
 	}

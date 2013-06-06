@@ -197,6 +197,10 @@ public class AiCrowd extends Crowd {
 			this.animations.put("ScoutFull", head1Blob);
 			this.animations.put("ArmourFull", head1Blob);
 			
+			String[] muleFiles = {AF+"mule.png", AF+"muleDead.png"};
+			AnimationBlob muleBlob = new AnimationBlob(new Animation[]{Animation.IDLE_MELEE, Animation.DEAD}, muleFiles, new int[]{30, 30});
+			this.animations.put("MuleFull", muleBlob);
+			
 		}
 		catch(IOException ioexcept){
 			System.err.println("Unable to load animations");
@@ -370,7 +374,13 @@ public class AiCrowd extends Crowd {
 	}
 
 	public BufferedImage getAnimationFrame(String image, int frame, Animation animation) {
-		return this.animations.get(image).getFrame(frame, animation);
+		try {
+			return this.animations.get(image).getFrame(frame, animation);
+		}
+		catch(NullPointerException e) {
+			System.out.println(image);
+			throw e;
+		}
 	}
 	
 	private static class AnimationBlob {
