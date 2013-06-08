@@ -212,9 +212,32 @@ public class LevelIO {
 		
 		TalkMap lastTalkMap = null;
 		
+		boolean skippingCond = false;
+		
 		while(lineString != null){
 			
-			if(lineString.startsWith("BLOCK")){
+			if(lineString.startsWith("ENDIF")) {
+				skippingCond = false;
+			}
+			else if(skippingCond) {
+				lineNumber++;
+				lineString = ReadWriter.readFromFile(levelFile, lineNumber);
+				continue;
+			}
+			
+			if(lineString.startsWith("IF")) {
+				
+				String memcodeInfo = ReadWriter.readFromArray(lineString, 0);
+				
+				if((memcodeInfo.startsWith("!") && missions.hasMemCode(memcodeInfo.substring(1))) || (!memcodeInfo.startsWith("!") && !missions.hasMemCode(memcodeInfo))) {
+					skippingCond = true;
+					lineNumber++;
+					lineString = ReadWriter.readFromFile(levelFile, lineNumber);
+					continue;
+				}
+				
+			}
+			else if(lineString.startsWith("BLOCK")){
 				LevelBlock block = new LevelBlock(blockNumber, missionsManager);
 				
 				blockStack.add(block);
