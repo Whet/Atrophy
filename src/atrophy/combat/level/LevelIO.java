@@ -216,6 +216,7 @@ public class LevelIO {
 		
 		while(lineString != null){
 			
+			// Script formatting
 			if(lineString.startsWith("ENDIF")) {
 				skippingCond = false;
 			}
@@ -224,8 +225,7 @@ public class LevelIO {
 				lineString = ReadWriter.readFromFile(levelFile, lineNumber);
 				continue;
 			}
-			
-			if(lineString.startsWith("IF")) {
+			else if(lineString.startsWith("IF")) {
 				
 				String memcodeInfo = ReadWriter.readFromArray(lineString, 0);
 				
@@ -237,7 +237,14 @@ public class LevelIO {
 				}
 				
 			}
-			else if(lineString.startsWith("BLOCK")){
+			else if (lineString.startsWith("ELSE")) {
+				
+				skippingCond = !skippingCond;
+				
+			}
+			
+			// Script commands
+			if(lineString.startsWith("BLOCK")){
 				LevelBlock block = new LevelBlock(blockNumber, missionsManager);
 				
 				blockStack.add(block);
