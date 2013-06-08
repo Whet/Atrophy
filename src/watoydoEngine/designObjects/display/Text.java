@@ -71,8 +71,7 @@ public class Text implements Displayable {
 		drawShape.setColor(colour);
 		drawShape.setFont(font);
 		while (pointInText < this.getText().length()) {
-			drawShape
-					.drawString(computeLines(), (int) location[0], (int) lineY);
+			drawShape.drawString(computeLines(), (int) location[0], (int) lineY);
 		}
 	}
 

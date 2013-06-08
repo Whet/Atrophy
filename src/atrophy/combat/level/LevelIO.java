@@ -662,6 +662,12 @@ public class LevelIO {
 				
 				command.setAlliances(alliances);
 			}
+			else if(lineString.startsWith("SMESSAGE")) {
+				missions.addStoryMessage(blockStack.peek(), ReadWriter.readFromArray(lineString, 0));
+			}
+			else if(lineString.startsWith("TRIGGER")) {
+				missions.addTrigger(blockStack.peek(), ReadWriter.readFromArray(lineString, 0));
+			}
 			
 			lineNumber++;
 			lineString = ReadWriter.readFromFile(levelFile, lineNumber);

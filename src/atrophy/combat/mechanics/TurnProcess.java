@@ -35,6 +35,7 @@ import atrophy.combat.display.ui.FloatingIcons;
 import atrophy.combat.display.ui.MessageBox;
 import atrophy.combat.display.ui.UiUpdaterSuite;
 import atrophy.combat.display.ui.loot.LootBox;
+import atrophy.gameMenu.saveFile.Missions;
 import atrophy.hardPanes.SplashPane;
 
 public class TurnProcess {
@@ -60,15 +61,14 @@ public class TurnProcess {
 	private LineDrawer lineDrawer;
 	private PanningManager panningManager;
 	private PowerManager powerManager;
+	private Missions missions;
 	
 	public TurnProcess(){
-		
 		turnCount = 0;
 		turnInProgress = false;
-		
 	}
 	
-	public void lazyLoad(AiManagementSuite aiManagementSuite, UiUpdaterSuite uiUpdaterSuite, CombatNCEManager combatInorganicManager, ActionSuite actionSuite){
+	public void lazyLoad(Missions missions, AiManagementSuite aiManagementSuite, UiUpdaterSuite uiUpdaterSuite, CombatNCEManager combatInorganicManager, ActionSuite actionSuite){
 		
 		this.panningManager = uiUpdaterSuite.getPanningManager();
 		
@@ -87,6 +87,8 @@ public class TurnProcess {
 		this.combatMouseHandler = actionSuite.getCombatMouseHandler();
 		this.combatKeyboardHandler = actionSuite.getCombatKeyboardHandler();
 		this.mouseAbilityHandler = actionSuite.getMouseAbilityHandler();
+		
+		this.missions = missions;
 		
 		shuffledAi = aiCrowd.getShuffledStack();
 		
@@ -115,6 +117,13 @@ public class TurnProcess {
 			updateAiLocations();
 			updateAiBrass();
 			updateAi();
+			
+			for(Ai ai : this.aiCrowd.getActors()) {
+				if(ai.getFaction().equals(AiGenerator.PLAYER)) {
+					missions.triggerStoryMessage(ai.getLevelBlock());
+					missions.triggerTag(ai.getLevelBlock());
+				}
+			}
 		}
 	}
 	

@@ -1,75 +1,55 @@
-/*
- * 
- */
 package atrophy.gameMenu.saveFile;
 
+import java.awt.Color;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
+import atrophy.combat.display.ui.LargeEventText;
 import atrophy.combat.items.EngineeringSupply;
 import atrophy.combat.items.MedicalSupply;
 import atrophy.combat.items.ScienceSupply;
 import atrophy.combat.items.WeaponSupply;
+import atrophy.combat.level.LevelBlock;
 import atrophy.gameMenu.saveFile.Squad.Squaddie;
 import atrophy.gameMenu.ui.StashManager;
 
-/**
- * The Class Missions.
- */
 public class Missions{
 
 	public static final String DEFAULT_MEM_CODE = "OPEN";
 	
-	/**
-	 * The interacting member.
-	 */
 	private Squaddie interactingMember;
-	
-	/**
-	 * The missions.
-	 */
 	private ArrayList<Mission> missions;
-	
-	/**
-	 * The mission givers.
-	 */
 	private ArrayList<MissionGiver> missionGivers;
-	
-	/**
-	 * The economy effects.
-	 */
 	private ArrayList<String> economyEffects;
-	
 	private Set<String> memCodes;
-	
+	private Map<LevelBlock, String> storyRooms;
+	private Map<LevelBlock, String> triggers;
 	private Squad squad;
-	
-	/**
-	 * Instantiates a new missions.
-	 * @param stashManager 
-	 * @param itemMarket 
-	 * @param squadMenu 
-	 * @param squadMenu 
-	 */
+	private LargeEventText largeEventText;
+
 	public Missions(){
 		missions = new ArrayList<>();
 		missionGivers = new ArrayList<MissionGiver>();
 		economyEffects = new ArrayList<String>();
 		memCodes = new HashSet<>();
 		memCodes.add(DEFAULT_MEM_CODE);
+		this.storyRooms = new HashMap<LevelBlock, String>();
+		this.triggers = new HashMap<LevelBlock, String>();
 	}
 	
 	public void lazyLoad(Squad squad, StashManager stashManager, ItemMarket itemMarket, TechTree techTree) {
 		this.squad = squad;
 		defaultMissions(stashManager, itemMarket, techTree);
 	}
+	
+	public void assignUi(LargeEventText largeEventText) {
+		this.largeEventText = largeEventText;
+	}
 
-	/**
-	 * Default missions.
-	 * @param itemMarkert 
-	 */
 	private void defaultMissions(StashManager stashManager, ItemMarket itemMarkert, TechTree techTree) {
 		
 		if(this.missionGivers.isEmpty()) {
@@ -84,18 +64,10 @@ public class Missions{
 		this.updateMissions();
 	}
 
-	/**
-	 * Gets the interacting member.
-	 *
-	 * @return the interacting member
-	 */
 	public Squaddie getInteractingMember() {
 		return interactingMember;
 	}
 
-	/**
-	 * Update missions.
-	 */
 	public void updateMissions(){
 		this.missions.clear();
 		for(int i = 0; i < missionGivers.size(); i++){
@@ -106,40 +78,18 @@ public class Missions{
 		}
 	}
 	
-	/**
-	 * Sets the interacting member.
-	 *
-	 * @param interactingMember the new interacting member
-	 */
 	public void setInteractingMember(Squaddie interactingMember) {
 		this.interactingMember = interactingMember;
 	}
 	
-	/**
-	 * Interact mission.
-	 *
-	 * @param i the i
-	 * @return true, if successful
-	 */
 	public boolean interactMission(int i) {
 		return missions.get(i).interact();
 	}
 
-	/**
-	 * Gets the mission count.
-	 *
-	 * @return the mission count
-	 */
 	public int getMissionCount() {
 		return this.missions.size();
 	}
 	
-	/**
-	 * Gets the mission.
-	 *
-	 * @param index the index
-	 * @return the mission
-	 */
 	public Mission getMission(int index) {
 		
 		if(index >= this.missions.size())
@@ -148,12 +98,6 @@ public class Missions{
 		return this.missions.get(index);
 	}
 
-	/**
-	 * Gets the mission name.
-	 *
-	 * @param i the i
-	 * @return the mission name
-	 */
 	public String getMissionName(int i) {
 		
 		if(i >= this.missions.size())
@@ -162,12 +106,6 @@ public class Missions{
 		return this.missions.get(i).name;
 	}
 	
-	/**
-	 * Gets the giver.
-	 *
-	 * @param mission the mission
-	 * @return the giver
-	 */
 	public MissionGiver getGiver(Mission mission) {
 		for(int i = 0; i < this.missionGivers.size(); i++){
 			if(this.missionGivers.get(i).getMission() == mission)
@@ -176,12 +114,6 @@ public class Missions{
 		return null;
 	}
 	
-	/**
-	 * Gets the giver short faction.
-	 *
-	 * @param mission the mission
-	 * @return the giver short faction
-	 */
 	public String getGiverShortFaction(Mission mission) {
 		if(mission == null)
 			return "";
@@ -192,39 +124,19 @@ public class Missions{
 		return this.getGiver(mission).getShortFaction();
 	}
 
-	/**
-	 * Gets the mission givers.
-	 *
-	 * @return the mission givers
-	 */
 	public ArrayList<MissionGiver> getMissionGivers() {
 		return missionGivers;
 	}
 
-	/**
-	 * Sets the mission givers.
-	 *
-	 * @param missionGivers the new mission givers
-	 */
 	public void setMissionGivers(ArrayList<MissionGiver> missionGivers) {
 		this.missionGivers = missionGivers;
 		this.updateMissions();
 	}
 	
-	/**
-	 * Gets the economy effects.
-	 *
-	 * @return the economy effects
-	 */
 	public ArrayList<String> getEconomyEffects() {
 		return economyEffects;
 	}
 
-	/**
-	 * Sets the economy effects.
-	 *
-	 * @param economyEffects the new economy effects
-	 */
 	public void setEconomyEffects(ArrayList<String> economyEffects) {
 		this.economyEffects = economyEffects;
 	}
@@ -249,51 +161,42 @@ public class Missions{
 	public Set<String> getMemCodes() {
 		return memCodes;
 	}
+	
+	public void addStoryMessage(LevelBlock block, String message) {
+		this.storyRooms.put(block, message);
+	}
+	
+	public void triggerStoryMessage(LevelBlock room) {
+		String message = this.storyRooms.get(room);
+		
+		if(message != null) {
+			this.storyRooms.remove(room);
+			largeEventText.flashText(message, Color.white, 10000);
+		}
+	}
+	
+	public void addTrigger(LevelBlock block, String tag) {
+		this.triggers.put(block, tag);
+	}
+	
+	public void triggerTag(LevelBlock room) {
+		this.memCodes.add(this.triggers.get(room));
+	}
 
-	/**
-	 * The Class Mission.
-	 */
 	public static abstract class Mission implements Serializable{
 		
-		/**
-		 * The Constant serialVersionUID.
-		 */
 		private static final long serialVersionUID = 5776226028366470409L;
-
-		/**
-		 * The name.
-		 */
 		protected String name;
-		
-		/**
-		 * The description.
-		 */
 		protected String description;
-		
-		/**
-		 * The reward.
-		 */
 		protected Object reward;
 		
 		// Whether the reward is an item (String) or Advance (int)
-		/**
-		 * The reward item.
-		 */
 		protected boolean rewardItem;
 
 		protected Missions missions;
 		protected Squad squad;
 		protected StashManager stashManager;
 		
-		/**
-		 * Instantiates a new mission.
-		 *
-		 * @param name the name
-		 * @param description the description
-		 * @param isRewardItem the reward item
-		 * @param reward the reward
-		 * @param squadMenu 
-		 */
 		public Mission(Missions missions, StashManager stashManager, String name, String description, boolean isRewardItem, Object reward, Squad squad){
 			this.rewardItem = isRewardItem;
 			this.reward = reward;
@@ -304,9 +207,6 @@ public class Missions{
 			this.stashManager = stashManager;
 		}
 		
-		/**
-		 * Give reward.
-		 */
 		protected void giveReward() {
 			if(rewardItem){
 				stashManager.addItem((String) reward);
@@ -318,27 +218,13 @@ public class Missions{
 			missions.missions.remove(this);
 		}
 		
-		/**
-		 * Interact.
-		 *
-		 * @return true, if successful
-		 */
 		public abstract boolean interact();
 
-		/**
-		 * Gets the name.
-		 *
-		 * @return the name
-		 */
+
 		public String getName() {
 			return this.name;
 		}
-		
-		/**
-		 * Gets the reward.
-		 *
-		 * @return the reward
-		 */
+
 		public String getReward(){
 			if(this.rewardItem){
 				return (String) reward;
@@ -346,11 +232,6 @@ public class Missions{
 			return Integer.toString((Integer) this.reward);
 		}
 
-		/**
-		 * Gets the description.
-		 *
-		 * @return the description
-		 */
 		public String getDescription() {
 			return this.description;
 		}

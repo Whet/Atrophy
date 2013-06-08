@@ -14,6 +14,7 @@ import javax.swing.JFrame;
 import watoydoEngine.designObjects.display.Crowd;
 import watoydoEngine.designObjects.display.TextButton;
 import watoydoEngine.workings.displayActivity.ActivePane;
+import atrophy.combat.display.ui.LargeEventText;
 import atrophy.gameMenu.saveFile.ItemMarket;
 import atrophy.gameMenu.saveFile.MapManager;
 import atrophy.gameMenu.saveFile.Missions;
