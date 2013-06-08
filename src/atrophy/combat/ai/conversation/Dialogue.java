@@ -76,7 +76,7 @@ public class Dialogue{
 	public boolean requirementsMet(String[] requirements, Ai currentAi) {
 		
 		for(int i = 0; i < requirements.length; i++){
-			if(!currentAi.getInventory().hasItemByName(requirements[i]) && !missions.hasMemCode(requirements[i]))
+			if(!currentAi.getInventory().hasItemByName(requirements[i]) && (!(requirements[i].startsWith("!") && !missions.hasMemCode(requirements[i])) || (requirements[i].startsWith("!") && missions.hasMemCode(requirements[i].substring(1)))))
 				return false;
 		}
 		
