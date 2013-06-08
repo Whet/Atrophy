@@ -124,6 +124,7 @@ public class Dialogue{
 			String[] swapItems = itemName.split("#");
 			
 			if(swapItems.length == 1){
+				// Spawn given stash
 				double[] location = missionManager.spawnItem(itemName); 
 				
 				// mark the location as a stash

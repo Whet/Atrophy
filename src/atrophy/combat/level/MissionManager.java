@@ -69,7 +69,7 @@ public class MissionManager {
 	 * @param spawnOnce the spawn once
 	 */
 	public void addSpawnStash(String tag, Lootable stash, double[] location, String item, boolean spawnOnce) {
-		SpawnInfo info = new SpawnInfo(tag, stash, location, item, spawnOnce, false);
+		SpawnInfo info = new SpawnInfo(tag, stash, location, Missions.DEFAULT_MEM_CODE, spawnOnce, false);
 		
 		info.item = info.workOutItem(item);
 		
@@ -84,10 +84,11 @@ public class MissionManager {
 	
 	public void addSpawnStash(String tag, Lootable stash, double[] location, String item, String spawnTag) {
 		
-		if(missions.hasMemCode(spawnTag))
+		// Remove #
+		if(missions.hasMemCode(spawnTag.substring(1)))
 			return;
 		
-		SpawnInfo info = new SpawnInfo(tag, stash, location, item, true, true);
+		SpawnInfo info = new SpawnInfo(tag, stash, location, spawnTag, true, true);
 		
 		info.item = info.workOutItem(item);
 		
@@ -177,7 +178,8 @@ public class MissionManager {
 			this.location = location;
 			this.doOnce = doOnce;
 			this.spawnOnLoot = spawnOnLoot;
-			this.memCode = memCode;
+			// Remove # at start
+			this.memCode = memCode.substring(1);
 		}
 
 		/**
