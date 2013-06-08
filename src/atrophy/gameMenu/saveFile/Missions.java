@@ -229,12 +229,16 @@ public class Missions{
 		this.economyEffects = economyEffects;
 	}
 	
-	public boolean addMemCode(String memCodes){
-		return this.memCodes.add(memCodes);
+	public boolean addMemCode(String memCode){
+		return this.memCodes.add(memCode);
 	}
 	
-	public boolean hasMemCode(String memCodes){
-		return this.memCodes.contains(memCodes);
+	public void removeMemCode(String memCode) {
+		this.memCodes.remove(memCode);
+	}
+	
+	public boolean hasMemCode(String memCode){
+		return this.memCodes.contains(memCode);
 	}
 	
 	public void setMemCodes(Set<String> memCodes) {

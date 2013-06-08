@@ -109,6 +109,10 @@ public class Dialogue{
 				itemName = itemName.substring(5);
 			}
 			// Event code
+			else if(itemName.startsWith("!$")){
+				missions.removeMemCode(itemName.substring(1, 5));
+				return true;
+			}
 			else if(itemName.startsWith("$")){
 				missions.addMemCode(itemName.substring(1, 5));
 				return true;
