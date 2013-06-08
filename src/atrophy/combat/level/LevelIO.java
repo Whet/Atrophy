@@ -220,6 +220,12 @@ public class LevelIO {
 			if(lineString.startsWith("ENDIF")) {
 				skippingCond = false;
 			}
+			else if (lineString.startsWith("ELSE")) {
+				skippingCond = !skippingCond;
+				lineNumber++;
+				lineString = ReadWriter.readFromFile(levelFile, lineNumber);
+				continue;
+			}
 			else if(skippingCond) {
 				lineNumber++;
 				lineString = ReadWriter.readFromFile(levelFile, lineNumber);
@@ -237,11 +243,7 @@ public class LevelIO {
 				}
 				
 			}
-			else if (lineString.startsWith("ELSE")) {
-				
-				skippingCond = !skippingCond;
-				
-			}
+			
 			
 			// Script commands
 			if(lineString.startsWith("BLOCK")){
