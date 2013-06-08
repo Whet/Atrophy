@@ -153,7 +153,9 @@ public class MessageManager{
 		while(speechIt.hasNext()){
 			String next = speechIt.next();
 			
-			this.topics.add(next);
+			// TODO
+			if(dialogue.requirementsMet(dialogue.longSpeeches.get(next)[1], messageBox.getConversers()[0]))
+				this.topics.add(next);
 		}
 		
 		for(int i = 0; i < dialogue.options.length; i++){
@@ -329,7 +331,9 @@ public class MessageManager{
 
 			String next = speechIt.next();
 
-			this.topics.add(next);
+			// TODO
+			if(dialogue.requirementsMet(dialogue.longSpeeches.get(next)[1], messageBox.getConversers()[0]))
+				this.topics.add(next);
 		}
 
 		for(int i = 0; i < dialogue.options.length; i++){
