@@ -915,6 +915,22 @@ public class ThinkingAi extends Ai{
 		}
 	}
 	
+	@Override
+	public void setDead(Ai killer, boolean dead) {
+		super.setDead(killer, dead);
+		if(this.aiNode != null && this.aiNode.behaviours.contains(AiNode.COMMAND_ON_DEATH)) {
+			this.aiNode.runDeathCommands();
+		}
+	}
+	
+	@Override
+	public void setDead(boolean dead) {
+		super.setDead(dead);
+		if(this.aiNode != null && this.aiNode.behaviours.contains(AiNode.COMMAND_ON_DEATH)) {
+			this.aiNode.runDeathCommands();
+		}
+	}
+	
 	public boolean isBlockPlayerConvo() {
 		return blockPlayerConvo;
 	}
@@ -984,6 +1000,7 @@ public class ThinkingAi extends Ai{
 		public static final String PRI_SHOPKEEP = "SHOP";
 		public static final String PRI_DEFENDER = "DEFENDER";
 		private static final String FOLLOW_PLAYER = "FOLLOW_PLAYER";
+		private static final String COMMAND_ON_DEATH = "COMMAND_ON_DEATH";
 		
 		private double[] location;
 		private double angle;
@@ -1042,6 +1059,13 @@ public class ThinkingAi extends Ai{
 			this.missionManager = missionManager;
 		}
 		
+		public void runDeathCommands() {
+			for(int i = 0; i < this.behaviours.size(); i++) {
+				if(this.behaviours.get(i).startsWith("#"))
+					this.missionManager.runCommand(this.behaviours.get(i).substring(1));
+			}
+		}
+
 		public boolean grabNode(ThinkingAi ai){
 			if(users.size() < maxUsers || maxUsers == 0){
 				this.users.add(ai);
