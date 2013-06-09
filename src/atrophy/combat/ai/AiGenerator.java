@@ -13,8 +13,8 @@ import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import atrophy.combat.CombatNCEManager;
 import atrophy.combat.CombatMembersManager;
+import atrophy.combat.CombatNCEManager;
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
@@ -38,7 +38,6 @@ import atrophy.combat.items.Weapon;
 import atrophy.combat.level.LevelBlock;
 import atrophy.combat.level.LevelManager;
 import atrophy.combat.mechanics.TurnProcess;
-import atrophy.gameMenu.saveFile.ItemMarket;
 import atrophy.gameMenu.saveFile.Squad.Squaddie;
 
 public class AiGenerator{
@@ -168,6 +167,7 @@ public class AiGenerator{
 		generateRosters();
 		combatUiManager.getAllyRoster().generatePortraits();
 		aiCrowd.shuffleAi();
+		turnProcess.updateTriggers();
 	}
 	
 	public void spawnAi(GenerateCommand command) {

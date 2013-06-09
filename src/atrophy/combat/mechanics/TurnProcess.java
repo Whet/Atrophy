@@ -117,16 +117,19 @@ public class TurnProcess {
 			updateAiLocations();
 			updateAiBrass();
 			updateAi();
-			
-			for(Ai ai : this.aiCrowd.getActors()) {
-				if(ai.getFaction().equals(AiGenerator.PLAYER)) {
-					missions.triggerStoryMessage(ai.getLevelBlock());
-					missions.triggerTag(ai.getLevelBlock());
-				}
-			}
+			updateTriggers();
 		}
 	}
 	
+	public void updateTriggers() {
+		for(Ai ai : this.aiCrowd.getActors()) {
+			if(ai.getFaction().equals(AiGenerator.PLAYER) && !ai.isDead()) {
+				missions.triggerStoryMessage(ai.getLevelBlock());
+				missions.triggerTag(ai.getLevelBlock());
+			}
+		}		
+	}
+
 	private void updateAiLocations(){
 		for(int i = 0; i < aiCrowd.getActorCount(); i++){
 			aiCrowd.getMask(i).updateImage();
