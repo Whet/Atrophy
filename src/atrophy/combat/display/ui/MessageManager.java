@@ -118,6 +118,7 @@ public class MessageManager{
 		
 		if(ai2.isDead()) {
 			setInvestigationButtons();
+			thinkingAiInitiated = false;
 			return;
 		}
 		
@@ -237,7 +238,7 @@ public class MessageManager{
 		}
 		else if(messageBox.getConversers()[1].isDead()) {
 			investigationReply(topic);
-			setInvestigationButtons();
+//			setInvestigationButtons();
 		}
 		else{	
 			longSpeechAction(topic);

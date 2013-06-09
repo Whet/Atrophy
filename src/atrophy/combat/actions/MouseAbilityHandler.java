@@ -199,11 +199,11 @@ public class MouseAbilityHandler {
 //				targetAi.setDead(true);
 //			break;
 			case "PowerKill":
-				targetAi = getClosestAiToMouse(mousePoint, AI_CLICK_RADIUS, true);
+				targetAi = getClosestAiToMouse(mousePoint, AI_CLICK_RADIUS, false);
 				powerManager.usePower(Power.KILL, targetAi);
 			break;
 			case "PowerProtect":
-				targetAi = getClosestAiToMouse(mousePoint, AI_CLICK_RADIUS, true);
+				targetAi = getClosestAiToMouse(mousePoint, AI_CLICK_RADIUS, false);
 				powerManager.usePower(Power.PROTECT, targetAi);
 			break;
 			case "PowerHelp":
@@ -213,7 +213,7 @@ public class MouseAbilityHandler {
 				AiDebugger d = new AiDebugger(mousePoint.x, mousePoint.y, targetAi);
 			break;
 			case Abilities.INVESTIGATE:
-				speechAi = getClosestAiToMouse(mousePoint, AI_CLICK_RADIUS);
+				speechAi = getClosestAiToMouse(mousePoint, AI_CLICK_RADIUS, true);
 				if(speechAi != null && !(speechAi instanceof TurretAi) && speechAi.getLevelBlock() == combatMembersManager.getCurrentAi().getLevelBlock() && speechAi.isDead()){
 					messageBox.setInvestigating(combatMembersManager.getCurrentAi(), speechAi);
 					lootBox.closeLootUi(lootBox.isVisible());
