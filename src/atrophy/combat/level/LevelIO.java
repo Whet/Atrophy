@@ -675,6 +675,13 @@ public class LevelIO {
 				if(!Boolean.parseBoolean(ReadWriter.readFromArray(lineString, 1)))
 					generationCommands.remove(generationCommands.size() - 1);
 			}
+			else if(lineString.startsWith("RUNCOMMAND")) {
+				// RUNCOMMAND[loopTimes]
+				int loop = Integer.parseInt(ReadWriter.readFromArray(lineString, 0));
+				for(int i = 0; i < loop; i++) {
+					generationCommands.add(generationCommands.get(generationCommands.size() - 1));
+				}
+			}
 			
 			lineNumber++;
 			lineString = ReadWriter.readFromFile(levelFile, lineNumber);
