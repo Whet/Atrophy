@@ -622,7 +622,7 @@ public class Ai implements Lootable{
 			this.setTargetAi(null); 
 			this.setSkippingTurns(true);
 			
-			this.deathReport = new AiDeathReport(killer, killer.getWeapon(), this.getLevelBlock(), turnProcess.getTurnCount());
+			this.deathReport = new AiDeathReport(this, killer, killer.getWeapon(), this.getLevelBlock(), turnProcess.getTurnCount());
 		}
 		
 		this.dead = dead;
@@ -641,6 +641,8 @@ public class Ai implements Lootable{
 		if(dead && !this.dead){	
 			this.setTargetAi(null); 
 			this.setSkippingTurns(true);
+			
+			this.deathReport = new AiDeathReport(this, this.getLevelBlock(), turnProcess.getTurnCount());
 		}
 		
 		this.dead = dead;

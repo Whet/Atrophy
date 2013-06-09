@@ -215,7 +215,7 @@ public class MouseAbilityHandler {
 			case Abilities.INVESTIGATE:
 				speechAi = getClosestAiToMouse(mousePoint, AI_CLICK_RADIUS);
 				if(speechAi != null && !(speechAi instanceof TurretAi) && speechAi.getLevelBlock() == combatMembersManager.getCurrentAi().getLevelBlock() && speechAi.isDead()){
-					messageBox.setConversation(combatMembersManager.getCurrentAi(), speechAi.getDeathReport().getTalker());
+					messageBox.setInvestigating(combatMembersManager.getCurrentAi(), speechAi);
 					lootBox.closeLootUi(lootBox.isVisible());
 					messageBox.setVisible(true);
 					this.cancelAbilitySetting();

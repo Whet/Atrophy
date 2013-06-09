@@ -609,6 +609,13 @@ public class MessageBox extends Crowd{
 		messageManager.loadTopics(currentAi, speechAi);
 	}
 	
+	public void setInvestigating(Ai currentAi, Ai deadAi) {
+		conversers[0] = currentAi;
+		conversers[1] = deadAi;
+		this.conversersText.setText(currentAi.getName() + " investigating " + conversers[1].getName());
+		messageManager.loadTopics(currentAi, deadAi);
+	}
+	
 	/**
 	 * Sets the conversation.
 	 *

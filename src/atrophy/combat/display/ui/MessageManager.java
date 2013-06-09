@@ -17,6 +17,7 @@ import atrophy.combat.ai.conversation.Dialogue;
 import atrophy.combat.ai.conversation.Topic;
 import atrophy.combat.display.ui.MessageBox.SpeechOption;
 import atrophy.combat.level.LevelBlock;
+import atrophy.combat.mechanics.Abilities;
 import atrophy.combat.mechanics.ScoringMechanics;
 
 public class MessageManager{
@@ -29,6 +30,11 @@ public class MessageManager{
 	public static final String TOPIC_SHOW_ENEMIES = "Enemy Locations";
 	public static final String TOPIC_STEAL = "Steal";
 	public static final String TOPIC_JOIN = "Recruit";
+	
+	public static final String INV_KILLER = "Identify Killer";
+	public static final String INV_WEAPON = "Cause of Death";
+	public static final String INV_ROOM = "Identify Location";
+	public static final String INV_TOD = "Time of Death";
 	
 	private Map<String, Topic> nameToTopic = new HashMap<>();;
 	
@@ -110,6 +116,11 @@ public class MessageManager{
 	public void loadTopics(Ai ai1, Ai ai2) {
 		resetTopics();
 		
+		if(ai2.isDead()) {
+			setInvestigationButtons();
+			return;
+		}
+		
 		greetingTopic();
 		
 		intimidated = ai2.getStunnedTurns() > 0;
@@ -135,6 +146,32 @@ public class MessageManager{
 		thinkingAiInitiated = false;
 	}
 	
+	private void setInvestigationButtons() {
+		this.topics.add(INV_KILLER);
+		this.topics.add(INV_ROOM);
+		this.topics.add(INV_TOD);
+		this.topics.add(INV_WEAPON);
+		this.topics.add(TOPIC_EXIT);
+		setTopicButtons();
+	}
+	
+	private void investigationReply(String topic) {
+		switch(topic) {
+			case INV_KILLER:
+				messageBox.addMessage(messageBox.getConversers()[1].getDeathReport().getKillerInformation(messageBox.getConversers()[0].getSkillLevel(Abilities.INVESTIGATE)));
+			break;
+			case INV_ROOM:
+				messageBox.addMessage(messageBox.getConversers()[1].getDeathReport().getRoomInformation(messageBox.getConversers()[0].getSkillLevel(Abilities.INVESTIGATE)));
+			break;
+			case INV_TOD:
+				messageBox.addMessage(messageBox.getConversers()[1].getDeathReport().getTODInformation(messageBox.getConversers()[0].getSkillLevel(Abilities.INVESTIGATE)));
+			break;
+			case INV_WEAPON:
+				messageBox.addMessage(messageBox.getConversers()[1].getDeathReport().getWeaponInformation(messageBox.getConversers()[0].getSkillLevel(Abilities.INVESTIGATE)));
+			break;
+		}
+	}
+
 	/**
 	 * Load dialogue.
 	 *
@@ -197,6 +234,10 @@ public class MessageManager{
 	private void topicAction(String topic){
 		if(thinkingAiInitiated){
 			playerResponseAction(topic);
+		}
+		else if(messageBox.getConversers()[1].isDead()) {
+			investigationReply(topic);
+			setInvestigationButtons();
 		}
 		else{	
 			longSpeechAction(topic);
