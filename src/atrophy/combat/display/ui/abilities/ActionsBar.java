@@ -113,6 +113,10 @@ public class ActionsBar extends Crowd{
 			ParryAction parry = new ParryAction(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/stun.png")));
 			actionButtonMap.put("parry", parry);
 			this.addButton(parry);
+			
+			InvestigateAction investigate = new InvestigateAction(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/investigate.png")));
+			actionButtonMap.put("investigate", investigate);
+			this.addButton(investigate);
 		}
 		catch(IOException ioExcept){
 			System.err.println("Could not load ActionsBar image. Terminating.");
@@ -213,6 +217,9 @@ public class ActionsBar extends Crowd{
 					break;
 					case Abilities.PARRY:
 						this.visibleButtons.add(actionButtonMap.get("parry"));
+					break;
+					case Abilities.INVESTIGATE:
+						this.visibleButtons.add(actionButtonMap.get("investigate"));
 					break;
 				}
 			}

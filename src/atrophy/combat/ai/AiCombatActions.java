@@ -138,7 +138,7 @@ public class AiCombatActions {
 		if(ScoringMechanics.killedTarget(invoker,this.getTargetAi())){
 			
 			// kill target
-			this.getTargetAi().setDead(true);
+			this.getTargetAi().setDead(invoker, true);
 			
 			// if the killer belongs to player faction then the kill is counted
 			if(invoker.getFaction().equals(AiGenerator.PLAYER)){

@@ -160,7 +160,7 @@ public class TurretAi extends LonerAi {
 	}
 	
 	@Override
-	public void setDead(boolean dead) {
+	public void setDead(Ai killer, boolean dead) {
 		
 		// setdead without blood death effect and remove weapon
 		

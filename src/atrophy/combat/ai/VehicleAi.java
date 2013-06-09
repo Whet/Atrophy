@@ -23,7 +23,7 @@ public class VehicleAi extends Ai {
 	}
 
 	@Override
-	public void setDead(boolean dead) {
+	public void setDead(Ai killer, boolean dead) {
 		this.dead = dead;
 		
 		if(this.dead){	

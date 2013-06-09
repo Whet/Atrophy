@@ -1,6 +1,3 @@
-/*
- * 
- */
 package atrophy.combat.ai;
 
 import java.awt.Color;
@@ -34,41 +31,24 @@ import atrophy.combat.level.Portal;
 import atrophy.combat.mechanics.Abilities;
 import atrophy.combat.mechanics.TurnProcess;
 
-// TODO: Auto-generated Javadoc
-// Contains vars and functions for Ai game mechanics
-/**
- * The Class Ai.
- */
 public class Ai implements Lootable{
 
 	protected AiData aiData;
-	
 	protected AiPathing aiPathing;
-	
 	protected AiActions aiActions;
-	
-	private String name;
-	
-	private String image;
-	
-	private String team;
-	
-	protected boolean dead;
-	
-	private boolean killCounted;
-	
-	private double lookAngle;
-	
-	private double editLookAngle;
-	
-	private int stunnedTurns;
-	
-	private int incapTurns;
-	
-	private boolean broadcastingLocation;
 
+	private AiDeathReport deathReport;
+	private String name;
+	private String image;
+	private String team;
+	protected boolean dead;
+	private boolean killCounted;
+	private double lookAngle;
+	private double editLookAngle;
+	private int stunnedTurns;
+	private int incapTurns;
+	private boolean broadcastingLocation;
 	private boolean ignoreLOS;
-	
 	private boolean skippingTurns;
 
 	protected MouseAbilityHandler mouseAbilityHandler;
@@ -629,6 +609,26 @@ public class Ai implements Lootable{
 		this.aiActions.setSwing(swing);
 	}
 	
+	public void setDead(Ai killer, boolean dead) {
+		
+		if(this.hasActiveEffect(ProtectPowerEffect.NAME))
+			return;
+		
+		// Check with aiDirector to see if death passes
+		dead = aiCrowd.getDirector().judge(dead, this);
+		
+		// Make sure dead unit show smashed helmet
+		if(dead && !this.dead){	
+			this.setTargetAi(null); 
+			this.setSkippingTurns(true);
+			
+			this.deathReport = new AiDeathReport(killer, killer.getWeapon(), this.getLevelBlock(), turnProcess.getTurnCount());
+		}
+		
+		this.dead = dead;
+		
+	}
+	
 	public void setDead(boolean dead) {
 		
 		if(this.hasActiveEffect(ProtectPowerEffect.NAME))
@@ -649,6 +649,10 @@ public class Ai implements Lootable{
 	
 	public void bodyFound(boolean killCounted) {
 		this.killCounted = killCounted;
+	}
+	
+	public AiDeathReport getDeathReport() {
+		return this.deathReport;
 	}
 	
 	public void setTeam(String team){

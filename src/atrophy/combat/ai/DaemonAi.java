@@ -32,7 +32,7 @@ public class DaemonAi extends ThinkingAi {
 	}
 	
 	@Override
-	public void setDead(boolean dead) {
+	public void setDead(Ai killer, boolean dead) {
 		if(dead) {
 			LevelBlock randomRoom;
 			do {

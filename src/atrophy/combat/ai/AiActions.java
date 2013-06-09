@@ -563,7 +563,7 @@ public class AiActions {
 			makeHatedWithTarget(invoker);
 			
 			if(!CombatVisualManager.spotFovNoRadius(invoker.getTargetAi(),invoker.getLocation())){
-				invoker.getTargetAi().setDead(true);
+				invoker.getTargetAi().setDead(invoker, true);
 			}
 			
 			invoker.setLocation(invoker.getTargetAi().getLocation().clone());

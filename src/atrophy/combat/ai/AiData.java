@@ -92,6 +92,7 @@ public class AiData {
 		this.setSkill(Abilities.SPEED_BOOSTER, 0);
 		this.setSkill(Abilities.STEALTH1, 0);
 		this.setSkill(Abilities.STEALTH2, 0);
+		this.setSkill(Abilities.INVESTIGATE, 0);
 		this.setSkill(Abilities.STUNGRENADETHROWER, 0);
 		this.setSkill(Abilities.WELDING, 0);
 	}
@@ -105,6 +106,7 @@ public class AiData {
 		this.abilities.clear();
 		
 		this.abilities.add(Abilities.SPEECH);
+		this.abilities.add(Abilities.INVESTIGATE);
 		
 		// Ability Items
 		if(this.inventory.hasItem(GrenadeItem.getInstance())){
@@ -165,7 +167,6 @@ public class AiData {
 		if(true) {
 			this.accuracyBoost = 0;
 		}
-		
 		
 		if(invoker.getLevelBlock() == null){
 			return;

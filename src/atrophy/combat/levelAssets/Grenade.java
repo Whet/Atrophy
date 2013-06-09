@@ -116,7 +116,7 @@ public class Grenade implements NonCharacterEntity{
 			if(aiCrowd.getActor(i).getLevelBlock() == this.room && ScoringMechanics.grenadeDamage(aiCrowd.getActor(i), skillLevel) && 
 			   CombatVisualManager.isInFiringSight(this.getLocation()[0], this.getLocation()[1], aiCrowd.getActor(i).getLocation()[0], aiCrowd.getActor(i).getLocation()[1], this.room)){
 				
-				aiCrowd.getActor(i).setDead(true);
+				aiCrowd.getActor(i).setDead(originator, true);
 			}
 		}
 		

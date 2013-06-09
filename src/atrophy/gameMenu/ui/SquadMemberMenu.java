@@ -56,7 +56,7 @@ public class SquadMemberMenu extends Menu {
 	 * @param index the index
 	 */
 	public SquadMemberMenu(WindowManager windowManager, Squad squad, StashManager stashManager, int index){
-		super(windowManager, new double[]{375,240});
+		super(windowManager, new double[]{420,240});
 		
 		this.index = index;
 		this.squadMember = squad.getSquadMember(index);

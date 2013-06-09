@@ -134,6 +134,7 @@ public class Squad implements Serializable {
 					this.setSkillLevel(Abilities.STEALTH2, 0);
 					this.setSkillLevel(Abilities.STUNGRENADETHROWER, 0);
 					this.setSkillLevel(Abilities.WELDING, 0);
+					this.setSkillLevel(Abilities.INVESTIGATE, 0);
 				break;
 			}
 		}
