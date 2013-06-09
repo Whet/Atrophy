@@ -176,6 +176,7 @@ public class AiGenerator{
 		if(command instanceof SoloGenerateCommand){
 			generateSoloAi((SoloGenerateCommand)command, squadCount);
 			squadCount++;
+			combatVisualManager.updateVisibleAi();
 			return;
 		}
 		
@@ -203,7 +204,7 @@ public class AiGenerator{
 			break;
 		}
 		squadCount++;
-		
+		combatVisualManager.updateVisibleAi();
 	}
 	
 	private void generateSoloAi(SoloGenerateCommand command, int team) {

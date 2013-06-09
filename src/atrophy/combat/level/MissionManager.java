@@ -1,10 +1,9 @@
-/*
- * 
- */
 package atrophy.combat.level;
 
 import java.util.HashMap;
 
+import atrophy.combat.ai.AiGenerator;
+import atrophy.combat.ai.AiGeneratorInterface.GenerateCommand;
 import atrophy.combat.ai.conversation.TalkMap;
 import atrophy.combat.display.ui.loot.LootBox.Lootable;
 import atrophy.combat.items.ArmourPlates1;
@@ -24,30 +23,25 @@ import atrophy.combat.items.WeaponSupply;
 import atrophy.combat.items.WeldingTorch;
 import atrophy.gameMenu.saveFile.Missions;
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class MissionManager.
- */
 public class MissionManager {
 	
 	// stashes where mission items can spawn
-	/**
-	 * The spawn stashes.
-	 */
 	private HashMap<String, SpawnInfo> spawnStashes;
-	
 	private HashMap<String, TalkMap> talkMaps;
+	private HashMap<String, Command> commands;
 	
 	private Missions missions;
+	private AiGenerator aiGenerator;
 	
-	/**
-	 * Instantiates a new mission manager.
-	 * @param missions 
-	 */
 	public MissionManager(Missions missions){
 		spawnStashes = new HashMap<String, SpawnInfo>();
 		talkMaps = new HashMap<>();
+		commands = new HashMap<>();
 		this.missions = missions;
+	}
+	
+	public void lazyLoad(AiGenerator aiGenerator) {
+		this.aiGenerator = aiGenerator;
 	}
 	
 	public void triggerLootEvent(Lootable lootable) {
@@ -59,15 +53,6 @@ public class MissionManager {
 		}
 	}
 
-	/**
-	 * Adds the spawn stash.
-	 *
-	 * @param tag the tag
-	 * @param stash the stash
-	 * @param location the location
-	 * @param item the item
-	 * @param spawnOnce the spawn once
-	 */
 	public void addSpawnStash(String tag, Lootable stash, double[] location, String item, boolean spawnOnce) {
 		SpawnInfo info = new SpawnInfo(tag, stash, location, Missions.DEFAULT_MEM_CODE, spawnOnce, false);
 		
@@ -102,12 +87,6 @@ public class MissionManager {
 	}
 	
 	// spawns an item in the given stash and returns where the stash is so a marker can be made
-	/**
-	 * Spawn item.
-	 *
-	 * @param tag the tag
-	 * @return the double[]
-	 */
 	public double[] spawnItem(String tag){
 		
 		SpawnInfo info = this.spawnStashes.get(tag);
@@ -134,44 +113,40 @@ public class MissionManager {
 		this.talkMaps.put(tag, lastTalkMap);
 	}
 	
-	/**
-	 * The Class SpawnInfo.
-	 */
+	public void addCommand(String tag, GenerateCommand command) {
+		this.commands.put(tag, new Command(command));
+	}
+	
+	public void runCommand(String tag) {
+		Command command = this.commands.get(tag);
+		if(command != null)
+			command.run();
+	}
+	
+	private class Command {
+		
+		private GenerateCommand command;
+		
+		public Command(GenerateCommand command) {
+			this.command = command;
+		}
+		
+		public void run() {
+			aiGenerator.spawnAi(command);
+		}
+		
+	}
+	
 	private class SpawnInfo{
 		
 		public String memCode;
-
 		public String tag;
-
 		public boolean spawnOnLoot;
-
-		/**
-		 * The stash.
-		 */
 		public Lootable stash;
-		
-		/**
-		 * The item.
-		 */
 		public Item item;
-		
-		/**
-		 * The location.
-		 */
 		public double[] location;
-		
-		/**
-		 * The do once.
-		 */
 		public boolean doOnce;
 		
-		/**
-		 * Instantiates a new spawn info.
-		 *
-		 * @param stash the stash
-		 * @param location the location
-		 * @param doOnce the do once
-		 */
 		public SpawnInfo(String tag, Lootable stash, double[] location, String memCode, boolean doOnce, boolean spawnOnLoot){
 			this.tag = tag;
 			this.stash = stash;
@@ -182,12 +157,6 @@ public class MissionManager {
 			this.memCode = memCode.substring(1);
 		}
 
-		/**
-		 * Work out item.
-		 *
-		 * @param item the item
-		 * @return the item
-		 */
 		public Item workOutItem(String item) {
 			switch(item){
 				case "ARMOUR1":
@@ -238,11 +207,6 @@ public class MissionManager {
 			return null;
 		}
 		
-		/**
-		 * Spawnitem.
-		 *
-		 * @param tag the tag
-		 */
 		public void spawnitem(String tag){
 			this.stash.addItem(item);
 			

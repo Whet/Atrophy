@@ -20,6 +20,7 @@ import atrophy.combat.display.AiManagementSuite;
 import atrophy.combat.display.MapPainter;
 import atrophy.combat.display.ui.UiUpdaterSuite;
 import atrophy.combat.level.LevelManager;
+import atrophy.combat.level.MissionManager;
 import atrophy.combat.mechanics.TurnProcess;
 import atrophy.gameMenu.saveFile.ItemMarket;
 
@@ -41,8 +42,9 @@ public class CombatHardPane implements HardPaneDefineable {
 	private AiCrowd aiCrowd;
 	private CombatNCEManager combatInorganicManager;
 	private List<AiGeneratorInterface.GenerateCommand> generationCommands;
+	private MissionManager missionManager;
 	
-	public CombatHardPane(TurnProcess turnProcess, AiManagementSuite aiManagementSuite, UiUpdaterSuite uiUpdaterSuite, ActionSuite actionSuite, LevelManager levelManager, AiCrowd aiCrowd, CombatNCEManager combatInorganicManager, List<GenerateCommand> generationCommands) {
+	public CombatHardPane(TurnProcess turnProcess, AiManagementSuite aiManagementSuite, UiUpdaterSuite uiUpdaterSuite, ActionSuite actionSuite, LevelManager levelManager, AiCrowd aiCrowd, CombatNCEManager combatInorganicManager, List<GenerateCommand> generationCommands, MissionManager missionManager) {
 		this.turnProcess = turnProcess;
 		this.aiManagementSuite = aiManagementSuite;
 		this.uiUpdaterSuite = uiUpdaterSuite;
@@ -51,6 +53,7 @@ public class CombatHardPane implements HardPaneDefineable {
 		this.aiCrowd = aiCrowd;
 		this.combatInorganicManager = combatInorganicManager;
 		this.generationCommands = generationCommands;
+		this.missionManager = missionManager;
 	}
 	
 	/* (non-Javadoc)
@@ -64,6 +67,8 @@ public class CombatHardPane implements HardPaneDefineable {
 		AiGenerator aiGenerator = new AiGenerator(aiManagementSuite.getAiCrowd(), aiManagementSuite.getCombatMembersManager(), uiUpdaterSuite.getCombatUiManager(), uiUpdaterSuite.getCombatVisualManager(), levelManager, uiUpdaterSuite.getPanningManager(), actionSuite.getMouseAbilityHandler(), turnProcess, uiUpdaterSuite.getFloatingIcons(), combatInorganicManager, uiUpdaterSuite.getLootBox());
 		aiGenerator.generateAi(generationCommands);
 		aiCrowd.getShuffledStack();
+		
+		missionManager.lazyLoad(aiGenerator);
 		
 		crowd.addCrowd(aiCrowd);
 		aiCrowd.setVisible(true);

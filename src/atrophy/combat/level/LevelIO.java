@@ -668,6 +668,13 @@ public class LevelIO {
 			else if(lineString.startsWith("TRIGGER")) {
 				missions.addTrigger(blockStack.peek(), ReadWriter.readFromArray(lineString, 0));
 			}
+			else if(lineString.startsWith("STORECOMMAND")) {
+				// STORECOMMAND[tagv,keepCommand?]
+				missionsManager.addCommand(ReadWriter.readFromArray(lineString, 0), generationCommands.get(generationCommands.size() - 1));
+				
+				if(!Boolean.parseBoolean(ReadWriter.readFromArray(lineString, 1)))
+					generationCommands.remove(generationCommands.size() - 1);
+			}
 			
 			lineNumber++;
 			lineString = ReadWriter.readFromFile(levelFile, lineNumber);

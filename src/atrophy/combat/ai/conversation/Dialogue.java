@@ -108,6 +108,11 @@ public class Dialogue{
 				
 				itemName = itemName.substring(5);
 			}
+			// Command
+			else if(itemName.startsWith("*")) {
+				missionManager.runCommand(itemName.substring(1, 5));
+				return true;
+			}
 			// Event code
 			else if(itemName.startsWith("!$")){
 				missions.removeMemCode(itemName.substring(1, 5));
