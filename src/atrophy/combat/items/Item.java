@@ -84,5 +84,27 @@ public abstract class Item {
 		}
 		return null;
 	}
+
+	public static boolean isItem(String item){
+		if(item.equals(ArmourPlates1.NAME) ||
+			item.equals(ArmourPlates2.NAME) ||
+			item.equals(GrenadeItem.NAME) ||
+			item.equals(LightStealthField.NAME) ||
+			item.equals(MediumStealthField.NAME) ||
+			item.equals(ScienceScanner.NAME) ||
+			item.equals(SensorSuite.NAME) ||
+			item.equals(SpeedBooster.NAME) ||
+			item.equals(StunGrenadeItem.NAME) ||
+			item.equals(UnitDetector.NAME) ||
+			item.equals(WeldingTorch.NAME) ||
+			item.equals(KillTags.NAME) ||
+			item.equals(WeaponSupply.NAME) ||
+			item.equals(EngineeringSupply.NAME) ||
+			item.equals(MedicalSupply.NAME) ||
+			item.equals(ScienceSupply.NAME)) {
+			return true;
+		}
+		return false;
+	}
 	
 }

@@ -135,10 +135,10 @@ public class Dialogue{
 				cartographer.addNewMarker(location, Color.white, messageBox.getConversers()[1].getName() + "'s Stash");
 			}
 			else{
-				if(Weapon.isWeapon(swapItems[0])){
+				if(Weapon.isWeapon(swapItems[1]) && (!Weapon.isWeapon(swapItems[0]) || messageBox.getConversers()[0].getWeapon().getName().equals(swapItems[1]))){
 					messageBox.getConversers()[0].setWeapon(Weapon.stringToWeapon(swapItems[1]));
 				}
-				else{
+				else if(Item.isItem(swapItems[1]) && (!Item.isItem(swapItems[0]) || messageBox.getConversers()[0].getInventory().hasItemByName(swapItems[0]))){
 					messageBox.getConversers()[0].getInventory().removeItem(Item.stringToItem(swapItems[0]));
 					messageBox.getConversers()[0].getInventory().addItem(Item.stringToItem(swapItems[1]));
 				}
