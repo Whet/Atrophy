@@ -675,6 +675,14 @@ public class LevelIO {
 				if(!Boolean.parseBoolean(ReadWriter.readFromArray(lineString, 1)))
 					generationCommands.remove(generationCommands.size() - 1);
 			}
+			else if(lineString.startsWith("STORESPAWNCOMMAND")) {
+				missionsManager.addCommand(ReadWriter.readFromArray(lineString, 0), missionsManager.getSpawnCommand(ReadWriter.readFromArray(lineString, 0)), Boolean.parseBoolean(ReadWriter.readFromArray(lineString, 1)));
+			}
+			else if(lineString.startsWith("RANDCOMMAND")) {
+				String tag = ReadWriter.readFromArray(lineString, 0);
+				int chance = Integer.parseInt(ReadWriter.readFromArray(lineString, 1));
+				missionsManager.getCommand(tag).setRandomChance(chance);
+			}
 			else if(lineString.startsWith("RUNCOMMAND")) {
 				// RUNCOMMAND[loopTimes]
 				int loop = Integer.parseInt(ReadWriter.readFromArray(lineString, 0));
