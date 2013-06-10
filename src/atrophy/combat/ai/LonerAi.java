@@ -12,6 +12,7 @@ import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.actions.MouseAbilityHandler;
+import atrophy.combat.ai.conversation.DialoguePool;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.ui.FloatingIcons;
 import atrophy.combat.display.ui.loot.LootBox;
@@ -32,11 +33,12 @@ public class LonerAi extends ThinkingAi{
 	 * @param randomName the random name
 	 * @param levelManager 
 	 * @param combatInorganicManager 
+	 * @param dialoguePool 
 	 * @param d the d
 	 * @param e the e
 	 */
-	public LonerAi(PanningManager panningManager, AiCrowd aiCrowd,CombatVisualManager combatVisualManager, TurnProcess turnProcess, FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, CombatMembersManager combatMembersManager, String randomName, double x, double y, LevelManager levelManager, CombatNCEManager combatInorganicManager, CombatUiManager combatUiManager, LootBox lootBox) {
-		super(panningManager, combatVisualManager, turnProcess, floatingIcons, mouseAbilityHandler, aiCrowd, combatMembersManager, randomName,x,y, levelManager, combatInorganicManager, combatUiManager, lootBox);
+	public LonerAi(PanningManager panningManager, AiCrowd aiCrowd,CombatVisualManager combatVisualManager, TurnProcess turnProcess, FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, CombatMembersManager combatMembersManager, String randomName, double x, double y, LevelManager levelManager, CombatNCEManager combatInorganicManager, CombatUiManager combatUiManager, LootBox lootBox, DialoguePool dialoguePool) {
+		super(dialoguePool, panningManager, combatVisualManager, turnProcess, floatingIcons, mouseAbilityHandler, aiCrowd, combatMembersManager, randomName,x,y, levelManager, combatInorganicManager, combatUiManager, lootBox);
 		this.aiCrowd = aiCrowd;
 		this.combatMembersManager = combatMembersManager;
 	}

@@ -1,6 +1,3 @@
-/*
- * 
- */
 package atrophy.combat.ai;
 
 import java.awt.Polygon;
@@ -19,6 +16,7 @@ import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.actions.MouseAbilityHandler;
 import atrophy.combat.ai.conversation.Dialogue;
+import atrophy.combat.ai.conversation.DialoguePool;
 import atrophy.combat.ai.conversation.Topic;
 import atrophy.combat.combatEffects.MobileInvisibility;
 import atrophy.combat.combatEffects.Parrying;
@@ -41,10 +39,6 @@ import atrophy.combat.levelAssets.Grenade;
 import atrophy.combat.mechanics.Abilities;
 import atrophy.combat.mechanics.TurnProcess;
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class ThinkingAi.
- */
 public class ThinkingAi extends Ai{
 	
 	protected static enum AiMode {
@@ -64,11 +58,12 @@ public class ThinkingAi extends Ai{
 
 	private boolean blockPlayerConvo;
 	
-	ThinkingAiEmotion emotionManager;
+	private ThinkingAiEmotion emotionManager;
 	private CombatNCEManager combatInorganicManager;
 	private LevelManager levelManager;
+	private DialoguePool dialoguePool;
 
-	public ThinkingAi(PanningManager panningManager, CombatVisualManager combatVisualManager, TurnProcess turnProcess, FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, AiCrowd aiCrowd, CombatMembersManager combatMembersManager, String name, double x, double y, LevelManager levelManager, CombatNCEManager combatInorganicManager, CombatUiManager combatUiManager, LootBox lootBox){
+	public ThinkingAi(DialoguePool dialoguePool, PanningManager panningManager, CombatVisualManager combatVisualManager, TurnProcess turnProcess, FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, AiCrowd aiCrowd, CombatMembersManager combatMembersManager, String name, double x, double y, LevelManager levelManager, CombatNCEManager combatInorganicManager, CombatUiManager combatUiManager, LootBox lootBox){
 		super(floatingIcons, mouseAbilityHandler, name,x,y, combatInorganicManager, levelManager, lootBox, combatMembersManager, combatUiManager, combatVisualManager, aiCrowd, panningManager, turnProcess);
 		aiMode = AiMode.EMPTY;
 		turnCounter = 0;
@@ -82,6 +77,7 @@ public class ThinkingAi extends Ai{
 		this.combatInorganicManager = combatInorganicManager;
 		this.levelManager = levelManager;
 		this.emotionManager = new ThinkingAiEmotion(this);
+		this.dialoguePool = dialoguePool;
 	}
 
 	@Override

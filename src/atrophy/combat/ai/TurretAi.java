@@ -11,6 +11,7 @@ import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.actions.MouseAbilityHandler;
+import atrophy.combat.ai.conversation.DialoguePool;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.ui.FloatingIcons;
 import atrophy.combat.display.ui.loot.LootBox;
@@ -34,8 +35,8 @@ public class TurretAi extends LonerAi {
 	private AiCrowd aiCrowd;
 	private TeamsCommander commander;
 	
-	public TurretAi(PanningManager panningManager, AiCrowd aiCrowd, CombatVisualManager combatVisualManager, TurnProcess turnProcess, FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, CombatMembersManager combatMembersManager, double x, double y, LevelManager levelManager, CombatNCEManager combatInorganicManager, CombatUiManager combatUiManager, LootBox lootBox) {
-		super(panningManager, aiCrowd, combatVisualManager, turnProcess, floatingIcons, mouseAbilityHandler, combatMembersManager, AiGenerator.TURRET, x, y, levelManager, combatInorganicManager, combatUiManager, lootBox);
+	public TurretAi(PanningManager panningManager, AiCrowd aiCrowd, CombatVisualManager combatVisualManager, TurnProcess turnProcess, FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, CombatMembersManager combatMembersManager, double x, double y, LevelManager levelManager, CombatNCEManager combatInorganicManager, CombatUiManager combatUiManager, LootBox lootBox, DialoguePool dialoguePool) {
+		super(panningManager, aiCrowd, combatVisualManager, turnProcess, floatingIcons, mouseAbilityHandler, combatMembersManager, AiGenerator.TURRET, x, y, levelManager, combatInorganicManager, combatUiManager, lootBox, dialoguePool);
 		this.aiMode = AiMode.EMPTY;
 		
 		lookTurnCounter = 0;

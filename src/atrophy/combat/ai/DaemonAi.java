@@ -6,6 +6,7 @@ import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.actions.MouseAbilityHandler;
+import atrophy.combat.ai.conversation.DialoguePool;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.ui.FloatingIcons;
 import atrophy.combat.display.ui.loot.LootBox;
@@ -24,8 +25,8 @@ public class DaemonAi extends ThinkingAi {
 			CombatMembersManager combatMembersManager, String name, double x,
 			double y, LevelManager levelManager,
 			CombatNCEManager combatInorganicManager,
-			CombatUiManager combatUiManager, LootBox lootBox) {
-		super(panningManager, combatVisualManager, turnProcess, floatingIcons,
+			CombatUiManager combatUiManager, LootBox lootBox, DialoguePool dialoguePool) {
+		super(dialoguePool, panningManager, combatVisualManager, turnProcess, floatingIcons,
 				mouseAbilityHandler, aiCrowd, combatMembersManager, name, x, y,
 				levelManager, combatInorganicManager, combatUiManager, lootBox);
 		this.levelManager = levelManager;
