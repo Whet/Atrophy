@@ -76,7 +76,7 @@ public class MenuMapInterface {
 					return;
 				}
 				
-				ActivePane.getInstance().changeRootCrowd(new Crowd(new CombatHardPane(turnProcess, aiManagementSuite, uiUpdaterSuite, actionSuite, levelManager, aiManagementSuite.getAiCrowd(), combatInorganicManager, generationCommands, missionManager, missions, uiUpdaterSuite.getCartographer())));
+				ActivePane.getInstance().changeRootCrowd(new Crowd(new CombatHardPane(turnProcess, aiManagementSuite, uiUpdaterSuite, actionSuite, levelManager, aiManagementSuite.getAiCrowd(), combatInorganicManager, generationCommands, missionManager, missions, uiUpdaterSuite.getCartographer(), uiUpdaterSuite.getMessageBox())));
 			}
 		});
 		

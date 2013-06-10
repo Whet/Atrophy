@@ -348,13 +348,14 @@ public class MessageManager{
 		
 		if(!topicReaction(topic)){
 			
-			if(messageBox.getConversers()[1] != null && ((ThinkingAi) messageBox.getConversers()[1]).getAiNode() != null &&
-			  ((ThinkingAi) messageBox.getConversers()[1]).getAiNode().hasDialogue())
+//			if(messageBox.getConversers()[1] != null && ((ThinkingAi) messageBox.getConversers()[1]).getAiNode() != null &&
+//			  ((ThinkingAi) messageBox.getConversers()[1]).getAiNode().hasDialogue())
 //				((ThinkingAi) messageBox.getConversers()[1]).getAiNode().getDialogue().longSpeechPoint = 0;
 			
 			// If ai started the convo then state their turn is ended
 			if(thinkingAiInitiated && messageBox.getConversers()[1] != null){
-				((ThinkingAi) messageBox.getConversers()[1]).getAiNode().finish(((ThinkingAi) messageBox.getConversers()[1]));
+				((ThinkingAi) messageBox.getConversers()[1]).finish();
+//				messageBox.setVisible(false);
 			}
 			
 			return;

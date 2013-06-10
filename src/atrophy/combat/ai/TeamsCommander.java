@@ -539,15 +539,23 @@ public class TeamsCommander {
 	}
 
 	public void addSuspectedAi(Ai killer, Ai killed) {
-		if(this.isAlliedWith(killed.getFaction()) && !killed.getFaction().equals(this.getFaction())) {
+		if(!this.isAlliedWith(killed.getFaction()) && !killed.getFaction().equals(this.getFaction())) {
 			return;
 		}
-		System.out.println(killer.getName() + "  is suspected of murder!");
+		System.out.println(killer.getName() + " is wanted!");
 		this.suspectedAi.put(killer, 30);
 	}
 	
 	public boolean isSuspected(Ai suspect) {
 		return this.suspectedAi.containsKey(suspect);
+	}
+
+	public void removeSuspected(Ai ai) {
+		this.suspectedAi.remove(ai);
+	}
+
+	public void removeHatedAi(Ai speaker) {
+		this.hatedAi.remove(speaker);
 	}
 
 }

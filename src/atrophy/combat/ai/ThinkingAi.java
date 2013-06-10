@@ -83,8 +83,10 @@ public class ThinkingAi extends Ai{
 	@Override
 	public void action(){
 		
-		if(this.getName().equals("Sorrowful Solovich"))
-			System.out.println();
+		if(this.isDead()) {
+			endTurn();
+			return;
+		}
 		
 		this.resetMoveUnits();
 		
@@ -537,13 +539,27 @@ public class ThinkingAi extends Ai{
 			// determine if target is hostile and if it is visible by the team
 			Ai ai = shuffledAi.get(i);
 			
-			
-			if(this.getCommander().isSuspected(ai)) {
-				this.getCommander().addHatedAi(ai);
-				if(!ai.getFaction().equals(AiGenerator.LONER))
-					this.getCommander().removeAlliance(ai.getFaction());
-				this.getCommander().removeFriend(ai);
-				System.out.println(ai.getName() + "  has been caught for murder and is hated");
+			if(this.getCommander().isSuspected(ai) && ai.getLevelBlock() == this.getLevelBlock() && combatVisualManager.isAiInSight(ai, this.getFaction())) {
+				
+				if(ai instanceof ThinkingAi) {
+					this.getCommander().addHatedAi(ai);
+					if(!ai.getFaction().equals(AiGenerator.LONER))
+						this.getCommander().removeAlliance(ai.getFaction());
+					this.getCommander().removeFriend(ai);
+				}
+				else {
+					
+					this.getCommander().addHatedAi(ai);
+					if(!ai.getFaction().equals(AiGenerator.LONER))
+						this.getCommander().removeAlliance(ai.getFaction());
+					this.getCommander().removeFriend(ai);
+					this.getCommander().removeSuspected(ai);
+					
+					this.dialoguePool.getMessageBox().setConversation(ai, this, this.dialoguePool.getMurderAccusation());
+					this.dialoguePool.getMessageBox().setVisible(true);
+					return;
+				}
+				
 			}
 			
 			if(canBeEngaged(ai)){
@@ -858,7 +874,7 @@ public class ThinkingAi extends Ai{
 		
 		// Investigate dead bodies
 		for(Ai ai : aiCrowd.getActors()){
-			if(ai.getLevelBlock() == this.getLevelBlock() && ai.isDead() && !this.getCommander().isInvestigated(ai) && combatVisualManager.isAiInSight(ai, this.getFaction())) {
+			if(ai.getLevelBlock() == this.getLevelBlock() && ai.isDead() && !this.getCommander().isInvestigated(ai) && CombatVisualManager.isAiInSight(this, ai)) {
 				this.getCommander().addInvestigatedAi(ai);
 				
 				// Chance to recognise killer
@@ -867,8 +883,12 @@ public class ThinkingAi extends Ai{
 				// Don't investigate deaths we caused
 				if(deathReport.killer == null || (deathReport.killer.getFaction().equals(this.getFaction()) && (!this.getFaction().equals(AiGenerator.LONER) || deathReport.killer == this)))
 					return;
+				
 				if(turnProcess.getTurnCount() - deathReport.timeOfDeath < 20 && deathReport.weapon.getName().equals(deathReport.killer.getWeapon().getName()) &&
-				  (combatVisualManager.isAiInSight(deathReport.killer, this.getFaction()) || new Random().nextInt(10) < 7)) {
+				  (CombatVisualManager.isAiInSight(this, deathReport.killer) || new Random().nextInt(10) < 7)) {
+					
+					System.out.println(this.getName() + " suspects " + deathReport.killer.getName() + " of murder");
+					
 					this.getCommander().addSuspectedAi(deathReport.killer, deathReport.killed);
 				}
 			}
@@ -973,7 +993,8 @@ public class ThinkingAi extends Ai{
 			case ATTACK:
 				this.aiMode = AiMode.ENGAGING;
 				this.aim(speaker);
-				this.aiNode.freeThinkTurns = 6;
+				if(this.aiNode != null)
+					this.aiNode.freeThinkTurns = 6;
 			break;
 			// Take money from ai
 			case PAY:
@@ -988,7 +1009,10 @@ public class ThinkingAi extends Ai{
 				int stunTurns = (int)Math.ceil((Maths.getDistance(this.getLocation(), speaker.getLocation()) / this.getMoveDistance())) + 6;
 				
 				speaker.setIncapTurns(stunTurns);
-				this.aiNode.freeThinkTurns = stunTurns + 1;
+				if(this.aiNode != null)
+					this.aiNode.freeThinkTurns = stunTurns + 1;
+				
+				this.getCommander().removeHatedAi(speaker);
 			break;
 			// Open trade with ai
 			case TRADE:
@@ -1378,22 +1402,6 @@ public class ThinkingAi extends Ai{
 			this.disabler = disabler;
 		}
 
-		public void finish(ThinkingAi ai) {
-			if(this.thinks){
-				ai.endTurn();
-			}
-			else{
-				
-//				if(ai.doingJob) {
-//					ai.job = ai.getCommander().getJob(ai);
-//					if(ai.getLevelBlock() == ai.job.getJobBlock())
-//						ai.job.tickJob();
-//				}
-				
-				ai.gatherEnvironmentData();
-			}
-		}
-
 		public void setThinks(boolean hasThoughts) {
 			this.thinks = hasThoughts;
 		}
@@ -1457,6 +1465,14 @@ public class ThinkingAi extends Ai{
 		
 	}
 
+	public void finish() {
+		if(this.aiNode != null && this.aiNode.thinks){
+			this.endTurn();
+		}
+		else{
+			this.gatherEnvironmentData();
+		}
+	}
 
 	public AiNode getAiNode() {
 		return this.aiNode;

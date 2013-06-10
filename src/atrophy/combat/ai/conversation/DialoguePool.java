@@ -1,24 +1,36 @@
 package atrophy.combat.ai.conversation;
 
-import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.display.ui.Cartographer;
+import atrophy.combat.display.ui.MessageBox;
 import atrophy.combat.level.MissionManager;
 import atrophy.gameMenu.saveFile.Missions;
 
 public class DialoguePool {
 
-	private Dialogue murderAccusation;
+	private MessageBox messageBox;
+	private Missions missions;
+	private MissionManager missionManager;
+	private Cartographer cartographer;
+	private String faction;
 	
-	public DialoguePool(String faction, Missions missions, MissionManager missionManager, Cartographer cartographer) {
-		switch(faction) {
-			case AiGenerator.WHITE_VISTA:
-				murderAccusation = new Dialogue(missions, missionManager, cartographer, "", new String[]{}, true);
-			break;
-		}
+	public DialoguePool(String faction, Missions missions, MissionManager missionManager, Cartographer cartographer, MessageBox messageBox) {
+		this.missions = missions;
+		this.missionManager = missionManager;
+		this.cartographer = cartographer;
+		this.messageBox = messageBox;
+		this.faction = faction;
 	}
 
 	public Dialogue getMurderAccusation() {
-		return murderAccusation;
+		return createMurderAccusation();
+	}
+
+	private Dialogue createMurderAccusation() {
+		return new Dialogue(missions, missionManager, cartographer, "Wait a second, you're that murderer! Time to face justice", new String[]{"Attack", "Give Items"}, true);
+	}
+
+	public MessageBox getMessageBox() {
+		return this.messageBox;
 	}
 	
 }
