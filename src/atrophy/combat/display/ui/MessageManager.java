@@ -273,6 +273,15 @@ public class MessageManager{
 			}
 		}
 		
+		// Update dialogue in case stage changes
+		if(dialogue != ((ThinkingAi) messageBox.getConversers()[1]).getAiNode().getInitiatorDialogue()) {
+			// Reset longspeechpoints if dialogue changes
+			dialogue.longSpeechPoint = 0;
+			((ThinkingAi) messageBox.getConversers()[1]).getAiNode().getInitiatorDialogue().longSpeechPoint = 0;
+		}
+		
+		dialogue = ((ThinkingAi) messageBox.getConversers()[1]).getAiNode().getInitiatorDialogue();
+		
 		// Add long speech setters and dialogue topics
 		speechIt = dialogue.longSpeeches.keySet().iterator();
 		while(speechIt.hasNext()){
@@ -293,30 +302,36 @@ public class MessageManager{
 
 		resetTopics();
 		
-		List<Dialogue> dialogues = ((ThinkingAi) messageBox.getConversers()[1]).getAiNode().getTopics();
+		Dialogue dialogue = ((ThinkingAi) messageBox.getConversers()[1]).getAiNode().getTopic();
 
 		String speech;
 
-		for(Dialogue dialogue : dialogues){
-		
-			Iterator<String> speechIt = dialogue.longSpeeches.keySet().iterator();
-	
-			while(speechIt.hasNext()){
-				String next = speechIt.next();
-	
-				if(next.equals(topic)){
-					dialogue.setLongSpeech(next);
+		Iterator<String> speechIt = dialogue.longSpeeches.keySet().iterator();
+
+		while(speechIt.hasNext()){
+			String next = speechIt.next();
+
+			if(next.equals(topic)){
+				dialogue.setLongSpeech(next);
+				speech = dialogue.nextSpeechDialogue();
+
+				// if the next speech text is a trigger then skip to next speech segment until text is reached
+				while(dialogue.checkTriggers(speech, messageBox)){
 					speech = dialogue.nextSpeechDialogue();
-	
-					// if the next speech text is a trigger then skip to next speech segment until text is reached
-					while(dialogue.checkTriggers(speech, messageBox)){
-						speech = dialogue.nextSpeechDialogue();
-					}
-	
-					messageBox.addMessage(messageBox.getConversers()[1].getName() + ": " + speech);
-	
-					return;
 				}
+				
+				// Update dialogue in case stage changes
+				if(dialogue != ((ThinkingAi) messageBox.getConversers()[1]).getAiNode().getTopic()) {
+					// Reset longspeechpoints if dialogue changes
+					dialogue.longSpeechPoint = 0;
+					((ThinkingAi) messageBox.getConversers()[1]).getAiNode().getTopic().longSpeechPoint = 0;
+				}
+				
+				dialogue = ((ThinkingAi) messageBox.getConversers()[1]).getAiNode().getTopic();
+
+				messageBox.addMessage(messageBox.getConversers()[1].getName() + ": " + speech);
+
+				return;
 			}
 		}
 	}
@@ -546,18 +561,16 @@ public class MessageManager{
 		if(((ThinkingAi) messageBox.getConversers()[1]).getAiNode() != null &&
 		   ((ThinkingAi) messageBox.getConversers()[1]).getAiNode().hasTopics()){
 			
-			List<Dialogue> topics = ((ThinkingAi) messageBox.getConversers()[1]).getAiNode().getTopics();
+			Dialogue dialogue = ((ThinkingAi) messageBox.getConversers()[1]).getAiNode().getTopic();
 			
-			if(topics.size() > 0 && topics.get(0) != null){
-				for(Dialogue dialogue : topics) {
-					// Add long speech setters
-					Iterator<String> speechIt = dialogue.longSpeeches.keySet().iterator();
-					while(speechIt.hasNext()){
-						String next = speechIt.next();
-						
-						if(dialogue.requirementsMet(dialogue.longSpeeches.get(next)[1], messageBox.getConversers()[0]))
-							this.topics.add(next);
-					}
+			if(dialogue != null){
+				// Add long speech setters
+				Iterator<String> speechIt = dialogue.longSpeeches.keySet().iterator();
+				while(speechIt.hasNext()){
+					String next = speechIt.next();
+					
+					if(dialogue.requirementsMet(dialogue.longSpeeches.get(next)[1], messageBox.getConversers()[0]))
+						this.topics.add(next);
 				}
 			}
 		}

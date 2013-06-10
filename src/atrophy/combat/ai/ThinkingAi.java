@@ -1328,14 +1328,23 @@ public class ThinkingAi extends Ai{
 			this.thinks = hasThoughts;
 		}
 
-		public List<Dialogue> getTopics() {
-			List<Dialogue> topics = new ArrayList<>();
+//		public List<Dialogue> getTopics() {
+//			List<Dialogue> topics = new ArrayList<>();
+//			
+//			for(String topicTag : this.talkMapTags){
+//				topics.add(missionManager.getTalkMap(topicTag).getDialogue());
+//			}
+//			
+//			return topics;
+//		}
+		
+		public Dialogue getTopic() {
 			
 			for(String topicTag : this.talkMapTags){
-				topics.add(missionManager.getTalkMap(topicTag).getDialogue());
+				return missionManager.getTalkMap(topicTag).getDialogue();
 			}
 			
-			return topics;
+			return null;
 		}
 
 		public boolean hasTopics(){
