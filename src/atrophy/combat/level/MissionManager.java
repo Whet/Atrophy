@@ -178,6 +178,12 @@ public class MissionManager {
 		missions.addMemCode(this.triggers.get(room));
 	}
 	
+	public void updateTimers() {
+		for (Timer timer : timers) {
+			timer.run();
+		}
+	}
+	
 	protected class Timer {
 		private int delay, repeats, timer, repetitions;
 		private String tag;
@@ -198,12 +204,12 @@ public class MissionManager {
 				if(repetitions > 0)
 					this.repeats++;
 				
-				if(timer == delay)
-					runCommand(tag);
+				runCommand(tag);
 				
-				if(repetitions == repeats)
+				if(repetitions == repeats && repetitions > 0)
 					timers.remove(this);
 			}
+			this.timer++;
 		}
 	}
 	

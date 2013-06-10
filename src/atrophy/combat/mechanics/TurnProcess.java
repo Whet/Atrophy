@@ -127,7 +127,9 @@ public class TurnProcess {
 				missionManager.triggerStoryMessage(ai.getLevelBlock());
 				missionManager.triggerTag(ai.getLevelBlock());
 			}
-		}		
+		}
+		
+		missionManager.updateTimers();
 	}
 
 	private void updateAiLocations(){
