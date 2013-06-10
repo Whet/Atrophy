@@ -378,7 +378,7 @@ public class AiCrowd extends Crowd {
 			return this.animations.get(image).getFrame(frame, animation);
 		}
 		catch(NullPointerException e) {
-			System.out.println(image);
+			System.out.println(image + "  FRAME: " + frame);
 			throw e;
 		}
 	}

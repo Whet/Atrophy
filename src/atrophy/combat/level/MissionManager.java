@@ -69,7 +69,7 @@ public class MissionManager {
 	}
 
 	public void addSpawnStash(String tag, Lootable stash, double[] location, String item, boolean spawnOnce) {
-		SpawnInfo info = new SpawnInfo(tag, stash, location, Missions.DEFAULT_MEM_CODE, spawnOnce, false);
+		SpawnInfo info = new SpawnInfo(tag, stash, location, "#"+Missions.DEFAULT_MEM_CODE, spawnOnce, false);
 		
 		info.item = info.workOutItem(item);
 		
@@ -216,11 +216,13 @@ public class MissionManager {
 		
 		public Command(GenerateCommand command) {
 			this.command = command;
+			this.chance = 100;
 		}
 		
 		public Command(SpawnInfo spawnCommand, String tag) {
 			this.spawnCommand = spawnCommand;
 			this.tag = tag;
+			this.chance = 100;
 		}
 
 		public void run() {

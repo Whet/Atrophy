@@ -676,6 +676,7 @@ public class LevelIO {
 					generationCommands.remove(generationCommands.size() - 1);
 			}
 			else if(lineString.startsWith("STORESPAWNCOMMAND")) {
+				// STORESPAWNCOMMAND[tagv,keepCommand?]
 				missionsManager.addCommand(ReadWriter.readFromArray(lineString, 0), missionsManager.getSpawnCommand(ReadWriter.readFromArray(lineString, 0)), Boolean.parseBoolean(ReadWriter.readFromArray(lineString, 1)));
 			}
 			else if(lineString.startsWith("RANDCOMMAND")) {
