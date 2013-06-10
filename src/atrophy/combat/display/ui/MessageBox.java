@@ -574,7 +574,12 @@ public class MessageBox extends Crowd{
 		 */
 		public Message(int turn, String message){
 			this.turn = turn;
-			this.message = message;
+			this.message = parseMessage(message);
+		}
+
+		private String parseMessage(String message) {
+			message = message.replaceAll("%playername", conversers[0].getName());
+			return message;
 		}
 
 		/**
