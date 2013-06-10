@@ -1001,6 +1001,7 @@ public class ThinkingAi extends Ai{
 		public static final String PRI_DEFENDER = "DEFENDER";
 		private static final String FOLLOW_PLAYER = "FOLLOW_PLAYER";
 		private static final String COMMAND_ON_DEATH = "COMMAND_ON_DEATH";
+		private static final String STAY_IN_ROOM = "STAY_IN_ROOM";
 		
 		private double[] location;
 		private double angle;
@@ -1016,9 +1017,10 @@ public class ThinkingAi extends Ai{
 		private int freeThinkTurns;
 		private int maxUsers;
 		private HashSet<ThinkingAi> users;
-
 		private HashSet<String> priorities;
 		private ArrayList<String> behaviours;
+		
+		private LevelBlock startBlock;
 		
 		// whether this node will think for the ai
 		// can be used to make nodes purely for dialogue
@@ -1080,12 +1082,22 @@ public class ThinkingAi extends Ai{
 		
 		public void think(ThinkingAi ai){
 			
+			if(this.behaviours.contains(STAY_IN_ROOM) && this.startBlock == null)
+				this.startBlock = ai.getLevelBlock();
+				
 			if(!thinks || this.behaviours.size() > 0){
 				if(!useDialogue(ai)){
 					
 					if(this.behaviours.contains(FOLLOW_PLAYER) && ai.levelManager.getBlock(ai.getMoveLocation()) != ai.combatMembersManager.getCurrentAi().getLevelBlock()){
 						try {
 							ai.setMoveLocation(ai.levelManager.randomInPosition(ai.combatMembersManager.getCurrentAi().getLevelBlock()));
+						} catch (PathNotFoundException e) {
+							// can't move to target
+						}
+					}
+					else if(this.behaviours.contains(STAY_IN_ROOM) && ai.levelManager.getBlock(ai.getMoveLocation()) != this.startBlock) {
+						try {
+							ai.setMoveLocation(ai.levelManager.randomInPosition(startBlock));
 						} catch (PathNotFoundException e) {
 							// can't move to target
 						}
