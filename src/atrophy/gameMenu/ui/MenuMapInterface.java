@@ -93,7 +93,7 @@ public class MenuMapInterface {
 	 */
 	private static void setSpawns(String owner, LevelManager levelManager, Squad squad, ItemMarket itemMarket, List<AiGeneratorInterface.GenerateCommand> generationCommands) {
 		
-		if(new Random().nextInt(10) < DAEMON_SPAWN_CHANCE) {
+		if(new Random().nextInt(10) < DAEMON_SPAWN_CHANCE && levelManager.getCurrentLevel().allowedSpawn(AiGenerator.DAEMON)) {
 			// Spawn daemon only map
 			generationCommands.add(new AiGeneratorInterface.DaemonRandomSpawn(AiGeneratorInterface.DaemonRandomSpawn.AXE));
 			generationCommands.add(new GenerateCommand(squad.getSquad(), AiGenerator.PLAYER));
