@@ -54,9 +54,7 @@ public class MenuMapInterface {
 				AiManagementSuite aiManagementSuite = new AiManagementSuite(turnProcess, combatInorganicManager, levelManager, squad);
 				UiUpdaterSuite uiUpdaterSuite = new UiUpdaterSuite(aiManagementSuite, turnProcess, levelManager, combatInorganicManager);
 				ActionSuite actionSuite = new ActionSuite(aiManagementSuite, uiUpdaterSuite, turnProcess, levelManager, squad, techTree, stashManager, missions);
-				MissionManager missionManager = new MissionManager(missions);
-				
-				missions.assignUi(uiUpdaterSuite.getCombatUiManager().getLargeEventText());
+				MissionManager missionManager = new MissionManager(missions, uiUpdaterSuite.getCombatUiManager().getLargeEventText());
 				
 				try {
 					// A.
@@ -65,7 +63,7 @@ public class MenuMapInterface {
 					// Moved from A. without checking		
 					aiManagementSuite.lazyLoad(uiUpdaterSuite, actionSuite.getMouseAbilityHandler());
 					setSpawns(owner, levelManager, squad, itemMarket, generationCommands);
-					turnProcess.lazyLoad(missions, aiManagementSuite, uiUpdaterSuite, combatInorganicManager, actionSuite);
+					turnProcess.lazyLoad(missionManager, aiManagementSuite, uiUpdaterSuite, combatInorganicManager, actionSuite);
 				} 
 				catch (IOException e) {
 					System.err.println("Level could not be loaded");

@@ -1,6 +1,5 @@
 package atrophy.gameMenu.saveFile;
 
-import java.awt.Color;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,7 +7,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-import atrophy.combat.display.ui.LargeEventText;
 import atrophy.combat.items.EngineeringSupply;
 import atrophy.combat.items.MedicalSupply;
 import atrophy.combat.items.ScienceSupply;
@@ -29,7 +27,6 @@ public class Missions{
 	private Map<LevelBlock, String> storyRooms;
 	private Map<LevelBlock, String> triggers;
 	private Squad squad;
-	private LargeEventText largeEventText;
 
 	public Missions(){
 		missions = new ArrayList<>();
@@ -46,10 +43,6 @@ public class Missions{
 		defaultMissions(stashManager, itemMarket, techTree);
 	}
 	
-	public void assignUi(LargeEventText largeEventText) {
-		this.largeEventText = largeEventText;
-	}
-
 	private void defaultMissions(StashManager stashManager, ItemMarket itemMarkert, TechTree techTree) {
 		
 		if(this.missionGivers.isEmpty()) {
@@ -162,27 +155,6 @@ public class Missions{
 		return memCodes;
 	}
 	
-	public void addStoryMessage(LevelBlock block, String message) {
-		this.storyRooms.put(block, message);
-	}
-	
-	public void triggerStoryMessage(LevelBlock room) {
-		String message = this.storyRooms.get(room);
-		
-		if(message != null) {
-			this.storyRooms.remove(room);
-			largeEventText.flashText(message, Color.white, 10000);
-		}
-	}
-	
-	public void addTrigger(LevelBlock block, String tag) {
-		this.triggers.put(block, tag);
-	}
-	
-	public void triggerTag(LevelBlock room) {
-		this.memCodes.add(this.triggers.get(room));
-	}
-
 	public static abstract class Mission implements Serializable{
 		
 		private static final long serialVersionUID = 5776226028366470409L;

@@ -13,8 +13,8 @@ import watoydoEngine.sounds.SoundBoard;
 import watoydoEngine.utils.Maths;
 import watoydoEngine.workings.DisplayManager;
 import watoydoEngine.workings.displayActivity.ActivePane;
-import atrophy.combat.CombatNCEManager;
 import atrophy.combat.CombatMembersManager;
+import atrophy.combat.CombatNCEManager;
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
@@ -35,7 +35,7 @@ import atrophy.combat.display.ui.FloatingIcons;
 import atrophy.combat.display.ui.MessageBox;
 import atrophy.combat.display.ui.UiUpdaterSuite;
 import atrophy.combat.display.ui.loot.LootBox;
-import atrophy.gameMenu.saveFile.Missions;
+import atrophy.combat.level.MissionManager;
 import atrophy.hardPanes.SplashPane;
 
 public class TurnProcess {
@@ -61,14 +61,14 @@ public class TurnProcess {
 	private LineDrawer lineDrawer;
 	private PanningManager panningManager;
 	private PowerManager powerManager;
-	private Missions missions;
+	private MissionManager missionManager;
 	
 	public TurnProcess(){
 		turnCount = 0;
 		turnInProgress = false;
 	}
 	
-	public void lazyLoad(Missions missions, AiManagementSuite aiManagementSuite, UiUpdaterSuite uiUpdaterSuite, CombatNCEManager combatInorganicManager, ActionSuite actionSuite){
+	public void lazyLoad(MissionManager missionManager, AiManagementSuite aiManagementSuite, UiUpdaterSuite uiUpdaterSuite, CombatNCEManager combatInorganicManager, ActionSuite actionSuite){
 		
 		this.panningManager = uiUpdaterSuite.getPanningManager();
 		
@@ -88,7 +88,7 @@ public class TurnProcess {
 		this.combatKeyboardHandler = actionSuite.getCombatKeyboardHandler();
 		this.mouseAbilityHandler = actionSuite.getMouseAbilityHandler();
 		
-		this.missions = missions;
+		this.missionManager = missionManager;
 		
 		shuffledAi = aiCrowd.getShuffledStack();
 		
@@ -124,8 +124,8 @@ public class TurnProcess {
 	public void updateTriggers() {
 		for(Ai ai : this.aiCrowd.getActors()) {
 			if(ai.getFaction().equals(AiGenerator.PLAYER) && !ai.isDead()) {
-				missions.triggerStoryMessage(ai.getLevelBlock());
-				missions.triggerTag(ai.getLevelBlock());
+				missionManager.triggerStoryMessage(ai.getLevelBlock());
+				missionManager.triggerTag(ai.getLevelBlock());
 			}
 		}		
 	}

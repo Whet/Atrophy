@@ -1,11 +1,16 @@
 package atrophy.combat.level;
 
+import java.awt.Color;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.ai.AiGeneratorInterface.GenerateCommand;
 import atrophy.combat.ai.conversation.TalkMap;
+import atrophy.combat.display.ui.LargeEventText;
 import atrophy.combat.display.ui.loot.LootBox.Lootable;
 import atrophy.combat.items.ArmourPlates1;
 import atrophy.combat.items.ArmourPlates2;
@@ -27,18 +32,27 @@ import atrophy.gameMenu.saveFile.Missions;
 public class MissionManager {
 	
 	// stashes where mission items can spawn
-	private HashMap<String, SpawnInfo> spawnStashes;
-	private HashMap<String, TalkMap> talkMaps;
-	private HashMap<String, Command> commands;
+	private Map<String, SpawnInfo> spawnStashes;
+	private Map<String, TalkMap> talkMaps;
+	private Map<String, Command> commands;
+	private Map<LevelBlock, String> storyRooms;
+	private Map<LevelBlock, String> triggers;
+	private List<Timer> timers;
 	
 	private Missions missions;
 	private AiGenerator aiGenerator;
+	private LargeEventText largeEventText;
 	
-	public MissionManager(Missions missions){
+	
+	public MissionManager(Missions missions, LargeEventText largeEventText){
 		spawnStashes = new HashMap<String, SpawnInfo>();
 		talkMaps = new HashMap<>();
 		commands = new HashMap<>();
+		storyRooms = new HashMap<>();
+		triggers = new HashMap<>();
+		timers = new ArrayList<>();
 		this.missions = missions;
+		this.largeEventText = largeEventText;
 	}
 	
 	public void lazyLoad(AiGenerator aiGenerator) {
@@ -137,6 +151,60 @@ public class MissionManager {
 		Command command = this.commands.get(tag);
 		if(command != null)
 			command.run();
+	}
+	
+	public void addTimer(int delay, int repetitions, String tag) {
+		this.timers.add(new Timer(delay, repetitions, tag));
+	}
+	
+	public void addStoryMessage(LevelBlock block, String message) {
+		this.storyRooms.put(block, message);
+	}
+	
+	public void triggerStoryMessage(LevelBlock room) {
+		String message = this.storyRooms.get(room);
+		
+		if(message != null) {
+			this.storyRooms.remove(room);
+			largeEventText.flashText(message, Color.white, 10000);
+		}
+	}
+	
+	public void addTrigger(LevelBlock block, String tag) {
+		this.triggers.put(block, tag);
+	}
+	
+	public void triggerTag(LevelBlock room) {
+		missions.addMemCode(this.triggers.get(room));
+	}
+	
+	protected class Timer {
+		private int delay, repeats, timer, repetitions;
+		private String tag;
+		
+		public Timer(int delay, int repetitions, String tag) {
+			this.delay = delay;
+			this.repetitions = repetitions;
+			this.tag = tag;
+			
+			this.repeats = 0;
+			this.timer = 0;
+		}
+		
+		public void run() {
+			if(this.timer == delay) {
+				this.timer = 0;
+				
+				if(repetitions > 0)
+					this.repeats++;
+				
+				if(timer == delay)
+					runCommand(tag);
+				
+				if(repetitions == repeats)
+					timers.remove(this);
+			}
+		}
 	}
 	
 	protected class Command {
