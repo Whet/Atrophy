@@ -663,10 +663,10 @@ public class LevelIO {
 				command.setAlliances(alliances);
 			}
 			else if(lineString.startsWith("SMESSAGE")) {
-				missions.addStoryMessage(blockStack.peek(), ReadWriter.readFromArray(lineString, 0));
+				missionsManager.addStoryMessage(blockStack.peek(), ReadWriter.readFromArray(lineString, 0));
 			}
 			else if(lineString.startsWith("TRIGGER")) {
-				missions.addTrigger(blockStack.peek(), ReadWriter.readFromArray(lineString, 0));
+				missionsManager.addTrigger(blockStack.peek(), ReadWriter.readFromArray(lineString, 0));
 			}
 			else if(lineString.startsWith("STORECOMMAND")) {
 				// STORECOMMAND[tagv,keepCommand?]
@@ -689,6 +689,15 @@ public class LevelIO {
 				for(int i = 0; i < loop; i++) {
 					generationCommands.add(generationCommands.get(generationCommands.size() - 1));
 				}
+			}
+			else if(lineString.startsWith("TIMER")) {
+				// TIMER[delay,repeats,TAGV]
+				
+				int delay = Integer.parseInt(ReadWriter.readFromArray(lineString, 0));
+				int repetitions = Integer.parseInt(ReadWriter.readFromArray(lineString, 1));
+				String tag = ReadWriter.readFromArray(lineString, 2);
+				
+				missionsManager.addTimer(delay,repetitions,tag);
 			}
 			
 			lineNumber++;
