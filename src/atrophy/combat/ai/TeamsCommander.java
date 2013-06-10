@@ -246,11 +246,10 @@ public class TeamsCommander {
 		Set<LevelBlock> assignedRooms = new HashSet<>();
 		
 		for(Entry<LevelBlock, DefenceHeuristic> entry : this.defenceHeuristics.entrySet()){
-			
 			jobExists = false;
 			
-			for(AiJob job : this.jobAssignments.values()){
-				if(job.getJobBlock() == entry.getKey()){
+			for(AiJob job : this.jobs){
+				if(job.getJobBlock().getCode() == entry.getKey().getCode()){
 					jobExists = true;
 					
 					// Update job to new heuristics
@@ -296,9 +295,9 @@ public class TeamsCommander {
 			}
 			
 		}
-//		for (AiJob job : this.jobs) {
-//			System.out.println(this.getFaction() + ": " + job.getType().toString() + "  Population: " + job.getTargetEmployeeCount());
-//		}
+		for (AiJob job : this.jobs) {
+			System.out.println(this.getFaction() + ": " + job.getType().toString() + "  Population: " + job.getTargetEmployeeCount() + "  Room: " + job.getJobBlock().getCode());
+		}
 		
 		// After jobs have been made set danger to 0 so that old dangers get removed if nothing happens
 		for(DefenceHeuristic dh : this.defenceHeuristics.values()) {
