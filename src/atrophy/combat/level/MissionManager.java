@@ -1,6 +1,7 @@
 package atrophy.combat.level;
 
 import java.util.HashMap;
+import java.util.Random;
 
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.ai.AiGeneratorInterface.GenerateCommand;
@@ -101,6 +102,10 @@ public class MissionManager {
 		return info.location;
 	}
 	
+	public SpawnInfo getSpawnCommand(String tag) {
+		return this.spawnStashes.get(tag);
+	}
+	
 	public TalkMap getTalkMap(String tag){
 		return this.talkMaps.get(tag);
 	}
@@ -117,22 +122,52 @@ public class MissionManager {
 		this.commands.put(tag, new Command(command));
 	}
 	
+	public void addCommand(String tag, SpawnInfo spawnCommand, boolean removeSpawnCommand) {
+		this.commands.put(tag, new Command(spawnCommand, tag));
+		
+		if(removeSpawnCommand)
+			this.spawnStashes.remove(tag);
+	}
+	
+	protected Command getCommand(String tag) {
+		return this.commands.get(tag);
+	}
+	
 	public void runCommand(String tag) {
 		Command command = this.commands.get(tag);
 		if(command != null)
 			command.run();
 	}
 	
-	private class Command {
+	protected class Command {
 		
 		private GenerateCommand command;
+		private SpawnInfo spawnCommand;
+		private String tag;
+		private int chance;
 		
 		public Command(GenerateCommand command) {
 			this.command = command;
 		}
 		
+		public Command(SpawnInfo spawnCommand, String tag) {
+			this.spawnCommand = spawnCommand;
+			this.tag = tag;
+		}
+
 		public void run() {
-			aiGenerator.spawnAi(command);
+			
+			if(new Random().nextInt(100) < chance) {
+				if(command != null)
+					aiGenerator.spawnAi(command);
+				else
+					spawnCommand.spawnitem(tag);
+			}
+				
+		}
+
+		public void setRandomChance(int chance) {
+			this.chance = chance;
 		}
 		
 	}

@@ -147,6 +147,14 @@ public class Dialogue{
 					messageBox.getConversers()[0].getInventory().removeItem(Item.stringToItem(swapItems[0]));
 					messageBox.getConversers()[0].getInventory().addItem(Item.stringToItem(swapItems[1]));
 				}
+				else if(swapItems[1].startsWith("*") && messageBox.getConversers()[0].getInventory().hasItemByName(swapItems[0])) {
+					missionManager.runCommand(swapItems[1].substring(1));
+					messageBox.getConversers()[0].getInventory().removeItem(Item.stringToItem(swapItems[0]));
+				}
+				else if(swapItems[1].startsWith("^") && messageBox.getConversers()[0].getInventory().hasItemByName(swapItems[0])) {
+					String[] talkMapUpdates = itemName.substring(1).split("#");
+					missionManager.getTalkMap(talkMapUpdates[0]).setToStage(Integer.parseInt(talkMapUpdates[1]));
+				}
 				messageBox.getConversers()[0].assignAbilities();
 			}
 			
