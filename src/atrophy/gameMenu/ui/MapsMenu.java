@@ -114,7 +114,7 @@ public class MapsMenu extends Menu {
 					
 					float scale = 200 / (float)(currentLevel.getSize()[0] - currentLevel.getSize()[1]);
 					miniMapLines = new MiniMapLines(scale, currentLevel);
-					miniMapLines.setLocation(MapsMenu.this.getLocation()[0] + 400, MapsMenu.this.getLocation()[1] + 10);
+					miniMapLines.setLocation(MapsMenu.this.getLocation()[0] + 400, MapsMenu.this.getLocation()[1] + 60);
 				}
 				
 				@Override
