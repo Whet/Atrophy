@@ -290,7 +290,7 @@ public class ThinkingAi extends Ai{
 			}
 		}
 		else if(this.aiInRoomToLoot()){
-			this.lootAiInRoom();
+			this.interactWithDeadAi();
 		}
 		else if(this.job != null && this.getLevelBlock() != this.job.getJobBlock()){
 			this.setMoveLocation(levelManager.randomInPosition(this.job.getJobBlock()));
@@ -539,19 +539,30 @@ public class ThinkingAi extends Ai{
 		for(int i = 0; i < shuffledAi.size(); i++){
 			
 			// determine if target is hostile and if it is visible by the team
-			if(canBeEngaged(shuffledAi.get(i))){
+			Ai ai = shuffledAi.get(i);
+			
+			
+			if(this.getCommander().isSuspected(ai)) {
+				this.getCommander().addHatedAi(ai);
+				if(!ai.getFaction().equals(AiGenerator.LONER))
+					this.getCommander().removeAlliance(ai.getFaction());
+				this.getCommander().removeFriend(ai);
+				System.out.println(ai.getName() + "  has been caught for murder and is hated");
+			}
+			
+			if(canBeEngaged(ai)){
 				
 				// Prioritise hatedAi or ai aiming at ai
-				if(this.getCommander().isAiHated(shuffledAi.get(i)) || shuffledAi.get(i).getTargetAi() == this){
-					target = shuffledAi.get(i);
+				if(this.getCommander().isAiHated(ai) || ai.getTargetAi() == this){
+					target = ai;
 					break;
 				}
 				
 			    // find closest target
-			    if(this.getTargetAi() == null || Maths.getDistance(this.getLocation(), shuffledAi.get(i).getLocation()) <
+			    if(this.getTargetAi() == null || Maths.getDistance(this.getLocation(), ai.getLocation()) <
 						  						 Maths.getDistance(this.getLocation(), this.getTargetAi().getLocation())){
 
-				   target = shuffledAi.get(i);
+				   target = ai;
 				}
 			   
 			}
@@ -564,7 +575,7 @@ public class ThinkingAi extends Ai{
 			this.getCommander().reportUnits(enemyCount,this.getLevelBlock());
 		}
 		else{
-			this.lootAiInRoom();
+			this.interactWithDeadAi();
 			
 			respondToEnvironmentData();
 			
@@ -829,23 +840,44 @@ public class ThinkingAi extends Ai{
 		return false;
 	}
 
-	protected void lootAiInRoom() {
-		if(!this.getInventory().isFull())
-		for(Ai ai : aiCrowd.getActors()){
-			if(ai.getLevelBlock() == this.getLevelBlock() && (ai.isDead() || (this.isTargetHostile(ai) && ai.getIncapTurns() > 0)) && !this.getCommander().isAiLooted(ai) && hasStuffToLoot(ai) && combatVisualManager.isAiInSight(ai, this.getFaction())){
-				this.aiMode = AiMode.LOOT;
-				this.setAction("Loot");
-				this.loot(ai);
-				
-				this.setTrueLookAngle(ai.getLocation());
-				
-				return;
+	protected void interactWithDeadAi() {
+		// Loot
+		if(!this.getInventory().isFull()) {
+			for(Ai ai : aiCrowd.getActors()){
+				if(ai.getLevelBlock() == this.getLevelBlock() && (ai.isDead() || (this.isTargetHostile(ai) && ai.getIncapTurns() > 0)) && !this.getCommander().isAiLooted(ai) && hasStuffToLoot(ai) && combatVisualManager.isAiInSight(ai, this.getFaction())){
+					this.aiMode = AiMode.LOOT;
+					this.setAction("Loot");
+					this.loot(ai);
+					
+					this.setTrueLookAngle(ai.getLocation());
+					
+					return;
+				}
+			}
+			// Stash Loot
+			if(this.hasAbility(Abilities.STASH_SEARCH)){
+				this.computeWhatToLoot(this.stashSearch());
 			}
 		}
 		
-		if(this.hasAbility(Abilities.STASH_SEARCH)){
-			this.computeWhatToLoot(this.stashSearch());
+		// Investigate dead bodies
+		for(Ai ai : aiCrowd.getActors()){
+			if(ai.getLevelBlock() == this.getLevelBlock() && ai.isDead() && !this.getCommander().isInvestigated(ai) && combatVisualManager.isAiInSight(ai, this.getFaction())) {
+				this.getCommander().addInvestigatedAi(ai);
+				
+				// Chance to recognise killer
+				AiDeathReport deathReport = ai.getDeathReport();
+				
+				// Don't investigate deaths we caused
+				if(deathReport.killer == null || (deathReport.killer.getFaction().equals(this.getFaction()) && (!this.getFaction().equals(AiGenerator.LONER) || deathReport.killer == this)))
+					return;
+				if(turnProcess.getTurnCount() - deathReport.timeOfDeath < 20 && deathReport.weapon.getName().equals(deathReport.killer.getWeapon().getName()) &&
+				  (combatVisualManager.isAiInSight(deathReport.killer, this.getFaction()) || new Random().nextInt(10) < 7)) {
+					this.getCommander().addSuspectedAi(deathReport.killer, deathReport.killed);
+				}
+			}
 		}
+		
 	}
 	
 	@Override

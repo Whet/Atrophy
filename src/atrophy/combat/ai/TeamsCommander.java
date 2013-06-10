@@ -1,6 +1,3 @@
-/*
- * 
- */
 package atrophy.combat.ai;
 
 import java.util.ArrayList;
@@ -32,6 +29,8 @@ public class TeamsCommander {
 	private Set<Ai> hatedAi;
 	private Set<Ai> friends;
 	private Set<Ai> lootedAi;
+	private Set<Ai> investigatedAi;
+	private Map<Ai, Integer> suspectedAi;
 	
 	private Map<Ai, AiJob> jobAssignments;
 	private Map<LevelBlock, DefenceHeuristic> defenceHeuristics;
@@ -60,8 +59,10 @@ public class TeamsCommander {
 		alliances = new HashSet<String>();
 		hatedAi = new HashSet<Ai>();
 		friends = new HashSet<Ai>();
+		investigatedAi = new HashSet<Ai>();
 		jobAssignments = new HashMap<>();
-		defenceHeuristics = new HashMap<>();	
+		defenceHeuristics = new HashMap<>();
+		suspectedAi = new HashMap<>();
 		
 		specialistNeeded = false;
 		
@@ -158,6 +159,16 @@ public class TeamsCommander {
 			return;
 		
 		this.turnsToNextUpdate --;
+		
+		Iterator<Entry<Ai, Integer>> iterator = this.suspectedAi.entrySet().iterator();
+		
+		while(iterator.hasNext()) {
+			Entry<Ai, Integer> entry = iterator.next();
+			entry.setValue(entry.getValue() - 1);
+			
+			if(entry.getValue() == 0)
+				iterator.remove();
+		}
 		
 		if(this.turnsToNextUpdate <= 0){
 			
@@ -498,6 +509,14 @@ public class TeamsCommander {
 		
 		return bestEntry.getKey();
 	}
+	
+	public void addInvestigatedAi(Ai ai) {
+		this.investigatedAi.add(ai);
+	}
+	
+	public boolean isInvestigated(Ai ai) {
+		return this.investigatedAi.contains(ai);
+	}
 
 	public void addFriend(Ai ai) {
 		this.friends.add(ai);
@@ -517,6 +536,18 @@ public class TeamsCommander {
 	
 	public boolean hasAi(DaemonAi ai) {
 		return this.teamAi.contains(ai);
+	}
+
+	public void addSuspectedAi(Ai killer, Ai killed) {
+		if(this.isAlliedWith(killed.getFaction()) && !killed.getFaction().equals(this.getFaction())) {
+			return;
+		}
+		System.out.println(killer.getName() + "  is suspected of murder!");
+		this.suspectedAi.put(killer, 30);
+	}
+	
+	public boolean isSuspected(Ai suspect) {
+		return this.suspectedAi.containsKey(suspect);
 	}
 
 }

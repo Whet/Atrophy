@@ -100,9 +100,9 @@ public class MenuMapInterface {
 			return;
 		}
 		
-		int banditTeamSpawn = new Random().nextInt(3);
+		int banditTeamSpawn = new Random().nextInt(3) + 2;
 		
-		int whiteVistaTeamSpawn = new Random().nextInt(3);
+		int whiteVistaTeamSpawn = new Random().nextInt(3) + 1;
 		
 		int lonerTeamSpawn = new Random().nextInt(4);
 		

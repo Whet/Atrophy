@@ -11,6 +11,7 @@ import atrophy.combat.items.Harpoon1;
 import atrophy.combat.items.MedicalSupply;
 import atrophy.combat.items.MeleeWeapon1;
 import atrophy.combat.items.Plasma1;
+import atrophy.combat.items.Railgun;
 import atrophy.combat.items.ScienceSupply;
 import atrophy.combat.items.StunGrenadeItem;
 import atrophy.combat.items.Weapon;
@@ -56,6 +57,7 @@ public class StashManager {
 		this.items.add(GrenadeItem.NAME);
 		this.items.add(GrenadeItem.NAME);
 		this.items.add(GrenadeItem.NAME);
+		this.items.add(Railgun.NAME);
 	}
 	
 	public void lazyLoad(ShopManager shopManager) {

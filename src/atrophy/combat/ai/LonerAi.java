@@ -124,7 +124,7 @@ public class LonerAi extends ThinkingAi{
 		}
 		else{
 			
-			this.lootAiInRoom();
+			this.interactWithDeadAi();
 			
 			respondToEnvironmentData();
 		}
