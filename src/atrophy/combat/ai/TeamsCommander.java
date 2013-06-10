@@ -295,9 +295,9 @@ public class TeamsCommander {
 			}
 			
 		}
-		for (AiJob job : this.jobs) {
-			System.out.println(this.getFaction() + ": " + job.getType().toString() + "  Population: " + job.getTargetEmployeeCount() + "  Room: " + job.getJobBlock().getCode());
-		}
+//		for (AiJob job : this.jobs) {
+//			System.out.println(this.getFaction() + ": " + job.getType().toString() + "  Population: " + job.getTargetEmployeeCount() + "  Room: " + job.getJobBlock().getCode());
+//		}
 		
 		// After jobs have been made set danger to 0 so that old dangers get removed if nothing happens
 		for(DefenceHeuristic dh : this.defenceHeuristics.values()) {
@@ -342,6 +342,8 @@ public class TeamsCommander {
 		// Force re-ordering of jobs
 		this.jobs.remove();
 		this.jobs.add(bestJob);
+		
+//		System.out.println(ai.getName() + " is doing job: " + this.jobAssignments.get(ai).getType());
 		
 		return bestJob;
 	}

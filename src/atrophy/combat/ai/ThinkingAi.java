@@ -1102,6 +1102,13 @@ public class ThinkingAi extends Ai{
 							// can't move to target
 						}
 					}
+					else if(!this.behaviours.contains(STAY_IN_ROOM) && !this.behaviours.contains(FOLLOW_PLAYER)){
+						if(ai.doingJob) {
+							ai.job = ai.getCommander().getJob(ai);
+							if(ai.getLevelBlock() == ai.job.getJobBlock())
+								ai.job.tickJob();
+						}
+					}
 
 					ai.gatherEnvironmentData();
 					
@@ -1194,6 +1201,13 @@ public class ThinkingAi extends Ai{
 				switch(disabler){
 					case "WHITE_VISTA_PRESENT":
 						if(checkForFactionInBlock(ai.getLevelBlock(), AiGenerator.WHITE_VISTA) && inverse){
+							
+//							if(ai.doingJob) {
+//								ai.job = ai.getCommander().getJob(ai);
+//								if(ai.getLevelBlock() == ai.job.getJobBlock())
+//									ai.job.tickJob();
+//							}
+							
 							ai.gatherEnvironmentData();
 							return true;
 						}
@@ -1201,6 +1215,13 @@ public class ThinkingAi extends Ai{
 							
 					case "BANDITS_PRESENT":
 						if(checkForFactionInBlock(ai.getLevelBlock(), AiGenerator.BANDITS) && inverse){
+							
+//							if(ai.doingJob) {
+//								ai.job = ai.getCommander().getJob(ai);
+//								if(ai.getLevelBlock() == ai.job.getJobBlock())
+//									ai.job.tickJob();
+//							}
+							
 							ai.gatherEnvironmentData();
 							return true;
 						}
@@ -1208,6 +1229,13 @@ public class ThinkingAi extends Ai{
 							
 					case "PLAYER_PRESENT":
 						if(checkForFactionInBlock(ai.getLevelBlock(), AiGenerator.PLAYER) && inverse){
+							
+//							if(ai.doingJob) {
+//								ai.job = ai.getCommander().getJob(ai);
+//								if(ai.getLevelBlock() == ai.job.getJobBlock())
+//									ai.job.tickJob();
+//							}
+							
 							ai.gatherEnvironmentData();
 							return true;
 						}
@@ -1215,6 +1243,13 @@ public class ThinkingAi extends Ai{
 							
 					case "LONER_PRESENT":
 						if(checkForFactionInBlock(ai.getLevelBlock(), AiGenerator.LONER) && inverse){
+							
+//							if(ai.doingJob) {
+//								ai.job = ai.getCommander().getJob(ai);
+//								if(ai.getLevelBlock() == ai.job.getJobBlock())
+//									ai.job.tickJob();
+//							}
+							
 							ai.gatherEnvironmentData();
 							return true;
 						}
@@ -1320,6 +1355,13 @@ public class ThinkingAi extends Ai{
 				ai.endTurn();
 			}
 			else{
+				
+//				if(ai.doingJob) {
+//					ai.job = ai.getCommander().getJob(ai);
+//					if(ai.getLevelBlock() == ai.job.getJobBlock())
+//						ai.job.tickJob();
+//				}
+				
 				ai.gatherEnvironmentData();
 			}
 		}
