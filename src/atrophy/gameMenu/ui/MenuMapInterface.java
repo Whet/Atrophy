@@ -57,6 +57,9 @@ public class MenuMapInterface {
 				MissionManager missionManager = new MissionManager(missions, uiUpdaterSuite.getCombatUiManager().getLargeEventText());
 				
 				try {
+					
+					missions.tickMissions();
+					
 					// A.
 					levelManager.setCurrentLevel(LevelIO.loadLevel(chosenLevel, owner, engineeringChance, medicalChance, weaponChance, scienceChance, uiUpdaterSuite.getPanningManager(), turnProcess, uiUpdaterSuite.getMessageBox(), aiManagementSuite.getAiCrowd(), aiManagementSuite.getCombatMembersManager(), missions, missionManager, generationCommands));
 					uiUpdaterSuite.lazyLoad(actionSuite.getMouseAbilityHandler(), aiManagementSuite.getAiCrowd(), levelManager, actionSuite.getCombatMouseHandler(), turnProcess);

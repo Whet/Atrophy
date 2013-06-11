@@ -48,10 +48,10 @@ public class Missions{
 		if(this.missionGivers.isEmpty()) {
 			this.missionGivers.add(new MissionGiver.WVGiver1(squad, this, techTree, stashManager, itemMarkert));
 			this.missionGivers.add(new MissionGiver.LonerGiver1(squad, this, techTree, stashManager, itemMarkert));
-			this.missionGivers.add(new MissionGiver.BanditGiver1(squad, this, techTree, stashManager, itemMarkert));
+//			this.missionGivers.add(new MissionGiver.BanditGiver1(squad, this, techTree, stashManager, itemMarkert));
 			this.missionGivers.add(new MissionGiver.WVGiver2(squad, this, techTree, stashManager, itemMarkert));
 			this.missionGivers.add(new MissionGiver.LonerGiver2(squad, this, techTree, stashManager, itemMarkert));
-			this.missionGivers.add(new MissionGiver.BanditGiver2(squad, this, techTree, stashManager, itemMarkert));
+//			this.missionGivers.add(new MissionGiver.BanditGiver2(squad, this, techTree, stashManager, itemMarkert));
 		}
 		
 		this.updateMissions();
@@ -65,7 +65,8 @@ public class Missions{
 		this.missions.clear();
 		for(int i = 0; i < missionGivers.size(); i++){
 			if(missionGivers.get(i).getMission() != null){
-				missionGivers.get(i).computeMission();
+				if(missionGivers.get(i).getMission().isExpired())
+					missionGivers.get(i).computeMission();
 				this.missions.add(missionGivers.get(i).getMission());
 			}
 		}
@@ -168,6 +169,7 @@ public class Missions{
 		protected Missions missions;
 		protected Squad squad;
 		protected StashManager stashManager;
+		protected Integer timeToLive;
 		
 		public Mission(Missions missions, StashManager stashManager, String name, String description, boolean isRewardItem, Object reward, Squad squad){
 			this.rewardItem = isRewardItem;
@@ -177,6 +179,7 @@ public class Missions{
 			this.missions = missions;
 			this.squad = squad;
 			this.stashManager = stashManager;
+			this.timeToLive = 5;
 		}
 		
 		protected void giveReward() {
@@ -206,6 +209,18 @@ public class Missions{
 
 		public String getDescription() {
 			return this.description;
+		}
+		
+		public boolean isExpired() {
+			return this.timeToLive <= 0;
+		}
+
+		public void tickTimeToLive() {
+			this.timeToLive--;
+		}
+		
+		public int getTimeToLive() {
+			return this.timeToLive;
 		}
 		
 	}
@@ -399,6 +414,12 @@ public class Missions{
 				return true;
 			}
 			return false;
+		}
+	}
+
+	public void tickMissions() {
+		for(Mission mission: this.missions) {
+			mission.tickTimeToLive();
 		}
 	}
 

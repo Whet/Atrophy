@@ -271,8 +271,8 @@ public abstract class MissionGiver implements Serializable{
 			if(this.tech.isEmpty() || techTree.isResearched(this.tech) )
 				this.tech = randomTech();
 			
-			shoppingListMission(squad, missions, stashManager, techTree.getRequirements(this.tech), this.tech);
-//			killMission(AiGenerator.BANDITS, squad, missions, stashManager);
+//			shoppingListMission(squad, missions, stashManager, techTree.getRequirements(this.tech), this.tech);
+			killMission(AiGenerator.BANDITS, squad, missions, stashManager);
 		}
 		
 	}

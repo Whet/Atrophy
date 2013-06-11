@@ -134,7 +134,7 @@ public class MissionMenu extends Menu {
 	private void drawTitle(Graphics2D drawShape) {
 		drawShape.setComposite(GraphicsFunctions.makeComposite(1.0f));
 		drawShape.setColor(Color.white);
-		drawShape.drawString(mission.getName(), (int)this.getLocation()[0] + 20, (int)this.getLocation()[1] + 21);
+		drawShape.drawString(mission.getName() + "  Time Left: " + mission.getTimeToLive(), (int)this.getLocation()[0] + 20, (int)this.getLocation()[1] + 21);
 	}
 	
 	/**
