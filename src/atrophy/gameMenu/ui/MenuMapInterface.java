@@ -103,9 +103,9 @@ public class MenuMapInterface {
 			return;
 		}
 		
-		int banditTeamSpawn = new Random().nextInt(3) + 2;
+		int banditTeamSpawn = new Random().nextInt(2) + 1;
 		
-		int whiteVistaTeamSpawn = new Random().nextInt(3) + 1;
+		int whiteVistaTeamSpawn = new Random().nextInt(2) + 1;
 		
 		int lonerTeamSpawn = new Random().nextInt(4);
 		
@@ -139,13 +139,13 @@ public class MenuMapInterface {
 			lonerTeamSpawn = 0;
 		
 		for(int i = 0; i < banditTeamSpawn; i++){
-			generationCommands.add(new GenerateCommand(2, 4, itemMarket.getBanditsAllowedItems(), itemMarket.getBanditsAllowedWeapons(), AiGenerator.BANDITS));
+			generationCommands.add(new GenerateCommand(2, 3, itemMarket.getBanditsAllowedItems(), itemMarket.getBanditsAllowedWeapons(), AiGenerator.BANDITS));
 		}
 		for(int i = 0; i < whiteVistaTeamSpawn; i++){
-			generationCommands.add(new GenerateCommand(2, 4, itemMarket.getWhiteVistaAllowedItems(), itemMarket.getWhiteVistaAllowedWeapons(), AiGenerator.WHITE_VISTA));
+			generationCommands.add(new GenerateCommand(2, 3, itemMarket.getWhiteVistaAllowedItems(), itemMarket.getWhiteVistaAllowedWeapons(), AiGenerator.WHITE_VISTA));
 		}
 		for(int i = 0; i < lonerTeamSpawn; i++){
-			generationCommands.add(new GenerateCommand(2, 4, itemMarket.getLonerAllowedItems(), itemMarket.getLonerAllowedWeapons(), AiGenerator.LONER));
+			generationCommands.add(new GenerateCommand(2, 3, itemMarket.getLonerAllowedItems(), itemMarket.getLonerAllowedWeapons(), AiGenerator.LONER));
 		}
 
 		generationCommands.add(new GenerateCommand(squad.getSquad(), AiGenerator.PLAYER));

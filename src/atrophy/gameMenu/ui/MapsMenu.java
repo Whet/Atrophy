@@ -81,7 +81,6 @@ public class MapsMenu extends Menu {
 						setPriorityMode(false);
 						MenuMapInterface.loadLevel(ReadWriter.getRootFile("Maps/" + sector.getMap(ind + (page * MAX_ITEMS))), sector.getOwner(ind + (page * MAX_ITEMS)),
 																		  squad, sector.getEngineeringChance(),sector.getMedicalChance(),sector.getWeaponChance(),sector.getScienceChance(), missions, itemMarket, techTree, stashManager);
-						squad.resetKills();
 					} 
 					catch (IOException e1) {
 						ErrorPopup popup = new ErrorPopup(windowManager, "Could Not Load Map At: " + System.getProperty("user.home") + "/Atrophy/Maps/" + sector.getMaps()[ind + (page * MAX_ITEMS)]);

@@ -7,7 +7,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.Map;
 
 import atrophy.combat.ai.MuleAi;
 import atrophy.combat.mechanics.Abilities;
@@ -23,11 +22,8 @@ public class Squad implements Serializable {
 	
 	private ArrayList<Squaddie> squadMembers;
 	
-	private Map<String, Integer> kills;
-	
 	public Squad(){
 		this.squadMembers = new ArrayList<Squaddie>(5);
-		this.kills = new HashMap<>();
 		this.stability = 1;
 	}
 	
@@ -72,29 +68,6 @@ public class Squad implements Serializable {
 
 	public int getSquadCount() {
 		return this.squadMembers.size();
-	}
-
-	public void addKill(String faction) {
-		if(this.kills.get(faction) != null)
-			this.kills.put(faction, this.kills.get(faction) + 1);
-		else
-			this.kills.put(faction, 1);
-	}
-
-	public Map<String, Integer> getSquadKills() {
-		return this.kills;
-	}
-
-	public void setKills(Map<String, Integer> kills) {
-		this.kills = kills;
-	}
-
-	public int getFactionKills(String faction) {
-		return this.kills.get(faction);
-	}
-
-	public void resetKills() {
-		this.kills.clear();
 	}
 
 	public static class Squaddie implements Serializable {

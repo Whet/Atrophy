@@ -130,7 +130,6 @@ public class CombatVisualManager {
 	}
 	
 	public static boolean spotFovNoRadius(Ai looker, double[] lookedAt){
-		 // fov * RING_SIZE is the radius of sight, to smooth gameplay rather than represent anything
 		if(Maths.angleDifference(Maths.getDegrees(looker.getLocation(), lookedAt), looker.getLookAngle()) <= looker.getFov() * 0.5){
 			return true;
 		}

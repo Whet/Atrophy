@@ -68,7 +68,7 @@ public class AiCrowd extends Crowd {
 		
 		this.masterStack = new Stack<Ai>();
 		
-		this.director = new HealthDirector();
+		this.director = new HealthDirector(this);
 		
 	}
 	
@@ -315,7 +315,7 @@ public class AiCrowd extends Crowd {
 		Squad squad = new Squad();
 		
 		squad.setAdvance(this.squad.getAdvance());
-		squad.setKills(this.squad.getSquadKills());
+//		squad.setKills(this.squad.getSquadKills());
 		
 		for(int i = 0; i < this.actors.size(); i++){
 			if(actors.get(i).getFaction().equals(AiGenerator.PLAYER) && !actors.get(i).isDead()){

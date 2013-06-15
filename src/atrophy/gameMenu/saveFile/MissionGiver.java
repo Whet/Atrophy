@@ -12,7 +12,6 @@ import atrophy.combat.items.EngineeringSupply;
 import atrophy.combat.items.MedicalSupply;
 import atrophy.combat.items.WeaponSupply;
 import atrophy.gameMenu.saveFile.Missions.GatherMission;
-import atrophy.gameMenu.saveFile.Missions.KillMission;
 import atrophy.gameMenu.saveFile.Missions.Mission;
 import atrophy.gameMenu.ui.StashManager;
 
@@ -178,11 +177,11 @@ public abstract class MissionGiver implements Serializable{
 	 * @param missions 
 	 * @param stashManager 
 	 */
-	protected void killMission(String faction, Squad squad, Missions missions, StashManager stashManager){
-		Object reward = randomReward();
-		
-		this.mission = new KillMission(missions, squad, stashManager, faction, new Random().nextInt(4) + 1, reward instanceof String, reward);
-	}
+//	protected void killMission(String faction, Squad squad, Missions missions, StashManager stashManager){
+//		Object reward = randomReward();
+//		
+//		this.mission = new KillMission(missions, squad, stashManager, faction, new Random().nextInt(4) + 1, reward instanceof String, reward);
+//	}
 
 	/**
 	 * Random supply.
@@ -271,8 +270,8 @@ public abstract class MissionGiver implements Serializable{
 			if(this.tech.isEmpty() || techTree.isResearched(this.tech) )
 				this.tech = randomTech();
 			
-//			shoppingListMission(squad, missions, stashManager, techTree.getRequirements(this.tech), this.tech);
-			killMission(AiGenerator.BANDITS, squad, missions, stashManager);
+			shoppingListMission(squad, missions, stashManager, techTree.getRequirements(this.tech), this.tech);
+//			killMission(AiGenerator.BANDITS, squad, missions, stashManager);
 		}
 		
 	}

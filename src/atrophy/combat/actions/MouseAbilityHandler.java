@@ -3,7 +3,6 @@
  */
 package atrophy.combat.actions;
 
-import java.awt.Color;
 import java.awt.Point;
 
 import watoydoEngine.sounds.SoundBoard;
@@ -12,7 +11,6 @@ import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.ai.Ai;
-import atrophy.combat.ai.AiData;
 import atrophy.combat.ai.AiDebugger;
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.ai.ThinkingAi;
@@ -178,15 +176,15 @@ public class MouseAbilityHandler {
 				return;
 				
 			case "CadTag":
-				targetAi = getClosestAiToMouse(mousePoint, AI_CLICK_RADIUS, true);
-				if(targetAi != null && 
-				   !(targetAi instanceof TurretAi) &&
-				   targetAi.isDead() &&
-				   Maths.getDistance(targetAi.getLocation(), combatMembersManager.getCurrentAi().getLocation()) <= AiData.INTERACTION_RANGE){
-					
-					squad.addKill(targetAi.getFaction());
-					combatUiManager.getLargeEventText().flashText(targetAi.getName() + " Tagged", Color.yellow);
-				}
+//				targetAi = getClosestAiToMouse(mousePoint, AI_CLICK_RADIUS, true);
+//				if(targetAi != null && 
+//				   !(targetAi instanceof TurretAi) &&
+//				   targetAi.isDead() &&
+//				   Maths.getDistance(targetAi.getLocation(), combatMembersManager.getCurrentAi().getLocation()) <= AiData.INTERACTION_RANGE){
+//					
+//					squad.addKill(targetAi.getFaction());
+//					combatUiManager.getLargeEventText().flashText(targetAi.getName() + " Tagged", Color.yellow);
+//				}
 			break;
 			case "Hack":
 				TurretAi turret = getClosestTurretToMouse(mousePoint, AI_CLICK_RADIUS, false);
