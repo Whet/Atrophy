@@ -104,9 +104,9 @@ public class LevelIO {
 		try{
 			level.setSize(new int[]{
 								    Integer.parseInt(ReadWriter.readFromArray(ReadWriter.readFromFile(levelFile, 0), 0)),
-								    Integer.parseInt(ReadWriter.readFromArray(ReadWriter.readFromFile(levelFile, 0), 1)),
+								    -Integer.parseInt(ReadWriter.readFromArray(ReadWriter.readFromFile(levelFile, 0), 1)),
 								    Integer.parseInt(ReadWriter.readFromArray(ReadWriter.readFromFile(levelFile, 0), 2)),
-								    Integer.parseInt(ReadWriter.readFromArray(ReadWriter.readFromFile(levelFile, 0), 3))
+								    -Integer.parseInt(ReadWriter.readFromArray(ReadWriter.readFromFile(levelFile, 0), 3))
 									});
 		}
 		catch(NumberFormatException e){
