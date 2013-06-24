@@ -180,7 +180,8 @@ public class AtrophyScriptReader {
 				level.setSize(sizeArray);
 				return;
 			case "BLOCK":
-				blockStack.add(createBlock(blockNumber++, tree, missionManager, level, combatMembersManager));
+				blockStack.add(createBlock(blockNumber, tree, missionManager, level, combatMembersManager));
+				blockNumber++;
 				return;
 			case "PORTAL":
 				portalStack.add(createPortal(tree));
@@ -198,12 +199,15 @@ public class AtrophyScriptReader {
 				createTrigger(tree);
 				return;
 			case "COMMAND":
+				//TODO
 				createCommand(tree);
 				return;
 			case "TALKTREE":
+				// TODO
 				createTalkTree(tree);
 				return;
 			case "TALK":
+				// TODO
 				createTalkTopic(tree);
 				return;
 			case "MAPSPAWNS":

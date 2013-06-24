@@ -185,7 +185,7 @@ public class LineDrawer implements Displayable{
 
 	public void updateAlphas(){
 		Set<LevelBlock> occupiedRooms = new HashSet<LevelBlock>();
-		Set<LevelBlock> connectedRooms = new HashSet<>();
+		Set<LevelBlock> connectedRooms = new HashSet<LevelBlock>();
 		
 		for(Ai ai : aiCrowd.getActors()){
 			if(combatVisualManager.isAllRevealed() ||
@@ -202,7 +202,7 @@ public class LineDrawer implements Displayable{
 		}
 		
 		for(int i = 0; i < map.length; i++){
-			LevelBlock block = levelManager.getBlock(map[i].levelBlockCode);
+			LevelBlock block = levelManager.getBlock(i);
 			
 			if(occupiedRooms.contains(block)){
 				map[i].setAlpha(OCCUPIED_ALPHA);
