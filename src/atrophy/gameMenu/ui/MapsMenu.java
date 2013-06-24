@@ -93,27 +93,27 @@ public class MapsMenu extends Menu {
 				public void mI(Point mousePosition) {
 					super.mI(mousePosition);
 
-					if(mapMade)
-						return;
-					
-					this.mapMade = true;
-					Level currentLevel;
-					try {
-						currentLevel = LevelIO.loadLevelBlocks(ReadWriter.getRootFile("Maps/" + sector.getMap(ind + (page * MAX_ITEMS))));
-					} catch (FileNotFoundException e) {
-						e.printStackTrace();
-						return;
-					} catch (IOException e) {
-						e.printStackTrace();
-						return;
-					} catch (LevelFormatException e) {
-						e.printStackTrace();
-						return;
-					}
-					
-					float scale = 200 / (float)(currentLevel.getSize()[0] - currentLevel.getSize()[1]);
-					miniMapLines = new MiniMapLines(scale, currentLevel);
-					miniMapLines.setLocation(MapsMenu.this.getLocation()[0] + 400, MapsMenu.this.getLocation()[1] + 60);
+//					if(mapMade)
+//						return;
+//					
+//					this.mapMade = true;
+//					Level currentLevel;
+//					try {
+//						currentLevel = LevelIO.loadLevelBlocks(ReadWriter.getRootFile("Maps/" + sector.getMap(ind + (page * MAX_ITEMS))));
+//					} catch (FileNotFoundException e) {
+//						e.printStackTrace();
+//						return;
+//					} catch (IOException e) {
+//						e.printStackTrace();
+//						return;
+//					} catch (LevelFormatException e) {
+//						e.printStackTrace();
+//						return;
+//					}
+//					
+//					float scale = 200 / (float)(currentLevel.getSize()[0] - currentLevel.getSize()[1]);
+//					miniMapLines = new MiniMapLines(scale, currentLevel);
+//					miniMapLines.setLocation(MapsMenu.this.getLocation()[0] + 400, MapsMenu.this.getLocation()[1] + 60);
 				}
 				
 				@Override

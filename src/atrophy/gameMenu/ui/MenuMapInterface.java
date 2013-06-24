@@ -11,6 +11,8 @@ import java.util.Random;
 
 import javax.swing.SwingUtilities;
 
+import org.antlr.runtime.RecognitionException;
+
 import watoydoEngine.designObjects.display.Crowd;
 import watoydoEngine.workings.displayActivity.ActivePane;
 import atrophy.combat.CombatNCEManager;
@@ -21,9 +23,8 @@ import atrophy.combat.ai.AiGeneratorInterface.GenerateCommand;
 import atrophy.combat.display.AiManagementSuite;
 import atrophy.combat.display.ui.UiUpdaterSuite;
 import atrophy.combat.level.LevelIO;
-import atrophy.combat.level.MissionManager;
-import atrophy.combat.level.LevelIO.LevelFormatException;
 import atrophy.combat.level.LevelManager;
+import atrophy.combat.level.MissionManager;
 import atrophy.combat.mechanics.TurnProcess;
 import atrophy.gameMenu.saveFile.ItemMarket;
 import atrophy.gameMenu.saveFile.Missions;
@@ -73,8 +74,8 @@ public class MenuMapInterface {
 					ActivePane.getInstance().cancelLoading();
 					return;
 				} 
-				catch (LevelFormatException e) {
-					System.err.println(e.message);
+				catch (RecognitionException e) {
+					System.err.println(e.toString());
 					ActivePane.getInstance().cancelLoading();
 					return;
 				}

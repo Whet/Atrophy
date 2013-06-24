@@ -3,12 +3,12 @@
  */
 package atrophy.combat.level;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+import java.util.Stack;
 
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.display.ui.loot.LootBox.Lootable;
@@ -16,6 +16,8 @@ import atrophy.combat.items.EngineeringSupply;
 import atrophy.combat.items.MedicalSupply;
 import atrophy.combat.items.ScienceSupply;
 import atrophy.combat.items.WeaponSupply;
+import atrophy.combat.level.AtrophyScriptReader.LevelBlockInfo;
+import atrophy.combat.level.AtrophyScriptReader.PortalInfo;
 
 
 // TODO: Auto-generated Javadoc
@@ -55,18 +57,21 @@ public class Level {
 		
 	}
 	
-	public void generatePortals(ArrayList<double[]> portalData, ArrayList<String> portalSecurity, Level level) {
+	public void generatePortals(Stack<PortalInfo> portalStack, Level level) {
+		
+		PortalInfo portalData;
+		
 		// add portals to blocks
-		for(int i = 0; i < portalData.size(); i++){
-			
+		while((portalData = portalStack.pop()) != null) {
 			// Add block at end location
-			LevelBlock block1 = level.getBlockAt(portalData.get(i)[2], portalData.get(i)[3]);
-			LevelBlock block2 = level.getBlockAt(portalData.get(i)[4], portalData.get(i)[5]);
+			LevelBlock block1 = level.getBlockAt(portalData.xList.get(1), portalData.yList.get(1));
+			LevelBlock block2 = level.getBlockAt(portalData.xList.get(2), portalData.yList.get(2));
 			
-			Portal newPortal = new Portal(portalData.get(i)[0], portalData.get(i)[1], 
-										  block1, portalData.get(i)[2], portalData.get(i)[3],
-										  block2, portalData.get(i)[4], portalData.get(i)[5]);
-			newPortal.setFactionWatch(portalSecurity.get(i));
+			Portal newPortal = new Portal(portalData.xList.get(0), portalData.yList.get(0), 
+										  block1, portalData.xList.get(1), portalData.yList.get(1),
+										  block2, portalData.xList.get(2), portalData.yList.get(2));
+			
+			newPortal.setFactionWatch(portalData.getSecurity());
 			
 			// Add portal to blocks
 			block1.addPortal(newPortal);
@@ -124,8 +129,15 @@ public class Level {
 		return this.levelBlocks.length;
 	}
 	
-	public void setBlocks(LevelBlock[] levelBlocks){
-		this.levelBlocks = levelBlocks;
+	public void setBlocks(Stack<LevelBlockInfo> blockStack){
+		this.levelBlocks = new LevelBlock[blockStack.size()];
+		
+		int i = 0;
+		LevelBlockInfo blockInfo;
+		while((blockInfo = blockStack.pop()) != null) {
+			this.levelBlocks[i] = blockInfo.toLevelBlock();
+			i++;
+		}
 	}
 	
 	public LevelBlock[] getBlocks(){
