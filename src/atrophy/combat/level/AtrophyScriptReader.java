@@ -3,7 +3,9 @@ package atrophy.combat.level;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.Stack;
 
 import org.antlr.runtime.ANTLRStringStream;
@@ -16,6 +18,7 @@ import org.antlr.runtime.tree.Tree;
 import watoydoEngine.io.ReadWriter;
 import atrophy.combat.CombatMembersManager;
 import atrophy.combat.PanningManager;
+import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.ai.AiGeneratorInterface.GenerateCommand;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.ui.MessageBox;
@@ -38,6 +41,7 @@ public class AtrophyScriptReader {
 		
 		while((lineString = ReadWriter.readFromFile(file, line)) != null) {
 			sb.append(lineString);
+			line++;
 		}
 		
 		CharStream stream =	new ANTLRStringStream(sb.toString());
@@ -46,18 +50,17 @@ public class AtrophyScriptReader {
 		AtrophyScriptParser parser = new AtrophyScriptParser(tokenStream);
 		prog_return prog = parser.prog();
 		
-		int[] size = new int[4];
-		
 		Stack<LevelBlockInfo> blockStack = new Stack<>();
 		Stack<PortalInfo> portalStack = new Stack<>();
-		
-		AtrophyScriptReader.walkTree(prog.tree, size, blockStack, portalStack);
-		
+
 		Level level = new Level(owner);
-		level.spawnItems(engineeringChance,medicalChance,weaponChance,scienceChance);
-		level.setSize(size);
+		
+		AtrophyScriptReader.walkTree(level, prog.tree, blockStack, portalStack, missionsManager, combatMembersManager);
+		
 		level.setBlocks(blockStack);
 		level.generatePortals(portalStack, level);
+		panningManager.setMaxOffsets(level.getSize());
+		level.spawnItems(engineeringChance,medicalChance,weaponChance,scienceChance);
 		
 		return level;
 	}
@@ -84,9 +87,14 @@ public class AtrophyScriptReader {
 		public List<Integer> yList;
 		public List<RegionInfo> cover;
 		public List<RegionInfo> stashes;
+		public List<String> territory;
+		public List<String> zone;
 		public int number;
+		private Level level;
+		private CombatMembersManager combatMembersManager;
+		private boolean saferoom;
 		
-		public LevelBlockInfo(int number, String name, List<Integer> xList, List<Integer> yList, MissionManager missionManager) {
+		public LevelBlockInfo(int number, String name, List<Integer> xList, List<Integer> yList, List<String> territory, List<String> zone, boolean saferoom, MissionManager missionManager, Level level, CombatMembersManager combatMembersManager) {
 			this.number = number;
 			this.name = name;
 			this.xList = xList;
@@ -94,7 +102,15 @@ public class AtrophyScriptReader {
 			
 			this.cover = new ArrayList<RegionInfo>();
 			this.stashes = new ArrayList<RegionInfo>();
+			
+			this.territory = territory;
+			this.zone = zone;
+			
+			this.saferoom = saferoom;
+			
 			this.missionManager = missionManager;
+			this.level = level;
+			this.combatMembersManager = combatMembersManager;
 		}
 
 		public void addCover(RegionInfo region) {
@@ -107,6 +123,24 @@ public class AtrophyScriptReader {
 
 		public LevelBlock toLevelBlock() {
 			LevelBlock levelBlock = new LevelBlock(number, missionManager);
+			for(int i = 0; i < xList.size(); i++) {
+				levelBlock.addVertex(xList.get(i), yList.get(i));
+			}
+			
+			for(int i = 0; i < territory.size(); i++) {
+				
+				if(territory.get(i).equals(AiGenerator.PLAYER)) {
+					level.addPlayerSpawn(levelBlock);
+					continue;
+				}
+				
+				combatMembersManager.getCommander(territory.get(i)).setBlockHeuristic(levelBlock, 50);
+			}
+			
+			levelBlock.createNavigationGrid();
+			if(saferoom)
+				level.addSaferoom(levelBlock);
+			
 			return levelBlock;
 		}
 	}
@@ -131,7 +165,7 @@ public class AtrophyScriptReader {
 
 	}
 	
-	public static void walkTree(Tree tree, int[] size, Stack<LevelBlockInfo> blockStack, Stack<PortalInfo> portalStack) {
+	public static void walkTree(Level level, Tree tree, Stack<LevelBlockInfo> blockStack, Stack<PortalInfo> portalStack, MissionManager missionManager, CombatMembersManager combatMembersManager) {
 		System.out.println(tree.toString());
 		
 		int blockNumber = 0;
@@ -141,14 +175,12 @@ public class AtrophyScriptReader {
 				runCommands(tree);
 				return;
 			case "MAPSIZE":
-				List<Integer> intList = createIntList(tree);
-				size = new int[4];
-				for(int i = 0; i < intList.size(); i++) {
-					size[i] = intList.get(i);
-				}
+				List<Integer> size = createIntList(tree);
+				int[] sizeArray = {size.get(0), size.get(1), size.get(2), size.get(3)};
+				level.setSize(sizeArray);
 				return;
 			case "BLOCK":
-				blockStack.add(createBlock(++blockNumber, tree, null));
+				blockStack.add(createBlock(blockNumber++, tree, missionManager, level, combatMembersManager));
 				return;
 			case "PORTAL":
 				portalStack.add(createPortal(tree));
@@ -174,11 +206,18 @@ public class AtrophyScriptReader {
 			case "TALK":
 				createTalkTopic(tree);
 				return;
+			case "MAPSPAWNS":
+				Set<String> allowedSpawns = new HashSet<>();
+				for(int i = 0 ; i < tree.getChildCount(); i++) {
+					allowedSpawns.add(tree.getChild(i).toString());
+				}
+				level.setAllowedSpawns(allowedSpawns);
+				return;
 		}
 		
 		
 		for(int i = 0; i < tree.getChildCount(); i++) {
-			walkTree(tree.getChild(i), size, blockStack, portalStack);
+			walkTree(level, tree.getChild(i), blockStack, portalStack, missionManager, combatMembersManager);
 		}
 	}
 
@@ -662,12 +701,15 @@ public class AtrophyScriptReader {
 		return new PortalInfo(name, security, xList, yList);
 	}
 
-	private static LevelBlockInfo createBlock(int blockNumber, Tree tree, MissionManager missionManager) {
+	private static LevelBlockInfo createBlock(int blockNumber, Tree tree, MissionManager missionManager, Level level, CombatMembersManager combatMembersManager) {
 		System.out.println("CREATING BLOCK");
 		
 		List<Integer> xList = new ArrayList<>();
 		List<Integer> yList = new ArrayList<>();
 		String name = "";
+		List<String> territory = new ArrayList<>();
+		List<String> zone = new ArrayList<>();
+		boolean saferoom = false;
 		
 		for(int i = 0; i < tree.getChildCount(); i++) {
 			switch(tree.getChild(i).toString()) {
@@ -680,6 +722,19 @@ public class AtrophyScriptReader {
 				case "VAR":
 					name = tree.getChild(i).getChild(0).toString();
 				break;
+				case "TERRITORY":
+					for(int j = 0; j < tree.getChild(i).getChildCount(); j++) {
+						territory.add(tree.getChild(i).getChild(j).toString());
+					}
+				break;
+				case "ZONE":
+					for(int j = 0; j < tree.getChild(i).getChildCount(); j++) {
+						zone.add(tree.getChild(i).getChild(j).toString());
+					}
+				break;
+				case "SAFEROOM":
+					saferoom = true;
+				break;
 			}
 		}
 		
@@ -687,7 +742,7 @@ public class AtrophyScriptReader {
 		System.out.println("Y " + yList);
 		System.out.println("Name " + name);
 		
-		return new LevelBlockInfo(blockNumber, name, xList, yList, missionManager);
+		return new LevelBlockInfo(blockNumber, name, xList, yList, territory, zone, saferoom, missionManager, level, combatMembersManager);
 	}
 
 	private static List<Integer> createIntList(Tree tree) {

@@ -6,6 +6,7 @@ package atrophy.combat.level;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.Stack;
@@ -62,7 +63,8 @@ public class Level {
 		PortalInfo portalData;
 		
 		// add portals to blocks
-		while((portalData = portalStack.pop()) != null) {
+		while(!portalStack.isEmpty()) {
+			portalData = portalStack.pop();
 			// Add block at end location
 			LevelBlock block1 = level.getBlockAt(portalData.xList.get(1), portalData.yList.get(1));
 			LevelBlock block2 = level.getBlockAt(portalData.xList.get(2), portalData.yList.get(2));
@@ -134,7 +136,8 @@ public class Level {
 		
 		int i = 0;
 		LevelBlockInfo blockInfo;
-		while((blockInfo = blockStack.pop()) != null) {
+		while(!blockStack.isEmpty()) {
+			blockInfo = blockStack.pop();
 			this.levelBlocks[i] = blockInfo.toLevelBlock();
 			i++;
 		}
@@ -178,12 +181,8 @@ public class Level {
 		return this.mapOwner;
 	}
 
-	public void setAllowedSpawns(String[] allowedSpawns) {
-		this.allowedSpawns = new HashSet<String>();
-		
-		for(int i = 0 ; i < allowedSpawns.length; i++){
-			this.allowedSpawns.add(allowedSpawns[i]);
-		}
+	public void setAllowedSpawns(Set<String> allowedSpawns) {
+		this.allowedSpawns = allowedSpawns;
 	}
 
 	public boolean allowedSpawn(String faction) {

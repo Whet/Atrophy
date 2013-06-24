@@ -91,59 +91,60 @@ public class LevelIO {
 	}
 
 	public static Level loadLevelBlocks(File levelFile) throws LevelFormatException, IOException {
-		Level level = new Level("");
-		Stack<LevelBlockInfo> blockStack = new Stack<LevelBlockInfo>();
-		
-		try{
-			level.setSize(new int[]{
-								    Integer.parseInt(ReadWriter.readFromArray(ReadWriter.readFromFile(levelFile, 0), 0)),
-								    -Integer.parseInt(ReadWriter.readFromArray(ReadWriter.readFromFile(levelFile, 0), 1)),
-								    Integer.parseInt(ReadWriter.readFromArray(ReadWriter.readFromFile(levelFile, 0), 2)),
-								    -Integer.parseInt(ReadWriter.readFromArray(ReadWriter.readFromFile(levelFile, 0), 3))
-									});
-		}
-		catch(NumberFormatException e){
-			throw new LevelFormatException(0,"The size line is not correctly defined! It should be on line 0 and as '[width Min, -width Max, height Min, -height Max]' ");
-		}
-		
-		int blockNumber = 0;
-		
-		int lineNumber  = 0;
-		
-		String lineString = ReadWriter.readFromFile(levelFile, lineNumber);
-		
-		while(lineString != null){
-			
-			if(lineString.startsWith("BLOCK")){
-				LevelBlock block = new LevelBlock(blockNumber, null);
-				
-				// Add verticies
-				int arraySize = ReadWriter.getArraySize(lineString);
-				
-				for(int i = 0; i < arraySize; i += 2){
-					
-					try{
-						int vertexX = Integer.parseInt(ReadWriter.readFromArray(lineString, i));
-						int vertexY = Integer.parseInt(ReadWriter.readFromArray(lineString, i + 1));
-						
-						block.addVertex(vertexX, vertexY);
-					}
-					catch(NumberFormatException e){
-						throw new LevelFormatException(lineNumber,"Room " + blockNumber + " has a vertex co-ordinate that is not an integer!");
-					}
-				}
-				block.setDiscovered(true);
-				blockStack.add(new LevelBlockInfo(blockNumber, "", null, null, null));
-				blockNumber++;
-			}
-			
-			lineNumber++;
-			lineString = ReadWriter.readFromFile(levelFile, lineNumber);
-		}
-		
-		level.setBlocks(blockStack);
-		
-		return level;
+//		Level level = new Level("");
+//		Stack<LevelBlockInfo> blockStack = new Stack<LevelBlockInfo>();
+//		
+//		try{
+//			level.setSize(new int[]{
+//								    Integer.parseInt(ReadWriter.readFromArray(ReadWriter.readFromFile(levelFile, 0), 0)),
+//								    -Integer.parseInt(ReadWriter.readFromArray(ReadWriter.readFromFile(levelFile, 0), 1)),
+//								    Integer.parseInt(ReadWriter.readFromArray(ReadWriter.readFromFile(levelFile, 0), 2)),
+//								    -Integer.parseInt(ReadWriter.readFromArray(ReadWriter.readFromFile(levelFile, 0), 3))
+//									});
+//		}
+//		catch(NumberFormatException e){
+//			throw new LevelFormatException(0,"The size line is not correctly defined! It should be on line 0 and as '[width Min, -width Max, height Min, -height Max]' ");
+//		}
+//		
+//		int blockNumber = 0;
+//		
+//		int lineNumber  = 0;
+//		
+//		String lineString = ReadWriter.readFromFile(levelFile, lineNumber);
+//		
+//		while(lineString != null){
+//			
+//			if(lineString.startsWith("BLOCK")){
+//				LevelBlock block = new LevelBlock(blockNumber, null);
+//				
+//				// Add verticies
+//				int arraySize = ReadWriter.getArraySize(lineString);
+//				
+//				for(int i = 0; i < arraySize; i += 2){
+//					
+//					try{
+//						int vertexX = Integer.parseInt(ReadWriter.readFromArray(lineString, i));
+//						int vertexY = Integer.parseInt(ReadWriter.readFromArray(lineString, i + 1));
+//						
+//						block.addVertex(vertexX, vertexY);
+//					}
+//					catch(NumberFormatException e){
+//						throw new LevelFormatException(lineNumber,"Room " + blockNumber + " has a vertex co-ordinate that is not an integer!");
+//					}
+//				}
+//				block.setDiscovered(true);
+//				blockStack.add(new LevelBlockInfo(blockNumber, "", null, null, null, null, null));
+//				blockNumber++;
+//			}
+//			
+//			lineNumber++;
+//			lineString = ReadWriter.readFromFile(levelFile, lineNumber);
+//		}
+//		
+//		level.setBlocks(blockStack);
+//		
+//		return level;
+		return null;
 	}
 	
 	public static Level loadLevel(File file, String owner, int engineeringChance, int medicalChance, int weaponChance, int scienceChance, PanningManager panningManager, TurnProcess turnProcess, MessageBox messageBox, AiCrowd aiCrowd, CombatMembersManager combatMembersManager, Missions missions, MissionManager missionsManager, List<GenerateCommand> generationCommands) throws IOException, RecognitionException{
