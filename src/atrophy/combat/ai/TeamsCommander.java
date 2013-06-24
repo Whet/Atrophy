@@ -365,7 +365,7 @@ public class TeamsCommander {
 			room = levelManager.randomRoom();
 			checkForNullHeuristic(room);
 		}
-		while(levelManager.isRoomBanned(this.getFaction(), room) || this.defenceHeuristics.get(room).getDefence() > 0);
+		while(levelManager.isRoomBanned(this.getFaction(), room));
 		
 		AiJob job = new AiJob(1, room, JobType.SCOUT, turnsToNextUpdate + 15);
 		jobs.add(job);
