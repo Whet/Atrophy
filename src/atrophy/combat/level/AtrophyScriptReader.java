@@ -3,8 +3,11 @@ package atrophy.combat.level;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Stack;
 
@@ -87,14 +90,14 @@ public class AtrophyScriptReader {
 		public List<Integer> yList;
 		public List<RegionInfo> cover;
 		public List<RegionInfo> stashes;
-		public List<String> territory;
+		public Map<String, Integer> territory;
 		public List<String> zone;
 		public int number;
 		private Level level;
 		private CombatMembersManager combatMembersManager;
 		private boolean saferoom;
 		
-		public LevelBlockInfo(int number, String name, List<Integer> xList, List<Integer> yList, List<String> territory, List<String> zone, boolean saferoom, MissionManager missionManager, Level level, CombatMembersManager combatMembersManager) {
+		public LevelBlockInfo(int number, String name, List<Integer> xList, List<Integer> yList, Map<String, Integer> territory, List<String> zone, boolean saferoom, MissionManager missionManager, Level level, CombatMembersManager combatMembersManager) {
 			this.number = number;
 			this.name = name;
 			this.xList = xList;
@@ -127,14 +130,18 @@ public class AtrophyScriptReader {
 				levelBlock.addVertex(xList.get(i), yList.get(i));
 			}
 			
-			for(int i = 0; i < territory.size(); i++) {
+			for(Entry<String, Integer> entry:territory.entrySet()) {
 				
-				if(territory.get(i).equals(AiGenerator.PLAYER)) {
+				if(entry.getKey().equals(AiGenerator.PLAYER)) {
 					level.addPlayerSpawn(levelBlock);
-					continue;
 				}
-				
-				combatMembersManager.getCommander(territory.get(i)).setBlockHeuristic(levelBlock, 50);
+				else {
+					
+					if(entry.getKey().equals("WhiteVista"))
+						combatMembersManager.getCommander(AiGenerator.WHITE_VISTA).setBlockHeuristic(levelBlock, entry.getValue());
+					else
+						combatMembersManager.getCommander(entry.getKey()).setBlockHeuristic(levelBlock, entry.getValue());
+				}
 			}
 			
 			levelBlock.createNavigationGrid();
@@ -213,8 +220,12 @@ public class AtrophyScriptReader {
 			case "MAPSPAWNS":
 				Set<String> allowedSpawns = new HashSet<>();
 				for(int i = 0 ; i < tree.getChildCount(); i++) {
-					allowedSpawns.add(tree.getChild(i).toString());
+					if(tree.getChild(i).toString().equals("WhiteVista"))
+						allowedSpawns.add(AiGenerator.WHITE_VISTA);
+					else
+						allowedSpawns.add(tree.getChild(i).toString());
 				}
+				
 				level.setAllowedSpawns(allowedSpawns);
 				return;
 		}
@@ -711,7 +722,7 @@ public class AtrophyScriptReader {
 		List<Integer> xList = new ArrayList<>();
 		List<Integer> yList = new ArrayList<>();
 		String name = "";
-		List<String> territory = new ArrayList<>();
+		Map<String, Integer> territory = new HashMap<String, Integer>();
 		List<String> zone = new ArrayList<>();
 		boolean saferoom = false;
 		
@@ -727,9 +738,8 @@ public class AtrophyScriptReader {
 					name = tree.getChild(i).getChild(0).toString();
 				break;
 				case "TERRITORY":
-					for(int j = 0; j < tree.getChild(i).getChildCount(); j++) {
-						territory.add(tree.getChild(i).getChild(j).toString());
-					}
+						territory.put(tree.getChild(i).getChild(0).toString(),
+						Integer.parseInt(tree.getChild(i).getChild(1).toString()));
 				break;
 				case "ZONE":
 					for(int j = 0; j < tree.getChild(i).getChildCount(); j++) {
