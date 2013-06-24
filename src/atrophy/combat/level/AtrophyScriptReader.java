@@ -166,7 +166,7 @@ public class AtrophyScriptReader {
 	}
 	
 	public static void walkTree(Level level, Tree tree, Stack<LevelBlockInfo> blockStack, Stack<PortalInfo> portalStack, MissionManager missionManager, CombatMembersManager combatMembersManager) {
-		System.out.println(tree.toString());
+		// system.out.println(tree.toString());
 		
 		int blockNumber = 0;
 		
@@ -222,7 +222,7 @@ public class AtrophyScriptReader {
 	}
 
 	private static void createCommand(Tree tree) {
-		System.out.println("CREATING COMMAND");
+		// system.out.println("CREATING COMMAND");
 		
 		String name = "";
 		List<TriggerEffect> effects = new ArrayList<>();
@@ -238,12 +238,12 @@ public class AtrophyScriptReader {
 			}
 		}
 		
-		System.out.println("CommandName: " + name);
-		System.out.println("Effects: " + effects);
+		// system.out.println("CommandName: " + name);
+		// system.out.println("Effects: " + effects);
 	}
 
 	private static void createTrigger(Tree tree) {
-		System.out.println("CREATING TRIGGER");
+		// system.out.println("CREATING TRIGGER");
 		
 		String name = "";
 		List<TriggerCond> conditions = new ArrayList<>();
@@ -263,9 +263,9 @@ public class AtrophyScriptReader {
 			}
 		}
 		
-		System.out.println("TriggerName: " + name);
-		System.out.println("Conds: " + conditions);
-		System.out.println("Effects: " +  effects);
+		// system.out.println("TriggerName: " + name);
+		// system.out.println("Conds: " + conditions);
+		// system.out.println("Effects: " +  effects);
 	}
 	
 	private static List<TriggerCond> createConditions(Tree child) {
@@ -593,7 +593,7 @@ public class AtrophyScriptReader {
 	}
 
 	private static void createTalkTopic(Tree tree) {
-		System.out.println("CREATING TALKTOPIC");
+		// system.out.println("CREATING TALKTOPIC");
 		
 		String parent = "";
 		Integer talkStage = null;
@@ -621,15 +621,15 @@ public class AtrophyScriptReader {
 			}
 		}
 		
-		System.out.println("Member of: " + parent);
-		System.out.println("At stage: " + talkStage);
-		System.out.println("AiInit: " + aiInit);
-		System.out.println("Opening: " + openingLine);
-		System.out.println(lines);
+		// system.out.println("Member of: " + parent);
+		// system.out.println("At stage: " + talkStage);
+		// system.out.println("AiInit: " + aiInit);
+		// system.out.println("Opening: " + openingLine);
+		// system.out.println(lines);
 	}
 
 	private static void createTalkTree(Tree tree) {
-		System.out.println("CREATING TALKTREE");
+		// system.out.println("CREATING TALKTREE");
 		
 		List<Integer> stages = new ArrayList<>();
 		
@@ -641,11 +641,11 @@ public class AtrophyScriptReader {
 			}
 		}
 		
-		System.out.println(stages);
+		// system.out.println(stages);
 	}
 
 	private static RegionInfo createRegion(Tree tree) {
-		System.out.println("CREATING REGION");
+		// system.out.println("CREATING REGION");
 		
 		List<Integer> xList = new ArrayList<>();
 		List<Integer> yList = new ArrayList<>();
@@ -665,15 +665,15 @@ public class AtrophyScriptReader {
 			}
 		}
 		
-		System.out.println("X " + xList);
-		System.out.println("Y " + yList);
-		System.out.println("Name " + name);
+		// system.out.println("X " + xList);
+		// system.out.println("Y " + yList);
+		// system.out.println("Name " + name);
 		
 		return new RegionInfo(name, xList, yList);
 	}
 
 	private static PortalInfo createPortal(Tree tree) {
-		System.out.println("CREATING PORTAL");
+		// system.out.println("CREATING PORTAL");
 		
 		List<Integer> xList = new ArrayList<>();
 		List<Integer> yList = new ArrayList<>();
@@ -694,15 +694,15 @@ public class AtrophyScriptReader {
 			}
 		}
 		
-		System.out.println("X " + xList);
-		System.out.println("Y " + yList);
-		System.out.println("Name " + name);
+		// system.out.println("X " + xList);
+		// system.out.println("Y " + yList);
+		// system.out.println("Name " + name);
 		
 		return new PortalInfo(name, security, xList, yList);
 	}
 
 	private static LevelBlockInfo createBlock(int blockNumber, Tree tree, MissionManager missionManager, Level level, CombatMembersManager combatMembersManager) {
-		System.out.println("CREATING BLOCK");
+		// system.out.println("CREATING BLOCK");
 		
 		List<Integer> xList = new ArrayList<>();
 		List<Integer> yList = new ArrayList<>();
@@ -738,9 +738,9 @@ public class AtrophyScriptReader {
 			}
 		}
 		
-		System.out.println("X " + xList);
-		System.out.println("Y " + yList);
-		System.out.println("Name " + name);
+		// system.out.println("X " + xList);
+		// system.out.println("Y " + yList);
+		// system.out.println("Name " + name);
 		
 		return new LevelBlockInfo(blockNumber, name, xList, yList, territory, zone, saferoom, missionManager, level, combatMembersManager);
 	}
@@ -757,7 +757,7 @@ public class AtrophyScriptReader {
 		
 		if(tree.getChild(0).toString().equals("COMMAND_CALL")) {
 			// Call command
-			System.out.println("   " + tree.getChild(0).getChild(0));
+			// system.out.println("   " + tree.getChild(0).getChild(0));
 			return;
 		}
 		
