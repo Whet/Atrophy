@@ -176,7 +176,7 @@ public class AtrophyScriptReader {
 				return;
 			case "MAPSIZE":
 				List<Integer> size = createIntList(tree);
-				int[] sizeArray = {size.get(0), size.get(1), size.get(2), size.get(3)};
+				int[] sizeArray = {size.get(0), -size.get(1), size.get(2), -size.get(3)};
 				level.setSize(sizeArray);
 				return;
 			case "BLOCK":
