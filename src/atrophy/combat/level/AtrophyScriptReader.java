@@ -23,6 +23,7 @@ import atrophy.combat.CombatMembersManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.ai.AiGeneratorInterface.GenerateCommand;
+import atrophy.combat.ai.conversation.Dialogue;
 import atrophy.combat.ai.conversation.TalkMap;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.ui.MessageBox;
@@ -59,7 +60,7 @@ public class AtrophyScriptReader {
 
 		Level level = new Level(owner);
 		
-		AtrophyScriptReader.walkTree(level, prog.tree, blockStack, portalStack, missionsManager, combatMembersManager);
+		AtrophyScriptReader.walkTree(level, prog.tree, blockStack, portalStack, missionsManager, combatMembersManager, missions, messageBox);
 		
 		level.setBlocks(blockStack);
 		level.generatePortals(portalStack, level);
@@ -173,7 +174,7 @@ public class AtrophyScriptReader {
 
 	}
 	
-	public static void walkTree(Level level, Tree tree, Stack<LevelBlockInfo> blockStack, Stack<PortalInfo> portalStack, MissionManager missionManager, CombatMembersManager combatMembersManager) {
+	public static void walkTree(Level level, Tree tree, Stack<LevelBlockInfo> blockStack, Stack<PortalInfo> portalStack, MissionManager missionManager, CombatMembersManager combatMembersManager, Missions missions, MessageBox messageBox) {
 		// system.out.println(tree.toString());
 		
 		int blockNumber = 0;
@@ -210,13 +211,9 @@ public class AtrophyScriptReader {
 				//TODO
 				createCommand(tree);
 				return;
-			case "TALKMAP":
-				TalkMap talkMap = createTalkMap(tree);
-				missionManager.addTalkMap(talkMap.getTag(), talkMap);
-				return;
 			case "TALK":
-				// TODO
-				createTalkTopic(tree);
+				TalkInfo talkInfo = createTalkTopic(tree, missions, missionManager, messageBox);
+				missionManager.getTalkMap(talkInfo.parent).addDialogue(talkInfo.talkStage, talkInfo.dialogue);
 				return;
 			case "MAPSPAWNS":
 				Set<String> allowedSpawns = new HashSet<>();
@@ -233,7 +230,7 @@ public class AtrophyScriptReader {
 		
 		
 		for(int i = 0; i < tree.getChildCount(); i++) {
-			walkTree(level, tree.getChild(i), blockStack, portalStack, missionManager, combatMembersManager);
+			walkTree(level, tree.getChild(i), blockStack, portalStack, missionManager, combatMembersManager, missions, messageBox);
 		}
 	}
 
@@ -608,8 +605,22 @@ public class AtrophyScriptReader {
 		return effects;
 	}
 
-	private static void createTalkTopic(Tree tree) {
-		// system.out.println("CREATING TALKTOPIC");
+	private static class TalkInfo {
+		
+		public final String parent;
+		public final Integer talkStage;
+		public final Dialogue dialogue;
+		
+		public TalkInfo(String parent, Integer talkStage, Dialogue dialogue) {
+			this.parent = parent;
+			this.talkStage = talkStage;
+			this.dialogue = dialogue;
+		}
+		
+	}
+	
+	private static TalkInfo createTalkTopic(Tree tree, Missions missions, MissionManager missionManager, MessageBox messageBox) {
+		System.out.println("CREATING TALKTOPIC");
 		
 		String parent = "";
 		Integer talkStage = null;
@@ -629,39 +640,32 @@ public class AtrophyScriptReader {
 					aiInit = Boolean.parseBoolean(tree.getChild(i).getChild(0).toString());
 				break;
 				case "OPENINGLINE":
-					openingLine = tree.getChild(i).getChild(0).toString();
+					openingLine = createString(tree.getChild(i));
 				break;
 				case "LINE":
-					lines.add(tree.getChild(i).getChild(0).toString());
+					lines.add(createString(tree.getChild(i)));
 				break;
 			}
 		}
 		
-		// system.out.println("Member of: " + parent);
-		// system.out.println("At stage: " + talkStage);
-		// system.out.println("AiInit: " + aiInit);
-		// system.out.println("Opening: " + openingLine);
-		// system.out.println(lines);
+		System.out.println("Member of: " + parent);
+		System.out.println("At stage: " + talkStage);
+		System.out.println("AiInit: " + aiInit);
+		System.out.println("Opening: " + openingLine);
+		System.out.println(lines);
+		
+		String[] options = new String[lines.size()];
+		
+		for(int i = 0; i < lines.size(); i++) {
+			options[i] = lines.get(i);
+		}
+		
+		if(missionManager.getTalkMap(parent) == null)
+			missionManager.addTalkMap(parent, new TalkMap(parent));
+		
+		return new TalkInfo(parent, talkStage, messageBox.createDialogue(missions, missionManager, openingLine, options, aiInit));
 	}
 	
-	private static TalkMap createTalkMap(Tree tree) {
-		System.out.println("CREATING TALKTREE");
-		
-		TalkMap talkMap = null;
-		
-		for(int i = 0; i < tree.getChildCount(); i++) {
-			switch(tree.getChild(i).toString()) {
-				case "VAR":
-					talkMap = new TalkMap(tree.getChild(i).getChild(0).toString());
-				break;
-			}
-		}
-
-		System.out.println(talkMap.getTag());
-		
-		return talkMap;
-	}
-
 	private static RegionInfo createRegion(Tree tree) {
 		// system.out.println("CREATING REGION");
 		
@@ -768,6 +772,17 @@ public class AtrophyScriptReader {
 			integers.add(Integer.parseInt(tree.getChild(i).toString()));
 		}
 		return integers;
+	}
+	
+	private static String createString(Tree tree) {
+		StringBuffer sb = new StringBuffer();
+		for(int i = 0; i < tree.getChildCount(); i++) {
+			if(i > 0)
+				sb.append(" ");
+			
+			sb.append(tree.getChild(i).toString());
+		}
+		return sb.toString();
 	}
 
 	private static void runCommands(Tree tree) {
