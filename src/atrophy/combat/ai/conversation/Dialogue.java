@@ -132,14 +132,7 @@ public class Dialogue{
 			// Check if the spawn is a swap
 			String[] swapItems = itemName.split("#");
 			
-			if(swapItems.length == 1){
-				// Spawn given stash
-				double[] location = missionManager.spawnItem(itemName); 
-				
-				// mark the location as a stash
-				cartographer.addNewMarker(location, Color.white, messageBox.getConversers()[1].getName() + "'s Stash");
-			}
-			else{
+			if(swapItems.length == 2){
 				if(Weapon.isWeapon(swapItems[1]) && (!Weapon.isWeapon(swapItems[0]) || messageBox.getConversers()[0].getWeapon().getName().equals(swapItems[1]))){
 					messageBox.getConversers()[0].setWeapon(Weapon.stringToWeapon(swapItems[1]));
 				}

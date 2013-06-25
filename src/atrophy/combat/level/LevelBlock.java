@@ -552,7 +552,6 @@ public class LevelBlock {
 		
 		for(int i = 0; i < this.stashPolygons.size(); i++){
 			if(region == this.stashPolygons.get(i)) {
-				missionManager.triggerLootEvent(this.stashes.get(i));
 				return this.stashes.get(i);
 			}
 		}

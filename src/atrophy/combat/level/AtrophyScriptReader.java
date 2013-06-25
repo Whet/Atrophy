@@ -70,6 +70,7 @@ public class AtrophyScriptReader {
 		level.generatePortals(portalStack, level);
 		panningManager.setMaxOffsets(level.getSize());
 		level.spawnItems(engineeringChance,medicalChance,weaponChance,scienceChance);
+		missionsManager.addCommands(commandStack);
 		
 		return level;
 	}
@@ -248,10 +249,10 @@ public class AtrophyScriptReader {
 		}
 	}
 	
-	private static class StoredCommand {
+	protected static class StoredCommand {
 		
-		private String name;
-		private List<TriggerEffect> effects;
+		public String name;
+		public List<TriggerEffect> effects;
 		
 		public StoredCommand(String name, List<TriggerEffect> effects) {
 			this.name = name;
@@ -266,9 +267,9 @@ public class AtrophyScriptReader {
 		
 	}
 	
-	private static class TriggerCommand extends StoredCommand {
+	protected static class TriggerCommand extends StoredCommand {
 
-		private List<TriggerCond> conditions;
+		public List<TriggerCond> conditions;
 		
 		public TriggerCommand(String name, List<TriggerEffect> effects, List<TriggerCond> conditions) {
 			super(name, effects);

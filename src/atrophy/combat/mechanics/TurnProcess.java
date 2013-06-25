@@ -125,7 +125,6 @@ public class TurnProcess {
 		for(Ai ai : this.aiCrowd.getActors()) {
 			if(ai.getFaction().equals(AiGenerator.PLAYER) && !ai.isDead()) {
 				missionManager.triggerStoryMessage(ai.getLevelBlock());
-				missionManager.triggerTag(ai.getLevelBlock());
 			}
 		}
 		

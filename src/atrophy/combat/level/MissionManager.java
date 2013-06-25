@@ -1,14 +1,12 @@
 package atrophy.combat.level;
 
 import java.awt.Color;
-import java.util.ArrayList;
+import java.awt.Polygon;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Random;
+import java.util.Stack;
 
 import atrophy.combat.ai.AiGenerator;
-import atrophy.combat.ai.AiGeneratorInterface.GenerateCommand;
 import atrophy.combat.ai.conversation.TalkMap;
 import atrophy.combat.display.ui.LargeEventText;
 import atrophy.combat.display.ui.loot.LootBox.Lootable;
@@ -27,17 +25,19 @@ import atrophy.combat.items.StunGrenadeItem;
 import atrophy.combat.items.UnitDetector;
 import atrophy.combat.items.WeaponSupply;
 import atrophy.combat.items.WeldingTorch;
+import atrophy.combat.level.AtrophyScriptReader.StoredCommand;
+import atrophy.combat.level.AtrophyScriptReader.TriggerCommand;
 import atrophy.gameMenu.saveFile.Missions;
 
 public class MissionManager {
-	
-	// stashes where mission items can spawn
-	private Map<String, SpawnInfo> spawnStashes;
+
+	private Map<String, Lootable> stashContents;
+	private Map<String, Polygon> stashObjects;
+	private Map<String, Polygon> coverObjects;
 	private Map<String, TalkMap> talkMaps;
-	private Map<String, Command> commands;
+	private Map<String, StoredCommand> commands;
+	private Map<String, TriggerCommand> triggers;
 	private Map<LevelBlock, String> storyRooms;
-	private Map<LevelBlock, String> triggers;
-	private List<Timer> timers;
 	
 	private Missions missions;
 	private AiGenerator aiGenerator;
@@ -45,79 +45,21 @@ public class MissionManager {
 	
 	
 	public MissionManager(Missions missions, LargeEventText largeEventText){
-		spawnStashes = new HashMap<String, SpawnInfo>();
+		
+		stashContents = new HashMap<>();
+		stashObjects = new HashMap<>();
+		coverObjects = new HashMap<>();
 		talkMaps = new HashMap<>();
 		commands = new HashMap<>();
-		storyRooms = new HashMap<>();
 		triggers = new HashMap<>();
-		timers = new ArrayList<>();
+		storyRooms = new HashMap<>();
+		
 		this.missions = missions;
 		this.largeEventText = largeEventText;
 	}
 	
 	public void lazyLoad(AiGenerator aiGenerator) {
 		this.aiGenerator = aiGenerator;
-	}
-	
-	public void triggerLootEvent(Lootable lootable) {
-		for(SpawnInfo info : spawnStashes.values()) {
-			if(info.stash == lootable && info.spawnOnLoot) {
-				info.spawnitem(info.tag);
-				missions.addMemCode(info.memCode);
-			}
-		}
-	}
-
-	public void addSpawnStash(String tag, Lootable stash, double[] location, String item, boolean spawnOnce) {
-		SpawnInfo info = new SpawnInfo(tag, stash, location, "#"+Missions.DEFAULT_MEM_CODE, spawnOnce, false);
-		
-		info.item = info.workOutItem(item);
-		
-		// incorrect item code
-		if(info.item == null){
-			System.err.println("Incorrect spawn item code: " + item);
-			return;
-		}
-		
-		this.spawnStashes.put(tag, info);
-	}
-	
-	public void addSpawnStash(String tag, Lootable stash, double[] location, String item, String spawnTag) {
-		
-		// Remove #
-		if(missions.hasMemCode(spawnTag.substring(1)))
-			return;
-		
-		SpawnInfo info = new SpawnInfo(tag, stash, location, spawnTag, true, true);
-		
-		info.item = info.workOutItem(item);
-		
-		// incorrect item code
-		if(info.item == null){
-			System.err.println("Incorrect spawn item code: " + item);
-			return;
-		}
-		
-		this.spawnStashes.put(tag, info);		
-	}
-	
-	// spawns an item in the given stash and returns where the stash is so a marker can be made
-	public double[] spawnItem(String tag){
-		
-		SpawnInfo info = this.spawnStashes.get(tag);
-		
-		// remove item if inventory full
-		if(info.stash.getInventory().isFull()){
-			info.stash.getInventory().removeItemAt(0);
-		}
-		
-		info.spawnitem(tag);
-		
-		return info.location;
-	}
-	
-	public SpawnInfo getSpawnCommand(String tag) {
-		return this.spawnStashes.get(tag);
 	}
 	
 	public TalkMap getTalkMap(String tag){
@@ -130,31 +72,6 @@ public class MissionManager {
 	
 	public void addTalkMap(String tag, TalkMap lastTalkMap) {
 		this.talkMaps.put(tag, lastTalkMap);
-	}
-	
-	public void addCommand(String tag, GenerateCommand command) {
-		this.commands.put(tag, new Command(command));
-	}
-	
-	public void addCommand(String tag, SpawnInfo spawnCommand, boolean removeSpawnCommand) {
-		this.commands.put(tag, new Command(spawnCommand, tag));
-		
-		if(removeSpawnCommand)
-			this.spawnStashes.remove(tag);
-	}
-	
-	protected Command getCommand(String tag) {
-		return this.commands.get(tag);
-	}
-	
-	public void runCommand(String tag) {
-		Command command = this.commands.get(tag);
-		if(command != null)
-			command.run();
-	}
-	
-	public void addTimer(int delay, int repetitions, String tag) {
-		this.timers.add(new Timer(delay, repetitions, tag));
 	}
 	
 	public void addStoryMessage(LevelBlock block, String message) {
@@ -170,83 +87,17 @@ public class MissionManager {
 		}
 	}
 	
-	public void addTrigger(LevelBlock block, String tag) {
-		this.triggers.put(block, tag);
-	}
-	
-	public void triggerTag(LevelBlock room) {
-		missions.addMemCode(this.triggers.get(room));
-	}
 	
 	public void updateTimers() {
-		for (Timer timer : timers) {
-			timer.run();
+	}
+	
+	public void addCommands(Stack<StoredCommand> commandStack) {
+		while(!commandStack.isEmpty()) {
+			StoredCommand command = commandStack.pop();
+			this.commands.put(command.name, command);
 		}
 	}
 	
-	protected class Timer {
-		private int delay, repeats, timer, repetitions;
-		private String tag;
-		
-		public Timer(int delay, int repetitions, String tag) {
-			this.delay = delay;
-			this.repetitions = repetitions;
-			this.tag = tag;
-			
-			this.repeats = 0;
-			this.timer = 0;
-		}
-		
-		public void run() {
-			if(this.timer == delay) {
-				this.timer = 0;
-				
-				if(repetitions > 0)
-					this.repeats++;
-				
-				runCommand(tag);
-				
-				if(repetitions == repeats && repetitions > 0)
-					timers.remove(this);
-			}
-			this.timer++;
-		}
-	}
-	
-	protected class Command {
-		
-		private GenerateCommand command;
-		private SpawnInfo spawnCommand;
-		private String tag;
-		private int chance;
-		
-		public Command(GenerateCommand command) {
-			this.command = command;
-			this.chance = 100;
-		}
-		
-		public Command(SpawnInfo spawnCommand, String tag) {
-			this.spawnCommand = spawnCommand;
-			this.tag = tag;
-			this.chance = 100;
-		}
-
-		public void run() {
-			
-			if(new Random().nextInt(100) < chance) {
-				if(command != null)
-					aiGenerator.spawnAi(command);
-				else
-					spawnCommand.spawnitem(tag);
-			}
-				
-		}
-
-		public void setRandomChance(int chance) {
-			this.chance = chance;
-		}
-		
-	}
 	
 	private class SpawnInfo{
 		
@@ -318,12 +169,14 @@ public class MissionManager {
 			return null;
 		}
 		
-		public void spawnitem(String tag){
-			this.stash.addItem(item);
-			
-			if(doOnce)
-				spawnStashes.remove(tag);
-		}
+	}
+
+
+	public void runCommand(String commandTag) {
+		StoredCommand storedCommand = this.commands.get(commandTag);
+		
+		if(storedCommand != null)
+			storedCommand.run();
 	}
 
 }
