@@ -64,13 +64,16 @@ public class AtrophyScriptReader {
 		
 		Level level = new Level(owner);
 		
-		AtrophyScriptReader.walkTree(level, prog.tree, blockStack, portalStack, commandStack, missionsManager, combatMembersManager, missions, messageBox, aiCrowd);
+		Tree initTree = AtrophyScriptReader.walkTree(level, prog.tree, blockStack, portalStack, commandStack, missionsManager, combatMembersManager, missions, messageBox, aiCrowd);
 		
 		level.setBlocks(blockStack);
 		level.generatePortals(portalStack, level);
 		panningManager.setMaxOffsets(level.getSize());
 		level.spawnItems(engineeringChance,medicalChance,weaponChance,scienceChance);
 		missionsManager.addCommands(commandStack);
+		
+		if(initTree != null)
+			runCommands(initTree, missionsManager);
 		
 		return level;
 	}
@@ -143,11 +146,7 @@ public class AtrophyScriptReader {
 					level.addPlayerSpawn(levelBlock);
 				}
 				else {
-					
-					if(entry.getKey().equals("WhiteVista"))
-						combatMembersManager.getCommander(AiGenerator.WHITE_VISTA).setBlockHeuristic(levelBlock, entry.getValue());
-					else
-						combatMembersManager.getCommander(entry.getKey()).setBlockHeuristic(levelBlock, entry.getValue());
+					combatMembersManager.getCommander(entry.getKey()).setBlockHeuristic(levelBlock, entry.getValue());
 				}
 			}
 			
@@ -196,57 +195,58 @@ public class AtrophyScriptReader {
 
 	}
 	
-	public static void walkTree(Level level, Tree tree, Stack<LevelBlockInfo> blockStack, Stack<PortalInfo> portalStack, Stack<StoredCommand> commands, MissionManager missionManager, CombatMembersManager combatMembersManager, Missions missions, MessageBox messageBox, AiCrowd aiCrowd) {
-		
+	public static Tree walkTree(Level level, Tree tree, Stack<LevelBlockInfo> blockStack, Stack<PortalInfo> portalStack, Stack<StoredCommand> commands, MissionManager missionManager, CombatMembersManager combatMembersManager, Missions missions, MessageBox messageBox, AiCrowd aiCrowd) {
+		Tree initTree = null;		
 		int blockNumber = 0;
 		
 		switch(tree.toString()) {
 			case "INIT":
-				runCommands(tree, missionManager);
-				return;
+				return tree;
 			case "MAPSIZE":
 				List<Integer> size = createIntList(tree);
 				int[] sizeArray = {size.get(0), -size.get(1), size.get(2), -size.get(3)};
 				level.setSize(sizeArray);
-				return;
+				return null;
 			case "BLOCK":
 				blockStack.add(createBlock(blockNumber, tree, missionManager, level, combatMembersManager));
 				blockNumber++;
-				return;
+				return null;
 			case "PORTAL":
 				portalStack.add(createPortal(tree));
-				return;
+				return null;
 			case "TEXTUREBLOCK":
 				createRegion(tree);
-				return;
+				return null;
 			case "TRIGGER":
 				//TODO
 				createTrigger(tree, missionManager, missions, aiCrowd);
-				return;
+				return null;
 			case "COMMAND":
 				commands.add(createCommand(tree, missionManager, missions, aiCrowd));
-				return;
+				return null;
 			case "TALK":
 				TalkInfo talkInfo = createTalkTopic(tree, missions, missionManager, messageBox);
 				missionManager.getTalkMap(talkInfo.parent).addDialogue(talkInfo.talkStage, talkInfo.dialogue);
-				return;
+				return null;
 			case "MAPSPAWNS":
 				Set<String> allowedSpawns = new HashSet<>();
 				for(int i = 0 ; i < tree.getChildCount(); i++) {
-					if(tree.getChild(i).toString().equals("WhiteVista"))
-						allowedSpawns.add(AiGenerator.WHITE_VISTA);
-					else
-						allowedSpawns.add(tree.getChild(i).toString());
+					allowedSpawns.add(tree.getChild(i).toString().replaceAll("_", " "));
 				}
 				
 				level.setAllowedSpawns(allowedSpawns);
-				return;
+				return null;
 		}
 		
 		
 		for(int i = 0; i < tree.getChildCount(); i++) {
-			walkTree(level, tree.getChild(i), blockStack, portalStack, commands, missionManager, combatMembersManager, missions, messageBox, aiCrowd);
+			Tree returnTree = walkTree(level, tree.getChild(i), blockStack, portalStack, commands, missionManager, combatMembersManager, missions, messageBox, aiCrowd);
+			
+			if(returnTree != null)
+				initTree = returnTree;
 		}
+		
+		return initTree;
 	}
 	
 	protected static class StoredCommand {
@@ -358,13 +358,13 @@ public class AtrophyScriptReader {
 		
 	}
 	
-	private abstract static class TriggerEffect {
+	protected abstract static class TriggerEffect {
 		
 		public abstract void run();
 		
 	}
 	
-	private abstract static class UnitInfoEffect extends TriggerEffect {
+	protected abstract static class UnitInfoEffect extends TriggerEffect {
 		
 		protected List<String> possibleNames;
 		protected List<String> possibleFactions;
@@ -389,25 +389,25 @@ public class AtrophyScriptReader {
 					case "ISNAME":
 						possibleNames = new ArrayList<>();
 						for(int j = 0; j < tree.getChild(i).getChildCount(); j++) {
-							possibleNames.add(createString(tree.getChild(i).getChild(j)));
+							possibleNames.add(tree.getChild(i).getChild(j).toString().replaceAll("_", " "));
 						}
 					break;
 					case "ISFACTION":
 						possibleFactions = new ArrayList<>();
 						for(int j = 0; j < tree.getChild(i).getChildCount(); j++) {
-							possibleFactions.add(createString(tree.getChild(i).getChild(j)));
+							possibleFactions.add(tree.getChild(i).getChild(j).toString().replaceAll("_", " "));
 						}
 					break;
 					case "HASITEM":
 						possibleItems = new ArrayList<>();
 						for(int j = 0; j < tree.getChild(i).getChildCount(); j++) {
-							possibleItems.add(createString(tree.getChild(i).getChild(j)));
+							possibleItems.add(tree.getChild(i).getChild(j).toString().replaceAll("_", " "));
 						}
 					break;
 					case "HASWEAPON":
 						possibleWeapons = new ArrayList<>();
 						for(int j = 0; j < tree.getChild(i).getChildCount(); j++) {
-							possibleWeapons.add(createString(tree.getChild(i).getChild(j)));
+							possibleWeapons.add(tree.getChild(i).getChild(j).toString().replaceAll("_", " "));
 						}
 					break;
 					case "ISALIVE":
@@ -466,22 +466,24 @@ public class AtrophyScriptReader {
 		
 	}
 	
-	private static final class SpawnEffect extends UnitInfoEffect {
+	protected static final class SpawnTeamEffect extends UnitInfoEffect {
 
 		public AiGenerator aiGenerator;
 		
-		public SpawnEffect(Tree tree, AiCrowd aiCrowd) {
+		public SpawnTeamEffect(Tree tree, AiCrowd aiCrowd) {
 			super(tree, aiCrowd);
 		}
 
 		@Override
 		public void run() {
-			aiGenerator.spawnAi(new GenerateCommand((int)minTeamSize, (int)maxTeamSize, this.possibleItems, this.possibleWeapons, this.possibleFactions.get(new Random().nextInt(this.possibleFactions.size()))));
+			aiGenerator.spawnAi(new GenerateCommand((int)minTeamSize, (int)maxTeamSize,
+													this.possibleItems, this.possibleWeapons,
+													this.possibleFactions.get(new Random().nextInt(this.possibleFactions.size()))));
 		}
 		
 	}
 	
-	private static final class RemoveEffect extends UnitInfoEffect {
+	protected static final class RemoveEffect extends UnitInfoEffect {
 
 		public RemoveEffect(Tree tree, AiCrowd aiCrowd) {
 			super(tree, aiCrowd);
@@ -495,7 +497,7 @@ public class AtrophyScriptReader {
 		
 	}
 	
-	private static final class KillEffect extends UnitInfoEffect {
+	protected static final class KillEffect extends UnitInfoEffect {
 
 		public KillEffect(Tree tree, AiCrowd aiCrowd) {
 			super(tree, aiCrowd);
@@ -510,7 +512,7 @@ public class AtrophyScriptReader {
 		
 	}
 	
-	private static final class TeleportEffect extends UnitInfoEffect {
+	protected static final class TeleportEffect extends UnitInfoEffect {
 
 		public TeleportEffect(Tree tree, AiCrowd aiCrowd) {
 			super(tree, aiCrowd);
@@ -524,7 +526,7 @@ public class AtrophyScriptReader {
 		
 	}
 	
-	private static final class ConverseEffect extends UnitInfoEffect {
+	protected static final class ConverseEffect extends UnitInfoEffect {
 
 		public ConverseEffect(Tree tree, AiCrowd aiCrowd) {
 			super(tree, aiCrowd);
@@ -551,7 +553,7 @@ public class AtrophyScriptReader {
 		
 	}
 	
-	private static final class MakeSaferoomEffect extends RoomInfoEffect {
+	protected static final class MakeSaferoomEffect extends RoomInfoEffect {
 
 		public MakeSaferoomEffect(Tree tree) {
 			super(tree);
@@ -565,7 +567,7 @@ public class AtrophyScriptReader {
 		
 	}
 	
-	private static final class RemoveSaferoomEffect extends RoomInfoEffect {
+	protected static final class RemoveSaferoomEffect extends RoomInfoEffect {
 
 		public RemoveSaferoomEffect(Tree tree) {
 			super(tree);
@@ -579,7 +581,7 @@ public class AtrophyScriptReader {
 		
 	}
 	
-	private static final class LoadMapEffect extends TriggerEffect {
+	protected static final class LoadMapEffect extends TriggerEffect {
 		
 		public LoadMapEffect(Tree tree) {
 			
@@ -593,7 +595,7 @@ public class AtrophyScriptReader {
 		
 	}
 	
-	private static final class LockDoorEffect extends TriggerEffect {
+	protected static final class LockDoorEffect extends TriggerEffect {
 			
 			public LockDoorEffect(Tree tree) {
 				
@@ -607,7 +609,7 @@ public class AtrophyScriptReader {
 			
 		}
 	
-	private static final class UnlockDoorEffect extends TriggerEffect {
+	protected static final class UnlockDoorEffect extends TriggerEffect {
 		
 		public UnlockDoorEffect(Tree tree) {
 			
@@ -621,7 +623,7 @@ public class AtrophyScriptReader {
 		
 	}
 	
-	private static final class AddTagEffect extends TriggerEffect {
+	protected static final class AddTagEffect extends TriggerEffect {
 			
 			private Missions missions;
 			private String tag;
@@ -638,7 +640,7 @@ public class AtrophyScriptReader {
 			
 		}
 	
-	private static final class RemoveTagEffect extends TriggerEffect {
+	protected static final class RemoveTagEffect extends TriggerEffect {
 		
 		private Missions missions;
 		private String tag;
@@ -655,7 +657,7 @@ public class AtrophyScriptReader {
 		
 	}
 	
-	private static final class ModifyDirectorEffect extends TriggerEffect {
+	protected static final class ModifyDirectorEffect extends TriggerEffect {
 		
 		public ModifyDirectorEffect(Tree tree) {
 			
@@ -669,7 +671,7 @@ public class AtrophyScriptReader {
 		
 	}
 	
-	private static final class ChangeAiNodeEffect extends TriggerEffect {
+	protected static final class ChangeAiNodeEffect extends TriggerEffect {
 		
 		public ChangeAiNodeEffect(Tree tree) {
 			
@@ -683,7 +685,7 @@ public class AtrophyScriptReader {
 		
 	}
 	
-	private static final class UpdateTalkEffect extends TriggerEffect {
+	protected static final class UpdateTalkEffect extends TriggerEffect {
 			
 			private MissionManager missionManager;
 			private String talkMap;
@@ -702,7 +704,7 @@ public class AtrophyScriptReader {
 			
 		}
 	
-	private static final class CommandCallEffect extends TriggerEffect {
+	protected static final class CommandCallEffect extends TriggerEffect {
 		
 		private final MissionManager missionManager;
 		private final String commandTag;
@@ -724,8 +726,8 @@ public class AtrophyScriptReader {
 		
 		for(int i = 0; i < tree.getChildCount(); i++) {
 			switch(tree.getChild(i).toString()) {
-				case "SPAWNUNIT":
-					effects.add(new SpawnEffect(tree.getChild(i), aiCrowd));
+				case "SPAWNTEAM":
+					effects.add(new SpawnTeamEffect(tree.getChild(i), aiCrowd));
 				break;
 				case "REMOVEUNIT":
 					effects.add(new RemoveEffect(tree.getChild(i), aiCrowd));
@@ -902,12 +904,12 @@ public class AtrophyScriptReader {
 					name = tree.getChild(i).getChild(0).toString();
 				break;
 				case "TERRITORY":
-						territory.put(tree.getChild(i).getChild(0).toString(),
+						territory.put(tree.getChild(i).getChild(0).toString().replaceAll("_", " "),
 						Integer.parseInt(tree.getChild(i).getChild(1).toString()));
 				break;
 				case "ZONE":
 					for(int j = 0; j < tree.getChild(i).getChildCount(); j++) {
-						zone.add(tree.getChild(i).getChild(j).toString());
+						zone.add(tree.getChild(i).getChild(j).toString().replaceAll("_", " "));
 					}
 				break;
 				case "SAFEROOM":
@@ -958,7 +960,7 @@ public class AtrophyScriptReader {
 		for(int i = 0; i < tree.getChildCount(); i++) {
 			if(tree.getChild(i).toString().equals("COMMAND_CALL")) {
 				String commandTag = tree.getChild(i).getChild(0).toString();
-				missionManager.runCommand(commandTag);
+				missionManager.addInitCommand(commandTag);
 			}
 		}
 		

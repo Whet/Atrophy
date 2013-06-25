@@ -3,7 +3,9 @@ package atrophy.combat.level;
 import java.awt.Color;
 import java.awt.Polygon;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.Map;
+import java.util.Queue;
 import java.util.Stack;
 
 import atrophy.combat.ai.AiGenerator;
@@ -25,11 +27,15 @@ import atrophy.combat.items.StunGrenadeItem;
 import atrophy.combat.items.UnitDetector;
 import atrophy.combat.items.WeaponSupply;
 import atrophy.combat.items.WeldingTorch;
+import atrophy.combat.level.AtrophyScriptReader.SpawnTeamEffect;
 import atrophy.combat.level.AtrophyScriptReader.StoredCommand;
 import atrophy.combat.level.AtrophyScriptReader.TriggerCommand;
+import atrophy.combat.level.AtrophyScriptReader.TriggerEffect;
 import atrophy.gameMenu.saveFile.Missions;
 
 public class MissionManager {
+	
+	private Queue<String> initCommandCalls;
 
 	private Map<String, Lootable> stashContents;
 	private Map<String, Polygon> stashObjects;
@@ -53,6 +59,7 @@ public class MissionManager {
 		commands = new HashMap<>();
 		triggers = new HashMap<>();
 		storyRooms = new HashMap<>();
+		initCommandCalls = new LinkedList<String>();
 		
 		this.missions = missions;
 		this.largeEventText = largeEventText;
@@ -60,6 +67,18 @@ public class MissionManager {
 	
 	public void lazyLoad(AiGenerator aiGenerator) {
 		this.aiGenerator = aiGenerator;
+		
+		for(StoredCommand command : this.commands.values()) {
+			for(TriggerEffect effect : command.effects) {
+				if(effect instanceof SpawnTeamEffect)
+					((SpawnTeamEffect) effect).aiGenerator = aiGenerator;
+			}
+		}
+		
+		while(!initCommandCalls.isEmpty()) {
+			String poll = initCommandCalls.poll();
+			this.runCommand(poll);
+		}
 	}
 	
 	public TalkMap getTalkMap(String tag){
@@ -171,8 +190,13 @@ public class MissionManager {
 		
 	}
 
-
+	public void addInitCommand(String command) {
+		this.initCommandCalls.add(command);
+	}
+	
+	
 	public void runCommand(String commandTag) {
+		
 		StoredCommand storedCommand = this.commands.get(commandTag);
 		
 		if(storedCommand != null)
