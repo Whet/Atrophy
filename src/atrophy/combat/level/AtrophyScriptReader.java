@@ -7,8 +7,8 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Map.Entry;
+import java.util.Random;
 import java.util.Set;
 import java.util.Stack;
 
@@ -22,6 +22,7 @@ import org.antlr.runtime.tree.Tree;
 import watoydoEngine.io.ReadWriter;
 import atrophy.combat.CombatMembersManager;
 import atrophy.combat.PanningManager;
+import atrophy.combat.ai.Ai;
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.ai.AiGeneratorInterface.GenerateCommand;
 import atrophy.combat.ai.conversation.Dialogue;
@@ -61,7 +62,7 @@ public class AtrophyScriptReader {
 
 		Level level = new Level(owner);
 		
-		AtrophyScriptReader.walkTree(level, prog.tree, blockStack, portalStack, missionsManager, combatMembersManager, missions, messageBox);
+		AtrophyScriptReader.walkTree(level, prog.tree, blockStack, portalStack, missionsManager, combatMembersManager, missions, messageBox, aiCrowd);
 		
 		level.setBlocks(blockStack);
 		level.generatePortals(portalStack, level);
@@ -175,7 +176,7 @@ public class AtrophyScriptReader {
 
 	}
 	
-	public static void walkTree(Level level, Tree tree, Stack<LevelBlockInfo> blockStack, Stack<PortalInfo> portalStack, MissionManager missionManager, CombatMembersManager combatMembersManager, Missions missions, MessageBox messageBox) {
+	public static void walkTree(Level level, Tree tree, Stack<LevelBlockInfo> blockStack, Stack<PortalInfo> portalStack, MissionManager missionManager, CombatMembersManager combatMembersManager, Missions missions, MessageBox messageBox, AiCrowd aiCrowd) {
 		
 		int blockNumber = 0;
 		
@@ -206,11 +207,11 @@ public class AtrophyScriptReader {
 				return;
 			case "TRIGGER":
 				//TODO
-				createTrigger(tree, missionManager, missions);
+				createTrigger(tree, missionManager, missions, aiCrowd);
 				return;
 			case "COMMAND":
 				//TODO
-				createCommand(tree, missionManager, missions);
+				createCommand(tree, missionManager, missions, aiCrowd);
 				return;
 			case "TALK":
 				TalkInfo talkInfo = createTalkTopic(tree, missions, missionManager, messageBox);
@@ -231,7 +232,7 @@ public class AtrophyScriptReader {
 		
 		
 		for(int i = 0; i < tree.getChildCount(); i++) {
-			walkTree(level, tree.getChild(i), blockStack, portalStack, missionManager, combatMembersManager, missions, messageBox);
+			walkTree(level, tree.getChild(i), blockStack, portalStack, missionManager, combatMembersManager, missions, messageBox, aiCrowd);
 		}
 	}
 	
@@ -274,7 +275,7 @@ public class AtrophyScriptReader {
 		
 	}
 
-	private static void createCommand(Tree tree, MissionManager missionManager, Missions missions) {
+	private static void createCommand(Tree tree, MissionManager missionManager, Missions missions, AiCrowd aiCrowd) {
 		
 		String name = "";
 		List<TriggerEffect> effects = new ArrayList<>();
@@ -282,7 +283,7 @@ public class AtrophyScriptReader {
 		for(int i = 0; i < tree.getChildCount(); i++) {
 			switch(tree.getChild(i).toString()) {
 				case "TRIGGEREFFECT":
-					effects = createEffects(tree.getChild(i), missionManager, missions);
+					effects = createEffects(tree.getChild(i), missionManager, missions, aiCrowd);
 				break;
 				case "VAR":
 					name = tree.getChild(i).getChild(0).toString();
@@ -292,19 +293,19 @@ public class AtrophyScriptReader {
 		
 	}
 
-	private static void createTrigger(Tree tree, MissionManager missionManager, Missions missions) {
+	private static void createTrigger(Tree tree, MissionManager missionManager, Missions missions, AiCrowd aiCrowd) {
 		
 		String name = "";
-		List<TriggerCond> conditions = new ArrayList<>();
+		TriggerCond condition = null;
 		List<TriggerEffect> effects = new ArrayList<>();
 		
 		for(int i = 0 ; i < tree.getChildCount(); i++) {
 			switch(tree.getChild(i).toString()) {
 				case "TRIGGERCOND":
-					conditions = createConditions(tree.getChild(i));
+					condition = new TriggerCond(tree.getChild(i));
 				break;
 				case "TRIGGEREFFECT":
-					effects = createEffects(tree.getChild(i), missionManager, missions);
+					effects = createEffects(tree.getChild(i), missionManager, missions, aiCrowd);
 				break;
 				case "VAR":
 					name = tree.getChild(i).getChild(0).toString();
@@ -314,12 +315,31 @@ public class AtrophyScriptReader {
 		
 	}
 	
-	private static List<TriggerCond> createConditions(Tree child) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-	
 	private static class TriggerCond {
+		
+		public TriggerCond(Tree child) {
+			// TODO Auto-generated constructor stub
+		}
+
+		private static abstract class TruthCond {
+			
+			public abstract boolean truthCheck();
+			
+		}
+		
+		private static class AND extends TruthCond{
+			TriggerCond op1, op2;
+			
+			public AND(TriggerCond op1, TriggerCond op2) {
+				this.op1 = op1;
+				this.op2 = op2;
+			}
+			
+			@Override
+			public boolean truthCheck() {
+				return true;
+			}
+		}
 		
 	}
 	
@@ -341,8 +361,10 @@ public class AtrophyScriptReader {
 		protected List<Integer> yList;
 		protected Integer minTeamSize;
 		protected Integer maxTeamSize;
+		protected AiCrowd aiCrowd;
 		
-		public UnitInfoEffect(Tree tree) {
+		public UnitInfoEffect(Tree tree, AiCrowd aiCrowd) {
+			this.aiCrowd = aiCrowd;
 			processUnitInfo(tree);
 		}
 
@@ -399,14 +421,42 @@ public class AtrophyScriptReader {
 			}
 		}
 		
+		protected List<Ai> matchAi() {
+			List<Ai> matchingAi = new ArrayList<>();
+			
+			for(Ai ai : this.aiCrowd.getActors()) {
+				if( (possibleNames == null || possibleNames.contains(ai.getName())) &&
+					(possibleFactions == null || possibleFactions.contains(ai.getFaction())) &&
+					(possibleWeapons == null || possibleWeapons.contains(ai.getWeapon().getName())) &&
+					(mustBeAlive == null || ai.isDead() == !mustBeAlive)) {
+					
+					if(possibleItems != null) {
+						boolean hasItem = false;
+						for(int i = 0; i < ai.getInventory().getItemCount(); i++) {
+							if(possibleItems.contains(ai.getInventory().getItemAt(i).getName()))
+								hasItem = true;
+						}
+						
+						if(!hasItem)
+							continue;
+					}
+					
+					matchingAi.add(ai);
+					
+				}
+			}
+			
+			return matchingAi;
+		}
+		
 	}
 	
 	private static final class SpawnEffect extends UnitInfoEffect {
 
 		public AiGenerator aiGenerator;
 		
-		public SpawnEffect(Tree tree) {
-			super(tree);
+		public SpawnEffect(Tree tree, AiCrowd aiCrowd) {
+			super(tree, aiCrowd);
 		}
 
 		@Override
@@ -418,8 +468,8 @@ public class AtrophyScriptReader {
 	
 	private static final class RemoveEffect extends UnitInfoEffect {
 
-		public RemoveEffect(Tree tree) {
-			super(tree);
+		public RemoveEffect(Tree tree, AiCrowd aiCrowd) {
+			super(tree, aiCrowd);
 		}
 
 		@Override
@@ -432,22 +482,23 @@ public class AtrophyScriptReader {
 	
 	private static final class KillEffect extends UnitInfoEffect {
 
-		public KillEffect(Tree tree) {
-			super(tree);
+		public KillEffect(Tree tree, AiCrowd aiCrowd) {
+			super(tree, aiCrowd);
 		}
 
 		@Override
 		public void run() {
-			// TODO Auto-generated method stub
-			
+			for(Ai ai:matchAi()) {
+				ai.setDead(true);
+			}
 		}
 		
 	}
 	
 	private static final class TeleportEffect extends UnitInfoEffect {
 
-		public TeleportEffect(Tree tree) {
-			super(tree);
+		public TeleportEffect(Tree tree, AiCrowd aiCrowd) {
+			super(tree, aiCrowd);
 		}
 
 		@Override
@@ -460,8 +511,8 @@ public class AtrophyScriptReader {
 	
 	private static final class ConverseEffect extends UnitInfoEffect {
 
-		public ConverseEffect(Tree tree) {
-			super(tree);
+		public ConverseEffect(Tree tree, AiCrowd aiCrowd) {
+			super(tree, aiCrowd);
 		}
 
 		@Override
@@ -653,25 +704,25 @@ public class AtrophyScriptReader {
 		
 	}
 	
-	private static List<TriggerEffect> createEffects(Tree tree, MissionManager missionManager, Missions missions) {
+	private static List<TriggerEffect> createEffects(Tree tree, MissionManager missionManager, Missions missions, AiCrowd aiCrowd) {
 		List<TriggerEffect> effects = new ArrayList<>();
 		
 		for(int i = 0; i < tree.getChildCount(); i++) {
 			switch(tree.getChild(i).toString()) {
 				case "SPAWNUNIT":
-					effects.add(new SpawnEffect(tree.getChild(i)));
+					effects.add(new SpawnEffect(tree.getChild(i), aiCrowd));
 				break;
 				case "REMOVEUNIT":
-					effects.add(new RemoveEffect(tree.getChild(i)));
+					effects.add(new RemoveEffect(tree.getChild(i), aiCrowd));
 				break;
 				case "KILLUNIT":
-					effects.add(new KillEffect(tree.getChild(i)));
+					effects.add(new KillEffect(tree.getChild(i), aiCrowd));
 				break;
 				case "TELEPORT":
-					effects.add(new TeleportEffect(tree.getChild(i)));
+					effects.add(new TeleportEffect(tree.getChild(i), aiCrowd));
 				break;
 				case "CONVERSE":
-					effects.add(new ConverseEffect(tree.getChild(i)));
+					effects.add(new ConverseEffect(tree.getChild(i), aiCrowd));
 				break;
 				case "SAFEROOM":
 					effects.add(new MakeSaferoomEffect(tree.getChild(i)));
