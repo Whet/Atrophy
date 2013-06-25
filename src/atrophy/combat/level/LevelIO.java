@@ -32,7 +32,6 @@ public class LevelIO {
 		File file =  new File(homeLocation + "/Atrophy");
 		
 		boolean exit = false;
-		
 		if(!file.exists()){
 			file.mkdir();
 			exit = true;

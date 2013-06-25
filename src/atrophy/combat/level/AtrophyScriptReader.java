@@ -26,10 +26,14 @@ import atrophy.combat.PanningManager;
 import atrophy.combat.ai.Ai;
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.ai.AiGeneratorInterface.GenerateCommand;
+import atrophy.combat.ai.AiGeneratorInterface.SoloGenerateCommand;
 import atrophy.combat.ai.conversation.Dialogue;
 import atrophy.combat.ai.conversation.TalkMap;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.ui.MessageBox;
+import atrophy.combat.items.GrenadeItem;
+import atrophy.combat.items.Item;
+import atrophy.combat.items.StunGrenadeItem;
 import atrophy.combat.level.AtrophyScriptParser.prog_return;
 import atrophy.combat.mechanics.TurnProcess;
 import atrophy.gameMenu.saveFile.Missions;
@@ -372,6 +376,7 @@ public class AtrophyScriptReader {
 		protected List<String> possibleWeapons;
 		protected Boolean mustBeAlive;
 		protected Boolean mustBeInvestigated;
+		protected Boolean isDaemon;
 		protected List<Integer> xList;
 		protected List<Integer> yList;
 		protected Integer minTeamSize;
@@ -422,6 +427,12 @@ public class AtrophyScriptReader {
 					case "ISNOTINVESTIGATED":
 						mustBeInvestigated = false;
 					break;
+					case "ISDAEMON":
+						isDaemon = true;
+					break;
+					case "ISNOTDAEMON":
+						isDaemon = false;
+					break;
 					case "TELEDEST":
 						xList = createIntList(tree.getChild(i).getChild(0));
 						yList = createIntList(tree.getChild(i).getChild(1));
@@ -466,7 +477,7 @@ public class AtrophyScriptReader {
 		
 	}
 	
-	protected static final class SpawnTeamEffect extends UnitInfoEffect {
+	protected static class SpawnTeamEffect extends UnitInfoEffect {
 
 		public AiGenerator aiGenerator;
 		
@@ -479,6 +490,56 @@ public class AtrophyScriptReader {
 			aiGenerator.spawnAi(new GenerateCommand((int)minTeamSize, (int)maxTeamSize,
 													this.possibleItems, this.possibleWeapons,
 													this.possibleFactions.get(new Random().nextInt(this.possibleFactions.size()))));
+		}
+		
+	}
+	
+	protected static final class SpawnCharacterEffect extends SpawnTeamEffect {
+		
+		public SpawnCharacterEffect(Tree tree, AiCrowd aiCrowd) {
+			super(tree, aiCrowd);
+		}
+		
+		@Override
+		public void run() {
+			
+			String[] items;
+			
+			if(possibleItems.size() > 5) {
+				
+				List<String> itemList = new ArrayList<>();
+				
+				int randomItemCount = new Random().nextInt(5);
+				
+				for(int i = 0; i < randomItemCount; i++){
+					String item = this.possibleItems.get(new Random().nextInt(possibleItems.size()));
+					
+					if(itemList.contains(item) && !item.equals(GrenadeItem.NAME) && !item.equals(StunGrenadeItem.NAME))
+						itemList.add(item);
+				}
+
+				items = new String[itemList.size()];
+				
+				for(int i = 0; i < itemList.size(); i++) {
+					items[i] = itemList.get(i);
+				}
+				
+			}
+			else {
+				items = new String[possibleItems.size()];
+				
+				for(int i = 0; i < this.possibleItems.size(); i++) {
+					items[i] = this.possibleItems.get(i);
+				}
+			}
+			
+			aiGenerator.spawnAi(new SoloGenerateCommand(this.xList.get(new Random().nextInt(this.xList.size())),
+														this.yList.get(new Random().nextInt(this.yList.size())),
+														this.possibleFactions.get(new Random().nextInt(this.possibleFactions.size())),
+														isDaemon,
+														this.possibleNames.get(new Random().nextInt(this.possibleNames.size())),
+														this.possibleWeapons.get(new Random().nextInt(this.possibleWeapons.size())),
+														items));
 		}
 		
 	}
@@ -728,6 +789,9 @@ public class AtrophyScriptReader {
 			switch(tree.getChild(i).toString()) {
 				case "SPAWNTEAM":
 					effects.add(new SpawnTeamEffect(tree.getChild(i), aiCrowd));
+				break;
+				case "SPAWNCHARACTER":
+					effects.add(new SpawnCharacterEffect(tree.getChild(i), aiCrowd));
 				break;
 				case "REMOVEUNIT":
 					effects.add(new RemoveEffect(tree.getChild(i), aiCrowd));
