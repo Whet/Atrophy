@@ -1,4 +1,4 @@
-// $ANTLR 3.4 C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g 2013-06-24 21:02:29
+// $ANTLR 3.4 C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g 2013-06-25 09:31:21
 
 	package atrophy.combat.level;
 
@@ -142,9 +142,9 @@ public class AtrophyScriptLexer extends Lexer {
     public static final int STAGELIST=45;
     public static final int STASH=46;
     public static final int TALK=47;
-    public static final int TALKPARENT=48;
-    public static final int TALKSTAGE=49;
-    public static final int TALKTREE=50;
+    public static final int TALKMAP=48;
+    public static final int TALKPARENT=49;
+    public static final int TALKSTAGE=50;
     public static final int TELEDEST=51;
     public static final int TELEPORT=52;
     public static final int TERRITORY=53;

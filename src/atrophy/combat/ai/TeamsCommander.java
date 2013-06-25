@@ -256,7 +256,7 @@ public class TeamsCommander {
 		
 		Set<LevelBlock> assignedRooms = new HashSet<>();
 		
-		for(Entry<LevelBlock, DefenceHeuristic> entry : this.defenceHeuristics.entrySet()){
+ 		for(Entry<LevelBlock, DefenceHeuristic> entry : this.defenceHeuristics.entrySet()){
 			jobExists = false;
 			
 			for(AiJob job : this.jobs){

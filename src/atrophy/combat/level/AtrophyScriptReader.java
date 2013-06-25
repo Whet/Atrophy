@@ -23,6 +23,7 @@ import atrophy.combat.CombatMembersManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.ai.AiGeneratorInterface.GenerateCommand;
+import atrophy.combat.ai.conversation.TalkMap;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.ui.MessageBox;
 import atrophy.combat.level.AtrophyScriptParser.prog_return;
@@ -209,9 +210,9 @@ public class AtrophyScriptReader {
 				//TODO
 				createCommand(tree);
 				return;
-			case "TALKTREE":
-				// TODO
-				createTalkTree(tree);
+			case "TALKMAP":
+				TalkMap talkMap = createTalkMap(tree);
+				missionManager.addTalkMap(talkMap.getTag(), talkMap);
 				return;
 			case "TALK":
 				// TODO
@@ -642,21 +643,23 @@ public class AtrophyScriptReader {
 		// system.out.println("Opening: " + openingLine);
 		// system.out.println(lines);
 	}
-
-	private static void createTalkTree(Tree tree) {
-		// system.out.println("CREATING TALKTREE");
+	
+	private static TalkMap createTalkMap(Tree tree) {
+		System.out.println("CREATING TALKTREE");
 		
-		List<Integer> stages = new ArrayList<>();
+		TalkMap talkMap = null;
 		
 		for(int i = 0; i < tree.getChildCount(); i++) {
 			switch(tree.getChild(i).toString()) {
-				case "STAGELIST":
-					stages = createIntList(tree.getChild(i));
+				case "VAR":
+					talkMap = new TalkMap(tree.getChild(i).getChild(0).toString());
 				break;
 			}
 		}
+
+		System.out.println(talkMap.getTag());
 		
-		// system.out.println(stages);
+		return talkMap;
 	}
 
 	private static RegionInfo createRegion(Tree tree) {

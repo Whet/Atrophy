@@ -1,4 +1,4 @@
-// $ANTLR 3.4 C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g 2013-06-24 21:02:28
+// $ANTLR 3.4 C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g 2013-06-25 09:31:20
 
 	package atrophy.combat.level;
 
@@ -14,7 +14,7 @@ import org.antlr.runtime.tree.*;
 @SuppressWarnings({"all", "warnings", "unchecked"})
 public class AtrophyScriptParser extends Parser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "ADDTAG", "ADD_TAG_PREFIX", "AIINIT", "BLOCK", "BOOL", "CHANGEAINODE", "COMMAND", "COMMAND_CALL", "COMMAND_CALL_PREFIX", "COMMENT", "CONTAINSFACTION", "CONVERSE", "COVER", "DIRECTORBIAS", "DOORNAMES", "EMPTY", "HASITEM", "HASWEAPON", "IDENT", "INIT", "INT", "ISALIVE", "ISFACTION", "ISINVESTIGATED", "ISNAME", "KILLUNIT", "LINE", "LOADMAP", "LOCKDOOR", "MAPSIZE", "MAPSPAWNS", "MULTILINE_COMMENT", "NEGATION", "OPENINGLINE", "PORTAL", "REMOVESAFEROOM", "REMOVETAG", "REMOVEUNIT", "REMOVE_TAG_PREFIX", "SAFEROOM", "SPAWNUNIT", "STAGELIST", "STASH", "TALK", "TALKPARENT", "TALKSTAGE", "TALKTREE", "TELEDEST", "TELEPORT", "TERRITORY", "TEXTURE", "TEXTUREBLOCK", "TRIGGER", "TRIGGERCOND", "TRIGGEREFFECT", "TRIGGERTYPE", "UNLOCKDOOR", "UPDATETALK", "UPDATE_TREE_PREFIX", "VAR", "WS", "XLIST", "YLIST", "ZONE", "'!='", "'\"'", "'#'", "'('", "')'", "'+'", "','", "'-'", "'::'", "'<'", "'<='", "'=='", "'>'", "'>='", "'BLOCK'", "'COMMAND'", "'COVER'", "'INIT'", "'MAPSIZE'", "'MAPSPAWNS'", "'PORTAL'", "'STASH'", "'TALK'", "'TALKMAP'", "'TEXTUREBLOCK'", "'TRIGGER'", "'a:'", "'addTag:'", "'aiInit:'", "'block'", "'callCommand:'", "'changeAiNode:'", "'command'", "'containsFaction:'", "'converse'", "'cover'", "'destination'", "'directorBias:'", "'hasItem:'", "'hasWeapon:'", "'init'", "'isAlive?'", "'isFaction:'", "'isInvestigated?'", "'isName:'", "'killUnit'", "'l:'", "'line:'", "'loadMap:'", "'lockDoor'", "'mapsize'", "'mapspawns'", "'name:'", "'o:'", "'opening:'", "'openingLine:'", "'p:'", "'parent:'", "'portal'", "'removeSaferoom'", "'removeTag:'", "'removeUnit'", "'s:'", "'saferoom'", "'spawnUnit'", "'stage:'", "'stages:'", "'stash'", "'talk'", "'talkMap'", "'talkmap'", "'tc:'", "'te'", "'teleport'", "'territory:'", "'textureBlock'", "'textureblock'", "'trigger'", "'triggerCond:'", "'triggerEffect'", "'unlockDoor'", "'updateTalk:'", "'x:'", "'y:'", "'zone:'", "'{'", "'}'"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "ADDTAG", "ADD_TAG_PREFIX", "AIINIT", "BLOCK", "BOOL", "CHANGEAINODE", "COMMAND", "COMMAND_CALL", "COMMAND_CALL_PREFIX", "COMMENT", "CONTAINSFACTION", "CONVERSE", "COVER", "DIRECTORBIAS", "DOORNAMES", "EMPTY", "HASITEM", "HASWEAPON", "IDENT", "INIT", "INT", "ISALIVE", "ISFACTION", "ISINVESTIGATED", "ISNAME", "KILLUNIT", "LINE", "LOADMAP", "LOCKDOOR", "MAPSIZE", "MAPSPAWNS", "MULTILINE_COMMENT", "NEGATION", "OPENINGLINE", "PORTAL", "REMOVESAFEROOM", "REMOVETAG", "REMOVEUNIT", "REMOVE_TAG_PREFIX", "SAFEROOM", "SPAWNUNIT", "STAGELIST", "STASH", "TALK", "TALKMAP", "TALKPARENT", "TALKSTAGE", "TELEDEST", "TELEPORT", "TERRITORY", "TEXTURE", "TEXTUREBLOCK", "TRIGGER", "TRIGGERCOND", "TRIGGEREFFECT", "TRIGGERTYPE", "UNLOCKDOOR", "UPDATETALK", "UPDATE_TREE_PREFIX", "VAR", "WS", "XLIST", "YLIST", "ZONE", "'!='", "'\"'", "'#'", "'('", "')'", "'+'", "','", "'-'", "'::'", "'<'", "'<='", "'=='", "'>'", "'>='", "'BLOCK'", "'COMMAND'", "'COVER'", "'INIT'", "'MAPSIZE'", "'MAPSPAWNS'", "'PORTAL'", "'STASH'", "'TALK'", "'TALKMAP'", "'TEXTUREBLOCK'", "'TRIGGER'", "'a:'", "'addTag:'", "'aiInit:'", "'block'", "'callCommand:'", "'changeAiNode:'", "'command'", "'containsFaction:'", "'converse'", "'cover'", "'destination'", "'directorBias:'", "'hasItem:'", "'hasWeapon:'", "'init'", "'isAlive?'", "'isFaction:'", "'isInvestigated?'", "'isName:'", "'killUnit'", "'l:'", "'line:'", "'loadMap:'", "'lockDoor'", "'mapsize'", "'mapspawns'", "'name:'", "'o:'", "'opening:'", "'openingLine:'", "'p:'", "'parent:'", "'portal'", "'removeSaferoom'", "'removeTag:'", "'removeUnit'", "'s:'", "'saferoom'", "'spawnUnit'", "'stage:'", "'stages:'", "'stash'", "'talk'", "'talkMap'", "'talkmap'", "'tc:'", "'te'", "'teleport'", "'territory:'", "'textureBlock'", "'textureblock'", "'trigger'", "'triggerCond:'", "'triggerEffect'", "'unlockDoor'", "'updateTalk:'", "'x:'", "'y:'", "'zone:'", "'{'", "'}'"
     };
 
     public static final int EOF=-1;
@@ -149,9 +149,9 @@ public class AtrophyScriptParser extends Parser {
     public static final int STAGELIST=45;
     public static final int STASH=46;
     public static final int TALK=47;
-    public static final int TALKPARENT=48;
-    public static final int TALKSTAGE=49;
-    public static final int TALKTREE=50;
+    public static final int TALKMAP=48;
+    public static final int TALKPARENT=49;
+    public static final int TALKSTAGE=50;
     public static final int TELEDEST=51;
     public static final int TELEPORT=52;
     public static final int TERRITORY=53;
@@ -320,7 +320,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
     // $ANTLR start "command"
-    // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:81:1: command : ( mapSize | mapSpawns | blockDecl | portalDecl | coverDecl | stashDecl | textureBlockDecl | triggerDecl | commandDecl | talkTreeDecl | talkDecl );
+    // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:81:1: command : ( mapSize | mapSpawns | blockDecl | portalDecl | coverDecl | stashDecl | textureBlockDecl | triggerDecl | commandDecl | talkMapDecl | talkDecl );
     public final AtrophyScriptParser.command_return command() throws RecognitionException {
         AtrophyScriptParser.command_return retval = new AtrophyScriptParser.command_return();
         retval.start = input.LT(1);
@@ -346,14 +346,14 @@ public TreeAdaptor getTreeAdaptor() {
 
         AtrophyScriptParser.commandDecl_return commandDecl12 =null;
 
-        AtrophyScriptParser.talkTreeDecl_return talkTreeDecl13 =null;
+        AtrophyScriptParser.talkMapDecl_return talkMapDecl13 =null;
 
         AtrophyScriptParser.talkDecl_return talkDecl14 =null;
 
 
 
         try {
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:81:8: ( mapSize | mapSpawns | blockDecl | portalDecl | coverDecl | stashDecl | textureBlockDecl | triggerDecl | commandDecl | talkTreeDecl | talkDecl )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:81:8: ( mapSize | mapSpawns | blockDecl | portalDecl | coverDecl | stashDecl | textureBlockDecl | triggerDecl | commandDecl | talkMapDecl | talkDecl )
             int alt3=11;
             switch ( input.LA(1) ) {
             case 86:
@@ -569,17 +569,17 @@ public TreeAdaptor getTreeAdaptor() {
                     }
                     break;
                 case 10 :
-                    // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:91:6: talkTreeDecl
+                    // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:91:6: talkMapDecl
                     {
                     root_0 = (CommonTree)adaptor.nil();
 
 
-                    pushFollow(FOLLOW_talkTreeDecl_in_command378);
-                    talkTreeDecl13=talkTreeDecl();
+                    pushFollow(FOLLOW_talkMapDecl_in_command378);
+                    talkMapDecl13=talkMapDecl();
 
                     state._fsp--;
 
-                    adaptor.addChild(root_0, talkTreeDecl13.getTree());
+                    adaptor.addChild(root_0, talkMapDecl13.getTree());
 
                     }
                     break;
@@ -2286,16 +2286,16 @@ public TreeAdaptor getTreeAdaptor() {
     // $ANTLR end "commandDecl"
 
 
-    public static class talkTreeDecl_return extends ParserRuleReturnScope {
+    public static class talkMapDecl_return extends ParserRuleReturnScope {
         CommonTree tree;
         public Object getTree() { return tree; }
     };
 
 
-    // $ANTLR start "talkTreeDecl"
-    // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:140:1: talkTreeDecl : ( 'TALKMAP' | 'talkmap' | 'talkMap' ) requiredAssignment '{' properties '}' -> ^( TALKTREE requiredAssignment properties ) ;
-    public final AtrophyScriptParser.talkTreeDecl_return talkTreeDecl() throws RecognitionException {
-        AtrophyScriptParser.talkTreeDecl_return retval = new AtrophyScriptParser.talkTreeDecl_return();
+    // $ANTLR start "talkMapDecl"
+    // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:140:1: talkMapDecl : ( 'TALKMAP' | 'talkmap' | 'talkMap' ) requiredAssignment '{' properties '}' -> ^( TALKMAP requiredAssignment properties ) ;
+    public final AtrophyScriptParser.talkMapDecl_return talkMapDecl() throws RecognitionException {
+        AtrophyScriptParser.talkMapDecl_return retval = new AtrophyScriptParser.talkMapDecl_return();
         retval.start = input.LT(1);
 
 
@@ -2324,7 +2324,7 @@ public TreeAdaptor getTreeAdaptor() {
         RewriteRuleSubtreeStream stream_requiredAssignment=new RewriteRuleSubtreeStream(adaptor,"rule requiredAssignment");
         RewriteRuleSubtreeStream stream_properties=new RewriteRuleSubtreeStream(adaptor,"rule properties");
         try {
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:140:13: ( ( 'TALKMAP' | 'talkmap' | 'talkMap' ) requiredAssignment '{' properties '}' -> ^( TALKTREE requiredAssignment properties ) )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:140:12: ( ( 'TALKMAP' | 'talkmap' | 'talkMap' ) requiredAssignment '{' properties '}' -> ^( TALKMAP requiredAssignment properties ) )
             // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:141:4: ( 'TALKMAP' | 'talkmap' | 'talkMap' ) requiredAssignment '{' properties '}'
             {
             // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:141:4: ( 'TALKMAP' | 'talkmap' | 'talkMap' )
@@ -2357,7 +2357,7 @@ public TreeAdaptor getTreeAdaptor() {
                 case 1 :
                     // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:141:5: 'TALKMAP'
                     {
-                    string_literal76=(Token)match(input,91,FOLLOW_91_in_talkTreeDecl813);  
+                    string_literal76=(Token)match(input,91,FOLLOW_91_in_talkMapDecl813);  
                     stream_91.add(string_literal76);
 
 
@@ -2366,7 +2366,7 @@ public TreeAdaptor getTreeAdaptor() {
                 case 2 :
                     // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:141:17: 'talkmap'
                     {
-                    string_literal77=(Token)match(input,138,FOLLOW_138_in_talkTreeDecl817);  
+                    string_literal77=(Token)match(input,138,FOLLOW_138_in_talkMapDecl817);  
                     stream_138.add(string_literal77);
 
 
@@ -2375,7 +2375,7 @@ public TreeAdaptor getTreeAdaptor() {
                 case 3 :
                     // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:141:29: 'talkMap'
                     {
-                    string_literal78=(Token)match(input,137,FOLLOW_137_in_talkTreeDecl821);  
+                    string_literal78=(Token)match(input,137,FOLLOW_137_in_talkMapDecl821);  
                     stream_137.add(string_literal78);
 
 
@@ -2385,25 +2385,25 @@ public TreeAdaptor getTreeAdaptor() {
             }
 
 
-            pushFollow(FOLLOW_requiredAssignment_in_talkTreeDecl824);
+            pushFollow(FOLLOW_requiredAssignment_in_talkMapDecl824);
             requiredAssignment79=requiredAssignment();
 
             state._fsp--;
 
             stream_requiredAssignment.add(requiredAssignment79.getTree());
 
-            char_literal80=(Token)match(input,153,FOLLOW_153_in_talkTreeDecl826);  
+            char_literal80=(Token)match(input,153,FOLLOW_153_in_talkMapDecl826);  
             stream_153.add(char_literal80);
 
 
-            pushFollow(FOLLOW_properties_in_talkTreeDecl827);
+            pushFollow(FOLLOW_properties_in_talkMapDecl827);
             properties81=properties();
 
             state._fsp--;
 
             stream_properties.add(properties81.getTree());
 
-            char_literal82=(Token)match(input,154,FOLLOW_154_in_talkTreeDecl829);  
+            char_literal82=(Token)match(input,154,FOLLOW_154_in_talkMapDecl829);  
             stream_154.add(char_literal82);
 
 
@@ -2418,13 +2418,13 @@ public TreeAdaptor getTreeAdaptor() {
             RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
             root_0 = (CommonTree)adaptor.nil();
-            // 141:77: -> ^( TALKTREE requiredAssignment properties )
+            // 141:77: -> ^( TALKMAP requiredAssignment properties )
             {
-                // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:141:80: ^( TALKTREE requiredAssignment properties )
+                // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:141:80: ^( TALKMAP requiredAssignment properties )
                 {
                 CommonTree root_1 = (CommonTree)adaptor.nil();
                 root_1 = (CommonTree)adaptor.becomeRoot(
-                (CommonTree)adaptor.create(TALKTREE, "TALKTREE")
+                (CommonTree)adaptor.create(TALKMAP, "TALKMAP")
                 , root_1);
 
                 adaptor.addChild(root_1, stream_requiredAssignment.nextTree());
@@ -2460,7 +2460,7 @@ public TreeAdaptor getTreeAdaptor() {
         }
         return retval;
     }
-    // $ANTLR end "talkTreeDecl"
+    // $ANTLR end "talkMapDecl"
 
 
     public static class talkDecl_return extends ParserRuleReturnScope {
@@ -9022,7 +9022,7 @@ public TreeAdaptor getTreeAdaptor() {
     public static final BitSet FOLLOW_textureBlockDecl_in_command357 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_triggerDecl_in_command364 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_commandDecl_in_command371 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_talkTreeDecl_in_command378 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_talkMapDecl_in_command378 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_talkDecl_in_command385 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_76_in_requiredAssignment398 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000020L});
     public static final BitSet FOLLOW_stringLiteral_in_requiredAssignment400 = new BitSet(new long[]{0x0000000000000002L});
@@ -9085,13 +9085,13 @@ public TreeAdaptor getTreeAdaptor() {
     public static final BitSet FOLLOW_153_in_commandDecl779 = new BitSet(new long[]{0x4000040000001020L,0x8032024C80000000L,0x000000000030201BL});
     public static final BitSet FOLLOW_triggerEffectList_in_commandDecl781 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000004000000L});
     public static final BitSet FOLLOW_154_in_commandDecl783 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_91_in_talkTreeDecl813 = new BitSet(new long[]{0x0000000000000000L,0x0000000000001000L});
-    public static final BitSet FOLLOW_138_in_talkTreeDecl817 = new BitSet(new long[]{0x0000000000000000L,0x0000000000001000L});
-    public static final BitSet FOLLOW_137_in_talkTreeDecl821 = new BitSet(new long[]{0x0000000000000000L,0x0000000000001000L});
-    public static final BitSet FOLLOW_requiredAssignment_in_talkTreeDecl824 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_153_in_talkTreeDecl826 = new BitSet(new long[]{0x0000000000000000L,0x3E0C000140000000L,0x0000000005CC586CL});
-    public static final BitSet FOLLOW_properties_in_talkTreeDecl827 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000004000000L});
-    public static final BitSet FOLLOW_154_in_talkTreeDecl829 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_91_in_talkMapDecl813 = new BitSet(new long[]{0x0000000000000000L,0x0000000000001000L});
+    public static final BitSet FOLLOW_138_in_talkMapDecl817 = new BitSet(new long[]{0x0000000000000000L,0x0000000000001000L});
+    public static final BitSet FOLLOW_137_in_talkMapDecl821 = new BitSet(new long[]{0x0000000000000000L,0x0000000000001000L});
+    public static final BitSet FOLLOW_requiredAssignment_in_talkMapDecl824 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_153_in_talkMapDecl826 = new BitSet(new long[]{0x0000000000000000L,0x3E0C000140000000L,0x0000000005CC586CL});
+    public static final BitSet FOLLOW_properties_in_talkMapDecl827 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000004000000L});
+    public static final BitSet FOLLOW_154_in_talkMapDecl829 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_90_in_talkDecl855 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000002000000L});
     public static final BitSet FOLLOW_136_in_talkDecl859 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000002000000L});
     public static final BitSet FOLLOW_153_in_talkDecl862 = new BitSet(new long[]{0x0000000000000000L,0x3E0C000140000000L,0x0000000005CC586CL});
