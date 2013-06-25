@@ -1,5 +1,6 @@
 package atrophy.combat.level;
 
+import java.awt.Polygon;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -59,10 +60,11 @@ public class AtrophyScriptReader {
 		
 		Stack<LevelBlockInfo> blockStack = new Stack<>();
 		Stack<PortalInfo> portalStack = new Stack<>();
-
+		Stack<StoredCommand> commandStack = new Stack<>();
+		
 		Level level = new Level(owner);
 		
-		AtrophyScriptReader.walkTree(level, prog.tree, blockStack, portalStack, missionsManager, combatMembersManager, missions, messageBox, aiCrowd);
+		AtrophyScriptReader.walkTree(level, prog.tree, blockStack, portalStack, commandStack, missionsManager, combatMembersManager, missions, messageBox, aiCrowd);
 		
 		level.setBlocks(blockStack);
 		level.generatePortals(portalStack, level);
@@ -152,6 +154,23 @@ public class AtrophyScriptReader {
 			if(saferoom)
 				level.addSaferoom(levelBlock);
 			
+			for(RegionInfo region : this.cover) {
+				Polygon regionPolygon = new Polygon();
+				for(int i = 0; i < region.xList.size(); i++) {
+					regionPolygon.addPoint(region.xList.get(i), region.yList.get(i));
+				}
+				
+				levelBlock.addCover(regionPolygon);
+			}
+			for(RegionInfo region : this.stashes) {
+				Polygon regionPolygon = new Polygon();
+				for(int i = 0; i < region.xList.size(); i++) {
+					regionPolygon.addPoint(region.xList.get(i), region.yList.get(i));
+				}
+				
+				levelBlock.addStash(regionPolygon);
+			}
+			
 			return levelBlock;
 		}
 	}
@@ -176,7 +195,7 @@ public class AtrophyScriptReader {
 
 	}
 	
-	public static void walkTree(Level level, Tree tree, Stack<LevelBlockInfo> blockStack, Stack<PortalInfo> portalStack, MissionManager missionManager, CombatMembersManager combatMembersManager, Missions missions, MessageBox messageBox, AiCrowd aiCrowd) {
+	public static void walkTree(Level level, Tree tree, Stack<LevelBlockInfo> blockStack, Stack<PortalInfo> portalStack, Stack<StoredCommand> commands, MissionManager missionManager, CombatMembersManager combatMembersManager, Missions missions, MessageBox messageBox, AiCrowd aiCrowd) {
 		
 		int blockNumber = 0;
 		
@@ -196,12 +215,6 @@ public class AtrophyScriptReader {
 			case "PORTAL":
 				portalStack.add(createPortal(tree));
 				return;
-			case "COVER":
-				blockStack.peek().addCover(createRegion(tree));
-				return;
-			case "STASH":
-				blockStack.peek().addStash(createRegion(tree));
-				return;
 			case "TEXTUREBLOCK":
 				createRegion(tree);
 				return;
@@ -210,8 +223,7 @@ public class AtrophyScriptReader {
 				createTrigger(tree, missionManager, missions, aiCrowd);
 				return;
 			case "COMMAND":
-				//TODO
-				createCommand(tree, missionManager, missions, aiCrowd);
+				commands.add(createCommand(tree, missionManager, missions, aiCrowd));
 				return;
 			case "TALK":
 				TalkInfo talkInfo = createTalkTopic(tree, missions, missionManager, messageBox);
@@ -232,7 +244,7 @@ public class AtrophyScriptReader {
 		
 		
 		for(int i = 0; i < tree.getChildCount(); i++) {
-			walkTree(level, tree.getChild(i), blockStack, portalStack, missionManager, combatMembersManager, missions, messageBox, aiCrowd);
+			walkTree(level, tree.getChild(i), blockStack, portalStack, commands, missionManager, combatMembersManager, missions, messageBox, aiCrowd);
 		}
 	}
 	
@@ -274,8 +286,8 @@ public class AtrophyScriptReader {
 		}
 		
 	}
-
-	private static void createCommand(Tree tree, MissionManager missionManager, Missions missions, AiCrowd aiCrowd) {
+	
+	private static StoredCommand createCommand(Tree tree, MissionManager missionManager, Missions missions, AiCrowd aiCrowd) {
 		
 		String name = "";
 		List<TriggerEffect> effects = new ArrayList<>();
@@ -290,6 +302,8 @@ public class AtrophyScriptReader {
 				break;
 			}
 		}
+		
+		return new StoredCommand(name, effects);
 		
 	}
 
@@ -872,6 +886,8 @@ public class AtrophyScriptReader {
 		Map<String, Integer> territory = new HashMap<String, Integer>();
 		List<String> zone = new ArrayList<>();
 		boolean saferoom = false;
+		List<RegionInfo> stashes = new ArrayList<>();
+		List<RegionInfo> cover = new ArrayList<>();
 		
 		for(int i = 0; i < tree.getChildCount(); i++) {
 			switch(tree.getChild(i).toString()) {
@@ -896,10 +912,25 @@ public class AtrophyScriptReader {
 				case "SAFEROOM":
 					saferoom = true;
 				break;
+				case "COVER":
+					cover.add(createRegion(tree.getChild(i)));
+				break;
+				case "STASH":
+					stashes.add(createRegion(tree.getChild(i)));
+				break;
 			}
 		}
 		
-		return new LevelBlockInfo(blockNumber, name, xList, yList, territory, zone, saferoom, missionManager, level, combatMembersManager);
+		LevelBlockInfo levelBlockInfo = new LevelBlockInfo(blockNumber, name, xList, yList, territory, zone, saferoom, missionManager, level, combatMembersManager);
+		
+		for(RegionInfo info : stashes) {
+			levelBlockInfo.addStash(info);
+		}
+		for(RegionInfo info : cover) {
+			levelBlockInfo.addCover(info);
+		}
+		
+		return levelBlockInfo;
 	}
 
 	private static List<Integer> createIntList(Tree tree) {
