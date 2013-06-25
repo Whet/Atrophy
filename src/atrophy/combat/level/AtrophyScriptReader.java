@@ -25,6 +25,7 @@ import atrophy.combat.CombatMembersManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.ai.Ai;
 import atrophy.combat.ai.AiGenerator;
+import atrophy.combat.ai.ThinkingAi;
 import atrophy.combat.ai.AiGeneratorInterface.GenerateCommand;
 import atrophy.combat.ai.AiGeneratorInterface.SoloGenerateCommand;
 import atrophy.combat.ai.conversation.Dialogue;
@@ -68,7 +69,7 @@ public class AtrophyScriptReader {
 		
 		Level level = new Level(owner);
 		
-		Tree initTree = AtrophyScriptReader.walkTree(level, prog.tree, blockStack, portalStack, commandStack, missionsManager, combatMembersManager, missions, messageBox, aiCrowd);
+		Tree initTree = AtrophyScriptReader.walkTree(level, prog.tree, blockStack, portalStack, commandStack, missionsManager, combatMembersManager, missions, messageBox, aiCrowd, combatMembersManager);
 		
 		level.setBlocks(blockStack);
 		level.generatePortals(portalStack, level);
@@ -199,7 +200,7 @@ public class AtrophyScriptReader {
 
 	}
 	
-	public static Tree walkTree(Level level, Tree tree, Stack<LevelBlockInfo> blockStack, Stack<PortalInfo> portalStack, Stack<StoredCommand> commands, MissionManager missionManager, CombatMembersManager combatMembersManager, Missions missions, MessageBox messageBox, AiCrowd aiCrowd) {
+	public static Tree walkTree(Level level, Tree tree, Stack<LevelBlockInfo> blockStack, Stack<PortalInfo> portalStack, Stack<StoredCommand> commands, MissionManager missionManager, CombatMembersManager combatMembersManager, Missions missions, MessageBox messageBox, AiCrowd aiCrowd, CombatMembersManager combatMembersManager2) {
 		Tree initTree = null;		
 		int blockNumber = 0;
 		
@@ -223,10 +224,10 @@ public class AtrophyScriptReader {
 				return null;
 			case "TRIGGER":
 				//TODO
-				createTrigger(tree, missionManager, missions, aiCrowd);
+				createTrigger(tree, missionManager, missions, aiCrowd, messageBox, combatMembersManager);
 				return null;
 			case "COMMAND":
-				commands.add(createCommand(tree, missionManager, missions, aiCrowd));
+				commands.add(createCommand(tree, missionManager, missions, aiCrowd, messageBox, combatMembersManager));
 				return null;
 			case "TALK":
 				TalkInfo talkInfo = createTalkTopic(tree, missions, missionManager, messageBox);
@@ -244,7 +245,7 @@ public class AtrophyScriptReader {
 		
 		
 		for(int i = 0; i < tree.getChildCount(); i++) {
-			Tree returnTree = walkTree(level, tree.getChild(i), blockStack, portalStack, commands, missionManager, combatMembersManager, missions, messageBox, aiCrowd);
+			Tree returnTree = walkTree(level, tree.getChild(i), blockStack, portalStack, commands, missionManager, combatMembersManager, missions, messageBox, aiCrowd, combatMembersManager2);
 			
 			if(returnTree != null)
 				initTree = returnTree;
@@ -292,7 +293,7 @@ public class AtrophyScriptReader {
 		
 	}
 	
-	private static StoredCommand createCommand(Tree tree, MissionManager missionManager, Missions missions, AiCrowd aiCrowd) {
+	private static StoredCommand createCommand(Tree tree, MissionManager missionManager, Missions missions, AiCrowd aiCrowd, MessageBox messageBox, CombatMembersManager combatMembersManager) {
 		
 		String name = "";
 		List<TriggerEffect> effects = new ArrayList<>();
@@ -300,7 +301,7 @@ public class AtrophyScriptReader {
 		for(int i = 0; i < tree.getChildCount(); i++) {
 			switch(tree.getChild(i).toString()) {
 				case "TRIGGEREFFECT":
-					effects = createEffects(tree.getChild(i), missionManager, missions, aiCrowd);
+					effects = createEffects(tree.getChild(i), missionManager, missions, aiCrowd, messageBox, combatMembersManager);
 				break;
 				case "VAR":
 					name = tree.getChild(i).getChild(0).toString();
@@ -312,7 +313,7 @@ public class AtrophyScriptReader {
 		
 	}
 
-	private static void createTrigger(Tree tree, MissionManager missionManager, Missions missions, AiCrowd aiCrowd) {
+	private static void createTrigger(Tree tree, MissionManager missionManager, Missions missions, AiCrowd aiCrowd, MessageBox messageBox, CombatMembersManager combatMembersManager) {
 		
 		String name = "";
 		TriggerCond condition = null;
@@ -324,7 +325,7 @@ public class AtrophyScriptReader {
 					condition = new TriggerCond(tree.getChild(i));
 				break;
 				case "TRIGGEREFFECT":
-					effects = createEffects(tree.getChild(i), missionManager, missions, aiCrowd);
+					effects = createEffects(tree.getChild(i), missionManager, missions, aiCrowd, messageBox, combatMembersManager);
 				break;
 				case "VAR":
 					name = tree.getChild(i).getChild(0).toString();
@@ -595,14 +596,26 @@ public class AtrophyScriptReader {
 	
 	protected static final class ConverseEffect extends UnitInfoEffect {
 
-		public ConverseEffect(Tree tree, AiCrowd aiCrowd) {
+		private MessageBox messageBox;
+		private CombatMembersManager combatMembersManager;
+		
+		public ConverseEffect(Tree tree, AiCrowd aiCrowd, MessageBox messageBox, CombatMembersManager combatMembersManager) {
 			super(tree, aiCrowd);
+			this.messageBox = messageBox;
+			this.combatMembersManager = combatMembersManager;
 		}
 
 		@Override
 		public void run() {
-			// TODO Auto-generated method stub
+			List<Ai> matchAi = matchAi();
+			Ai ai = matchAi.get(new Random().nextInt(matchAi.size()));
 			
+			if(ai instanceof ThinkingAi && ((ThinkingAi) ai).getAiNode() != null)
+				messageBox.setConversation(combatMembersManager.getCurrentAi(), ai, ((ThinkingAi) ai).getAiNode().getInitiatorDialogue());
+			else
+				messageBox.setConversation(combatMembersManager.getCurrentAi(), ai);
+			
+			messageBox.setVisible(true);
 		}
 		
 	}
@@ -788,7 +801,7 @@ public class AtrophyScriptReader {
 		
 	}
 	
-	private static List<TriggerEffect> createEffects(Tree tree, MissionManager missionManager, Missions missions, AiCrowd aiCrowd) {
+	private static List<TriggerEffect> createEffects(Tree tree, MissionManager missionManager, Missions missions, AiCrowd aiCrowd, MessageBox messageBox, CombatMembersManager combatMembersManager) {
 		List<TriggerEffect> effects = new ArrayList<>();
 		
 		for(int i = 0; i < tree.getChildCount(); i++) {
@@ -809,7 +822,7 @@ public class AtrophyScriptReader {
 					effects.add(new TeleportEffect(tree.getChild(i), aiCrowd));
 				break;
 				case "CONVERSE":
-					effects.add(new ConverseEffect(tree.getChild(i), aiCrowd));
+					effects.add(new ConverseEffect(tree.getChild(i), aiCrowd, messageBox, combatMembersManager));
 				break;
 				case "SAFEROOM":
 					effects.add(new MakeSaferoomEffect(tree.getChild(i)));
