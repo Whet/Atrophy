@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Map.Entry;
 import java.util.Set;
 import java.util.Stack;
@@ -175,13 +176,12 @@ public class AtrophyScriptReader {
 	}
 	
 	public static void walkTree(Level level, Tree tree, Stack<LevelBlockInfo> blockStack, Stack<PortalInfo> portalStack, MissionManager missionManager, CombatMembersManager combatMembersManager, Missions missions, MessageBox messageBox) {
-		// system.out.println(tree.toString());
 		
 		int blockNumber = 0;
 		
 		switch(tree.toString()) {
 			case "INIT":
-				runCommands(tree);
+				runCommands(tree, missionManager);
 				return;
 			case "MAPSIZE":
 				List<Integer> size = createIntList(tree);
@@ -205,11 +205,12 @@ public class AtrophyScriptReader {
 				createRegion(tree);
 				return;
 			case "TRIGGER":
-				createTrigger(tree);
+				//TODO
+				createTrigger(tree, missionManager, missions);
 				return;
 			case "COMMAND":
 				//TODO
-				createCommand(tree);
+				createCommand(tree, missionManager, missions);
 				return;
 			case "TALK":
 				TalkInfo talkInfo = createTalkTopic(tree, missions, missionManager, messageBox);
@@ -233,9 +234,47 @@ public class AtrophyScriptReader {
 			walkTree(level, tree.getChild(i), blockStack, portalStack, missionManager, combatMembersManager, missions, messageBox);
 		}
 	}
+	
+	private static class StoredCommand {
+		
+		private String name;
+		private List<TriggerEffect> effects;
+		
+		public StoredCommand(String name, List<TriggerEffect> effects) {
+			this.name = name;
+			this.effects = effects;
+		}
+		
+		public void run() {
+			for(int i = 0; i < this.effects.size(); i++) {
+				this.effects.get(i).run();
+			}
+		}
+		
+	}
+	
+	private static class TriggerCommand extends StoredCommand {
 
-	private static void createCommand(Tree tree) {
-		// system.out.println("CREATING COMMAND");
+		private List<TriggerCond> conditions;
+		
+		public TriggerCommand(String name, List<TriggerEffect> effects, List<TriggerCond> conditions) {
+			super(name, effects);
+			this.conditions = conditions;
+		}
+		
+		@Override
+		public void run() {
+			if(conditionsMet())
+				super.run();
+		}
+
+		private boolean conditionsMet() {
+			return true;
+		}
+		
+	}
+
+	private static void createCommand(Tree tree, MissionManager missionManager, Missions missions) {
 		
 		String name = "";
 		List<TriggerEffect> effects = new ArrayList<>();
@@ -243,7 +282,7 @@ public class AtrophyScriptReader {
 		for(int i = 0; i < tree.getChildCount(); i++) {
 			switch(tree.getChild(i).toString()) {
 				case "TRIGGEREFFECT":
-					effects = createEffects(tree.getChild(i));
+					effects = createEffects(tree.getChild(i), missionManager, missions);
 				break;
 				case "VAR":
 					name = tree.getChild(i).getChild(0).toString();
@@ -251,12 +290,9 @@ public class AtrophyScriptReader {
 			}
 		}
 		
-		// system.out.println("CommandName: " + name);
-		// system.out.println("Effects: " + effects);
 	}
 
-	private static void createTrigger(Tree tree) {
-		// system.out.println("CREATING TRIGGER");
+	private static void createTrigger(Tree tree, MissionManager missionManager, Missions missions) {
 		
 		String name = "";
 		List<TriggerCond> conditions = new ArrayList<>();
@@ -268,7 +304,7 @@ public class AtrophyScriptReader {
 					conditions = createConditions(tree.getChild(i));
 				break;
 				case "TRIGGEREFFECT":
-					effects = createEffects(tree.getChild(i));
+					effects = createEffects(tree.getChild(i), missionManager, missions);
 				break;
 				case "VAR":
 					name = tree.getChild(i).getChild(0).toString();
@@ -276,9 +312,6 @@ public class AtrophyScriptReader {
 			}
 		}
 		
-		// system.out.println("TriggerName: " + name);
-		// system.out.println("Conds: " + conditions);
-		// system.out.println("Effects: " +  effects);
 	}
 	
 	private static List<TriggerCond> createConditions(Tree child) {
@@ -298,27 +331,87 @@ public class AtrophyScriptReader {
 	
 	private abstract static class UnitInfoEffect extends TriggerEffect {
 		
+		protected List<String> possibleNames;
+		protected List<String> possibleFactions;
+		protected List<String> possibleItems;
+		protected List<String> possibleWeapons;
+		protected Boolean mustBeAlive;
+		protected Boolean mustBeInvestigated;
+		protected List<Integer> xList;
+		protected List<Integer> yList;
+		protected Integer minTeamSize;
+		protected Integer maxTeamSize;
+		
 		public UnitInfoEffect(Tree tree) {
 			processUnitInfo(tree);
 		}
 
 		private void processUnitInfo(Tree tree) {
-			// TODO Auto-generated method stub
-			
+			for(int i = 0; i < tree.getChildCount(); i++) {
+				switch(tree.getChild(i).toString()) {
+					case "ISNAME":
+						possibleNames = new ArrayList<>();
+						for(int j = 0; j < tree.getChild(i).getChildCount(); j++) {
+							possibleNames.add(createString(tree.getChild(i).getChild(j)));
+						}
+					break;
+					case "ISFACTION":
+						possibleFactions = new ArrayList<>();
+						for(int j = 0; j < tree.getChild(i).getChildCount(); j++) {
+							possibleFactions.add(createString(tree.getChild(i).getChild(j)));
+						}
+					break;
+					case "HASITEM":
+						possibleItems = new ArrayList<>();
+						for(int j = 0; j < tree.getChild(i).getChildCount(); j++) {
+							possibleItems.add(createString(tree.getChild(i).getChild(j)));
+						}
+					break;
+					case "HASWEAPON":
+						possibleWeapons = new ArrayList<>();
+						for(int j = 0; j < tree.getChild(i).getChildCount(); j++) {
+							possibleWeapons.add(createString(tree.getChild(i).getChild(j)));
+						}
+					break;
+					case "ISALIVE":
+						mustBeAlive = true;
+					break;
+					case "ISDEAD":
+						mustBeAlive = false;
+					break;
+					case "ISINVESTIGATED":
+						mustBeInvestigated = true;
+					break;
+					case "ISNOTINVESTIGATED":
+						mustBeInvestigated = false;
+					break;
+					case "TELEDEST":
+						xList = createIntList(tree.getChild(i).getChild(0));
+						yList = createIntList(tree.getChild(i).getChild(1));
+					break;
+					case "MINTEAMSIZE":
+						minTeamSize = Integer.parseInt(tree.getChild(i).getChild(0).toString());
+					break;
+					case "MAXTEAMSIZE":
+						maxTeamSize = Integer.parseInt(tree.getChild(i).getChild(0).toString());
+					break;
+				}
+			}
 		}
 		
 	}
 	
 	private static final class SpawnEffect extends UnitInfoEffect {
 
+		public AiGenerator aiGenerator;
+		
 		public SpawnEffect(Tree tree) {
 			super(tree);
 		}
 
 		@Override
 		public void run() {
-			// TODO Auto-generated method stub
-			
+			aiGenerator.spawnAi(new GenerateCommand((int)minTeamSize, (int)maxTeamSize, this.possibleItems, this.possibleWeapons, this.possibleFactions.get(new Random().nextInt(this.possibleFactions.size()))));
 		}
 		
 	}
@@ -464,28 +557,34 @@ public class AtrophyScriptReader {
 	
 	private static final class AddTagEffect extends TriggerEffect {
 			
-			public AddTagEffect(Tree tree) {
-				
+			private Missions missions;
+			private String tag;
+		
+			public AddTagEffect(Tree tree, Missions missions) {
+				this.missions = missions;
+				this.tag = tree.getChild(0).toString();
 			}
 
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
-				
+				this.missions.addMemCode(tag);
 			}
 			
 		}
 	
 	private static final class RemoveTagEffect extends TriggerEffect {
 		
-		public RemoveTagEffect(Tree tree) {
-			
+		private Missions missions;
+		private String tag;
+		
+		public RemoveTagEffect(Tree tree, Missions missions) {
+			this.missions = missions;
+			this.tag = tree.getChild(0).toString();
 		}
 
 		@Override
 		public void run() {
-			// TODO Auto-generated method stub
-			
+			this.missions.removeMemCode(tag);
 		}
 		
 	}
@@ -520,33 +619,41 @@ public class AtrophyScriptReader {
 	
 	private static final class UpdateTalkEffect extends TriggerEffect {
 			
-			public UpdateTalkEffect(Tree tree) {
-				
+			private MissionManager missionManager;
+			private String talkMap;
+			private int stage;
+		
+			public UpdateTalkEffect(Tree tree, MissionManager missionManager) {
+				this.missionManager = missionManager;
+				this.talkMap = tree.getChild(0).toString();
+				this.stage = Integer.parseInt(tree.getChild(1).toString());
 			}
 
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
-				
+				missionManager.getTalkMap(talkMap).setToStage(stage);
 			}
 			
 		}
 	
 	private static final class CommandCallEffect extends TriggerEffect {
 		
-		public CommandCallEffect(Tree tree) {
-			
+		private final MissionManager missionManager;
+		private final String commandTag;
+		
+		public CommandCallEffect(Tree tree, MissionManager missionManager) {
+			this.missionManager = missionManager;
+			commandTag = tree.getChild(0).toString();
 		}
 
 		@Override
 		public void run() {
-			// TODO Auto-generated method stub
-			
+			missionManager.runCommand(commandTag);			
 		}
 		
 	}
 	
-	private static List<TriggerEffect> createEffects(Tree tree) {
+	private static List<TriggerEffect> createEffects(Tree tree, MissionManager missionManager, Missions missions) {
 		List<TriggerEffect> effects = new ArrayList<>();
 		
 		for(int i = 0; i < tree.getChildCount(); i++) {
@@ -582,10 +689,10 @@ public class AtrophyScriptReader {
 					effects.add(new UnlockDoorEffect(tree.getChild(i)));
 				break;
 				case "ADDTAG":
-					effects.add(new AddTagEffect(tree.getChild(i)));
+					effects.add(new AddTagEffect(tree.getChild(i), missions));
 				break;
 				case "REMOVETAG":
-					effects.add(new RemoveTagEffect(tree.getChild(i)));
+					effects.add(new RemoveTagEffect(tree.getChild(i), missions));
 				break;
 				case "DIRECTORBIAS":
 					effects.add(new ModifyDirectorEffect(tree.getChild(i)));
@@ -594,10 +701,10 @@ public class AtrophyScriptReader {
 					effects.add(new ChangeAiNodeEffect(tree.getChild(i)));
 				break;
 				case "UPDATETALK":
-					effects.add(new UpdateTalkEffect(tree.getChild(i)));
+					effects.add(new UpdateTalkEffect(tree.getChild(i), missionManager));
 				break;
 				case "COMMAND CALL":
-					effects.add(new CommandCallEffect(tree.getChild(i)));
+					effects.add(new CommandCallEffect(tree.getChild(i), missionManager));
 				break;
 			}
 		}
@@ -620,8 +727,7 @@ public class AtrophyScriptReader {
 	}
 	
 	private static TalkInfo createTalkTopic(Tree tree, Missions missions, MissionManager missionManager, MessageBox messageBox) {
-		System.out.println("CREATING TALKTOPIC");
-		
+
 		String parent = "";
 		Integer talkStage = null;
 		Boolean aiInit = null;
@@ -648,12 +754,6 @@ public class AtrophyScriptReader {
 			}
 		}
 		
-		System.out.println("Member of: " + parent);
-		System.out.println("At stage: " + talkStage);
-		System.out.println("AiInit: " + aiInit);
-		System.out.println("Opening: " + openingLine);
-		System.out.println(lines);
-		
 		String[] options = new String[lines.size()];
 		
 		for(int i = 0; i < lines.size(); i++) {
@@ -667,7 +767,6 @@ public class AtrophyScriptReader {
 	}
 	
 	private static RegionInfo createRegion(Tree tree) {
-		// system.out.println("CREATING REGION");
 		
 		List<Integer> xList = new ArrayList<>();
 		List<Integer> yList = new ArrayList<>();
@@ -687,15 +786,10 @@ public class AtrophyScriptReader {
 			}
 		}
 		
-		// system.out.println("X " + xList);
-		// system.out.println("Y " + yList);
-		// system.out.println("Name " + name);
-		
 		return new RegionInfo(name, xList, yList);
 	}
 
 	private static PortalInfo createPortal(Tree tree) {
-		// system.out.println("CREATING PORTAL");
 		
 		List<Integer> xList = new ArrayList<>();
 		List<Integer> yList = new ArrayList<>();
@@ -716,15 +810,10 @@ public class AtrophyScriptReader {
 			}
 		}
 		
-		// system.out.println("X " + xList);
-		// system.out.println("Y " + yList);
-		// system.out.println("Name " + name);
-		
 		return new PortalInfo(name, security, xList, yList);
 	}
 
 	private static LevelBlockInfo createBlock(int blockNumber, Tree tree, MissionManager missionManager, Level level, CombatMembersManager combatMembersManager) {
-		// system.out.println("CREATING BLOCK");
 		
 		List<Integer> xList = new ArrayList<>();
 		List<Integer> yList = new ArrayList<>();
@@ -759,10 +848,6 @@ public class AtrophyScriptReader {
 			}
 		}
 		
-		// system.out.println("X " + xList);
-		// system.out.println("Y " + yList);
-		// system.out.println("Name " + name);
-		
 		return new LevelBlockInfo(blockNumber, name, xList, yList, territory, zone, saferoom, missionManager, level, combatMembersManager);
 	}
 
@@ -785,12 +870,13 @@ public class AtrophyScriptReader {
 		return sb.toString();
 	}
 
-	private static void runCommands(Tree tree) {
+	private static void runCommands(Tree tree, MissionManager missionManager) {
 		
-		if(tree.getChild(0).toString().equals("COMMAND_CALL")) {
-			// Call command
-			// system.out.println("   " + tree.getChild(0).getChild(0));
-			return;
+		for(int i = 0; i < tree.getChildCount(); i++) {
+			if(tree.getChild(i).toString().equals("COMMAND_CALL")) {
+				String commandTag = tree.getChild(i).getChild(0).toString();
+				missionManager.runCommand(commandTag);
+			}
 		}
 		
 	}

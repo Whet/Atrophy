@@ -386,7 +386,7 @@ public class AiGenerator{
 		}
 	}
 	
-	private void generateLoner(String team, ArrayList<String> allowedItems, ArrayList<String> allowedWeapons, LevelBlock room){
+	private void generateLoner(String team, List<String> allowedItems, List<String> allowedWeapons, LevelBlock room){
 		
 		double[] randomLocation = levelManager.randomInPosition(room);
 		
@@ -436,7 +436,7 @@ public class AiGenerator{
 		aiCrowd.addMask(aiImg);
 	}
 	
-	private void generateTeam(String team, int members, ArrayList<String> allowedItems, ArrayList<String> allowedWeapons, LevelBlock spawnRoom){
+	private void generateTeam(String team, int members, List<String> allowedItems, List<String> allowedWeapons, LevelBlock spawnRoom){
 		
 		double[] randomLocation = levelManager.randomInPosition(spawnRoom);
 		
@@ -484,7 +484,7 @@ public class AiGenerator{
 		}
 	}
 	
-	private void applyLootList(ArrayList<String> allowedItems, ArrayList<String> allowedWeapons, Ai ai) {
+	private void applyLootList(List<String> allowedItems, List<String> allowedWeapons, Ai ai) {
 		ai.setWeapon(Weapon.stringToWeapon(allowedWeapons.get(new Random().nextInt(allowedWeapons.size()))));
 		
 		int randomItemCount = new Random().nextInt(5);

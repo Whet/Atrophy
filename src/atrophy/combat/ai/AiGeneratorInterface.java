@@ -4,6 +4,7 @@
 package atrophy.combat.ai;
 
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 import atrophy.combat.ai.ThinkingAi.AiNode;
@@ -59,9 +60,9 @@ public class AiGeneratorInterface {
 		 */
 		private ArrayList<Squaddie> squad;
 
-		private ArrayList<String> allowedWeapons;
+		private List<String> allowedWeapons;
 
-		private ArrayList<String> allowedItems;
+		private List<String> allowedItems;
 		
 		/**
 		 * Instantiates a new generate command.
@@ -72,7 +73,7 @@ public class AiGeneratorInterface {
 		 * @param weaponTable the weapon table
 		 * @param faction the faction
 		 */
-		public GenerateCommand(int minTeamSize, int maxTeamSize, ArrayList<String> allowedItems, ArrayList<String> allowedWeapons, String faction){
+		public GenerateCommand(int minTeamSize, int maxTeamSize, List<String> allowedItems, List<String> allowedWeapons, String faction){
 			this.minTeamSize = minTeamSize;
 			this.maxTeamSize = maxTeamSize;
 			this.faction = faction;
@@ -176,11 +177,11 @@ public class AiGeneratorInterface {
 			return this.y;
 		}
 
-		public ArrayList<String> getAllowedWeapons() {
+		public List<String> getAllowedWeapons() {
 			return allowedWeapons;
 		}
 
-		public ArrayList<String> getAllowedItems() {
+		public List<String> getAllowedItems() {
 			return allowedItems;
 		}
 	}
