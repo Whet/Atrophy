@@ -581,8 +581,14 @@ public class AtrophyScriptReader {
 
 		@Override
 		public void run() {
-			// TODO Auto-generated method stub
+			List<Ai> matchAi = matchAi();
 			
+			for(int i = 0; i < matchAi.size(); i++) {
+				
+				int rand = new Random().nextInt(this.xList.size());
+				
+				matchAi.get(i).setLocation(this.xList.get(rand), this.yList.get(rand));
+			}
 		}
 		
 	}
