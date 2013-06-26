@@ -104,8 +104,8 @@ public class Dialogue{
 	public boolean checkTriggers(String speech, MessageBox messageBox) {
 		if(speech.startsWith("#")){
 			
-			// remove the #
-			String itemName = speech.substring(1);
+			// remove the # and spaces
+			String itemName = speech.substring(1).replaceAll(" ", "");
 			
 			// check if the spawn also has an id
 			// id ex. ##ABCDItemName
@@ -126,7 +126,7 @@ public class Dialogue{
 			}
 			// Event code
 			else if(itemName.startsWith("!$")){
-				missions.removeMemCode(itemName.substring(1, 5));
+				missions.removeMemCode(itemName.substring(2, 6));
 				return true;
 			}
 			else if(itemName.startsWith("$")){
