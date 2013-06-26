@@ -772,7 +772,7 @@ public class AtrophyScriptReader {
 		
 			public AddTagEffect(Tree tree, Missions missions) {
 				this.missions = missions;
-				this.tag = tree.getChild(0).toString();
+				this.tag = createString(tree);
 			}
 
 			@Override
@@ -789,7 +789,7 @@ public class AtrophyScriptReader {
 		
 		public RemoveTagEffect(Tree tree, Missions missions) {
 			this.missions = missions;
-			this.tag = tree.getChild(0).toString();
+			this.tag = createString(tree);
 		}
 
 		@Override
@@ -1138,7 +1138,10 @@ public class AtrophyScriptReader {
 			if(i > 0)
 				sb.append(" ");
 			
-			sb.append(tree.getChild(i).toString());
+			if(tree.getChild(i).toString().equals("NEGATION"))
+				sb.append("!" + createString(tree.getChild(i)));
+			else
+				sb.append(tree.getChild(i).toString());
 		}
 		return sb.toString();
 	}
