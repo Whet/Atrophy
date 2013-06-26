@@ -25,15 +25,15 @@ import atrophy.combat.CombatMembersManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.ai.Ai;
 import atrophy.combat.ai.AiGenerator;
-import atrophy.combat.ai.ThinkingAi;
 import atrophy.combat.ai.AiGeneratorInterface.GenerateCommand;
 import atrophy.combat.ai.AiGeneratorInterface.SoloGenerateCommand;
+import atrophy.combat.ai.ThinkingAi;
+import atrophy.combat.ai.ThinkingAi.AiNode;
 import atrophy.combat.ai.conversation.Dialogue;
 import atrophy.combat.ai.conversation.TalkMap;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.ui.MessageBox;
 import atrophy.combat.items.GrenadeItem;
-import atrophy.combat.items.Item;
 import atrophy.combat.items.StunGrenadeItem;
 import atrophy.combat.level.AtrophyScriptParser.prog_return;
 import atrophy.combat.mechanics.TurnProcess;
@@ -69,7 +69,9 @@ public class AtrophyScriptReader {
 		
 		Level level = new Level(owner);
 		
-		Tree initTree = AtrophyScriptReader.walkTree(level, prog.tree, blockStack, portalStack, commandStack, missionsManager, combatMembersManager, missions, messageBox, aiCrowd, combatMembersManager);
+		Tree initTree = AtrophyScriptReader.walkTree(level, prog.tree,
+													 blockStack, portalStack, commandStack, missionsManager,
+													 combatMembersManager, missions, messageBox, aiCrowd, turnProcess);
 		
 		level.setBlocks(blockStack);
 		level.generatePortals(portalStack, level);
@@ -200,7 +202,11 @@ public class AtrophyScriptReader {
 
 	}
 	
-	public static Tree walkTree(Level level, Tree tree, Stack<LevelBlockInfo> blockStack, Stack<PortalInfo> portalStack, Stack<StoredCommand> commands, MissionManager missionManager, CombatMembersManager combatMembersManager, Missions missions, MessageBox messageBox, AiCrowd aiCrowd, CombatMembersManager combatMembersManager2) {
+	public static Tree walkTree(Level level, Tree tree,
+								Stack<LevelBlockInfo> blockStack, Stack<PortalInfo> portalStack, Stack<StoredCommand> commands,
+								MissionManager missionManager, CombatMembersManager combatMembersManager, Missions missions,
+								MessageBox messageBox, AiCrowd aiCrowd, TurnProcess turnProcess) {
+		
 		Tree initTree = null;		
 		int blockNumber = 0;
 		
@@ -224,10 +230,10 @@ public class AtrophyScriptReader {
 				return null;
 			case "TRIGGER":
 				//TODO
-				createTrigger(tree, missionManager, missions, aiCrowd, messageBox, combatMembersManager);
+				createTrigger(tree, missionManager, missions, aiCrowd, messageBox, combatMembersManager, turnProcess);
 				return null;
 			case "COMMAND":
-				commands.add(createCommand(tree, missionManager, missions, aiCrowd, messageBox, combatMembersManager));
+				commands.add(createCommand(tree, missionManager, missions, aiCrowd, messageBox, combatMembersManager, turnProcess));
 				return null;
 			case "TALK":
 				TalkInfo talkInfo = createTalkTopic(tree, missions, missionManager, messageBox);
@@ -245,7 +251,10 @@ public class AtrophyScriptReader {
 		
 		
 		for(int i = 0; i < tree.getChildCount(); i++) {
-			Tree returnTree = walkTree(level, tree.getChild(i), blockStack, portalStack, commands, missionManager, combatMembersManager, missions, messageBox, aiCrowd, combatMembersManager2);
+			Tree returnTree = walkTree(level, tree.getChild(i),
+									   blockStack, portalStack, commands, missionManager,
+									   combatMembersManager, missions, messageBox,
+									   aiCrowd, turnProcess);
 			
 			if(returnTree != null)
 				initTree = returnTree;
@@ -293,7 +302,8 @@ public class AtrophyScriptReader {
 		
 	}
 	
-	private static StoredCommand createCommand(Tree tree, MissionManager missionManager, Missions missions, AiCrowd aiCrowd, MessageBox messageBox, CombatMembersManager combatMembersManager) {
+	private static StoredCommand createCommand(Tree tree, MissionManager missionManager, Missions missions, AiCrowd aiCrowd,
+										       MessageBox messageBox, CombatMembersManager combatMembersManager, TurnProcess turnProcess) {
 		
 		String name = "";
 		List<TriggerEffect> effects = new ArrayList<>();
@@ -301,7 +311,7 @@ public class AtrophyScriptReader {
 		for(int i = 0; i < tree.getChildCount(); i++) {
 			switch(tree.getChild(i).toString()) {
 				case "TRIGGEREFFECT":
-					effects = createEffects(tree.getChild(i), missionManager, missions, aiCrowd, messageBox, combatMembersManager);
+					effects = createEffects(tree.getChild(i), missionManager, missions, aiCrowd, messageBox, combatMembersManager, turnProcess);
 				break;
 				case "VAR":
 					name = tree.getChild(i).getChild(0).toString();
@@ -313,7 +323,8 @@ public class AtrophyScriptReader {
 		
 	}
 
-	private static void createTrigger(Tree tree, MissionManager missionManager, Missions missions, AiCrowd aiCrowd, MessageBox messageBox, CombatMembersManager combatMembersManager) {
+	private static void createTrigger(Tree tree, MissionManager missionManager, Missions missions, AiCrowd aiCrowd,
+									  MessageBox messageBox, CombatMembersManager combatMembersManager, TurnProcess turnProcess) {
 		
 		String name = "";
 		TriggerCond condition = null;
@@ -325,7 +336,7 @@ public class AtrophyScriptReader {
 					condition = new TriggerCond(tree.getChild(i));
 				break;
 				case "TRIGGEREFFECT":
-					effects = createEffects(tree.getChild(i), missionManager, missions, aiCrowd, messageBox, combatMembersManager);
+					effects = createEffects(tree.getChild(i), missionManager, missions, aiCrowd, messageBox, combatMembersManager, turnProcess);
 				break;
 				case "VAR":
 					name = tree.getChild(i).getChild(0).toString();
@@ -497,8 +508,15 @@ public class AtrophyScriptReader {
 	
 	protected static final class SpawnCharacterEffect extends SpawnTeamEffect {
 		
-		public SpawnCharacterEffect(Tree tree, AiCrowd aiCrowd) {
+		private AiNode aiNode;
+		
+		public SpawnCharacterEffect(Tree tree, AiCrowd aiCrowd, MessageBox messageBox, TurnProcess turnProcess, MissionManager missionManager) {
 			super(tree, aiCrowd);
+			
+			for(int i = 0; i < tree.getChildCount(); i++) {
+				if(tree.getChild(i).toString().equals("AINODE"))
+					aiNode = createAiNode(tree.getChild(i), messageBox, turnProcess, missionManager);
+			}
 		}
 		
 		@Override
@@ -534,13 +552,55 @@ public class AtrophyScriptReader {
 				}
 			}
 			
-			aiGenerator.spawnAi(new SoloGenerateCommand(this.xList.get(new Random().nextInt(this.xList.size())),
+			ArrayList<String> priorities = new ArrayList<>();
+			String name = this.possibleNames.get(new Random().nextInt(this.possibleNames.size()));
+			priorities.add(name);
+			aiNode.addPriorities(priorities);
+			
+			SoloGenerateCommand command = new SoloGenerateCommand(this.xList.get(new Random().nextInt(this.xList.size())),
 														this.yList.get(new Random().nextInt(this.yList.size())),
 														this.possibleFactions.get(new Random().nextInt(this.possibleFactions.size())),
 														isDaemon,
-														this.possibleNames.get(new Random().nextInt(this.possibleNames.size())),
+														name,
 														this.possibleWeapons.get(new Random().nextInt(this.possibleWeapons.size())),
-														items));
+														items);
+			command.addAiNode(aiNode);
+			aiGenerator.spawnAi(command);
+		}
+		
+		private AiNode createAiNode(Tree child, MessageBox messageBox, TurnProcess turnProcess, MissionManager missionManager) {
+			
+			AiNode aiNode = new AiNode(aiCrowd, messageBox, turnProcess, missionManager, 0, 0);
+			ArrayList<String> behaviours = new ArrayList<>();
+			ArrayList<String> talkMapList = new ArrayList<>();
+			
+			for(int i = 0; i < child.getChildCount(); i++) {
+				
+				switch(child.getChild(i).toString()) {
+					case "SUBSCRIBE":
+						for(int j = 0; j < child.getChild(i).getChildCount(); j++) {
+							talkMapList.add(child.getChild(i).getChild(j).toString());
+						}
+					break;
+					case "BEHAVIOUR":
+						for(int j = 0; j < child.getChild(i).getChildCount(); j++) {
+							behaviours.add(child.getChild(i).getChild(j).toString());
+						}
+					break;
+				}
+				
+			}
+			
+			String[] talkMaps = new String[talkMapList.size()];
+			
+			for(int i = 0; i < talkMapList.size(); i++) {
+				talkMaps[i] = talkMapList.get(i);
+			}
+					
+			aiNode.addBehaviours(behaviours);
+			aiNode.subscribeToTalkMaps(talkMaps);
+			
+			return aiNode;
 		}
 		
 	}
@@ -610,10 +670,12 @@ public class AtrophyScriptReader {
 			List<Ai> matchAi = matchAi();
 			Ai ai = matchAi.get(new Random().nextInt(matchAi.size()));
 			
-			if(ai instanceof ThinkingAi && ((ThinkingAi) ai).getAiNode() != null)
+			if(ai instanceof ThinkingAi && ((ThinkingAi) ai).getAiNode() != null && ((ThinkingAi) ai).getAiNode().getInitiatorDialogue() != null) {
 				messageBox.setConversation(combatMembersManager.getCurrentAi(), ai, ((ThinkingAi) ai).getAiNode().getInitiatorDialogue());
-			else
+			}
+			else {
 				messageBox.setConversation(combatMembersManager.getCurrentAi(), ai);
+			}
 			
 			messageBox.setVisible(true);
 		}
@@ -801,7 +863,9 @@ public class AtrophyScriptReader {
 		
 	}
 	
-	private static List<TriggerEffect> createEffects(Tree tree, MissionManager missionManager, Missions missions, AiCrowd aiCrowd, MessageBox messageBox, CombatMembersManager combatMembersManager) {
+	private static List<TriggerEffect> createEffects(Tree tree, MissionManager missionManager, Missions missions, AiCrowd aiCrowd,
+													 MessageBox messageBox, CombatMembersManager combatMembersManager, TurnProcess turnProcess) {
+		
 		List<TriggerEffect> effects = new ArrayList<>();
 		
 		for(int i = 0; i < tree.getChildCount(); i++) {
@@ -810,7 +874,7 @@ public class AtrophyScriptReader {
 					effects.add(new SpawnTeamEffect(tree.getChild(i), aiCrowd));
 				break;
 				case "SPAWNCHARACTER":
-					effects.add(new SpawnCharacterEffect(tree.getChild(i), aiCrowd));
+					effects.add(new SpawnCharacterEffect(tree.getChild(i), aiCrowd, messageBox, turnProcess, missionManager));
 				break;
 				case "REMOVEUNIT":
 					effects.add(new RemoveEffect(tree.getChild(i), aiCrowd));
@@ -883,7 +947,9 @@ public class AtrophyScriptReader {
 		Integer talkStage = null;
 		Boolean aiInit = null;
 		String openingLine = null;
-		List<String> lines = new ArrayList<>();
+		List<String> optionsList = new ArrayList<>();
+		Map<String, String[]> topics = new HashMap<>();
+		Map<String, String[]> requiredItems = new HashMap<>();
 		
 		for(int i = 0; i < tree.getChildCount(); i++) {
 			switch(tree.getChild(i).toString()) {
@@ -899,22 +965,61 @@ public class AtrophyScriptReader {
 				case "OPENINGLINE":
 					openingLine = createString(tree.getChild(i));
 				break;
-				case "LINE":
-					lines.add(createString(tree.getChild(i)));
+				case "OPTION":
+					optionsList.add(createString(tree.getChild(i)));
+				break;
+				case "TOPIC":
+					String name = "";
+					List<String> lines = new ArrayList<>();
+					List<String> req = new ArrayList<>();
+					for(int j = 0; j < tree.getChild(i).getChildCount(); j++) {
+						switch(tree.getChild(i).getChild(j).toString()) {
+							case "LINE": 
+								lines.add(createString(tree.getChild(i).getChild(j)));
+							break;
+							case "VAR":
+								name = createString(tree.getChild(i).getChild(j));
+							break;
+							case "REQ":
+								req.add(createString(tree.getChild(i).getChild(j)));
+							break;
+						}
+					}
+					
+					String[] speech = new String[lines.size()];
+					
+					for(int j = 0; j < lines.size(); j++) {
+						speech[j] = lines.get(j);
+					}
+					
+					String[] reqArray = new String[req.size()];
+					
+					for(int j = 0; j < req.size(); j++) {
+						reqArray[j] = req.get(j);
+					}
+					
+					topics.put(name, speech);
+					requiredItems.put(name, reqArray);
 				break;
 			}
 		}
 		
-		String[] options = new String[lines.size()];
+		String[] options = new String[optionsList.size()];
 		
-		for(int i = 0; i < lines.size(); i++) {
-			options[i] = lines.get(i);
+		for(int i = 0; i < optionsList.size(); i++) {
+			options[i] = optionsList.get(i);
 		}
 		
 		if(missionManager.getTalkMap(parent) == null)
 			missionManager.addTalkMap(parent, new TalkMap(parent));
 		
-		return new TalkInfo(parent, talkStage, messageBox.createDialogue(missions, missionManager, openingLine, options, aiInit));
+		Dialogue createDialogue = messageBox.createDialogue(missions, missionManager, openingLine, options, aiInit);
+		
+		for(Entry<String, String[]> entry : topics.entrySet()) {
+			createDialogue.addLongSpeech(entry.getKey(), entry.getValue(), requiredItems.get(entry.getKey()));
+		}
+		
+		return new TalkInfo(parent, talkStage, createDialogue);
 	}
 	
 	private static RegionInfo createRegion(Tree tree) {
