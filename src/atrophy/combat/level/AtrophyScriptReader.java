@@ -46,7 +46,7 @@ public class AtrophyScriptReader {
 								     int engineeringChance, int medicalChance, int weaponChance, int scienceChance,
 								     PanningManager panningManager, TurnProcess turnProcess, MessageBox messageBox,
 								     AiCrowd aiCrowd, CombatMembersManager combatMembersManager, Missions missions,
-								     MissionManager missionsManager, List<GenerateCommand> generationCommands) throws RecognitionException, IOException {
+								     MissionManager missionManager, List<GenerateCommand> generationCommands) throws RecognitionException, IOException {
 		
 		StringBuffer sb = new StringBuffer();
 		String lineString;
@@ -66,21 +66,22 @@ public class AtrophyScriptReader {
 		Stack<LevelBlockInfo> blockStack = new Stack<>();
 		Stack<PortalInfo> portalStack = new Stack<>();
 		Stack<StoredCommand> commandStack = new Stack<>();
+		Stack<TriggerCommand> triggers = new Stack<>();
 		
 		Level level = new Level(owner);
 		
 		Tree initTree = AtrophyScriptReader.walkTree(level, prog.tree,
-													 blockStack, portalStack, commandStack, missionsManager,
+													 blockStack, portalStack, commandStack, triggers, missionManager,
 													 combatMembersManager, missions, messageBox, aiCrowd, turnProcess);
 		
 		level.setBlocks(blockStack);
 		level.generatePortals(portalStack, level);
 		panningManager.setMaxOffsets(level.getSize());
 		level.spawnItems(engineeringChance,medicalChance,weaponChance,scienceChance);
-		missionsManager.addCommands(commandStack);
-		
+		missionManager.addCommands(commandStack);
+		missionManager.addTriggers(triggers);
 		if(initTree != null)
-			runCommands(initTree, missionsManager);
+			runCommands(initTree, missionManager);
 		
 		return level;
 	}
@@ -203,7 +204,7 @@ public class AtrophyScriptReader {
 	}
 	
 	public static Tree walkTree(Level level, Tree tree,
-								Stack<LevelBlockInfo> blockStack, Stack<PortalInfo> portalStack, Stack<StoredCommand> commands,
+								Stack<LevelBlockInfo> blockStack, Stack<PortalInfo> portalStack, Stack<StoredCommand> commands, Stack<TriggerCommand> triggers,
 								MissionManager missionManager, CombatMembersManager combatMembersManager, Missions missions,
 								MessageBox messageBox, AiCrowd aiCrowd, TurnProcess turnProcess) {
 		
@@ -229,8 +230,7 @@ public class AtrophyScriptReader {
 				createRegion(tree);
 				return null;
 			case "TRIGGER":
-				//TODO
-				createTrigger(tree, missionManager, missions, aiCrowd, messageBox, combatMembersManager, turnProcess);
+				triggers.add(createTrigger(tree, missionManager, missions, aiCrowd, messageBox, combatMembersManager, turnProcess));
 				return null;
 			case "COMMAND":
 				commands.add(createCommand(tree, missionManager, missions, aiCrowd, messageBox, combatMembersManager, turnProcess));
@@ -252,7 +252,7 @@ public class AtrophyScriptReader {
 		
 		for(int i = 0; i < tree.getChildCount(); i++) {
 			Tree returnTree = walkTree(level, tree.getChild(i),
-									   blockStack, portalStack, commands, missionManager,
+									   blockStack, portalStack, commands, triggers, missionManager,
 									   combatMembersManager, missions, messageBox,
 									   aiCrowd, turnProcess);
 			
@@ -283,23 +283,19 @@ public class AtrophyScriptReader {
 	
 	protected static class TriggerCommand extends StoredCommand {
 
-		public List<TriggerCond> conditions;
+		public TriggerCond condition;
 		
-		public TriggerCommand(String name, List<TriggerEffect> effects, List<TriggerCond> conditions) {
+		public TriggerCommand(String name, List<TriggerEffect> effects, TriggerCond condition) {
 			super(name, effects);
-			this.conditions = conditions;
+			this.condition = condition;
 		}
 		
 		@Override
 		public void run() {
-			if(conditionsMet())
+			if(condition == null || condition.truthCheck())
 				super.run();
 		}
 
-		private boolean conditionsMet() {
-			return true;
-		}
-		
 	}
 	
 	private static StoredCommand createCommand(Tree tree, MissionManager missionManager, Missions missions, AiCrowd aiCrowd,
@@ -323,7 +319,7 @@ public class AtrophyScriptReader {
 		
 	}
 
-	private static void createTrigger(Tree tree, MissionManager missionManager, Missions missions, AiCrowd aiCrowd,
+	private static TriggerCommand createTrigger(Tree tree, MissionManager missionManager, Missions missions, AiCrowd aiCrowd,
 									  MessageBox messageBox, CombatMembersManager combatMembersManager, TurnProcess turnProcess) {
 		
 		String name = "";
@@ -333,7 +329,7 @@ public class AtrophyScriptReader {
 		for(int i = 0 ; i < tree.getChildCount(); i++) {
 			switch(tree.getChild(i).toString()) {
 				case "TRIGGERCOND":
-					condition = new TriggerCond(tree.getChild(i));
+					condition = new TriggerCond(tree.getChild(i), aiCrowd);
 				break;
 				case "TRIGGEREFFECT":
 					effects = createEffects(tree.getChild(i), missionManager, missions, aiCrowd, messageBox, combatMembersManager, turnProcess);
@@ -344,12 +340,38 @@ public class AtrophyScriptReader {
 			}
 		}
 		
+		return new TriggerCommand(name, effects, condition);
+		
 	}
 	
 	private static class TriggerCond {
 		
-		public TriggerCond(Tree child) {
-			// TODO Auto-generated constructor stub
+		private final AiCrowd aiCrowd;
+		private TruthCond truthCond;
+		
+		public TriggerCond(Tree tree, AiCrowd aiCrowd) {
+			this.aiCrowd = aiCrowd;
+			
+			this.truthCond = createTruthCond(tree.getChild(0));
+		}
+
+		private TruthCond createTruthCond(Tree tree) {
+			switch(tree.toString()) {
+				case "AND":
+					return new AND(createTruthCond(tree.getChild(0)), createTruthCond(tree.getChild(1)));
+				case "OR":
+					return new OR(createTruthCond(tree.getChild(0)), createTruthCond(tree.getChild(1)));
+				case "NEGATION":
+					return new NOT(createTruthCond(tree.getChild(0)));
+				case "ISALIVE":
+					return new IsAlive(tree);
+				case "ONTIME":
+					return new OnTime(tree);
+				case "LOGIC":
+					return createTruthCond(tree.getChild(0));
+			}
+			System.err.println("Null Truth Cond: " + tree.toString());
+			return null;
 		}
 
 		private static abstract class TruthCond {
@@ -358,20 +380,96 @@ public class AtrophyScriptReader {
 			
 		}
 		
-		private static class AND extends TruthCond{
-			TriggerCond op1, op2;
+		private class NOT extends TruthCond{
+			TruthCond op1;
 			
-			public AND(TriggerCond op1, TriggerCond op2) {
+			public NOT(TruthCond op1) {
+				this.op1 = op1;
+			}
+			
+			@Override
+			public boolean truthCheck() {
+				return !op1.truthCheck();
+			}
+		}
+		
+		private class AND extends TruthCond{
+			TruthCond op1, op2;
+			
+			public AND(TruthCond op1, TruthCond op2) {
 				this.op1 = op1;
 				this.op2 = op2;
 			}
 			
 			@Override
 			public boolean truthCheck() {
-				return true;
+				Boolean op1Result = op1.truthCheck();
+				Boolean op2Result = op2.truthCheck();
+				return op1Result && op2Result;
 			}
 		}
 		
+		private class OR extends TruthCond{
+			TruthCond op1, op2;
+			
+			public OR(TruthCond op1, TruthCond op2) {
+				this.op1 = op1;
+				this.op2 = op2;
+			}
+			
+			@Override
+			public boolean truthCheck() {
+				Boolean op1Result = op1.truthCheck();
+				Boolean op2Result = op2.truthCheck();
+				return op1Result || op2Result;
+			}
+		}
+		
+		private class IsAlive extends TruthCond {
+
+			UnitInfoEffect unitInfo; 
+			
+			public IsAlive(Tree tree) {
+				this.unitInfo = new UnitInfoEffect(tree, aiCrowd);
+			}
+			
+			@Override
+			public boolean truthCheck() {
+				for(Ai ai: unitInfo.matchAi()) {
+					if(ai.isDead())
+						return false;
+				}
+				return true;
+			}
+			
+		}
+		
+		private class OnTime extends TruthCond {
+
+			int targetTime, currentTime;
+			
+			public OnTime(Tree tree) {
+				this.targetTime = Integer.parseInt(tree.getChild(0).toString());
+				this.currentTime = 0;
+			}
+			
+			@Override
+			public boolean truthCheck() {
+				currentTime++;
+				
+				if(currentTime >= targetTime) {
+					currentTime = 0;
+					return true;
+				}
+				
+				return false;
+			}
+			
+		}
+		
+		public boolean truthCheck() {
+			return this.truthCond.truthCheck();
+		}
 	}
 	
 	protected abstract static class TriggerEffect {
@@ -380,7 +478,7 @@ public class AtrophyScriptReader {
 		
 	}
 	
-	protected abstract static class UnitInfoEffect extends TriggerEffect {
+	protected static class UnitInfoEffect extends TriggerEffect {
 		
 		protected List<String> possibleNames;
 		protected List<String> possibleFactions;
@@ -486,6 +584,9 @@ public class AtrophyScriptReader {
 			
 			return matchingAi;
 		}
+
+		@Override
+		public void run() {}
 		
 	}
 	

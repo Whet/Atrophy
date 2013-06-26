@@ -5,6 +5,7 @@ import java.awt.Polygon;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Queue;
 import java.util.Stack;
 
@@ -106,8 +107,14 @@ public class MissionManager {
 		}
 	}
 	
-	
-	public void updateTimers() {
+	public void checkTriggers() {
+		for(Entry<String, TriggerCommand> entry : this.triggers.entrySet()) {
+			entry.getValue().run();
+		}
+	}
+
+	public void addInitCommand(String command) {
+		this.initCommandCalls.add(command);
 	}
 	
 	public void addCommands(Stack<StoredCommand> commandStack) {
@@ -117,6 +124,12 @@ public class MissionManager {
 		}
 	}
 	
+	public void addTriggers(Stack<TriggerCommand> triggerStack) {
+		while(!triggerStack.isEmpty()) {
+			TriggerCommand trigger = triggerStack.pop();
+			this.triggers.put(trigger.name, trigger);
+		}
+	}
 	
 	private class SpawnInfo{
 		
@@ -190,11 +203,6 @@ public class MissionManager {
 		
 	}
 
-	public void addInitCommand(String command) {
-		this.initCommandCalls.add(command);
-	}
-	
-	
 	public void runCommand(String commandTag) {
 		
 		StoredCommand storedCommand = this.commands.get(commandTag);

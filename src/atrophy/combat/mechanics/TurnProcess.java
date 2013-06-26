@@ -128,7 +128,7 @@ public class TurnProcess {
 			}
 		}
 		
-		missionManager.updateTimers();
+		missionManager.checkTriggers();
 	}
 
 	private void updateAiLocations(){
