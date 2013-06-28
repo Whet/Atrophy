@@ -1384,7 +1384,7 @@ public class ThinkingAi extends Ai{
 		
 		public boolean hasDialogue(){
 			for(String talkMap : talkMapTags){
-				if(missionManager.getTalkMap(talkMap).getDialogue().isInitiator())
+				if(missionManager.getTalkMap(talkMap) != null && missionManager.getTalkMap(talkMap).getDialogue().isInitiator())
 					return true;
 			}
 			return false;
