@@ -6,7 +6,6 @@ package atrophy.combat.level;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Random;
 import java.util.Set;
 import java.util.Stack;
@@ -29,17 +28,10 @@ import atrophy.combat.level.AtrophyScriptReader.PortalInfo;
 public class Level {
 	
 	private LevelBlock[] levelBlocks;
-	
 	private int[] size;
-
 	private HashMap<LevelBlock, Set<String>> bannedBlocks;
-	
 	private String mapOwner;
-	
 	private Set<String> allowedSpawns;
-
-	private Set<LevelBlock> safeRooms;
-
 	private LevelBlock playerSpawn;
 	
 	public Level(String mapOwner){
@@ -53,8 +45,6 @@ public class Level {
 		allowedSpawns.add(AiGenerator.BANDITS);
 		allowedSpawns.add(AiGenerator.WHITE_VISTA);
 		allowedSpawns.add(AiGenerator.LONER);
-		
-		safeRooms = new HashSet<>();
 		
 	}
 	
@@ -193,14 +183,6 @@ public class Level {
 		this.playerSpawn = playerSpawn;
 	}
 	
-	public void addSaferoom(LevelBlock safeRoom){
-		this.safeRooms.add(safeRoom);
-	}
-
-	public boolean isInSaferoom(LevelBlock levelBlock) {
-		return this.safeRooms.contains(levelBlock);
-	}
-
 	public LevelBlock getPlayerSpawn() {
 		return this.playerSpawn;
 	}

@@ -3,10 +3,12 @@ package atrophy.combat.level;
 import java.awt.Color;
 import java.awt.Polygon;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Queue;
+import java.util.Set;
 import java.util.Stack;
 
 import atrophy.combat.ai.AiGenerator;
@@ -45,10 +47,13 @@ public class MissionManager {
 	private Map<String, StoredCommand> commands;
 	private Map<String, TriggerCommand> triggers;
 	private Map<LevelBlock, String> storyRooms;
+	private Set<LevelBlock> safeRooms;
 	
 	private Missions missions;
 	private AiGenerator aiGenerator;
 	private LargeEventText largeEventText;
+
+	private Map<String, Object> vars;
 	
 	
 	public MissionManager(Missions missions, LargeEventText largeEventText){
@@ -60,7 +65,9 @@ public class MissionManager {
 		commands = new HashMap<>();
 		triggers = new HashMap<>();
 		storyRooms = new HashMap<>();
-		initCommandCalls = new LinkedList<String>();
+		initCommandCalls = new LinkedList<>();
+		safeRooms = new HashSet<>();
+		vars = new HashMap<>();
 		
 		this.missions = missions;
 		this.largeEventText = largeEventText;
@@ -211,4 +218,25 @@ public class MissionManager {
 			storedCommand.run();
 	}
 
+	public void addVariableObject(String name, Object object) {
+		if(name != null && !name.isEmpty())
+			this.vars.put(name, object);
+	}
+
+	public Object getVar(String name) {
+		return this.vars.get(name);
+	}
+
+	public void addSaferoom(LevelBlock safeRoom){
+		this.safeRooms.add(safeRoom);
+	}
+
+	public boolean isInSaferoom(LevelBlock levelBlock) {
+		return this.safeRooms.contains(levelBlock);
+	}
+
+	public void removeSaferoom(LevelBlock room) {
+		this.safeRooms.remove(room);
+	}
+	
 }

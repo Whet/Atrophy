@@ -54,8 +54,8 @@ public class MenuMapInterface {
 				CombatNCEManager combatInorganicManager = new CombatNCEManager(levelManager);
 				AiManagementSuite aiManagementSuite = new AiManagementSuite(turnProcess, combatInorganicManager, levelManager, squad);
 				UiUpdaterSuite uiUpdaterSuite = new UiUpdaterSuite(aiManagementSuite, turnProcess, levelManager, combatInorganicManager);
-				ActionSuite actionSuite = new ActionSuite(aiManagementSuite, uiUpdaterSuite, turnProcess, levelManager, squad, techTree, stashManager, missions);
 				MissionManager missionManager = new MissionManager(missions, uiUpdaterSuite.getCombatUiManager().getLargeEventText());
+				ActionSuite actionSuite = new ActionSuite(aiManagementSuite, uiUpdaterSuite, turnProcess, levelManager, squad, techTree, stashManager, missions, missionManager);
 				
 				try {
 					

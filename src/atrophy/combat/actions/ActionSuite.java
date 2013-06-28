@@ -3,6 +3,7 @@ package atrophy.combat.actions;
 import atrophy.combat.display.AiManagementSuite;
 import atrophy.combat.display.ui.UiUpdaterSuite;
 import atrophy.combat.level.LevelManager;
+import atrophy.combat.level.MissionManager;
 import atrophy.combat.mechanics.TurnProcess;
 import atrophy.gameMenu.saveFile.Missions;
 import atrophy.gameMenu.saveFile.Squad;
@@ -15,10 +16,10 @@ public class ActionSuite {
 	private CombatMouseHandler combatMouseHandler;
 	private MouseAbilityHandler mouseAbilityHandler;
 	
-	public ActionSuite(AiManagementSuite aiManagementSuite, UiUpdaterSuite uiUpdaterSuite, TurnProcess turnProcess, LevelManager levelManager, Squad squad, TechTree techTree, StashManager stashManager, Missions missions){
+	public ActionSuite(AiManagementSuite aiManagementSuite, UiUpdaterSuite uiUpdaterSuite, TurnProcess turnProcess, LevelManager levelManager, Squad squad, TechTree techTree, StashManager stashManager, Missions missions, MissionManager missionManager){
 		
 		this.mouseAbilityHandler = new MouseAbilityHandler(squad,aiManagementSuite, uiUpdaterSuite, levelManager);
-		this.combatKeyboardHandler = new CombatKeyboardHandler(levelManager, mouseAbilityHandler, turnProcess, aiManagementSuite, uiUpdaterSuite, techTree, stashManager, missions);
+		this.combatKeyboardHandler = new CombatKeyboardHandler(levelManager, mouseAbilityHandler, turnProcess, aiManagementSuite, uiUpdaterSuite, techTree, stashManager, missions, missionManager);
 		this.combatMouseHandler = new CombatMouseHandler(levelManager, mouseAbilityHandler, aiManagementSuite, uiUpdaterSuite);
 	}
 

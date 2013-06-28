@@ -163,8 +163,4 @@ public class LevelManager {
 		return this.currentLevel.isBanned(block, faction);
 	}
 
-	public boolean isInSaferoom(LevelBlock levelBlock) {
-		return this.currentLevel.isInSaferoom(levelBlock);
-	}
-	
 }

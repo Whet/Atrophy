@@ -1,6 +1,3 @@
-/*
- * 
- */
 package atrophy.combat.actions;
 
 import java.awt.event.KeyEvent;
@@ -24,16 +21,13 @@ import atrophy.combat.display.ui.MessageBox;
 import atrophy.combat.display.ui.UiUpdaterSuite;
 import atrophy.combat.display.ui.loot.LootBox;
 import atrophy.combat.level.LevelManager;
+import atrophy.combat.level.MissionManager;
 import atrophy.combat.mechanics.TurnProcess;
 import atrophy.gameMenu.saveFile.Missions;
 import atrophy.gameMenu.saveFile.TechTree;
 import atrophy.gameMenu.ui.StashManager;
 import atrophy.hardPanes.GameMenuHardPane;
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class CombatKeyboardHandler.
- */
 public class CombatKeyboardHandler extends KeyboardHandler {
 	
 	private PanningManager panningManager;
@@ -51,8 +45,9 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 	private StashManager stashManager;
 	private Missions missions;
 	private PowerManager powerManager;
+	private MissionManager missionManager;
 	
-	public CombatKeyboardHandler(LevelManager levelManager, MouseAbilityHandler mouseAbilityHandler, TurnProcess turnProcess, AiManagementSuite aiManagementSuite, UiUpdaterSuite uiUpdaterSuite, TechTree techTree, StashManager stashManager, Missions missions){
+	public CombatKeyboardHandler(LevelManager levelManager, MouseAbilityHandler mouseAbilityHandler, TurnProcess turnProcess, AiManagementSuite aiManagementSuite, UiUpdaterSuite uiUpdaterSuite, TechTree techTree, StashManager stashManager, Missions missions, MissionManager missionManager){
 		
 		this.aiCrowd = aiManagementSuite.getAiCrowd();
 		this.combatMembersManager = aiManagementSuite.getCombatMembersManager();
@@ -72,6 +67,7 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 		this.techTree = techTree;
 		this.stashManager = stashManager;
 		
+		this.missionManager = missionManager;
 	}
 	
 	public void setPowerManager(PowerManager powerManager) {
@@ -155,7 +151,7 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 				for(int i = 0; i < aiCrowd.getActorCount(); i++){
 					if(aiCrowd.getActor(i).getFaction().equals(AiGenerator.PLAYER) &&
 					   !aiCrowd.getActor(i).isDead() &&
-					   levelManager.isInSaferoom(aiCrowd.getActor(i).getLevelBlock())){
+					   missionManager.isInSaferoom(aiCrowd.getActor(i).getLevelBlock())){
 						teamInSaferoom = true;
 					}
 				}

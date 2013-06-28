@@ -160,7 +160,7 @@ public class AtrophyScriptReader {
 			
 			levelBlock.createNavigationGrid();
 			if(saferoom)
-				level.addSaferoom(levelBlock);
+				missionManager.addSaferoom(levelBlock);
 			
 			for(RegionInfo region : this.cover) {
 				Polygon regionPolygon = new Polygon();
@@ -169,6 +169,7 @@ public class AtrophyScriptReader {
 				}
 				
 				levelBlock.addCover(regionPolygon);
+				missionManager.addVariableObject(region.name, regionPolygon);
 			}
 			for(RegionInfo region : this.stashes) {
 				Polygon regionPolygon = new Polygon();
@@ -177,7 +178,10 @@ public class AtrophyScriptReader {
 				}
 				
 				levelBlock.addStash(regionPolygon);
+				missionManager.addVariableObject(region.name, regionPolygon);
 			}
+			
+			missionManager.addVariableObject(name, levelBlock);
 			
 			return levelBlock;
 		}
@@ -784,42 +788,78 @@ public class AtrophyScriptReader {
 	}
 	
 	private abstract static class RoomInfoEffect extends TriggerEffect {
+
+		protected AiCrowd aiCrowd;
+		protected MissionManager missionManager;
+		protected List<String> targetRooms;
+		protected List<String> targetFactions;
 		
-		public RoomInfoEffect(Tree tree) {
+		public RoomInfoEffect(Tree tree, MissionManager missionManager, AiCrowd aiCrowd) {
+			this.missionManager = missionManager;
+			this.targetRooms = new ArrayList<>();
+			this.targetFactions = new ArrayList<>();
+			this.aiCrowd = aiCrowd;
 			processRoomInfo(tree);
 		}
 
 		private void processRoomInfo(Tree tree) {
-			// TODO Auto-generated method stub
+			for(int i = 0; i < tree.getChildCount(); i++) {
+				switch(tree.getChild(i).toString()) {
+					case "ISNAME":
+						this.targetRooms.add(createString(tree.getChild(i)));
+					break;
+					case "CONTAINSFACTION":
+						this.targetFactions.add(createString(tree.getChild(i)).replaceAll("_", " "));
+					break;
+				}
+			}
+		}
+		
+		protected Set<LevelBlock> findMatch() {
 			
+			Set<LevelBlock> rooms = new HashSet<>();
+			
+			for(Ai ai: aiCrowd.getActors()) {
+				if(targetFactions.contains(ai.getFaction()))
+					rooms.add(ai.getLevelBlock());
+			}
+			for(String roomName: this.targetRooms) {
+				rooms.add((LevelBlock) missionManager.getVar(roomName));
+			}
+			
+			return rooms;
 		}
 		
 	}
 	
 	protected static final class MakeSaferoomEffect extends RoomInfoEffect {
 
-		public MakeSaferoomEffect(Tree tree) {
-			super(tree);
+		public MakeSaferoomEffect(Tree tree, MissionManager missionManager, AiCrowd aiCrowd) {
+			super(tree, missionManager, aiCrowd);
 		}
 
 		@Override
 		public void run() {
-			// TODO Auto-generated method stub
-			
+			Set<LevelBlock> matches = findMatch();
+			for(LevelBlock room: matches) {
+				missionManager.addSaferoom(room);
+			}
 		}
 		
 	}
 	
 	protected static final class RemoveSaferoomEffect extends RoomInfoEffect {
 
-		public RemoveSaferoomEffect(Tree tree) {
-			super(tree);
+		public RemoveSaferoomEffect(Tree tree, MissionManager missionManager, AiCrowd aiCrowd) {
+			super(tree, missionManager, aiCrowd);
 		}
 
 		@Override
 		public void run() {
-			// TODO Auto-generated method stub
-			
+			Set<LevelBlock> matches = findMatch();
+			for(LevelBlock room: matches) {
+				missionManager.removeSaferoom(room);
+			}			
 		}
 		
 	}
@@ -990,10 +1030,10 @@ public class AtrophyScriptReader {
 					effects.add(new ConverseEffect(tree.getChild(i), aiCrowd, messageBox, combatMembersManager));
 				break;
 				case "SAFEROOM":
-					effects.add(new MakeSaferoomEffect(tree.getChild(i)));
+					effects.add(new MakeSaferoomEffect(tree.getChild(i), missionManager, aiCrowd));
 				break;
 				case "REMOVESAFEROOM":
-					effects.add(new RemoveSaferoomEffect(tree.getChild(i)));
+					effects.add(new RemoveSaferoomEffect(tree.getChild(i), missionManager, aiCrowd));
 				break;
 				case "LOADMAP":
 					effects.add(new LoadMapEffect(tree.getChild(i)));

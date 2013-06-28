@@ -2,16 +2,13 @@ package atrophy.gameMenu.saveFile;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Map;
 import java.util.Set;
 
 import atrophy.combat.items.EngineeringSupply;
 import atrophy.combat.items.MedicalSupply;
 import atrophy.combat.items.ScienceSupply;
 import atrophy.combat.items.WeaponSupply;
-import atrophy.combat.level.LevelBlock;
 import atrophy.gameMenu.saveFile.Squad.Squaddie;
 import atrophy.gameMenu.ui.StashManager;
 
@@ -24,8 +21,6 @@ public class Missions{
 	private ArrayList<MissionGiver> missionGivers;
 	private ArrayList<String> economyEffects;
 	private Set<String> memCodes;
-	private Map<LevelBlock, String> storyRooms;
-	private Map<LevelBlock, String> triggers;
 	private Squad squad;
 
 	public Missions(){
@@ -34,8 +29,6 @@ public class Missions{
 		economyEffects = new ArrayList<String>();
 		memCodes = new HashSet<>();
 		memCodes.add(DEFAULT_MEM_CODE);
-		this.storyRooms = new HashMap<LevelBlock, String>();
-		this.triggers = new HashMap<LevelBlock, String>();
 	}
 	
 	public void lazyLoad(Squad squad, StashManager stashManager, ItemMarket itemMarket, TechTree techTree) {
