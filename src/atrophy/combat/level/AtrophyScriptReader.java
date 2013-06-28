@@ -246,7 +246,7 @@ public class AtrophyScriptReader {
 			case "MAPSPAWNS":
 				Set<String> allowedSpawns = new HashSet<>();
 				for(int i = 0 ; i < tree.getChildCount(); i++) {
-					allowedSpawns.add(tree.getChild(i).toString().replaceAll("_", " "));
+					allowedSpawns.add(createString(tree.getChild(i)));
 				}
 				
 				level.setAllowedSpawns(allowedSpawns);
@@ -508,25 +508,25 @@ public class AtrophyScriptReader {
 					case "ISNAME":
 						possibleNames = new ArrayList<>();
 						for(int j = 0; j < tree.getChild(i).getChildCount(); j++) {
-							possibleNames.add(tree.getChild(i).getChild(j).toString().replaceAll("_", " "));
+							possibleNames.add(createString(tree.getChild(i).getChild(j)));
 						}
 					break;
 					case "ISFACTION":
 						possibleFactions = new ArrayList<>();
 						for(int j = 0; j < tree.getChild(i).getChildCount(); j++) {
-							possibleFactions.add(tree.getChild(i).getChild(j).toString().replaceAll("_", " "));
+							possibleFactions.add(createString(tree.getChild(i).getChild(j)));
 						}
 					break;
 					case "HASITEM":
 						possibleItems = new ArrayList<>();
 						for(int j = 0; j < tree.getChild(i).getChildCount(); j++) {
-							possibleItems.add(tree.getChild(i).getChild(j).toString().replaceAll("_", " "));
+							possibleItems.add(createString(tree.getChild(i).getChild(j)));
 						}
 					break;
 					case "HASWEAPON":
 						possibleWeapons = new ArrayList<>();
 						for(int j = 0; j < tree.getChild(i).getChildCount(); j++) {
-							possibleWeapons.add(tree.getChild(i).getChild(j).toString().replaceAll("_", " "));
+							possibleWeapons.add(createString(tree.getChild(i).getChild(j)));
 						}
 					break;
 					case "ISALIVE":
@@ -684,12 +684,12 @@ public class AtrophyScriptReader {
 				switch(child.getChild(i).toString()) {
 					case "SUBSCRIBE":
 						for(int j = 0; j < child.getChild(i).getChildCount(); j++) {
-							talkMapList.add(child.getChild(i).getChild(j).toString());
+							talkMapList.add(createString(child.getChild(i).getChild(j)));
 						}
 					break;
 					case "BEHAVIOUR":
 						for(int j = 0; j < child.getChild(i).getChildCount(); j++) {
-							behaviours.add(child.getChild(i).getChild(j).toString());
+							behaviours.add(createString(child.getChild(i).getChild(j)));
 						}
 					break;
 				}
@@ -806,10 +806,14 @@ public class AtrophyScriptReader {
 			for(int i = 0; i < tree.getChildCount(); i++) {
 				switch(tree.getChild(i).toString()) {
 					case "ISNAME":
-						this.targetRooms.add(createString(tree.getChild(i)));
+						for(int j = 0; j< tree.getChild(i).getChildCount(); j++) {
+							this.targetRooms.add(createString(tree.getChild(i).getChild(j)));
+						}
 					break;
 					case "CONTAINSFACTION":
-						this.targetFactions.add(createString(tree.getChild(i)).replaceAll("_", " "));
+						for(int j = 0; j< tree.getChild(i).getChildCount(); j++) {
+							this.targetFactions.add(createString(tree.getChild(i).getChild(j)));
+						}
 					break;
 				}
 			}
@@ -1233,12 +1237,12 @@ public class AtrophyScriptReader {
 					name = tree.getChild(i).getChild(0).toString();
 				break;
 				case "TERRITORY":
-						territory.put(tree.getChild(i).getChild(0).toString().replaceAll("_", " "),
-						Integer.parseInt(tree.getChild(i).getChild(1).toString()));
+					territory.put(createString(tree.getChild(i).getChild(0)),
+					Integer.parseInt(tree.getChild(i).getChild(1).toString()));
 				break;
 				case "ZONE":
 					for(int j = 0; j < tree.getChild(i).getChildCount(); j++) {
-						zone.add(tree.getChild(i).getChild(j).toString().replaceAll("_", " "));
+						zone.add(createString(tree.getChild(i).getChild(j)));
 					}
 				break;
 				case "SAFEROOM":
