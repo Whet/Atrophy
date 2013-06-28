@@ -620,7 +620,7 @@ public class AtrophyScriptReader {
 			
 			for(int i = 0; i < tree.getChildCount(); i++) {
 				if(tree.getChild(i).toString().equals("AINODE"))
-					aiNode = createAiNode(tree.getChild(i), messageBox, turnProcess, missionManager);
+					aiNode = createAiNode(tree.getChild(i), aiCrowd, messageBox, turnProcess, missionManager);
 			}
 		}
 		
@@ -673,41 +673,41 @@ public class AtrophyScriptReader {
 			aiGenerator.spawnAi(command);
 		}
 		
-		private AiNode createAiNode(Tree child, MessageBox messageBox, TurnProcess turnProcess, MissionManager missionManager) {
+	}
+	
+	private static AiNode createAiNode(Tree child, AiCrowd aiCrowd, MessageBox messageBox, TurnProcess turnProcess, MissionManager missionManager) {
+		
+		AiNode aiNode = new AiNode(aiCrowd, messageBox, turnProcess, missionManager, 0, 0);
+		ArrayList<String> behaviours = new ArrayList<>();
+		ArrayList<String> talkMapList = new ArrayList<>();
+		
+		for(int i = 0; i < child.getChildCount(); i++) {
 			
-			AiNode aiNode = new AiNode(aiCrowd, messageBox, turnProcess, missionManager, 0, 0);
-			ArrayList<String> behaviours = new ArrayList<>();
-			ArrayList<String> talkMapList = new ArrayList<>();
-			
-			for(int i = 0; i < child.getChildCount(); i++) {
-				
-				switch(child.getChild(i).toString()) {
-					case "SUBSCRIBE":
-						for(int j = 0; j < child.getChild(i).getChildCount(); j++) {
-							talkMapList.add(createString(child.getChild(i).getChild(j)));
-						}
-					break;
-					case "BEHAVIOUR":
-						for(int j = 0; j < child.getChild(i).getChildCount(); j++) {
-							behaviours.add(createString(child.getChild(i).getChild(j)));
-						}
-					break;
-				}
-				
+			switch(child.getChild(i).toString()) {
+				case "SUBSCRIBE":
+					for(int j = 0; j < child.getChild(i).getChildCount(); j++) {
+						talkMapList.add(createString(child.getChild(i).getChild(j)));
+					}
+				break;
+				case "BEHAVIOUR":
+					for(int j = 0; j < child.getChild(i).getChildCount(); j++) {
+						behaviours.add(createString(child.getChild(i).getChild(j)));
+					}
+				break;
 			}
 			
-			String[] talkMaps = new String[talkMapList.size()];
-			
-			for(int i = 0; i < talkMapList.size(); i++) {
-				talkMaps[i] = talkMapList.get(i);
-			}
-					
-			aiNode.addBehaviours(behaviours);
-			aiNode.subscribeToTalkMaps(talkMaps);
-			
-			return aiNode;
 		}
 		
+		String[] talkMaps = new String[talkMapList.size()];
+		
+		for(int i = 0; i < talkMapList.size(); i++) {
+			talkMaps[i] = talkMapList.get(i);
+		}
+				
+		aiNode.addBehaviours(behaviours);
+		aiNode.subscribeToTalkMaps(talkMaps);
+		
+		return aiNode;
 	}
 	
 	protected static final class RemoveEffect extends UnitInfoEffect {
@@ -958,16 +958,23 @@ public class AtrophyScriptReader {
 		
 	}
 	
-	protected static final class ChangeAiNodeEffect extends TriggerEffect {
+	protected static final class ChangeAiNodeEffect extends UnitInfoEffect {
 		
-		public ChangeAiNodeEffect(Tree tree) {
-			
+		private AiNode aiNode;
+		
+		public ChangeAiNodeEffect(Tree tree, AiCrowd aiCrowd, MessageBox messageBox, TurnProcess turnProcess, MissionManager missionManager) {
+			super(tree, aiCrowd);
+			this.aiNode = createAiNode(tree, aiCrowd, messageBox, turnProcess, missionManager);
 		}
 
 		@Override
 		public void run() {
-			// TODO Auto-generated method stub
+			List<Ai> matchAi = matchAi();
 			
+			for(Ai ai: matchAi) {
+				if(ai instanceof ThinkingAi)
+					((ThinkingAi) ai).setAiNode(aiNode);
+			}
 		}
 		
 	}
@@ -1058,7 +1065,7 @@ public class AtrophyScriptReader {
 					effects.add(new ModifyDirectorEffect(tree.getChild(i)));
 				break;
 				case "CHANGEAINODE":
-					effects.add(new ChangeAiNodeEffect(tree.getChild(i)));
+					effects.add(new ChangeAiNodeEffect(tree.getChild(i), aiCrowd, messageBox, turnProcess, missionManager));
 				break;
 				case "UPDATETALK":
 					effects.add(new UpdateTalkEffect(tree.getChild(i), missionManager));
