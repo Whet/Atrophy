@@ -238,5 +238,9 @@ public class MissionManager {
 	public void removeSaferoom(LevelBlock room) {
 		this.safeRooms.remove(room);
 	}
+
+	public void showMessage(String message) {
+		largeEventText.flashText(message);
+	}
 	
 }

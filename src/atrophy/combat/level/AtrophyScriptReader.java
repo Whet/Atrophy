@@ -1015,6 +1015,23 @@ public class AtrophyScriptReader {
 		
 	}
 	
+	protected static final class ShowMessageEffect extends TriggerEffect {
+
+		private String message;
+		private MissionManager missionManager;
+		
+		public ShowMessageEffect(Tree tree, MissionManager missionManager) {
+			this.message = createString(tree);
+			this.missionManager = missionManager;
+		}
+		
+		@Override
+		public void run() {
+			missionManager.showMessage(message);
+		}
+		
+	}
+	
 	private static List<TriggerEffect> createEffects(Tree tree, MissionManager missionManager, Missions missions, AiCrowd aiCrowd,
 													 MessageBox messageBox, CombatMembersManager combatMembersManager, TurnProcess turnProcess) {
 		
@@ -1072,6 +1089,9 @@ public class AtrophyScriptReader {
 				break;
 				case "COMMAND CALL":
 					effects.add(new CommandCallEffect(tree.getChild(i), missionManager));
+				break;
+				case "SHOWMESSAGE":
+					effects.add(new ShowMessageEffect(tree.getChild(i), missionManager));
 				break;
 			}
 		}

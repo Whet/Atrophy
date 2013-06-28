@@ -1,4 +1,4 @@
-// $ANTLR 3.4 C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g 2013-06-28 22:54:43
+// $ANTLR 3.4 C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g 2013-06-28 23:03:07
 
 	package atrophy.combat.level;
 
@@ -2405,8 +2405,8 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = NOT_PREFIX;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:498:12: ( '!' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:498:14: '!'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:499:12: ( '!' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:499:14: '!'
             {
             match('!'); 
 
@@ -2426,8 +2426,8 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = ADD_TAG_PREFIX;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:499:16: ( '#$' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:499:18: '#$'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:500:16: ( '#$' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:500:18: '#$'
             {
             match("#$"); 
 
@@ -2449,8 +2449,8 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = REMOVE_TAG_PREFIX;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:500:19: ( '#!$' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:500:21: '#!$'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:501:19: ( '#!$' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:501:21: '#!$'
             {
             match("#!$"); 
 
@@ -2472,8 +2472,8 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = UPDATE_TREE_PREFIX;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:501:20: ( '#^' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:501:22: '#^'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:502:20: ( '#^' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:502:22: '#^'
             {
             match("#^"); 
 
@@ -2495,8 +2495,8 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = COMMAND_CALL_PREFIX;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:502:21: ( '#*' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:502:23: '#*'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:503:21: ( '#*' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:503:23: '#*'
             {
             match("#*"); 
 
@@ -2518,7 +2518,7 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = BOOL;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:503:6: ( 'TRUE' | 'FALSE' | 'T' | 'F' | 'true' | 'false' | 't' | 'f' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:504:6: ( 'TRUE' | 'FALSE' | 'T' | 'F' | 'true' | 'false' | 't' | 'f' )
             int alt1=8;
             switch ( input.LA(1) ) {
             case 'T':
@@ -2579,7 +2579,7 @@ public class AtrophyScriptLexer extends Lexer {
 
             switch (alt1) {
                 case 1 :
-                    // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:503:8: 'TRUE'
+                    // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:504:8: 'TRUE'
                     {
                     match("TRUE"); 
 
@@ -2588,7 +2588,7 @@ public class AtrophyScriptLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:503:17: 'FALSE'
+                    // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:504:17: 'FALSE'
                     {
                     match("FALSE"); 
 
@@ -2597,21 +2597,21 @@ public class AtrophyScriptLexer extends Lexer {
                     }
                     break;
                 case 3 :
-                    // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:503:27: 'T'
+                    // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:504:27: 'T'
                     {
                     match('T'); 
 
                     }
                     break;
                 case 4 :
-                    // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:503:33: 'F'
+                    // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:504:33: 'F'
                     {
                     match('F'); 
 
                     }
                     break;
                 case 5 :
-                    // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:503:39: 'true'
+                    // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:504:39: 'true'
                     {
                     match("true"); 
 
@@ -2620,7 +2620,7 @@ public class AtrophyScriptLexer extends Lexer {
                     }
                     break;
                 case 6 :
-                    // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:503:48: 'false'
+                    // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:504:48: 'false'
                     {
                     match("false"); 
 
@@ -2629,14 +2629,14 @@ public class AtrophyScriptLexer extends Lexer {
                     }
                     break;
                 case 7 :
-                    // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:503:58: 't'
+                    // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:504:58: 't'
                     {
                     match('t'); 
 
                     }
                     break;
                 case 8 :
-                    // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:503:64: 'f'
+                    // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:504:64: 'f'
                     {
                     match('f'); 
 
@@ -2658,8 +2658,8 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = IDENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:504:7: ( ( 'a' .. 'z' | 'A' .. 'Z' ) ( '_' | 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )* )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:504:9: ( 'a' .. 'z' | 'A' .. 'Z' ) ( '_' | 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )*
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:505:7: ( ( 'a' .. 'z' | 'A' .. 'Z' ) ( '_' | 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )* )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:505:9: ( 'a' .. 'z' | 'A' .. 'Z' ) ( '_' | 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )*
             {
             if ( (input.LA(1) >= 'A' && input.LA(1) <= 'Z')||(input.LA(1) >= 'a' && input.LA(1) <= 'z') ) {
                 input.consume();
@@ -2671,7 +2671,7 @@ public class AtrophyScriptLexer extends Lexer {
             }
 
 
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:504:30: ( '_' | 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )*
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:505:30: ( '_' | 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )*
             loop2:
             do {
                 int alt2=2;
@@ -2721,10 +2721,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = INT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:505:5: ( ( '0' .. '9' )+ )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:505:7: ( '0' .. '9' )+
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:506:5: ( ( '0' .. '9' )+ )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:506:7: ( '0' .. '9' )+
             {
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:505:7: ( '0' .. '9' )+
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:506:7: ( '0' .. '9' )+
             int cnt3=0;
             loop3:
             do {
@@ -2779,10 +2779,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = WS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:506:4: ( ( ' ' | '\\t' | '\\n' | '\\r' | '\\f' )+ )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:506:6: ( ' ' | '\\t' | '\\n' | '\\r' | '\\f' )+
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:507:4: ( ( ' ' | '\\t' | '\\n' | '\\r' | '\\f' )+ )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:507:6: ( ' ' | '\\t' | '\\n' | '\\r' | '\\f' )+
             {
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:506:6: ( ' ' | '\\t' | '\\n' | '\\r' | '\\f' )+
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:507:6: ( ' ' | '\\t' | '\\n' | '\\r' | '\\f' )+
             int cnt4=0;
             loop4:
             do {
@@ -2839,14 +2839,14 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:507:9: ( '//' ( . )* ( '\\n' | '\\r' ) )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:507:11: '//' ( . )* ( '\\n' | '\\r' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:508:9: ( '//' ( . )* ( '\\n' | '\\r' ) )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:508:11: '//' ( . )* ( '\\n' | '\\r' )
             {
             match("//"); 
 
 
 
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:507:16: ( . )*
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:508:16: ( . )*
             loop5:
             do {
                 int alt5=2;
@@ -2862,7 +2862,7 @@ public class AtrophyScriptLexer extends Lexer {
 
                 switch (alt5) {
             	case 1 :
-            	    // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:507:16: .
+            	    // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:508:16: .
             	    {
             	    matchAny(); 
 
@@ -2903,14 +2903,14 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = MULTILINE_COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:508:19: ( '/*' ( . )* '*/' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:508:21: '/*' ( . )* '*/'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:509:19: ( '/*' ( . )* '*/' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:509:21: '/*' ( . )* '*/'
             {
             match("/*"); 
 
 
 
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:508:26: ( . )*
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:509:26: ( . )*
             loop6:
             do {
                 int alt6=2;
@@ -2935,7 +2935,7 @@ public class AtrophyScriptLexer extends Lexer {
 
                 switch (alt6) {
             	case 1 :
-            	    // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:508:26: .
+            	    // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:509:26: .
             	    {
             	    matchAny(); 
 
