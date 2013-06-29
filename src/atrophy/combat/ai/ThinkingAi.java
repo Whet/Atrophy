@@ -1481,7 +1481,7 @@ public class ThinkingAi extends Ai{
 	public void setAiNode(AiNode aiNode) {
 		
 		// Only release a node if it isn't personalised
-		if(this.aiNode != null && this.aiNode.hasPriority(this.getName()))
+		if(this.aiNode != null && this.aiNode.hasPriority(this.getName()) && !aiNode.hasPriority(this.getName()))
 			return;
 			
 		this.aiNode = aiNode;
