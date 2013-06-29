@@ -20,7 +20,10 @@ import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.ui.MessageBox;
 import atrophy.combat.level.AtrophyScriptReader.LevelBlockInfo;
 import atrophy.combat.mechanics.TurnProcess;
+import atrophy.gameMenu.saveFile.ItemMarket;
 import atrophy.gameMenu.saveFile.Missions;
+import atrophy.gameMenu.saveFile.TechTree;
+import atrophy.gameMenu.ui.StashManager;
 
 public class LevelIO {
 	
@@ -146,7 +149,7 @@ public class LevelIO {
 		return null;
 	}
 	
-	public static Level loadLevel(File file, String owner, int engineeringChance, int medicalChance, int weaponChance, int scienceChance, PanningManager panningManager, TurnProcess turnProcess, MessageBox messageBox, AiCrowd aiCrowd, CombatMembersManager combatMembersManager, Missions missions, MissionManager missionsManager, List<GenerateCommand> generationCommands) throws IOException, RecognitionException{
+	public static Level loadLevel(File file, String owner, int engineeringChance, int medicalChance, int weaponChance, int scienceChance, PanningManager panningManager, TurnProcess turnProcess, MessageBox messageBox, AiCrowd aiCrowd, CombatMembersManager combatMembersManager, Missions missions, MissionManager missionsManager, List<GenerateCommand> generationCommands, ItemMarket itemMarket, TechTree techTree, StashManager stashManager) throws IOException, RecognitionException{
 //		Level level = new Level(owner);
 //		
 //		Stack<LevelBlock> blocksList = new Stack<LevelBlock>();
@@ -186,7 +189,7 @@ public class LevelIO {
 //		
 //		return level;
 		
-		return AtrophyScriptReader.readScript(file, owner, engineeringChance, medicalChance, weaponChance, scienceChance, panningManager, turnProcess, messageBox, aiCrowd, combatMembersManager, missions, missionsManager, generationCommands);
+		return AtrophyScriptReader.readScript(file, owner, engineeringChance, medicalChance, weaponChance, scienceChance, panningManager, turnProcess, messageBox, aiCrowd, combatMembersManager, missions, missionsManager, generationCommands, itemMarket, techTree, stashManager);
 	}
 
 //	private static void readBlocks(File levelFile, Level level, Stack<LevelBlock> blockStack, AiCrowd aiCrowd, MessageBox messageBox, TurnProcess turnProcess, Missions missions, MissionManager missionsManager, List<AiGeneratorInterface.GenerateCommand> generationCommands, CombatMembersManager combatMembersManager) throws IOException, LevelFormatException {

@@ -2,6 +2,7 @@ package atrophy.combat.level;
 
 import java.awt.Polygon;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -37,7 +38,11 @@ import atrophy.combat.items.GrenadeItem;
 import atrophy.combat.items.StunGrenadeItem;
 import atrophy.combat.level.AtrophyScriptParser.prog_return;
 import atrophy.combat.mechanics.TurnProcess;
+import atrophy.gameMenu.saveFile.ItemMarket;
 import atrophy.gameMenu.saveFile.Missions;
+import atrophy.gameMenu.saveFile.TechTree;
+import atrophy.gameMenu.ui.MenuMapInterface;
+import atrophy.gameMenu.ui.StashManager;
 
 public class AtrophyScriptReader {
 
@@ -46,7 +51,8 @@ public class AtrophyScriptReader {
 								     int engineeringChance, int medicalChance, int weaponChance, int scienceChance,
 								     PanningManager panningManager, TurnProcess turnProcess, MessageBox messageBox,
 								     AiCrowd aiCrowd, CombatMembersManager combatMembersManager, Missions missions,
-								     MissionManager missionManager, List<GenerateCommand> generationCommands) throws RecognitionException, IOException {
+								     MissionManager missionManager, List<GenerateCommand> generationCommands,
+								     ItemMarket itemMarket, TechTree techTree, StashManager stashManager) throws RecognitionException, IOException {
 		
 		StringBuffer sb = new StringBuffer();
 		String lineString;
@@ -72,7 +78,8 @@ public class AtrophyScriptReader {
 		
 		Tree initTree = AtrophyScriptReader.walkTree(level, prog.tree,
 													 blockStack, portalStack, commandStack, triggers, missionManager,
-													 combatMembersManager, missions, messageBox, aiCrowd, turnProcess);
+													 combatMembersManager, missions, messageBox, aiCrowd, turnProcess,
+													 itemMarket, techTree, stashManager);
 		
 		level.setBlocks(blockStack);
 		level.generatePortals(portalStack, level, missionManager);
@@ -210,7 +217,8 @@ public class AtrophyScriptReader {
 	public static Tree walkTree(Level level, Tree tree,
 								Stack<LevelBlockInfo> blockStack, Stack<PortalInfo> portalStack, Stack<StoredCommand> commands, Stack<TriggerCommand> triggers,
 								MissionManager missionManager, CombatMembersManager combatMembersManager, Missions missions,
-								MessageBox messageBox, AiCrowd aiCrowd, TurnProcess turnProcess) {
+								MessageBox messageBox, AiCrowd aiCrowd, TurnProcess turnProcess,
+								ItemMarket itemMarket, TechTree techTree, StashManager stashManager) {
 		
 		Tree initTree = null;		
 		int blockNumber = 0;
@@ -234,10 +242,10 @@ public class AtrophyScriptReader {
 				createRegion(tree);
 				return null;
 			case "TRIGGER":
-				triggers.add(createTrigger(tree, missionManager, missions, aiCrowd, messageBox, combatMembersManager, turnProcess));
+				triggers.add(createTrigger(tree, missionManager, missions, aiCrowd, messageBox, combatMembersManager, turnProcess, itemMarket, techTree, stashManager));
 				return null;
 			case "COMMAND":
-				commands.add(createCommand(tree, missionManager, missions, aiCrowd, messageBox, combatMembersManager, turnProcess));
+				commands.add(createCommand(tree, missionManager, missions, aiCrowd, messageBox, combatMembersManager, turnProcess, itemMarket, techTree, stashManager));
 				return null;
 			case "TALK":
 				TalkInfo talkInfo = createTalkTopic(tree, missions, missionManager, messageBox);
@@ -258,7 +266,7 @@ public class AtrophyScriptReader {
 			Tree returnTree = walkTree(level, tree.getChild(i),
 									   blockStack, portalStack, commands, triggers, missionManager,
 									   combatMembersManager, missions, messageBox,
-									   aiCrowd, turnProcess);
+									   aiCrowd, turnProcess, itemMarket, techTree, stashManager);
 			
 			if(returnTree != null)
 				initTree = returnTree;
@@ -303,7 +311,8 @@ public class AtrophyScriptReader {
 	}
 	
 	private static StoredCommand createCommand(Tree tree, MissionManager missionManager, Missions missions, AiCrowd aiCrowd,
-										       MessageBox messageBox, CombatMembersManager combatMembersManager, TurnProcess turnProcess) {
+										       MessageBox messageBox, CombatMembersManager combatMembersManager, TurnProcess turnProcess,
+										       ItemMarket itemMarket, TechTree techTree, StashManager stashManager) {
 		
 		String name = "";
 		List<TriggerEffect> effects = new ArrayList<>();
@@ -311,7 +320,7 @@ public class AtrophyScriptReader {
 		for(int i = 0; i < tree.getChildCount(); i++) {
 			switch(tree.getChild(i).toString()) {
 				case "TRIGGEREFFECT":
-					effects = createEffects(tree.getChild(i), missionManager, missions, aiCrowd, messageBox, combatMembersManager, turnProcess);
+					effects = createEffects(tree.getChild(i), missionManager, missions, aiCrowd, messageBox, combatMembersManager, turnProcess, itemMarket, techTree, stashManager);
 				break;
 				case "VAR":
 					name = tree.getChild(i).getChild(0).toString();
@@ -324,7 +333,8 @@ public class AtrophyScriptReader {
 	}
 
 	private static TriggerCommand createTrigger(Tree tree, MissionManager missionManager, Missions missions, AiCrowd aiCrowd,
-									  MessageBox messageBox, CombatMembersManager combatMembersManager, TurnProcess turnProcess) {
+												MessageBox messageBox, CombatMembersManager combatMembersManager, TurnProcess turnProcess,
+												ItemMarket itemMarket, TechTree techTree, StashManager stashManager) {
 		
 		String name = "";
 		TriggerCond condition = null;
@@ -336,7 +346,7 @@ public class AtrophyScriptReader {
 					condition = new TriggerCond(tree.getChild(i), aiCrowd);
 				break;
 				case "TRIGGEREFFECT":
-					effects = createEffects(tree.getChild(i), missionManager, missions, aiCrowd, messageBox, combatMembersManager, turnProcess);
+					effects = createEffects(tree.getChild(i), missionManager, missions, aiCrowd, messageBox, combatMembersManager, turnProcess, itemMarket, techTree, stashManager);
 				break;
 				case "VAR":
 					name = tree.getChild(i).getChild(0).toString();
@@ -879,14 +889,35 @@ public class AtrophyScriptReader {
 	
 	protected static final class LoadMapEffect extends TriggerEffect {
 		
-		public LoadMapEffect(Tree tree) {
+		private String mapName;
+		private String owner;
+		private int engChance, medChance, wepChance, sciChance;
+		
+		private AiCrowd aiCrowd;
+		private Missions missions;
+		private ItemMarket itemMarket;
+		private TechTree techTree;
+		private StashManager stashManager;
+		
+		public LoadMapEffect(Tree tree, AiCrowd aiCrowd, Missions missions, ItemMarket itemMarket, TechTree techTree, StashManager stashManager) {
+			this.aiCrowd = aiCrowd;
+			this.missions = missions;
+			this.itemMarket = itemMarket;
+			this.techTree = techTree;
+			this.stashManager = stashManager;
 			
+			this.mapName = "NewStyle";
+			this.owner = AiGenerator.WHITE_VISTA;
 		}
 
 		@Override
 		public void run() {
-			// TODO Auto-generated method stub
-			
+			try {
+				MenuMapInterface.loadLevel(ReadWriter.getRootFile("Maps/" + mapName + ".txt"), owner,
+						  				   aiCrowd.getSquad(), engChance, medChance, wepChance, sciChance, missions, itemMarket, techTree, stashManager);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			}
 		}
 		
 	}
@@ -1084,7 +1115,8 @@ public class AtrophyScriptReader {
 	}
 	
 	private static List<TriggerEffect> createEffects(Tree tree, MissionManager missionManager, Missions missions, AiCrowd aiCrowd,
-													 MessageBox messageBox, CombatMembersManager combatMembersManager, TurnProcess turnProcess) {
+													 MessageBox messageBox, CombatMembersManager combatMembersManager, TurnProcess turnProcess,
+													 ItemMarket itemMarket, TechTree techTree, StashManager stashManager) {
 		
 		List<TriggerEffect> effects = new ArrayList<>();
 		
@@ -1115,7 +1147,7 @@ public class AtrophyScriptReader {
 					effects.add(new RemoveSaferoomEffect(tree.getChild(i), missionManager, aiCrowd));
 				break;
 				case "LOADMAP":
-					effects.add(new LoadMapEffect(tree.getChild(i)));
+					effects.add(new LoadMapEffect(tree.getChild(i), aiCrowd, missions, itemMarket, techTree, stashManager));
 				break;
 				case "LOCKDOOR":
 					effects.add(new LockDoorEffect(tree.getChild(i), missionManager));
