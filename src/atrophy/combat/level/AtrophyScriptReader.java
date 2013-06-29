@@ -53,7 +53,7 @@ public class AtrophyScriptReader {
 		int line = 0;
 		
 		while((lineString = ReadWriter.readFromFile(file, line)) != null) {
-			sb.append(lineString);
+			sb.append(lineString + "\n");
 			line++;
 		}
 		

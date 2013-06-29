@@ -1,4 +1,4 @@
-// $ANTLR 3.4 C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g 2013-06-28 23:03:06
+// $ANTLR 3.4 C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g 2013-06-29 12:41:51
 
 	package atrophy.combat.level;
 
@@ -14,7 +14,7 @@ import org.antlr.runtime.tree.*;
 @SuppressWarnings({"all", "warnings", "unchecked"})
 public class AtrophyScriptParser extends Parser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "ADDTAG", "ADD_TAG_PREFIX", "AIINIT", "AINODE", "AND", "BEHAVIOUR", "BLOCK", "BOOL", "CHANGEAINODE", "COMMAND", "COMMAND_CALL", "COMMAND_CALL_PREFIX", "COMMENT", "CONTAINSFACTION", "CONVERSE", "COVER", "DIRECTORBIAS", "DOORNAMES", "EMPTY", "HASITEM", "HASWEAPON", "IDENT", "INIT", "INROOM", "INT", "ISALIVE", "ISDAEMON", "ISDEAD", "ISFACTION", "ISINVESTIGATED", "ISNAME", "ISNOTDAEMON", "ISNOTINVESTIGATED", "KILLUNIT", "LINE", "LOADMAP", "LOCKDOOR", "LOGIC", "MAPSIZE", "MAPSPAWNS", "MAXTEAMSIZE", "MINTEAMSIZE", "MULTILINE_COMMENT", "NEGATION", "NOT_PREFIX", "ONTIME", "OPENINGLINE", "OPTION", "OR", "PORTAL", "REMOVESAFEROOM", "REMOVETAG", "REMOVEUNIT", "REMOVE_TAG_PREFIX", "REQ", "SAFEROOM", "SHOWMESSAGE", "SPAWNCHARACTER", "SPAWNTEAM", "STAGELIST", "STASH", "STRING", "SUBSCRIBE", "TALK", "TALKMAP", "TALKPARENT", "TALKSTAGE", "TELEDEST", "TELEPORT", "TERRITORY", "TEXTURE", "TEXTUREBLOCK", "TOPIC", "TRIGGER", "TRIGGERCOND", "TRIGGEREFFECT", "TRIGGERTYPE", "UNLOCKDOOR", "UPDATETALK", "UPDATE_TREE_PREFIX", "VAR", "WS", "XLIST", "YLIST", "ZONE", "'\"'", "'#'", "'('", "')'", "','", "'-'", "'::'", "'AND'", "'BLOCK'", "'COMMAND'", "'COVER'", "'INIT'", "'MAPSIZE'", "'MAPSPAWNS'", "'OR'", "'PORTAL'", "'STASH'", "'TALK'", "'TEXTUREBLOCK'", "'TRIGGER'", "'a:'", "'addTag:'", "'aiInit:'", "'aiNode'", "'behaviours:'", "'block'", "'callCommand:'", "'changeAiNode:'", "'command'", "'containsFaction:'", "'converse'", "'cover'", "'destination'", "'directorBias:'", "'hasItem:'", "'hasWeapon:'", "'init'", "'isAlive'", "'isAlive:'", "'isDaemon'", "'isDead'", "'isFaction:'", "'isInvestigated'", "'isName:'", "'isNotDaemon'", "'isNotInvestigated'", "'killUnit'", "'l:'", "'lines:'", "'loadMap:'", "'lockDoor'", "'mapsize'", "'mapspawns'", "'maxTeamSize:'", "'minTeamSize:'", "'name:'", "'o:'", "'onTime:'", "'opening:'", "'openingLine:'", "'option:'", "'p:'", "'parent:'", "'portal'", "'removeSaferoom'", "'removeTag:'", "'removeUnit'", "'req:'", "'s:'", "'saferoom'", "'showMessage:'", "'spawnCharacter'", "'spawnTeam'", "'stage:'", "'stages:'", "'stash'", "'subscribe:'", "'t:'", "'talk'", "'tc'", "'te'", "'teleport'", "'territory:'", "'textureBlock'", "'textureblock'", "'topic'", "'trigger'", "'triggerCond'", "'triggerEffect'", "'unlockDoor'", "'updateTalk:'", "'x:'", "'y:'", "'zone:'", "'{'", "'}'"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "ADDTAG", "ADD_TAG_PREFIX", "AIINIT", "AINODE", "AND", "BEHAVIOUR", "BLOCK", "BOOL", "CHANGEAINODE", "COMMAND", "COMMAND_CALL", "COMMAND_CALL_PREFIX", "COMMENT", "CONTAINSFACTION", "CONVERSE", "COVER", "DIRECTORBIAS", "DOORNAMES", "EMPTY", "HASITEM", "HASWEAPON", "IDENT", "INIT", "INROOM", "INT", "ISALIVE", "ISDAEMON", "ISDEAD", "ISFACTION", "ISINVESTIGATED", "ISNAME", "ISNOTDAEMON", "ISNOTINVESTIGATED", "KILLUNIT", "LINE", "LOADMAP", "LOCKDOOR", "LOGIC", "MAPSIZE", "MAPSPAWNS", "MAXTEAMSIZE", "MINTEAMSIZE", "MULTILINE_COMMENT", "NEGATION", "NOT_PREFIX", "ONTIME", "OPENINGLINE", "OPTION", "OR", "PORTAL", "REMOVESAFEROOM", "REMOVETAG", "REMOVEUNIT", "REMOVE_TAG_PREFIX", "REQ", "SAFEROOM", "SHOWMESSAGE", "SPAWNCHARACTER", "SPAWNTEAM", "STAGELIST", "STASH", "STRING", "SUBSCRIBE", "TALK", "TALKMAP", "TALKPARENT", "TALKSTAGE", "TELEDEST", "TELEPORT", "TERRITORY", "TEXTURE", "TEXTUREBLOCK", "TOPIC", "TRIGGER", "TRIGGERCOND", "TRIGGEREFFECT", "TRIGGERTYPE", "UNLOCKDOOR", "UPDATETALK", "UPDATE_TREE_PREFIX", "VAR", "WS", "XLIST", "YLIST", "ZONE", "'\"'", "'#'", "'('", "')'", "','", "'-'", "'::'", "'AND'", "'BLOCK'", "'COMMAND'", "'COVER'", "'INIT'", "'MAPSIZE'", "'MAPSPAWNS'", "'OR'", "'PORTAL'", "'STASH'", "'TALK'", "'TEXTUREBLOCK'", "'TRIGGER'", "'a:'", "'addTag:'", "'aiInit:'", "'aiNode'", "'behaviours:'", "'block'", "'callCommand:'", "'changeAiNode'", "'command'", "'containsFaction:'", "'converse'", "'cover'", "'destination'", "'directorBias:'", "'hasItem:'", "'hasWeapon:'", "'init'", "'isAlive'", "'isAlive:'", "'isDaemon'", "'isDead'", "'isFaction:'", "'isInvestigated'", "'isName:'", "'isNotDaemon'", "'isNotInvestigated'", "'killUnit'", "'l:'", "'lines:'", "'loadMap:'", "'lockDoor'", "'mapsize'", "'mapspawns'", "'maxTeamSize:'", "'minTeamSize:'", "'name:'", "'o:'", "'onTime:'", "'opening:'", "'openingLine:'", "'option:'", "'p:'", "'parent:'", "'portal'", "'removeSaferoom'", "'removeTag:'", "'removeUnit'", "'req:'", "'s:'", "'saferoom'", "'showMessage:'", "'spawnCharacter'", "'spawnTeam'", "'stage:'", "'stages:'", "'stash'", "'subscribe:'", "'t:'", "'talk'", "'tc'", "'te'", "'teleport'", "'territory:'", "'textureBlock'", "'textureblock'", "'topic'", "'trigger'", "'triggerCond'", "'triggerEffect'", "'unlockDoor'", "'updateTalk:'", "'x:'", "'y:'", "'zone:'", "'{'", "'}'"
     };
 
     public static final int EOF=-1;
@@ -1236,7 +1236,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
             // AST REWRITE
-            // elements: varAssignment, properties
+            // elements: properties, varAssignment
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -2768,7 +2768,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
             // AST REWRITE
-            // elements: INT, stringLiteral
+            // elements: stringLiteral, INT
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -3911,7 +3911,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
             // AST REWRITE
-            // elements: topicProperties, requiredAssignment
+            // elements: requiredAssignment, topicProperties
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -4983,7 +4983,7 @@ public TreeAdaptor getTreeAdaptor() {
                     stream_queryNegation.add(b2.getTree());
 
                     // AST REWRITE
-                    // elements: b2, b1
+                    // elements: b1, b2
                     // token labels: 
                     // rule labels: retval, b1, b2
                     // token list labels: 
@@ -5033,7 +5033,7 @@ public TreeAdaptor getTreeAdaptor() {
                     stream_queryNegation.add(b2.getTree());
 
                     // AST REWRITE
-                    // elements: b2, b1
+                    // elements: b1, b2
                     // token labels: 
                     // rule labels: retval, b1, b2
                     // token list labels: 
@@ -5521,7 +5521,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
             // AST REWRITE
-            // elements: properties, varAssignment
+            // elements: varAssignment, properties
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -5677,7 +5677,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
             // AST REWRITE
-            // elements: properties, varAssignment
+            // elements: varAssignment, properties
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -7505,7 +7505,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
             // AST REWRITE
-            // elements: yListProperty, xListProperty
+            // elements: xListProperty, yListProperty
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -10289,7 +10289,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
     // $ANTLR start "changeAiNode"
-    // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:470:1: changeAiNode : 'changeAiNode:' -> ^( CHANGEAINODE ) ;
+    // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:470:1: changeAiNode : 'changeAiNode' '{' '{' unitInfo '}' ',' '{' aiNodeOptions '}' '}' -> ^( CHANGEAINODE unitInfo aiNodeOptions ) ;
     public final AtrophyScriptParser.changeAiNode_return changeAiNode() throws RecognitionException {
         AtrophyScriptParser.changeAiNode_return retval = new AtrophyScriptParser.changeAiNode_return();
         retval.start = input.LT(1);
@@ -10298,20 +10298,84 @@ public TreeAdaptor getTreeAdaptor() {
         CommonTree root_0 = null;
 
         Token string_literal306=null;
+        Token char_literal307=null;
+        Token char_literal308=null;
+        Token char_literal310=null;
+        Token char_literal311=null;
+        Token char_literal312=null;
+        Token char_literal314=null;
+        Token char_literal315=null;
+        AtrophyScriptParser.unitInfo_return unitInfo309 =null;
+
+        AtrophyScriptParser.aiNodeOptions_return aiNodeOptions313 =null;
+
 
         CommonTree string_literal306_tree=null;
+        CommonTree char_literal307_tree=null;
+        CommonTree char_literal308_tree=null;
+        CommonTree char_literal310_tree=null;
+        CommonTree char_literal311_tree=null;
+        CommonTree char_literal312_tree=null;
+        CommonTree char_literal314_tree=null;
+        CommonTree char_literal315_tree=null;
         RewriteRuleTokenStream stream_116=new RewriteRuleTokenStream(adaptor,"token 116");
-
+        RewriteRuleTokenStream stream_183=new RewriteRuleTokenStream(adaptor,"token 183");
+        RewriteRuleTokenStream stream_93=new RewriteRuleTokenStream(adaptor,"token 93");
+        RewriteRuleTokenStream stream_184=new RewriteRuleTokenStream(adaptor,"token 184");
+        RewriteRuleSubtreeStream stream_aiNodeOptions=new RewriteRuleSubtreeStream(adaptor,"rule aiNodeOptions");
+        RewriteRuleSubtreeStream stream_unitInfo=new RewriteRuleSubtreeStream(adaptor,"rule unitInfo");
         try {
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:470:13: ( 'changeAiNode:' -> ^( CHANGEAINODE ) )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:471:4: 'changeAiNode:'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:470:13: ( 'changeAiNode' '{' '{' unitInfo '}' ',' '{' aiNodeOptions '}' '}' -> ^( CHANGEAINODE unitInfo aiNodeOptions ) )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:471:4: 'changeAiNode' '{' '{' unitInfo '}' ',' '{' aiNodeOptions '}' '}'
             {
             string_literal306=(Token)match(input,116,FOLLOW_116_in_changeAiNode3011);  
             stream_116.add(string_literal306);
 
 
+            char_literal307=(Token)match(input,183,FOLLOW_183_in_changeAiNode3013);  
+            stream_183.add(char_literal307);
+
+
+            char_literal308=(Token)match(input,183,FOLLOW_183_in_changeAiNode3015);  
+            stream_183.add(char_literal308);
+
+
+            pushFollow(FOLLOW_unitInfo_in_changeAiNode3017);
+            unitInfo309=unitInfo();
+
+            state._fsp--;
+
+            stream_unitInfo.add(unitInfo309.getTree());
+
+            char_literal310=(Token)match(input,184,FOLLOW_184_in_changeAiNode3019);  
+            stream_184.add(char_literal310);
+
+
+            char_literal311=(Token)match(input,93,FOLLOW_93_in_changeAiNode3021);  
+            stream_93.add(char_literal311);
+
+
+            char_literal312=(Token)match(input,183,FOLLOW_183_in_changeAiNode3023);  
+            stream_183.add(char_literal312);
+
+
+            pushFollow(FOLLOW_aiNodeOptions_in_changeAiNode3025);
+            aiNodeOptions313=aiNodeOptions();
+
+            state._fsp--;
+
+            stream_aiNodeOptions.add(aiNodeOptions313.getTree());
+
+            char_literal314=(Token)match(input,184,FOLLOW_184_in_changeAiNode3027);  
+            stream_184.add(char_literal314);
+
+
+            char_literal315=(Token)match(input,184,FOLLOW_184_in_changeAiNode3029);  
+            stream_184.add(char_literal315);
+
+
             // AST REWRITE
-            // elements: 
+            // elements: unitInfo, aiNodeOptions
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -10321,14 +10385,18 @@ public TreeAdaptor getTreeAdaptor() {
             RewriteRuleSubtreeStream stream_retval=new RewriteRuleSubtreeStream(adaptor,"rule retval",retval!=null?retval.tree:null);
 
             root_0 = (CommonTree)adaptor.nil();
-            // 471:21: -> ^( CHANGEAINODE )
+            // 471:70: -> ^( CHANGEAINODE unitInfo aiNodeOptions )
             {
-                // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:471:24: ^( CHANGEAINODE )
+                // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:471:73: ^( CHANGEAINODE unitInfo aiNodeOptions )
                 {
                 CommonTree root_1 = (CommonTree)adaptor.nil();
                 root_1 = (CommonTree)adaptor.becomeRoot(
                 (CommonTree)adaptor.create(CHANGEAINODE, "CHANGEAINODE")
                 , root_1);
+
+                adaptor.addChild(root_1, stream_unitInfo.nextTree());
+
+                adaptor.addChild(root_1, stream_aiNodeOptions.nextTree());
 
                 adaptor.addChild(root_0, root_1);
                 }
@@ -10377,27 +10445,27 @@ public TreeAdaptor getTreeAdaptor() {
 
         CommonTree root_0 = null;
 
-        Token string_literal307=null;
-        AtrophyScriptParser.stringLiteral_return stringLiteral308 =null;
+        Token string_literal316=null;
+        AtrophyScriptParser.stringLiteral_return stringLiteral317 =null;
 
 
-        CommonTree string_literal307_tree=null;
+        CommonTree string_literal316_tree=null;
         RewriteRuleTokenStream stream_159=new RewriteRuleTokenStream(adaptor,"token 159");
         RewriteRuleSubtreeStream stream_stringLiteral=new RewriteRuleSubtreeStream(adaptor,"rule stringLiteral");
         try {
             // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:474:12: ( 'showMessage:' stringLiteral -> ^( SHOWMESSAGE stringLiteral ) )
             // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:475:4: 'showMessage:' stringLiteral
             {
-            string_literal307=(Token)match(input,159,FOLLOW_159_in_showMessage3033);  
-            stream_159.add(string_literal307);
+            string_literal316=(Token)match(input,159,FOLLOW_159_in_showMessage3054);  
+            stream_159.add(string_literal316);
 
 
-            pushFollow(FOLLOW_stringLiteral_in_showMessage3035);
-            stringLiteral308=stringLiteral();
+            pushFollow(FOLLOW_stringLiteral_in_showMessage3056);
+            stringLiteral317=stringLiteral();
 
             state._fsp--;
 
-            stream_stringLiteral.add(stringLiteral308.getTree());
+            stream_stringLiteral.add(stringLiteral317.getTree());
 
             // AST REWRITE
             // elements: stringLiteral
@@ -10468,17 +10536,17 @@ public TreeAdaptor getTreeAdaptor() {
 
         CommonTree root_0 = null;
 
-        Token string_literal309=null;
-        Token string_literal310=null;
-        Token char_literal311=null;
-        Token char_literal313=null;
-        AtrophyScriptParser.commandCallList_return commandCallList312 =null;
+        Token string_literal318=null;
+        Token string_literal319=null;
+        Token char_literal320=null;
+        Token char_literal322=null;
+        AtrophyScriptParser.commandCallList_return commandCallList321 =null;
 
 
-        CommonTree string_literal309_tree=null;
-        CommonTree string_literal310_tree=null;
-        CommonTree char_literal311_tree=null;
-        CommonTree char_literal313_tree=null;
+        CommonTree string_literal318_tree=null;
+        CommonTree string_literal319_tree=null;
+        CommonTree char_literal320_tree=null;
+        CommonTree char_literal322_tree=null;
         RewriteRuleTokenStream stream_125=new RewriteRuleTokenStream(adaptor,"token 125");
         RewriteRuleTokenStream stream_183=new RewriteRuleTokenStream(adaptor,"token 183");
         RewriteRuleTokenStream stream_184=new RewriteRuleTokenStream(adaptor,"token 184");
@@ -10509,8 +10577,8 @@ public TreeAdaptor getTreeAdaptor() {
                 case 1 :
                     // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:479:5: 'INIT'
                     {
-                    string_literal309=(Token)match(input,100,FOLLOW_100_in_beginStatement3059);  
-                    stream_100.add(string_literal309);
+                    string_literal318=(Token)match(input,100,FOLLOW_100_in_beginStatement3080);  
+                    stream_100.add(string_literal318);
 
 
                     }
@@ -10518,8 +10586,8 @@ public TreeAdaptor getTreeAdaptor() {
                 case 2 :
                     // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:479:14: 'init'
                     {
-                    string_literal310=(Token)match(input,125,FOLLOW_125_in_beginStatement3063);  
-                    stream_125.add(string_literal310);
+                    string_literal319=(Token)match(input,125,FOLLOW_125_in_beginStatement3084);  
+                    stream_125.add(string_literal319);
 
 
                     }
@@ -10528,19 +10596,19 @@ public TreeAdaptor getTreeAdaptor() {
             }
 
 
-            char_literal311=(Token)match(input,183,FOLLOW_183_in_beginStatement3066);  
-            stream_183.add(char_literal311);
+            char_literal320=(Token)match(input,183,FOLLOW_183_in_beginStatement3087);  
+            stream_183.add(char_literal320);
 
 
-            pushFollow(FOLLOW_commandCallList_in_beginStatement3071);
-            commandCallList312=commandCallList();
+            pushFollow(FOLLOW_commandCallList_in_beginStatement3092);
+            commandCallList321=commandCallList();
 
             state._fsp--;
 
-            stream_commandCallList.add(commandCallList312.getTree());
+            stream_commandCallList.add(commandCallList321.getTree());
 
-            char_literal313=(Token)match(input,184,FOLLOW_184_in_beginStatement3076);  
-            stream_184.add(char_literal313);
+            char_literal322=(Token)match(input,184,FOLLOW_184_in_beginStatement3097);  
+            stream_184.add(char_literal322);
 
 
             // AST REWRITE
@@ -10612,13 +10680,13 @@ public TreeAdaptor getTreeAdaptor() {
 
         CommonTree root_0 = null;
 
-        Token char_literal315=null;
-        AtrophyScriptParser.commandCall_return commandCall314 =null;
+        Token char_literal324=null;
+        AtrophyScriptParser.commandCall_return commandCall323 =null;
 
-        AtrophyScriptParser.commandCall_return commandCall316 =null;
+        AtrophyScriptParser.commandCall_return commandCall325 =null;
 
 
-        CommonTree char_literal315_tree=null;
+        CommonTree char_literal324_tree=null;
 
         try {
             // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:486:16: ( commandCall ( ',' ! commandCall )* )
@@ -10627,12 +10695,12 @@ public TreeAdaptor getTreeAdaptor() {
             root_0 = (CommonTree)adaptor.nil();
 
 
-            pushFollow(FOLLOW_commandCall_in_commandCallList3103);
-            commandCall314=commandCall();
+            pushFollow(FOLLOW_commandCall_in_commandCallList3124);
+            commandCall323=commandCall();
 
             state._fsp--;
 
-            adaptor.addChild(root_0, commandCall314.getTree());
+            adaptor.addChild(root_0, commandCall323.getTree());
 
             // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:487:16: ( ',' ! commandCall )*
             loop45:
@@ -10643,14 +10711,14 @@ public TreeAdaptor getTreeAdaptor() {
             	case 1 :
             	    // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:487:17: ',' ! commandCall
             	    {
-            	    char_literal315=(Token)match(input,93,FOLLOW_93_in_commandCallList3106); 
+            	    char_literal324=(Token)match(input,93,FOLLOW_93_in_commandCallList3127); 
 
-            	    pushFollow(FOLLOW_commandCall_in_commandCallList3109);
-            	    commandCall316=commandCall();
+            	    pushFollow(FOLLOW_commandCall_in_commandCallList3130);
+            	    commandCall325=commandCall();
 
             	    state._fsp--;
 
-            	    adaptor.addChild(root_0, commandCall316.getTree());
+            	    adaptor.addChild(root_0, commandCall325.getTree());
 
             	    }
             	    break;
@@ -10700,15 +10768,15 @@ public TreeAdaptor getTreeAdaptor() {
 
         CommonTree root_0 = null;
 
-        Token string_literal317=null;
-        Token COMMAND_CALL_PREFIX319=null;
-        AtrophyScriptParser.stringLiteral_return stringLiteral318 =null;
+        Token string_literal326=null;
+        Token COMMAND_CALL_PREFIX328=null;
+        AtrophyScriptParser.stringLiteral_return stringLiteral327 =null;
 
-        AtrophyScriptParser.stringLiteral_return stringLiteral320 =null;
+        AtrophyScriptParser.stringLiteral_return stringLiteral329 =null;
 
 
-        CommonTree string_literal317_tree=null;
-        CommonTree COMMAND_CALL_PREFIX319_tree=null;
+        CommonTree string_literal326_tree=null;
+        CommonTree COMMAND_CALL_PREFIX328_tree=null;
         RewriteRuleTokenStream stream_115=new RewriteRuleTokenStream(adaptor,"token 115");
         RewriteRuleTokenStream stream_COMMAND_CALL_PREFIX=new RewriteRuleTokenStream(adaptor,"token COMMAND_CALL_PREFIX");
         RewriteRuleSubtreeStream stream_stringLiteral=new RewriteRuleSubtreeStream(adaptor,"rule stringLiteral");
@@ -10734,16 +10802,16 @@ public TreeAdaptor getTreeAdaptor() {
                 case 1 :
                     // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:491:4: 'callCommand:' stringLiteral
                     {
-                    string_literal317=(Token)match(input,115,FOLLOW_115_in_commandCall3126);  
-                    stream_115.add(string_literal317);
+                    string_literal326=(Token)match(input,115,FOLLOW_115_in_commandCall3147);  
+                    stream_115.add(string_literal326);
 
 
-                    pushFollow(FOLLOW_stringLiteral_in_commandCall3128);
-                    stringLiteral318=stringLiteral();
+                    pushFollow(FOLLOW_stringLiteral_in_commandCall3149);
+                    stringLiteral327=stringLiteral();
 
                     state._fsp--;
 
-                    stream_stringLiteral.add(stringLiteral318.getTree());
+                    stream_stringLiteral.add(stringLiteral327.getTree());
 
                     // AST REWRITE
                     // elements: stringLiteral
@@ -10780,16 +10848,16 @@ public TreeAdaptor getTreeAdaptor() {
                 case 2 :
                     // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:492:6: COMMAND_CALL_PREFIX stringLiteral
                     {
-                    COMMAND_CALL_PREFIX319=(Token)match(input,COMMAND_CALL_PREFIX,FOLLOW_COMMAND_CALL_PREFIX_in_commandCall3143);  
-                    stream_COMMAND_CALL_PREFIX.add(COMMAND_CALL_PREFIX319);
+                    COMMAND_CALL_PREFIX328=(Token)match(input,COMMAND_CALL_PREFIX,FOLLOW_COMMAND_CALL_PREFIX_in_commandCall3164);  
+                    stream_COMMAND_CALL_PREFIX.add(COMMAND_CALL_PREFIX328);
 
 
-                    pushFollow(FOLLOW_stringLiteral_in_commandCall3145);
-                    stringLiteral320=stringLiteral();
+                    pushFollow(FOLLOW_stringLiteral_in_commandCall3166);
+                    stringLiteral329=stringLiteral();
 
                     state._fsp--;
 
-                    stream_stringLiteral.add(stringLiteral320.getTree());
+                    stream_stringLiteral.add(stringLiteral329.getTree());
 
                     // AST REWRITE
                     // elements: stringLiteral
@@ -10862,13 +10930,13 @@ public TreeAdaptor getTreeAdaptor() {
 
         CommonTree root_0 = null;
 
-        Token char_literal321=null;
-        Token wildcard322=null;
-        Token char_literal323=null;
+        Token char_literal330=null;
+        Token wildcard331=null;
+        Token char_literal332=null;
 
-        CommonTree char_literal321_tree=null;
-        CommonTree wildcard322_tree=null;
-        CommonTree char_literal323_tree=null;
+        CommonTree char_literal330_tree=null;
+        CommonTree wildcard331_tree=null;
+        CommonTree char_literal332_tree=null;
 
         try {
             // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:495:14: ( '\"' ! ( . )* '\"' !)
@@ -10877,7 +10945,7 @@ public TreeAdaptor getTreeAdaptor() {
             root_0 = (CommonTree)adaptor.nil();
 
 
-            char_literal321=(Token)match(input,89,FOLLOW_89_in_stringLiteral3168); 
+            char_literal330=(Token)match(input,89,FOLLOW_89_in_stringLiteral3189); 
 
             // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:496:9: ( . )*
             loop47:
@@ -10897,11 +10965,11 @@ public TreeAdaptor getTreeAdaptor() {
             	case 1 :
             	    // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:496:9: .
             	    {
-            	    wildcard322=(Token)input.LT(1);
+            	    wildcard331=(Token)input.LT(1);
 
             	    matchAny(input); 
-            	    wildcard322_tree = (CommonTree)adaptor.create(wildcard322);
-            	    adaptor.addChild(root_0, wildcard322_tree);
+            	    wildcard331_tree = (CommonTree)adaptor.create(wildcard331);
+            	    adaptor.addChild(root_0, wildcard331_tree);
 
 
             	    }
@@ -10913,7 +10981,7 @@ public TreeAdaptor getTreeAdaptor() {
             } while (true);
 
 
-            char_literal323=(Token)match(input,89,FOLLOW_89_in_stringLiteral3174); 
+            char_literal332=(Token)match(input,89,FOLLOW_89_in_stringLiteral3195); 
 
             }
 
@@ -11314,22 +11382,31 @@ public TreeAdaptor getTreeAdaptor() {
     public static final BitSet FOLLOW_REMOVE_TAG_PREFIX_in_removeTag2965 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
     public static final BitSet FOLLOW_stringLiteral_in_removeTag2967 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_122_in_directorBias2990 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_116_in_changeAiNode3011 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_159_in_showMessage3033 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_stringLiteral_in_showMessage3035 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_100_in_beginStatement3059 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0080000000000000L});
-    public static final BitSet FOLLOW_125_in_beginStatement3063 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0080000000000000L});
-    public static final BitSet FOLLOW_183_in_beginStatement3066 = new BitSet(new long[]{0x0000000000008000L,0x0008000000000000L});
-    public static final BitSet FOLLOW_commandCallList_in_beginStatement3071 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0100000000000000L});
-    public static final BitSet FOLLOW_184_in_beginStatement3076 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_commandCall_in_commandCallList3103 = new BitSet(new long[]{0x0000000000000002L,0x0000000020000000L});
-    public static final BitSet FOLLOW_93_in_commandCallList3106 = new BitSet(new long[]{0x0000000000008000L,0x0008000000000000L});
-    public static final BitSet FOLLOW_commandCall_in_commandCallList3109 = new BitSet(new long[]{0x0000000000000002L,0x0000000020000000L});
-    public static final BitSet FOLLOW_115_in_commandCall3126 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_stringLiteral_in_commandCall3128 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_COMMAND_CALL_PREFIX_in_commandCall3143 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
-    public static final BitSet FOLLOW_stringLiteral_in_commandCall3145 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_89_in_stringLiteral3168 = new BitSet(new long[]{0xFFFFFFFFFFFFFFF0L,0xFFFFFFFFFFFFFFFFL,0x01FFFFFFFFFFFFFFL});
-    public static final BitSet FOLLOW_89_in_stringLiteral3174 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_116_in_changeAiNode3011 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0080000000000000L});
+    public static final BitSet FOLLOW_183_in_changeAiNode3013 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0080000000000000L});
+    public static final BitSet FOLLOW_183_in_changeAiNode3015 = new BitSet(new long[]{0x0000000000000000L,0x5A01000000000000L,0x010000000000C07FL});
+    public static final BitSet FOLLOW_unitInfo_in_changeAiNode3017 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0100000000000000L});
+    public static final BitSet FOLLOW_184_in_changeAiNode3019 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
+    public static final BitSet FOLLOW_93_in_changeAiNode3021 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0080000000000000L});
+    public static final BitSet FOLLOW_183_in_changeAiNode3023 = new BitSet(new long[]{0x0000000000000000L,0x0002000000000000L,0x0100002000000000L});
+    public static final BitSet FOLLOW_aiNodeOptions_in_changeAiNode3025 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0100000000000000L});
+    public static final BitSet FOLLOW_184_in_changeAiNode3027 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0100000000000000L});
+    public static final BitSet FOLLOW_184_in_changeAiNode3029 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_159_in_showMessage3054 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_stringLiteral_in_showMessage3056 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_100_in_beginStatement3080 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0080000000000000L});
+    public static final BitSet FOLLOW_125_in_beginStatement3084 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0080000000000000L});
+    public static final BitSet FOLLOW_183_in_beginStatement3087 = new BitSet(new long[]{0x0000000000008000L,0x0008000000000000L});
+    public static final BitSet FOLLOW_commandCallList_in_beginStatement3092 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0100000000000000L});
+    public static final BitSet FOLLOW_184_in_beginStatement3097 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_commandCall_in_commandCallList3124 = new BitSet(new long[]{0x0000000000000002L,0x0000000020000000L});
+    public static final BitSet FOLLOW_93_in_commandCallList3127 = new BitSet(new long[]{0x0000000000008000L,0x0008000000000000L});
+    public static final BitSet FOLLOW_commandCall_in_commandCallList3130 = new BitSet(new long[]{0x0000000000000002L,0x0000000020000000L});
+    public static final BitSet FOLLOW_115_in_commandCall3147 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_stringLiteral_in_commandCall3149 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_COMMAND_CALL_PREFIX_in_commandCall3164 = new BitSet(new long[]{0x0000000000000000L,0x0000000002000000L});
+    public static final BitSet FOLLOW_stringLiteral_in_commandCall3166 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_89_in_stringLiteral3189 = new BitSet(new long[]{0xFFFFFFFFFFFFFFF0L,0xFFFFFFFFFFFFFFFFL,0x01FFFFFFFFFFFFFFL});
+    public static final BitSet FOLLOW_89_in_stringLiteral3195 = new BitSet(new long[]{0x0000000000000002L});
 
 }
