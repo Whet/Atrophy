@@ -460,19 +460,41 @@ public class AtrophyScriptReader {
 		
 		private class OnTime extends TruthCond {
 
-			int targetTime, currentTime;
+			int targetTime, currentTime, timeLeft, repeatsLeft;
 			
 			public OnTime(Tree tree) {
 				this.targetTime = Integer.parseInt(tree.getChild(0).toString());
+				
+				
 				this.currentTime = 0;
+				
+				this.timeLeft = -1;
+				this.repeatsLeft = -1;
+				
+				if(tree.getChild(1).toString().equals("EXPIRETIME"))
+					this.timeLeft = Integer.parseInt(tree.getChild(1).getChild(0).toString());
+				
+				if(tree.getChild(1).toString().equals("EXPIREREPEATS"))
+					this.repeatsLeft = Integer.parseInt(tree.getChild(1).getChild(0).toString());
 			}
 			
 			@Override
 			public boolean truthCheck() {
+				
+				if(timeLeft == 0 || repeatsLeft == 0)
+					return false;
+				
 				currentTime++;
+				
+				if(timeLeft > 0)
+					timeLeft--;
 				
 				if(currentTime >= targetTime) {
 					currentTime = 0;
+					
+					if(repeatsLeft > 0)
+						repeatsLeft--;
+					
 					return true;
 				}
 				
