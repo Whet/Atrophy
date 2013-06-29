@@ -773,6 +773,9 @@ public class AtrophyScriptReader {
 				int rand = new Random().nextInt(this.xList.size());
 				
 				matchAi.get(i).setLocation(this.xList.get(rand), this.yList.get(rand));
+				
+				matchAi.get(i).updateLevelBlock();
+				aiCrowd.getActorMask(matchAi.get(i)).updateImage();
 			}
 		}
 		

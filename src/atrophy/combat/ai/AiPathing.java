@@ -279,8 +279,8 @@ public class AiPathing {
 	public LevelBlock getLevelBlock() {
 		
 		if(this.residentBlock == null)
-			this.residentBlock = levelManager.getBlock(location);
-		
+			this.updateLevelBlock();
+			
 		return this.residentBlock;
 	}
 
@@ -446,6 +446,10 @@ public class AiPathing {
 				invoker.setMoveLocationToSelf();
 			}
 		}
+	}
+
+	public void updateLevelBlock() {
+		this.residentBlock = levelManager.getBlock(this.getLocation());
 	}
 	
 }

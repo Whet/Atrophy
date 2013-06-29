@@ -854,4 +854,8 @@ public class Ai implements Lootable{
 		this.nextAi = nextAi;
 	}
 
+	public void updateLevelBlock() {
+		this.aiPathing.updateLevelBlock();
+	}
+
 }
