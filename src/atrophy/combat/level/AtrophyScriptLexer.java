@@ -1,4 +1,4 @@
-// $ANTLR 3.4 C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g 2013-06-29 13:03:20
+// $ANTLR 3.4 C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g 2013-06-29 13:10:28
 
 	package atrophy.combat.level;
 
@@ -107,7 +107,6 @@ public class AtrophyScriptLexer extends Lexer {
     public static final int T__183=183;
     public static final int T__184=184;
     public static final int T__185=185;
-    public static final int T__186=186;
     public static final int ADDTAG=4;
     public static final int ADD_TAG_PREFIX=5;
     public static final int AIINIT=6;
@@ -1468,10 +1467,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__145;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:66:8: ( 'name:' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:66:10: 'name:'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:66:8: ( 'o:' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:66:10: 'o:'
             {
-            match("name:"); 
+            match("o:"); 
 
 
 
@@ -1491,10 +1490,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__146;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:67:8: ( 'o:' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:67:10: 'o:'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:67:8: ( 'onTime:' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:67:10: 'onTime:'
             {
-            match("o:"); 
+            match("onTime:"); 
 
 
 
@@ -1514,10 +1513,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__147;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:68:8: ( 'onTime:' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:68:10: 'onTime:'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:68:8: ( 'opening:' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:68:10: 'opening:'
             {
-            match("onTime:"); 
+            match("opening:"); 
 
 
 
@@ -1537,10 +1536,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__148;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:69:8: ( 'opening:' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:69:10: 'opening:'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:69:8: ( 'openingLine:' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:69:10: 'openingLine:'
             {
-            match("opening:"); 
+            match("openingLine:"); 
 
 
 
@@ -1560,10 +1559,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__149;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:70:8: ( 'openingLine:' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:70:10: 'openingLine:'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:70:8: ( 'option:' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:70:10: 'option:'
             {
-            match("openingLine:"); 
+            match("option:"); 
 
 
 
@@ -1583,10 +1582,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__150;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:71:8: ( 'option:' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:71:10: 'option:'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:71:8: ( 'p:' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:71:10: 'p:'
             {
-            match("option:"); 
+            match("p:"); 
 
 
 
@@ -1606,10 +1605,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__151;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:72:8: ( 'p:' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:72:10: 'p:'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:72:8: ( 'parent:' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:72:10: 'parent:'
             {
-            match("p:"); 
+            match("parent:"); 
 
 
 
@@ -1629,10 +1628,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__152;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:73:8: ( 'parent:' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:73:10: 'parent:'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:73:8: ( 'portal' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:73:10: 'portal'
             {
-            match("parent:"); 
+            match("portal"); 
 
 
 
@@ -1652,10 +1651,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__153;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:74:8: ( 'portal' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:74:10: 'portal'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:74:8: ( 'priority:' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:74:10: 'priority:'
             {
-            match("portal"); 
+            match("priority:"); 
 
 
 
@@ -1675,10 +1674,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__154;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:75:8: ( 'priority:' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:75:10: 'priority:'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:75:8: ( 'removeSaferoom' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:75:10: 'removeSaferoom'
             {
-            match("priority:"); 
+            match("removeSaferoom"); 
 
 
 
@@ -1698,10 +1697,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__155;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:76:8: ( 'removeSaferoom' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:76:10: 'removeSaferoom'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:76:8: ( 'removeTag:' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:76:10: 'removeTag:'
             {
-            match("removeSaferoom"); 
+            match("removeTag:"); 
 
 
 
@@ -1721,10 +1720,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__156;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:77:8: ( 'removeTag:' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:77:10: 'removeTag:'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:77:8: ( 'removeUnit' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:77:10: 'removeUnit'
             {
-            match("removeTag:"); 
+            match("removeUnit"); 
 
 
 
@@ -1744,10 +1743,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__157;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:78:8: ( 'removeUnit' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:78:10: 'removeUnit'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:78:8: ( 'req:' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:78:10: 'req:'
             {
-            match("removeUnit"); 
+            match("req:"); 
 
 
 
@@ -1767,10 +1766,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__158;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:79:8: ( 'req:' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:79:10: 'req:'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:79:8: ( 's:' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:79:10: 's:'
             {
-            match("req:"); 
+            match("s:"); 
 
 
 
@@ -1790,10 +1789,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__159;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:80:8: ( 's:' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:80:10: 's:'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:80:8: ( 'saferoom' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:80:10: 'saferoom'
             {
-            match("s:"); 
+            match("saferoom"); 
 
 
 
@@ -1813,10 +1812,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__160;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:81:8: ( 'saferoom' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:81:10: 'saferoom'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:81:8: ( 'showMessage:' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:81:10: 'showMessage:'
             {
-            match("saferoom"); 
+            match("showMessage:"); 
 
 
 
@@ -1836,10 +1835,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__161;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:82:8: ( 'showMessage:' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:82:10: 'showMessage:'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:82:8: ( 'spawnCharacter' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:82:10: 'spawnCharacter'
             {
-            match("showMessage:"); 
+            match("spawnCharacter"); 
 
 
 
@@ -1859,10 +1858,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__162;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:83:8: ( 'spawnCharacter' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:83:10: 'spawnCharacter'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:83:8: ( 'spawnTeam' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:83:10: 'spawnTeam'
             {
-            match("spawnCharacter"); 
+            match("spawnTeam"); 
 
 
 
@@ -1882,10 +1881,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__163;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:84:8: ( 'spawnTeam' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:84:10: 'spawnTeam'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:84:8: ( 'stage:' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:84:10: 'stage:'
             {
-            match("spawnTeam"); 
+            match("stage:"); 
 
 
 
@@ -1905,10 +1904,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__164;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:85:8: ( 'stage:' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:85:10: 'stage:'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:85:8: ( 'stages:' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:85:10: 'stages:'
             {
-            match("stage:"); 
+            match("stages:"); 
 
 
 
@@ -1928,10 +1927,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__165;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:86:8: ( 'stages:' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:86:10: 'stages:'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:86:8: ( 'stash' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:86:10: 'stash'
             {
-            match("stages:"); 
+            match("stash"); 
 
 
 
@@ -1951,10 +1950,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__166;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:87:8: ( 'stash' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:87:10: 'stash'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:87:8: ( 'subscribe:' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:87:10: 'subscribe:'
             {
-            match("stash"); 
+            match("subscribe:"); 
 
 
 
@@ -1974,10 +1973,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__167;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:88:8: ( 'subscribe:' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:88:10: 'subscribe:'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:88:8: ( 't:' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:88:10: 't:'
             {
-            match("subscribe:"); 
+            match("t:"); 
 
 
 
@@ -1997,10 +1996,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__168;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:89:8: ( 't:' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:89:10: 't:'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:89:8: ( 'talk' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:89:10: 'talk'
             {
-            match("t:"); 
+            match("talk"); 
 
 
 
@@ -2020,10 +2019,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__169;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:90:8: ( 'talk' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:90:10: 'talk'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:90:8: ( 'tc' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:90:10: 'tc'
             {
-            match("talk"); 
+            match("tc"); 
 
 
 
@@ -2043,10 +2042,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__170;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:91:8: ( 'tc' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:91:10: 'tc'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:91:8: ( 'te' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:91:10: 'te'
             {
-            match("tc"); 
+            match("te"); 
 
 
 
@@ -2066,10 +2065,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__171;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:92:8: ( 'te' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:92:10: 'te'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:92:8: ( 'teleport' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:92:10: 'teleport'
             {
-            match("te"); 
+            match("teleport"); 
 
 
 
@@ -2089,10 +2088,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__172;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:93:8: ( 'teleport' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:93:10: 'teleport'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:93:8: ( 'territory:' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:93:10: 'territory:'
             {
-            match("teleport"); 
+            match("territory:"); 
 
 
 
@@ -2112,10 +2111,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__173;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:94:8: ( 'territory:' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:94:10: 'territory:'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:94:8: ( 'textureBlock' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:94:10: 'textureBlock'
             {
-            match("territory:"); 
+            match("textureBlock"); 
 
 
 
@@ -2135,10 +2134,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__174;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:95:8: ( 'textureBlock' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:95:10: 'textureBlock'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:95:8: ( 'textureblock' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:95:10: 'textureblock'
             {
-            match("textureBlock"); 
+            match("textureblock"); 
 
 
 
@@ -2158,10 +2157,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__175;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:96:8: ( 'textureblock' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:96:10: 'textureblock'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:96:8: ( 'topic' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:96:10: 'topic'
             {
-            match("textureblock"); 
+            match("topic"); 
 
 
 
@@ -2181,10 +2180,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__176;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:97:8: ( 'topic' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:97:10: 'topic'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:97:8: ( 'trigger' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:97:10: 'trigger'
             {
-            match("topic"); 
+            match("trigger"); 
 
 
 
@@ -2204,10 +2203,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__177;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:98:8: ( 'trigger' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:98:10: 'trigger'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:98:8: ( 'triggerCond' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:98:10: 'triggerCond'
             {
-            match("trigger"); 
+            match("triggerCond"); 
 
 
 
@@ -2227,10 +2226,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__178;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:99:8: ( 'triggerCond' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:99:10: 'triggerCond'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:99:8: ( 'triggerEffect' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:99:10: 'triggerEffect'
             {
-            match("triggerCond"); 
+            match("triggerEffect"); 
 
 
 
@@ -2250,10 +2249,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__179;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:100:8: ( 'triggerEffect' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:100:10: 'triggerEffect'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:100:8: ( 'unlockDoor' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:100:10: 'unlockDoor'
             {
-            match("triggerEffect"); 
+            match("unlockDoor"); 
 
 
 
@@ -2273,10 +2272,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__180;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:101:8: ( 'unlockDoor' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:101:10: 'unlockDoor'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:101:8: ( 'updateTalk:' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:101:10: 'updateTalk:'
             {
-            match("unlockDoor"); 
+            match("updateTalk:"); 
 
 
 
@@ -2296,10 +2295,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__181;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:102:8: ( 'updateTalk:' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:102:10: 'updateTalk:'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:102:8: ( 'x:' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:102:10: 'x:'
             {
-            match("updateTalk:"); 
+            match("x:"); 
 
 
 
@@ -2319,10 +2318,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__182;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:103:8: ( 'x:' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:103:10: 'x:'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:103:8: ( 'y:' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:103:10: 'y:'
             {
-            match("x:"); 
+            match("y:"); 
 
 
 
@@ -2342,10 +2341,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__183;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:104:8: ( 'y:' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:104:10: 'y:'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:104:8: ( 'zone:' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:104:10: 'zone:'
             {
-            match("y:"); 
+            match("zone:"); 
 
 
 
@@ -2365,12 +2364,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__184;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:105:8: ( 'zone:' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:105:10: 'zone:'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:105:8: ( '{' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:105:10: '{'
             {
-            match("zone:"); 
-
-
+            match('{'); 
 
             }
 
@@ -2388,29 +2385,8 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__185;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:106:8: ( '{' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:106:10: '{'
-            {
-            match('{'); 
-
-            }
-
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally {
-        	// do for sure before leaving
-        }
-    }
-    // $ANTLR end "T__185"
-
-    // $ANTLR start "T__186"
-    public final void mT__186() throws RecognitionException {
-        try {
-            int _type = T__186;
-            int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:107:8: ( '}' )
-            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:107:10: '}'
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:106:8: ( '}' )
+            // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:106:10: '}'
             {
             match('}'); 
 
@@ -2423,7 +2399,7 @@ public class AtrophyScriptLexer extends Lexer {
         	// do for sure before leaving
         }
     }
-    // $ANTLR end "T__186"
+    // $ANTLR end "T__185"
 
     // $ANTLR start "NOT_PREFIX"
     public final void mNOT_PREFIX() throws RecognitionException {
@@ -2991,8 +2967,8 @@ public class AtrophyScriptLexer extends Lexer {
     // $ANTLR end "MULTILINE_COMMENT"
 
     public void mTokens() throws RecognitionException {
-        // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:8: ( T__90 | T__91 | T__92 | T__93 | T__94 | T__95 | T__96 | T__97 | T__98 | T__99 | T__100 | T__101 | T__102 | T__103 | T__104 | T__105 | T__106 | T__107 | T__108 | T__109 | T__110 | T__111 | T__112 | T__113 | T__114 | T__115 | T__116 | T__117 | T__118 | T__119 | T__120 | T__121 | T__122 | T__123 | T__124 | T__125 | T__126 | T__127 | T__128 | T__129 | T__130 | T__131 | T__132 | T__133 | T__134 | T__135 | T__136 | T__137 | T__138 | T__139 | T__140 | T__141 | T__142 | T__143 | T__144 | T__145 | T__146 | T__147 | T__148 | T__149 | T__150 | T__151 | T__152 | T__153 | T__154 | T__155 | T__156 | T__157 | T__158 | T__159 | T__160 | T__161 | T__162 | T__163 | T__164 | T__165 | T__166 | T__167 | T__168 | T__169 | T__170 | T__171 | T__172 | T__173 | T__174 | T__175 | T__176 | T__177 | T__178 | T__179 | T__180 | T__181 | T__182 | T__183 | T__184 | T__185 | T__186 | NOT_PREFIX | ADD_TAG_PREFIX | REMOVE_TAG_PREFIX | UPDATE_TREE_PREFIX | COMMAND_CALL_PREFIX | BOOL | IDENT | INT | WS | COMMENT | MULTILINE_COMMENT )
-        int alt7=108;
+        // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:8: ( T__90 | T__91 | T__92 | T__93 | T__94 | T__95 | T__96 | T__97 | T__98 | T__99 | T__100 | T__101 | T__102 | T__103 | T__104 | T__105 | T__106 | T__107 | T__108 | T__109 | T__110 | T__111 | T__112 | T__113 | T__114 | T__115 | T__116 | T__117 | T__118 | T__119 | T__120 | T__121 | T__122 | T__123 | T__124 | T__125 | T__126 | T__127 | T__128 | T__129 | T__130 | T__131 | T__132 | T__133 | T__134 | T__135 | T__136 | T__137 | T__138 | T__139 | T__140 | T__141 | T__142 | T__143 | T__144 | T__145 | T__146 | T__147 | T__148 | T__149 | T__150 | T__151 | T__152 | T__153 | T__154 | T__155 | T__156 | T__157 | T__158 | T__159 | T__160 | T__161 | T__162 | T__163 | T__164 | T__165 | T__166 | T__167 | T__168 | T__169 | T__170 | T__171 | T__172 | T__173 | T__174 | T__175 | T__176 | T__177 | T__178 | T__179 | T__180 | T__181 | T__182 | T__183 | T__184 | T__185 | NOT_PREFIX | ADD_TAG_PREFIX | REMOVE_TAG_PREFIX | UPDATE_TREE_PREFIX | COMMAND_CALL_PREFIX | BOOL | IDENT | INT | WS | COMMENT | MULTILINE_COMMENT )
+        int alt7=107;
         alt7 = dfa7.predict(input);
         switch (alt7) {
             case 1 :
@@ -3764,95 +3740,87 @@ public class AtrophyScriptLexer extends Lexer {
                 }
                 break;
             case 97 :
-                // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:672: T__186
-                {
-                mT__186(); 
-
-
-                }
-                break;
-            case 98 :
-                // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:679: NOT_PREFIX
+                // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:672: NOT_PREFIX
                 {
                 mNOT_PREFIX(); 
 
 
                 }
                 break;
-            case 99 :
-                // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:690: ADD_TAG_PREFIX
+            case 98 :
+                // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:683: ADD_TAG_PREFIX
                 {
                 mADD_TAG_PREFIX(); 
 
 
                 }
                 break;
-            case 100 :
-                // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:705: REMOVE_TAG_PREFIX
+            case 99 :
+                // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:698: REMOVE_TAG_PREFIX
                 {
                 mREMOVE_TAG_PREFIX(); 
 
 
                 }
                 break;
-            case 101 :
-                // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:723: UPDATE_TREE_PREFIX
+            case 100 :
+                // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:716: UPDATE_TREE_PREFIX
                 {
                 mUPDATE_TREE_PREFIX(); 
 
 
                 }
                 break;
-            case 102 :
-                // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:742: COMMAND_CALL_PREFIX
+            case 101 :
+                // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:735: COMMAND_CALL_PREFIX
                 {
                 mCOMMAND_CALL_PREFIX(); 
 
 
                 }
                 break;
-            case 103 :
-                // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:762: BOOL
+            case 102 :
+                // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:755: BOOL
                 {
                 mBOOL(); 
 
 
                 }
                 break;
-            case 104 :
-                // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:767: IDENT
+            case 103 :
+                // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:760: IDENT
                 {
                 mIDENT(); 
 
 
                 }
                 break;
-            case 105 :
-                // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:773: INT
+            case 104 :
+                // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:766: INT
                 {
                 mINT(); 
 
 
                 }
                 break;
-            case 106 :
-                // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:777: WS
+            case 105 :
+                // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:770: WS
                 {
                 mWS(); 
 
 
                 }
                 break;
-            case 107 :
-                // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:780: COMMENT
+            case 106 :
+                // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:773: COMMENT
                 {
                 mCOMMENT(); 
 
 
                 }
                 break;
-            case 108 :
-                // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:788: MULTILINE_COMMENT
+            case 107 :
+                // C:\\Users\\Charles Sherman\\workspace\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:781: MULTILINE_COMMENT
                 {
                 mMULTILINE_COMMENT(); 
 
@@ -3867,176 +3835,176 @@ public class AtrophyScriptLexer extends Lexer {
 
     protected DFA7 dfa7 = new DFA7(this);
     static final String DFA7_eotS =
-        "\2\uffff\1\61\5\uffff\10\51\1\75\16\51\1\75\4\51\3\uffff\2\75\11"+
-        "\uffff\5\51\1\165\5\51\2\uffff\15\51\1\uffff\5\51\1\uffff\2\51\1"+
-        "\uffff\4\51\1\uffff\5\51\1\uffff\1\51\1\u00a5\1\u00a9\4\51\2\uffff"+
-        "\3\51\2\uffff\1\u00b2\5\51\1\uffff\57\51\1\uffff\3\51\1\uffff\10"+
-        "\51\1\uffff\3\51\1\u00fa\3\51\1\u00ff\2\51\1\75\17\51\1\u0111\26"+
-        "\51\1\uffff\6\51\1\u012f\5\51\1\75\5\51\1\u013a\1\51\1\u013c\1\uffff"+
-        "\3\51\1\u0140\1\uffff\6\51\1\u0147\5\51\1\u014d\4\51\1\uffff\17"+
-        "\51\1\uffff\13\51\1\u016f\1\51\1\uffff\3\51\1\u0174\3\51\1\uffff"+
-        "\2\75\1\uffff\1\51\1\uffff\2\51\1\u017b\1\uffff\4\51\1\u0180\1\51"+
-        "\1\uffff\5\51\1\uffff\6\51\1\u018d\6\51\1\uffff\12\51\1\u019e\6"+
-        "\51\1\uffff\1\51\1\uffff\4\51\1\uffff\3\51\1\u01af\1\u01b0\1\51"+
-        "\1\uffff\1\51\1\u01b3\3\uffff\3\51\1\u01b7\6\51\1\u01bf\1\51\1\uffff"+
-        "\2\51\1\uffff\5\51\1\u01c8\3\51\1\uffff\1\51\3\uffff\10\51\1\uffff"+
-        "\4\51\1\u01dd\2\51\2\uffff\2\51\1\uffff\3\51\1\uffff\1\51\1\u01e6"+
-        "\2\51\1\uffff\1\51\2\uffff\1\u01ea\4\51\1\u01ef\1\uffff\1\u01f0"+
-        "\1\uffff\3\51\1\uffff\5\51\1\u01f9\4\51\1\u01fe\5\51\1\uffff\2\51"+
-        "\1\u0206\5\51\1\uffff\3\51\1\uffff\4\51\2\uffff\1\u0213\3\51\1\uffff"+
-        "\3\51\1\uffff\2\51\1\u021c\1\51\1\uffff\7\51\1\uffff\7\51\2\uffff"+
-        "\3\51\1\uffff\4\51\1\uffff\1\u0233\2\51\3\uffff\4\51\1\u023a\2\51"+
-        "\1\uffff\3\51\1\u0240\2\51\1\u0243\5\51\1\uffff\4\51\1\u024d\1\51"+
-        "\2\uffff\1\u024f\1\uffff\1\u0250\1\51\1\uffff\2\51\1\uffff\1\51"+
-        "\3\uffff\1\51\1\uffff\1\51\1\u0257\1\u0258\1\uffff\1\51\2\uffff"+
-        "\1\51\1\uffff\4\51\2\uffff\1\u025f\1\51\1\u0261\1\51\1\u0263\1\u0264"+
-        "\1\uffff\1\51\1\uffff\1\51\3\uffff\1\51\1\u0268\1\uffff";
+        "\2\uffff\1\60\5\uffff\10\50\1\74\15\50\1\74\4\50\3\uffff\2\74\11"+
+        "\uffff\5\50\1\163\5\50\2\uffff\15\50\1\uffff\4\50\1\uffff\2\50\1"+
+        "\uffff\4\50\1\uffff\5\50\1\uffff\1\50\1\u00a2\1\u00a6\4\50\2\uffff"+
+        "\3\50\2\uffff\1\u00af\5\50\1\uffff\56\50\1\uffff\3\50\1\uffff\10"+
+        "\50\1\uffff\3\50\1\u00f6\3\50\1\u00fb\2\50\1\74\17\50\1\u010d\25"+
+        "\50\1\uffff\6\50\1\u012a\5\50\1\74\5\50\1\u0135\1\50\1\u0137\1\uffff"+
+        "\3\50\1\u013b\1\uffff\6\50\1\u0142\5\50\1\u0148\4\50\1\uffff\32"+
+        "\50\1\u016a\1\50\1\uffff\3\50\1\u016f\3\50\1\uffff\2\74\1\uffff"+
+        "\1\50\1\uffff\2\50\1\u0176\1\uffff\4\50\1\u017b\1\50\1\uffff\5\50"+
+        "\1\uffff\6\50\1\u0188\6\50\1\uffff\12\50\1\u0199\6\50\1\uffff\1"+
+        "\50\1\uffff\4\50\1\uffff\3\50\1\u01aa\1\u01ab\1\50\1\uffff\1\50"+
+        "\1\u01ae\3\uffff\3\50\1\u01b2\6\50\1\u01ba\1\50\1\uffff\2\50\1\uffff"+
+        "\5\50\1\u01c3\3\50\1\uffff\1\50\3\uffff\10\50\1\uffff\4\50\1\u01d8"+
+        "\2\50\2\uffff\2\50\1\uffff\3\50\1\uffff\1\50\1\u01e1\2\50\1\uffff"+
+        "\1\50\2\uffff\1\u01e5\4\50\1\u01ea\1\uffff\1\u01eb\1\uffff\3\50"+
+        "\1\uffff\5\50\1\u01f4\4\50\1\u01f9\5\50\1\uffff\2\50\1\u0201\5\50"+
+        "\1\uffff\3\50\1\uffff\4\50\2\uffff\1\u020e\3\50\1\uffff\3\50\1\uffff"+
+        "\2\50\1\u0217\1\50\1\uffff\7\50\1\uffff\7\50\2\uffff\3\50\1\uffff"+
+        "\4\50\1\uffff\1\u022e\2\50\3\uffff\4\50\1\u0235\2\50\1\uffff\3\50"+
+        "\1\u023b\2\50\1\u023e\5\50\1\uffff\4\50\1\u0248\1\50\2\uffff\1\u024a"+
+        "\1\uffff\1\u024b\1\50\1\uffff\2\50\1\uffff\1\50\3\uffff\1\50\1\uffff"+
+        "\1\50\1\u0252\1\u0253\1\uffff\1\50\2\uffff\1\50\1\uffff\4\50\2\uffff"+
+        "\1\u025a\1\50\1\u025c\1\50\1\u025e\1\u025f\1\uffff\1\50\1\uffff"+
+        "\1\50\3\uffff\1\50\1\u0263\1\uffff";
     static final String DFA7_eofS =
-        "\u0269\uffff";
+        "\u0264\uffff";
     static final String DFA7_minS =
         "\1\11\1\uffff\1\41\5\uffff\1\116\1\114\1\117\1\116\1\101\1\122\1"+
-        "\117\1\124\1\60\1\72\1\145\1\141\1\145\1\141\1\156\1\151\1\72\2"+
+        "\117\1\124\1\60\1\72\1\145\1\141\1\145\1\141\1\156\1\151\1\72\1"+
         "\141\2\72\1\145\1\72\1\60\1\156\2\72\1\157\3\uffff\2\60\3\uffff"+
         "\1\52\5\uffff\1\104\1\117\1\115\1\111\1\120\1\60\1\122\1\101\1\114"+
         "\1\130\1\111\2\uffff\1\144\1\111\1\150\1\157\1\154\1\141\1\155\1"+
         "\163\1\162\1\163\1\151\1\101\1\154\1\uffff\1\156\1\141\1\160\1\156"+
-        "\1\155\1\uffff\1\124\1\145\1\uffff\2\162\1\151\1\155\1\uffff\1\146"+
-        "\1\157\2\141\1\142\1\uffff\1\154\2\60\1\160\1\151\1\154\1\144\2"+
-        "\uffff\1\156\1\114\1\154\2\uffff\1\60\1\103\1\115\1\105\1\124\1"+
-        "\123\1\uffff\1\124\1\123\1\113\1\124\1\107\1\105\1\124\1\156\1\157"+
-        "\1\141\1\143\1\154\1\156\1\155\1\164\1\145\1\164\1\145\1\111\1\164"+
-        "\1\154\2\141\1\156\1\141\1\154\1\145\1\144\1\153\1\163\2\124\1\145"+
-        "\1\151\1\156\1\151\1\145\1\164\2\157\1\72\1\145\2\167\1\147\1\163"+
-        "\1\153\1\uffff\1\145\1\162\1\164\1\uffff\1\151\1\147\1\145\1\157"+
-        "\1\141\1\145\1\123\1\163\1\uffff\1\113\1\101\1\122\1\60\1\111\1"+
-        "\101\1\110\1\60\1\125\1\107\1\60\1\141\1\151\1\144\1\166\1\153\1"+
-        "\103\1\147\2\141\1\145\1\162\1\151\1\143\1\164\1\145\1\60\1\151"+
-        "\1\145\1\141\1\143\1\166\1\155\1\164\1\125\1\163\1\115\1\104\1\151"+
-        "\2\145\1\72\1\155\1\151\1\157\1\156\1\141\1\162\1\166\1\uffff\1"+
-        "\162\1\115\1\156\1\145\1\150\1\143\1\60\1\160\1\151\1\165\1\143"+
-        "\1\147\1\60\1\143\1\164\1\72\1\105\1\145\1\60\1\116\1\60\1\uffff"+
-        "\1\132\1\101\1\114\1\60\1\uffff\1\122\1\105\1\147\1\164\1\145\1"+
-        "\151\1\60\1\157\1\145\1\156\1\151\1\162\1\60\1\156\1\164\1\145\1"+
-        "\141\1\uffff\1\166\1\155\1\144\1\164\2\145\1\104\1\156\1\72\1\141"+
-        "\1\157\1\172\3\141\1\uffff\1\145\2\156\1\164\1\154\1\151\1\145\1"+
-        "\157\1\145\1\103\1\72\1\60\1\162\1\uffff\1\157\1\164\1\162\1\60"+
-        "\1\145\1\153\1\145\1\uffff\2\60\1\uffff\1\104\1\uffff\1\105\1\127"+
-        "\1\60\1\uffff\1\105\1\122\2\72\1\60\1\157\1\uffff\1\155\1\101\1"+
-        "\144\1\156\1\163\1\uffff\1\141\1\157\1\155\1\160\1\145\1\157\1\60"+
-        "\1\151\1\163\1\72\1\141\1\156\1\151\1\uffff\1\160\1\157\1\145\1"+
-        "\167\2\155\1\72\1\147\2\72\1\60\1\164\1\123\1\157\1\163\1\150\1"+
-        "\145\1\uffff\1\72\1\uffff\1\151\1\162\1\157\1\145\1\uffff\1\162"+
-        "\1\104\1\124\2\60\1\116\1\uffff\1\102\1\60\3\uffff\1\165\1\155\1"+
-        "\151\1\60\1\163\1\145\1\164\1\162\1\72\1\157\1\60\1\156\1\uffff"+
-        "\1\157\1\164\1\uffff\1\145\1\166\1\164\1\72\1\162\1\60\1\156\2\123"+
-        "\1\uffff\1\72\3\uffff\1\171\2\141\1\156\1\155\1\163\2\141\1\uffff"+
-        "\1\142\1\164\1\162\1\102\1\60\1\157\1\141\2\uffff\1\123\1\114\1"+
-        "\uffff\1\162\1\141\1\116\1\uffff\1\106\1\60\1\151\1\102\1\uffff"+
-        "\1\156\2\uffff\1\60\1\156\1\151\1\155\1\145\1\60\1\uffff\1\60\1"+
-        "\uffff\1\163\2\151\1\uffff\1\151\1\72\1\146\1\147\1\151\1\60\1\141"+
-        "\1\162\1\155\1\145\1\60\1\171\2\154\1\157\1\146\1\uffff\1\157\1"+
-        "\154\1\60\1\117\1\163\1\156\1\157\1\141\1\uffff\1\157\1\151\1\72"+
-        "\1\uffff\1\72\1\147\1\157\1\163\2\uffff\1\60\2\172\1\156\1\uffff"+
-        "\1\145\1\72\1\164\1\uffff\1\147\1\141\1\60\1\72\1\uffff\1\72\2\157"+
-        "\1\156\1\146\1\162\1\153\1\uffff\1\103\1\72\2\144\1\143\1\156\1"+
-        "\141\2\uffff\1\141\1\156\1\164\1\uffff\3\145\1\162\1\uffff\1\60"+
-        "\1\145\1\143\3\uffff\2\143\1\144\1\145\1\60\1\72\1\113\1\uffff\1"+
-        "\72\1\145\1\164\1\60\1\163\1\164\1\60\1\151\3\72\1\157\1\uffff\1"+
-        "\72\1\164\2\153\1\60\1\143\2\uffff\1\60\1\uffff\1\60\1\151\1\uffff"+
-        "\1\72\1\145\1\uffff\1\147\3\uffff\1\157\1\uffff\1\145\2\60\1\uffff"+
-        "\1\164\2\uffff\1\157\1\uffff\1\144\1\141\1\155\1\162\2\uffff\1\60"+
-        "\1\156\1\60\1\164\2\60\1\uffff\1\72\1\uffff\1\145\3\uffff\1\144"+
-        "\1\60\1\uffff";
+        "\1\uffff\1\124\1\145\1\uffff\2\162\1\151\1\155\1\uffff\1\146\1\157"+
+        "\2\141\1\142\1\uffff\1\154\2\60\1\160\1\151\1\154\1\144\2\uffff"+
+        "\1\156\1\114\1\154\2\uffff\1\60\1\103\1\115\1\105\1\124\1\123\1"+
+        "\uffff\1\124\1\123\1\113\1\124\1\107\1\105\1\124\1\156\1\157\1\141"+
+        "\1\143\1\154\1\156\1\155\1\164\1\145\1\164\1\145\1\111\1\164\1\154"+
+        "\2\141\1\156\1\141\1\154\1\145\1\144\1\153\1\163\2\124\1\151\1\156"+
+        "\1\151\1\145\1\164\2\157\1\72\1\145\2\167\1\147\1\163\1\153\1\uffff"+
+        "\1\145\1\162\1\164\1\uffff\1\151\1\147\1\145\1\157\1\141\1\145\1"+
+        "\123\1\163\1\uffff\1\113\1\101\1\122\1\60\1\111\1\101\1\110\1\60"+
+        "\1\125\1\107\1\60\1\141\1\151\1\144\1\166\1\153\1\103\1\147\2\141"+
+        "\1\145\1\162\1\151\1\143\1\164\1\145\1\60\1\151\1\145\1\141\1\143"+
+        "\1\166\1\155\1\164\1\125\1\163\1\115\1\104\1\151\2\145\1\155\1\151"+
+        "\1\157\1\156\1\141\1\162\1\166\1\uffff\1\162\1\115\1\156\1\145\1"+
+        "\150\1\143\1\60\1\160\1\151\1\165\1\143\1\147\1\60\1\143\1\164\1"+
+        "\72\1\105\1\145\1\60\1\116\1\60\1\uffff\1\132\1\101\1\114\1\60\1"+
+        "\uffff\1\122\1\105\1\147\1\164\1\145\1\151\1\60\1\157\1\145\1\156"+
+        "\1\151\1\162\1\60\1\156\1\164\1\145\1\141\1\uffff\1\166\1\155\1"+
+        "\144\1\164\2\145\1\104\1\156\1\72\1\141\1\157\1\172\3\141\1\145"+
+        "\2\156\1\164\1\154\1\151\1\145\1\157\1\145\1\103\1\72\1\60\1\162"+
+        "\1\uffff\1\157\1\164\1\162\1\60\1\145\1\153\1\145\1\uffff\2\60\1"+
+        "\uffff\1\104\1\uffff\1\105\1\127\1\60\1\uffff\1\105\1\122\2\72\1"+
+        "\60\1\157\1\uffff\1\155\1\101\1\144\1\156\1\163\1\uffff\1\141\1"+
+        "\157\1\155\1\160\1\145\1\157\1\60\1\151\1\163\1\72\1\141\1\156\1"+
+        "\151\1\uffff\1\160\1\157\1\145\1\167\2\155\1\72\1\147\2\72\1\60"+
+        "\1\164\1\123\1\157\1\163\1\150\1\145\1\uffff\1\72\1\uffff\1\151"+
+        "\1\162\1\157\1\145\1\uffff\1\162\1\104\1\124\2\60\1\116\1\uffff"+
+        "\1\102\1\60\3\uffff\1\165\1\155\1\151\1\60\1\163\1\145\1\164\1\162"+
+        "\1\72\1\157\1\60\1\156\1\uffff\1\157\1\164\1\uffff\1\145\1\166\1"+
+        "\164\1\72\1\162\1\60\1\156\2\123\1\uffff\1\72\3\uffff\1\171\2\141"+
+        "\1\156\1\155\1\163\2\141\1\uffff\1\142\1\164\1\162\1\102\1\60\1"+
+        "\157\1\141\2\uffff\1\123\1\114\1\uffff\1\162\1\141\1\116\1\uffff"+
+        "\1\106\1\60\1\151\1\102\1\uffff\1\156\2\uffff\1\60\1\156\1\151\1"+
+        "\155\1\145\1\60\1\uffff\1\60\1\uffff\1\163\2\151\1\uffff\1\151\1"+
+        "\72\1\146\1\147\1\151\1\60\1\141\1\162\1\155\1\145\1\60\1\171\2"+
+        "\154\1\157\1\146\1\uffff\1\157\1\154\1\60\1\117\1\163\1\156\1\157"+
+        "\1\141\1\uffff\1\157\1\151\1\72\1\uffff\1\72\1\147\1\157\1\163\2"+
+        "\uffff\1\60\2\172\1\156\1\uffff\1\145\1\72\1\164\1\uffff\1\147\1"+
+        "\141\1\60\1\72\1\uffff\1\72\2\157\1\156\1\146\1\162\1\153\1\uffff"+
+        "\1\103\1\72\2\144\1\143\1\156\1\141\2\uffff\1\141\1\156\1\164\1"+
+        "\uffff\3\145\1\162\1\uffff\1\60\1\145\1\143\3\uffff\2\143\1\144"+
+        "\1\145\1\60\1\72\1\113\1\uffff\1\72\1\145\1\164\1\60\1\163\1\164"+
+        "\1\60\1\151\3\72\1\157\1\uffff\1\72\1\164\2\153\1\60\1\143\2\uffff"+
+        "\1\60\1\uffff\1\60\1\151\1\uffff\1\72\1\145\1\uffff\1\147\3\uffff"+
+        "\1\157\1\uffff\1\145\2\60\1\uffff\1\164\2\uffff\1\157\1\uffff\1"+
+        "\144\1\141\1\155\1\162\2\uffff\1\60\1\156\1\60\1\164\2\60\1\uffff"+
+        "\1\72\1\uffff\1\145\3\uffff\1\144\1\60\1\uffff";
     static final String DFA7_maxS =
         "\1\175\1\uffff\1\136\5\uffff\1\116\1\114\1\117\1\116\1\101\1\122"+
         "\1\117\1\124\1\172\1\151\1\154\1\157\1\151\1\141\1\163\1\151\1\157"+
-        "\1\151\1\141\1\160\1\162\1\145\1\165\1\172\1\160\2\72\1\157\3\uffff"+
-        "\2\172\3\uffff\1\57\5\uffff\1\104\1\117\1\126\1\111\1\120\1\172"+
-        "\1\122\1\101\1\114\1\130\1\125\2\uffff\1\144\1\116\1\150\1\157\1"+
-        "\154\1\141\1\166\1\163\1\162\1\163\1\151\1\116\1\154\1\uffff\1\156"+
-        "\1\143\1\170\1\156\1\155\1\uffff\1\124\1\164\1\uffff\2\162\1\151"+
-        "\1\161\1\uffff\1\146\1\157\2\141\1\142\1\uffff\1\154\2\172\1\160"+
-        "\1\165\1\154\1\144\2\uffff\1\156\1\114\1\154\2\uffff\1\172\1\103"+
-        "\1\115\1\105\1\124\1\123\1\uffff\1\124\1\123\1\113\1\124\1\107\1"+
-        "\105\1\124\1\156\1\157\1\141\1\143\1\154\1\156\1\155\1\166\1\145"+
-        "\1\164\1\145\1\127\1\164\1\154\1\145\1\141\1\156\1\157\1\154\1\145"+
-        "\1\144\1\153\1\163\2\124\1\145\1\151\1\156\1\151\1\145\1\164\2\157"+
-        "\1\72\1\145\2\167\2\163\1\153\1\uffff\1\145\1\162\1\164\1\uffff"+
-        "\1\151\1\147\1\145\1\157\1\141\1\145\1\123\1\163\1\uffff\1\113\1"+
-        "\101\1\122\1\172\1\120\1\101\1\110\1\172\1\125\1\107\1\172\1\141"+
-        "\1\151\1\144\1\166\1\153\1\103\1\147\2\141\1\145\1\162\1\151\1\143"+
-        "\1\164\1\145\1\172\1\151\1\145\1\141\1\143\1\166\1\155\1\164\1\125"+
-        "\1\163\1\115\1\104\1\160\2\145\1\72\1\155\1\151\1\157\1\156\1\141"+
-        "\1\162\1\166\1\uffff\1\162\1\115\1\156\1\145\1\150\1\143\1\172\1"+
-        "\160\1\151\1\165\1\143\1\147\1\172\1\143\1\164\1\72\1\105\1\145"+
-        "\1\172\1\116\1\172\1\uffff\1\132\1\101\1\114\1\172\1\uffff\1\122"+
-        "\1\105\1\147\1\164\1\145\1\151\1\172\1\157\1\145\1\156\1\151\1\162"+
-        "\1\172\1\156\1\164\1\145\1\141\1\uffff\1\166\1\155\1\144\1\164\2"+
-        "\145\1\111\1\156\1\72\1\141\1\157\1\172\3\141\1\uffff\1\145\2\156"+
-        "\1\164\1\154\1\151\1\145\1\157\1\145\1\124\1\163\1\172\1\162\1\uffff"+
-        "\1\157\1\164\1\162\1\172\1\145\1\153\1\145\1\uffff\2\172\1\uffff"+
-        "\1\104\1\uffff\1\105\1\127\1\172\1\uffff\1\105\1\122\2\72\1\172"+
-        "\1\157\1\uffff\1\155\1\101\1\144\1\156\1\163\1\uffff\1\141\1\157"+
-        "\1\155\1\160\1\145\1\157\1\172\1\151\1\163\1\72\1\141\1\156\1\151"+
-        "\1\uffff\1\160\1\157\1\145\1\167\2\155\1\72\1\147\2\72\1\172\1\164"+
-        "\1\125\1\157\1\163\1\150\1\145\1\uffff\1\72\1\uffff\1\151\1\162"+
-        "\1\157\1\145\1\uffff\1\162\1\104\1\124\2\172\1\116\1\uffff\1\102"+
-        "\1\172\3\uffff\1\165\1\155\1\151\1\172\1\163\1\145\1\164\1\162\1"+
-        "\72\1\157\1\172\1\156\1\uffff\1\157\1\164\1\uffff\1\145\1\166\1"+
-        "\164\1\72\1\162\1\172\1\156\2\123\1\uffff\1\114\3\uffff\1\171\2"+
-        "\141\1\156\1\155\1\163\2\141\1\uffff\1\142\1\164\1\162\1\142\1\172"+
-        "\1\157\1\141\2\uffff\1\123\1\114\1\uffff\1\162\1\141\1\116\1\uffff"+
-        "\1\106\1\172\1\151\1\102\1\uffff\1\156\2\uffff\1\172\1\156\1\151"+
-        "\1\155\1\145\1\172\1\uffff\1\172\1\uffff\1\163\2\151\1\uffff\1\151"+
-        "\1\72\1\146\1\147\1\151\1\172\1\141\1\162\1\155\1\145\1\172\1\171"+
-        "\2\154\1\157\1\146\1\uffff\1\157\1\154\1\172\1\117\1\163\1\156\1"+
-        "\157\1\141\1\uffff\1\157\1\151\1\72\1\uffff\1\72\1\147\1\157\1\163"+
-        "\2\uffff\3\172\1\156\1\uffff\1\145\1\72\1\164\1\uffff\1\147\1\141"+
-        "\1\172\1\72\1\uffff\1\72\2\157\1\156\1\146\1\162\1\153\1\uffff\1"+
-        "\103\1\72\2\144\1\143\1\156\1\141\2\uffff\1\141\1\156\1\164\1\uffff"+
-        "\3\145\1\162\1\uffff\1\172\1\145\1\143\3\uffff\2\143\1\144\1\145"+
-        "\1\172\1\72\1\113\1\uffff\1\72\1\145\1\164\1\172\1\163\1\164\1\172"+
-        "\1\151\3\72\1\157\1\uffff\1\72\1\164\2\153\1\172\1\143\2\uffff\1"+
-        "\172\1\uffff\1\172\1\151\1\uffff\1\72\1\145\1\uffff\1\147\3\uffff"+
-        "\1\157\1\uffff\1\145\2\172\1\uffff\1\164\2\uffff\1\157\1\uffff\1"+
-        "\144\1\141\1\155\1\162\2\uffff\1\172\1\156\1\172\1\164\2\172\1\uffff"+
-        "\1\72\1\uffff\1\145\3\uffff\1\144\1\172\1\uffff";
+        "\1\151\1\160\1\162\1\145\1\165\1\172\1\160\2\72\1\157\3\uffff\2"+
+        "\172\3\uffff\1\57\5\uffff\1\104\1\117\1\126\1\111\1\120\1\172\1"+
+        "\122\1\101\1\114\1\130\1\125\2\uffff\1\144\1\116\1\150\1\157\1\154"+
+        "\1\141\1\166\1\163\1\162\1\163\1\151\1\116\1\154\1\uffff\1\156\1"+
+        "\143\1\170\1\156\1\uffff\1\124\1\164\1\uffff\2\162\1\151\1\161\1"+
+        "\uffff\1\146\1\157\2\141\1\142\1\uffff\1\154\2\172\1\160\1\165\1"+
+        "\154\1\144\2\uffff\1\156\1\114\1\154\2\uffff\1\172\1\103\1\115\1"+
+        "\105\1\124\1\123\1\uffff\1\124\1\123\1\113\1\124\1\107\1\105\1\124"+
+        "\1\156\1\157\1\141\1\143\1\154\1\156\1\155\1\166\1\145\1\164\1\145"+
+        "\1\127\1\164\1\154\1\145\1\141\1\156\1\157\1\154\1\145\1\144\1\153"+
+        "\1\163\2\124\1\151\1\156\1\151\1\145\1\164\2\157\1\72\1\145\2\167"+
+        "\2\163\1\153\1\uffff\1\145\1\162\1\164\1\uffff\1\151\1\147\1\145"+
+        "\1\157\1\141\1\145\1\123\1\163\1\uffff\1\113\1\101\1\122\1\172\1"+
+        "\120\1\101\1\110\1\172\1\125\1\107\1\172\1\141\1\151\1\144\1\166"+
+        "\1\153\1\103\1\147\2\141\1\145\1\162\1\151\1\143\1\164\1\145\1\172"+
+        "\1\151\1\145\1\141\1\143\1\166\1\155\1\164\1\125\1\163\1\115\1\104"+
+        "\1\160\2\145\1\155\1\151\1\157\1\156\1\141\1\162\1\166\1\uffff\1"+
+        "\162\1\115\1\156\1\145\1\150\1\143\1\172\1\160\1\151\1\165\1\143"+
+        "\1\147\1\172\1\143\1\164\1\72\1\105\1\145\1\172\1\116\1\172\1\uffff"+
+        "\1\132\1\101\1\114\1\172\1\uffff\1\122\1\105\1\147\1\164\1\145\1"+
+        "\151\1\172\1\157\1\145\1\156\1\151\1\162\1\172\1\156\1\164\1\145"+
+        "\1\141\1\uffff\1\166\1\155\1\144\1\164\2\145\1\111\1\156\1\72\1"+
+        "\141\1\157\1\172\3\141\1\145\2\156\1\164\1\154\1\151\1\145\1\157"+
+        "\1\145\1\124\1\163\1\172\1\162\1\uffff\1\157\1\164\1\162\1\172\1"+
+        "\145\1\153\1\145\1\uffff\2\172\1\uffff\1\104\1\uffff\1\105\1\127"+
+        "\1\172\1\uffff\1\105\1\122\2\72\1\172\1\157\1\uffff\1\155\1\101"+
+        "\1\144\1\156\1\163\1\uffff\1\141\1\157\1\155\1\160\1\145\1\157\1"+
+        "\172\1\151\1\163\1\72\1\141\1\156\1\151\1\uffff\1\160\1\157\1\145"+
+        "\1\167\2\155\1\72\1\147\2\72\1\172\1\164\1\125\1\157\1\163\1\150"+
+        "\1\145\1\uffff\1\72\1\uffff\1\151\1\162\1\157\1\145\1\uffff\1\162"+
+        "\1\104\1\124\2\172\1\116\1\uffff\1\102\1\172\3\uffff\1\165\1\155"+
+        "\1\151\1\172\1\163\1\145\1\164\1\162\1\72\1\157\1\172\1\156\1\uffff"+
+        "\1\157\1\164\1\uffff\1\145\1\166\1\164\1\72\1\162\1\172\1\156\2"+
+        "\123\1\uffff\1\114\3\uffff\1\171\2\141\1\156\1\155\1\163\2\141\1"+
+        "\uffff\1\142\1\164\1\162\1\142\1\172\1\157\1\141\2\uffff\1\123\1"+
+        "\114\1\uffff\1\162\1\141\1\116\1\uffff\1\106\1\172\1\151\1\102\1"+
+        "\uffff\1\156\2\uffff\1\172\1\156\1\151\1\155\1\145\1\172\1\uffff"+
+        "\1\172\1\uffff\1\163\2\151\1\uffff\1\151\1\72\1\146\1\147\1\151"+
+        "\1\172\1\141\1\162\1\155\1\145\1\172\1\171\2\154\1\157\1\146\1\uffff"+
+        "\1\157\1\154\1\172\1\117\1\163\1\156\1\157\1\141\1\uffff\1\157\1"+
+        "\151\1\72\1\uffff\1\72\1\147\1\157\1\163\2\uffff\3\172\1\156\1\uffff"+
+        "\1\145\1\72\1\164\1\uffff\1\147\1\141\1\172\1\72\1\uffff\1\72\2"+
+        "\157\1\156\1\146\1\162\1\153\1\uffff\1\103\1\72\2\144\1\143\1\156"+
+        "\1\141\2\uffff\1\141\1\156\1\164\1\uffff\3\145\1\162\1\uffff\1\172"+
+        "\1\145\1\143\3\uffff\2\143\1\144\1\145\1\172\1\72\1\113\1\uffff"+
+        "\1\72\1\145\1\164\1\172\1\163\1\164\1\172\1\151\3\72\1\157\1\uffff"+
+        "\1\72\1\164\2\153\1\172\1\143\2\uffff\1\172\1\uffff\1\172\1\151"+
+        "\1\uffff\1\72\1\145\1\uffff\1\147\3\uffff\1\157\1\uffff\1\145\2"+
+        "\172\1\uffff\1\164\2\uffff\1\157\1\uffff\1\144\1\141\1\155\1\162"+
+        "\2\uffff\1\172\1\156\1\172\1\164\2\172\1\uffff\1\72\1\uffff\1\145"+
+        "\3\uffff\1\144\1\172\1\uffff";
     static final String DFA7_acceptS =
-        "\1\uffff\1\1\1\uffff\1\3\1\4\1\5\1\6\1\7\34\uffff\1\140\1\141\1"+
-        "\142\2\uffff\1\150\1\151\1\152\1\uffff\1\143\1\144\1\145\1\146\1"+
-        "\2\13\uffff\1\147\1\25\15\uffff\1\60\5\uffff\1\71\2\uffff\1\76\4"+
-        "\uffff\1\106\5\uffff\1\117\7\uffff\1\135\1\136\3\uffff\1\153\1\154"+
-        "\6\uffff\1\17\57\uffff\1\121\3\uffff\1\122\10\uffff\1\10\61\uffff"+
-        "\1\105\25\uffff\1\14\4\uffff\1\22\21\uffff\1\45\17\uffff\1\70\15"+
-        "\uffff\1\120\7\uffff\1\137\2\uffff\1\11\1\uffff\1\13\3\uffff\1\21"+
-        "\6\uffff\1\32\5\uffff\1\40\15\uffff\1\61\21\uffff\1\113\1\uffff"+
-        "\1\115\4\uffff\1\127\6\uffff\1\20\2\uffff\1\26\1\27\1\30\14\uffff"+
-        "\1\51\2\uffff\1\54\11\uffff\1\72\1\uffff\1\75\1\77\1\100\10\uffff"+
-        "\1\114\7\uffff\1\12\1\15\2\uffff\1\24\3\uffff\1\35\4\uffff\1\43"+
-        "\1\uffff\1\47\1\46\6\uffff\1\62\1\uffff\1\64\3\uffff\1\73\20\uffff"+
-        "\1\130\10\uffff\1\37\3\uffff\1\50\4\uffff\1\57\1\63\4\uffff\1\101"+
-        "\3\uffff\1\107\4\uffff\1\123\7\uffff\1\16\7\uffff\1\44\1\52\3\uffff"+
-        "\1\65\4\uffff\1\103\3\uffff\1\112\1\116\1\124\7\uffff\1\31\14\uffff"+
-        "\1\104\6\uffff\1\133\1\134\1\uffff\1\33\2\uffff\1\41\2\uffff\1\55"+
-        "\1\uffff\1\66\1\67\1\74\1\uffff\1\110\3\uffff\1\131\1\uffff\1\23"+
-        "\1\34\1\uffff\1\42\4\uffff\1\125\1\126\6\uffff\1\132\1\uffff\1\53"+
-        "\1\uffff\1\102\1\111\1\36\2\uffff\1\56";
+        "\1\uffff\1\1\1\uffff\1\3\1\4\1\5\1\6\1\7\33\uffff\1\137\1\140\1"+
+        "\141\2\uffff\1\147\1\150\1\151\1\uffff\1\142\1\143\1\144\1\145\1"+
+        "\2\13\uffff\1\146\1\25\15\uffff\1\60\4\uffff\1\70\2\uffff\1\75\4"+
+        "\uffff\1\105\5\uffff\1\116\7\uffff\1\134\1\135\3\uffff\1\152\1\153"+
+        "\6\uffff\1\17\56\uffff\1\120\3\uffff\1\121\10\uffff\1\10\60\uffff"+
+        "\1\104\25\uffff\1\14\4\uffff\1\22\21\uffff\1\45\34\uffff\1\117\7"+
+        "\uffff\1\136\2\uffff\1\11\1\uffff\1\13\3\uffff\1\21\6\uffff\1\32"+
+        "\5\uffff\1\40\15\uffff\1\61\21\uffff\1\112\1\uffff\1\114\4\uffff"+
+        "\1\126\6\uffff\1\20\2\uffff\1\26\1\27\1\30\14\uffff\1\51\2\uffff"+
+        "\1\54\11\uffff\1\71\1\uffff\1\74\1\76\1\77\10\uffff\1\113\7\uffff"+
+        "\1\12\1\15\2\uffff\1\24\3\uffff\1\35\4\uffff\1\43\1\uffff\1\47\1"+
+        "\46\6\uffff\1\62\1\uffff\1\64\3\uffff\1\72\20\uffff\1\127\10\uffff"+
+        "\1\37\3\uffff\1\50\4\uffff\1\57\1\63\4\uffff\1\100\3\uffff\1\106"+
+        "\4\uffff\1\122\7\uffff\1\16\7\uffff\1\44\1\52\3\uffff\1\65\4\uffff"+
+        "\1\102\3\uffff\1\111\1\115\1\123\7\uffff\1\31\14\uffff\1\103\6\uffff"+
+        "\1\132\1\133\1\uffff\1\33\2\uffff\1\41\2\uffff\1\55\1\uffff\1\66"+
+        "\1\67\1\73\1\uffff\1\107\3\uffff\1\130\1\uffff\1\23\1\34\1\uffff"+
+        "\1\42\4\uffff\1\124\1\125\6\uffff\1\131\1\uffff\1\53\1\uffff\1\101"+
+        "\1\110\1\36\2\uffff\1\56";
     static final String DFA7_specialS =
-        "\u0269\uffff}>";
+        "\u0264\uffff}>";
     static final String[] DFA7_transitionS = {
-            "\2\53\1\uffff\2\53\22\uffff\1\53\1\46\1\1\1\2\4\uffff\1\3\1"+
-            "\4\2\uffff\1\5\1\6\1\uffff\1\54\12\52\1\7\6\uffff\1\10\1\11"+
-            "\1\12\2\51\1\47\2\51\1\13\3\51\1\14\1\51\1\15\1\16\2\51\1\17"+
-            "\1\20\6\51\6\uffff\1\21\1\22\1\23\1\24\1\51\1\50\1\51\1\25\1"+
-            "\26\1\51\1\27\1\30\1\31\1\32\1\33\1\34\1\51\1\35\1\36\1\37\1"+
-            "\40\2\51\1\41\1\42\1\43\1\44\1\uffff\1\45",
+            "\2\52\1\uffff\2\52\22\uffff\1\52\1\45\1\1\1\2\4\uffff\1\3\1"+
+            "\4\2\uffff\1\5\1\6\1\uffff\1\53\12\51\1\7\6\uffff\1\10\1\11"+
+            "\1\12\2\50\1\46\2\50\1\13\3\50\1\14\1\50\1\15\1\16\2\50\1\17"+
+            "\1\20\6\50\6\uffff\1\21\1\22\1\23\1\24\1\50\1\47\1\50\1\25\1"+
+            "\26\1\50\1\27\1\30\1\31\1\50\1\32\1\33\1\50\1\34\1\35\1\36\1"+
+            "\37\2\50\1\40\1\41\1\42\1\43\1\uffff\1\44",
             "",
-            "\1\56\2\uffff\1\55\5\uffff\1\60\63\uffff\1\57",
-            "",
-            "",
+            "\1\55\2\uffff\1\54\5\uffff\1\57\63\uffff\1\56",
             "",
             "",
             "",
+            "",
+            "",
+            "\1\61",
             "\1\62",
             "\1\63",
             "\1\64",
@@ -4044,114 +4012,114 @@ public class AtrophyScriptLexer extends Lexer {
             "\1\66",
             "\1\67",
             "\1\70",
-            "\1\71",
-            "\12\51\7\uffff\1\72\3\51\1\73\14\51\1\74\10\51\4\uffff\1\51"+
-            "\1\uffff\32\51",
-            "\1\76\51\uffff\1\77\4\uffff\1\100",
-            "\1\101\6\uffff\1\102",
-            "\1\103\6\uffff\1\104\6\uffff\1\105",
-            "\1\106\3\uffff\1\107",
-            "\1\110",
-            "\1\111\4\uffff\1\112",
-            "\1\113",
-            "\1\114\56\uffff\1\115\5\uffff\1\116",
-            "\1\117\7\uffff\1\120",
-            "\1\121",
-            "\1\122\63\uffff\1\123\1\uffff\1\124",
-            "\1\125\46\uffff\1\126\15\uffff\1\127\2\uffff\1\130",
-            "\1\131",
-            "\1\132\46\uffff\1\133\6\uffff\1\134\7\uffff\1\135\3\uffff\1"+
-            "\136\1\137",
-            "\12\51\1\140\6\uffff\32\51\4\uffff\1\51\1\uffff\1\141\1\51"+
-            "\1\142\1\51\1\143\11\51\1\144\2\51\1\145\10\51",
-            "\1\146\1\uffff\1\147",
+            "\12\50\7\uffff\1\71\3\50\1\72\14\50\1\73\10\50\4\uffff\1\50"+
+            "\1\uffff\32\50",
+            "\1\75\51\uffff\1\76\4\uffff\1\77",
+            "\1\100\6\uffff\1\101",
+            "\1\102\6\uffff\1\103\6\uffff\1\104",
+            "\1\105\3\uffff\1\106",
+            "\1\107",
+            "\1\110\4\uffff\1\111",
+            "\1\112",
+            "\1\113\56\uffff\1\114\5\uffff\1\115",
+            "\1\116\7\uffff\1\117",
+            "\1\120\63\uffff\1\121\1\uffff\1\122",
+            "\1\123\46\uffff\1\124\15\uffff\1\125\2\uffff\1\126",
+            "\1\127",
+            "\1\130\46\uffff\1\131\6\uffff\1\132\7\uffff\1\133\3\uffff\1"+
+            "\134\1\135",
+            "\12\50\1\136\6\uffff\32\50\4\uffff\1\50\1\uffff\1\137\1\50"+
+            "\1\140\1\50\1\141\11\50\1\142\2\50\1\143\10\50",
+            "\1\144\1\uffff\1\145",
+            "\1\146",
+            "\1\147",
             "\1\150",
-            "\1\151",
-            "\1\152",
             "",
             "",
             "",
-            "\12\51\7\uffff\1\153\31\51\4\uffff\1\51\1\uffff\32\51",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\1\154\31\51",
+            "\12\50\7\uffff\1\151\31\50\4\uffff\1\50\1\uffff\32\50",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\1\152\31\50",
             "",
             "",
             "",
-            "\1\156\4\uffff\1\155",
-            "",
+            "\1\154\4\uffff\1\153",
             "",
             "",
             "",
             "",
-            "\1\157",
-            "\1\160",
-            "\1\161\10\uffff\1\162",
-            "\1\163",
+            "",
+            "\1\155",
+            "\1\156",
+            "\1\157\10\uffff\1\160",
+            "\1\161",
+            "\1\162",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
             "\1\164",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
+            "\1\165",
             "\1\166",
             "\1\167",
-            "\1\170",
-            "\1\171",
-            "\1\172\13\uffff\1\173",
+            "\1\170\13\uffff\1\171",
             "",
             "",
-            "\1\174",
-            "\1\175\4\uffff\1\176",
+            "\1\172",
+            "\1\173\4\uffff\1\174",
+            "\1\175",
+            "\1\176",
             "\1\177",
             "\1\u0080",
-            "\1\u0081",
-            "\1\u0082",
-            "\1\u0083\1\u0084\7\uffff\1\u0085",
+            "\1\u0081\1\u0082\7\uffff\1\u0083",
+            "\1\u0084",
+            "\1\u0085",
             "\1\u0086",
             "\1\u0087",
-            "\1\u0088",
-            "\1\u0089",
-            "\1\u008a\2\uffff\1\u008b\1\uffff\1\u008c\2\uffff\1\u008d\4"+
-            "\uffff\1\u008e",
-            "\1\u008f",
+            "\1\u0088\2\uffff\1\u0089\1\uffff\1\u008a\2\uffff\1\u008b\4"+
+            "\uffff\1\u008c",
+            "\1\u008d",
             "",
-            "\1\u0090",
-            "\1\u0091\1\uffff\1\u0092",
-            "\1\u0093\7\uffff\1\u0094",
-            "\1\u0095",
-            "\1\u0096",
+            "\1\u008e",
+            "\1\u008f\1\uffff\1\u0090",
+            "\1\u0091\7\uffff\1\u0092",
+            "\1\u0093",
+            "",
+            "\1\u0094",
+            "\1\u0095\16\uffff\1\u0096",
             "",
             "\1\u0097",
-            "\1\u0098\16\uffff\1\u0099",
+            "\1\u0098",
+            "\1\u0099",
+            "\1\u009a\3\uffff\1\u009b",
             "",
-            "\1\u009a",
-            "\1\u009b",
             "\1\u009c",
-            "\1\u009d\3\uffff\1\u009e",
-            "",
+            "\1\u009d",
+            "\1\u009e",
             "\1\u009f",
             "\1\u00a0",
-            "\1\u00a1",
-            "\1\u00a2",
-            "\1\u00a3",
             "",
-            "\1\u00a4",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\13\51\1\u00a6\5\51"+
-            "\1\u00a7\5\51\1\u00a8\2\51",
+            "\1\u00a1",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\13\50\1\u00a3\5\50"+
+            "\1\u00a4\5\50\1\u00a5\2\50",
+            "\1\u00a7",
+            "\1\u00a8\13\uffff\1\u00a9",
             "\1\u00aa",
-            "\1\u00ab\13\uffff\1\u00ac",
+            "\1\u00ab",
+            "",
+            "",
+            "\1\u00ac",
             "\1\u00ad",
             "\1\u00ae",
             "",
             "",
-            "\1\u00af",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
             "\1\u00b0",
             "\1\u00b1",
-            "",
-            "",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
+            "\1\u00b2",
             "\1\u00b3",
             "\1\u00b4",
+            "",
             "\1\u00b5",
             "\1\u00b6",
             "\1\u00b7",
-            "",
             "\1\u00b8",
             "\1\u00b9",
             "\1\u00ba",
@@ -4163,20 +4131,20 @@ public class AtrophyScriptLexer extends Lexer {
             "\1\u00c0",
             "\1\u00c1",
             "\1\u00c2",
-            "\1\u00c3",
-            "\1\u00c4",
+            "\1\u00c3\1\uffff\1\u00c4",
             "\1\u00c5",
-            "\1\u00c6\1\uffff\1\u00c7",
-            "\1\u00c8",
-            "\1\u00c9",
+            "\1\u00c6",
+            "\1\u00c7",
+            "\1\u00c8\15\uffff\1\u00c9",
             "\1\u00ca",
-            "\1\u00cb\15\uffff\1\u00cc",
-            "\1\u00cd",
+            "\1\u00cb",
+            "\1\u00cc\3\uffff\1\u00cd",
             "\1\u00ce",
-            "\1\u00cf\3\uffff\1\u00d0",
-            "\1\u00d1",
+            "\1\u00cf",
+            "\1\u00d0\15\uffff\1\u00d1",
             "\1\u00d2",
-            "\1\u00d3\15\uffff\1\u00d4",
+            "\1\u00d3",
+            "\1\u00d4",
             "\1\u00d5",
             "\1\u00d6",
             "\1\u00d7",
@@ -4192,38 +4160,38 @@ public class AtrophyScriptLexer extends Lexer {
             "\1\u00e1",
             "\1\u00e2",
             "\1\u00e3",
-            "\1\u00e4",
-            "\1\u00e5",
+            "\1\u00e4\13\uffff\1\u00e5",
             "\1\u00e6",
             "\1\u00e7",
-            "\1\u00e8\13\uffff\1\u00e9",
-            "\1\u00ea",
-            "\1\u00eb",
             "",
+            "\1\u00e8",
+            "\1\u00e9",
+            "\1\u00ea",
+            "",
+            "\1\u00eb",
             "\1\u00ec",
             "\1\u00ed",
             "\1\u00ee",
-            "",
             "\1\u00ef",
             "\1\u00f0",
             "\1\u00f1",
             "\1\u00f2",
+            "",
             "\1\u00f3",
             "\1\u00f4",
             "\1\u00f5",
-            "\1\u00f6",
-            "",
-            "\1\u00f7",
-            "\1\u00f8",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
+            "\1\u00f7\6\uffff\1\u00f8",
             "\1\u00f9",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
-            "\1\u00fb\6\uffff\1\u00fc",
+            "\1\u00fa",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
+            "\1\u00fc",
             "\1\u00fd",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
             "\1\u00fe",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
+            "\1\u00ff",
             "\1\u0100",
             "\1\u0101",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
             "\1\u0102",
             "\1\u0103",
             "\1\u0104",
@@ -4235,11 +4203,11 @@ public class AtrophyScriptLexer extends Lexer {
             "\1\u010a",
             "\1\u010b",
             "\1\u010c",
-            "\1\u010d",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
             "\1\u010e",
             "\1\u010f",
             "\1\u0110",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
+            "\1\u0111",
             "\1\u0112",
             "\1\u0113",
             "\1\u0114",
@@ -4247,74 +4215,74 @@ public class AtrophyScriptLexer extends Lexer {
             "\1\u0116",
             "\1\u0117",
             "\1\u0118",
-            "\1\u0119",
-            "\1\u011a",
+            "\1\u0119\6\uffff\1\u011a",
             "\1\u011b",
             "\1\u011c",
-            "\1\u011d\6\uffff\1\u011e",
+            "\1\u011d",
+            "\1\u011e",
             "\1\u011f",
             "\1\u0120",
             "\1\u0121",
             "\1\u0122",
             "\1\u0123",
+            "",
             "\1\u0124",
             "\1\u0125",
             "\1\u0126",
             "\1\u0127",
             "\1\u0128",
-            "",
             "\1\u0129",
-            "\1\u012a",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
             "\1\u012b",
             "\1\u012c",
             "\1\u012d",
             "\1\u012e",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
+            "\1\u012f",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
             "\1\u0130",
             "\1\u0131",
             "\1\u0132",
             "\1\u0133",
             "\1\u0134",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
-            "\1\u0135",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
             "\1\u0136",
-            "\1\u0137",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
+            "",
             "\1\u0138",
             "\1\u0139",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
-            "\1\u013b",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
+            "\1\u013a",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
             "",
+            "\1\u013c",
             "\1\u013d",
             "\1\u013e",
             "\1\u013f",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
-            "",
+            "\1\u0140",
             "\1\u0141",
-            "\1\u0142",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
             "\1\u0143",
             "\1\u0144",
             "\1\u0145",
             "\1\u0146",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
-            "\1\u0148",
+            "\1\u0147",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
             "\1\u0149",
             "\1\u014a",
             "\1\u014b",
             "\1\u014c",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
+            "",
+            "\1\u014d",
             "\1\u014e",
             "\1\u014f",
             "\1\u0150",
             "\1\u0151",
-            "",
             "\1\u0152",
-            "\1\u0153",
-            "\1\u0154",
+            "\1\u0153\4\uffff\1\u0154",
             "\1\u0155",
             "\1\u0156",
             "\1\u0157",
-            "\1\u0158\4\uffff\1\u0159",
+            "\1\u0158",
+            "\1\u0159",
             "\1\u015a",
             "\1\u015b",
             "\1\u015c",
@@ -4323,43 +4291,43 @@ public class AtrophyScriptLexer extends Lexer {
             "\1\u015f",
             "\1\u0160",
             "\1\u0161",
-            "",
             "\1\u0162",
             "\1\u0163",
             "\1\u0164",
             "\1\u0165",
-            "\1\u0166",
-            "\1\u0167",
-            "\1\u0168",
-            "\1\u0169",
-            "\1\u016a",
-            "\1\u016b\20\uffff\1\u016c",
-            "\1\u016d\70\uffff\1\u016e",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
-            "\1\u0170",
+            "\1\u0166\20\uffff\1\u0167",
+            "\1\u0168\70\uffff\1\u0169",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
+            "\1\u016b",
             "",
+            "\1\u016c",
+            "\1\u016d",
+            "\1\u016e",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
+            "\1\u0170",
             "\1\u0171",
             "\1\u0172",
+            "",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
+            "",
             "\1\u0173",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
+            "",
+            "\1\u0174",
             "\1\u0175",
-            "\1\u0176",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
+            "",
             "\1\u0177",
-            "",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
-            "",
             "\1\u0178",
-            "",
             "\1\u0179",
             "\1\u017a",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
-            "",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
             "\1\u017c",
+            "",
             "\1\u017d",
             "\1\u017e",
             "\1\u017f",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
+            "\1\u0180",
             "\1\u0181",
             "",
             "\1\u0182",
@@ -4367,290 +4335,284 @@ public class AtrophyScriptLexer extends Lexer {
             "\1\u0184",
             "\1\u0185",
             "\1\u0186",
-            "",
             "\1\u0187",
-            "\1\u0188",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
             "\1\u0189",
             "\1\u018a",
             "\1\u018b",
             "\1\u018c",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
+            "\1\u018d",
             "\1\u018e",
+            "",
             "\1\u018f",
             "\1\u0190",
             "\1\u0191",
             "\1\u0192",
             "\1\u0193",
-            "",
             "\1\u0194",
             "\1\u0195",
             "\1\u0196",
             "\1\u0197",
             "\1\u0198",
-            "\1\u0199",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
             "\1\u019a",
-            "\1\u019b",
-            "\1\u019c",
-            "\1\u019d",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
+            "\1\u019b\1\u019c\1\u019d",
+            "\1\u019e",
             "\1\u019f",
-            "\1\u01a0\1\u01a1\1\u01a2",
+            "\1\u01a0",
+            "\1\u01a1",
+            "",
+            "\1\u01a2",
+            "",
             "\1\u01a3",
             "\1\u01a4",
             "\1\u01a5",
             "\1\u01a6",
             "",
             "\1\u01a7",
-            "",
             "\1\u01a8",
             "\1\u01a9",
-            "\1\u01aa",
-            "\1\u01ab",
-            "",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
             "\1\u01ac",
+            "",
             "\1\u01ad",
-            "\1\u01ae",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
+            "",
+            "",
+            "",
+            "\1\u01af",
+            "\1\u01b0",
             "\1\u01b1",
-            "",
-            "\1\u01b2",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
-            "",
-            "",
-            "",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
+            "\1\u01b3",
             "\1\u01b4",
             "\1\u01b5",
             "\1\u01b6",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
+            "\1\u01b7",
             "\1\u01b8",
-            "\1\u01b9",
-            "\1\u01ba",
+            "\12\50\1\u01b9\6\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
             "\1\u01bb",
+            "",
             "\1\u01bc",
             "\1\u01bd",
-            "\12\51\1\u01be\6\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
-            "\1\u01c0",
             "",
+            "\1\u01be",
+            "\1\u01bf",
+            "\1\u01c0",
             "\1\u01c1",
             "\1\u01c2",
-            "",
-            "\1\u01c3",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
             "\1\u01c4",
             "\1\u01c5",
             "\1\u01c6",
-            "\1\u01c7",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
+            "",
+            "\1\u01c7\21\uffff\1\u01c8",
+            "",
+            "",
+            "",
             "\1\u01c9",
             "\1\u01ca",
             "\1\u01cb",
-            "",
-            "\1\u01cc\21\uffff\1\u01cd",
-            "",
-            "",
-            "",
+            "\1\u01cc",
+            "\1\u01cd",
             "\1\u01ce",
             "\1\u01cf",
             "\1\u01d0",
+            "",
             "\1\u01d1",
             "\1\u01d2",
             "\1\u01d3",
-            "\1\u01d4",
-            "\1\u01d5",
+            "\1\u01d4\37\uffff\1\u01d5",
+            "\12\50\7\uffff\2\50\1\u01d6\1\50\1\u01d7\25\50\4\uffff\1\50"+
+            "\1\uffff\32\50",
+            "\1\u01d9",
+            "\1\u01da",
             "",
-            "\1\u01d6",
-            "\1\u01d7",
-            "\1\u01d8",
-            "\1\u01d9\37\uffff\1\u01da",
-            "\12\51\7\uffff\2\51\1\u01db\1\51\1\u01dc\25\51\4\uffff\1\51"+
-            "\1\uffff\32\51",
+            "",
+            "\1\u01db",
+            "\1\u01dc",
+            "",
+            "\1\u01dd",
             "\1\u01de",
             "\1\u01df",
             "",
-            "",
             "\1\u01e0",
-            "\1\u01e1",
-            "",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
             "\1\u01e2",
             "\1\u01e3",
+            "",
             "\1\u01e4",
             "",
-            "\1\u01e5",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
+            "",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
+            "\1\u01e6",
             "\1\u01e7",
             "\1\u01e8",
-            "",
             "\1\u01e9",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
             "",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
             "",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
-            "\1\u01eb",
             "\1\u01ec",
             "\1\u01ed",
             "\1\u01ee",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
             "",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
-            "",
+            "\1\u01ef",
+            "\1\u01f0",
             "\1\u01f1",
             "\1\u01f2",
             "\1\u01f3",
-            "",
-            "\1\u01f4",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
             "\1\u01f5",
             "\1\u01f6",
             "\1\u01f7",
             "\1\u01f8",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
             "\1\u01fa",
             "\1\u01fb",
             "\1\u01fc",
             "\1\u01fd",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
+            "\1\u01fe",
+            "",
             "\1\u01ff",
             "\1\u0200",
-            "\1\u0201",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
             "\1\u0202",
             "\1\u0203",
-            "",
             "\1\u0204",
             "\1\u0205",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
+            "\1\u0206",
+            "",
             "\1\u0207",
             "\1\u0208",
             "\1\u0209",
+            "",
             "\1\u020a",
             "\1\u020b",
-            "",
             "\1\u020c",
             "\1\u020d",
-            "\1\u020e",
             "",
+            "",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
             "\1\u020f",
             "\1\u0210",
             "\1\u0211",
+            "",
             "\1\u0212",
-            "",
-            "",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
+            "\1\u0213",
             "\1\u0214",
+            "",
             "\1\u0215",
             "\1\u0216",
-            "",
-            "\1\u0217",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
             "\1\u0218",
-            "\1\u0219",
             "",
+            "\1\u0219",
             "\1\u021a",
             "\1\u021b",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
+            "\1\u021c",
             "\1\u021d",
-            "",
             "\1\u021e",
             "\1\u021f",
+            "",
             "\1\u0220",
             "\1\u0221",
             "\1\u0222",
             "\1\u0223",
             "\1\u0224",
-            "",
             "\1\u0225",
             "\1\u0226",
+            "",
+            "",
             "\1\u0227",
             "\1\u0228",
             "\1\u0229",
+            "",
             "\1\u022a",
             "\1\u022b",
-            "",
-            "",
             "\1\u022c",
             "\1\u022d",
-            "\1\u022e",
             "",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
             "\1\u022f",
             "\1\u0230",
+            "",
+            "",
+            "",
             "\1\u0231",
             "\1\u0232",
-            "",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
+            "\1\u0233",
             "\1\u0234",
-            "\1\u0235",
-            "",
-            "",
-            "",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
             "\1\u0236",
             "\1\u0237",
+            "",
             "\1\u0238",
             "\1\u0239",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
-            "\1\u023b",
+            "\1\u023a",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
             "\1\u023c",
-            "",
             "\1\u023d",
-            "\1\u023e",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
             "\1\u023f",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
+            "\1\u0240",
             "\1\u0241",
             "\1\u0242",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
+            "\1\u0243",
+            "",
             "\1\u0244",
             "\1\u0245",
             "\1\u0246",
             "\1\u0247",
-            "\1\u0248",
-            "",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
             "\1\u0249",
-            "\1\u024a",
-            "\1\u024b",
+            "",
+            "",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
+            "",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
             "\1\u024c",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
+            "",
+            "\1\u024d",
             "\1\u024e",
             "",
+            "\1\u024f",
             "",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
             "",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
+            "",
+            "\1\u0250",
+            "",
             "\1\u0251",
-            "",
-            "\1\u0252",
-            "\1\u0253",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
             "",
             "\1\u0254",
-            "",
             "",
             "",
             "\1\u0255",
             "",
             "\1\u0256",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
-            "",
+            "\1\u0257",
+            "\1\u0258",
             "\1\u0259",
             "",
             "",
-            "\1\u025a",
-            "",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
             "\1\u025b",
-            "\1\u025c",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
             "\1\u025d",
-            "\1\u025e",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
             "",
-            "",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
             "\1\u0260",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
+            "",
+            "\1\u0261",
+            "",
+            "",
+            "",
             "\1\u0262",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
-            "",
-            "\1\u0265",
-            "",
-            "\1\u0266",
-            "",
-            "",
-            "",
-            "\1\u0267",
-            "\12\51\7\uffff\32\51\4\uffff\1\51\1\uffff\32\51",
+            "\12\50\7\uffff\32\50\4\uffff\1\50\1\uffff\32\50",
             ""
     };
 
@@ -4684,7 +4646,7 @@ public class AtrophyScriptLexer extends Lexer {
             this.transition = DFA7_transition;
         }
         public String getDescription() {
-            return "1:1: Tokens : ( T__90 | T__91 | T__92 | T__93 | T__94 | T__95 | T__96 | T__97 | T__98 | T__99 | T__100 | T__101 | T__102 | T__103 | T__104 | T__105 | T__106 | T__107 | T__108 | T__109 | T__110 | T__111 | T__112 | T__113 | T__114 | T__115 | T__116 | T__117 | T__118 | T__119 | T__120 | T__121 | T__122 | T__123 | T__124 | T__125 | T__126 | T__127 | T__128 | T__129 | T__130 | T__131 | T__132 | T__133 | T__134 | T__135 | T__136 | T__137 | T__138 | T__139 | T__140 | T__141 | T__142 | T__143 | T__144 | T__145 | T__146 | T__147 | T__148 | T__149 | T__150 | T__151 | T__152 | T__153 | T__154 | T__155 | T__156 | T__157 | T__158 | T__159 | T__160 | T__161 | T__162 | T__163 | T__164 | T__165 | T__166 | T__167 | T__168 | T__169 | T__170 | T__171 | T__172 | T__173 | T__174 | T__175 | T__176 | T__177 | T__178 | T__179 | T__180 | T__181 | T__182 | T__183 | T__184 | T__185 | T__186 | NOT_PREFIX | ADD_TAG_PREFIX | REMOVE_TAG_PREFIX | UPDATE_TREE_PREFIX | COMMAND_CALL_PREFIX | BOOL | IDENT | INT | WS | COMMENT | MULTILINE_COMMENT );";
+            return "1:1: Tokens : ( T__90 | T__91 | T__92 | T__93 | T__94 | T__95 | T__96 | T__97 | T__98 | T__99 | T__100 | T__101 | T__102 | T__103 | T__104 | T__105 | T__106 | T__107 | T__108 | T__109 | T__110 | T__111 | T__112 | T__113 | T__114 | T__115 | T__116 | T__117 | T__118 | T__119 | T__120 | T__121 | T__122 | T__123 | T__124 | T__125 | T__126 | T__127 | T__128 | T__129 | T__130 | T__131 | T__132 | T__133 | T__134 | T__135 | T__136 | T__137 | T__138 | T__139 | T__140 | T__141 | T__142 | T__143 | T__144 | T__145 | T__146 | T__147 | T__148 | T__149 | T__150 | T__151 | T__152 | T__153 | T__154 | T__155 | T__156 | T__157 | T__158 | T__159 | T__160 | T__161 | T__162 | T__163 | T__164 | T__165 | T__166 | T__167 | T__168 | T__169 | T__170 | T__171 | T__172 | T__173 | T__174 | T__175 | T__176 | T__177 | T__178 | T__179 | T__180 | T__181 | T__182 | T__183 | T__184 | T__185 | NOT_PREFIX | ADD_TAG_PREFIX | REMOVE_TAG_PREFIX | UPDATE_TREE_PREFIX | COMMAND_CALL_PREFIX | BOOL | IDENT | INT | WS | COMMENT | MULTILINE_COMMENT );";
         }
     }
  

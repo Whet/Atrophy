@@ -48,7 +48,7 @@ public class Level {
 		
 	}
 	
-	public void generatePortals(Stack<PortalInfo> portalStack, Level level) {
+	public void generatePortals(Stack<PortalInfo> portalStack, Level level, MissionManager missionManager) {
 		
 		PortalInfo portalData;
 		
@@ -68,6 +68,9 @@ public class Level {
 			// Add portal to blocks
 			block1.addPortal(newPortal);
 			block2.addPortal(newPortal);
+			
+			if(!portalData.name.isEmpty())
+				missionManager.addVariableObject(portalData.name, newPortal);
 		}
 	}
 	

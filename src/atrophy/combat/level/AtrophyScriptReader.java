@@ -75,7 +75,7 @@ public class AtrophyScriptReader {
 													 combatMembersManager, missions, messageBox, aiCrowd, turnProcess);
 		
 		level.setBlocks(blockStack);
-		level.generatePortals(portalStack, level);
+		level.generatePortals(portalStack, level, missionManager);
 		panningManager.setMaxOffsets(level.getSize());
 		level.spawnItems(engineeringChance,medicalChance,weaponChance,scienceChance);
 		missionManager.addCommands(commandStack);
@@ -891,30 +891,72 @@ public class AtrophyScriptReader {
 		
 	}
 	
-	protected static final class LockDoorEffect extends TriggerEffect {
+	private abstract static class DoorInfoEffect extends TriggerEffect {
+
+		protected MissionManager missionManager;
+		protected List<String> targetPortals;
+		
+		public DoorInfoEffect(Tree tree, MissionManager missionManager) {
+			this.missionManager = missionManager;
+			this.targetPortals = new ArrayList<>();
+			processDoorInfo(tree);
+		}
+
+		private void processDoorInfo(Tree tree) {
+			for(int i = 0; i < tree.getChildCount(); i++) {
+				switch(tree.getChild(i).toString()) {
+					case "ISNAME":
+						for(int j = 0; j< tree.getChild(i).getChildCount(); j++) {
+							this.targetPortals.add(createString(tree.getChild(i).getChild(j)));
+						}
+					break;
+				}
+			}
+		}
+		
+		protected Set<Portal> findMatch() {
 			
-			public LockDoorEffect(Tree tree) {
-				
+			Set<Portal> portals = new HashSet<>();
+			
+			for(String portalName: this.targetPortals) {
+				portals.add((Portal) missionManager.getVar(portalName));
+			}
+			
+			return portals;
+		}
+		
+	}
+	
+	protected static final class LockDoorEffect extends DoorInfoEffect {
+			
+			public LockDoorEffect(Tree tree, MissionManager missionManager) {
+				super(tree, missionManager);
 			}
 
 			@Override
 			public void run() {
-				// TODO Auto-generated method stub
+				Set<Portal> doors = this.findMatch();
 				
+				for(Portal portal: doors) {
+					portal.setWelded(true);
+				}				
 			}
 			
 		}
 	
-	protected static final class UnlockDoorEffect extends TriggerEffect {
+	protected static final class UnlockDoorEffect extends DoorInfoEffect {
 		
-		public UnlockDoorEffect(Tree tree) {
-			
+		public UnlockDoorEffect(Tree tree, MissionManager missionManager) {
+			super(tree, missionManager);
 		}
 
 		@Override
 		public void run() {
-			// TODO Auto-generated method stub
+			Set<Portal> doors = this.findMatch();
 			
+			for(Portal portal: doors) {
+				portal.setWelded(false);
+			}
 		}
 		
 	}
@@ -1076,10 +1118,10 @@ public class AtrophyScriptReader {
 					effects.add(new LoadMapEffect(tree.getChild(i)));
 				break;
 				case "LOCKDOOR":
-					effects.add(new LockDoorEffect(tree.getChild(i)));
+					effects.add(new LockDoorEffect(tree.getChild(i), missionManager));
 				break;
 				case "UNLOCKDOOR":
-					effects.add(new UnlockDoorEffect(tree.getChild(i)));
+					effects.add(new UnlockDoorEffect(tree.getChild(i), missionManager));
 				break;
 				case "ADDTAG":
 					effects.add(new AddTagEffect(tree.getChild(i), missions));
