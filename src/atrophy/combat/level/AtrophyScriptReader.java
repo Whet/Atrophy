@@ -906,8 +906,35 @@ public class AtrophyScriptReader {
 			this.techTree = techTree;
 			this.stashManager = stashManager;
 			
-			this.mapName = "NewStyle";
-			this.owner = AiGenerator.WHITE_VISTA;
+			engChance = 0;
+			medChance = 0;
+			wepChance = 0;
+			sciChance = 0;
+			
+			owner = AiGenerator.randomFaction();
+			
+			for(int i = 0; i < tree.getChildCount(); i++) {
+				switch(tree.getChild(i).toString()) {
+					case "ENG":
+						engChance = Integer.parseInt(tree.getChild(i).getChild(0).toString());
+					break;
+					case "MED":
+						medChance = Integer.parseInt(tree.getChild(i).getChild(0).toString());
+					break;
+					case "WEP":
+						wepChance = Integer.parseInt(tree.getChild(i).getChild(0).toString());
+					break;
+					case "SCI":
+						sciChance = Integer.parseInt(tree.getChild(i).getChild(0).toString());
+					break;
+					case "ISNAME":
+						mapName = createString(tree.getChild(i).getChild(new Random().nextInt(tree.getChild(i).getChildCount())));
+					break;
+					case "ISFACTION":
+						owner = createString(tree.getChild(i).getChild(new Random().nextInt(tree.getChild(i).getChildCount())));
+					break;
+				}
+			}
 		}
 
 		@Override
