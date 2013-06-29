@@ -694,6 +694,15 @@ public class AtrophyScriptReader {
 						behaviours.add(createString(child.getChild(i).getChild(j)));
 					}
 				break;
+				case "PRIORITY":
+					List<String> priorities = new ArrayList<>();
+					
+					for(int j = 0; j < child.getChild(i).getChildCount(); j++) {
+						priorities.add(createString(child.getChild(i).getChild(j)));
+					}
+					
+					aiNode.addPriorities(priorities);
+				break;
 			}
 			
 		}
