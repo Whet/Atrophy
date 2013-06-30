@@ -295,17 +295,28 @@ public class AtrophyScriptReader {
 	
 	protected static class TriggerCommand extends StoredCommand {
 
+		private boolean running;
+		
 		public TriggerCond condition;
 		
 		public TriggerCommand(String name, List<TriggerEffect> effects, TriggerCond condition) {
 			super(name, effects);
 			this.condition = condition;
+			this.running = true;
 		}
 		
 		@Override
 		public void run() {
-			if(condition == null || condition.truthCheck())
+			if(condition == null || (running && condition.truthCheck()))
 				super.run();
+		}
+
+		public boolean isExpired() {
+			return this.condition.isExpired();
+		}
+
+		public void setRunning(boolean running) {
+			this.running = running;
 		}
 
 	}
@@ -367,6 +378,13 @@ public class AtrophyScriptReader {
 			this.aiCrowd = aiCrowd;
 			
 			this.truthCond = createTruthCond(tree.getChild(0));
+		}
+		
+		public boolean isExpired() {
+			if(truthCond instanceof OnTime)
+				return ((OnTime) truthCond).repeatsLeft == 0 || ((OnTime) truthCond).timeLeft == 0;
+			
+			return false;
 		}
 
 		private TruthCond createTruthCond(Tree tree) {
@@ -465,7 +483,6 @@ public class AtrophyScriptReader {
 			public OnTime(Tree tree) {
 				this.targetTime = Integer.parseInt(tree.getChild(0).toString());
 				
-				
 				this.currentTime = 0;
 				
 				this.timeLeft = -1;
@@ -476,6 +493,7 @@ public class AtrophyScriptReader {
 				
 				if(tree.getChild(1).toString().equals("EXPIREREPEATS"))
 					this.repeatsLeft = Integer.parseInt(tree.getChild(1).getChild(0).toString());
+				
 			}
 			
 			@Override
@@ -1092,6 +1110,26 @@ public class AtrophyScriptReader {
 		
 	}
 	
+	protected static final class SetTriggerRunningEffect extends TriggerEffect {
+		
+		private MissionManager missionManager;
+		private boolean running;
+		private String trigger;
+		
+		public SetTriggerRunningEffect(Tree tree, MissionManager missionManager) {
+			this.missionManager = missionManager;
+			
+			this.trigger = createString(tree.getChild(0));
+			this.running = Boolean.parseBoolean(tree.getChild(1).toString());
+		}
+
+		@Override
+		public void run() {
+			missionManager.setTriggerRunning(trigger, running);
+		}
+		
+	}
+	
 	protected static final class ChangeAiNodeEffect extends UnitInfoEffect {
 		
 		private AiNode aiNode;
@@ -1227,6 +1265,9 @@ public class AtrophyScriptReader {
 				break;
 				case "SHOWMESSAGE":
 					effects.add(new ShowMessageEffect(tree.getChild(i), missionManager));
+				break;
+				case "SETTRIGGERRUNNING":
+					effects.add(new SetTriggerRunningEffect(tree.getChild(i), missionManager));
 				break;
 			}
 		}

@@ -1,9 +1,9 @@
 package atrophy.combat.level;
 
 import java.awt.Color;
-import java.awt.Polygon;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -40,9 +40,6 @@ public class MissionManager {
 	
 	private Queue<String> initCommandCalls;
 
-	private Map<String, Lootable> stashContents;
-	private Map<String, Polygon> stashObjects;
-	private Map<String, Polygon> coverObjects;
 	private Map<String, TalkMap> talkMaps;
 	private Map<String, StoredCommand> commands;
 	private Map<String, TriggerCommand> triggers;
@@ -58,9 +55,6 @@ public class MissionManager {
 	
 	public MissionManager(Missions missions, LargeEventText largeEventText){
 		
-		stashContents = new HashMap<>();
-		stashObjects = new HashMap<>();
-		coverObjects = new HashMap<>();
 		talkMaps = new HashMap<>();
 		commands = new HashMap<>();
 		triggers = new HashMap<>();
@@ -115,8 +109,13 @@ public class MissionManager {
 	}
 	
 	public void checkTriggers() {
-		for(Entry<String, TriggerCommand> entry : this.triggers.entrySet()) {
+		Iterator<Entry<String, TriggerCommand>> iterator = this.triggers.entrySet().iterator();
+		while(iterator.hasNext()) {
+			Entry<String, TriggerCommand> entry = iterator.next();
 			entry.getValue().run();
+			
+			if(entry.getValue().isExpired())
+				iterator.remove();
 		}
 	}
 
@@ -241,6 +240,10 @@ public class MissionManager {
 
 	public void showMessage(String message) {
 		largeEventText.flashText(message);
+	}
+	
+	public void setTriggerRunning(String trigger, boolean running) {
+		this.triggers.get(trigger).setRunning(running);
 	}
 	
 }
