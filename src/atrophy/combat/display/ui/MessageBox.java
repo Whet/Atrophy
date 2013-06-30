@@ -578,9 +578,9 @@ public class MessageBox extends Crowd{
 		}
 
 		private String parseMessage(String message) {
-			message = message.replaceAll("%playername", conversers[0].getName());
-			message = message.replaceAll("%ainame", conversers[1].getName());
-			message = message.replaceAll("%aifaction", conversers[1].getFaction());
+			message = message.replaceAll("playername", conversers[0].getName());
+			message = message.replaceAll("ainame", conversers[1].getName());
+			message = message.replaceAll("aifaction", conversers[1].getFaction());
 			return message;
 		}
 
