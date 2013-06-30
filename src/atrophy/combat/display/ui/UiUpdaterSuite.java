@@ -9,6 +9,8 @@ import atrophy.combat.actions.MouseAbilityHandler;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.AiManagementSuite;
 import atrophy.combat.display.LineDrawer;
+import atrophy.combat.display.MapDrawer;
+import atrophy.combat.display.TorchDrawer;
 import atrophy.combat.display.ui.loot.LootBox;
 import atrophy.combat.level.LevelManager;
 import atrophy.combat.mechanics.TurnProcess;
@@ -71,12 +73,20 @@ public class UiUpdaterSuite {
 
 	public void lazyLoad(MouseAbilityHandler mouseAbilityHandler, AiCrowd aiCrowd, LevelManager levelManager, CombatMouseHandler combatMouseHandler, TurnProcess turnProcess) {
 		combatUiManager.lazyLoad(mouseAbilityHandler, combatUiManager, floatingIcons, combatVisualManager, lootBox, levelManager, aiCrowd, panningManager, turnProcess);
-		floatingIcons.lazyLoad(combatUiManager.getLineSurface());
+		floatingIcons.lazyLoad(combatUiManager.getMapDrawer());
 		messageBox.lazyLoad(combatMouseHandler);
 	}
 
 	public LineDrawer getLineDrawer() {
 		return combatUiManager.getLineSurface();
+	}
+
+	public MapDrawer getMapDrawer() {
+		return combatUiManager.getMapDrawer();
+	}
+
+	public TorchDrawer getTorchDrawer() {
+		return combatUiManager.getTorchDrawer();
 	}
 	
 }

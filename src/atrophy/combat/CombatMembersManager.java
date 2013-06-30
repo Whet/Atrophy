@@ -21,6 +21,8 @@ import atrophy.combat.ai.ThinkingAi;
 import atrophy.combat.ai.WhiteVistaCommander;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.LineDrawer;
+import atrophy.combat.display.MapDrawer;
+import atrophy.combat.display.TorchDrawer;
 import atrophy.combat.display.ui.UiUpdaterSuite;
 import atrophy.combat.level.LevelBlock;
 import atrophy.combat.level.LevelManager;
@@ -38,7 +40,8 @@ public class CombatMembersManager {
 	private MouseAbilityHandler mouseAbilityHandler;
 	private CombatNCEManager combatInorganicManager;
 	private LevelManager levelManager;
-	private LineDrawer lineDrawer;
+	private TorchDrawer torchDrawer;
+	private MapDrawer mapDrawer;
 	
 	public CombatMembersManager(AiCrowd aiCrowd, TurnProcess turnProcess, LevelManager levelManager, CombatNCEManager combatInorganicManager){
 		commanders = new ArrayList<TeamsCommander>(2);
@@ -92,7 +95,8 @@ public class CombatMembersManager {
 	public void lazyLoad(UiUpdaterSuite uiUpdaterSuite, MouseAbilityHandler mouseAbilityHandler){
 		this.uiUpdaterSuite = uiUpdaterSuite;
 		this.mouseAbilityHandler = mouseAbilityHandler;
-		this.lineDrawer = uiUpdaterSuite.getLineDrawer();
+		this.torchDrawer = uiUpdaterSuite.getTorchDrawer();
+		this.mapDrawer = uiUpdaterSuite.getMapDrawer();
 	}
 	
 	public Ai getCurrentAi(){
@@ -141,8 +145,8 @@ public class CombatMembersManager {
 	
 	public void setCurrentAi(Ai currentAi){
 		this.currentAi = currentAi;
-		lineDrawer.updateFovLight(currentAi);
-		lineDrawer.updateAlphas();
+		torchDrawer.updateFovLight(currentAi);
+		mapDrawer.updateAlphas();
 	}
 
 	public void changeCurrentAi(Ai currentAi){
@@ -158,7 +162,7 @@ public class CombatMembersManager {
 		else{
 			uiUpdaterSuite.getLootBox().closeLootUi(false);
 		}
-		lineDrawer.updateAlphas();
+		mapDrawer.updateAlphas();
 	}
 
 	public void changeCurrentAi(int i){

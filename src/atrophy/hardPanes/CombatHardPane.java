@@ -16,6 +16,7 @@ import atrophy.combat.ai.AiGeneratorInterface;
 import atrophy.combat.ai.AiGeneratorInterface.GenerateCommand;
 import atrophy.combat.combatEffects.PowerManager;
 import atrophy.combat.display.AiCrowd;
+import atrophy.combat.display.AiImage;
 import atrophy.combat.display.AiManagementSuite;
 import atrophy.combat.display.MapPainter;
 import atrophy.combat.display.ui.Cartographer;
@@ -93,6 +94,8 @@ public class CombatHardPane implements HardPaneDefineable {
 		// Add ui elements
 		crowd.addButton(uiUpdaterSuite.getCombatUiManager().getMoveFlag());
 		crowd.addDisplayItem(uiUpdaterSuite.getCombatUiManager().getLineSurface());
+		crowd.addDisplayItem(uiUpdaterSuite.getCombatUiManager().getMapDrawer());
+		crowd.addDisplayItem(uiUpdaterSuite.getCombatUiManager().getTorchDrawer());
 		crowd.addDisplayItem(uiUpdaterSuite.getCombatUiManager().getAllyRoster());
 		crowd.addMouseActionItem(uiUpdaterSuite.getCombatUiManager().getAllyRoster());
 		crowd.addCrowd(uiUpdaterSuite.getCombatUiManager().getCombatInfo());
@@ -117,7 +120,9 @@ public class CombatHardPane implements HardPaneDefineable {
 		// Order Z, higher numbers on top
 		// ai images at 2, dead ones at 1
 		
-		uiUpdaterSuite.getCombatUiManager().getLineSurface().setZ(-1);
+		uiUpdaterSuite.getCombatUiManager().getMapDrawer().setZ(-1);
+		uiUpdaterSuite.getCombatUiManager().getLineSurface().setZ(0);
+		uiUpdaterSuite.getCombatUiManager().getTorchDrawer().setZ(3);
 		
 		aiCrowd.setZ(2);
 		
@@ -165,7 +170,7 @@ public class CombatHardPane implements HardPaneDefineable {
 		
 		crowd.addKeyListener(actionSuite.getCombatKeyboardHandler());
 		
-		uiUpdaterSuite.getCombatUiManager().getLineSurface().updateAlphas();
+		uiUpdaterSuite.getCombatUiManager().getMapDrawer().updateAlphas();
 		
 	}
 	

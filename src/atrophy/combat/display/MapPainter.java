@@ -73,10 +73,10 @@ public class MapPainter {
 	 * @param alpha the alpha
 	 * @param lineDrawer 
 	 */
-	public static void applyImage(BufferedImage texture, double[] location, double alpha, LineDrawer lineDrawer){
+	public static void applyImage(BufferedImage texture, double[] location, double alpha, MapDrawer lineDrawer){
 		// only draw pixels where there are already pixels and in the same room
 		if(texture != null){
-			LineDrawer.MapDrawBlock drawBlock = lineDrawer.getMapDrawBlock(location);
+			MapDrawer.MapDrawBlock drawBlock = lineDrawer.getMapDrawBlock(location);
 			
 			for(int i = 0; i < texture.getWidth(); i++){
 				for(int j = 0; j < texture.getHeight(); j++){
@@ -112,7 +112,7 @@ public class MapPainter {
 	 * @param location the location
 	 * @param alpha the alpha
 	 */
-	public static void applyImage(BufferedImage texture, LineDrawer.MapDrawBlock drawBlock, double[] location, double alpha){
+	public static void applyImage(BufferedImage texture, MapDrawer.MapDrawBlock drawBlock, double[] location, double alpha){
 		// only draw pixels where there are already pixels and in the same room
 		if(texture != null){
 			

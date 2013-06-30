@@ -30,6 +30,8 @@ import atrophy.combat.combatEffects.PowerManager;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.AiManagementSuite;
 import atrophy.combat.display.LineDrawer;
+import atrophy.combat.display.MapDrawer;
+import atrophy.combat.display.TorchDrawer;
 import atrophy.combat.display.ui.CartographerBox;
 import atrophy.combat.display.ui.FloatingIcons;
 import atrophy.combat.display.ui.MessageBox;
@@ -58,7 +60,8 @@ public class TurnProcess {
 	private CombatVisualManager combatVisualManager;
 	private CombatMembersManager combatMembersManager;
 	private CombatNCEManager combatInorganicManager;
-	private LineDrawer lineDrawer;
+	private TorchDrawer torchDrawer;
+	private MapDrawer mapDrawer;
 	private PanningManager panningManager;
 	private PowerManager powerManager;
 	private MissionManager missionManager;
@@ -75,7 +78,8 @@ public class TurnProcess {
 		this.aiCrowd = aiManagementSuite.getAiCrowd();
 		this.combatMembersManager = aiManagementSuite.getCombatMembersManager();
 		this.combatInorganicManager = combatInorganicManager;
-		this.lineDrawer = uiUpdaterSuite.getCombatUiManager().getLineSurface();
+		this.torchDrawer = uiUpdaterSuite.getCombatUiManager().getTorchDrawer();
+		this.mapDrawer = uiUpdaterSuite.getCombatUiManager().getMapDrawer();
 		
 		this.combatVisualManager = uiUpdaterSuite.getCombatVisualManager();
 		this.combatUiManager = uiUpdaterSuite.getCombatUiManager();
@@ -250,8 +254,8 @@ public class TurnProcess {
 			aiCrowd.getMask(i).setActive(true);
 		}
 		
-		lineDrawer.updateAlphas();
-		lineDrawer.updateFovLight(combatMembersManager.getCurrentAi());
+		mapDrawer.updateAlphas();
+		torchDrawer.updateFovLight(combatMembersManager.getCurrentAi());
 		turnInProgress = false;
 		
 		updateTweens();
@@ -350,7 +354,7 @@ public class TurnProcess {
 		ActivePane.getInstance().getRootCrowd().computeZOrder();
 		
 		combatKeyboardHandler.setFocus(true);
-		lineDrawer.updateAlphas();
+		mapDrawer.updateAlphas();
 		updateTweens();
 		combatVisualManager.updateVisibleAi();
 	}

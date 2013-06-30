@@ -17,8 +17,11 @@ import java.util.TimerTask;
 
 import javax.imageio.ImageIO;
 
+import org.newdawn.slick.opengl.pbuffer.GraphicsFactory;
+
 import watoydoEngine.designObjects.display.Crowd;
 import watoydoEngine.io.ReadWriter;
+import watoydoEngine.utils.GraphicsFunctions;
 import atrophy.combat.ai.Ai;
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.ai.ThinkingAi;

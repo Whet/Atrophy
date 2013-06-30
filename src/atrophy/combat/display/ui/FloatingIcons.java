@@ -28,6 +28,7 @@ import atrophy.combat.combatEffects.PowerManager.PowerEffect;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.AiImage;
 import atrophy.combat.display.LineDrawer;
+import atrophy.combat.display.MapDrawer;
 import atrophy.combat.display.MapPainter;
 import atrophy.combat.items.GrenadeItem;
 import atrophy.combat.items.StunGrenadeItem;
@@ -46,7 +47,7 @@ public class FloatingIcons extends Crowd{
 	private PanningManager panningManager;
 	private AiCrowd aiCrowd;
 	private CombatVisualManager combatVisualManager;
-	private LineDrawer lineDrawer;
+	private MapDrawer mapDrawer;
 	private LevelManager levelManager;
 	private CombatNCEManager combatInorganicManager;
 	
@@ -87,8 +88,8 @@ public class FloatingIcons extends Crowd{
 	}
 	
 
-	public void lazyLoad(LineDrawer lineDrawer) {
-		this.lineDrawer = lineDrawer;		
+	public void lazyLoad(MapDrawer mapDrawer) {
+		this.mapDrawer = mapDrawer;		
 	}
 	
 	public void setPowerManager(PowerManager powerManager) {
@@ -110,7 +111,7 @@ public class FloatingIcons extends Crowd{
 		if(combatVisualManager.isAllRevealed()){
 			while(pendingIt.hasNext()){
 				PendingPaint pender = pendingIt.next();
-				MapPainter.applyImage(pender.getImage(), pender.getLocation(), pender.getAlpha(), lineDrawer);
+				MapPainter.applyImage(pender.getImage(), pender.getLocation(), pender.getAlpha(), mapDrawer);
 				pendingIt.remove();
 			}
 			return;
@@ -120,7 +121,7 @@ public class FloatingIcons extends Crowd{
 			PendingPaint pender = pendingIt.next();
 			// if player can spot effect then apply it
 			if(combatVisualManager.isPointInSight(pender.location, "Player")){
-				MapPainter.applyImage(pender.getImage(), pender.getLocation(), pender.getAlpha(), lineDrawer);
+				MapPainter.applyImage(pender.getImage(), pender.getLocation(), pender.getAlpha(), mapDrawer);
 				pendingIt.remove();
 			}
 		}
