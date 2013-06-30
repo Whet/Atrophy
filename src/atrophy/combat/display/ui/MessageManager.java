@@ -191,7 +191,6 @@ public class MessageManager{
 		while(speechIt.hasNext()){
 			String next = speechIt.next();
 			
-			// TODO
 			if(dialogue.requirementsMet(dialogue.longSpeeches.get(next)[1], messageBox.getConversers()[0]))
 				this.topics.add(next);
 		}

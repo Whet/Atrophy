@@ -35,7 +35,9 @@ import atrophy.combat.ai.conversation.TalkMap;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.ui.MessageBox;
 import atrophy.combat.items.GrenadeItem;
+import atrophy.combat.items.Item;
 import atrophy.combat.items.StunGrenadeItem;
+import atrophy.combat.items.Weapon;
 import atrophy.combat.level.AtrophyScriptParser.prog_return;
 import atrophy.combat.mechanics.TurnProcess;
 import atrophy.gameMenu.saveFile.ItemMarket;
@@ -541,6 +543,7 @@ public class AtrophyScriptReader {
 		protected Boolean mustBeAlive;
 		protected Boolean mustBeInvestigated;
 		protected Boolean isDaemon;
+		protected Boolean isPlayer;
 		protected List<Integer> xList;
 		protected List<Integer> yList;
 		protected Integer minTeamSize;
@@ -607,6 +610,9 @@ public class AtrophyScriptReader {
 					case "MAXTEAMSIZE":
 						maxTeamSize = Integer.parseInt(tree.getChild(i).getChild(0).toString());
 					break;
+					case "ISPLAYER":
+						isPlayer = true;
+					break;
 				}
 			}
 		}
@@ -618,7 +624,8 @@ public class AtrophyScriptReader {
 				if( (possibleNames == null || possibleNames.contains(ai.getName())) &&
 					(possibleFactions == null || possibleFactions.contains(ai.getFaction())) &&
 					(possibleWeapons == null || possibleWeapons.contains(ai.getWeapon().getName())) &&
-					(mustBeAlive == null || ai.isDead() == !mustBeAlive)) {
+					(mustBeAlive == null || ai.isDead() == !mustBeAlive) &&
+					(isPlayer == null || ai.getFaction().equals(AiGenerator.PLAYER))) {
 					
 					if(possibleItems != null) {
 						boolean hasItem = false;
@@ -1130,6 +1137,59 @@ public class AtrophyScriptReader {
 		
 	}
 	
+	protected static final class SpawnItemEffect extends UnitInfoEffect {
+
+		private List<String> possibleItems;
+		
+		public SpawnItemEffect(Tree tree, AiCrowd aiCrowd) {
+			super(tree, aiCrowd);
+			
+			this.possibleItems = new ArrayList<>();
+			
+			for(int i = 0; i < tree.getChildCount(); i++) {
+				switch(tree.getChild(i).toString()) {
+					case "STRING":
+						possibleItems.add(createString(tree.getChild(i)));
+					break;
+				}
+			}
+		}
+
+		@Override
+		public void run() {
+			List<Ai> matchAi = matchAi();
+			
+			for(Ai ai: matchAi) {
+				int spareInventory = 5 - ai.getInventory().getItemCount();
+				
+				if(possibleItems.size() > spareInventory) {
+					for(int j = 0; j < spareInventory; j++) {
+						String itemName = possibleItems.get(new Random().nextInt(possibleItems.size()));
+						if(Item.isItem(itemName)) {
+							ai.addItem(Item.stringToItem(itemName));
+						}
+						else {
+							ai.setWeapon(Weapon.stringToWeapon(itemName));
+						}
+					}
+				}
+				else {
+					for(int j = 0; j < possibleItems.size(); j++) {
+						String itemName = possibleItems.get(j);
+						if(Item.isItem(itemName)) {
+							ai.addItem(Item.stringToItem(itemName));
+						}
+						else {
+							ai.setWeapon(Weapon.stringToWeapon(itemName));
+						}
+					}
+				}
+				
+			}
+		}
+		
+	}
+	
 	protected static final class ChangeAiNodeEffect extends UnitInfoEffect {
 		
 		private AiNode aiNode;
@@ -1268,6 +1328,9 @@ public class AtrophyScriptReader {
 				break;
 				case "SETTRIGGERRUNNING":
 					effects.add(new SetTriggerRunningEffect(tree.getChild(i), missionManager));
+				break;
+				case "SPAWNITEM":
+					effects.add(new SpawnItemEffect(tree.getChild(i), aiCrowd));
 				break;
 			}
 		}
