@@ -290,7 +290,7 @@ public class ThinkingAi extends Ai{
 		else if(this.aiInRoomToLoot()){
 			this.interactWithDeadAi();
 		}
-		else if(this.job != null && this.getLevelBlock() != this.job.getJobBlock()){
+		else if(this.job != null && levelManager.getBlock(this.getMoveLocation()) != this.job.getJobBlock()){
 			this.setMoveLocation(levelManager.randomInPosition(this.job.getJobBlock()));
 		}
 		else if(Maths.getDistance(this.getLocation(), this.getMoveLocation()) == 0 && this.turnCounter == 0){
