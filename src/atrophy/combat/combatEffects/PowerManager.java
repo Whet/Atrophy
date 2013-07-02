@@ -31,6 +31,9 @@ public class PowerManager {
 	
 	public void usePower(Power power, Object target) {
 		
+		if(target == null)
+			return;
+		
 		// Must have stability greater than 0
 		if(squad.getStability() - (powerBuffer.size() * POWER_STABILITY_DEDUCTION) <= 0)
 			return;
