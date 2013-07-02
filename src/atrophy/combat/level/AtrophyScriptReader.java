@@ -198,6 +198,16 @@ public class AtrophyScriptReader {
 			
 			
 				missionManager.addVariableObject(name, levelBlock);
+				
+				if(this.zone != null && this.zone.size() > 0) {
+					String[] factions = new String[this.zone.size()];
+					
+					for(int i = 0; i < this.zone.size(); i++) {
+						factions[i] = this.zone.get(i);
+					}
+					
+					level.addBannedBlock(factions, levelBlock);
+				}
 			}
 			
 			return levelBlock;
