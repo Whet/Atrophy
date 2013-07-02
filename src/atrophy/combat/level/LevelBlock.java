@@ -337,6 +337,11 @@ public class LevelBlock {
 	public Lootable getStash(double[] location) {
 		Polygon region = this.getStealthRegionObject(location);
 		
+		return getStash(region);
+	}
+	
+	public Lootable getStash(Polygon region) {
+		
 		for(int i = 0; i < this.stashPolygons.size(); i++){
 			if(region == this.stashPolygons.get(i)) {
 				return this.stashes.get(i);
@@ -460,5 +465,5 @@ public class LevelBlock {
 		
 		return null;
 	}
-	
+
 }

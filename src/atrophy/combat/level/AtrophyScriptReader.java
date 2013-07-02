@@ -34,6 +34,7 @@ import atrophy.combat.ai.conversation.Dialogue;
 import atrophy.combat.ai.conversation.TalkMap;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.ui.MessageBox;
+import atrophy.combat.display.ui.loot.LootBox.Lootable;
 import atrophy.combat.items.GrenadeItem;
 import atrophy.combat.items.Item;
 import atrophy.combat.items.StunGrenadeItem;
@@ -189,7 +190,10 @@ public class AtrophyScriptReader {
 					}
 					
 					levelBlock.addStash(regionPolygon);
-					missionManager.addVariableObject(region.name, regionPolygon);
+					if(region.name != null && !region.name.isEmpty()) {
+						missionManager.addVariableObject(region.name, regionPolygon);
+						missionManager.addVariableObject(region.name + "Lootable", levelBlock.getStash(regionPolygon));
+					}
 				}
 			
 			
@@ -1143,11 +1147,13 @@ public class AtrophyScriptReader {
 	
 	protected static final class SpawnItemEffect extends UnitInfoEffect {
 
+		private MissionManager missionManager;
 		private List<String> possibleItems;
 		
-		public SpawnItemEffect(Tree tree, AiCrowd aiCrowd) {
+		public SpawnItemEffect(Tree tree, AiCrowd aiCrowd, MissionManager missionManager) {
 			super(tree, aiCrowd);
 			
+			this.missionManager = missionManager;
 			this.possibleItems = new ArrayList<>();
 			
 			for(int i = 0; i < tree.getChildCount(); i++) {
@@ -1188,8 +1194,44 @@ public class AtrophyScriptReader {
 						}
 					}
 				}
-				
 			}
+			
+			if(this.possibleNames != null && this.possibleNames.size() > 0) {
+				for(int i = 0; i < this.possibleNames.size(); i++) {
+					Object object = this.missionManager.getVar(this.possibleNames.get(i));
+					
+					if(object != null && object instanceof Lootable) {
+						
+						Lootable lootable = (Lootable) object;
+						
+						int spareInventory = 5 - lootable.getInventory().getItemCount();
+						
+						if(possibleItems.size() > spareInventory) {
+							for(int j = 0; j < spareInventory; j++) {
+								String itemName = possibleItems.get(new Random().nextInt(possibleItems.size()));
+								if(Item.isItem(itemName)) {
+									lootable.addItem(Item.stringToItem(itemName));
+								}
+								else {
+									lootable.setWeapon(Weapon.stringToWeapon(itemName));
+								}
+							}
+						}
+						else {
+							for(int j = 0; j < possibleItems.size(); j++) {
+								String itemName = possibleItems.get(j);
+								if(Item.isItem(itemName)) {
+									lootable.addItem(Item.stringToItem(itemName));
+								}
+								else {
+									lootable.setWeapon(Weapon.stringToWeapon(itemName));
+								}
+							}
+						}
+					}
+				}
+			}
+			
 		}
 		
 	}
@@ -1334,7 +1376,7 @@ public class AtrophyScriptReader {
 					effects.add(new SetTriggerRunningEffect(tree.getChild(i), missionManager));
 				break;
 				case "SPAWNITEM":
-					effects.add(new SpawnItemEffect(tree.getChild(i), aiCrowd));
+					effects.add(new SpawnItemEffect(tree.getChild(i), aiCrowd, missionManager));
 				break;
 			}
 		}
