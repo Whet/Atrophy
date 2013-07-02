@@ -166,7 +166,7 @@ public class CombatMembersManager {
 	}
 
 	public void changeCurrentAi(int i){
-		if(i < this.getAllyCount() && this.getAlly(i) != null){
+		if(i < this.getAllyCount() && this.getAlly(i) != null && !this.getAlly(i).isDead()){
 			
 			this.changeCurrentAi(this.getAlly(i));
 			
