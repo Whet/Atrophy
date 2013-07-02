@@ -11,6 +11,8 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.antlr.runtime.RecognitionException;
+
 import watoydoEngine.designObjects.display.Text;
 import watoydoEngine.designObjects.display.TextButton;
 import watoydoEngine.io.ReadWriter;
@@ -19,7 +21,6 @@ import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.display.ui.MiniMapLines;
 import atrophy.combat.level.Level;
 import atrophy.combat.level.LevelIO;
-import atrophy.combat.level.LevelIO.LevelFormatException;
 import atrophy.gameMenu.saveFile.ItemMarket;
 import atrophy.gameMenu.saveFile.MapManager.Sector;
 import atrophy.gameMenu.saveFile.Missions;
@@ -93,27 +94,27 @@ public class MapsMenu extends Menu {
 				public void mI(Point mousePosition) {
 					super.mI(mousePosition);
 
-//					if(mapMade)
-//						return;
-//					
-//					this.mapMade = true;
-//					Level currentLevel;
-//					try {
-//						currentLevel = LevelIO.loadLevelBlocks(ReadWriter.getRootFile("Maps/" + sector.getMap(ind + (page * MAX_ITEMS))));
-//					} catch (FileNotFoundException e) {
-//						e.printStackTrace();
-//						return;
-//					} catch (IOException e) {
-//						e.printStackTrace();
-//						return;
-//					} catch (LevelFormatException e) {
-//						e.printStackTrace();
-//						return;
-//					}
-//					
-//					float scale = 200 / (float)(currentLevel.getSize()[0] - currentLevel.getSize()[1]);
-//					miniMapLines = new MiniMapLines(scale, currentLevel);
-//					miniMapLines.setLocation(MapsMenu.this.getLocation()[0] + 400, MapsMenu.this.getLocation()[1] + 60);
+					if(mapMade)
+						return;
+					
+					this.mapMade = true;
+					Level currentLevel;
+					try {
+						currentLevel = LevelIO.loadLevelBlocks(ReadWriter.getRootFile("Maps/" + sector.getMap(ind + (page * MAX_ITEMS))));
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+						return;
+					} catch (IOException e) {
+						e.printStackTrace();
+						return;
+					} catch (RecognitionException e) {
+						e.printStackTrace();
+						return;
+					}
+					
+					float scale = 200 / (float)(currentLevel.getSize()[0] - currentLevel.getSize()[1]);
+					miniMapLines = new MiniMapLines(scale, currentLevel);
+					miniMapLines.setLocation(MapsMenu.this.getLocation()[0] + 400, MapsMenu.this.getLocation()[1] + 60);
 				}
 				
 				@Override

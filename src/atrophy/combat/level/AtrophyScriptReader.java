@@ -157,40 +157,44 @@ public class AtrophyScriptReader {
 				levelBlock.addVertex(xList.get(i), yList.get(i));
 			}
 			
-			for(Entry<String, Integer> entry:territory.entrySet()) {
+			for(Entry<String, Integer> entry: territory.entrySet()) {
 				
 				if(entry.getKey().equals(AiGenerator.PLAYER)) {
 					level.addPlayerSpawn(levelBlock);
 				}
-				else {
+				else if(combatMembersManager != null) {
 					combatMembersManager.getCommander(entry.getKey()).setBlockHeuristic(levelBlock, entry.getValue());
 				}
 			}
 			
-			levelBlock.createNavigationGrid();
-			if(saferoom)
-				missionManager.addSaferoom(levelBlock);
+			if(combatMembersManager != null) {
+				levelBlock.createNavigationGrid();
 			
-			for(RegionInfo region : this.cover) {
-				Polygon regionPolygon = new Polygon();
-				for(int i = 0; i < region.xList.size(); i++) {
-					regionPolygon.addPoint(region.xList.get(i), region.yList.get(i));
-				}
+				if(saferoom)
+					missionManager.addSaferoom(levelBlock);
 				
-				levelBlock.addCover(regionPolygon);
-				missionManager.addVariableObject(region.name, regionPolygon);
-			}
-			for(RegionInfo region : this.stashes) {
-				Polygon regionPolygon = new Polygon();
-				for(int i = 0; i < region.xList.size(); i++) {
-					regionPolygon.addPoint(region.xList.get(i), region.yList.get(i));
+				for(RegionInfo region : this.cover) {
+					Polygon regionPolygon = new Polygon();
+					for(int i = 0; i < region.xList.size(); i++) {
+						regionPolygon.addPoint(region.xList.get(i), region.yList.get(i));
+					}
+					
+					levelBlock.addCover(regionPolygon);
+					missionManager.addVariableObject(region.name, regionPolygon);
 				}
-				
-				levelBlock.addStash(regionPolygon);
-				missionManager.addVariableObject(region.name, regionPolygon);
-			}
+				for(RegionInfo region : this.stashes) {
+					Polygon regionPolygon = new Polygon();
+					for(int i = 0; i < region.xList.size(); i++) {
+						regionPolygon.addPoint(region.xList.get(i), region.yList.get(i));
+					}
+					
+					levelBlock.addStash(regionPolygon);
+					missionManager.addVariableObject(region.name, regionPolygon);
+				}
 			
-			missionManager.addVariableObject(name, levelBlock);
+			
+				missionManager.addVariableObject(name, levelBlock);
+			}
 			
 			return levelBlock;
 		}
@@ -1566,6 +1570,48 @@ public class AtrophyScriptReader {
 			}
 		}
 		
+	}
+
+	public static Level readBlocks(File file) throws RecognitionException, IOException {
+		StringBuffer sb = new StringBuffer();
+		String lineString;
+		int line = 0;
+		
+		while((lineString = ReadWriter.readFromFile(file, line)) != null) {
+			sb.append(lineString + "\n");
+			line++;
+		}
+		
+		CharStream stream =	new ANTLRStringStream(sb.toString());
+		AtrophyScriptLexer lexer = new AtrophyScriptLexer(stream);
+		TokenStream tokenStream = new CommonTokenStream(lexer);
+		AtrophyScriptParser parser = new AtrophyScriptParser(tokenStream);
+		prog_return prog = parser.prog();
+		
+		Stack<LevelBlockInfo> blockStack = new Stack<>();
+		
+		Level level = new Level("");
+		
+		Tree tree = prog.tree;
+		int blockNumber = 0;
+		
+		for(int i = 0; i < tree.getChildCount(); i++) {
+			switch(tree.getChild(i).toString()) {
+				case "MAPSIZE":
+					List<Integer> size = createIntList(tree.getChild(i));
+					int[] sizeArray = {size.get(0), -size.get(1), size.get(2), -size.get(3)};
+					level.setSize(sizeArray);
+				break;
+				case "BLOCK":
+					blockStack.add(createBlock(blockNumber, tree.getChild(i), null, level, null));
+					blockNumber++;
+				break;
+			}
+		}
+		
+		level.setBlocks(blockStack);
+		
+		return level;
 	}
 	
 }
