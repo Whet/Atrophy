@@ -10,7 +10,7 @@ import atrophy.combat.level.Level;
 
 public class MiniMapLines implements Displayable {
 
-	private static final Color MAP_BORDER = Color.white;
+	private static final Color MAP_BORDER = new Color(60,60,40);
 	private float mapAlpha;
 	private int z;
 	private double[] location;
