@@ -27,13 +27,8 @@ public class VehicleAi extends Ai {
 		this.dead = dead;
 		
 		if(this.dead){	
-			
 			this.setTargetAi(null); 
 			this.setSkippingTurns(true);
-			
-//			if(!this.getImage().endsWith("Dead")){
-//				this.setImage(getImage() + "Dead");
-//			}
 		}
 		
 	}
@@ -49,7 +44,5 @@ public class VehicleAi extends Ai {
 	public String getVehicleType() {
 		return this.vehicleType;
 	}
-	
-	
-	
+
 }

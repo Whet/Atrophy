@@ -656,13 +656,6 @@ public class AiActions {
 			case Abilities.STASH_SEARCH:
 				this.stashSearch(invoker);
 			break;
-			case Abilities.HACK:
-				if(getActionTurns() > Abilities.turnsToDo(Abilities.HACK, invoker.getSkillLevel(Abilities.SCAN_SCIENCE))){
-					((TurretAi) invoker.getTargetAi()).hack(AiGenerator.BANDITS);
-					this.setAction(NO_ACTION);
-				}
-				invoker.aiActions.incrementActionTurns();
-			break;
 			case NO_ACTION:
 			default:
 				this.aiCombatActions.reload(invoker);
@@ -714,12 +707,6 @@ public class AiActions {
 
 	public void setSwing(int swing) {
 		this.aiCombatActions.setSwing(swing);
-	}
-
-	public void setHackTarget(Ai invoker, TurretAi targetAi) {
-		invoker.removeOrders(mouseAbilityHandler);
-		invoker.setTargetAi(targetAi);
-		this.setAction(Abilities.HACK);
 	}
 
 }

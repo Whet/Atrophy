@@ -166,11 +166,6 @@ public class AiGenerator{
 								  command.getAllowedWeapons(),
 							      levelManager.randomRoom());
 				break;
-				case TURRET:
-					generateTurrets(squadCount+LONER,
-									command.getX(),
-									command.getY());
-				break;
 			}
 			squadCount++;
 		}
@@ -208,11 +203,6 @@ public class AiGenerator{
 							 combatMembersManager.getCommander(BANDITS).getSpawnRoom());
 			break;
 			case LONER:
-			break;
-			case TURRET:
-				generateTurrets(squadCount+LONER,
-								command.getX(),
-								command.getY());
 			break;
 		}
 		squadCount++;
@@ -377,13 +367,7 @@ public class AiGenerator{
 	}
 	
 	private void generateRosters(){
-		
 		combatMembersManager.updateCommanders();
-		
-		for(Ai turret : aiCrowd.getActors()) {
-			if(turret instanceof TurretAi)
-				((TurretAi) turret).setCommander(combatMembersManager.getCommander(levelManager.getCurrentLevel().getMapOwner()));
-		}
 	}
 	
 	private void generateLoner(String team, List<String> allowedItems, List<String> allowedWeapons, LevelBlock room){
@@ -413,27 +397,6 @@ public class AiGenerator{
 		
 		combatMembersManager.addAi(ai);
 		
-	}
-	
-	private void generateTurrets(String team, double x, double y){
-		
-		AiImage aiImg = new AiImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, 0,0, mouseAbilityHandler, floatingIcons);
-		ThinkingAi ai;
-		
-		DialoguePool dialoguePool = new DialoguePool(team, missions, missionManager, cartographer, messageBox);
-		
-		ai = new TurretAi(panningManager, aiCrowd, combatVisualManager, turnProcess, floatingIcons, mouseAbilityHandler, combatMembersManager, x,y, levelManager, combatInorganicManager, combatUiManager, lootbox, dialoguePool);
-		ai.setImage("Turret");
-		ai.setTeam(team);
-		
-		ai.assignAbilities();
-		aiImg.setAi(ai);
-		
-		aiCrowd.addDisplayItem(aiImg);
-		aiCrowd.addMouseActionItem(aiImg);
-		
-		aiCrowd.addActor(ai, new DirectorClassification(DirectorArchetype.UNDECIDED));
-		aiCrowd.addMask(aiImg);
 	}
 	
 	private void generateTeam(String team, int members, List<String> allowedItems, List<String> allowedWeapons, LevelBlock spawnRoom){

@@ -1,6 +1,3 @@
-/*
- * 
- */
 package atrophy.combat.actions;
 
 import java.awt.Point;
@@ -14,7 +11,6 @@ import atrophy.combat.ai.Ai;
 import atrophy.combat.ai.AiDebugger;
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.ai.ThinkingAi;
-import atrophy.combat.ai.TurretAi;
 import atrophy.combat.combatEffects.Power;
 import atrophy.combat.combatEffects.PowerManager;
 import atrophy.combat.display.AiCrowd;
@@ -27,20 +23,9 @@ import atrophy.combat.level.LevelManager;
 import atrophy.combat.mechanics.Abilities;
 import atrophy.gameMenu.saveFile.Squad;
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class MouseAbilityHandler.
- */
 public class MouseAbilityHandler {
 		
-	/**
-	 * The ability applied.
-	 */
 	private String abilityApplied;
-	
-	/**
-	 * The setting ability.
-	 */
 	private boolean settingAbility;
 
 	private CombatMembersManager combatMembersManager;
@@ -53,10 +38,6 @@ public class MouseAbilityHandler {
 	private Squad squad;
 	private PowerManager powerManager;
 	
-	/**
-	 * Instantiates a new mouse ability handler.
-	 * @param levelManager 
-	 */
 	public MouseAbilityHandler(Squad squad, AiManagementSuite aiManagementSuite, UiUpdaterSuite uiUpdaterSuite, LevelManager levelManager){
 		abilityApplied = "";
 		settingAbility = false;
@@ -77,37 +58,19 @@ public class MouseAbilityHandler {
 		this.powerManager = powerManager;
 	}
 	
-	/**
-	 * Sets the ability.
-	 *
-	 * @param abilityApplied the new ability
-	 */
 	public void setAbility(String abilityApplied){
 		this.abilityApplied = abilityApplied;
 		settingAbility = true;
 	}
 	
-	/**
-	 * Cancel ability setting.
-	 */
 	public void cancelAbilitySetting(){
 		settingAbility = false;
 	}
 	
-	/**
-	 * Checks if is setting ability.
-	 *
-	 * @return true, if is setting ability
-	 */
 	public boolean isSettingAbility(){
 		return this.settingAbility;
 	}
 	
-	/**
-	 * Apply ability.
-	 *
-	 * @param mousePoint the mouse point
-	 */
 	public void applyAbility(Point mousePoint){
 		if(levelManager.getBlock(mousePoint.x - panningManager.getOffset()[0],
 								 mousePoint.y - panningManager.getOffset()[1]) != null){
@@ -137,7 +100,7 @@ public class MouseAbilityHandler {
 		switch(abilityApplied){
 			case Abilities.SPEECH:
 				Ai speechAi = getClosestAiToMouse(mousePoint, AI_CLICK_RADIUS);
-				if(speechAi != null && !(speechAi instanceof TurretAi) && speechAi.getLevelBlock() == combatMembersManager.getCurrentAi().getLevelBlock() &&
+				if(speechAi != null && speechAi.getLevelBlock() == combatMembersManager.getCurrentAi().getLevelBlock() &&
 				   !speechAi.getFaction().equals(AiGenerator.PLAYER) && ( !(speechAi instanceof ThinkingAi) || !((ThinkingAi)speechAi).isBlockPlayerConvo())){
 					
 					messageBox.setConversation(combatMembersManager.getCurrentAi(), speechAi);
@@ -149,19 +112,19 @@ public class MouseAbilityHandler {
 			break;
 			case Abilities.STUN_MELEE:
 				Ai targetAi = getClosestAiToMouse(mousePoint, AI_CLICK_RADIUS);
-				if(targetAi != null && !(targetAi instanceof TurretAi) && !targetAi.getFaction().equals(AiGenerator.PLAYER)){
+				if(targetAi != null && !targetAi.getFaction().equals(AiGenerator.PLAYER)){
 					combatMembersManager.getCurrentAi().setStunTarget(targetAi);
 				}
 			break;
 			case Abilities.GRAPPLE:
 				targetAi = getClosestAiToMouse(mousePoint, AI_CLICK_RADIUS);
-				if(targetAi != null && !(targetAi instanceof TurretAi) && !targetAi.getFaction().equals(AiGenerator.PLAYER)){
+				if(targetAi != null && !targetAi.getFaction().equals(AiGenerator.PLAYER)){
 					combatMembersManager.getCurrentAi().setGrappleTarget(targetAi);
 				}
 			break;
 			case Abilities.SLIT_MELEE:
 				targetAi = getClosestAiToMouse(mousePoint, AI_CLICK_RADIUS);
-				if(targetAi != null && !(targetAi instanceof TurretAi)  && !targetAi.getFaction().equals(AiGenerator.PLAYER)){
+				if(targetAi != null && !targetAi.getFaction().equals(AiGenerator.PLAYER)){
 					combatMembersManager.getCurrentAi().setBackstabTarget(targetAi);
 				}
 			break;
@@ -186,12 +149,6 @@ public class MouseAbilityHandler {
 //					combatUiManager.getLargeEventText().flashText(targetAi.getName() + " Tagged", Color.yellow);
 //				}
 			break;
-			case "Hack":
-				TurretAi turret = getClosestTurretToMouse(mousePoint, AI_CLICK_RADIUS, false);
-				
-				if(turret != null)
-					combatMembersManager.getCurrentAi().setHackTarget(turret);
-			break;
 //			case "DebugKill":
 //				targetAi = getClosestAiToMouse(mousePoint, AI_CLICK_RADIUS, true);
 //				targetAi.setDead(true);
@@ -212,7 +169,7 @@ public class MouseAbilityHandler {
 			break;
 			case Abilities.INVESTIGATE:
 				speechAi = getClosestAiToMouse(mousePoint, AI_CLICK_RADIUS, true);
-				if(speechAi != null && !(speechAi instanceof TurretAi) && speechAi.getLevelBlock() == combatMembersManager.getCurrentAi().getLevelBlock() && speechAi.isDead()){
+				if(speechAi != null && speechAi.getLevelBlock() == combatMembersManager.getCurrentAi().getLevelBlock() && speechAi.isDead()){
 					messageBox.setInvestigating(combatMembersManager.getCurrentAi(), speechAi);
 					lootBox.closeLootUi(lootBox.isVisible());
 					messageBox.setVisible(true);
@@ -276,42 +233,6 @@ public class MouseAbilityHandler {
 		
 		if(closestAiImage != null){
 			return closestAiImage.getAi();
-		}
-		
-		return null;
-	}
-	
-	private TurretAi getClosestTurretToMouse(Point mousePosition, int minRadius, boolean allowDead){
-		
-		AiImage closestAiImage = null;
-		
-		for(int i = 0; i < aiCrowd.getActorCount(); i++){
-			if(aiCrowd.getActor(i) instanceof TurretAi &&
-			   (allowDead || !aiCrowd.getMask(i).getAi().isDead()) &&
-				aiCrowd.getMask(i).isVisible() &&
-				// within min radius
-				Maths.getDistance(mousePosition.x - panningManager.getOffset()[0],
-					              mousePosition.y - panningManager.getOffset()[1],
-					              aiCrowd.getMask(i).getLocation()[0],
-					              aiCrowd.getMask(i).getLocation()[1]) <= minRadius &&
-					              
-				(closestAiImage == null || 
-				// new ai is closer than current closest ai
-			    Maths.getDistance(mousePosition.x - panningManager.getOffset()[0],
-			    		          mousePosition.y - panningManager.getOffset()[1],
-			    		          aiCrowd.getMask(i).getLocation()[0],
-			    		          aiCrowd.getMask(i).getLocation()[1]) <
-			    		          
-			    Maths.getDistance(closestAiImage.getLocation()[0], closestAiImage.getLocation()[1], 
-			    		          mousePosition.x - panningManager.getOffset()[0],
-			    		          mousePosition.y - panningManager.getOffset()[1]))){
-				
-				closestAiImage = aiCrowd.getMask(i);
-			}
-		}
-		
-		if(closestAiImage != null){
-			return (TurretAi) closestAiImage.getAi();
 		}
 		
 		return null;

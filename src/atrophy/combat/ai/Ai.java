@@ -379,10 +379,6 @@ public class Ai implements Lootable{
 		this.aiActions.setBackstabTarget(this, targetAi);
 	}
 	
-	public void setHackTarget(TurretAi turret) {
-		this.aiActions.setHackTarget(this, turret);		
-	}
-	
 	public void backstabTarget(){
 		this.aiActions.backstabTarget(this);
 	}
