@@ -130,6 +130,9 @@ public class TurnProcess {
 		}
 		
 		missionManager.checkTriggers();
+		
+		if(checkGameOver())
+			this.endGame();
 	}
 
 	private void updateAiLocations(){
