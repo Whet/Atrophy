@@ -62,7 +62,12 @@ public class Ai implements Lootable{
 	protected PanningManager panningManager;
 	private Ai nextAi;
 
-	public Ai(FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, String name, double x, double y, CombatNCEManager combatInorganicManager, LevelManager levelManager, LootBox lootBox, CombatMembersManager combatMembersManager, CombatUiManager combatUiManager, CombatVisualManager combatVisualManager, AiCrowd aiCrowd, PanningManager panningManager, TurnProcess turnProcess){
+	public Ai(FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler,
+			  String name, double x, double y,
+			  CombatNCEManager combatInorganicManager, LevelManager levelManager, LootBox lootBox,
+			  CombatMembersManager combatMembersManager, CombatUiManager combatUiManager, CombatVisualManager combatVisualManager,
+			  AiCrowd aiCrowd, PanningManager panningManager, TurnProcess turnProcess){
+		
 		this.name = name;
 		image = "";
 		
@@ -138,8 +143,6 @@ public class Ai implements Lootable{
 		
 	}
 	
-	// The Void
-
 	public double[] getActionLocation() {
 		return this.aiActions.getActionLocation();
 	}
@@ -383,7 +386,6 @@ public class Ai implements Lootable{
 		this.aiActions.backstabTarget(this);
 	}
 	
-	// Getters
 	public boolean didMove() {
 		return this.aiPathing.didMove();
 	}
@@ -549,7 +551,6 @@ public class Ai implements Lootable{
 		return this.aiData.getWeapon().getCombatScore();
 	}
 	
-	// Setters
 	public void setName(String name) {
 		this.name = name;
 	}
