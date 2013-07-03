@@ -245,6 +245,7 @@ public class MessageManager{
 				String next = speechIt.next();
 	
 				if(next.equals(topic)){
+	
 					dialogue.setLongSpeech(next);
 					speech = dialogue.nextSpeechDialogue();
 	
@@ -262,16 +263,35 @@ public class MessageManager{
 						}
 					}
 					
-					messageBox.addMessage(messageBox.getConversers()[1].getName() + ": " + speech);
+					messageBox.addMessage(messageBox.getTalkNode().getName() + ": " + speech);
 					
 					break;
 				}
 				
 				// If the player talks on another dialogue this will reset the longpoint of the first dialogue
 				dialogue.longSpeechPoint = 0;
+				
 			}
 		}
 		
+		dialogues = messageBox.getTalkNode().getDialogues();
+		
+		for (Dialogue dialogue : dialogues) {
+
+			Iterator<String> speechIt = dialogue.longSpeeches.keySet().iterator();
+			
+			while(speechIt.hasNext()){
+				String next = speechIt.next();
+				if(dialogue.requirementsMet(dialogue.longSpeeches.get(next)[1], messageBox.getConversers()[0]))
+					this.topics.add(next);
+			
+			}
+			for(String textOption : dialogue.options){
+				this.topics.add(textOption);
+			}
+		}
+		
+		setTopicButtons();
 	}
 
 	private void playerResponseAction(String topic){

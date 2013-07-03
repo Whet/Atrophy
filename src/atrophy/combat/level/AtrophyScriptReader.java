@@ -799,10 +799,11 @@ public class AtrophyScriptReader {
 
 		public AiGenerator aiGenerator;
 		private List<String> subscriptions;
+		private MissionManager missionManager;
 		
-		public SpawnTalkNodeEffect(Tree tree, AiCrowd aiCrowd, AiGenerator aiGenerator) {
+		public SpawnTalkNodeEffect(Tree tree, AiCrowd aiCrowd, MissionManager missionManager) {
 			super(tree, aiCrowd);
-			this.aiGenerator = aiGenerator;
+			this.missionManager = missionManager;
 			this.subscriptions = new ArrayList<>();
 			
 			for(int i = 0; i < tree.getChildCount(); i++) {
@@ -816,7 +817,7 @@ public class AtrophyScriptReader {
 		
 		@Override
 		public void run() {
-			aiGenerator.spawnTalkNode(new TalkNode(this.possibleNames.get(new Random().nextInt(this.possibleNames.size())), this.subscriptions));
+			aiGenerator.spawnTalkNode(new TalkNode(this.possibleNames.get(new Random().nextInt(this.possibleNames.size())), this.subscriptions, missionManager));
 		}
 		
 	}
@@ -887,13 +888,24 @@ public class AtrophyScriptReader {
 		@Override
 		public void run() {
 			List<Ai> matchAi = matchAi();
-			Ai ai = matchAi.get(new Random().nextInt(matchAi.size()));
+			Ai ai = null;
+
+			if(matchAi.size() > 0)
+				ai = matchAi.get(new Random().nextInt(matchAi.size()));
 			
-			if(ai instanceof ThinkingAi && ((ThinkingAi) ai).getAiNode() != null && ((ThinkingAi) ai).getAiNode().getInitiatorDialogue() != null) {
+			if(ai != null && ai instanceof ThinkingAi && ((ThinkingAi) ai).getAiNode() != null && ((ThinkingAi) ai).getAiNode().getInitiatorDialogue() != null) {
 				messageBox.setConversation(combatMembersManager.getCurrentAi(), ai, ((ThinkingAi) ai).getAiNode().getInitiatorDialogue());
 			}
-			else {
+			else if(ai != null) {
 				messageBox.setConversation(combatMembersManager.getCurrentAi(), ai);
+			}
+			
+			if(this.possibleNames.size() > 0) {
+				
+				TalkNode talkNode = aiCrowd.getTalkNode(this.possibleNames.get(new Random().nextInt(this.possibleNames.size())));
+				
+				if(talkNode != null) 
+					messageBox.setConversation(combatMembersManager.getCurrentAi(), talkNode);
 			}
 			
 			messageBox.setVisible(true);
@@ -1416,7 +1428,7 @@ public class AtrophyScriptReader {
 					effects.add(new SpawnItemEffect(tree.getChild(i), aiCrowd, missionManager));
 				break;
 				case "SPAWNTALKNODE":
-					effects.add(new SpawnTalkNodeEffect(tree.getChild(i), aiCrowd, null));
+					effects.add(new SpawnTalkNodeEffect(tree.getChild(i), aiCrowd, missionManager));
 				break;
 			}
 		}

@@ -210,8 +210,7 @@ public class AiGenerator{
 	}
 	
 	public void spawnTalkNode(TalkNode talkNode) {
-		// TODO Auto-generated method stub
-		
+		aiCrowd.addTalkNode(talkNode);
 	}
 	
 	private void generateSoloAi(SoloGenerateCommand command, int team) {

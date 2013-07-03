@@ -21,6 +21,7 @@ import watoydoEngine.designObjects.display.Crowd;
 import watoydoEngine.io.ReadWriter;
 import atrophy.combat.ai.Ai;
 import atrophy.combat.ai.AiGenerator;
+import atrophy.combat.ai.TalkNode;
 import atrophy.combat.ai.ThinkingAi;
 import atrophy.combat.ai.VehicleAi;
 import atrophy.combat.ai.director.DirectorClassification;
@@ -32,8 +33,9 @@ public class AiCrowd extends Crowd {
 	
 	private static final int ANIMATION_FRAME_LENGTH = 200;
 
-	private volatile ArrayList<Ai> actors;
-	private volatile ArrayList<AiImage> masks;
+	private Map<String, TalkNode> talkNodes;
+	private ArrayList<Ai> actors;
+	private ArrayList<AiImage> masks;
 	private Map<Ai, AiImage> actorToMask;
 	
 	private Stack<Ai> masterStack;
@@ -52,6 +54,7 @@ public class AiCrowd extends Crowd {
 		super(false);
 		images = new HashMap<>();
 		animations = new HashMap<>();
+		talkNodes= new HashMap<>();
 		actors = new ArrayList<Ai>();
 		masks = new ArrayList<AiImage>();
 		loadPortraits();
@@ -270,6 +273,14 @@ public class AiCrowd extends Crowd {
 	
 	public int getActorCount(){
 		return actors.size();
+	}
+	
+	public TalkNode getTalkNode(String name) {
+		return this.talkNodes.get(name);
+	}
+	
+	public void addTalkNode(TalkNode talkNode) {
+		this.talkNodes.put(talkNode.getName(), talkNode);
 	}
 	
 	public AiImage getActorMask(Ai ai){

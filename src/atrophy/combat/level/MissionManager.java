@@ -80,6 +80,14 @@ public class MissionManager {
 					((SpawnTalkNodeEffect) effect).aiGenerator = aiGenerator;
 			}
 		}
+		for(TriggerCommand command : this.triggers.values()) {
+			for(TriggerEffect effect : command.effects) {
+				if(effect instanceof SpawnTeamEffect)
+					((SpawnTeamEffect) effect).aiGenerator = aiGenerator;
+				else if(effect instanceof SpawnTalkNodeEffect)
+					((SpawnTalkNodeEffect) effect).aiGenerator = aiGenerator;
+			}
+		}
 		
 		while(!initCommandCalls.isEmpty()) {
 			String poll = initCommandCalls.poll();
