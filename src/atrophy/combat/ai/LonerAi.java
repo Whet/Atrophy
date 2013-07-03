@@ -71,7 +71,7 @@ public class LonerAi extends ThinkingAi{
 	protected boolean canBeEngaged(Ai ai) {
 		if(this.isTargetHostile(ai) &&
 		   ai.getLevelBlock() == this.getLevelBlock() &&
-		   CombatVisualManager.isAiInSight(this, ai)){
+		   combatVisualManager.isAiInSight(this, ai)){
 			return true;
 		}
 		return false;

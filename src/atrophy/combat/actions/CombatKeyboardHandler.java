@@ -420,7 +420,6 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 			// Num +
 			case 107:
 				combatVisualManager.revealAll();
-				combatVisualManager.updateVisibleAi();
 			break;
 			
 			// shift

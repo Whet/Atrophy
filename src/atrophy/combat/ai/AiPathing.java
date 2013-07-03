@@ -46,6 +46,9 @@ public class AiPathing {
 	}
 	
 	public void move(Ai invoker){
+		
+//		long time = System.currentTimeMillis();
+		
 		try{
 			invoker.setSwing(0);
 			invoker.setOldTargetSwing(0);
@@ -234,6 +237,8 @@ public class AiPathing {
 		}
 		// cannot find what actually throws this, nothing shows when stepped through
 		catch(NullPointerException npe){}
+		
+//		System.out.println("Path Time Millis: " + (System.currentTimeMillis() - time));
 	}
 	 
 	/**

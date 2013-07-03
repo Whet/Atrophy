@@ -29,9 +29,7 @@ import atrophy.combat.ai.ThinkingAi;
 import atrophy.combat.combatEffects.PowerManager;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.AiManagementSuite;
-import atrophy.combat.display.LineDrawer;
 import atrophy.combat.display.MapDrawer;
-import atrophy.combat.display.TorchDrawer;
 import atrophy.combat.display.ui.CartographerBox;
 import atrophy.combat.display.ui.FloatingIcons;
 import atrophy.combat.display.ui.MessageBox;
@@ -60,7 +58,6 @@ public class TurnProcess {
 	private CombatVisualManager combatVisualManager;
 	private CombatMembersManager combatMembersManager;
 	private CombatNCEManager combatInorganicManager;
-	private TorchDrawer torchDrawer;
 	private MapDrawer mapDrawer;
 	private PanningManager panningManager;
 	private PowerManager powerManager;
@@ -78,7 +75,6 @@ public class TurnProcess {
 		this.aiCrowd = aiManagementSuite.getAiCrowd();
 		this.combatMembersManager = aiManagementSuite.getCombatMembersManager();
 		this.combatInorganicManager = combatInorganicManager;
-		this.torchDrawer = uiUpdaterSuite.getCombatUiManager().getTorchDrawer();
 		this.mapDrawer = uiUpdaterSuite.getCombatUiManager().getMapDrawer();
 		
 		this.combatVisualManager = uiUpdaterSuite.getCombatVisualManager();
@@ -120,6 +116,7 @@ public class TurnProcess {
 			combatVisualManager.setTableMasks(false);
 			updateAiLocations();
 			updateAiBrass();
+			
 			updateAi();
 			updateTriggers();
 		}
@@ -146,6 +143,8 @@ public class TurnProcess {
 	}
 	
 	private void updateAi(){
+		
+//		long time = System.currentTimeMillis();
 		
 		List<Ai> chain = new ArrayList<>();
 		
@@ -192,6 +191,8 @@ public class TurnProcess {
 		
 		chainStart.action();
 
+//		System.out.println(System.currentTimeMillis() - time);
+		
 	}
 	
 	private Ai nextNonDeadAi() {
@@ -255,7 +256,6 @@ public class TurnProcess {
 		}
 		
 		mapDrawer.updateAlphas();
-		torchDrawer.updateFovLight(combatMembersManager.getCurrentAi());
 		turnInProgress = false;
 		
 		updateTweens();

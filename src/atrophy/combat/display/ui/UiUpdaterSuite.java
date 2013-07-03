@@ -31,7 +31,7 @@ public class UiUpdaterSuite {
 		this.panningManager = new PanningManager(aiManagementSuite.getAiCrowd(), aiManagementSuite.getCombatMembersManager());
 		this.cartographer = new Cartographer();
 		this.combatUiManager = new CombatUiManager(cartographer, aiManagementSuite.getCombatMembersManager(), panningManager, aiManagementSuite.getAiCrowd(), turnProcess, levelManager);
-		this.combatVisualManager = new CombatVisualManager(aiManagementSuite.getAiCrowd(), combatUiManager, aiManagementSuite.getCombatMembersManager(), levelManager);
+		this.combatVisualManager = new CombatVisualManager(aiManagementSuite.getAiCrowd(), combatUiManager, aiManagementSuite.getCombatMembersManager(), levelManager, turnProcess);
 		this.cartographerBox = new CartographerBox(panningManager, cartographer);
 		this.messageBox = new MessageBox(combatUiManager, turnProcess, aiManagementSuite.getCombatMembersManager(), combatVisualManager, cartographer, cartographerBox, aiManagementSuite.getAiCrowd());
 		this.lootBox = new LootBox(combatUiManager, messageBox, cartographerBox);

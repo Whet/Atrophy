@@ -48,7 +48,7 @@ public class TorchDrawer implements Displayable {
 		
 		if(oldLookLocation != null && ai.getLookAngle() == oldLookAngle && ai.getLocation()[0] == oldLookLocation[0] && ai.getLocation()[1] == oldLookLocation[1])
 			return;
-					
+		
 		oldLookAngle = ai.getLookAngle();
 		oldLookLocation = new double[2];
 		oldLookLocation[0] = ai.getLocation()[0];
@@ -168,14 +168,14 @@ public class TorchDrawer implements Displayable {
 		}
 		
 //		System.out.println("Lightpoly points: " + lightPolygon.npoints);
-		
+
 	}
 	
 	@Override
 	public void drawMethod(Graphics2D drawShape) {
 		drawFovLight(drawShape, combatMembersManager.getCurrentAi());
 	}
-	
+	 
 	private void drawFovLight(Graphics2D drawShape, final Ai ai){
 
 		AffineTransform transform = drawShape.getTransform();

@@ -4,8 +4,10 @@
 package atrophy.combat;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import atrophy.combat.actions.MouseAbilityHandler;
@@ -20,7 +22,6 @@ import atrophy.combat.ai.TeamsCommander;
 import atrophy.combat.ai.ThinkingAi;
 import atrophy.combat.ai.WhiteVistaCommander;
 import atrophy.combat.display.AiCrowd;
-import atrophy.combat.display.LineDrawer;
 import atrophy.combat.display.MapDrawer;
 import atrophy.combat.display.TorchDrawer;
 import atrophy.combat.display.ui.UiUpdaterSuite;
@@ -42,6 +43,7 @@ public class CombatMembersManager {
 	private LevelManager levelManager;
 	private TorchDrawer torchDrawer;
 	private MapDrawer mapDrawer;
+	private Map<LevelBlock, StrengthStub> factionStrengthScores;
 	
 	public CombatMembersManager(AiCrowd aiCrowd, TurnProcess turnProcess, LevelManager levelManager, CombatNCEManager combatInorganicManager){
 		commanders = new ArrayList<TeamsCommander>(2);
@@ -51,6 +53,43 @@ public class CombatMembersManager {
 		this.turnProcess = turnProcess;
 		this.combatInorganicManager = combatInorganicManager;
 		this.levelManager = levelManager;
+		
+	}
+	
+	private class StrengthStub {
+		
+		private int code;
+		//Faction, [Strength, Turn]
+		private Map<String, Integer[]> strengthInfo;
+		
+		public StrengthStub(int code) {
+			
+			this.code = code;
+			
+			strengthInfo = new HashMap<>();
+			
+			strengthInfo.put(AiGenerator.BANDITS, new Integer[]{0,-1});
+			strengthInfo.put(AiGenerator.WHITE_VISTA, new Integer[]{0,-1});
+			strengthInfo.put(AiGenerator.PLAYER, new Integer[]{0,-1});
+		}
+
+		public int getStrength(String faction) {
+			
+			if(this.strengthInfo.get(faction)[1] == turnProcess.getTurnCount())
+				return this.strengthInfo.get(faction)[0];
+			
+			int strength = 0;
+			
+			for(int i = 0; i < aiCrowd.getActorCount(); i++){
+				if(aiCrowd.getActor(i).getFaction().equals(faction) && aiCrowd.getActor(i).getLevelBlock().getCode() == code)
+					strength += aiCrowd.getActor(i).getCombatScore();
+			}
+			
+			this.strengthInfo.put(faction, new Integer[]{strength, turnProcess.getTurnCount()});
+			
+			return strength;
+		}
+		
 	}
 	
 	public void createCommanders() {
@@ -97,6 +136,11 @@ public class CombatMembersManager {
 		this.mouseAbilityHandler = mouseAbilityHandler;
 		this.torchDrawer = uiUpdaterSuite.getTorchDrawer();
 		this.mapDrawer = uiUpdaterSuite.getMapDrawer();
+		
+		this.factionStrengthScores = new HashMap<>();
+		for(int i = 0; i < this.levelManager.getCurrentLevel().getBlockCount(); i++) {
+			this.factionStrengthScores.put(this.levelManager.getCurrentLevel().getBlock(i), new StrengthStub(this.levelManager.getBlock(i).getCode()));
+		}
 	}
 	
 	public Ai getCurrentAi(){
@@ -201,14 +245,7 @@ public class CombatMembersManager {
 	}
 	
 	public int getFactionStrength(String faction, LevelBlock levelBlock) {
-		int strength = 0;
-		
-		for(int i = 0; i < aiCrowd.getActorCount(); i++){
-			if(aiCrowd.getActor(i).getFaction().equals(faction) && aiCrowd.getActor(i).getLevelBlock() == levelBlock)
-				strength += aiCrowd.getActor(i).getCombatScore();
-		}
-		
-		return strength;
+		return this.factionStrengthScores.get(levelBlock).getStrength(faction);
 	}
 	
 	public boolean factionsAllied(String faction, String faction2) {

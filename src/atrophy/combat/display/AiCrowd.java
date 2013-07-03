@@ -17,11 +17,8 @@ import java.util.TimerTask;
 
 import javax.imageio.ImageIO;
 
-import org.newdawn.slick.opengl.pbuffer.GraphicsFactory;
-
 import watoydoEngine.designObjects.display.Crowd;
 import watoydoEngine.io.ReadWriter;
-import watoydoEngine.utils.GraphicsFunctions;
 import atrophy.combat.ai.Ai;
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.ai.ThinkingAi;
@@ -37,6 +34,7 @@ public class AiCrowd extends Crowd {
 
 	private volatile ArrayList<Ai> actors;
 	private volatile ArrayList<AiImage> masks;
+	private Map<Ai, AiImage> actorToMask;
 	
 	private Stack<Ai> masterStack;
 	private Stack<Ai> shuffledStack;
@@ -72,6 +70,7 @@ public class AiCrowd extends Crowd {
 		this.masterStack = new Stack<Ai>();
 		
 		this.director = new HealthDirector(this);
+		this.actorToMask = new HashMap<>();
 		
 	}
 	
@@ -274,15 +273,7 @@ public class AiCrowd extends Crowd {
 	}
 	
 	public AiImage getActorMask(Ai ai){
-		int i;
-		
-		for(i = 0; i < this.masks.size(); i++){
-			if(this.masks.get(i).getAi() == ai){
-				break;
-			}
-		}
-		
-		return this.masks.get(i);
+		return this.actorToMask.get(ai);
 	}
 	
 	public AiImage getMask(int i){
@@ -304,6 +295,7 @@ public class AiCrowd extends Crowd {
 	public void addMask(AiImage aiImg){
 		masks.add(aiImg);
 		aiImg.updateImage();
+		this.actorToMask.put(aiImg.getAi(), aiImg);
 	}
 
 	public ArrayList<AiImage> getMasks() {

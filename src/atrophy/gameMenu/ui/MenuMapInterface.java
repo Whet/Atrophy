@@ -104,30 +104,30 @@ public class MenuMapInterface {
 			return;
 		}
 		
-		int banditTeamSpawn = new Random().nextInt(2) + 1;
+		int banditTeamSpawn = 2;
 		
-		int whiteVistaTeamSpawn = new Random().nextInt(2) + 1;
+		int whiteVistaTeamSpawn = 2;
 		
 		int lonerTeamSpawn = new Random().nextInt(4);
 		
 		ArrayList<String> targetFactions =  new ArrayList<String>();
 		
-		if(owner.equals(AiGenerator.WHITE_VISTA)){
-			whiteVistaTeamSpawn += 2;
-			
-			targetFactions.add(AiGenerator.BANDITS);
-		}
-		else if(owner.equals(AiGenerator.BANDITS)){
-			banditTeamSpawn += 2;
-			
-			targetFactions.add(AiGenerator.WHITE_VISTA);
-			targetFactions.add(AiGenerator.LONER);
-			targetFactions.add(AiGenerator.PLAYER);
-		}
-		// Loners
-		else{
-			targetFactions.add(AiGenerator.BANDITS);
-		}
+//		if(owner.equals(AiGenerator.WHITE_VISTA)){
+//			whiteVistaTeamSpawn += 2;
+//			
+//			targetFactions.add(AiGenerator.BANDITS);
+//		}
+//		else if(owner.equals(AiGenerator.BANDITS)){
+//			banditTeamSpawn += 2;
+//			
+//			targetFactions.add(AiGenerator.WHITE_VISTA);
+//			targetFactions.add(AiGenerator.LONER);
+//			targetFactions.add(AiGenerator.PLAYER);
+//		}
+//		// Loners
+//		else{
+//			targetFactions.add(AiGenerator.BANDITS);
+//		}
 		
 		// Cancel spawns if not specified
 		if(!levelManager.getCurrentLevel().allowedSpawn(AiGenerator.BANDITS))

@@ -2,14 +2,19 @@ package atrophy.combat;
 
 import java.awt.Polygon;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 import watoydoEngine.utils.Maths;
 import atrophy.combat.ai.Ai;
+import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.AiImage;
 import atrophy.combat.level.LevelBlock;
 import atrophy.combat.level.LevelManager;
 import atrophy.combat.mechanics.Abilities;
+import atrophy.combat.mechanics.TurnProcess;
 
 public class CombatVisualManager {
 	
@@ -29,16 +34,29 @@ public class CombatVisualManager {
 	private CombatUiManager combatUiManager;
 	private CombatMembersManager combatMembersManager;
 	private LevelManager levelManager;
+	private TurnProcess turnProcess;
 
 	private boolean drawingIndividualSight;
 	
-	public CombatVisualManager(AiCrowd aiCrowd, CombatUiManager combatUiManager, CombatMembersManager combatMembersManager, LevelManager levelManager){
+	private Map<String, Map<Ai, Integer>> factionVisibleAi;
+	private Map<Ai, Map<Ai, double[]>> aiVisibilityCache;
+	
+	public CombatVisualManager(AiCrowd aiCrowd, CombatUiManager combatUiManager, CombatMembersManager combatMembersManager, LevelManager levelManager, TurnProcess turnProcess){
 		this.aiCrowd = aiCrowd;
 		this.combatUiManager = combatUiManager;
 		this.combatMembersManager = combatMembersManager;
 		this.levelManager = levelManager;
 		
 		drawingIndividualSight = true;
+		factionVisibleAi = new HashMap<>();
+		
+		factionVisibleAi.put(AiGenerator.WHITE_VISTA, new HashMap<Ai, Integer>());
+		factionVisibleAi.put(AiGenerator.BANDITS, new HashMap<Ai, Integer>());
+		factionVisibleAi.put(AiGenerator.PLAYER, new HashMap<Ai, Integer>());
+		
+		aiVisibilityCache = new HashMap<>();
+		
+		this.turnProcess = turnProcess;
 	}
 	
 	// If this unit becomes the current ai then only units its team can see should be visible
@@ -69,8 +87,20 @@ public class CombatVisualManager {
 			}
 		}
 	}
+	
+	public boolean isAiInSight(Ai looker, Ai lookedAt){
 		
-	public static boolean isAiInSight(Ai looker, Ai lookedAt){
+		if(this.aiVisibilityCache.get(looker) == null) {
+			this.aiVisibilityCache.put(looker, new HashMap<Ai, double[]>());
+		}
+		
+		if(this.aiVisibilityCache.get(looker).containsKey(lookedAt)) {
+			double[] ds = this.aiVisibilityCache.get(looker).get(lookedAt);
+			
+			if(ds[0] == ds[2] && ds[1] == ds[3] && spotStealth(looker, lookedAt))
+				return true;
+		}
+		
 		// in fov && in same room as target
 		// in a radius && in same room
 		// or dead and kill counted
@@ -94,6 +124,9 @@ public class CombatVisualManager {
 			if(lookedAt.isDead() && looker.getFaction().equals("Player")){
 				lookedAt.bodyFound(true);
 			}
+			
+			// Update cache
+			this.aiVisibilityCache.get(looker).put(lookedAt, new double[]{looker.getLocation()[0], looker.getLocation()[1], lookedAt.getLocation()[0], lookedAt.getLocation()[1]});
 			
 			return true;
 		}
@@ -145,10 +178,19 @@ public class CombatVisualManager {
 	}
 	
 	public boolean isAiInSight(Ai aiLookedAt, String faction){
+
+		Integer integer = this.factionVisibleAi.get(faction).get(aiLookedAt);
+		
+		if(integer != null && integer == turnProcess.getTurnCount())
+			return true;
+		
+		
 		for(int i = 0; i < aiCrowd.getActorCount(); i++){
 			if(!aiCrowd.getActor(i).isDead() &&
 			   aiCrowd.getActor(i).getFaction().equals(faction) &&
 			   (isAiInSight(aiCrowd.getActor(i), aiLookedAt))){
+				
+				this.factionVisibleAi.get(faction).put(aiLookedAt, turnProcess.getTurnCount());
 				
 				return true;
 			}
@@ -244,16 +286,6 @@ public class CombatVisualManager {
 		drawObjLines = drawLines;
 	}
 
-	public boolean isPointInSight(double[] location) {
-		// if any ai can spot the point return true
-		for(Ai ai : aiCrowd.getActors()){
-			if(!ai.isDead() && ai.getLevelBlock() == levelManager.getBlock(location) && spotFov(ai, location)){
-				return true;
-			}
-		}
-		return false;
-	}
-	
 	public boolean isPointInSight(double[] location, String faction) {
 		// if any ai can spot the point return true
 		for(Ai ai : aiCrowd.getActors()){

@@ -3,6 +3,7 @@
  */
 package atrophy.combat.ai;
 
+import java.awt.Polygon;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
@@ -13,6 +14,7 @@ import java.util.PriorityQueue;
 import java.util.Set;
 
 import watoydoEngine.utils.Maths;
+import atrophy.combat.CombatVisualManager;
 import atrophy.combat.level.LevelBlock;
 import atrophy.combat.level.LevelBlockGrid;
 import atrophy.combat.level.LevelBlockGrid.GridBlock;
@@ -174,7 +176,7 @@ public class PathFinder {
 	        GridBlock current = lowestF(openSet);
 	        
 	        if(current == goal || (goal == null && Maths.getDistance(current.getPathLocation(), moveLocation) <= moveDistance))
-	            return createAStarPath(cameFrom, current, startBlock);
+	            return createAStarPath(cameFrom, current, startBlock, mover.getLevelBlock().getHitBox());
 	        
 	        openSet.remove(current);
 	        closedSet.add(current);
@@ -216,7 +218,7 @@ public class PathFinder {
 	    return returnBlock;
     }
 
-    private static ArrayList<double[]> createAStarPath(Map<GridBlock, GridBlock> cameFrom, GridBlock goal, GridBlock start) {
+    private static ArrayList<double[]> createAStarPath(Map<GridBlock, GridBlock> cameFrom, GridBlock goal, GridBlock start, Polygon room) {
         
         GridBlock current = goal;
         
@@ -224,7 +226,14 @@ public class PathFinder {
         
         while(current != start) {
             current.picked = true;
-            path.add(current.getPathLocation());
+            
+            if(path.size() == 0 || !CombatVisualManager.isInSight(path.get(path.size() - 1)[0],
+            													  path.get(path.size() - 1)[1],
+            													  current.getPathLocation()[0],
+            													  current.getPathLocation()[1],
+            													  room))
+            	path.add(current.getPathLocation());
+            
             current = cameFrom.get(current);
         }
         
