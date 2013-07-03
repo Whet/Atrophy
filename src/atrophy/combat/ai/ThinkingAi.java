@@ -383,30 +383,30 @@ public class ThinkingAi extends Ai{
 			for(int i = 0; i < combatInorganicManager.getLevelAssets().size(); i++){
 				if(combatInorganicManager.getLevelAsset(i) instanceof Grenade &&
 				   levelManager.getBlock(combatInorganicManager.getLevelAsset(i).getLocation())	== this.getLevelBlock()){
-					flee();
 
-					// if can't flee in time then move to cover
-					if(this.getLevelBlock().getCover().size() > 0 &&
-					    Maths.getDistance(this.getMoveLocation(), this.getLocation()) / this.getMoveDistance() >= Grenade.FUSE_TIME){
-						
-						this.moveTowardsNearestRegion(this.getLevelBlock().getCover());
-						
-					}
-					// otherwise run to a corner to try and escape los (not calculated, just random)
-					else{
-						double shortestDistance = 0;
-						int index = 0;
-						for(int j = 0; j < this.getLevelBlock().getHitBox().npoints; j++){
-							if(j == 0 || shortestDistance > Maths.getDistance(this.getLocation()[0], this.getLocation()[1],
-									                                           this.getLevelBlock().getHitBox().xpoints[j], this.getLevelBlock().getHitBox().ypoints[j])){
-								shortestDistance = Maths.getDistance(this.getLocation()[0], this.getLocation()[1],
-												   this.getLevelBlock().getHitBox().xpoints[j], this.getLevelBlock().getHitBox().ypoints[j]);
-								index = j;
-							}
+					Portal fleePortal = null;
+					
+					for(int j = 0; j < this.getLevelBlock().getPortalCount(); j++){
+						if(this.getLevelBlock().getPortal(j).canUse() && Maths.getDistance(this.getLevelBlock().getPortal(j).getLocation(), this.getLocation()) / this.getMoveDistance() <= Grenade.FUSE_TIME &&
+						   (fleePortal == null || Maths.getDistance(fleePortal.getLocation(), this.getLocation()) > 
+						                          Maths.getDistance(this.getLevelBlock().getPortal(j).getLocation(), this.getLocation())
+						   )){
+							
+							fleePortal = this.getLevelBlock().getPortal(j);
 						}
-						
-						this.setMoveLocation(this.getLevelBlock().getHitBox().xpoints[index],this.getLevelBlock().getHitBox().ypoints[index]);
 					}
+					
+					if(fleePortal != null){
+						this.aiMode = AiMode.FLEEING;
+						this.doingJob = false;
+						this.chaseAi = null;
+						this.setTargetAi(null);
+						this.setMoveLocation(levelManager.randomInPosition(fleePortal.linksTo(this.getLevelBlock())));
+					}
+					else if(this.getLevelBlock().getCover().size() > 0){
+						this.moveTowardsNearestRegion(this.getLevelBlock().getCover());
+					}
+
 					break;
 				}
 			}
@@ -542,16 +542,19 @@ public class ThinkingAi extends Ai{
 			if(this.getCommander().isSuspected(ai) && ai.getLevelBlock() == this.getLevelBlock() && combatVisualManager.isAiInSight(ai, this.getFaction())) {
 				
 				if(ai instanceof ThinkingAi) {
-					this.getCommander().addHatedAi(ai);
+					
 					if(!ai.getFaction().equals(AiGenerator.LONER))
 						this.getCommander().removeAlliance(ai.getFaction());
+
+					this.getCommander().addHatedAi(ai);
 					this.getCommander().removeFriend(ai);
 				}
 				else {
 					
-					this.getCommander().addHatedAi(ai);
 					if(!ai.getFaction().equals(AiGenerator.LONER))
 						this.getCommander().removeAlliance(ai.getFaction());
+
+					this.getCommander().addHatedAi(ai);
 					this.getCommander().removeFriend(ai);
 					this.getCommander().removeSuspected(ai);
 					
@@ -874,7 +877,7 @@ public class ThinkingAi extends Ai{
 		
 		// Investigate dead bodies
 		for(Ai ai : aiCrowd.getActors()){
-			if(ai.getLevelBlock() == this.getLevelBlock() && ai.isDead() && !this.getCommander().isInvestigated(ai) && CombatVisualManager.isAiInSight(this, ai)) {
+			if(ai.getLevelBlock() == this.getLevelBlock() && ai.isDead() && !this.getCommander().isInvestigated(ai) && combatVisualManager.isAiInSight(this, ai)) {
 				this.getCommander().addInvestigatedAi(ai);
 				
 				// Chance to recognise killer
@@ -885,7 +888,7 @@ public class ThinkingAi extends Ai{
 					return;
 				
 				if(turnProcess.getTurnCount() - deathReport.timeOfDeath < 20 && deathReport.weapon.getName().equals(deathReport.killer.getWeapon().getName()) &&
-				  (CombatVisualManager.isAiInSight(this, deathReport.killer) || new Random().nextInt(10) < 7)) {
+				  (combatVisualManager.isAiInSight(this, deathReport.killer) || new Random().nextInt(10) < 7)) {
 					
 					System.out.println(this.getName() + " suspects " + deathReport.killer.getName() + " of murder");
 					
@@ -1218,7 +1221,7 @@ public class ThinkingAi extends Ai{
 				
 				// find a player unit in sight
 				for(Ai actor : aiCrowd.getActors()){
-					if(actor.getFaction().equals(AiGenerator.PLAYER) && !actor.isDead() && !(actor instanceof VehicleAi) && dialogue.canTalkTo(actor) && CombatVisualManager.isAiInSight(ai, actor)){
+					if(actor.getFaction().equals(AiGenerator.PLAYER) && !actor.isDead() && !(actor instanceof VehicleAi) && dialogue.canTalkTo(actor) && ai.combatVisualManager.isAiInSight(ai, actor)){
 						talkTarget = actor;
 						break;
 					}
