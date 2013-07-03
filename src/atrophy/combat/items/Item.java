@@ -1,48 +1,19 @@
-/*
- * 
- */
 package atrophy.combat.items;
 
-/**
- * The Class Item.
- */
 public abstract class Item {
 	
-	/**
-	 * The name.
-	 */
 	private String name;
-	
-	/**
-	 * The description.
-	 */
 	private String description;
 	
-	/**
-	 * Instantiates a new item.
-	 *
-	 * @param name the name
-	 * @param description the description
-	 */
 	protected Item(String name, String description){
 		this.name= name;
 		this.description = description;
 	}
 	
-	/**
-	 * Gets the name.
-	 *
-	 * @return the name
-	 */
 	public String getName(){
 		return this.name;
 	}
 	
-	/**
-	 * Gets the description.
-	 *
-	 * @return the description
-	 */
 	public String getDescription(){
 		return this.description;
 	}
@@ -71,8 +42,6 @@ public abstract class Item {
 				return UnitDetector.getInstance();
 			case WeldingTorch.NAME:
 				return WeldingTorch.getInstance();
-			case KillTags.NAME:
-				return KillTags.getInstance();
 			case WeaponSupply.NAME:
 				return WeaponSupply.getInstance();
 			case EngineeringSupply.NAME:
@@ -97,7 +66,6 @@ public abstract class Item {
 			item.equals(StunGrenadeItem.NAME) ||
 			item.equals(UnitDetector.NAME) ||
 			item.equals(WeldingTorch.NAME) ||
-			item.equals(KillTags.NAME) ||
 			item.equals(WeaponSupply.NAME) ||
 			item.equals(EngineeringSupply.NAME) ||
 			item.equals(MedicalSupply.NAME) ||

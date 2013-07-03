@@ -14,7 +14,6 @@ import atrophy.combat.items.EngineeringSupply;
 import atrophy.combat.items.GrenadeItem;
 import atrophy.combat.items.Harpoon1;
 import atrophy.combat.items.Harpoon2;
-import atrophy.combat.items.KillTags;
 import atrophy.combat.items.LightStealthField;
 import atrophy.combat.items.MedicalSupply;
 import atrophy.combat.items.MediumStealthField;
@@ -76,7 +75,6 @@ public class ItemMarket {
 		itemData.put(SensorSuite.NAME, 				new ItemData(techTree, 5000,TechTree.OPTICS,false));
 		itemData.put(SpeedBooster.NAME, 			new ItemData(techTree, 3200,TechTree.ADVANCED_SUIT_THRUSTERS,false));
 		itemData.put(UnitDetector.NAME, 			new ItemData(techTree, 1200,TechTree.SUIT_COMMUNICATION,false));
-		itemData.put(KillTags.NAME, 				new ItemData(techTree, 600,TechTree.BOUNTY_HUNTING,false));
 		itemData.put(WeldingTorch.NAME, 			new ItemData(techTree, 1000,TechTree.BASIC_TOOLS,false));
 	}
 	
