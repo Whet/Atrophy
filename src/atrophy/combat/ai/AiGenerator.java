@@ -209,6 +209,11 @@ public class AiGenerator{
 		combatVisualManager.updateVisibleAi();
 	}
 	
+	public void spawnTalkNode(TalkNode talkNode) {
+		// TODO Auto-generated method stub
+		
+	}
+	
 	private void generateSoloAi(SoloGenerateCommand command, int team) {
 		
 		double[] location = new double[]{command.x, command.y};

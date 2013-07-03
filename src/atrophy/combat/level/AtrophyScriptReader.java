@@ -26,6 +26,7 @@ import atrophy.combat.CombatMembersManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.ai.Ai;
 import atrophy.combat.ai.AiGenerator;
+import atrophy.combat.ai.TalkNode;
 import atrophy.combat.ai.AiGeneratorInterface.GenerateCommand;
 import atrophy.combat.ai.AiGeneratorInterface.SoloGenerateCommand;
 import atrophy.combat.ai.ThinkingAi;
@@ -794,6 +795,32 @@ public class AtrophyScriptReader {
 		return aiNode;
 	}
 	
+	protected static final class SpawnTalkNodeEffect extends UnitInfoEffect {
+
+		public AiGenerator aiGenerator;
+		private List<String> subscriptions;
+		
+		public SpawnTalkNodeEffect(Tree tree, AiCrowd aiCrowd, AiGenerator aiGenerator) {
+			super(tree, aiCrowd);
+			this.aiGenerator = aiGenerator;
+			this.subscriptions = new ArrayList<>();
+			
+			for(int i = 0; i < tree.getChildCount(); i++) {
+				if(tree.getChild(i).toString().equals("SUBSCRIBE")) {
+					for(int j = 0; j < tree.getChild(i).getChildCount(); j++) {
+						subscriptions.add(createString(tree.getChild(i).getChild(j)));
+					}
+				}
+			}
+		}
+		
+		@Override
+		public void run() {
+			aiGenerator.spawnTalkNode(new TalkNode(this.possibleNames.get(new Random().nextInt(this.possibleNames.size())), this.subscriptions));
+		}
+		
+	}
+	
 	protected static final class RemoveEffect extends UnitInfoEffect {
 
 		public RemoveEffect(Tree tree, AiCrowd aiCrowd) {
@@ -1387,6 +1414,9 @@ public class AtrophyScriptReader {
 				break;
 				case "SPAWNITEM":
 					effects.add(new SpawnItemEffect(tree.getChild(i), aiCrowd, missionManager));
+				break;
+				case "SPAWNTALKNODE":
+					effects.add(new SpawnTalkNodeEffect(tree.getChild(i), aiCrowd, null));
 				break;
 			}
 		}

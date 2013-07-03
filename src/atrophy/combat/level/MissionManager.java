@@ -30,6 +30,8 @@ import atrophy.combat.items.StunGrenadeItem;
 import atrophy.combat.items.UnitDetector;
 import atrophy.combat.items.WeaponSupply;
 import atrophy.combat.items.WeldingTorch;
+import atrophy.combat.level.AtrophyScriptParser.spawnTalkNode_return;
+import atrophy.combat.level.AtrophyScriptReader.SpawnTalkNodeEffect;
 import atrophy.combat.level.AtrophyScriptReader.SpawnTeamEffect;
 import atrophy.combat.level.AtrophyScriptReader.StoredCommand;
 import atrophy.combat.level.AtrophyScriptReader.TriggerCommand;
@@ -74,6 +76,8 @@ public class MissionManager {
 			for(TriggerEffect effect : command.effects) {
 				if(effect instanceof SpawnTeamEffect)
 					((SpawnTeamEffect) effect).aiGenerator = aiGenerator;
+				else if(effect instanceof SpawnTalkNodeEffect)
+					((SpawnTalkNodeEffect) effect).aiGenerator = aiGenerator;
 			}
 		}
 		
