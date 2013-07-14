@@ -47,13 +47,13 @@ public class MissionManager {
 	private Map<String, TriggerCommand> triggers;
 	private Map<LevelBlock, String> storyRooms;
 	private Set<LevelBlock> safeRooms;
+	private Set<String> memCodes;
 	
 	private Missions missions;
 	private AiGenerator aiGenerator;
 	private LargeEventText largeEventText;
 
 	private Map<String, Object> vars;
-	
 	
 	public MissionManager(Missions missions, LargeEventText largeEventText){
 		
@@ -64,6 +64,7 @@ public class MissionManager {
 		initCommandCalls = new LinkedList<>();
 		safeRooms = new HashSet<>();
 		vars = new HashMap<>();
+		memCodes = new HashSet<>();
 		
 		this.missions = missions;
 		this.largeEventText = largeEventText;
@@ -257,5 +258,21 @@ public class MissionManager {
 	public void setTriggerRunning(String trigger, boolean running) {
 		this.triggers.get(trigger).setRunning(running);
 	}
-	
+
+	public boolean hasMemCode(String memCode) {
+		return this.memCodes.contains(memCode) || this.missions.hasMemCode(memCode);
+	}
+
+	public void addMemCode(String memCode) {
+		if(memCode.startsWith("_"))
+			this.memCodes.add(memCode);
+		else
+			this.missions.addMemCode(memCode);
+	}
+
+	public void removeMemCode(String memCode) {
+		this.memCodes.remove(memCode);
+		this.missions.removeMemCode(memCode);
+	}
+
 }

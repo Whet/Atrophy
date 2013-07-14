@@ -518,8 +518,8 @@ public class MessageBox extends Crowd{
 		
 	}
 	
-	public Dialogue createDialogue(Missions missions, MissionManager missionsManager, String openingLine, String[] options, boolean initiator) {
-		return new Dialogue(missions, missionsManager, cartographer, openingLine, options, initiator);
+	public Dialogue createDialogue(MissionManager missionsManager, String openingLine, String[] options, boolean initiator) {
+		return new Dialogue(missionsManager, cartographer, openingLine, options, initiator);
 	}
 
 	public TalkNode getTalkNode() {

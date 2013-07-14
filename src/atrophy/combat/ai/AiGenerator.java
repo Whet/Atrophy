@@ -220,7 +220,7 @@ public class AiGenerator{
 		AiImage aiImg = new AiImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, 0,0, mouseAbilityHandler, floatingIcons);
 		ThinkingAi ai = null;
 		
-		DialoguePool dialoguePool = new DialoguePool(command.getFaction(), missions, missionManager, cartographer, messageBox);
+		DialoguePool dialoguePool = new DialoguePool(command.getFaction(), missionManager, cartographer, messageBox);
 		
 		switch(command.getFaction()){
 			case AiGenerator.LONER:
@@ -292,7 +292,7 @@ public class AiGenerator{
 		AiImage aiImg = new AiImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, 0,0, mouseAbilityHandler, floatingIcons);
 		ThinkingAi ai = null;
 		
-		DialoguePool dialoguePool = new DialoguePool(DAEMON, missions, missionManager, cartographer, messageBox);
+		DialoguePool dialoguePool = new DialoguePool(DAEMON, missionManager, cartographer, messageBox);
 		
 		ai = new DaemonAi(panningManager, combatVisualManager, turnProcess, floatingIcons, mouseAbilityHandler, aiCrowd, combatMembersManager, randomDaemonName(),location[0],location[1], levelManager, combatInorganicManager, combatUiManager, lootbox, dialoguePool);
 		ai.setBaseAggression(ThinkingAiEmotion.MINDLESS_TERROR);
@@ -381,7 +381,7 @@ public class AiGenerator{
 		AiImage aiImg = new AiImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, 0,0, mouseAbilityHandler, floatingIcons);
 		ThinkingAi ai;
 		
-		DialoguePool dialoguePool = new DialoguePool(LONER, missions, missionManager, cartographer, messageBox);
+		DialoguePool dialoguePool = new DialoguePool(LONER, missionManager, cartographer, messageBox);
 		
 		ai = new LonerAi(panningManager, aiCrowd, combatVisualManager, turnProcess, floatingIcons, mouseAbilityHandler, combatMembersManager, randomName(),randomLocation[0],randomLocation[1], levelManager, combatInorganicManager, combatUiManager, lootbox, dialoguePool);
 		ai.setBaseAggression(ThinkingAiEmotion.PASSIVE_RESPOND);
@@ -417,7 +417,7 @@ public class AiGenerator{
 			
 			String faction = team.substring(numberMatcher.group().length());
 			
-			DialoguePool dialoguePool = new DialoguePool(faction, missions, missionManager, cartographer, messageBox);
+			DialoguePool dialoguePool = new DialoguePool(faction, missionManager, cartographer, messageBox);
 			
 			ThinkingAi ai = new ThinkingAi(dialoguePool, panningManager, combatVisualManager, turnProcess, floatingIcons, mouseAbilityHandler, aiCrowd, combatMembersManager, randomName(),randomLocation[0],randomLocation[1], levelManager, combatInorganicManager, combatUiManager, lootbox);
 			

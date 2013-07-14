@@ -16,53 +16,21 @@ import atrophy.gameMenu.saveFile.Missions;
 
 public class Dialogue{
 	
-	/**
-	 * The opening line.
-	 */
 	public String openingLine;
-	
-	/**
-	 * The options.
-	 */
 	public String[] options;
 	
 	// string which is cycled through when continue is pressed
-	/**
-	 * The long speeches.
-	 */
 	public Map<String, String[][]> longSpeeches;
 	
-	/**
-	 * The long speech.
-	 */
 	public String[] longSpeech;
-	
 	private boolean initiator;
-	
-	/**
-	 * The long speech point.
-	 */
 	public int longSpeechPoint;
-	
-	/**
-	 * The talked to.
-	 */
 	public List<Ai> talkedTo;
 	
-	private Missions missions;
 	private MissionManager missionManager;
 	private Cartographer cartographer;
 	
-	/**
-	 * Instantiates a new dialogue.
-	 * @param i 
-	 *
-	 * @param openingLine the opening line
-	 * @param options the options
-	 * @param initiator 
-	 */
-	public Dialogue(Missions missions, MissionManager missionManager, Cartographer cartographer, String openingLine, String[] options, boolean initiator){
-		this.missions = missions;
+	public Dialogue(MissionManager missionManager, Cartographer cartographer, String openingLine, String[] options, boolean initiator){
 		this.openingLine = openingLine;
 		this.options = options;
 		this.missionManager = missionManager;
@@ -83,9 +51,9 @@ public class Dialogue{
 			   (!currentAi.getInventory().hasItemByName(requirements[i]) && !requirements[i].startsWith("!"))
 			   )) ||
 			   (
-			   (missions.hasMemCode(requirements[i]) &&
+			   (missionManager.hasMemCode(requirements[i]) &&
 					   requirements[i].startsWith("!")) ||
-			   (!missions.hasMemCode(requirements[i]) &&
+			   (!missionManager.hasMemCode(requirements[i]) &&
 					   !requirements[i].startsWith("!"))
 			   ))
 				return false;
@@ -94,13 +62,6 @@ public class Dialogue{
 		return true;
 	}
 
-	/**
-	 * Check triggers.
-	 *
-	 * @param speech the speech
-	 * @param messageBox 
-	 * @return true, if successful
-	 */
 	public boolean checkTriggers(String speech, MessageBox messageBox) {
 		if(speech.startsWith("#")){
 			
@@ -112,10 +73,10 @@ public class Dialogue{
 			if(itemName.startsWith("#")){
 				
 				// id already included so exit
-				if(missions.hasMemCode(itemName.substring(1, 5)))
+				if(missionManager.hasMemCode(itemName.substring(1, 5)))
 					return true;
 				
-				missions.addMemCode(itemName.substring(1, 5));
+				missionManager.addMemCode(itemName.substring(1, 5));
 				
 				itemName = itemName.substring(5);
 			}
@@ -126,11 +87,11 @@ public class Dialogue{
 			}
 			// Event code
 			else if(itemName.startsWith("!$")){
-				missions.removeMemCode(itemName.substring(2, 6));
+				missionManager.removeMemCode(itemName.substring(2, 6));
 				return true;
 			}
 			else if(itemName.startsWith("$")){
-				missions.addMemCode(itemName.substring(1, 5));
+				missionManager.addMemCode(itemName.substring(1, 5));
 				return true;
 			}
 			// Talktree update ^TAG#STAGE.NUMBER
@@ -167,21 +128,10 @@ public class Dialogue{
 		return false;
 	}
 
-	/**
-	 * Adds the long speech.
-	 *
-	 * @param speechName the speech name
-	 * @param speech the speech
-	 */
 	public void addLongSpeech(String speechName, String[] speech, String[] requiredItems){
 		this.longSpeeches.put(speechName, new String[][]{speech,requiredItems});
 	}
 
-	/**
-	 * Sets the long speech.
-	 *
-	 * @param speechName the new long speech
-	 */
 	public void setLongSpeech(String speechName){
 		
 		if(longSpeeches.get(speechName)[0] != longSpeech)
@@ -190,11 +140,6 @@ public class Dialogue{
 		this.longSpeech = this.longSpeeches.get(speechName)[0];
 	}
 	
-	/**
-	 * Next speech dialogue.
-	 *
-	 * @return the string
-	 */
 	public String nextSpeechDialogue() {
 		if(longSpeechPoint < longSpeech.length){
 			longSpeechPoint++;		
@@ -202,21 +147,10 @@ public class Dialogue{
 		return longSpeech[longSpeechPoint - 1];
 	}
 
-	/**
-	 * Can talk to.
-	 *
-	 * @param actor the actor
-	 * @return true, if successful
-	 */
 	public boolean canTalkTo(Ai actor) {
 		return !this.talkedTo.contains(actor);
 	}
 	
-	/**
-	 * Talked to.
-	 *
-	 * @param actor the actor
-	 */
 	public void talkedTo(Ai actor){
 		this.talkedTo.add(actor);
 	}

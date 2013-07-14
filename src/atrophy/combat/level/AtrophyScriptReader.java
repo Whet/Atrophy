@@ -1051,6 +1051,10 @@ public class AtrophyScriptReader {
 						  				   aiCrowd.getSquad(), engChance, medChance, wepChance, sciChance, missions, itemMarket, techTree, stashManager);
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (RecognitionException e) {
+				e.printStackTrace();
 			}
 		}
 		
@@ -1522,7 +1526,7 @@ public class AtrophyScriptReader {
 		if(missionManager.getTalkMap(parent) == null)
 			missionManager.addTalkMap(parent, new TalkMap(parent));
 		
-		Dialogue createDialogue = messageBox.createDialogue(missions, missionManager, openingLine, options, aiInit);
+		Dialogue createDialogue = messageBox.createDialogue(missionManager, openingLine, options, aiInit);
 		
 		for(Entry<String, String[]> entry : topics.entrySet()) {
 			createDialogue.addLongSpeech(entry.getKey(), entry.getValue(), requiredItems.get(entry.getKey()));
