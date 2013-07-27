@@ -26,9 +26,9 @@ import atrophy.combat.CombatMembersManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.ai.Ai;
 import atrophy.combat.ai.AiGenerator;
-import atrophy.combat.ai.TalkNode;
 import atrophy.combat.ai.AiGeneratorInterface.GenerateCommand;
 import atrophy.combat.ai.AiGeneratorInterface.SoloGenerateCommand;
+import atrophy.combat.ai.TalkNode;
 import atrophy.combat.ai.ThinkingAi;
 import atrophy.combat.ai.ThinkingAi.AiNode;
 import atrophy.combat.ai.conversation.Dialogue;
@@ -80,10 +80,48 @@ public class AtrophyScriptReader {
 		
 		Level level = new Level(owner);
 		
-		Tree initTree = AtrophyScriptReader.walkTree(level, prog.tree,
-													 blockStack, portalStack, commandStack, triggers, missionManager,
-													 combatMembersManager, missions, messageBox, aiCrowd, turnProcess,
-													 itemMarket, techTree, stashManager);
+		Map<String, List<Tree>> moduleTrees = new HashMap<String, List<Tree>>();
+		Map<String, List<Tree>> commandTrees = new HashMap<String, List<Tree>>();
+		
+		Tree progTree = ((Tree) prog.getTree());
+		
+		for(int i = 0; i < progTree.getChildCount(); i++) {
+			
+			Tree child = progTree.getChild(i);
+			
+			if(child.toString().equals("MODULE")) {
+				String treeName = child.getChild(0).toString();
+				
+				List<Tree> subTree = new ArrayList<>();
+				
+				for(int j = 1; j < child.getChildCount(); j++) {
+					subTree.add(child.getChild(j));
+				}
+				
+				moduleTrees.put(treeName, subTree);
+			}
+			else if(child.toString().equals("SEQUENCE")) {
+				String treeName = child.getChild(0).toString();
+				
+				List<Tree> subTree = new ArrayList<>();
+				
+				for(int j = 1; j < child.getChildCount(); j++) {
+					subTree.add(child.getChild(j));
+				}
+				
+				commandTrees.put(treeName, subTree);
+			}
+			
+		}
+		
+		for(List<Tree> moduleLists: moduleTrees.values()) {
+			for(Tree tree: moduleLists) {
+			
+				AtrophyScriptReader.walkTree(level, tree, blockStack, portalStack, commandStack, triggers, missionManager,
+											 combatMembersManager, missions, messageBox, aiCrowd, turnProcess, itemMarket, techTree, stashManager);
+			
+			}
+		}
 		
 		level.setBlocks(blockStack);
 		level.generatePortals(portalStack, level, missionManager);
@@ -91,8 +129,14 @@ public class AtrophyScriptReader {
 		level.spawnItems(engineeringChance,medicalChance,weaponChance,scienceChance);
 		missionManager.addCommands(commandStack);
 		missionManager.addTriggers(triggers);
-		if(initTree != null)
-			runCommands(initTree, missionManager);
+		
+		for(List<Tree> commandLists: commandTrees.values()) {
+			for(Tree tree: commandLists) {
+				
+				runCommands(tree, missionManager);
+				
+			}
+		}
 		
 		return level;
 	}
@@ -235,43 +279,42 @@ public class AtrophyScriptReader {
 
 	}
 	
-	public static Tree walkTree(Level level, Tree tree,
+	public static void walkTree(Level level, Tree tree,
 								Stack<LevelBlockInfo> blockStack, Stack<PortalInfo> portalStack, Stack<StoredCommand> commands, Stack<TriggerCommand> triggers,
 								MissionManager missionManager, CombatMembersManager combatMembersManager, Missions missions,
 								MessageBox messageBox, AiCrowd aiCrowd, TurnProcess turnProcess,
 								ItemMarket itemMarket, TechTree techTree, StashManager stashManager) {
 		
-		Tree initTree = null;		
 		int blockNumber = 0;
 		
 		switch(tree.toString()) {
 			case "INIT":
-				return tree;
+			break;
 			case "MAPSIZE":
 				List<Integer> size = createIntList(tree);
 				int[] sizeArray = {size.get(0), -size.get(1), size.get(2), -size.get(3)};
 				level.setSize(sizeArray);
-				return null;
+			break;
 			case "BLOCK":
 				blockStack.add(createBlock(blockNumber, tree, missionManager, level, combatMembersManager));
 				blockNumber++;
-				return null;
+			break;
 			case "PORTAL":
 				portalStack.add(createPortal(tree));
-				return null;
+			break;
 			case "TEXTUREBLOCK":
 				createRegion(tree);
-				return null;
+			break;
 			case "TRIGGER":
 				triggers.add(createTrigger(tree, missionManager, missions, aiCrowd, messageBox, combatMembersManager, turnProcess, itemMarket, techTree, stashManager));
-				return null;
+			break;
 			case "COMMAND":
 				commands.add(createCommand(tree, missionManager, missions, aiCrowd, messageBox, combatMembersManager, turnProcess, itemMarket, techTree, stashManager));
-				return null;
+			break;
 			case "TALK":
 				TalkInfo talkInfo = createTalkTopic(tree, missions, missionManager, messageBox);
 				missionManager.getTalkMap(talkInfo.parent).addDialogue(talkInfo.talkStage, talkInfo.dialogue);
-				return null;
+			break;
 			case "MAPSPAWNS":
 				Set<String> allowedSpawns = new HashSet<>();
 				for(int i = 0 ; i < tree.getChildCount(); i++) {
@@ -279,21 +322,18 @@ public class AtrophyScriptReader {
 				}
 				
 				level.setAllowedSpawns(allowedSpawns);
-				return null;
+			break;
 		}
 		
 		
-		for(int i = 0; i < tree.getChildCount(); i++) {
-			Tree returnTree = walkTree(level, tree.getChild(i),
-									   blockStack, portalStack, commands, triggers, missionManager,
-									   combatMembersManager, missions, messageBox,
-									   aiCrowd, turnProcess, itemMarket, techTree, stashManager);
-			
-			if(returnTree != null)
-				initTree = returnTree;
-		}
+//		for(int i = 0; i < tree.getChildCount(); i++) {
+//			walkTree(level, tree.getChild(i),
+//					   blockStack, portalStack, commands, triggers, missionManager,
+//					   combatMembersManager, missions, messageBox,
+//					   aiCrowd, turnProcess, itemMarket, techTree, stashManager);
+//			
+//		}
 		
-		return initTree;
 	}
 	
 	protected static class StoredCommand {
@@ -1690,20 +1730,57 @@ public class AtrophyScriptReader {
 		
 		Level level = new Level("");
 		
-		Tree tree = prog.tree;
+		Map<String, List<Tree>> moduleTrees = new HashMap<String, List<Tree>>();
+		Map<String, List<Tree>> commandTrees = new HashMap<String, List<Tree>>();
+		
+		Tree progTree = ((Tree) prog.getTree());
+		
+		for(int i = 0; i < progTree.getChildCount(); i++) {
+			
+			Tree child = progTree.getChild(i);
+			
+			if(child.toString().equals("MODULE")) {
+				
+				String treeName = child.getChild(0).toString();
+				
+				List<Tree> subTree = new ArrayList<>();
+				
+				for(int j = 1; j < child.getChildCount(); j++) {
+					subTree.add(child.getChild(j));
+				}
+				
+				moduleTrees.put(treeName, subTree);
+			}
+			else if(child.toString().equals("SEQUENCE")) {
+				
+				String treeName = child.getChild(0).toString();
+				
+				List<Tree> subTree = new ArrayList<>();
+				
+				for(int j = 1; j < child.getChildCount(); j++) {
+					subTree.add(child.getChild(j));
+				}
+				
+				commandTrees.put(treeName, subTree);
+			}
+			
+		}
+		
 		int blockNumber = 0;
 		
-		for(int i = 0; i < tree.getChildCount(); i++) {
-			switch(tree.getChild(i).toString()) {
-				case "MAPSIZE":
-					List<Integer> size = createIntList(tree.getChild(i));
-					int[] sizeArray = {size.get(0), -size.get(1), size.get(2), -size.get(3)};
-					level.setSize(sizeArray);
-				break;
-				case "BLOCK":
-					blockStack.add(createBlock(blockNumber, tree.getChild(i), null, level, null));
-					blockNumber++;
-				break;
+		for(List<Tree> moduleTreeList: moduleTrees.values()) {
+			for(Tree tree: moduleTreeList) {
+				switch(tree.toString()) {
+					case "MAPSIZE":
+						List<Integer> size = createIntList(tree);
+						int[] sizeArray = {size.get(0), -size.get(1), size.get(2), -size.get(3)};
+						level.setSize(sizeArray);
+					break;
+					case "BLOCK":
+						blockStack.add(createBlock(blockNumber, tree, null, level, null));
+						blockNumber++;
+					break;
+				}
 			}
 		}
 		
