@@ -55,8 +55,19 @@ public class AtrophyScriptReader {
 								     int engineeringChance, int medicalChance, int weaponChance, int scienceChance,
 								     PanningManager panningManager, TurnProcess turnProcess, MessageBox messageBox,
 								     AiCrowd aiCrowd, CombatMembersManager combatMembersManager, Missions missions,
-								     MissionManager missionManager, List<GenerateCommand> generationCommands,
-								     ItemMarket itemMarket, TechTree techTree, StashManager stashManager) throws RecognitionException, IOException {
+								     MissionManager missionManager, List<GenerateCommand> generationCommands, ItemMarket itemMarket, TechTree techTree, StashManager stashManager) throws RecognitionException, IOException {
+		
+		return readScript(new Level(owner), file,
+						  engineeringChance, medicalChance, weaponChance, scienceChance, panningManager, turnProcess,
+				   		  messageBox, aiCrowd, combatMembersManager, missions, missionManager, generationCommands, itemMarket, techTree, stashManager);
+		
+	}
+	
+	private static Level readScript(Level level, File file,
+								     int engineeringChance, int medicalChance, int weaponChance, int scienceChance,
+								     PanningManager panningManager, TurnProcess turnProcess, MessageBox messageBox,
+								     AiCrowd aiCrowd, CombatMembersManager combatMembersManager, Missions missions,
+								     MissionManager missionManager, List<GenerateCommand> generationCommands, ItemMarket itemMarket, TechTree techTree, StashManager stashManager) throws RecognitionException, IOException {
 		
 		StringBuffer sb = new StringBuffer();
 		String lineString;
@@ -77,8 +88,6 @@ public class AtrophyScriptReader {
 		Stack<PortalInfo> portalStack = new Stack<>();
 		Stack<StoredCommand> commandStack = new Stack<>();
 		Stack<TriggerCommand> triggers = new Stack<>();
-		
-		Level level = new Level(owner);
 		
 		Map<String, List<Tree>> moduleTrees = new HashMap<String, List<Tree>>();
 		Map<String, List<Tree>> commandTrees = new HashMap<String, List<Tree>>();
@@ -114,8 +123,8 @@ public class AtrophyScriptReader {
 			
 		}
 		
-		for(List<Tree> moduleLists: moduleTrees.values()) {
-			for(Tree tree: moduleLists) {
+		for(Entry<String, List<Tree>> moduleLists: moduleTrees.entrySet()) {
+			for(Tree tree: moduleLists.getValue()) {
 			
 				AtrophyScriptReader.walkTree(level, tree, blockStack, portalStack, commandStack, triggers, missionManager,
 											 combatMembersManager, missions, messageBox, aiCrowd, turnProcess, itemMarket, techTree, stashManager);
@@ -127,18 +136,107 @@ public class AtrophyScriptReader {
 		level.generatePortals(portalStack, level, missionManager);
 		panningManager.setMaxOffsets(level.getSize());
 		level.spawnItems(engineeringChance,medicalChance,weaponChance,scienceChance);
+		
+		
 		missionManager.addCommands(commandStack);
 		missionManager.addTriggers(triggers);
 		
-		for(List<Tree> commandLists: commandTrees.values()) {
-			for(Tree tree: commandLists) {
-				
-				runCommands(tree, missionManager);
-				
+		for(Entry<String, List<Tree>> commandLists: commandTrees.entrySet()) {
+			for(Tree tree: commandLists.getValue()) {
+					runCommands(tree, missionManager, level, combatMembersManager, missions, messageBox, aiCrowd,
+								turnProcess, itemMarket, techTree, stashManager, panningManager, engineeringChance, medicalChance, weaponChance, scienceChance);
 			}
 		}
 		
 		return level;
+	}
+	
+	private static void readScript(File file, Level level, MissionManager missionManager, CombatMembersManager combatMembersManager,
+								   Missions missions, MessageBox messageBox, AiCrowd aiCrowd, TurnProcess turnProcess, ItemMarket itemMarket,
+								   TechTree techTree, StashManager stashManager, Set<String> modules, Set<String> sequences, PanningManager panningManager, int engineeringChance, int medicalChance, int weaponChance, int scienceChance) throws IOException, RecognitionException {
+		
+		StringBuffer sb = new StringBuffer();
+		String lineString;
+		int line = 0;
+		
+		while((lineString = ReadWriter.readFromFile(file, line)) != null) {
+			sb.append(lineString + "\n");
+			line++;
+		}
+		
+		CharStream stream =	new ANTLRStringStream(sb.toString());
+		AtrophyScriptLexer lexer = new AtrophyScriptLexer(stream);
+		TokenStream tokenStream = new CommonTokenStream(lexer);
+		AtrophyScriptParser parser = new AtrophyScriptParser(tokenStream);
+		prog_return prog = parser.prog();
+		
+		Map<String, List<Tree>> moduleTrees = new HashMap<String, List<Tree>>();
+		Map<String, List<Tree>> commandTrees = new HashMap<String, List<Tree>>();
+		
+		Tree progTree = ((Tree) prog.getTree());
+		
+		for(int i = 0; i < progTree.getChildCount(); i++) {
+			
+			Tree child = progTree.getChild(i);
+			
+			if(child.toString().equals("MODULE")) {
+				String treeName = child.getChild(0).toString();
+				
+				List<Tree> subTree = new ArrayList<>();
+				
+				for(int j = 1; j < child.getChildCount(); j++) {
+					subTree.add(child.getChild(j));
+				}
+				
+				moduleTrees.put(treeName, subTree);
+			}
+			else if(child.toString().equals("SEQUENCE")) {
+				String treeName = child.getChild(0).toString();
+				
+				List<Tree> subTree = new ArrayList<>();
+				
+				for(int j = 1; j < child.getChildCount(); j++) {
+					subTree.add(child.getChild(j));
+				}
+				
+				commandTrees.put(treeName, subTree);
+			}
+			
+		}
+		
+		Stack<LevelBlockInfo> blockStack = new Stack<>();
+		Stack<PortalInfo> portalStack = new Stack<>();
+		Stack<StoredCommand> commandStack = new Stack<>();
+		Stack<TriggerCommand> triggers = new Stack<>();
+		
+		for(Entry<String, List<Tree>> moduleLists: moduleTrees.entrySet()) {
+			for(Tree tree: moduleLists.getValue()) {
+				if(modules.contains(moduleLists.getKey()))
+					AtrophyScriptReader.walkTree(level, tree, null, null, commandStack, triggers, missionManager,
+												 combatMembersManager, missions, messageBox, aiCrowd, turnProcess, itemMarket, techTree, stashManager);
+			}
+		}
+		
+		if(blockStack.size() > 0)
+			level.setBlocks(blockStack);
+		if(portalStack.size() > 0)
+			level.generatePortals(portalStack, level, missionManager);
+		
+		panningManager.setMaxOffsets(level.getSize());
+		
+		if(blockStack.size() > 0)
+			level.spawnItems(engineeringChance,medicalChance,weaponChance,scienceChance);
+		
+		missionManager.addCommands(commandStack);
+		missionManager.addTriggers(triggers);
+		
+		for(Entry<String, List<Tree>> commandLists: commandTrees.entrySet()) {
+			for(Tree tree: commandLists.getValue()) {
+				if(sequences.contains(commandLists.getKey()))
+					runCommands(tree, missionManager, level, combatMembersManager, missions, messageBox, aiCrowd,
+							    turnProcess, itemMarket, techTree, stashManager, panningManager, engineeringChance, medicalChance, weaponChance, scienceChance);
+			}
+		}
 	}
 	
 	private static class RegionInfo {
@@ -1699,13 +1797,44 @@ public class AtrophyScriptReader {
 		return sb.toString();
 	}
 
-	private static void runCommands(Tree tree, MissionManager missionManager) {
+	private static void runCommands(Tree commTree, MissionManager missionManager, Level level,
+									CombatMembersManager combatMembersManager, Missions missions, MessageBox messageBox, AiCrowd aiCrowd,
+									TurnProcess turnProcess, ItemMarket itemMarket, TechTree techTree, StashManager stashManager,
+									PanningManager panningManager, int engineeringChance, int medicalChance, int weaponChance, int scienceChance) throws IOException, RecognitionException {
 		
-		for(int i = 0; i < tree.getChildCount(); i++) {
-			if(tree.getChild(i).toString().equals("COMMAND_CALL")) {
-				String commandTag = tree.getChild(i).getChild(0).toString();
-				missionManager.addInitCommand(commandTag);
+		Set<String> modules = new HashSet<>();
+		
+		if(commTree.toString().equals("COMMAND_CALL")) {
+			String commandTag = commTree.getChild(0).toString();
+			missionManager.addInitCommand(commandTag);
+		}
+		else if(commTree.toString().equals("ATCALL_MODULE")) {
+			modules = new HashSet<>();
+			
+			Tree modulesTree = commTree.getChild(0);
+			
+			for (int i = 0; i < modulesTree.getChildCount(); i++) {
+				modules.add(modulesTree.getChild(i).toString());
 			}
+			
+		}
+		else if(commTree.toString().equals("ATCALL_SEQUENCE")) {
+			Set<String> sequences = new HashSet<>();
+			
+			Tree seqTree = commTree.getChild(0);
+			
+			for (int i = 0; i < seqTree.getChildCount(); i++) {
+				sequences.add(seqTree.getChild(i).toString());
+			}
+			
+			String fileName = commTree.getChild(1).toString();
+			
+			File file = ReadWriter.getRootFile("Maps/" + fileName);
+			
+			readScript(file, level,
+					   missionManager, combatMembersManager, missions, messageBox, aiCrowd, turnProcess,
+					   itemMarket, techTree, stashManager, modules, sequences, panningManager,
+					   engineeringChance, medicalChance, weaponChance, scienceChance);
 		}
 		
 	}
