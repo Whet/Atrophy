@@ -236,6 +236,8 @@ public class MessageManager{
 		List<Dialogue> dialogues = messageBox.getTalkNode().getDialogues();
 
 		String speech;
+		
+		boolean noDia = true;
 
 		for(Dialogue dialogue: dialogues) {
 		
@@ -264,14 +266,15 @@ public class MessageManager{
 					}
 					
 					messageBox.addMessage(messageBox.getTalkNode().getName() + ": " + speech);
-					
+					noDia = false;
 					break;
 				}
 				
-				// If the player talks on another dialogue this will reset the longpoint of the first dialogue
-				dialogue.longSpeechPoint = 0;
-				
 			}
+			
+//			If the player talks on another dialogue this will reset the longpoint of the first dialogue
+			if(noDia)
+				dialogue.longSpeechPoint = 0;
 		}
 		
 		dialogues = messageBox.getTalkNode().getDialogues();
@@ -354,6 +357,8 @@ public class MessageManager{
 
 		String speech;
 
+		boolean noDia = true;
+		
 		for(Dialogue dialogue: dialogues) {
 		
 			Iterator<String> speechIt = dialogue.longSpeeches.keySet().iterator();
@@ -380,13 +385,15 @@ public class MessageManager{
 					}
 					
 					messageBox.addMessage(messageBox.getConversers()[1].getName() + ": " + speech);
-					
+					noDia = false;
 					break;
 				}
 				
-				// If the player talks on another dialogue this will reset the longpoint of the first dialogue
-				dialogue.longSpeechPoint = 0;
 			}
+			
+			// If the player talks on another dialogue this will reset the longpoint of the first dialogue
+			if(noDia)
+				dialogue.longSpeechPoint = 0;
 		}
 	}
 	
