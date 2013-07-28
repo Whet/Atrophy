@@ -31,6 +31,9 @@ public class Main{
 	public Main(){
 		
 		ReadWriter.HOME_LOCATION = getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+		if(ReadWriter.HOME_LOCATION.endsWith("Atrophy.jar"))
+			ReadWriter.HOME_LOCATION = ReadWriter.HOME_LOCATION.substring(0, ReadWriter.HOME_LOCATION.length() - "Atrophy.jar".length());
+		
 		SwingUtilities.invokeLater(new Runnable() {
 			
 			@Override

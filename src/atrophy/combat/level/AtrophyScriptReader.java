@@ -1274,34 +1274,34 @@ public class AtrophyScriptReader {
 	
 	protected static final class AddTagEffect extends TriggerEffect {
 			
-			private Missions missions;
+			private MissionManager missionManager;
 			private String tag;
 		
-			public AddTagEffect(Tree tree, Missions missions) {
-				this.missions = missions;
+			public AddTagEffect(Tree tree, MissionManager missionManager) {
+				this.missionManager = missionManager;
 				this.tag = createString(tree).replaceAll(" ", "");
 			}
 
 			@Override
 			public void run() {
-				this.missions.addMemCode(tag);
+				this.missionManager.addMemCode(tag);
 			}
 			
 		}
 	
 	protected static final class RemoveTagEffect extends TriggerEffect {
 		
-		private Missions missions;
+		private MissionManager missionManager;
 		private String tag;
 		
-		public RemoveTagEffect(Tree tree, Missions missions) {
-			this.missions = missions;
+		public RemoveTagEffect(Tree tree, MissionManager missionManager) {
+			this.missionManager = missionManager;
 			this.tag = createString(tree).replaceAll(" ", "");
 		}
 
 		@Override
 		public void run() {
-			this.missions.removeMemCode(tag);
+			this.missionManager.removeMemCode(tag);
 		}
 		
 	}
@@ -1547,10 +1547,10 @@ public class AtrophyScriptReader {
 					effects.add(new UnlockDoorEffect(tree.getChild(i), missionManager));
 				break;
 				case "ADDTAG":
-					effects.add(new AddTagEffect(tree.getChild(i), missions));
+					effects.add(new AddTagEffect(tree.getChild(i), missionManager));
 				break;
 				case "REMOVETAG":
-					effects.add(new RemoveTagEffect(tree.getChild(i), missions));
+					effects.add(new RemoveTagEffect(tree.getChild(i), missionManager));
 				break;
 				case "DIRECTORBIAS":
 					effects.add(new ModifyDirectorEffect(tree.getChild(i)));
