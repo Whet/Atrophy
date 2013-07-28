@@ -43,6 +43,7 @@ public class MapManager {
 			loadMaps();
 		}
 		catch (IOException e) {
+			e.printStackTrace();
 			System.err.println("Problem making or loading maps");
 			System.exit(-1);
 		}

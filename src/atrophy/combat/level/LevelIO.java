@@ -11,6 +11,8 @@ import java.util.List;
 
 import org.antlr.runtime.RecognitionException;
 
+import watoydoEngine.io.ReadWriter;
+
 import atrophy.combat.CombatMembersManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.ai.AiGeneratorInterface.GenerateCommand;
@@ -24,12 +26,14 @@ import atrophy.gameMenu.ui.StashManager;
 
 public class LevelIO {
 	
+	public static final String SUB_FOLDER = "GameData";
+	
 	public static void createLevelFolders(){
 		
-		String homeLocation = System.getProperty("user.home");
+		String homeLocation = ReadWriter.HOME_LOCATION;
 		
 		// Atrophy folder
-		File file =  new File(homeLocation + "/Atrophy");
+		File file =  new File(homeLocation + "/" + SUB_FOLDER);
 		
 		boolean exit = false;
 		if(!file.exists()){
@@ -38,7 +42,7 @@ public class LevelIO {
 		}
 		
 		// Map file
-		file =  new File(homeLocation + "/Atrophy/Sectors.txt");
+		file =  new File(homeLocation + "/" + SUB_FOLDER + "/Sectors.txt");
 		
 		if(!file.exists()){
 			try {
@@ -66,7 +70,7 @@ public class LevelIO {
 		}
 		
 		// Maps folder
-		file =  new File(homeLocation + "/Atrophy/Maps");
+		file =  new File(homeLocation + "/" + SUB_FOLDER + "/Maps");
 		
 		if(!file.exists()){
 			file.mkdir();
@@ -74,7 +78,7 @@ public class LevelIO {
 		}
 		
 		// Saves folder
-		file =  new File(homeLocation + "/Atrophy/Saves");
+		file =  new File(homeLocation + "/" + SUB_FOLDER + "/Saves");
 		
 		if(!file.exists()){
 			file.mkdir();
@@ -83,7 +87,7 @@ public class LevelIO {
 		
 		if(exit){
 			System.err.println("Your folders didn't exist! Please populate the data folders and reload the game");
-			System.err.println("A folder was made at: " + homeLocation + "/Atrophy");
+			System.err.println("A folder was made at: " + homeLocation + "/" + SUB_FOLDER);
 			System.exit(-1);
 		}
 		

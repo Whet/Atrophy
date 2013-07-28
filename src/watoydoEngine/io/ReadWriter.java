@@ -9,8 +9,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import atrophy.combat.level.LevelIO;
+
 public class ReadWriter{
 	
+	public static String HOME_LOCATION;
 	private static final Character ESCAPE_COMMA = '~';
 	
 	public static String readFromArray(String inputline, int index){
@@ -111,8 +114,8 @@ public class ReadWriter{
 	
 	public static File getRootFile(String resource) throws FileNotFoundException {
 
-		String homeLocation = System.getProperty("user.home");
-		File file =  new File(homeLocation + "/Atrophy/" + resource);
+		String homeLocation = HOME_LOCATION;
+		File file =  new File(homeLocation + "/" + LevelIO.SUB_FOLDER + "/" + resource);
 		
 		if(!file.exists())
 			throw new FileNotFoundException();

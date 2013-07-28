@@ -5,6 +5,7 @@ package watoydoEngine.workings;
 
 import javax.swing.SwingUtilities;
 
+import watoydoEngine.io.ReadWriter;
 import watoydoEngine.workings.displayActivity.SetupWindow;
 
 
@@ -29,6 +30,7 @@ public class Main{
 	 */
 	public Main(){
 		
+		ReadWriter.HOME_LOCATION = getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
 		SwingUtilities.invokeLater(new Runnable() {
 			
 			@Override
