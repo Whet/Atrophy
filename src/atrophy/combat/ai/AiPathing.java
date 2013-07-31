@@ -32,7 +32,7 @@ public class AiPathing {
 		
 		this.levelManager = levelManager;
 		
-		moveDistance = 40;
+		moveDistance = 60;
 		defaultMoveDistance = moveDistance;
 		location = new double[2];
 		location[0] = x;
