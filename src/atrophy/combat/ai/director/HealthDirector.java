@@ -5,6 +5,7 @@ import java.util.Map;
 
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.ai.Ai;
+import atrophy.combat.ai.ThinkingAi;
 import atrophy.combat.display.AiCrowd;
 
 public class HealthDirector {
@@ -59,7 +60,7 @@ public class HealthDirector {
 			
 			return true;
 		}
-		else if(killer.getWeapon().isMelee() && !combatVisualManager.isAiInSight(killer, killedAi.getFaction())) {
+		else if(killer.getWeapon().isMelee() && !combatVisualManager.isAiInSight(killer, killedAi.getFaction()) && getFactionInRoom(killedAi) == 1) {
 			
 			changeClassification(killedAi, DirectorArchetype.COD);
 			
@@ -67,6 +68,18 @@ public class HealthDirector {
 		}
 		
 		return false;
+	}
+
+	private int getFactionInRoom(Ai queriedAi) {
+		
+		int count = 0;
+		
+		for(Ai ai: aiCrowd.getActors()) {
+			if(ai.getFaction().equals(queriedAi.getFaction()) && ai.getLevelBlock() == queriedAi.getLevelBlock())
+				count++;
+		}
+		
+		return count;
 	}
 
 	public void addAi(Ai ai, DirectorClassification aiClass) {
