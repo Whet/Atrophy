@@ -103,8 +103,7 @@ public class LevelManager {
 	}
 	
 	public LevelBlock randomRoom(){
-		Random rand = new Random();
-		return getBlock(rand.nextInt(this.currentLevel.getBlockCount()));
+		return getBlock(new Random().nextInt(this.currentLevel.getBlockCount()));
 	}
 	
 	public LevelBlock randomStartingRoom(LevelBlock avoidRoom){
