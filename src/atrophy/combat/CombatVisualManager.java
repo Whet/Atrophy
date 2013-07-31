@@ -13,6 +13,7 @@ import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.AiImage;
 import atrophy.combat.level.LevelBlock;
 import atrophy.combat.level.LevelManager;
+import atrophy.combat.level.Portal;
 import atrophy.combat.mechanics.Abilities;
 import atrophy.combat.mechanics.TurnProcess;
 
@@ -199,9 +200,13 @@ public class CombatVisualManager {
 	}
 	
 	private static boolean isInDoorSight(Ai looker, Ai aiLookedAt) {
+		
+		Portal losPortal = looker.getLevelBlock().getLOSPortal(looker, looker.getLevelBlock());
+		
 		if(looker.getLevelBlock().getCloseConnectedRooms(looker).contains(aiLookedAt.getLevelBlock()) &&
 		   spotFovNoRadius(looker, aiLookedAt.getLocation()) &&
-		   spotStealth(looker,aiLookedAt)){
+		   spotStealth(looker,aiLookedAt) &&
+		   isInFiringSight(losPortal.getLocation()[0], losPortal.getLocation()[1], aiLookedAt.getLocation()[0], aiLookedAt.getLocation()[1], aiLookedAt.getLevelBlock())){
 			return true;
 		}
 		return false;

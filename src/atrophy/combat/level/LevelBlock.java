@@ -443,6 +443,16 @@ public class LevelBlock {
 		
 		return connectedRooms;
 	}
+	
+	public Portal getLOSPortal(Ai ai, LevelBlock room) {
+		
+		for(Portal portal : this.portals){
+			if(portal.isInRadius(ai.getLocation(), this) && CombatVisualManager.spotFovNoRadius(ai, portal.getLocation()) && portal.connectsTo(room))
+				return portal;
+		}
+		
+		return null;
+	}
 
     public LevelBlockGrid getLevelBlockGrid() {
         return this.grid;
