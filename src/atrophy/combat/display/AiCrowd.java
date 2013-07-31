@@ -19,6 +19,7 @@ import javax.imageio.ImageIO;
 
 import watoydoEngine.designObjects.display.Crowd;
 import watoydoEngine.io.ReadWriter;
+import atrophy.combat.CombatVisualManager;
 import atrophy.combat.ai.Ai;
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.ai.TalkNode;
@@ -75,6 +76,10 @@ public class AiCrowd extends Crowd {
 		this.director = new HealthDirector(this);
 		this.actorToMask = new HashMap<>();
 		
+	}
+	
+	public void lazyLoad(CombatVisualManager combatVisualManager) {
+		this.director.lazyLoad(combatVisualManager);
 	}
 	
 	public HealthDirector getDirector() {

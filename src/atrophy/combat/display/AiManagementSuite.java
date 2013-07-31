@@ -29,6 +29,7 @@ public class AiManagementSuite {
 	
 	public void lazyLoad(UiUpdaterSuite uiUpdaterSuite, MouseAbilityHandler mouseAbilityHandler){
 		this.combatMembersManager.lazyLoad(uiUpdaterSuite, mouseAbilityHandler);
+		this.aiCrowd.lazyLoad(uiUpdaterSuite.getCombatVisualManager());
 	}
 	
 }

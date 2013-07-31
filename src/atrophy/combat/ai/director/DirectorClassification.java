@@ -7,6 +7,10 @@ public class DirectorClassification {
 	public DirectorClassification(DirectorArchetype type) {
 		this.type = type;
 	}
+
+	public DirectorArchetype getType() {
+		return type;
+	}
 	
 	
 }

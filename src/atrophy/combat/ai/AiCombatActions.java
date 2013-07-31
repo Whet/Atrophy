@@ -135,7 +135,7 @@ public class AiCombatActions {
 		
 		// if a hit
 		// being in the weapons range allows a re-roll
-		if(ScoringMechanics.killedTarget(invoker,this.getTargetAi())){
+		if(aiCrowd.getDirector().judge(ScoringMechanics.killedTarget(invoker,this.getTargetAi()), invoker.getTargetAi(), invoker)){
 			
 			// kill target
 			this.getTargetAi().setDead(invoker, true);
