@@ -456,9 +456,6 @@ public class ThinkingAi extends Ai{
 		for(int j = 0; j < this.getLevelBlock().getPortalCount(); j++){
 			// check that enemies aren't closer to the target than unit
 			if(this.getLevelBlock().getPortal(j).canUse() && !levelManager.isRoomBanned(this.getFaction(), getLevelBlock().getPortal(j).linksTo(this.getLevelBlock())) && 
-			   closestDistanceToPoint(hostileAiInRoom, this.getLevelBlock().getPortal(j).getLocation()) > 
-			                          Maths.getDistance(this.getLevelBlock().getPortal(j).getLocation(), this.getLocation()) &&
-			                          
 			   (fleePortal == null || (Maths.getDistance(fleePortal.getLocation(), this.getLocation()) > 
 			                          Maths.getDistance(this.getLevelBlock().getPortal(j).getLocation(), this.getLocation()))
 			   )){
@@ -478,19 +475,6 @@ public class ThinkingAi extends Ai{
 			// all doors closed or ai blocking path, throw path not found exception
 			throw new PathNotFoundException(this.getLevelBlock());
 		}
-	}
-	
-	private double closestDistanceToPoint(ArrayList<Ai> units, double[] location){
-		
-		Double distance = null;
-		
-		for(Ai ai : units){
-			if(distance == null || Maths.getDistance(ai.getLocation(), location) < distance){
-				distance = Maths.getDistance(ai.getLocation(), location);
-			}
-		}
-		
-		return distance;
 	}
 	
 	protected void cleanupIntraTurnVars(){
