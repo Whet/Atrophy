@@ -326,8 +326,6 @@ public class TurnProcess {
 	
 	private void endGame(){
 		
-		SoundBoard.getInstance().startMusic("watoydoEngine/mods/sounds/music/Ave.ogg", true);
-		
 		panningManager.panToPlayer();
 		combatUiManager.getAllyRoster().setVisible(false);
 		combatUiManager.getActionText().setVisible(false);
