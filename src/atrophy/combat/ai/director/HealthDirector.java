@@ -5,40 +5,66 @@ import java.util.Map;
 
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.ai.Ai;
-import atrophy.combat.ai.ThinkingAi;
 import atrophy.combat.display.AiCrowd;
 
 public class HealthDirector {
 
 	private CombatVisualManager combatVisualManager;
 	private AiCrowd aiCrowd;
-//	private Map<TriggerKey, Judgement> judgements;
 	
-	private Map<JudgementType, Integer> judgements;
-	
+	private Map<JudgementType, Integer> jdg;
 	private Map<Ai, DirectorClassification> clf;
 	
 	public HealthDirector(AiCrowd aiCrowd) {
-//		this.judgements = new HashMap<>();
 		this.clf = new HashMap<>();
+		this.jdg = new HashMap<>();
+		
+		this.jdg.put(JudgementType.STEALTH_KILL, 0);
+		this.jdg.put(JudgementType.SWARM_HITS, 0);
+		
 		this.aiCrowd = aiCrowd;
 	}
 
 	public boolean judge(boolean dead, Ai killedAi, Ai killer) {
 		
+		if(killer.getStunnedTurns() > 0 || killer.getIncapTurns() > 0 ||
+		  (!this.clf.get(killedAi).getType().equals(DirectorArchetype.PLAYER) && !this.clf.get(killer).getType().equals(DirectorArchetype.PLAYER))) {
+			
+			return dead;
+		}
+		
 		if(clf.get(killer).getType().equals(DirectorArchetype.COD)) {
+			
 			appealArchetypeChange(dead, killer, clf.get(killer).getOriginalType());
 			return false;
 		}
 		
-		if((clf.get(killedAi).getType().equals(DirectorArchetype.COD) || clf.get(killedAi).getType().equals(DirectorArchetype.SWARM)) &&
+		if((clf.get(killedAi).getType().equals(DirectorArchetype.COD) ||
+		   (clf.get(killedAi).getType().equals(DirectorArchetype.SWARM) &&
+		   (getFactionInRoom(killedAi) > 3) || getFactionInRoom(killedAi) == 1)) &&
 			clf.get(killer).getType().equals(DirectorArchetype.PLAYER)) {
+			
+			if(Math.random() > 0.8) {
+				changeClassification(killedAi, DirectorArchetype.COD);
+			}
+			
 			return true;
+		}
+		
+		if(dead && clf.get(killedAi).getType().equals(DirectorArchetype.PLAYER) && clf.get(killer).getType().equals(DirectorArchetype.SWARM)) {
+			
+			jdg.put(JudgementType.SWARM_HITS, jdg.get(JudgementType.SWARM_HITS) + 1);
+			
+			if(getFactionInRoom(killer) > 2 || jdg.get(JudgementType.SWARM_HITS) > 2)
+				return dead;
+			
+			return false;
 		}
 		
 		if(dead || (!clf.get(killedAi).getType().equals(DirectorArchetype.ELITE) &&
 				    !clf.get(killedAi).getType().equals(DirectorArchetype.SPEAKER) &&
 				    stealthKillChecks(killedAi, killer))) {
+			
 			return true;
 		}
 		
@@ -54,9 +80,9 @@ public class HealthDirector {
 
 	private boolean stealthKillChecks(Ai killedAi, Ai killer) {
 		
-		if(judgements.get(JudgementType.STEALTH_KILL) < 3 && killer.getWeapon().isMelee() && !combatVisualManager.isAiInSight(killer, killedAi.getFaction())) {
+		if(jdg.get(JudgementType.STEALTH_KILL) < 3 && killer.getWeapon().isMelee() && !combatVisualManager.isAiInSight(killer, killedAi.getFaction())) {
 			
-			judgements.put(JudgementType.STEALTH_KILL, judgements.get(JudgementType.STEALTH_KILL) + 1);
+			jdg.put(JudgementType.STEALTH_KILL, jdg.get(JudgementType.STEALTH_KILL) + 1);
 			
 			return true;
 		}

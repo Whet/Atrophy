@@ -267,7 +267,7 @@ public class AiGenerator{
 		aiCrowd.addDisplayItem(aiImg);
 		aiCrowd.addMouseActionItem(aiImg);
 		
-		aiCrowd.addActor(ai, new DirectorClassification(DirectorArchetype.UNDECIDED));
+		aiCrowd.addActor(ai, new DirectorClassification(DirectorArchetype.SWARM));
 		aiCrowd.addMask(aiImg);
 		
 		if(command.getAiNode() != null){
@@ -307,7 +307,7 @@ public class AiGenerator{
 		aiCrowd.addDisplayItem(aiImg);
 		aiCrowd.addMouseActionItem(aiImg);
 		
-		aiCrowd.addActor(ai, new DirectorClassification(DirectorArchetype.UNDECIDED));
+		aiCrowd.addActor(ai, new DirectorClassification(DirectorArchetype.SWARM));
 		aiCrowd.addMask(aiImg);
 		
 		combatMembersManager.addAi(ai);
@@ -396,7 +396,7 @@ public class AiGenerator{
 		aiCrowd.addDisplayItem(aiImg);
 		aiCrowd.addMouseActionItem(aiImg);
 		
-		aiCrowd.addActor(ai, new DirectorClassification(DirectorArchetype.UNDECIDED));
+		aiCrowd.addActor(ai, new DirectorClassification(DirectorArchetype.SWARM));
 		aiCrowd.addMask(aiImg);
 		
 		combatMembersManager.addAi(ai);
@@ -442,7 +442,7 @@ public class AiGenerator{
 			aiCrowd.addDisplayItem(aiImg);
 			aiCrowd.addMouseActionItem(aiImg);
 			
-			aiCrowd.addActor(ai, new DirectorClassification(DirectorArchetype.UNDECIDED));
+			aiCrowd.addActor(ai, new DirectorClassification(DirectorArchetype.SWARM));
 			aiCrowd.addMask(aiImg);
 			
 			randomLocation = levelManager.randomInPosition(spawnRoom);
