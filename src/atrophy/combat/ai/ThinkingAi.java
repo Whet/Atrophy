@@ -448,7 +448,7 @@ public class ThinkingAi extends Ai{
 		ArrayList<Ai> hostileAiInRoom = new ArrayList<Ai>(2);
 		
 		for(Ai ai : aiCrowd.getActors()){
-			if(this.isTargetHostile(ai) && combatVisualManager.isAiInSight(ai, this.getFaction())){
+			if(this.isTargetHostile(ai) && combatVisualManager.isAiInSight(this, ai, this.getFaction())){
 				hostileAiInRoom.add(ai);
 			}
 		}
@@ -523,7 +523,7 @@ public class ThinkingAi extends Ai{
 			// determine if target is hostile and if it is visible by the team
 			Ai ai = shuffledAi.get(i);
 			
-			if(this.getCommander().isSuspected(ai) && ai.getLevelBlock() == this.getLevelBlock() && combatVisualManager.isAiInSight(ai, this.getFaction())) {
+			if(this.getCommander().isSuspected(ai) && ai.getLevelBlock() == this.getLevelBlock() && combatVisualManager.isAiInSight(this, ai, this.getFaction())) {
 				
 				if(ai instanceof ThinkingAi) {
 					
@@ -585,7 +585,7 @@ public class ThinkingAi extends Ai{
 	protected boolean canBeEngaged(Ai ai) {
 		if(this.isTargetHostile(ai) &&
 		   ai.getLevelBlock() == this.getLevelBlock() &&
-		   combatVisualManager.isAiInSight(ai, this.getFaction())){
+		   combatVisualManager.isAiInSight(this, ai, this.getFaction())){
 			return true;
 		}
 		return false;
@@ -832,7 +832,7 @@ public class ThinkingAi extends Ai{
 	private boolean aiInRoomToLoot() {
 		if(!this.getInventory().isFull())
 		for(Ai ai : aiCrowd.getActors()){
-			if(ai.getLevelBlock() == this.getLevelBlock() && (ai.isDead() || (this.isTargetHostile(ai) && ai.getIncapTurns() > 0)) && !this.getCommander().isAiLooted(ai) && hasStuffToLoot(ai) && combatVisualManager.isAiInSight(ai, this.getFaction())){
+			if(ai.getLevelBlock() == this.getLevelBlock() && (ai.isDead() || (this.isTargetHostile(ai) && ai.getIncapTurns() > 0)) && !this.getCommander().isAiLooted(ai) && hasStuffToLoot(ai) && combatVisualManager.isAiInSight(this, ai, this.getFaction())){
 				return true;
 			}
 		}
@@ -843,7 +843,7 @@ public class ThinkingAi extends Ai{
 		// Loot
 		if(!this.getInventory().isFull()) {
 			for(Ai ai : aiCrowd.getActors()){
-				if(ai.getLevelBlock() == this.getLevelBlock() && (ai.isDead() || (this.isTargetHostile(ai) && ai.getIncapTurns() > 0)) && !this.getCommander().isAiLooted(ai) && hasStuffToLoot(ai) && combatVisualManager.isAiInSight(ai, this.getFaction())){
+				if(ai.getLevelBlock() == this.getLevelBlock() && (ai.isDead() || (this.isTargetHostile(ai) && ai.getIncapTurns() > 0)) && !this.getCommander().isAiLooted(ai) && hasStuffToLoot(ai) && combatVisualManager.isAiInSight(this, ai, this.getFaction())){
 					this.aiMode = AiMode.LOOT;
 					this.setAction("Loot");
 					this.loot(ai);
@@ -914,7 +914,7 @@ public class ThinkingAi extends Ai{
 		for(Ai ai : aiCrowd.getActors()){
 			if(!ai.getFaction().equals(this.getFaction()) && 
 			   (ai.getTargetAi() != null && ai.getTargetAi().getFaction().equals(this.getFaction()) && ( ai.getAction().equals(AiCombatActions.SHOOTING) || ai.getAction().equals(AiCombatActions.AIMING))) &&
-			   combatVisualManager.isAiInSight(ai, this.getFaction())){
+			   combatVisualManager.isAiInSight(this, ai, this.getFaction())){
 				return true;
 			}
 		}

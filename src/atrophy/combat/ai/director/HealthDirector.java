@@ -93,13 +93,13 @@ public class HealthDirector {
 
 	private boolean stealthKillChecks(Ai killedAi, Ai killer) {
 		
-		if(jdg.get(JudgementType.STEALTH_KILL) < 3 && killer.getWeapon().isMelee() && !combatVisualManager.isAiInSight(killer, killedAi.getFaction())) {
+		if(jdg.get(JudgementType.STEALTH_KILL) < 3 && killer.getWeapon().isMelee() && !combatVisualManager.isAiInSight(killedAi, killer, killedAi.getFaction())) {
 			
 			jdg.put(JudgementType.STEALTH_KILL, jdg.get(JudgementType.STEALTH_KILL) + 1);
 			
 			return true;
 		}
-		else if(killer.getWeapon().isMelee() && !combatVisualManager.isAiInSight(killer, killedAi.getFaction()) && getFactionInRoom(killedAi) == 1) {
+		else if(killer.getWeapon().isMelee() && !combatVisualManager.isAiInSight(killedAi, killer, killedAi.getFaction()) && getFactionInRoom(killedAi) == 1) {
 			
 			changeClassification(killedAi, DirectorArchetype.COD);
 			

@@ -77,7 +77,7 @@ public class CombatVisualManager {
 			else{
 				// if a member of the team can see it, all the team can see it
 				if(aiCrowd.getActor(i).isBroadcastingLocation() || allRevealed || ((aiCrowd.getActor(i).getFaction().equals("Player") && !aiCrowd.getActor(i).isDead())||
-				   isAiInSight(aiCrowd.getActor(i), "Player"))){
+				   isAiInSight(null, aiCrowd.getActor(i), "Player"))){
 					
 					aiCrowd.getActorMask(aiCrowd.getActor(i)).setVisible(true);
 				}
@@ -178,12 +178,12 @@ public class CombatVisualManager {
 		return false;
 	}
 	
-	public boolean isAiInSight(Ai aiLookedAt, String faction){
+	public boolean isAiInSight(Ai looker, Ai lookedAt, String faction){
 
 		if(faction.equals(AiGenerator.LONER))
-			return false;
+			return isAiInSight(looker, lookedAt);
 		
-		Integer integer = this.factionVisibleAi.get(faction).get(aiLookedAt);
+		Integer integer = this.factionVisibleAi.get(faction).get(lookedAt);
 		
 		if(integer != null && integer == turnProcess.getTurnCount())
 			return true;
@@ -192,9 +192,9 @@ public class CombatVisualManager {
 		for(int i = 0; i < aiCrowd.getActorCount(); i++){
 			if(!aiCrowd.getActor(i).isDead() &&
 			   aiCrowd.getActor(i).getFaction().equals(faction) &&
-			   (isAiInSight(aiCrowd.getActor(i), aiLookedAt))){
+			   (isAiInSight(aiCrowd.getActor(i), lookedAt))){
 				
-				this.factionVisibleAi.get(faction).put(aiLookedAt, turnProcess.getTurnCount());
+				this.factionVisibleAi.get(faction).put(lookedAt, turnProcess.getTurnCount());
 				
 				return true;
 			}

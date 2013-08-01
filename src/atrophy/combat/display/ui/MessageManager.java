@@ -490,9 +490,9 @@ public class MessageManager{
 				// if the initiator isn't visible and a minor check
 				// if visible and a big check
 				if(((ThinkingAi) messageBox.getConversers()[1]).getAggression() < ThinkingAiEmotion.MINDLESS_TERROR && (
-				   (!combatVisualManager.isAiInSight(messageBox.getConversers()[0], messageBox.getConversers()[1].getFaction()) && 
+				   (!combatVisualManager.isAiInSight(messageBox.getConversers()[1], messageBox.getConversers()[0], messageBox.getConversers()[1].getFaction()) && 
 				   ScoringMechanics.weakIntimidateCheck(messageBox.getConversers()[0], messageBox.getConversers()[1], combatMembersManager)) ||
-				   (combatVisualManager.isAiInSight(messageBox.getConversers()[0], messageBox.getConversers()[1].getFaction()) &&
+				   (combatVisualManager.isAiInSight(messageBox.getConversers()[1], messageBox.getConversers()[0], messageBox.getConversers()[1].getFaction()) &&
 				   ScoringMechanics.strongIntimidateCheck(messageBox.getConversers()[0], messageBox.getConversers()[1], combatMembersManager) ))){
 					
 					messageBox.addMessage(ChatterBox.message(messageBox.getConversers()[1].getName(), Topic.INCAP_REACTION, -1));
@@ -517,9 +517,9 @@ public class MessageManager{
 				// if visible and a big check
 				if(((ThinkingAi) messageBox.getConversers()[1]).getAggression() < ThinkingAiEmotion.MINDLESS_TERROR &&
 				    (intimidated || messageBox.getConversers()[1].getIncapTurns() > 0 ||
-				    (!combatVisualManager.isAiInSight(messageBox.getConversers()[0], messageBox.getConversers()[1].getFaction()) && 
+				    (!combatVisualManager.isAiInSight(messageBox.getConversers()[1], messageBox.getConversers()[0], messageBox.getConversers()[1].getFaction()) && 
 				    ScoringMechanics.weakIntimidateCheck(messageBox.getConversers()[0], messageBox.getConversers()[1], combatMembersManager)) ||
-				    (combatVisualManager.isAiInSight(messageBox.getConversers()[0], messageBox.getConversers()[1].getFaction()) &&
+				    (combatVisualManager.isAiInSight(messageBox.getConversers()[1], messageBox.getConversers()[0], messageBox.getConversers()[1].getFaction()) &&
 				    ScoringMechanics.strongIntimidateCheck(messageBox.getConversers()[0], messageBox.getConversers()[1], combatMembersManager) ))){
 					
 					messageBox.addMessage(ChatterBox.message(messageBox.getConversers()[1].getName(), Topic.INCAP_REACTION, -1));

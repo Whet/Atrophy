@@ -585,7 +585,7 @@ public class AiActions {
 
 	private void breakAlliance(Ai invoker) {
 		if(invoker.getTargetAi() instanceof ThinkingAi &&
-		   combatVisualManager.isAiInSight(invoker, invoker.getTargetAi().getFaction())){
+		   combatVisualManager.isAiInSight(invoker.getTargetAi(), invoker, invoker.getTargetAi().getFaction())){
 			
 			((ThinkingAi) invoker.getTargetAi()).getCommander().removeAlliance(invoker.getFaction());
 			
@@ -593,7 +593,7 @@ public class AiActions {
 	}
 	
 	private void makeHatedWithTarget(Ai invoker) {
-		if(invoker.getTargetAi() instanceof ThinkingAi && combatVisualManager.isAiInSight(invoker, invoker.getTargetAi().getFaction())){
+		if(invoker.getTargetAi() instanceof ThinkingAi && combatVisualManager.isAiInSight(invoker.getTargetAi(), invoker, invoker.getTargetAi().getFaction())){
 			
 			TeamsCommander commander = ((ThinkingAi) invoker.getTargetAi()).getCommander();
 			commander.removeAlliance(invoker.getFaction());
