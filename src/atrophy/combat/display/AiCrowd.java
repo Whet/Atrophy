@@ -137,9 +137,6 @@ public class AiCrowd extends Crowd {
 							  "images/atrophy/combat/heads/armourHead.png",
 							  "images/atrophy/combat/heads/armourHeadDamaged.png",
 							  
-							  "images/atrophy/combat/heads/turret.png",
-							  "images/atrophy/combat/heads/turret.png",
-							  
 							  "images/atrophy/combat/heads/mule.png",
 							  "images/atrophy/combat/heads/muleDead.png",
 							  };
@@ -156,7 +153,6 @@ public class AiCrowd extends Crowd {
 							  "Stealthed", "StealthedDead",
 							  "Scout",	   "ScoutDead",
 							  "Armour",	   "ArmourDead",
-							  "Turret",    "TurretDead",
 							  "Mule",	   "MuleDead"
 							  };
 			
