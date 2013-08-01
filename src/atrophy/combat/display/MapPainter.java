@@ -1,47 +1,25 @@
-/*
- * 
- */
 package atrophy.combat.display;
 
 import java.awt.Color;
 import java.awt.Polygon;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 
 import watoydoEngine.io.ReadWriter;
 import atrophy.combat.level.LevelBlock;
 
-/**
- * The Class MapPainter.
- */
 public class MapPainter {
 	
-	/**
-	 * The BLOO d_ textures.
-	 */
-//	public static BufferedImage[] BLOOD_TEXTURES;
-	
-	/**
-	 * The EFFEC t_ scars.
-	 */
 	public static BufferedImage[] EFFECT_SCARS;
 	
-	/**
-	 * Load textures.
-	 */
 	public static void loadTextures(){
 		
-//		BLOOD_TEXTURES = new BufferedImage[4];
 		EFFECT_SCARS = new BufferedImage[1];
 		
 		try {
-//			BLOOD_TEXTURES[0] = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/effects/blood0.png"));
-//			BLOOD_TEXTURES[1] = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/effects/blood1.png"));
-//			BLOOD_TEXTURES[2] = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/effects/blood2.png"));
-//			BLOOD_TEXTURES[3] = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/effects/blood3.png"));
-			
 			EFFECT_SCARS[0] = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/effects/explosion.png"));
 			
 		}
@@ -51,28 +29,6 @@ public class MapPainter {
 		}
 	}
 	
-	/**
-	 * Removes the textures.
-	 */
-//	public static void removeTextures(){
-//		for(int i = 0; i < BLOOD_TEXTURES.length; i++){
-//			BLOOD_TEXTURES[i].flush();
-//		}
-//		BLOOD_TEXTURES = null;
-//		for(int i = 0; i < EFFECT_SCARS.length; i++){
-//			EFFECT_SCARS[i].flush();
-//		}
-//		EFFECT_SCARS = null;
-//	}
-
-	/**
-	 * Apply image.
-	 *
-	 * @param texture the texture
-	 * @param location the location
-	 * @param alpha the alpha
-	 * @param lineDrawer 
-	 */
 	public static void applyImage(BufferedImage texture, double[] location, double alpha, MapDrawer lineDrawer){
 		// only draw pixels where there are already pixels and in the same room
 		if(texture != null){
@@ -98,20 +54,11 @@ public class MapPainter {
 													moddedColour.getRGB());
 					
 					}
-
 				}
 			}
 		}
 	}
 	
-	/**
-	 * Apply image.
-	 *
-	 * @param texture the texture
-	 * @param drawBlock the draw block
-	 * @param location the location
-	 * @param alpha the alpha
-	 */
 	public static void applyImage(BufferedImage texture, MapDrawer.MapDrawBlock drawBlock, double[] location, double alpha){
 		// only draw pixels where there are already pixels and in the same room
 		if(texture != null){
@@ -139,27 +86,12 @@ public class MapPainter {
 		}
 	}
 	
-	/**
-	 * Alpha colours.
-	 *
-	 * @param textureColour the texture colour
-	 * @param roomColour the room colour
-	 * @param alpha the alpha
-	 * @return the color
-	 */
 	public static Color alphaColours(Color textureColour, Color roomColour, double alpha) {
 		return new Color((int)(textureColour.getRed() * alpha + roomColour.getRed() * (1 - alpha)),
 				         (int)(textureColour.getGreen() * alpha + roomColour.getGreen() * (1 - alpha)),
 					     (int)(textureColour.getBlue() * alpha + roomColour.getBlue() * (1 - alpha)));
 	}
 
-	/**
-	 * Apply map texture.
-	 *
-	 * @param texture the texture
-	 * @param textureBlock the texture block
-	 * @param mapBlock the map block
-	 */
 	public static void applyMapTexture(BufferedImage texture, LevelBlock textureBlock, BufferedImage mapBlock) {
 		// only draw pixels where there are already pixels and in the same room and loop texture to fill
 		
@@ -205,21 +137,132 @@ public class MapPainter {
 		}
 		while(loopsCount[0] != loops[0] || loopsCount[1] != loops[1]);
 	}
+	
+	public static void applyMapTexture(BufferedImage[] textures, int[] floorInfo, LevelBlock textureBlock, BufferedImage mapBlock) {
+		// only draw pixels where there are already pixels and in the same room and loop texture to fill
+		
+		int[] loops = new int[2];
+		loops[0] = (int)Math.ceil(textureBlock.getHitBox().getBounds2D().getWidth() / textures[0].getWidth());
+		loops[1] = (int)Math.ceil(textureBlock.getHitBox().getBounds2D().getHeight() / textures[1].getHeight());
+		
+		int[] loopsCount = {0,0};
+		
+		int xOffset = 0;
+		int yOffset = 0;
+		
+		int x = 0;
+		int y = 0;
+		int xLeft = loops[0];
+		int yLeft = loops[1];
+		int textureCode = -1;
+		int repeats = 0;
+		int maxRepeats = (int)((textureBlock.getHitBox().getBounds2D().getHeight() * textureBlock.getHitBox().getBounds2D().getWidth()) / (textures[0].getHeight() * textures[0].getWidth())) - 2;
+		textureCode = chooseTexture(floorInfo, x, y, xLeft, yLeft, textureCode, repeats, maxRepeats);
+		
+		System.out.println("Areas: " + ((textureBlock.getHitBox().getBounds2D().getHeight() * textureBlock.getHitBox().getBounds2D().getWidth()) / (textures[0].getHeight() * textures[0].getWidth())));
+		System.out.println("Max Repeats: " + maxRepeats);
+		
+		BufferedImage texture = textures[textureCode];
+		
+		do{
+			
+			for(int i = 0; i < texture.getWidth(); i++){
+				for(int j = 0; j < texture.getHeight(); j++){
+					
+					if(i + xOffset < mapBlock.getWidth() &&
+					   j + yOffset < mapBlock.getHeight() &&
+					   textureBlock.getHitBox().contains(i + textureBlock.getHitBox().getBounds2D().getMinX() + xOffset,
+							                             j + textureBlock.getHitBox().getBounds2D().getMinY() + yOffset) &&
+					   texture.getRGB(i, j) != 0x00000000){
+					
+						mapBlock.setRGB((int)(i + xOffset),
+									    (int)(j + yOffset),
+										texture.getRGB(i, j));
+						
+					}
+					
+				}
+			}
+			
+			if(loopsCount[0] < loops[0]){
+				xOffset += texture.getWidth();
+				
+				x++;
+				xLeft--;
+				
+				loopsCount[0]++;
+			}
+			else if(loopsCount[1] < loops[1]){
+				xOffset = 0;
+				
+				x = 0;
+				xLeft = loops[0];
+				
+				loopsCount[0] = 0;
+				loopsCount[1]++;
+				
+				yOffset += texture.getHeight();
+				
+				y++;
+				yLeft--;
+			}
+			
+			// Choose new textures
+			int newCode = chooseTexture(floorInfo, x, y, xLeft, yLeft, textureCode, repeats, maxRepeats);
+			if(newCode == textureCode) {
+				repeats++;
+			}
+			else {
+				repeats = 0;
+			}
+			textureCode = newCode;
+			texture = textures[textureCode];
+		}
+		while(loopsCount[0] != loops[0] || loopsCount[1] != loops[1]);
+	}
 
-	/**
-	 * Apply image.
-	 *
-	 * @param texture the texture
-	 * @param drawShape the draw shape
-	 * @param drawPoly the draw poly
-	 * @param offset the offset
-	 */
+	private static int chooseTexture(int[] floorInfo, int x, int y, int xLeft, int yLeft, int textureCode, int repeats, int maxRepeats) {
+		for(int i = 0; i < floorInfo.length; i++) {
+			if(floorInfo[i] >= x && floorInfo[i] >= y && floorInfo[i] < xLeft && floorInfo[i] < yLeft && (textureCode != i || repeats < maxRepeats)) {
+				return i;
+			}
+		}
+		
+		return 0;
+	}
+
 	public static void applyImage(BufferedImage texture, BufferedImage drawShape, Polygon drawPoly, double[] offset) {
 
 		for(int i = 0; i < drawShape.getWidth(); i++){
 			for(int j = 0; j < drawShape.getHeight(); j++){
 				
 				if(drawPoly.contains(i + offset[0], j + offset[1])){
+					
+					int[] location = {i,j};
+					
+					while(location[0] >= texture.getWidth()){
+						location[0] -= texture.getWidth();
+					}
+					while(location[1] >= texture.getHeight()){
+						location[1] -= texture.getHeight();
+					}
+					
+					drawShape.setRGB(i,j, texture.getRGB(location[0],location[1]));
+				}
+				
+			}
+		}
+
+	}
+	
+	public static void applyImage(BufferedImage[] textures, BufferedImage drawShape, Polygon drawPoly, double[] offset) {
+
+		for(int i = 0; i < drawShape.getWidth(); i++){
+			for(int j = 0; j < drawShape.getHeight(); j++){
+				
+				if(drawPoly.contains(i + offset[0], j + offset[1])){
+					
+					BufferedImage texture = textures[new Random().nextInt(textures.length)];
 					
 					int[] location = {i,j};
 					

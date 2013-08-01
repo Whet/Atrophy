@@ -58,11 +58,20 @@ public class MapDrawer implements Displayable {
 	private void makeMap() {
 			
 		BufferedImage[] floorTextures = new BufferedImage[4];
+		// 0 - prefer edges, higher numbers == tiles from edge allowed
+		int[] floorTextInfo = new int[4];
 		try{
 			floorTextures[0] = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/texture/floors/floor1.png"));
+			floorTextInfo[0] = 0;
+			
 			floorTextures[1] = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/texture/floors/floor2.png"));
+			floorTextInfo[1] = 2;
+			
 			floorTextures[2] = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/texture/floors/floor3.png"));
+			floorTextInfo[2] = 1;
+			
 			floorTextures[3] = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/texture/floors/floor4.png"));
+			floorTextInfo[3] = 2;
 		}
 		catch(IOException e){
 			System.err.println("No Floor textures");
@@ -76,22 +85,7 @@ public class MapDrawer implements Displayable {
 		
 			map[mapNumber] = new MapDrawBlock(panningManager, new BufferedImage((int)levelBlock.getSize()[0],(int)levelBlock.getSize()[1], BufferedImage.TYPE_INT_ARGB),levelBlock);
 			
-			BufferedImage texture = floorTextures[levelBlock.getFloorTextureCode()];
-			MapPainter.applyMapTexture(texture, levelBlock, map[mapNumber].getImage());
-			
-			// apply texture regions
-			Iterator<Polygon> texturePolyIt = levelBlock.getTexturePolygons().iterator();
-			
-			while(texturePolyIt.hasNext()){
-				
-				Polygon textureRegion = texturePolyIt.next();
-				texture =  floorTextures[levelBlock.getTextures().peek()];
-				
-				MapPainter.applyImage(texture, map[mapNumber].getImage(), textureRegion, levelBlock.getLocation());
-				
-				texturePolyIt.remove();
-				levelBlock.getTextures().pop();
-			}
+			MapPainter.applyMapTexture(floorTextures, floorTextInfo, levelBlock, map[mapNumber].getImage());
 			
 			map[mapNumber].drawRegions(levelBlock);
 			
