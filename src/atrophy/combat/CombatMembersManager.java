@@ -70,6 +70,7 @@ public class CombatMembersManager {
 			
 			strengthInfo.put(AiGenerator.BANDITS, new Integer[]{0,-1});
 			strengthInfo.put(AiGenerator.WHITE_VISTA, new Integer[]{0,-1});
+			strengthInfo.put(AiGenerator.LONER, new Integer[]{0,-1});
 			strengthInfo.put(AiGenerator.PLAYER, new Integer[]{0,-1});
 		}
 
