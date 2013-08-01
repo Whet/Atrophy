@@ -5,6 +5,7 @@ import atrophy.combat.actions.MouseAbilityHandler;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.AiImage;
 import atrophy.combat.mechanics.ScoringMechanics;
+import atrophy.combat.mechanics.TurnProcess;
 
 public class AiCombatActions {
 
@@ -135,7 +136,7 @@ public class AiCombatActions {
 		
 		// if a hit
 		// being in the weapons range allows a re-roll
-		if(aiCrowd.getDirector().judge(ScoringMechanics.killedTarget(invoker,this.getTargetAi()), invoker.getTargetAi(), invoker)){
+		if(aiCrowd.getDirector().judge(ScoringMechanics.killedTarget(invoker,this.getTargetAi()), invoker.getTargetAi(), invoker, invoker.turnProcess.getTurnCount())){
 			
 			// kill target
 			this.getTargetAi().setDead(invoker, true);

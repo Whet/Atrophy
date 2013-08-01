@@ -20,25 +20,32 @@ public class HealthDirector {
 		this.jdg = new HashMap<>();
 		
 		this.jdg.put(JudgementType.STEALTH_KILL, 0);
-		this.jdg.put(JudgementType.SWARM_HITS, 0);
 		
 		this.aiCrowd = aiCrowd;
 	}
 
-	public boolean judge(boolean dead, Ai killedAi, Ai killer) {
+	public boolean judge(boolean dead, Ai killedAi, Ai killer, int turn) {
 		
-		if(killer.getStunnedTurns() > 0 || killer.getIncapTurns() > 0 ||
-		  (!this.clf.get(killedAi).getType().equals(DirectorArchetype.PLAYER) && !this.clf.get(killer).getType().equals(DirectorArchetype.PLAYER))) {
-			
+		// Handle attackers that shouldn't be able to attack
+		if(killer.getStunnedTurns() > 0 || killer.getIncapTurns() > 0) {
+			return false;
+		}
+		
+		// Don't handle ai on ai conflict beyond pure dice rolling]
+		if(!this.clf.get(killedAi).getType().equals(DirectorArchetype.PLAYER) && !this.clf.get(killer).getType().equals(DirectorArchetype.PLAYER)) {
 			return dead;
 		}
 		
+		// Handle cod attacking
 		if(clf.get(killer).getType().equals(DirectorArchetype.COD)) {
 			
 			appealArchetypeChange(dead, killer, clf.get(killer).getOriginalType());
 			return false;
 		}
 		
+		clf.get(killedAi).addAttackRecord(turn);
+		
+		// Handle attacking swam/cod
 		if((clf.get(killedAi).getType().equals(DirectorArchetype.COD) ||
 		   (clf.get(killedAi).getType().equals(DirectorArchetype.SWARM) &&
 		   (getFactionInRoom(killedAi) > 3) || getFactionInRoom(killedAi) == 1)) &&
@@ -51,16 +58,22 @@ public class HealthDirector {
 			return true;
 		}
 		
-		if(dead && clf.get(killedAi).getType().equals(DirectorArchetype.PLAYER) && clf.get(killer).getType().equals(DirectorArchetype.SWARM)) {
+		// Handle swarm attacking
+		if(clf.get(killedAi).getType().equals(DirectorArchetype.PLAYER) && clf.get(killer).getType().equals(DirectorArchetype.SWARM)) {
 			
-			jdg.put(JudgementType.SWARM_HITS, jdg.get(JudgementType.SWARM_HITS) + 1);
+			// Complete swarming will kill careless player
+			if(clf.get(killedAi).getAttackedCount() == getFactionInRoom(killer))
+				return true;
 			
-			if(getFactionInRoom(killer) > 2 || jdg.get(JudgementType.SWARM_HITS) > 2)
+			// Some swarming, give the swarm a chance
+			if(getFactionInRoom(killer) > 2)
 				return dead;
 			
+			// A lone swarmer cannot kill
 			return false;
 		}
 		
+		// Handle stealth kills
 		if(dead || (!clf.get(killedAi).getType().equals(DirectorArchetype.ELITE) &&
 				    !clf.get(killedAi).getType().equals(DirectorArchetype.SPEAKER) &&
 				    stealthKillChecks(killedAi, killer))) {

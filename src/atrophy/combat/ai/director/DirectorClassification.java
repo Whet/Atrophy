@@ -4,10 +4,13 @@ public class DirectorClassification {
 
 	private DirectorArchetype type;
 	private DirectorArchetype originalType;
+	//  [turnOfAttack, no. of attackers]
+	private int[] attackInfo;
 	
 	public DirectorClassification(DirectorArchetype type) {
 		this.type = type;
 		this.originalType = type;
+		attackInfo = new int[]{0,0};
 	}
 
 	public DirectorArchetype getType() {
@@ -20,6 +23,20 @@ public class DirectorClassification {
 
 	public void setType(DirectorArchetype type) {
 		this.type = type;
+	}
+
+	public void addAttackRecord(int turn) {
+		if(attackInfo[0] < turn) {
+			attackInfo[0] = turn;
+			attackInfo[1] = 1;
+		}
+		else {
+			attackInfo[1]++;
+		}
+	}
+
+	public int getAttackedCount() {
+		return attackInfo[1];
 	}
 	
 }
