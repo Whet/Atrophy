@@ -180,6 +180,9 @@ public class CombatVisualManager {
 	
 	public boolean isAiInSight(Ai aiLookedAt, String faction){
 
+		if(faction.equals(AiGenerator.LONER))
+			return false;
+		
 		Integer integer = this.factionVisibleAi.get(faction).get(aiLookedAt);
 		
 		if(integer != null && integer == turnProcess.getTurnCount())
