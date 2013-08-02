@@ -62,16 +62,16 @@ public class MapDrawer implements Displayable {
 		int[] floorTextInfo = new int[4];
 		try{
 			floorTextures[0] = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/texture/floors/floor1.png"));
-			floorTextInfo[0] = 0;
+			floorTextInfo[0] = 1;
 			
 			floorTextures[1] = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/texture/floors/floor2.png"));
 			floorTextInfo[1] = 2;
 			
 			floorTextures[2] = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/texture/floors/floor3.png"));
-			floorTextInfo[2] = 1;
+			floorTextInfo[2] = 3;
 			
 			floorTextures[3] = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/texture/floors/floor4.png"));
-			floorTextInfo[3] = 2;
+			floorTextInfo[3] = 4;
 		}
 		catch(IOException e){
 			System.err.println("No Floor textures");

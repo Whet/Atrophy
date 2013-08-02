@@ -156,11 +156,13 @@ public class MapPainter {
 		int yLeft = loops[1];
 		int textureCode = -1;
 		int repeats = 0;
-		int maxRepeats = (int)((textureBlock.getHitBox().getBounds2D().getHeight() * textureBlock.getHitBox().getBounds2D().getWidth()) / (textures[0].getHeight() * textures[0].getWidth())) - 2;
+		int maxRepeats =
+		1;
+//		(int)((textureBlock.getHitBox().getBounds2D().getHeight() * textureBlock.getHitBox().getBounds2D().getWidth()) / (textures[0].getHeight() * textures[0].getWidth())) - 2;
 		textureCode = chooseTexture(floorInfo, x, y, xLeft, yLeft, textureCode, repeats, maxRepeats);
 		
-		System.out.println("Areas: " + ((textureBlock.getHitBox().getBounds2D().getHeight() * textureBlock.getHitBox().getBounds2D().getWidth()) / (textures[0].getHeight() * textures[0].getWidth())));
-		System.out.println("Max Repeats: " + maxRepeats);
+//		System.out.println("Areas: " + ((textureBlock.getHitBox().getBounds2D().getHeight() * textureBlock.getHitBox().getBounds2D().getWidth()) / (textures[0].getHeight() * textures[0].getWidth())));
+//		System.out.println("Max Repeats: " + maxRepeats);
 		
 		BufferedImage texture = textures[textureCode];
 		
@@ -223,12 +225,12 @@ public class MapPainter {
 
 	private static int chooseTexture(int[] floorInfo, int x, int y, int xLeft, int yLeft, int textureCode, int repeats, int maxRepeats) {
 		for(int i = 0; i < floorInfo.length; i++) {
-			if(floorInfo[i] >= x && floorInfo[i] >= y && floorInfo[i] < xLeft && floorInfo[i] < yLeft && (textureCode != i || repeats < maxRepeats)) {
+			if(floorInfo[i] >= x && floorInfo[i] >= y && floorInfo[i] <= xLeft && floorInfo[i] <= yLeft && (textureCode != i || repeats < maxRepeats)) {
 				return i;
 			}
 		}
 		
-		return 0;
+		return chooseTexture(floorInfo, x - 1, y - 1, xLeft + 1, yLeft + 1, textureCode, repeats, maxRepeats);
 	}
 
 	public static void applyImage(BufferedImage texture, BufferedImage drawShape, Polygon drawPoly, double[] offset) {
