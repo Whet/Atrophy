@@ -300,6 +300,11 @@ public class Missions{
 			return false;
 		}
 		
+		@Override
+		public boolean isExpired() {
+			return super.isExpired() || techTree.isResearched(this.tech);
+		}
+		
 	}
 	
 	/**
