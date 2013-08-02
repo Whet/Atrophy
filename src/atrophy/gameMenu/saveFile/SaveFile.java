@@ -67,7 +67,7 @@ public class SaveFile implements Serializable{
 		}	
 	}
 	
-	public static Squad loadGame(File file, StashManager stashManager, MapManager mapWar, ShopManager shopManager, Missions missions, WindowManager windowManager) {
+	public static Squad loadGame(File file, StashManager stashManager, MapManager mapWar, ShopManager shopManager, Missions missions, WindowManager windowManager, ItemMarket itemMarket) {
 		
 		SaveFile save = null;
 		
@@ -96,14 +96,15 @@ public class SaveFile implements Serializable{
 			
 			stashManager.setItems(save.stash);
 			mapWar.setSectors(save.sectors);
+			itemMarket.lazyLoad(save.techTree);
 			shopManager.randomItems();
 			missions.setEconomyEffects(save.economyEffects);
-//			TechTree.setInstance(save.techTree);
 			windowManager.updateWindows();
 			missions.setMemCodes(save.spawnCodes);
 			
 			// set advance to true value
 			save.squad.setAdvance(save.advance);
+			save.squad.setTechTree(save.techTree);
 			
 			SaveFile.saveLocation = save.saveURL;
 		}

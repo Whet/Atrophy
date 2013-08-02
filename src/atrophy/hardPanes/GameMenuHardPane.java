@@ -43,10 +43,11 @@ public class GameMenuHardPane implements HardPaneDefineable{
 		MenuBar menuBar = new MenuBar();
 		WindowManager windowManager = new WindowManager(menuBar);
 		stashManager.setWindowManager(windowManager);
-		ItemMarket itemMarket = new ItemMarket(techTree);
+		ItemMarket itemMarket = new ItemMarket();
 		MapManager mapWar = new MapManager(missions);
 		ShopManager shopManager = new ShopManager(windowManager, stashManager, itemMarket);
 		
+		itemMarket.lazyLoad(techTree);
 		shopManager.lazyLoad(squad);
 		menuBar.lazyLoad(windowManager, mapWar, missions, squad, shopManager, stashManager, techTree, itemMarket);
 		stashManager.lazyLoad(shopManager);

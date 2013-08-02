@@ -22,7 +22,7 @@ public class Missions{
 	private ArrayList<String> economyEffects;
 	private Set<String> memCodes;
 	private Squad squad;
-
+	
 	public Missions(){
 		missions = new ArrayList<>();
 		missionGivers = new ArrayList<MissionGiver>();

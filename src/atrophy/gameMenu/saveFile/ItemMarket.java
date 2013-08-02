@@ -42,11 +42,14 @@ public class ItemMarket {
 	private Set<String> weaponsInMarket;
 	private Set<String> itemsInMarket;
 	
-	public ItemMarket(TechTree techTree){
+	public ItemMarket(){
 		
 		this.weaponsInMarket = new HashSet<String>();
 		this.itemsInMarket = new HashSet<String>();
 		
+	}
+	
+	public void lazyLoad(TechTree techTree) {
 		loadItemData(techTree);
 		updateMarket();
 	}

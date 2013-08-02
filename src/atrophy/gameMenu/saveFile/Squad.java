@@ -21,6 +21,7 @@ public class Squad implements Serializable {
 	private int stability;
 	
 	private ArrayList<Squaddie> squadMembers;
+	private TechTree techTree;
 	
 	public Squad(){
 		this.squadMembers = new ArrayList<Squaddie>(5);
@@ -185,6 +186,14 @@ public class Squad implements Serializable {
 		public String getVehicleType() {
 			return this.vehicleType;
 		}
+	}
+
+	public void setTechTree(TechTree techTree) {
+		this.techTree = techTree;
+	}
+
+	public TechTree getTechTree() {
+		return this.techTree;
 	}
 
 }
