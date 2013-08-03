@@ -56,13 +56,7 @@ public class TextInput extends Text implements MouseRespondable,KeyboardResponda
 	protected void updateText(){};
 
 	public boolean kD(KeyEvent e){
-		// if backspace, delete last letter
-		// doesn't work with getKeyCode
-		if(e.getKeyChar() == KeyEvent.VK_BACK_SPACE && this.getText().length() > minLetters){
-			this.setText(this.getText().substring(0, this.getText().length() - 1));
-		}
-		// always return true to stop other things running
-		return true;
+		return false;
 	}
 
 	public boolean kU(KeyEvent e){
@@ -73,7 +67,13 @@ public class TextInput extends Text implements MouseRespondable,KeyboardResponda
 	}
 
 	public boolean kP(KeyEvent e){
-		return false;
+		// if backspace, delete last letter
+		// doesn't work with getKeyCode
+		if(e.getKeyChar() == KeyEvent.VK_BACK_SPACE && this.getText().length() > minLetters){
+			this.setText(this.getText().substring(0, this.getText().length() - 1));
+		}
+		// always return true to stop other things running
+		return true;
 	}
 
 	public boolean mD(Point mousePosition, MouseEvent e){
