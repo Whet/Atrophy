@@ -868,7 +868,7 @@ public class ThinkingAi extends Ai{
 				AiDeathReport deathReport = ai.getDeathReport();
 				
 				// Don't investigate deaths we caused
-				if(deathReport.killer == null || (deathReport.killer.getFaction().equals(this.getFaction()) && (!this.getFaction().equals(AiGenerator.LONER) || deathReport.killer == this)))
+				if(deathReport == null || deathReport.killer == null || (deathReport.killer.getFaction().equals(this.getFaction()) && (!this.getFaction().equals(AiGenerator.LONER) || deathReport.killer == this)))
 					return;
 				
 				if(turnProcess.getTurnCount() - deathReport.timeOfDeath < 20 && deathReport.weapon.getName().equals(deathReport.killer.getWeapon().getName()) &&
