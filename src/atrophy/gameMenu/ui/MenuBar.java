@@ -116,18 +116,20 @@ public class MenuBar extends Crowd{
 			@Override
 			public boolean mU(Point mousePosition, MouseEvent e) {
 				
-				ActivePane.getInstance().setVisible(false);
-				
 				if(!SaveFile.saveLocation.isEmpty()) {
 					SaveFile.saveGame(new File(SaveFile.saveLocation), squad, missions, mapWar.getSectors(), stashManager.getItems(), techTree, missions.getMemCodes());
+					ActivePane.getInstance().setVisible(true);
 				}
 				else {
+					ActivePane.getInstance().setVisible(false);
+					
 					JFileChooser chooser = new JFileChooser(new File(System.getProperty("user.home") + "/Atrophy"));
 					
 					int returnValue = chooser.showSaveDialog(new JFrame());
 					
 					if(returnValue == JFileChooser.APPROVE_OPTION){
 						SaveFile.saveGame(chooser.getSelectedFile(), squad, missions, mapWar.getSectors(), stashManager.getItems(), techTree, missions.getMemCodes());
+						ActivePane.getInstance().setVisible(true);
 					}
 					else{
 						ActivePane.getInstance().setVisible(true);
