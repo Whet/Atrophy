@@ -13,6 +13,7 @@ import javax.swing.JFrame;
 
 import watoydoEngine.designObjects.display.Crowd;
 import watoydoEngine.designObjects.display.TextButton;
+import watoydoEngine.io.ReadWriter;
 import watoydoEngine.sounds.SoundBoard;
 import watoydoEngine.workings.displayActivity.ActivePane;
 import atrophy.gameMenu.saveFile.ItemMarket;
@@ -123,7 +124,7 @@ public class MenuBar extends Crowd{
 				else {
 					ActivePane.getInstance().setVisible(false);
 					
-					JFileChooser chooser = new JFileChooser(new File(System.getProperty("user.home") + "/Atrophy"));
+					JFileChooser chooser = new JFileChooser(new File(ReadWriter.HOME_LOCATION + "/GameData/Saves"));
 					
 					int returnValue = chooser.showSaveDialog(new JFrame());
 					

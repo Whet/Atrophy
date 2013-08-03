@@ -13,6 +13,7 @@ import javax.swing.JFrame;
 
 import watoydoEngine.designObjects.display.Crowd;
 import watoydoEngine.designObjects.display.TextButton;
+import watoydoEngine.io.ReadWriter;
 import watoydoEngine.workings.displayActivity.ActivePane;
 import atrophy.combat.display.ui.LargeEventText;
 import atrophy.gameMenu.saveFile.ItemMarket;
@@ -76,7 +77,7 @@ public class SplashMenu extends Crowd {
 				
 				ActivePane.getInstance().setVisible(false);
 				
-				JFileChooser chooser = new JFileChooser(new File(System.getProperty("user.home") + "/Atrophy"));
+				JFileChooser chooser = new JFileChooser(new File(ReadWriter.HOME_LOCATION + "/GameData/Saves"));
 				int returnValue = chooser.showOpenDialog(new JFrame());
 				
 				if(returnValue == JFileChooser.APPROVE_OPTION){

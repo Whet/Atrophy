@@ -84,7 +84,7 @@ public class MapsMenu extends Menu {
 																		  squad, sector.getEngineeringChance(),sector.getMedicalChance(),sector.getWeaponChance(),sector.getScienceChance(), missions, itemMarket, techTree, stashManager);
 					} 
 					catch (IOException e1) {
-						ErrorPopup popup = new ErrorPopup(windowManager, "Could Not Load Map At: " + System.getProperty("user.home") + "/Atrophy/Maps/" + sector.getMaps()[ind + (page * MAX_ITEMS)]);
+						ErrorPopup popup = new ErrorPopup(windowManager, "Could Not Load Map At: " + ReadWriter.HOME_LOCATION + "/Atrophy/Maps/" + sector.getMaps()[ind + (page * MAX_ITEMS)]);
 						windowManager.addPopup(MapsMenu.this,popup);
 					} catch (RecognitionException e1) {
 						e1.printStackTrace();
