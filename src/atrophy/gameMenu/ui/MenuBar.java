@@ -109,7 +109,7 @@ public class MenuBar extends Crowd{
 		TextButton saveGame = new TextButton(Color.yellow, Color.red) {
 			
 			{
-				this.setText("Save & Exit");
+				this.setText("Save");
 				this.setVisible(true);
 			}
 			
@@ -134,8 +134,6 @@ public class MenuBar extends Crowd{
 						return true;
 					}
 				}
-				
-				System.exit(0);
 				
 				return true;
 			}
