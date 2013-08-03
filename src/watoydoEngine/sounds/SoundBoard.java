@@ -29,12 +29,11 @@ public class SoundBoard {
 	private String musicCollection[];
 
 	private SoundBoard(){
-		musicCollection = new String[4];
+		musicCollection = new String[3];
 		
-		musicCollection[0] = "watoydoEngine/mods/sounds/music/ambient1.ogg";
-		musicCollection[1] = "watoydoEngine/mods/sounds/music/ambient2.ogg";
-		musicCollection[2] = "watoydoEngine/mods/sounds/music/ambient3.ogg";
-		musicCollection[3] = "watoydoEngine/mods/sounds/music/ambient4.ogg";
+		musicCollection[0] = "watoydoEngine/mods/sounds/music/Interloper.ogg";
+		musicCollection[1] = "watoydoEngine/mods/sounds/music/Neo Western.ogg";
+		musicCollection[2] = "watoydoEngine/mods/sounds/music/Simplex.ogg";
 		
 		musicVolume = 0.1f;
 		effectVolume = 0.5f;
