@@ -9,6 +9,7 @@ import java.util.Random;
 import javax.imageio.ImageIO;
 
 import watoydoEngine.io.ReadWriter;
+import atrophy.combat.ai.PathFinder;
 import atrophy.combat.level.LevelBlock;
 
 public class MapPainter {
@@ -138,31 +139,24 @@ public class MapPainter {
 		while(loopsCount[0] != loops[0] || loopsCount[1] != loops[1]);
 	}
 	
-	public static void applyMapTexture(BufferedImage[] textures, int[] floorInfo, LevelBlock textureBlock, BufferedImage mapBlock) {
+	public static void applyMapTexture(BufferedImage[] textures, int[] floorInfo, LevelBlock levelBlock, BufferedImage mapBlock) {
 		// only draw pixels where there are already pixels and in the same room and loop texture to fill
 		
 		int[] loops = new int[2];
-		loops[0] = (int)Math.ceil(textureBlock.getHitBox().getBounds2D().getWidth() / textures[0].getWidth());
-		loops[1] = (int)Math.ceil(textureBlock.getHitBox().getBounds2D().getHeight() / textures[1].getHeight());
+		loops[0] = (int)Math.ceil(levelBlock.getHitBox().getBounds2D().getWidth() / textures[0].getWidth());
+		loops[1] = (int)Math.ceil(levelBlock.getHitBox().getBounds2D().getHeight() / textures[1].getHeight());
 		
 		int[] loopsCount = {0,0};
 		
 		int xOffset = 0;
 		int yOffset = 0;
 		
+		int[][] texturePath = PathFinder.findTexturePath(levelBlock, textures[0].getHeight());
+		
 		int x = 0;
 		int y = 0;
-		int xLeft = loops[0];
-		int yLeft = loops[1];
-		int textureCode = -1;
-		int repeats = 0;
-		int maxRepeats =
-		1;
-//		(int)((textureBlock.getHitBox().getBounds2D().getHeight() * textureBlock.getHitBox().getBounds2D().getWidth()) / (textures[0].getHeight() * textures[0].getWidth())) - 2;
-		textureCode = chooseTexture(floorInfo, x, y, xLeft, yLeft, textureCode, repeats, maxRepeats);
 		
-//		System.out.println("Areas: " + ((textureBlock.getHitBox().getBounds2D().getHeight() * textureBlock.getHitBox().getBounds2D().getWidth()) / (textures[0].getHeight() * textures[0].getWidth())));
-//		System.out.println("Max Repeats: " + maxRepeats);
+		int textureCode = chooseTexture(floorInfo, x, y, texturePath);
 		
 		BufferedImage texture = textures[textureCode];
 		
@@ -173,8 +167,8 @@ public class MapPainter {
 					
 					if(i + xOffset < mapBlock.getWidth() &&
 					   j + yOffset < mapBlock.getHeight() &&
-					   textureBlock.getHitBox().contains(i + textureBlock.getHitBox().getBounds2D().getMinX() + xOffset,
-							                             j + textureBlock.getHitBox().getBounds2D().getMinY() + yOffset) &&
+					   levelBlock.getHitBox().contains(i + levelBlock.getHitBox().getBounds2D().getMinX() + xOffset,
+							                             j + levelBlock.getHitBox().getBounds2D().getMinY() + yOffset) &&
 					   texture.getRGB(i, j) != 0x00000000){
 					
 						mapBlock.setRGB((int)(i + xOffset),
@@ -190,7 +184,6 @@ public class MapPainter {
 				xOffset += texture.getWidth();
 				
 				x++;
-				xLeft--;
 				
 				loopsCount[0]++;
 			}
@@ -198,7 +191,6 @@ public class MapPainter {
 				xOffset = 0;
 				
 				x = 0;
-				xLeft = loops[0];
 				
 				loopsCount[0] = 0;
 				loopsCount[1]++;
@@ -206,31 +198,25 @@ public class MapPainter {
 				yOffset += texture.getHeight();
 				
 				y++;
-				yLeft--;
 			}
 			
 			// Choose new textures
-			int newCode = chooseTexture(floorInfo, x, y, xLeft, yLeft, textureCode, repeats, maxRepeats);
-			if(newCode == textureCode) {
-				repeats++;
-			}
-			else {
-				repeats = 0;
-			}
-			textureCode = newCode;
+			textureCode = chooseTexture(floorInfo, x, y, texturePath);
+			 
 			texture = textures[textureCode];
 		}
 		while(loopsCount[0] != loops[0] || loopsCount[1] != loops[1]);
 	}
 
-	private static int chooseTexture(int[] floorInfo, int x, int y, int xLeft, int yLeft, int textureCode, int repeats, int maxRepeats) {
+	private static int chooseTexture(int[] floorInfo, int x, int y, int[][] texturePath) {
+		int desiredType = texturePath[x][y];
+		
 		for(int i = 0; i < floorInfo.length; i++) {
-			if(floorInfo[i] >= x && floorInfo[i] >= y && floorInfo[i] <= xLeft && floorInfo[i] <= yLeft && (textureCode != i || repeats < maxRepeats)) {
+			if(floorInfo[i] == desiredType)
 				return i;
-			}
 		}
 		
-		return chooseTexture(floorInfo, x - 1, y - 1, xLeft + 1, yLeft + 1, textureCode, repeats, maxRepeats);
+		return 0;
 	}
 
 	public static void applyImage(BufferedImage texture, BufferedImage drawShape, Polygon drawPoly, double[] offset) {

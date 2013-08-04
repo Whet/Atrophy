@@ -22,6 +22,38 @@ import atrophy.combat.level.Portal;
 
 public class PathFinder {
 	
+	public static int[][] findTexturePath(LevelBlock levelBlock, int textureSize) {
+		
+		int[][] texturePath = new int[1 + (int)Math.ceil(levelBlock.getHitBox().getBounds2D().getWidth() / textureSize)][1 + (int)Math.ceil(levelBlock.getHitBox().getBounds2D().getHeight() / textureSize)];
+		
+		double startX, startY;
+		
+		Polygon roomPoly = levelBlock.getHitBox();
+		
+		startX = roomPoly.getBounds2D().getMinX();
+		startY = roomPoly.getBounds2D().getMinY();
+		
+		for(int i = 0; i < texturePath.length; i++) {
+			for(int j = 0; j < texturePath[i].length; j++) {
+				// Check that all corners are in the block to make it a possible path block
+				
+				if(roomPoly.contains(startX + i * textureSize,       startY + j * textureSize) &&
+				   roomPoly.contains(startX + (i + 1) * textureSize, startY + j * textureSize) &&
+				   roomPoly.contains(startX + i * textureSize,       startY + (j + 1) * textureSize) &&
+				   roomPoly.contains(startX + (i + 1) * textureSize, startY + (j + 1) * textureSize)) {
+					texturePath[i][j] = 2;
+				}
+				else {
+					texturePath[i][j] = 1;
+				}
+			}
+		}
+		
+		
+		return texturePath;
+		
+	}
+	
 	public static ArrayList<Portal> findAStarPath(double[] startLocation, double[] targetLocation, LevelBlock startBlock, LevelBlock targetRoom, Portal excludedPortal, boolean ignoreClosedDoors) throws PathNotFoundException{
 	    
 		PathingPortalSet closedSet = new PathingPortalSet();
