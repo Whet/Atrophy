@@ -37,10 +37,10 @@ public class PathFinder {
 			for(int j = 0; j < texturePath[i].length; j++) {
 				// Check that all corners are in the block to make it a possible path block
 				
-				if(roomPoly.contains(startX + i * textureSize,       startY + j * textureSize) &&
-				   roomPoly.contains(startX + (i + 1) * textureSize, startY + j * textureSize) &&
-				   roomPoly.contains(startX + i * textureSize,       startY + (j + 1) * textureSize) &&
-				   roomPoly.contains(startX + (i + 1) * textureSize, startY + (j + 1) * textureSize)) {
+				if(roomPoly.contains(startX + i * textureSize + 1,       startY + j * textureSize + 1) &&
+				   roomPoly.contains(startX + (i + 1) * textureSize - 1, startY + j * textureSize + 1) &&
+				   roomPoly.contains(startX + i * textureSize + 1,       startY + (j + 1) * textureSize - 1) &&
+				   roomPoly.contains(startX + (i + 1) * textureSize - 1, startY + (j + 1) * textureSize - 1)) {
 					texturePath[i][j] = 2;
 				}
 				else {
