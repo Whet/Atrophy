@@ -42,6 +42,17 @@ public class PathFinder {
 				   roomPoly.contains(startX + i * textureSize + 1,       startY + (j + 1) * textureSize - 1) &&
 				   roomPoly.contains(startX + (i + 1) * textureSize - 1, startY + (j + 1) * textureSize - 1)) {
 					texturePath[i][j] = 2;
+					
+					
+					// Check if portal lies in texturePath
+					for(Portal portal: levelBlock.getPortals()) {
+						double[] portLoc = (portal.getLocation(levelBlock));
+
+						if(startX + i * textureSize <= portLoc[0] && startX + (i + 1) * textureSize >= portLoc[0] &&
+						   startY + j * textureSize <= portLoc[1] && startY + (j + 1) * textureSize >= portLoc[1]) {
+							texturePath[i][j] = 3;
+						}
+					}
 				}
 				else {
 					texturePath[i][j] = 1;
