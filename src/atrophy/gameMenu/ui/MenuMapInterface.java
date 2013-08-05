@@ -95,9 +95,9 @@ public class MenuMapInterface {
 			return;
 		}
 		
-		int banditTeamSpawn = 2;
+		int banditTeamSpawn = levelManager.getBlocks().length / 2 + 1;
 		
-		int whiteVistaTeamSpawn = 2;
+		int whiteVistaTeamSpawn = levelManager.getBlocks().length / 2 + 1;
 		
 		int lonerTeamSpawn = new Random().nextInt(4);
 		

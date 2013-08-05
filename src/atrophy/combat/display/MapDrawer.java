@@ -58,7 +58,10 @@ public class MapDrawer implements Displayable {
 	private void makeMap() {
 			
 		BufferedImage[] floorTextures = new BufferedImage[4];
-		// 0 - prefer edges, higher numbers == tiles from edge allowed
+		// 0 - Not a complete block / Is a clipped block
+		// 1 - Complete block
+		// 2 - Door block
+		// 3 - PathBlock
 		int[] floorTextInfo = new int[4];
 		try{
 			floorTextures[0] = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/texture/floors/floor1.png"));
