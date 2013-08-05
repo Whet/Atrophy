@@ -192,6 +192,7 @@ public class AiPathing {
 						} 
 						catch (PathNotFoundException e) {
 							System.out.println("Bad internal path to portal " + invoker.getName());
+							return;
 						}
 						
 						if(roomPathway.size() > 0) {

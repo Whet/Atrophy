@@ -73,17 +73,21 @@ public class LevelBlockGrid {
          }
          
          double distance = Maths.getDistance(location, blocks.get(startIndex).get(0).getPathLocation());
+         int index = 0;
          
          for(int j = 0; j < blocks.get(startIndex).size(); j++){
+        	 // If smaller distance or start of array
              if(Maths.getDistance(location, blocks.get(startIndex).get(j).getPathLocation()) <= distance || j == blocks.get(startIndex).size()){
             	 distance = Maths.getDistance(location, blocks.get(startIndex).get(j).getPathLocation());
+            	 index = j;
              }
+             // Larger distance
              else{
             	 return blocks.get(startIndex).get(j - 1);
              }
          }
-         
-         return null;
+//         return null;
+         return blocks.get(startIndex).get(index);
 	}
     
     private void convertPolygonToBlocks(Polygon hitbox) {
@@ -208,7 +212,7 @@ public class LevelBlockGrid {
         }
 
         public boolean contains(double x2, double y2) {
-            return this.x <= x2 && this.x + width >= x2 && this.y <= y2 && this.y + height >= y2;
+            return this.x - 1 <= x2 && this.x + width + 1 >= x2 && this.y - 1 <= y2 && this.y + height + 1 >= y2;
         }
 
         public boolean contains(double[] location) {

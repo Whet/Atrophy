@@ -25,7 +25,7 @@ public class PathFinder {
 
 	public static int[][] findTexturePath(LevelBlock levelBlock, int textureSize) {
 
-		// 1 - No a complete block
+		// 1 - Not a complete block / Is a clipped block
 		// 2 - Complete block
 		// 3 - Door block
 		// 4 - PathBlock
@@ -417,6 +417,10 @@ public class PathFinder {
 		Set<GridBlock> openSet = new HashSet<>();
 
 		GridBlock startBlock = navGrid.getNearestGridBlock(mover.getLocation());
+		if(startBlock == null) {
+			System.err.println("AAGHGSHGSHG  " + mover.getName());
+			throw new PathNotFoundException(null);
+		}
 		openSet.add(startBlock);
 		startBlock.g = 0;
 		startBlock.h = Maths.getDistance(startBlock.getPathLocation(),
