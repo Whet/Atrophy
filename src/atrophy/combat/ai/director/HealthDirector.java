@@ -62,7 +62,7 @@ public class HealthDirector {
 		if(clf.get(killedAi).getType().equals(DirectorArchetype.PLAYER) && clf.get(killer).getType().equals(DirectorArchetype.SWARM)) {
 			
 			// Complete swarming will kill careless player
-			if(clf.get(killedAi).getAttackedCount() == getFactionInRoom(killer))
+			if(clf.get(killedAi).getAttackedCount() == getFactionInRoom(killer) && getFactionInRoom(killer) > 3)
 				return true;
 			
 			// Some swarming, give the swarm a chance
