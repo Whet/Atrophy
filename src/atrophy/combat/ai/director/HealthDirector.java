@@ -12,15 +12,12 @@ public class HealthDirector {
 	private CombatVisualManager combatVisualManager;
 	private AiCrowd aiCrowd;
 	
-	private Map<JudgementType, Integer> jdg;
+	private int stealthKills;
 	private Map<Ai, DirectorClassification> clf;
 	
 	public HealthDirector(AiCrowd aiCrowd) {
 		this.clf = new HashMap<>();
-		this.jdg = new HashMap<>();
-		
-		this.jdg.put(JudgementType.STEALTH_KILL, 0);
-		
+		this.stealthKills = 0;
 		this.aiCrowd = aiCrowd;
 	}
 
@@ -93,9 +90,9 @@ public class HealthDirector {
 
 	private boolean stealthKillChecks(Ai killedAi, Ai killer) {
 		
-		if(jdg.get(JudgementType.STEALTH_KILL) < 3 && killer.getWeapon().isMelee() && !combatVisualManager.isAiInSight(killedAi, killer, killedAi.getFaction())) {
+		if(stealthKills < 3 && killer.getWeapon().isMelee() && !combatVisualManager.isAiInSight(killedAi, killer, killedAi.getFaction())) {
 			
-			jdg.put(JudgementType.STEALTH_KILL, jdg.get(JudgementType.STEALTH_KILL) + 1);
+			stealthKills++;
 			
 			return true;
 		}
