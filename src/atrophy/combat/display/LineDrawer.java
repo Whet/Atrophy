@@ -104,29 +104,6 @@ public class LineDrawer implements Displayable{
 		drawKillRadius(drawShape);
 	}
 
-	@SuppressWarnings("unused")
-    private void drawPathGrid(Graphics2D drawShape, LevelBlockGrid levelBlockGrid, double x, double y) {
-	    
-	    for(int i = 0; i < levelBlockGrid.getBlocks().size(); i++){
-	        for(int j = 0; j < levelBlockGrid.getBlocks().get(i).size(); j++){
-	            
-	            GridBlock gridBlock = levelBlockGrid.getBlocks().get(i).get(j);
-	            
-	            if(gridBlock.picked) {
-	                drawShape.setColor(Color.red);
-	                drawShape.fillRect((int)(gridBlock.x - x), (int)(gridBlock.y - y), (int)gridBlock.width, (int)gridBlock.height);
-	            }
-	            else {
-	                drawShape.setColor(Color.white);
-	                drawShape.drawRect((int)(gridBlock.x - x), (int)(gridBlock.y - y), (int)gridBlock.width, (int)gridBlock.height);
-	            }
-	            
-	            
-	        }
-	    }
-	    
-    }
-
 	private void drawKillRadius(Graphics2D drawShape){
 		if(combatMembersManager.getCurrentAi() != null){
 			drawShape.setComposite(GraphicsFunctions.makeComposite(0.2f));

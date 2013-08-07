@@ -24,7 +24,9 @@ import atrophy.combat.PanningManager;
 import atrophy.combat.ai.Ai;
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.level.LevelBlock;
+import atrophy.combat.level.LevelBlockGrid;
 import atrophy.combat.level.LevelManager;
+import atrophy.combat.level.LevelBlockGrid.GridBlock;
 
 
 public class MapDrawer implements Displayable {
@@ -313,9 +315,6 @@ public class MapDrawer implements Displayable {
 					drawShape.drawPolygon(mapDraw.getStealthRegions().get(i));
 				}
 				
-				// Debug
-//				drawPathGrid(drawShape, levelManager.getBlock(mapDraw.levelBlockCode).getLevelBlockGrid(), mapDraw.getLocation()[0], mapDraw.getLocation()[1]);
-				
 				if(combatVisualManager.isTabled() && levelManager.getBlock(mapDraw.levelBlockCode) == combatVisualManager.getLastDraggableAi().getLevelBlock()){
 					
 					drawShape.setColor(Color.gray);
@@ -327,11 +326,33 @@ public class MapDrawer implements Displayable {
 					drawShape.drawPolygon(levelManager.getBlock(mapDraw.levelBlockCode).getHitBox());
 				}
 			}
+			// Debug
+//			else {
+//				panTransform.setToTranslation((int)panningManager.getOffset()[0] + mapDraw.getLocation()[0], 
+//	                      (int)panningManager.getOffset()[1] + mapDraw.getLocation()[1]);
+//
+//				drawShape.setTransform(panTransform);
+//
+//				drawPathGrid(drawShape, levelManager.getBlock(mapDraw.levelBlockCode).getLevelBlockGrid(), mapDraw.getLocation()[0], mapDraw.getLocation()[1]);
+//			}
 		}
 		
 		drawShape.setTransform(new AffineTransform());
 	}
 	
+	private void drawPathGrid(Graphics2D drawShape, LevelBlockGrid levelBlockGrid, double x, double y) {
+		drawShape.setColor(Color.white);
+	    for(int i = 0; i < levelBlockGrid.getBlocks().size(); i++){
+	        for(int j = 0; j < levelBlockGrid.getBlocks().get(i).size(); j++){
+	            
+	            GridBlock gridBlock = levelBlockGrid.getBlocks().get(i).get(j);
+	            
+                drawShape.drawRect((int)(gridBlock.x - x), (int)(gridBlock.y - y), (int)gridBlock.width, (int)gridBlock.height);
+	            
+	        }
+	    }
+	    
+    }
 	
 	@Override
 	public int getZ() {
