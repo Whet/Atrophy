@@ -7,6 +7,7 @@ import atrophy.combat.CombatVisualManager;
 import atrophy.combat.level.LevelBlock;
 import atrophy.combat.level.LevelManager;
 import atrophy.combat.level.Portal;
+import atrophy.combat.level.LevelBlockGrid.GridBlock;
 
 public class AiPathing {
 
@@ -240,6 +241,12 @@ public class AiPathing {
 		catch(NullPointerException npe){}
 		
 //		System.out.println("Path Time Millis: " + (System.currentTimeMillis() - time));
+		
+		// Fix for being outside level
+		if(levelManager.getBlock(this.getLocation()) == null) {
+			GridBlock navBlock = this.getLevelBlock().getLevelBlockGrid().getNearestGridBlock(this.getLocation());
+			this.setLocation(navBlock.getPathLocation()[0], navBlock.getPathLocation()[1]);
+		}
 	}
 	 
 	/**
