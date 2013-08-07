@@ -118,14 +118,14 @@ public class CommanderDebugger {
 				debugText.append(ai.getName() + " ");
 			}
 			
-			debugText.append("}\n");
-			
-			debugText.append("---- DEFENCE VALUES ----\n");
-			
-			for (Entry<LevelBlock, DefenceHeuristic> entry: commander.getDefenceHeuristics().entrySet()) {
-				debugText.append(entry.getKey().getCode() + " Def: " + entry.getValue().defenceH + " Dan: " + entry.getValue().dangerH + " Mis: " + entry.getValue().missionH);
-			}
-			
+		}
+		
+		debugText.append("}\n");
+		
+		debugText.append("---- DEFENCE VALUES ----\n");
+		
+		for (Entry<LevelBlock, DefenceHeuristic> entry: commander.getDefenceHeuristics().entrySet()) {
+			debugText.append(entry.getKey().getCode() + " Def: " + entry.getValue().defenceH + " Dan: " + entry.getValue().dangerH + " Mis: " + entry.getValue().missionH);
 		}
 	}
 	
