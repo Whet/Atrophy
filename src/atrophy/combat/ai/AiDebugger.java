@@ -6,6 +6,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JPanel;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
@@ -40,6 +41,21 @@ public class AiDebugger {
 			}
 
 		});
+		JButton lookAtCommander = new JButton("Look At Commander");
+		
+		lookAtCommander.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				new CommanderDebugger(((ThinkingAi) ai).getCommander(), frame.getX(), frame.getY());
+			}
+
+		});
+		
+		final JPanel buttonFrame = new JPanel();
+		
+		buttonFrame.add(updateButton);
+		buttonFrame.add(lookAtCommander);
 		
 		SwingUtilities.invokeLater(new Runnable() {
 			
@@ -49,7 +65,7 @@ public class AiDebugger {
 				frame.setLocation(x, y);
 				frame.getContentPane().setLayout(new BorderLayout());
 				frame.add(debugText, BorderLayout.CENTER);
-				frame.add(updateButton, BorderLayout.SOUTH);
+				frame.add(buttonFrame, BorderLayout.SOUTH);
 				frame.pack();
 				frame.setSize(frame.getWidth() + 100, frame.getHeight() + 100);
 				frame.setVisible(true);

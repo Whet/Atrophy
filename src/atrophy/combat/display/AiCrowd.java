@@ -371,7 +371,7 @@ public class AiCrowd extends Crowd {
 		super.drawMethod(drawShape);
 	}
 
-	public void updateAnimations() {
+	public synchronized void updateAnimations() {
 		for(AiImage image : this.masks) {
 			image.updateAnimation();
 			image.setZ((int) image.getLocation()[1]);

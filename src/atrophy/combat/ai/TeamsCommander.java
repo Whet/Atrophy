@@ -558,4 +558,39 @@ public class TeamsCommander {
 		this.hatedAi.remove(speaker);
 	}
 
+	
+	// Debug
+	
+	public Set<String> getAlliances() {
+		return alliances;
+	}
+
+	public Set<Ai> getHatedAi() {
+		return hatedAi;
+	}
+
+	public Set<Ai> getFriends() {
+		return friends;
+	}
+
+	public Set<Ai> getInvestigatedAi() {
+		return investigatedAi;
+	}
+
+	public Map<Ai, Integer> getSuspectedAi() {
+		return suspectedAi;
+	}
+
+	public Map<Ai, AiJob> getJobAssignments() {
+		return jobAssignments;
+	}
+
+	public Map<LevelBlock, DefenceHeuristic> getDefenceHeuristics() {
+		return defenceHeuristics;
+	}
+
+	public PriorityQueue<AiJob> getJobs() {
+		return jobs;
+	}
+
 }
