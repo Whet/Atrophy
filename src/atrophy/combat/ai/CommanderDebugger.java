@@ -14,6 +14,8 @@ import javax.swing.JTextArea;
 import javax.swing.ScrollPaneConstants;
 import javax.swing.SwingUtilities;
 
+import atrophy.combat.level.LevelBlock;
+
 public class CommanderDebugger {
 
 	private final TeamsCommander commander;
@@ -117,6 +119,12 @@ public class CommanderDebugger {
 			}
 			
 			debugText.append("}\n");
+			
+			debugText.append("---- DEFENCE VALUES ----\n");
+			
+			for (Entry<LevelBlock, DefenceHeuristic> entry: commander.getDefenceHeuristics().entrySet()) {
+				debugText.append(entry.getKey().getCode() + " Def: " + entry.getValue().defenceH + " Dan: " + entry.getValue().dangerH + " Mis: " + entry.getValue().missionH);
+			}
 			
 		}
 	}
