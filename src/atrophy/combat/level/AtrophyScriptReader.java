@@ -50,7 +50,8 @@ import atrophy.gameMenu.ui.StashManager;
 
 public class AtrophyScriptReader {
 
-
+	private static int BLOCK_NUMBER = 0;
+	
 	protected static Level readScript(File file, String owner,
 								     int engineeringChance, int medicalChance, int weaponChance, int scienceChance,
 								     PanningManager panningManager, TurnProcess turnProcess, MessageBox messageBox,
@@ -122,6 +123,8 @@ public class AtrophyScriptReader {
 			}
 			
 		}
+		
+		BLOCK_NUMBER = 0;
 		
 		for(Entry<String, List<Tree>> moduleLists: moduleTrees.entrySet()) {
 			for(Tree tree: moduleLists.getValue()) {
@@ -210,6 +213,8 @@ public class AtrophyScriptReader {
 		Stack<PortalInfo> portalStack = new Stack<>();
 		Stack<StoredCommand> commandStack = new Stack<>();
 		Stack<TriggerCommand> triggers = new Stack<>();
+		
+		BLOCK_NUMBER = 0;
 		
 		for(Entry<String, List<Tree>> moduleLists: moduleTrees.entrySet()) {
 			for(Tree tree: moduleLists.getValue()) {
@@ -387,8 +392,6 @@ public class AtrophyScriptReader {
 								MessageBox messageBox, AiCrowd aiCrowd, TurnProcess turnProcess,
 								ItemMarket itemMarket, TechTree techTree, StashManager stashManager) {
 		
-		int blockNumber = 0;
-		
 		switch(tree.toString()) {
 			case "INIT":
 			break;
@@ -398,8 +401,8 @@ public class AtrophyScriptReader {
 				level.setSize(sizeArray);
 			break;
 			case "BLOCK":
-				blockStack.add(createBlock(blockNumber, tree, missionManager, level, combatMembersManager));
-				blockNumber++;
+				blockStack.add(createBlock(BLOCK_NUMBER, tree, missionManager, level, combatMembersManager));
+				BLOCK_NUMBER++;
 			break;
 			case "PORTAL":
 				portalStack.add(createPortal(tree));

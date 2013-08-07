@@ -1,6 +1,3 @@
-/*
- * 
- */
 package atrophy.gameMenu.ui;
 
 import java.io.File;
@@ -33,9 +30,6 @@ import atrophy.gameMenu.saveFile.Squad;
 import atrophy.gameMenu.saveFile.TechTree;
 import atrophy.hardPanes.CombatHardPane;
 
-/**
- * The Class MenuMapInterface.
- */
 public class MenuMapInterface {
 	
 	private static final int DAEMON_SPAWN_CHANCE = 2;
@@ -77,15 +71,6 @@ public class MenuMapInterface {
 		
 	}
 
-	/**
-	 * Sets the spawns.
-	 *
-	 * @param owner the new spawns
-	 * @param levelManager 
-	 * @param squad 
-	 * @param itemMarket 
-	 * @param generationCommands 
-	 */
 	private static void setSpawns(String owner, LevelManager levelManager, Squad squad, ItemMarket itemMarket, List<AiGeneratorInterface.GenerateCommand> generationCommands) {
 		
 		if(new Random().nextInt(10) < DAEMON_SPAWN_CHANCE && levelManager.getCurrentLevel().allowedSpawn(AiGenerator.DAEMON)) {
@@ -95,9 +80,15 @@ public class MenuMapInterface {
 			return;
 		}
 		
-		int banditTeamSpawn = levelManager.getBlocks().length / 2 + 1;
+		int banditTeamSpawn = levelManager.getBlocks().length / 4 + 1;
 		
-		int whiteVistaTeamSpawn = levelManager.getBlocks().length / 2 + 1;
+		if(banditTeamSpawn > 5)
+			banditTeamSpawn = 5;
+		
+		int whiteVistaTeamSpawn = levelManager.getBlocks().length / 4 + 1;
+		
+		if(whiteVistaTeamSpawn > 5)
+			whiteVistaTeamSpawn = 5;
 		
 		int lonerTeamSpawn = new Random().nextInt(4);
 		
