@@ -90,7 +90,7 @@ public class CombatUiManager{
 		   combatMembersManager.getCurrentAi().getAction().equals("Looting")){
 			lootBox.loadLootDisplay(combatMembersManager.getCurrentAi(), 
 					                              combatMembersManager.getCurrentAi().getTargetAi(),
-					                              false);
+					                              true);
 		}
 		else{
 			lootBox.closeLootUi(false);

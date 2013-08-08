@@ -410,7 +410,7 @@ public class LootBox extends Crowd{
 			// update abilities
 			combatUiManager.updateUi();
 			
-			this.closeLootUi();
+			this.closeLootUi(true);
 		}
 		else{
 			this.loadInventoryDisplay(looter, true);
@@ -482,7 +482,7 @@ public class LootBox extends Crowd{
 	}
 	
 	public void closeLootUi(){
-		closeLootUi(true);
+		closeLootUi(false);
 	}
 	
 	public void closeLootUi(boolean playSound){
