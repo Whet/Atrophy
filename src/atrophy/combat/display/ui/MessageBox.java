@@ -19,6 +19,7 @@ import watoydoEngine.designObjects.display.Text;
 import watoydoEngine.designObjects.display.TextButton;
 import watoydoEngine.fonts.FontList;
 import watoydoEngine.io.ReadWriter;
+import watoydoEngine.sounds.SoundBoard;
 import watoydoEngine.utils.GraphicsFunctions;
 import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatUiManager;
@@ -460,6 +461,7 @@ public class MessageBox extends Crowd{
 		conversers[1] = speechAi;
 		this.conversersText.setText(currentAi.getName() + " speaking to " + conversers[1].getName());
 		messageManager.loadTopics(currentAi, speechAi);
+		SoundBoard.getInstance().playEffect("radio");
 	}
 	
 	public void setInvestigating(Ai currentAi, Ai deadAi) {
@@ -474,6 +476,7 @@ public class MessageBox extends Crowd{
 		conversers[1] = speechAi;
 		this.conversersText.setText(currentAi.getName() + " speaking to " + conversers[1].getName());
 		messageManager.loadDialogue(dialogue);
+		SoundBoard.getInstance().playEffect("radio");
 	}
 	
 	public void setConversation(Ai currentAi, TalkNode talkNode) {

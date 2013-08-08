@@ -55,10 +55,8 @@ public class SoundBoard {
 			
 			switch(key){
 				case "invClose":
-					sound = new Sound("watoydoEngine/mods/sounds/invClose.ogg");
-				break;
 				case "invOpen":
-					sound = new Sound("watoydoEngine/mods/sounds/invOpen.ogg");
+					sound = new Sound("watoydoEngine/mods/sounds/inventory.ogg");
 				break;
 				case "invExchange":
 					sound = new Sound("watoydoEngine/mods/sounds/invExchange.ogg");
@@ -68,6 +66,9 @@ public class SoundBoard {
 				break;
 				case "cancel":
 					sound = new Sound("watoydoEngine/mods/sounds/interfaceCancel.ogg");
+				break;
+				case "radio":
+					sound = new Sound("watoydoEngine/mods/sounds/messageMenu.ogg");
 				break;
 			}
 			
