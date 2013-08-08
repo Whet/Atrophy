@@ -62,6 +62,7 @@ public class TurnProcess {
 	private PanningManager panningManager;
 	private PowerManager powerManager;
 	private MissionManager missionManager;
+	private boolean[] deadAliveAi;
 	
 	public TurnProcess(){
 		turnCount = 0;
@@ -96,6 +97,12 @@ public class TurnProcess {
 	
 	public synchronized void endTurn(){
 		if(!turnInProgress && !allPlayersWaiting()){
+			
+			deadAliveAi = new boolean[aiCrowd.getActorCount()];
+			for(int i = 0; i < deadAliveAi.length; i++) {
+				deadAliveAi[i] = aiCrowd.getActor(i).isDead();
+			}
+			
 			turnInProgress = true;
 			combatMouseHandler.setActive(false);
 			combatKeyboardHandler.setFocus(false);
@@ -119,6 +126,7 @@ public class TurnProcess {
 			
 			updateAi();
 			updateTriggers();
+			
 		}
 	}
 	
@@ -233,6 +241,14 @@ public class TurnProcess {
 
 	public void lastAiUpdated(){
 		
+		boolean playDeathSound = false;
+		for(int i = 0; i < deadAliveAi.length; i++) {
+			if(deadAliveAi[i] != aiCrowd.getActor(i).isDead() && combatVisualManager.isAiInSight(null, aiCrowd.getActor(i), AiGenerator.PLAYER)) {
+				playDeathSound = true;
+				break;
+			}
+		}
+		
 		if(shuffledAi.size() == 0){
 			shuffledAi = aiCrowd.getShuffledStack();
 			combatInorganicManager.updateAssets();
@@ -262,6 +278,9 @@ public class TurnProcess {
 		turnInProgress = false;
 		
 		updateTweens();
+		
+		if(playDeathSound)
+			SoundBoard.getInstance().playEffect("death");
 	}
 	
 	private void updateTweens() {
@@ -326,6 +345,7 @@ public class TurnProcess {
 	
 	private void endGame(){
 		
+		SoundBoard.getInstance().playEffect("death");
 		panningManager.panToPlayer();
 		combatUiManager.getAllyRoster().setVisible(false);
 		combatUiManager.getActionText().setVisible(false);

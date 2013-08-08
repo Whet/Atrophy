@@ -70,6 +70,9 @@ public class SoundBoard {
 				case "radio":
 					sound = new Sound("watoydoEngine/mods/sounds/messageMenu.ogg");
 				break;
+				case "death":
+					sound = new Sound("watoydoEngine/mods/sounds/death1.ogg");
+				break;
 			}
 			
 			if(sound != null)
