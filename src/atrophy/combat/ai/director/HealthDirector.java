@@ -122,7 +122,7 @@ public class HealthDirector {
 		int count = 0;
 		
 		for(Ai ai: aiCrowd.getActors()) {
-			if(ai.getFaction().equals(queriedAi.getFaction()) && ai.getLevelBlock() == queriedAi.getLevelBlock())
+			if(ai.getFaction().equals(queriedAi.getFaction()) && ai.getLevelBlock() == queriedAi.getLevelBlock() && !ai.isDead())
 				count++;
 		}
 		
