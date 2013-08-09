@@ -282,11 +282,12 @@ public class TurnProcess {
 		if(aiCrowd.getDirector().isPlayerAttacked())
 			SoundBoard.getInstance().playEffect("hostileSound");
 		
-		if(aiCrowd.getDirector().isPlayerAttacker())
-			SoundBoard.getInstance().playEffect("dangerSound");
-		
 		if(playDeathSound)
 			SoundBoard.getInstance().playEffect("death");
+		
+		// not else if as isPlayerAttacker resets the boolean for the turn
+		if(aiCrowd.getDirector().isPlayerAttacker() && !playDeathSound)
+			SoundBoard.getInstance().playEffect("dangerSound");
 	}
 	
 	private void updateTweens() {
