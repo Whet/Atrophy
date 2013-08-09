@@ -86,6 +86,19 @@ public class SoundBoard {
 						break;
 					}
 				break;
+				case"dangerSound":
+					switch(new Random().nextInt(3)) {
+						case 0:
+							sound = new Sound("watoydoEngine/mods/sounds/dangerSound1.ogg");
+						break;
+						case 1:
+							sound = new Sound("watoydoEngine/mods/sounds/dangerSound2.ogg");
+						break;
+						case 2:
+							sound = new Sound("watoydoEngine/mods/sounds/dangerSound3.ogg");
+						break;
+					}
+				break;
 			}
 			
 			if(sound != null)

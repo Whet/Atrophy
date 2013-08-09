@@ -282,6 +282,9 @@ public class TurnProcess {
 		if(aiCrowd.getDirector().isPlayerAttacked())
 			SoundBoard.getInstance().playEffect("hostileSound");
 		
+		if(aiCrowd.getDirector().isPlayerAttacker())
+			SoundBoard.getInstance().playEffect("dangerSound");
+		
 		if(playDeathSound)
 			SoundBoard.getInstance().playEffect("death");
 	}
