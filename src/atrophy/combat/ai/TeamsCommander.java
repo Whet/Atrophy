@@ -542,7 +542,7 @@ public class TeamsCommander {
 		if(!this.isAlliedWith(killed.getFaction()) && !killed.getFaction().equals(this.getFaction())) {
 			return;
 		}
-		System.out.println(killer.getName() + " is wanted!");
+//		System.out.println(killer.getName() + " is wanted!");
 		this.suspectedAi.put(killer, 30);
 	}
 	

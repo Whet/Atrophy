@@ -874,7 +874,7 @@ public class ThinkingAi extends Ai{
 				if(turnProcess.getTurnCount() - deathReport.timeOfDeath < 20 && deathReport.weapon.getName().equals(deathReport.killer.getWeapon().getName()) &&
 				  (combatVisualManager.isAiInSight(this, deathReport.killer) || new Random().nextInt(10) < 7)) {
 					
-					System.out.println(this.getName() + " suspects " + deathReport.killer.getName() + " of murder");
+//					System.out.println(this.getName() + " suspects " + deathReport.killer.getName() + " of murder");
 					
 					this.getCommander().addSuspectedAi(deathReport.killer, deathReport.killed);
 				}
