@@ -109,7 +109,7 @@ public class CombatMouseHandler extends ActionRegion {
 			// set move flag position
 			combatUiManager.getMoveFlag().setAiMoveLocation(mousePosition.x - panningManager.getOffset()[0],
 														    mousePosition.y - panningManager.getOffset()[1]);
-			SoundBoard.getInstance().playEffect("cancel");
+			SoundBoard.getInstance().playEffect("tick");
 			return true;
 		}
 		return false;

@@ -14,11 +14,15 @@ public class HealthDirector {
 	
 	private int stealthKills;
 	private Map<Ai, DirectorClassification> clf;
+	private boolean playerAttacked;
+	private boolean playerAttacker;
 	
 	public HealthDirector(AiCrowd aiCrowd) {
 		this.clf = new HashMap<>();
 		this.stealthKills = 0;
 		this.aiCrowd = aiCrowd;
+		this.playerAttacked = false;
+		this.playerAttacker = false;
 	}
 
 	public boolean judge(boolean dead, Ai killedAi, Ai killer, int turn) {
@@ -28,9 +32,16 @@ public class HealthDirector {
 			return false;
 		}
 		
-		// Don't handle ai on ai conflict beyond pure dice rolling]
+		// Don't handle ai on ai conflict beyond pure dice rolling
 		if(!this.clf.get(killedAi).getType().equals(DirectorArchetype.PLAYER) && !this.clf.get(killer).getType().equals(DirectorArchetype.PLAYER)) {
 			return dead;
+		}
+		
+		if(this.clf.get(killedAi).getType().equals(DirectorArchetype.PLAYER)) {
+			playerAttacked = true;
+		}
+		if(this.clf.get(killer).getType().equals(DirectorArchetype.PLAYER)) {
+			playerAttacker = true;
 		}
 		
 		// Handle cod attacking
@@ -130,5 +141,18 @@ public class HealthDirector {
 	public void lazyLoad(CombatVisualManager combatVisualManager) {
 		this.combatVisualManager = combatVisualManager;
 	}
+
+	public boolean isPlayerAttacked() {
+		boolean r = this.playerAttacked;
+		this.playerAttacked = false;
+		return r;
+	}
+
+	public boolean isPlayerAttacker() {
+		boolean r = this.playerAttacker;
+		this.playerAttacker = false;
+		return r;
+	}
+	
 	
 }
