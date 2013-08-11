@@ -2,6 +2,7 @@ package atrophy.combat.ai.director;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.ai.Ai;
@@ -81,11 +82,25 @@ public class HealthDirector {
 			return false;
 		}
 		
-		// Handle stealth kills
-		if(dead || (!clf.get(killedAi).getType().equals(DirectorArchetype.ELITE) &&
-				    !clf.get(killedAi).getType().equals(DirectorArchetype.SPEAKER) &&
-				    stealthKillChecks(killedAi, killer))) {
+		// Handle elite attacking
+		if(clf.get(killer).getType().equals(DirectorArchetype.PLAYER) && clf.get(killedAi).getType().equals(DirectorArchetype.ELITE)) {
+			// Multiple attacks remove elite status
+			if(clf.get(killedAi).getAttackedCount() > 1) {
+				
+				// All out attack has higher chance to kill elite
+				if(clf.get(killedAi).getAttackedCount() == getFactionInRoom(killer)) {
+					changeClassification(killedAi, DirectorArchetype.UNDECIDED);
+					return dead || new Random().nextInt(10) < 7;
+				}
+				
+				return dead;
+			}
 			
+			return false;
+		}
+		
+		// Handle stealth kills
+		if(dead || (!clf.get(killedAi).getType().equals(DirectorArchetype.SPEAKER) && stealthKillChecks(killedAi, killer))) {
 			return true;
 		}
 		
