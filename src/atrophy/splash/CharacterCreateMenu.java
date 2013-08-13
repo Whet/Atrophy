@@ -157,6 +157,7 @@ public class CharacterCreateMenu extends Crowd{
 		}
 		
 		TechTree techTree = new TechTree();
+		squad.setTechTree(techTree);
 		StashManager stashManager = new StashManager(null);
 		Missions missions = new Missions();
 		ActivePane.getInstance().changeRootCrowd(new Crowd(new GameMenuHardPane(squad, techTree, stashManager, missions)));

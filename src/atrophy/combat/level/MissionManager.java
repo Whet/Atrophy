@@ -275,4 +275,8 @@ public class MissionManager {
 		this.missions.removeMemCode(memCode);
 	}
 
+	public void unlockTech(String tech) {
+		missions.getSquad().getTechTree().research(tech);
+	}
+
 }

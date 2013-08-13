@@ -421,4 +421,8 @@ public class Missions{
 		}
 	}
 
+	public Squad getSquad() {
+		return this.squad;
+	}
+
 }

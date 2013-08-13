@@ -983,6 +983,29 @@ public class AtrophyScriptReader {
 		
 	}
 	
+	protected static final class UnlockTechEffect extends TriggerEffect {
+
+		private List<String> techs;
+		private MissionManager missionManager;
+		
+		public UnlockTechEffect(Tree child, MissionManager missionManager) {
+			this.missionManager = missionManager;
+			techs = new ArrayList<>();
+			
+			for(int i = 0; i < child.getChildCount(); i++) {
+				techs.add(createString(child.getChild(i)));
+			}
+		}
+
+		@Override
+		public void run() {
+			for(String tech: techs) {
+				missionManager.unlockTech(tech);
+			}
+		}
+		
+	}
+	
 	protected static final class RemoveEffect extends UnitInfoEffect {
 
 		public RemoveEffect(Tree tree, AiCrowd aiCrowd, MissionManager missionManager) {
@@ -1594,6 +1617,9 @@ public class AtrophyScriptReader {
 				break;
 				case "SPAWNTALKNODE":
 					effects.add(new SpawnTalkNodeEffect(tree.getChild(i), aiCrowd, missionManager));
+				break;
+				case "UNLOCKTECH":
+					effects.add(new UnlockTechEffect(tree.getChild(i), missionManager));
 				break;
 			}
 		}

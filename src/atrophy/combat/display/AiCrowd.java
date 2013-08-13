@@ -349,6 +349,7 @@ public class AiCrowd extends Crowd {
 				squad.addSquaddie(squadMember);
 			}
 		}
+		squad.setTechTree(this.squad.getTechTree());
 		
 		return squad;
 		
