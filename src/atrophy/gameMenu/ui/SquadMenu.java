@@ -114,7 +114,7 @@ public class SquadMenu extends Menu{
 		this.addDisplayItem(buySquaddie);
 		this.addMouseActionItem(buySquaddie);
 		
-//		if(techTree.isResearched(TechTree.MULE)){
+		if(techTree.isResearched(TechTree.MULE)){
 		
 			TextButton buyMule = new TextButton(Color.yellow, Color.red) {
 				{
@@ -136,7 +136,7 @@ public class SquadMenu extends Menu{
 			this.addDisplayItem(buyMule);
 			this.addMouseActionItem(buyMule);
 		
-//		}
+		}
 		
 		Text squadListTag = new Text(windowLocation[0] + 21, windowLocation[1] + 121, "Squad Members");
 		this.addDisplayItem(squadListTag);
