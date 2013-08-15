@@ -95,7 +95,7 @@ public class Level {
 				}
 			}
 			
-			if(rand.nextInt(100) < scienceChance * 3)
+			if(rand.nextInt(100) < scienceChance)
 				this.levelBlocks[i].setContainsScience(true);
 		}
 	}

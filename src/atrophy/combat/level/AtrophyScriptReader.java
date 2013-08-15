@@ -36,10 +36,14 @@ import atrophy.combat.ai.conversation.TalkMap;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.ui.MessageBox;
 import atrophy.combat.display.ui.loot.LootBox.Lootable;
+import atrophy.combat.items.EngineeringSupply;
 import atrophy.combat.items.GrenadeItem;
 import atrophy.combat.items.Item;
+import atrophy.combat.items.MedicalSupply;
+import atrophy.combat.items.ScienceSupply;
 import atrophy.combat.items.StunGrenadeItem;
 import atrophy.combat.items.Weapon;
+import atrophy.combat.items.WeaponSupply;
 import atrophy.combat.level.AtrophyScriptParser.prog_return;
 import atrophy.combat.mechanics.TurnProcess;
 import atrophy.gameMenu.saveFile.ItemMarket;
@@ -89,6 +93,11 @@ public class AtrophyScriptReader {
 		Stack<PortalInfo> portalStack = new Stack<>();
 		Stack<StoredCommand> commandStack = new Stack<>();
 		Stack<TriggerCommand> triggers = new Stack<>();
+		Map<String, Integer> itemSpawnChances = new HashMap<>();
+		itemSpawnChances.put(WeaponSupply.NAME, weaponChance);
+		itemSpawnChances.put(EngineeringSupply.NAME, engineeringChance);
+		itemSpawnChances.put(MedicalSupply.NAME, medicalChance);
+		itemSpawnChances.put(ScienceSupply.NAME, scienceChance);
 		
 		Map<String, List<Tree>> moduleTrees = new HashMap<String, List<Tree>>();
 		Map<String, List<Tree>> commandTrees = new HashMap<String, List<Tree>>();
@@ -129,7 +138,7 @@ public class AtrophyScriptReader {
 		for(Entry<String, List<Tree>> moduleLists: moduleTrees.entrySet()) {
 			for(Tree tree: moduleLists.getValue()) {
 			
-				AtrophyScriptReader.walkTree(level, tree, blockStack, portalStack, commandStack, triggers, missionManager,
+				AtrophyScriptReader.walkTree(level, tree, blockStack, portalStack, commandStack, triggers, itemSpawnChances, missionManager,
 											 combatMembersManager, missions, messageBox, aiCrowd, turnProcess, itemMarket, techTree, stashManager);
 			
 			}
@@ -138,7 +147,7 @@ public class AtrophyScriptReader {
 		level.setBlocks(blockStack);
 		level.generatePortals(portalStack, level, missionManager);
 		panningManager.setMaxOffsets(level.getSize());
-		level.spawnItems(engineeringChance,medicalChance,weaponChance,scienceChance);
+		level.spawnItems(itemSpawnChances.get(EngineeringSupply.NAME),itemSpawnChances.get(MedicalSupply.NAME),itemSpawnChances.get(WeaponSupply.NAME),itemSpawnChances.get(ScienceSupply.NAME));
 		
 		
 		missionManager.addCommands(commandStack);
@@ -213,13 +222,18 @@ public class AtrophyScriptReader {
 		Stack<PortalInfo> portalStack = new Stack<>();
 		Stack<StoredCommand> commandStack = new Stack<>();
 		Stack<TriggerCommand> triggers = new Stack<>();
+		Map<String, Integer> itemSpawnChances = new HashMap<>();
+		itemSpawnChances.put(WeaponSupply.NAME, weaponChance);
+		itemSpawnChances.put(EngineeringSupply.NAME, engineeringChance);
+		itemSpawnChances.put(MedicalSupply.NAME, medicalChance);
+		itemSpawnChances.put(ScienceSupply.NAME, scienceChance);
 		
 		BLOCK_NUMBER = 0;
 		
 		for(Entry<String, List<Tree>> moduleLists: moduleTrees.entrySet()) {
 			for(Tree tree: moduleLists.getValue()) {
 				if(modules.contains(moduleLists.getKey()))
-					AtrophyScriptReader.walkTree(level, tree, blockStack, portalStack, commandStack, triggers, missionManager,
+					AtrophyScriptReader.walkTree(level, tree, blockStack, portalStack, commandStack, triggers, itemSpawnChances, missionManager,
 												 combatMembersManager, missions, messageBox, aiCrowd, turnProcess, itemMarket, techTree, stashManager);
 			}
 		}
@@ -232,7 +246,7 @@ public class AtrophyScriptReader {
 		panningManager.setMaxOffsets(level.getSize());
 		
 		if(blockStack.size() > 0)
-			level.spawnItems(engineeringChance,medicalChance,weaponChance,scienceChance);
+			level.spawnItems(itemSpawnChances.get(EngineeringSupply.NAME),itemSpawnChances.get(MedicalSupply.NAME),itemSpawnChances.get(WeaponSupply.NAME),itemSpawnChances.get(ScienceSupply.NAME));
 		
 		missionManager.addCommands(commandStack);
 		missionManager.addTriggers(triggers);
@@ -387,7 +401,7 @@ public class AtrophyScriptReader {
 	}
 	
 	public static void walkTree(Level level, Tree tree,
-								Stack<LevelBlockInfo> blockStack, Stack<PortalInfo> portalStack, Stack<StoredCommand> commands, Stack<TriggerCommand> triggers,
+								Stack<LevelBlockInfo> blockStack, Stack<PortalInfo> portalStack, Stack<StoredCommand> commands, Stack<TriggerCommand> triggers, Map<String, Integer> itemSpawns,
 								MissionManager missionManager, CombatMembersManager combatMembersManager, Missions missions,
 								MessageBox messageBox, AiCrowd aiCrowd, TurnProcess turnProcess,
 								ItemMarket itemMarket, TechTree techTree, StashManager stashManager) {
@@ -427,6 +441,13 @@ public class AtrophyScriptReader {
 				}
 				
 				level.setAllowedSpawns(allowedSpawns);
+			break;
+			case "ITEMSPAWNS":
+				List<Integer> chances = createIntList(tree);
+				itemSpawns.put(WeaponSupply.NAME, chances.get(0));
+				itemSpawns.put(EngineeringSupply.NAME, chances.get(1));
+				itemSpawns.put(MedicalSupply.NAME, chances.get(2));
+				itemSpawns.put(ScienceSupply.NAME, chances.get(3));
 			break;
 		}
 		
