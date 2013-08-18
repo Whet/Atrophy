@@ -1642,10 +1642,50 @@ public class AtrophyScriptReader {
 				case "UNLOCKTECH":
 					effects.add(new UnlockTechEffect(tree.getChild(i), missionManager));
 				break;
+				case "CHANGESTABILITY":
+					effects.add(new GiveStabilityEffect(tree.getChild(i), missionManager));
+				break;
+				case "CHANGEADVANCE":
+					effects.add(new GiveAdvanceEffect(tree.getChild(i), missionManager));
+				break;
 			}
 		}
 		
 		return effects;
+	}
+	
+	private static class GiveStabilityEffect extends TriggerEffect {
+
+		private int stabilityMod;
+		private MissionManager missionManager;
+		
+		public GiveStabilityEffect(Tree child, MissionManager missionManager) {
+			stabilityMod = Integer.parseInt(createString(child).toString().replaceAll(" ", ""));
+			this.missionManager = missionManager;
+		}
+
+		@Override
+		public void run() {
+			missionManager.changeStability(stabilityMod);
+		}
+		
+	}
+	
+	private static class GiveAdvanceEffect extends TriggerEffect {
+
+		private int advanceMod;
+		private MissionManager missionManager;
+		
+		public GiveAdvanceEffect(Tree child, MissionManager missionManager) {
+			advanceMod = Integer.parseInt(createString(child).toString().replaceAll(" ", ""));
+			this.missionManager = missionManager;
+		}
+
+		@Override
+		public void run() {
+			missionManager.changeAdvance(advanceMod);
+		}
+		
 	}
 
 	private static class TalkInfo {

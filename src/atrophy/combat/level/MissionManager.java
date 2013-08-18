@@ -279,4 +279,12 @@ public class MissionManager {
 		missions.getSquad().getTechTree().research(tech);
 	}
 
+	public void changeStability(int stabilityMod) {
+		missions.getSquad().setStability(missions.getSquad().getStability() + stabilityMod);
+	}
+
+	public void changeAdvance(int advanceMod) {
+		missions.getSquad().setAdvance(missions.getSquad().getAdvance() + advanceMod);
+	}
+
 }
