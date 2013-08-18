@@ -738,6 +738,7 @@ public class AtrophyScriptReader {
 		protected MissionManager missionManager;
 		
 		public UnitInfoEffect(Tree tree, AiCrowd aiCrowd, MissionManager missionManager) {
+			possibleRooms = new ArrayList<>();
 			this.aiCrowd = aiCrowd;
 			this.missionManager = missionManager;
 			processUnitInfo(tree);
@@ -771,7 +772,6 @@ public class AtrophyScriptReader {
 						}
 					break;
 					case "ISROOM":
-						possibleRooms = new ArrayList<>();
 						for(int j = 0; j < tree.getChild(i).getChildCount(); j++) {
 							possibleRooms.add(createString(tree.getChild(i).getChild(j)));
 						}
