@@ -885,9 +885,9 @@ public class AtrophyScriptReader {
 		@Override
 		public void run() {
 			
-			String[] items;
+			String[] items = null;
 			
-			if(possibleItems.size() > 5) {
+			if(possibleItems != null && possibleItems.size() > 5) {
 				
 				List<String> itemList = new ArrayList<>();
 				
@@ -907,7 +907,7 @@ public class AtrophyScriptReader {
 				}
 				
 			}
-			else {
+			else if(possibleItems != null) {
 				items = new String[possibleItems.size()];
 				
 				for(int i = 0; i < this.possibleItems.size(); i++) {
@@ -919,6 +919,9 @@ public class AtrophyScriptReader {
 			String name = this.possibleNames.get(new Random().nextInt(this.possibleNames.size()));
 			priorities.add(name);
 			aiNode.addPriorities(priorities);
+			
+			if(isDaemon == null)
+				isDaemon = false;
 			
 			SoloGenerateCommand command = new SoloGenerateCommand(this.xList.get(new Random().nextInt(this.xList.size())),
 														this.yList.get(new Random().nextInt(this.yList.size())),

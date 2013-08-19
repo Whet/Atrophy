@@ -256,9 +256,10 @@ public class AiGenerator{
 		else {
 			ai.setWeapon(Weapon.stringToWeapon(command.getWeapon()));
 			
-			for(int i = 0; i < command.getItems().length; i++){
-				ai.addItem(Item.stringToItem(command.getItems()[i]));
-			}
+			if(command.getItems() != null)
+				for(int i = 0; i < command.getItems().length; i++){
+					ai.addItem(Item.stringToItem(command.getItems()[i]));
+				}
 		}
 		
 		ai.assignAbilities();
