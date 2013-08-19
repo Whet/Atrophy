@@ -584,6 +584,8 @@ public class AtrophyScriptReader {
 					return new NOT(createTruthCond(tree.getChild(0), missionManager));
 				case "ISALIVE":
 					return new IsAlive(tree, missionManager);
+				case "ISINROOM":
+					return new IsInRoom(tree, missionManager, aiCrowd);
 				case "ONTIME":
 					return new OnTime(tree);
 				case "LOGIC":
@@ -654,11 +656,40 @@ public class AtrophyScriptReader {
 			
 			@Override
 			public boolean truthCheck() {
-				for(Ai ai: unitInfo.matchAi()) {
+				for(Ai ai: unitInfo.findMatch()) {
 					if(ai.isDead())
 						return false;
 				}
 				return true;
+			}
+			
+		}
+		
+		private class IsInRoom extends TruthCond {
+
+			UnitInfoEffect unitInfo;
+			RoomInfoEffect roomInfo;
+			
+			public IsInRoom(Tree tree, MissionManager missionManager, AiCrowd aiCrowd) {
+				this.unitInfo = new UnitInfoEffect(tree.getChild(0), aiCrowd, missionManager);
+				this.roomInfo = new RoomInfoEffect(tree.getChild(1), missionManager, aiCrowd);
+			}
+			
+			@Override
+			public boolean truthCheck() {
+				
+				List<Ai> matchedAi = unitInfo.findMatch();
+				
+				Set<LevelBlock> matchedRooms = roomInfo.findMatch();
+				
+				for(Ai ai: matchedAi) {
+					for(LevelBlock room: matchedRooms) {
+						if(ai.getLevelBlock() == room)
+							return true;
+					}
+				}
+				
+				return false;
 			}
 			
 		}
@@ -811,7 +842,7 @@ public class AtrophyScriptReader {
 			}
 		}
 		
-		protected List<Ai> matchAi() {
+		protected List<Ai> findMatch() {
 			List<Ai> matchingAi = new ArrayList<>();
 			
 			Set<LevelBlock> allowedRooms = new HashSet<>();
@@ -825,10 +856,10 @@ public class AtrophyScriptReader {
 					(possibleFactions == null || possibleFactions.contains(ai.getFaction())) &&
 					(possibleWeapons == null || possibleWeapons.contains(ai.getWeapon().getName())) &&
 					(mustBeAlive == null || ai.isDead() == !mustBeAlive) &&
-					(possibleRooms == null || allowedRooms.contains(ai.getLevelBlock())) &&
+					(possibleRooms.size() == 0 || allowedRooms.contains(ai.getLevelBlock())) &&
 					(isPlayer == null || ai.getFaction().equals(AiGenerator.PLAYER))) {
 					
-					if(possibleItems != null) {
+					if(possibleItems != null && possibleItems.size() > 0) {
 						boolean hasItem = false;
 						for(int i = 0; i < ai.getInventory().getItemCount(); i++) {
 							if(possibleItems.contains(ai.getInventory().getItemAt(i).getName()))
@@ -1052,7 +1083,7 @@ public class AtrophyScriptReader {
 
 		@Override
 		public void run() {
-			for(Ai ai:matchAi()) {
+			for(Ai ai:findMatch()) {
 				ai.setDead(true);
 			}
 		}
@@ -1067,7 +1098,7 @@ public class AtrophyScriptReader {
 
 		@Override
 		public void run() {
-			List<Ai> matchAi = matchAi();
+			List<Ai> matchAi = findMatch();
 			
 			for(int i = 0; i < matchAi.size(); i++) {
 				
@@ -1095,7 +1126,7 @@ public class AtrophyScriptReader {
 
 		@Override
 		public void run() {
-			List<Ai> matchAi = matchAi();
+			List<Ai> matchAi = findMatch();
 			Ai ai = null;
 
 			if(matchAi.size() > 0)
@@ -1121,7 +1152,7 @@ public class AtrophyScriptReader {
 		
 	}
 	
-	private abstract static class RoomInfoEffect extends TriggerEffect {
+	private static class RoomInfoEffect extends TriggerEffect {
 
 		protected AiCrowd aiCrowd;
 		protected MissionManager missionManager;
@@ -1156,17 +1187,21 @@ public class AtrophyScriptReader {
 		protected Set<LevelBlock> findMatch() {
 			
 			Set<LevelBlock> rooms = new HashSet<>();
-			
-			for(Ai ai: aiCrowd.getActors()) {
-				if(targetFactions.contains(ai.getFaction()))
-					rooms.add(ai.getLevelBlock());
-			}
+			if(targetFactions.size() > 0)
+				for(Ai ai: aiCrowd.getActors()) {
+					if(targetFactions.contains(ai.getFaction()))
+						rooms.add(ai.getLevelBlock());
+				}
+
 			for(String roomName: this.targetRooms) {
 				rooms.add((LevelBlock) missionManager.getVar(roomName));
 			}
 			
 			return rooms;
 		}
+		
+		@Override
+		public void run() {}
 		
 	}
 	
@@ -1428,7 +1463,7 @@ public class AtrophyScriptReader {
 
 		@Override
 		public void run() {
-			List<Ai> matchAi = matchAi();
+			List<Ai> matchAi = findMatch();
 			
 			for(Ai ai: matchAi) {
 				int spareInventory = 5 - ai.getInventory().getItemCount();
@@ -1508,7 +1543,7 @@ public class AtrophyScriptReader {
 
 		@Override
 		public void run() {
-			List<Ai> matchAi = matchAi();
+			List<Ai> matchAi = findMatch();
 			
 			for(Ai ai: matchAi) {
 				if(ai instanceof ThinkingAi)
