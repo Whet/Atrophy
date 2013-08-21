@@ -1103,7 +1103,7 @@ public class ThinkingAi extends Ai{
 		public void runDeathCommands() {
 			for(int i = 0; i < this.behaviours.size(); i++) {
 				if(this.behaviours.get(i).startsWith("#"))
-					this.missionManager.runCommand(this.behaviours.get(i).substring(1));
+					this.missionManager.runCommand(this.behaviours.get(i).substring(1).replaceAll(" ", ""));
 			}
 		}
 
