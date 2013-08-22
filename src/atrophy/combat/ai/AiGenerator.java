@@ -219,8 +219,10 @@ public class AiGenerator{
 		
 		double[] location = null;
 		
-		if(command.x == null)
+		if(command.x == null && !command.getFaction().equals(AiGenerator.LONER))
 			location = levelManager.randomInPosition(combatMembersManager.getCommander(command.getFaction()).getSpawnRoom());
+		else if(command.x == null && command.getFaction().equals(AiGenerator.LONER))
+			location = levelManager.randomPosition();
 		else
 			location = new double[]{command.x, command.y};
 		
@@ -275,7 +277,7 @@ public class AiGenerator{
 		aiCrowd.addDisplayItem(aiImg);
 		aiCrowd.addMouseActionItem(aiImg);
 		
-		aiCrowd.addActor(ai, new DirectorClassification(DirectorArchetype.UNDECIDED));
+		aiCrowd.addActor(ai, new DirectorClassification(command.directorClass));
 		aiCrowd.addMask(aiImg);
 		
 		if(command.getAiNode() != null){

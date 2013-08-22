@@ -434,6 +434,7 @@ public class Missions{
 	}
 
 	public boolean isCharacterFree(String characterCode) {
+		System.out.println("CODE: " + characterCode + "///" + this.characterCodes + "  " + this.tempCharacterCodes);
 		return !this.characterCodes.contains(characterCode) && !this.tempCharacterCodes.values().contains(characterCode);
 	}
 
@@ -448,6 +449,8 @@ public class Missions{
 				this.characterCodes.add(this.tempCharacterCodes.get(actor.getName()));
 			}
 		}
+		
+		this.tempCharacterCodes.clear();
 		
 	}
 

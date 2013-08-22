@@ -14,6 +14,7 @@ import org.json.JSONTokener;
 
 import watoydoEngine.io.ReadWriter;
 import atrophy.combat.ai.AiGeneratorInterface.SoloGenerateCommand;
+import atrophy.combat.ai.director.DirectorArchetype;
 import atrophy.combat.level.LevelIO;
 import atrophy.gameMenu.saveFile.Missions;
 
@@ -40,9 +41,14 @@ public class SpecialCharacterGenerator {
 	            if(factionRoot.get(key) instanceof JSONObject){
 	            	JSONObject character = (JSONObject) factionRoot.get(key);
 	            	
-	            	if(character.get("sector").toString().equals(sector) && missions.isCharacterFree(character.toString())) {
+	            	if(character.get("sector").toString().equals(sector) && missions.isCharacterFree(key)) {
 	            		System.out.println("Character Spawned: " + key);
-	            		possibleCharacters.add(new CharacterInfo(faction, character.get("name").toString(), character.get("weapon").toString(), character.getJSONArray("items")));
+	            		
+	            		if(character.has("type"))
+	            			possibleCharacters.add(new CharacterInfo(faction, character.get("name").toString(), character.get("weapon").toString(), character.getJSONArray("items"), character.getString("type").toString()));
+	            		else
+	            			possibleCharacters.add(new CharacterInfo(faction, character.get("name").toString(), character.get("weapon").toString(), character.getJSONArray("items")));
+	            		
 	            		missions.addCharacterCode(key, character.get("name").toString());
 	            	}
 	            }
@@ -67,6 +73,7 @@ public class SpecialCharacterGenerator {
 		public String name;
 		public String weapon;
 		public String[] items;
+		public DirectorArchetype classification;
 		
 		public CharacterInfo(String faction, String name, String weapon, JSONArray items) throws JSONException {
 			this.faction = faction;
@@ -77,10 +84,25 @@ public class SpecialCharacterGenerator {
 			for(int i = 0; i < items.length(); i++) {
 				this.items[i] = items.get(i).toString();
 			}
+			
+			this.classification = DirectorArchetype.UNDECIDED;
+		}
+		
+		public CharacterInfo(String faction, String name, String weapon, JSONArray items, String classification) throws JSONException {
+			this.faction = faction;
+			this.name = name;
+			this.weapon = weapon;
+			this.items = new String[items.length()];
+			
+			for(int i = 0; i < items.length(); i++) {
+				this.items[i] = items.get(i).toString();
+			}
+			
+			this.classification = DirectorArchetype.getEnum(classification);
 		}
 
 		public SoloGenerateCommand toCommand() {
-			return new SoloGenerateCommand(faction, false, name, weapon, items);
+			return new SoloGenerateCommand(faction, classification, false, name, weapon, items);
 		}
 		
 	}

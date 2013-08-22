@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Random;
 
 import atrophy.combat.ai.ThinkingAi.AiNode;
+import atrophy.combat.ai.director.DirectorArchetype;
 import atrophy.gameMenu.saveFile.Squad.Squaddie;
 
 /**
@@ -37,6 +38,8 @@ public class AiGeneratorInterface {
 	 * The Class GenerateCommand.
 	 */
 	public static class GenerateCommand{
+		
+		protected DirectorArchetype directorClass;
 		
 		protected Double x,y;
 		
@@ -79,6 +82,7 @@ public class AiGeneratorInterface {
 			this.faction = faction;
 			this.allowedItems = allowedItems;
 			this.allowedWeapons = allowedWeapons;
+			this.directorClass = DirectorArchetype.UNDECIDED;
 		}
 
 		/**
@@ -220,6 +224,16 @@ public class AiGeneratorInterface {
 			this.name = name;
 			this.weapon = weapon;
 			this.items = items;
+		}
+		
+		public SoloGenerateCommand(String faction, DirectorArchetype directorClass, boolean isDaemon, String name, String weapon, String[] items){
+			super(1, 1, null, null, faction);
+			
+			this.isDaemon = isDaemon;
+			this.name = name;
+			this.weapon = weapon;
+			this.items = items;
+			this.directorClass = directorClass;
 		}
 		
 		public boolean isDaemon() {
