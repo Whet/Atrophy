@@ -52,6 +52,8 @@ public class HealthDirector {
 			return false;
 		}
 		
+		
+		// Register attack
 		clf.get(killedAi).addAttackRecord(turn);
 		
 		// Handle attacking swam/cod
@@ -71,7 +73,7 @@ public class HealthDirector {
 		if(clf.get(killedAi).getType().equals(DirectorArchetype.PLAYER) && clf.get(killer).getType().equals(DirectorArchetype.SWARM)) {
 			
 			// Complete swarming will kill careless player
-			if(clf.get(killedAi).getAttackedCount() == getFactionInRoom(killer) && getFactionInRoom(killer) > 3)
+			if(clf.get(killedAi).getAttackedCount(turn) == getFactionInRoom(killer) && getFactionInRoom(killer) > 3)
 				return true;
 			
 			// Some swarming, give the swarm a chance
@@ -85,10 +87,10 @@ public class HealthDirector {
 		// Handle elite attacking
 		if(clf.get(killer).getType().equals(DirectorArchetype.PLAYER) && clf.get(killedAi).getType().equals(DirectorArchetype.ELITE)) {
 			// Multiple attacks remove elite status
-			if(clf.get(killedAi).getAttackedCount() > 1) {
+			if(clf.get(killedAi).getAttackedCount(turn) > 1) {
 				
 				// All out attack has higher chance to kill elite
-				if(clf.get(killedAi).getAttackedCount() == getFactionInRoom(killer)) {
+				if(clf.get(killedAi).getAttackedCount(turn) == getFactionInRoom(killer)) {
 					changeClassification(killedAi, DirectorArchetype.UNDECIDED);
 					return dead || new Random().nextInt(10) < 7;
 				}

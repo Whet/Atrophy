@@ -35,7 +35,13 @@ public class DirectorClassification {
 		}
 	}
 
-	public int getAttackedCount() {
+	public int getAttackedCount(int turn) {
+		
+		if(attackInfo[0] < turn) {
+			attackInfo[0] = turn;
+			attackInfo[1] = 0;
+		}
+		
 		return attackInfo[1];
 	}
 	
