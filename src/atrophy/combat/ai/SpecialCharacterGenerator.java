@@ -12,8 +12,6 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
-import sun.rmi.transport.proxy.CGIHandler;
-
 import watoydoEngine.io.ReadWriter;
 import atrophy.combat.ai.AiGeneratorInterface.SoloGenerateCommand;
 import atrophy.combat.level.LevelIO;
@@ -39,13 +37,13 @@ public class SpecialCharacterGenerator {
 	        while(keys.hasNext()){
 	            String key = (String)keys.next();
 	            
-	            System.out.println("Character Spawned: " + key);
-	            
 	            if(factionRoot.get(key) instanceof JSONObject){
 	            	JSONObject character = (JSONObject) factionRoot.get(key);
 	            	
 	            	if(character.get("sector").toString().equals(sector) && missions.isCharacterFree(character.toString())) {
+	            		System.out.println("Character Spawned: " + key);
 	            		possibleCharacters.add(new CharacterInfo(faction, character.get("name").toString(), character.get("weapon").toString(), character.getJSONArray("items")));
+	            		missions.addCharacterCode(key, character.get("name").toString());
 	            	}
 	            }
 	        }

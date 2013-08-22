@@ -145,7 +145,6 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 			//esc
 			case 27:
 				
-				
 				boolean teamInSaferoom = false;
 				
 				for(int i = 0; i < aiCrowd.getActorCount(); i++){
@@ -160,6 +159,8 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 					// Cleanup timer thread
 					LargeEventText.flashTimer.cancel();
 					LargeEventText.flashTimer.purge();
+					
+					missions.checkDeadSpecialCharacters(aiCrowd);
 					
 					ActivePane.getInstance().changeRootCrowd(new Crowd(new GameMenuHardPane(aiCrowd.saveToSquad(), techTree, stashManager, missions)));
 				}

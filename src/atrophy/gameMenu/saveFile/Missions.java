@@ -2,9 +2,13 @@ package atrophy.gameMenu.saveFile;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
+import atrophy.combat.ai.Ai;
+import atrophy.combat.display.AiCrowd;
 import atrophy.combat.items.EngineeringSupply;
 import atrophy.combat.items.MedicalSupply;
 import atrophy.combat.items.ScienceSupply;
@@ -21,13 +25,17 @@ public class Missions{
 	private ArrayList<MissionGiver> missionGivers;
 	private ArrayList<String> economyEffects;
 	private Set<String> memCodes;
+	private Set<String> characterCodes;
+	private Map<String, String> tempCharacterCodes;
 	private Squad squad;
-	
+
 	public Missions(){
 		missions = new ArrayList<>();
 		missionGivers = new ArrayList<MissionGiver>();
 		economyEffects = new ArrayList<String>();
 		memCodes = new HashSet<>();
+		characterCodes = new HashSet<>();
+		tempCharacterCodes = new HashMap<>();
 		memCodes.add(DEFAULT_MEM_CODE);
 	}
 	
@@ -426,7 +434,21 @@ public class Missions{
 	}
 
 	public boolean isCharacterFree(String characterCode) {
-		return true;
+		return !this.characterCodes.contains(characterCode) && !this.tempCharacterCodes.values().contains(characterCode);
+	}
+
+	public void addCharacterCode(String key, String name) {
+		this.tempCharacterCodes.put(name, key);
+	}
+
+	public void checkDeadSpecialCharacters(AiCrowd aiCrowd) {
+		
+		for(Ai actor: aiCrowd.getActors()) {
+			if(this.tempCharacterCodes.containsKey(actor.getName()) && actor.isDead()) {
+				this.characterCodes.add(this.tempCharacterCodes.get(actor.getName()));
+			}
+		}
+		
 	}
 
 }
