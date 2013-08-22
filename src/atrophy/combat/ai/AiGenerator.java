@@ -33,6 +33,8 @@ import atrophy.combat.display.ui.Cartographer;
 import atrophy.combat.display.ui.FloatingIcons;
 import atrophy.combat.display.ui.MessageBox;
 import atrophy.combat.display.ui.loot.LootBox;
+import atrophy.combat.items.ArmourPlates1;
+import atrophy.combat.items.ArmourPlates2;
 import atrophy.combat.items.DaemonWeapon;
 import atrophy.combat.items.GrenadeItem;
 import atrophy.combat.items.Item;
@@ -462,6 +464,9 @@ public class AiGenerator{
 		
 		int randomItemCount = new Random().nextInt(5);
 		if(allowedItems.size() > 0) {
+			
+			boolean hasArmour = false;
+			
 			for(int i = 0; i < randomItemCount; i++){
 				String item = allowedItems.get(new Random().nextInt(allowedItems.size()));
 				
@@ -470,8 +475,13 @@ public class AiGenerator{
 				allowedDuplicateItems.add(GrenadeItem.NAME);
 				allowedDuplicateItems.add(StunGrenadeItem.NAME);
 				
-				if(item != null && (!ai.getInventory().hasItem(Item.stringToItem(item)) || allowedDuplicateItems.contains(item)))
+				if(item != null && (!(item.equals(ArmourPlates1.NAME) || item.equals(ArmourPlates2.NAME)) || !hasArmour) &&
+						           (!ai.getInventory().hasItem(Item.stringToItem(item)) || allowedDuplicateItems.contains(item))) {
 					ai.addItem(Item.stringToItem(item));
+					
+					if(item.equals(ArmourPlates1.NAME) || item.equals(ArmourPlates2.NAME))
+						hasArmour = true;
+				}
 			}
 		}
 	}
