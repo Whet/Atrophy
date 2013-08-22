@@ -7,6 +7,7 @@ import java.util.Random;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.ai.Ai;
 import atrophy.combat.display.AiCrowd;
+import atrophy.combat.mechanics.ScoringMechanics;
 
 public class HealthDirector {
 
@@ -89,16 +90,16 @@ public class HealthDirector {
 			// Multiple attacks remove elite status
 			if(clf.get(killedAi).getAttackedCount(turn) > 1) {
 				
-				// All out attack has higher chance to kill elite
-				if(clf.get(killedAi).getAttackedCount(turn) == getFactionInRoom(killer)) {
-					changeClassification(killedAi, DirectorArchetype.UNDECIDED);
-					return dead || new Random().nextInt(10) < 7;
-				}
+				changeClassification(killedAi, DirectorArchetype.UNDECIDED);
 				
 				return dead;
 			}
 			
-			return false;
+			// Make the attacker re-roll
+			if(dead)
+				return ScoringMechanics.killedTarget(killer, killedAi);
+			
+			return dead;
 		}
 		
 		// Handle stealth kills
