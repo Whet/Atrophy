@@ -215,7 +215,12 @@ public class AiGenerator{
 	
 	private void generateSoloAi(SoloGenerateCommand command, int team) {
 		
-		double[] location = new double[]{command.x, command.y};
+		double[] location = null;
+		
+		if(command.x == null)
+			location = levelManager.randomInPosition(combatMembersManager.getCommander(command.getFaction()).getSpawnRoom());
+		else
+			location = new double[]{command.x, command.y};
 		
 		AiImage aiImg = new AiImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, 0,0, mouseAbilityHandler, floatingIcons);
 		ThinkingAi ai = null;

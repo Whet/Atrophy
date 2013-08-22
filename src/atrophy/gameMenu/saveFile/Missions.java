@@ -425,4 +425,8 @@ public class Missions{
 		return this.squad;
 	}
 
+	public boolean isCharacterFree(String characterCode) {
+		return true;
+	}
+
 }

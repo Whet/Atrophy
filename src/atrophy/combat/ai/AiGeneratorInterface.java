@@ -38,7 +38,7 @@ public class AiGeneratorInterface {
 	 */
 	public static class GenerateCommand{
 		
-		protected double x,y;
+		protected Double x,y;
 		
 		/**
 		 * The faction.
@@ -206,6 +206,15 @@ public class AiGeneratorInterface {
 			super(1, 1, null, null, faction);
 			this.x = x;
 			this.y = y;
+			
+			this.isDaemon = isDaemon;
+			this.name = name;
+			this.weapon = weapon;
+			this.items = items;
+		}
+		
+		public SoloGenerateCommand(String faction, boolean isDaemon, String name, String weapon, String[] items){
+			super(1, 1, null, null, faction);
 			
 			this.isDaemon = isDaemon;
 			this.name = name;

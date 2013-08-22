@@ -16,6 +16,8 @@ import atrophy.combat.CombatNCEManager;
 import atrophy.combat.actions.ActionSuite;
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.ai.AiGeneratorInterface;
+import atrophy.combat.ai.AiGeneratorInterface.SoloGenerateCommand;
+import atrophy.combat.ai.SpecialCharacterGenerator;
 import atrophy.combat.ai.AiGeneratorInterface.GenerateCommand;
 import atrophy.combat.display.AiManagementSuite;
 import atrophy.combat.display.ui.UiUpdaterSuite;
@@ -62,7 +64,7 @@ public class MenuMapInterface {
 				uiUpdaterSuite.lazyLoad(actionSuite.getMouseAbilityHandler(), aiManagementSuite.getAiCrowd(), levelManager, actionSuite.getCombatMouseHandler(), turnProcess);
 				// Moved from A. without checking		
 				aiManagementSuite.lazyLoad(uiUpdaterSuite, actionSuite.getMouseAbilityHandler());
-				setSpawns(owner, levelManager, squad, itemMarket, generationCommands);
+				setSpawns(owner, levelManager, squad, itemMarket, generationCommands, missions);
 				turnProcess.lazyLoad(missionManager, aiManagementSuite, uiUpdaterSuite, combatInorganicManager, actionSuite);
 				
 				ActivePane.getInstance().changeRootCrowd(new Crowd(new CombatHardPane(turnProcess, aiManagementSuite, uiUpdaterSuite, actionSuite, levelManager, aiManagementSuite.getAiCrowd(), combatInorganicManager, generationCommands, missionManager, missions, uiUpdaterSuite.getCartographer(), uiUpdaterSuite.getMessageBox())));
@@ -71,7 +73,7 @@ public class MenuMapInterface {
 		
 	}
 
-	private static void setSpawns(String owner, LevelManager levelManager, Squad squad, ItemMarket itemMarket, List<AiGeneratorInterface.GenerateCommand> generationCommands) {
+	private static void setSpawns(String owner, LevelManager levelManager, Squad squad, ItemMarket itemMarket, List<AiGeneratorInterface.GenerateCommand> generationCommands, Missions missions) {
 		
 		if(new Random().nextInt(10) < DAEMON_SPAWN_CHANCE && levelManager.getCurrentLevel().allowedSpawn(AiGenerator.DAEMON)) {
 			// Spawn daemon only map
@@ -92,25 +94,6 @@ public class MenuMapInterface {
 		
 		int lonerTeamSpawn = new Random().nextInt(4);
 		
-		ArrayList<String> targetFactions =  new ArrayList<String>();
-		
-//		if(owner.equals(AiGenerator.WHITE_VISTA)){
-//			whiteVistaTeamSpawn += 2;
-//			
-//			targetFactions.add(AiGenerator.BANDITS);
-//		}
-//		else if(owner.equals(AiGenerator.BANDITS)){
-//			banditTeamSpawn += 2;
-//			
-//			targetFactions.add(AiGenerator.WHITE_VISTA);
-//			targetFactions.add(AiGenerator.LONER);
-//			targetFactions.add(AiGenerator.PLAYER);
-//		}
-//		// Loners
-//		else{
-//			targetFactions.add(AiGenerator.BANDITS);
-//		}
-		
 		// Cancel spawns if not specified
 		if(!levelManager.getCurrentLevel().allowedSpawn(AiGenerator.BANDITS))
 			banditTeamSpawn = 0;
@@ -122,13 +105,38 @@ public class MenuMapInterface {
 			lonerTeamSpawn = 0;
 		
 		for(int i = 0; i < banditTeamSpawn; i++){
-			generationCommands.add(new GenerateCommand(2, 3, itemMarket.getBanditsAllowedItems(), itemMarket.getBanditsAllowedWeapons(), AiGenerator.BANDITS));
+			SoloGenerateCommand specialCharacter = null;
+			
+			if(new Random().nextInt(10) < 1)
+				specialCharacter = SpecialCharacterGenerator.specialCharacters(missions, itemMarket.getBanditsAllowedItems(), itemMarket.getBanditsAllowedWeapons(), AiGenerator.BANDITS);
+			
+			if(specialCharacter == null)
+				generationCommands.add(new GenerateCommand(2, 3, itemMarket.getBanditsAllowedItems(), itemMarket.getBanditsAllowedWeapons(), AiGenerator.BANDITS));
+			else
+				generationCommands.add(specialCharacter);
+			
 		}
 		for(int i = 0; i < whiteVistaTeamSpawn; i++){
-			generationCommands.add(new GenerateCommand(2, 3, itemMarket.getWhiteVistaAllowedItems(), itemMarket.getWhiteVistaAllowedWeapons(), AiGenerator.WHITE_VISTA));
+			SoloGenerateCommand specialCharacter = null;
+			
+			if(new Random().nextInt(10) < 1)
+				specialCharacter = SpecialCharacterGenerator.specialCharacters(missions, itemMarket.getWhiteVistaAllowedItems(), itemMarket.getWhiteVistaAllowedWeapons(), AiGenerator.WHITE_VISTA);
+			
+			if(specialCharacter == null)
+				generationCommands.add(new GenerateCommand(2, 3, itemMarket.getWhiteVistaAllowedItems(), itemMarket.getWhiteVistaAllowedWeapons(), AiGenerator.WHITE_VISTA));
+			else
+				generationCommands.add(specialCharacter);
 		}
 		for(int i = 0; i < lonerTeamSpawn; i++){
-			generationCommands.add(new GenerateCommand(2, 3, itemMarket.getLonerAllowedItems(), itemMarket.getLonerAllowedWeapons(), AiGenerator.LONER));
+			SoloGenerateCommand specialCharacter = null;
+			
+			if(new Random().nextInt(10) < 1)
+				specialCharacter = SpecialCharacterGenerator.specialCharacters(missions, itemMarket.getLonerAllowedItems(), itemMarket.getLonerAllowedWeapons(), AiGenerator.LONER);
+			
+			if(specialCharacter == null)
+				generationCommands.add(new GenerateCommand(2, 3, itemMarket.getLonerAllowedItems(), itemMarket.getLonerAllowedWeapons(), AiGenerator.LONER));
+			else
+				generationCommands.add(specialCharacter);
 		}
 
 		generationCommands.add(new GenerateCommand(squad.getSquad(), AiGenerator.PLAYER));
