@@ -1248,6 +1248,7 @@ public class AtrophyScriptReader {
 		private ItemMarket itemMarket;
 		private TechTree techTree;
 		private StashManager stashManager;
+		private String sector;
 		
 		public LoadMapEffect(Tree tree, AiCrowd aiCrowd, Missions missions, ItemMarket itemMarket, TechTree techTree, StashManager stashManager) {
 			this.aiCrowd = aiCrowd;
@@ -1283,6 +1284,9 @@ public class AtrophyScriptReader {
 					case "ISFACTION":
 						owner = createString(tree.getChild(i).getChild(new Random().nextInt(tree.getChild(i).getChildCount())));
 					break;
+					case "SECTOR":
+						sector = createString(tree.getChild(i));
+					break;
 				}
 			}
 		}
@@ -1291,7 +1295,7 @@ public class AtrophyScriptReader {
 		public void run() {
 			try {
 				MenuMapInterface.loadLevel(ReadWriter.getRootFile("Maps/" + mapName + ".txt"), owner,
-						  				   aiCrowd.getSquad(), engChance, medChance, wepChance, sciChance, missions, itemMarket, techTree, stashManager);
+						  				   aiCrowd.getSquad(), engChance, medChance, wepChance, sciChance, missions, itemMarket, techTree, stashManager, sector);
 			} catch (FileNotFoundException e) {
 				e.printStackTrace();
 			} catch (IOException e) {

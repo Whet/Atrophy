@@ -12,6 +12,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.json.JSONTokener;
 
+import sun.rmi.transport.proxy.CGIHandler;
+
 import watoydoEngine.io.ReadWriter;
 import atrophy.combat.ai.AiGeneratorInterface.SoloGenerateCommand;
 import atrophy.combat.level.LevelIO;
@@ -19,7 +21,8 @@ import atrophy.gameMenu.saveFile.Missions;
 
 public class SpecialCharacterGenerator {
 
-	public static SoloGenerateCommand specialCharacters(Missions missions, ArrayList<String> allowedItems, ArrayList<String> allowedWeapons, String faction) {
+	public static SoloGenerateCommand specialCharacters(Missions missions, ArrayList<String> allowedItems, ArrayList<String> allowedWeapons, String faction, String sector) {
+	
 		SoloGenerateCommand specialCharacter = null;
 		
 		try {
@@ -36,12 +39,12 @@ public class SpecialCharacterGenerator {
 	        while(keys.hasNext()){
 	            String key = (String)keys.next();
 	            
-	            System.out.println("Key: " + key);
+	            System.out.println("Character Spawned: " + key);
 	            
 	            if(factionRoot.get(key) instanceof JSONObject){
 	            	JSONObject character = (JSONObject) factionRoot.get(key);
 	            	
-	            	if(missions.isCharacterFree(character.toString())) {
+	            	if(character.get("sector").toString().equals(sector) && missions.isCharacterFree(character.toString())) {
 	            		possibleCharacters.add(new CharacterInfo(faction, character.get("name").toString(), character.get("weapon").toString(), character.getJSONArray("items")));
 	            	}
 	            }

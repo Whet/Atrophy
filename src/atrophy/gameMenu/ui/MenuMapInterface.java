@@ -36,7 +36,7 @@ public class MenuMapInterface {
 	
 	private static final int DAEMON_SPAWN_CHANCE = 2;
 
-	public static void loadLevel(final File chosenLevel, final String owner, final Squad squad, final int engineeringChance, final int medicalChance, final int weaponChance, final int scienceChance, final Missions missions, final ItemMarket itemMarket, final TechTree techTree, final StashManager stashManager) throws IOException, RecognitionException {
+	public static void loadLevel(final File chosenLevel, final String owner, final Squad squad, final int engineeringChance, final int medicalChance, final int weaponChance, final int scienceChance, final Missions missions, final ItemMarket itemMarket, final TechTree techTree, final StashManager stashManager, final String sector) throws IOException, RecognitionException {
 
 		ActivePane.getInstance().showLoading();
 		
@@ -64,7 +64,7 @@ public class MenuMapInterface {
 				uiUpdaterSuite.lazyLoad(actionSuite.getMouseAbilityHandler(), aiManagementSuite.getAiCrowd(), levelManager, actionSuite.getCombatMouseHandler(), turnProcess);
 				// Moved from A. without checking		
 				aiManagementSuite.lazyLoad(uiUpdaterSuite, actionSuite.getMouseAbilityHandler());
-				setSpawns(owner, levelManager, squad, itemMarket, generationCommands, missions);
+				setSpawns(owner, levelManager, squad, itemMarket, generationCommands, missions, sector);
 				turnProcess.lazyLoad(missionManager, aiManagementSuite, uiUpdaterSuite, combatInorganicManager, actionSuite);
 				
 				ActivePane.getInstance().changeRootCrowd(new Crowd(new CombatHardPane(turnProcess, aiManagementSuite, uiUpdaterSuite, actionSuite, levelManager, aiManagementSuite.getAiCrowd(), combatInorganicManager, generationCommands, missionManager, missions, uiUpdaterSuite.getCartographer(), uiUpdaterSuite.getMessageBox())));
@@ -73,7 +73,7 @@ public class MenuMapInterface {
 		
 	}
 
-	private static void setSpawns(String owner, LevelManager levelManager, Squad squad, ItemMarket itemMarket, List<AiGeneratorInterface.GenerateCommand> generationCommands, Missions missions) {
+	private static void setSpawns(String owner, LevelManager levelManager, Squad squad, ItemMarket itemMarket, List<AiGeneratorInterface.GenerateCommand> generationCommands, Missions missions, String sector) {
 		
 		if(new Random().nextInt(10) < DAEMON_SPAWN_CHANCE && levelManager.getCurrentLevel().allowedSpawn(AiGenerator.DAEMON)) {
 			// Spawn daemon only map
@@ -108,7 +108,7 @@ public class MenuMapInterface {
 			SoloGenerateCommand specialCharacter = null;
 			
 			if(new Random().nextInt(10) < 1)
-				specialCharacter = SpecialCharacterGenerator.specialCharacters(missions, itemMarket.getBanditsAllowedItems(), itemMarket.getBanditsAllowedWeapons(), AiGenerator.BANDITS);
+				specialCharacter = SpecialCharacterGenerator.specialCharacters(missions, itemMarket.getBanditsAllowedItems(), itemMarket.getBanditsAllowedWeapons(), AiGenerator.BANDITS, sector);
 			
 			if(specialCharacter == null)
 				generationCommands.add(new GenerateCommand(2, 3, itemMarket.getBanditsAllowedItems(), itemMarket.getBanditsAllowedWeapons(), AiGenerator.BANDITS));
@@ -120,7 +120,7 @@ public class MenuMapInterface {
 			SoloGenerateCommand specialCharacter = null;
 			
 			if(new Random().nextInt(10) < 1)
-				specialCharacter = SpecialCharacterGenerator.specialCharacters(missions, itemMarket.getWhiteVistaAllowedItems(), itemMarket.getWhiteVistaAllowedWeapons(), AiGenerator.WHITE_VISTA);
+				specialCharacter = SpecialCharacterGenerator.specialCharacters(missions, itemMarket.getWhiteVistaAllowedItems(), itemMarket.getWhiteVistaAllowedWeapons(), AiGenerator.WHITE_VISTA, sector);
 			
 			if(specialCharacter == null)
 				generationCommands.add(new GenerateCommand(2, 3, itemMarket.getWhiteVistaAllowedItems(), itemMarket.getWhiteVistaAllowedWeapons(), AiGenerator.WHITE_VISTA));
@@ -131,7 +131,7 @@ public class MenuMapInterface {
 			SoloGenerateCommand specialCharacter = null;
 			
 			if(new Random().nextInt(10) < 1)
-				specialCharacter = SpecialCharacterGenerator.specialCharacters(missions, itemMarket.getLonerAllowedItems(), itemMarket.getLonerAllowedWeapons(), AiGenerator.LONER);
+				specialCharacter = SpecialCharacterGenerator.specialCharacters(missions, itemMarket.getLonerAllowedItems(), itemMarket.getLonerAllowedWeapons(), AiGenerator.LONER, sector);
 			
 			if(specialCharacter == null)
 				generationCommands.add(new GenerateCommand(2, 3, itemMarket.getLonerAllowedItems(), itemMarket.getLonerAllowedWeapons(), AiGenerator.LONER));
