@@ -72,8 +72,8 @@ public class TechTree implements Serializable{
 		TechnologyNode impMechanicalWeapons = new TechnologyNode(new TechnologyNode[]{mechanicalWeapons}, CALIBRATION,1,2,0,0);
 		techTree.put(CALIBRATION,impMechanicalWeapons);
 		
-		TechnologyNode cadTags = new TechnologyNode(new TechnologyNode[]{mechanicalWeapons}, BOUNTY_HUNTING,1,0,0,3);
-		techTree.put(BOUNTY_HUNTING,cadTags);
+//		TechnologyNode cadTags = new TechnologyNode(new TechnologyNode[]{mechanicalWeapons}, BOUNTY_HUNTING,1,0,0,3);
+//		techTree.put(BOUNTY_HUNTING,cadTags);
 		
 		TechnologyNode firearm1 = new TechnologyNode(new TechnologyNode[]{impMechanicalWeapons}, FIREARMS,0,1,5,0);
 		techTree.put(FIREARMS,firearm1);
