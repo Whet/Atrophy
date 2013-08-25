@@ -145,9 +145,9 @@ public class SquadMemberMenu extends Menu {
 						stashManager.addItem(item);
 						squadMember.removeItem(ind);
 						SoundBoard.getInstance().playEffect("invExchange");
-						updateInformation();
 					}
 					this.setText("Empty");
+					updateInformation();
 					return true;
 				}
 			};
@@ -187,7 +187,8 @@ public class SquadMemberMenu extends Menu {
 			updateInformation();
 			return true;
 		}
-			return super.mD(mousePosition, e);
+		
+		return super.mD(mousePosition, e);
 	}
 	
 	/* (non-Javadoc)
