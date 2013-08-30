@@ -1,5 +1,6 @@
 package atrophy.combat.ai;
 
+import java.util.Random;
 import java.util.Stack;
 
 import watoydoEngine.utils.Maths;
@@ -14,7 +15,8 @@ import atrophy.combat.level.LevelBlockGrid.GridBlock;
 public class AiPathing {
 
 	private static final int SLOWING_DISTANCE = MeleeWeapon1.RANGE;
-	private static final int SLOW_MAX_MOVE = SLOWING_DISTANCE - 10;
+	private static final int SLOW_MAX_MOVE = SLOWING_DISTANCE + 10;
+	private static final int MAJOR_SLOW_MAX_MOVE = 5;
 
 	private Stack<Portal> portalPathway;
 	
@@ -295,12 +297,21 @@ public class AiPathing {
 
 	public void resetMoveUnits(Ai invoker) {
 		
-		// Decrease move distance if ai nearby
-		for (Ai ai : aiCrowd.getActors()) {
-			if(!ai.getFaction().equals(invoker.getFaction()) && ai.getLevelBlock() == invoker.getLevelBlock() && ai.getTargetAi() == invoker &&
-			   Maths.getDistance(ai.getLocation(), invoker.getLocation()) < SLOWING_DISTANCE) {
-				this.moveUnits = SLOW_MAX_MOVE;
-				return;
+		// Chance to be majorly slowed
+		if(new Random().nextInt(10) > 8) {
+			this.moveUnits = MAJOR_SLOW_MAX_MOVE;
+			return;
+		}
+		
+		
+		if(this.moveDistance > SLOW_MAX_MOVE) {
+			// Decrease move distance if ai nearby
+			for (Ai ai : aiCrowd.getActors()) {
+				if(!ai.getFaction().equals(invoker.getFaction()) && ai.getLevelBlock() == invoker.getLevelBlock() && ai.getTargetAi() == invoker &&
+				   Maths.getDistance(ai.getLocation(), invoker.getLocation()) < SLOWING_DISTANCE) {
+					this.moveUnits = SLOW_MAX_MOVE;
+					return;
+				}
 			}
 		}
 		
