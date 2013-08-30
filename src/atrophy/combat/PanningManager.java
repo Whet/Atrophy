@@ -228,6 +228,10 @@ public class PanningManager {
 	}
 
 	public void updatePan(Point oldPoint, Point newPoint, double[] panAtClick) {
+		
+		if(oldPoint == null || newPoint == null || panAtClick == null)
+			return;
+		
 		this.panningOffset[0] = panAtClick[0];
 		this.panningOffset[1] = panAtClick[1];
 		
