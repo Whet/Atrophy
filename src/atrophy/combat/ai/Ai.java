@@ -95,7 +95,7 @@ public class Ai implements Lootable{
 		this.panningManager = panningManager;
 		
 		aiActions = new AiActions(aiCrowd, combatVisualManager, combatUiManager, combatMembersManager, combatInorganicManager, floatingIcons, mouseAbilityHandler, lootBox, levelManager);
-		aiPathing = new AiPathing(levelManager, x,y);
+		aiPathing = new AiPathing(aiCrowd, levelManager, x,y);
 		aiData = new AiData(mouseAbilityHandler, this, new MeleeWeapon1());
 		
 		this.mouseAbilityHandler = mouseAbilityHandler;
@@ -126,7 +126,7 @@ public class Ai implements Lootable{
 
 		skippingTurns = false;
 		aiActions = new AiActions(thinkingAi.aiCrowd, thinkingAi.combatVisualManager, thinkingAi.combatUiManager, thinkingAi.combatMembersManager, combatInorganicManager, floatingIcons, mouseAbilityHandler, thinkingAi.lootBox, levelManager);
-		aiPathing = new AiPathing(levelManager, thinkingAi.getLocation()[0], thinkingAi.getLocation()[1]);
+		aiPathing = new AiPathing(aiCrowd, levelManager, thinkingAi.getLocation()[0], thinkingAi.getLocation()[1]);
 		aiData = new AiData(mouseAbilityHandler, thinkingAi, thinkingAi.getWeapon());
 		
 		this.setMoveLocationToSelf();
@@ -224,7 +224,7 @@ public class Ai implements Lootable{
 	}
 
 	protected void resetMoveUnits(){
-		this.aiPathing.resetMoveUnits();
+		this.aiPathing.resetMoveUnits(this);
 	}
 	
 	public int getOldActionTurns() {
