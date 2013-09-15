@@ -16,6 +16,7 @@ public class InfoText extends Text {
 	private static final Mutex hintEditMutex = new Mutex();
 	
 	private List<InfoTextDisplayable> hints;
+	private List<String> specialHints;
 	
 	private CombatUiManager combatUiManager;
 	
@@ -25,6 +26,8 @@ public class InfoText extends Text {
 		this.setFont(FontList.AUD16);
 		
 		this.combatUiManager = combatUiManager;
+		
+		this.specialHints = new ArrayList<>();
 	}
 	
 	private void drawHints(){
@@ -32,11 +35,16 @@ public class InfoText extends Text {
 		this.setText("");
 		
 		// Set infoText in corner, correct size to show all lines
-		this.setLocation(10.0,DisplayManager.getInstance().getResolution()[1] - combatUiManager.getActionsBar().getSize()[1] - (20 * hintLines()));
+		this.setLocation(10.0,DisplayManager.getInstance().getResolution()[1] - combatUiManager.getActionsBar().getSize()[1] - (20 * (hintLines() + specialHints.size())));
 		
 		for(InfoTextDisplayable hint : hints){
 			this.appendText(hint.getUiHint() + "@n");
 		}
+		
+		for(String hint: specialHints) {
+			this.appendText(hint + "@n");
+		}
+		
 		hintEditMutex.release();
 	}
 	
@@ -93,6 +101,32 @@ public class InfoText extends Text {
 				hintEditMutex.acquire();
 				drawHints();
 			}
+		}
+		catch(InterruptedException ie){
+			System.err.println("Interrupted");
+			Thread.currentThread().interrupt();
+		}
+	}
+
+	public void displayInfo(String string) {
+		if(!specialHints.contains(string)) {
+			try {
+				hintEditMutex.acquire();
+				specialHints.add(string);
+				drawHints();
+			}
+			catch(InterruptedException ie){
+				System.err.println("Interrupted");
+				Thread.currentThread().interrupt();
+			}
+		}
+	}
+
+	public void removeInfo(String string) {
+		try {
+			hintEditMutex.acquire();
+			specialHints.remove(string);
+			drawHints();
 		}
 		catch(InterruptedException ie){
 			System.err.println("Interrupted");

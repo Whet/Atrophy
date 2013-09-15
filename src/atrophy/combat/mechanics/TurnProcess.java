@@ -32,6 +32,7 @@ import atrophy.combat.display.AiManagementSuite;
 import atrophy.combat.display.MapDrawer;
 import atrophy.combat.display.ui.CartographerBox;
 import atrophy.combat.display.ui.FloatingIcons;
+import atrophy.combat.display.ui.InfoTextDisplayable;
 import atrophy.combat.display.ui.MessageBox;
 import atrophy.combat.display.ui.UiUpdaterSuite;
 import atrophy.combat.display.ui.loot.LootBox;
@@ -138,6 +139,24 @@ public class TurnProcess {
 		}
 		
 		missionManager.checkTriggers();
+		
+		// Check if all units in saferoom to display hint text
+		boolean teamInSaferoom = false;
+		
+		for(int i = 0; i < aiCrowd.getActorCount(); i++){
+			if(aiCrowd.getActor(i).getFaction().equals(AiGenerator.PLAYER) &&
+			   !aiCrowd.getActor(i).isDead() &&
+			   missionManager.isInSaferoom(aiCrowd.getActor(i).getLevelBlock())){
+				teamInSaferoom = true;
+			}
+		}
+		
+		if(teamInSaferoom){
+			combatUiManager.getInfoText().displayInfo("Press Esc to leave level");
+		}
+		else {
+			combatUiManager.getInfoText().removeInfo("Press Esc to leave level");
+		}
 		
 		if(checkGameOver())
 			this.endGame();
@@ -288,6 +307,8 @@ public class TurnProcess {
 		// not else if as isPlayerAttacker resets the boolean for the turn
 		if(aiCrowd.getDirector().isPlayerAttacker() && !playDeathSound)
 			SoundBoard.getInstance().playEffect("dangerSound");
+		
+		
 	}
 	
 	private void updateTweens() {
