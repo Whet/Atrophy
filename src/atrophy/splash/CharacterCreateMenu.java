@@ -32,7 +32,7 @@ import atrophy.hardPanes.GameMenuHardPane;
 
 public class CharacterCreateMenu extends Crowd{
 
-	private static final int START_ADVANCE = 99999999;
+	private static final int START_ADVANCE = 200;
 
 	private TextInput name;
 	private ImageSelect image;
