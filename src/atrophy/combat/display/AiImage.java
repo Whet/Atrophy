@@ -314,7 +314,7 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 			this.updateAnimation();
 		}
 		
-		if(this.isVisible() && this.frame >= attackFrame &&
+		if(this.isVisible() && this.frame >= attackFrame && attackTarget != null &&
 		  (this.animation.equals(Animation.ATTACK_MELEE) || this.animation.equals(Animation.ATTACK_WEP1) || this.animation.equals(Animation.ATTACK_WEP2) || this.animation.equals(Animation.ATTACK_WEP3))){
 			floatingIcons.addEffect(this.getAi().getWeapon().getFireEffect(panningManager, this.getAi().getLocation(), attackTarget.getLocation()));
 			attackTarget = null;
