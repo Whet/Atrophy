@@ -67,6 +67,7 @@ public class TechTree implements Serializable{
 		
 		
 		TechnologyNode mechanicalWeapons = new TechnologyNode(new TechnologyNode[]{base}, MECHANICAL_WEAPONS,0,1,1,0);
+		mechanicalWeapons.setResearched(true);
 		techTree.put(MECHANICAL_WEAPONS,mechanicalWeapons);
 		
 		TechnologyNode impMechanicalWeapons = new TechnologyNode(new TechnologyNode[]{mechanicalWeapons}, CALIBRATION,1,2,0,0);
