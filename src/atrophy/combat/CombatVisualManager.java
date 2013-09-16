@@ -97,8 +97,9 @@ public class CombatVisualManager {
 		
 		if(this.aiVisibilityCache.get(looker).containsKey(lookedAt)) {
 			double[] ds = this.aiVisibilityCache.get(looker).get(lookedAt);
-			
-			if(ds[0] == ds[2] && ds[1] == ds[3] && spotStealth(looker, lookedAt))
+			//looker[x,y]
+			//lookedat[x,y]
+			if(looker.getLocation()[0] == ds[0] && lookedAt.getLocation()[0] == ds[2] &&  looker.getLocation()[1] == ds[1] && lookedAt.getLocation()[1] == ds[3] && spotStealth(looker, lookedAt))
 				return true;
 		}
 		
