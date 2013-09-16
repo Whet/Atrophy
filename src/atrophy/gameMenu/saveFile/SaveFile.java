@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Set;
 
+import atrophy.combat.ai.AiGenerator;
 import atrophy.gameMenu.saveFile.MapManager.Sector;
 import atrophy.gameMenu.ui.ShopManager;
 import atrophy.gameMenu.ui.StashManager;
@@ -27,6 +28,7 @@ public class SaveFile implements Serializable{
 	public ArrayList<MissionGiver> quests;
 	public ArrayList<String> economyEffects;
 	public Integer advance;
+	public Double whiteVistaRelation, banditRelation;
 	
 	public TechTree techTree;
 	public Set<String> spawnCodes;
@@ -40,11 +42,14 @@ public class SaveFile implements Serializable{
 		this.economyEffects = missions.getEconomyEffects();
 		this.techTree = techTree;
 		this.spawnCodes = spawnCodes;
+		this.whiteVistaRelation = 1.0;
+		this.banditRelation = -1.0;
 	}
 
 	public static void saveGame(File file, Squad squad, Missions missions, ArrayList<Sector> sectors, ArrayList<String> stash, TechTree techTree, Set<String> spawnCodes){
 		SaveFile save = new SaveFile(squad,missions,sectors,stash,techTree,spawnCodes);
-		
+		save.whiteVistaRelation = squad.getFactionRelation(AiGenerator.WHITE_VISTA);
+		save.banditRelation = squad.getFactionRelation(AiGenerator.BANDITS);
 		save.saveURL = file.getAbsolutePath();
 		
 		ObjectOutputStream stream = null;
@@ -105,7 +110,7 @@ public class SaveFile implements Serializable{
 			// set advance to true value
 			save.squad.setAdvance(save.advance);
 			save.squad.setTechTree(save.techTree);
-			
+			save.squad.setFactionRelations(save.whiteVistaRelation, save.banditRelation);
 			SaveFile.saveLocation = save.saveURL;
 		}
 		

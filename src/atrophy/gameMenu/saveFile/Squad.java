@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.ai.MuleAi;
 import atrophy.combat.mechanics.Abilities;
 
@@ -22,10 +23,15 @@ public class Squad implements Serializable {
 	
 	private ArrayList<Squaddie> squadMembers;
 	private TechTree techTree;
+
+	private Double whiteVistaRelation;
+	private Double banditRelation;
 	
 	public Squad(){
 		this.squadMembers = new ArrayList<Squaddie>(5);
 		this.stability = 1;
+		this.whiteVistaRelation = 1.0;
+		this.banditRelation = -1.0;
 	}
 	
 	public ArrayList<Squaddie> getSquad(){
@@ -194,6 +200,40 @@ public class Squad implements Serializable {
 
 	public TechTree getTechTree() {
 		return this.techTree;
+	}
+
+	public void setFactionRelations(Double whiteVistaRelation, Double banditRelation) {
+		this.whiteVistaRelation = whiteVistaRelation;
+		this.banditRelation = banditRelation;
+	}
+
+	public void incrementFactionRelation(String faction, double increment) {
+		switch(faction) {
+			case AiGenerator.WHITE_VISTA:
+				this.whiteVistaRelation += increment;
+				if(whiteVistaRelation > 2)
+					whiteVistaRelation = 2.0;
+				else if(whiteVistaRelation < -2)
+					whiteVistaRelation = -2.0;
+			break;
+			case AiGenerator.BANDITS:
+				this.banditRelation += increment;
+				if(banditRelation > 2)
+					banditRelation = 2.0;
+				else if(banditRelation < -2)
+					banditRelation = -2.0;
+			break;
+		}
+	}
+
+	public Double getFactionRelation(String faction) {
+		switch(faction) {
+			case AiGenerator.WHITE_VISTA:
+			return this.whiteVistaRelation;
+			case AiGenerator.BANDITS:
+			return this.banditRelation;
+		}
+		return 0.0;
 	}
 
 }

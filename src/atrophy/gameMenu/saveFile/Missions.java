@@ -49,10 +49,10 @@ public class Missions{
 		if(this.missionGivers.isEmpty()) {
 			this.missionGivers.add(new MissionGiver.WVGiver1(squad, this, techTree, stashManager, itemMarkert));
 			this.missionGivers.add(new MissionGiver.LonerGiver1(squad, this, techTree, stashManager, itemMarkert));
-//			this.missionGivers.add(new MissionGiver.BanditGiver1(squad, this, techTree, stashManager, itemMarkert));
+			this.missionGivers.add(new MissionGiver.BanditGiver1(squad, this, techTree, stashManager, itemMarkert));
 			this.missionGivers.add(new MissionGiver.WVGiver2(squad, this, techTree, stashManager, itemMarkert));
 			this.missionGivers.add(new MissionGiver.LonerGiver2(squad, this, techTree, stashManager, itemMarkert));
-//			this.missionGivers.add(new MissionGiver.BanditGiver2(squad, this, techTree, stashManager, itemMarkert));
+			this.missionGivers.add(new MissionGiver.BanditGiver2(squad, this, techTree, stashManager, itemMarkert));
 		}
 		
 		this.updateMissions();
@@ -171,8 +171,9 @@ public class Missions{
 		protected Squad squad;
 		protected StashManager stashManager;
 		protected Integer timeToLive;
+		protected String faction;
 		
-		public Mission(Missions missions, StashManager stashManager, String name, String description, boolean isRewardItem, Object reward, Squad squad){
+		public Mission(Missions missions, StashManager stashManager, String faction, String name, String description, boolean isRewardItem, Object reward, Squad squad){
 			this.rewardItem = isRewardItem;
 			this.reward = reward;
 			this.name = name;
@@ -181,6 +182,7 @@ public class Missions{
 			this.squad = squad;
 			this.stashManager = stashManager;
 			this.timeToLive = 5;
+			this.faction = faction;
 		}
 		
 		protected void giveReward() {
@@ -190,6 +192,11 @@ public class Missions{
 			else{
 				missions.squad.setAdvance(missions.squad.getAdvance() + (Integer)reward);
 			}
+			
+			if(missions.squad.getFactionRelation(faction) >= 0)
+				missions.squad.incrementFactionRelation(this.faction, 0.1);
+			else
+				missions.squad.incrementFactionRelation(this.faction, 0.05);
 			
 			missions.missions.remove(this);
 		}
@@ -233,8 +240,8 @@ public class Missions{
 		private TechTree techTree;
 		private String tech;
 		
-		public ShoppingListMission(Missions missions, Squad squad, StashManager stashManager, TechTree techTree, int[] requirements, Object rewardPerItem, String tech) {
-			super(missions, stashManager,
+		public ShoppingListMission(Missions missions, Squad squad, StashManager stashManager, TechTree techTree, int[] requirements, Object rewardPerItem, String tech, String faction) {
+			super(missions, stashManager, faction,
 				  "Unlock the Mysteries of: " + tech,
 				  "Obj: To unlock the mysteries of " + tech + "@nThe following are required:@nSci. "+ requirements[0] + " Eng. " + requirements[1] + " Wep. " + requirements[2] + " Med. " + requirements[3]
 						  + "@nReward per Supply: " + rewardPerItem,
@@ -337,8 +344,9 @@ public class Missions{
 		 * @param rewardItem the reward item
 		 * @param reward the reward
 		 */
-		public GatherMission(Missions missions, Squad squad, StashManager stashManager, String targetItem, boolean rewardItem, Object reward){
-			super(missions, stashManager, "Req: " + targetItem,
+		public GatherMission(Missions missions, Squad squad, StashManager stashManager, String targetItem, boolean rewardItem, Object reward, String faction){
+			super(missions, stashManager, faction,
+				  "Req: " + targetItem,
 				  "Obj: Hand in a " + targetItem + "@nReward: " + reward,
 				  rewardItem, reward, squad);
 			

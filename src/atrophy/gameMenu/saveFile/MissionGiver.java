@@ -1,6 +1,3 @@
-/*
- * 
- */
 package atrophy.gameMenu.saveFile;
 
 import java.io.Serializable;
@@ -15,39 +12,17 @@ import atrophy.gameMenu.saveFile.Missions.GatherMission;
 import atrophy.gameMenu.saveFile.Missions.Mission;
 import atrophy.gameMenu.ui.StashManager;
 
-/**
- * The Class MissionGiver.
- */
 public abstract class MissionGiver implements Serializable{
 
-	/**
-	 * The Constant serialVersionUID.
-	 */
 	private static final long serialVersionUID = -1513720208713723216L;
 
-	/**
-	 * The mission.
-	 */
 	private Mission mission;
-	
-	/**
-	 * The name.
-	 */
 	private String name;
 	
-	/**
-	 * The faction.
-	 */
 	private String faction;
-	
 	protected String tech;
 	
 	protected int scienceSupply, weaponSupply, engineeringSupply, medicalSupply;
-	
-	/**
-	 * The reputation.
-	 */
-	private int reputation;
 	
 	protected Squad squad;
 	protected Missions missions;
@@ -64,7 +39,6 @@ public abstract class MissionGiver implements Serializable{
 	protected MissionGiver(Squad squad, Missions missions, TechTree techTree, StashManager stashManager, ItemMarket itemMarket, String name, String faction){
 		this.name = name;
 		this.faction = faction;
-		this.reputation = 0;
 		
 		this.squad = squad;
 		this.missions = missions;
@@ -153,7 +127,7 @@ public abstract class MissionGiver implements Serializable{
 	protected void shoppingListMission(Squad squad, Missions missions, StashManager stashManager, int[] requirements, String tech){
 		Object reward = new Random().nextInt(300) + 100;
 		
-		this.mission = new Missions.ShoppingListMission(missions, squad, stashManager, techTree, requirements, reward, tech);
+		this.mission = new Missions.ShoppingListMission(missions, squad, stashManager, techTree, requirements, reward, tech, this.faction);
 	}
 	
 	/**
@@ -166,7 +140,7 @@ public abstract class MissionGiver implements Serializable{
 	protected void gatherMission(String item, Squad squad, Missions missions, StashManager stashManager){
 		Object reward = randomReward();
 		
-		this.mission = new GatherMission(missions, squad, stashManager, item, reward instanceof String, reward);
+		this.mission = new GatherMission(missions, squad, stashManager, item, reward instanceof String, reward, this.faction);
 	}
 	
 	/**
@@ -218,29 +192,6 @@ public abstract class MissionGiver implements Serializable{
 		return "";
 	}
 
-	/**
-	 * Gets the reputation.
-	 *
-	 * @return the reputation
-	 */
-	public int getReputation() {
-		return reputation;
-	}
-
-	/**
-	 * Sets the reputation.
-	 *
-	 * @param reputation the new reputation
-	 */
-	public void setReputation(int reputation) {
-		this.reputation = reputation;
-	}
-
-	/**
-	 * Random reward.
-	 *
-	 * @return the object
-	 */
 	private Object randomReward() {
 		return itemMarket.getRandomMarketItem();
 	}
