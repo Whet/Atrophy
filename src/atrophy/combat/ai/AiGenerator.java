@@ -254,7 +254,7 @@ public class AiGenerator{
 			case AiGenerator.BANDITS:
 				ai = new ThinkingAi(dialoguePool, panningManager, combatVisualManager, turnProcess, floatingIcons, mouseAbilityHandler, aiCrowd, combatMembersManager, command.getName(),location[0],location[1], levelManager, combatInorganicManager, combatUiManager, lootbox);
 				ai.setBaseAggression(ThinkingAiEmotion.AGGRESSIVE_FIGHTER);
-				ai.setImage(randomImage());
+				ai.setImage("Bandit");
 				ai.setTeam(team+BANDITS);
 			break;
 		}
@@ -440,6 +440,7 @@ public class AiGenerator{
 			switch(ai.getFaction()){
 				case BANDITS:
 					ai.setBaseAggression(ThinkingAiEmotion.AGGRESSIVE_FIGHTER);
+					ai.setImage("Bandit");
 				break;
 				case WHITE_VISTA:
 					ai.setBaseAggression(ThinkingAiEmotion.PASSIVE_RESPOND);

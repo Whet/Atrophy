@@ -203,6 +203,10 @@ public class AiCrowd extends Crowd {
 			this.animations.put("ScoutFull", head1Blob);
 			this.animations.put("ArmourFull", head1Blob);
 			
+			String[] head2Files = {AF+"deadSpriteSheetBandit.png", AF+"idleSpriteSheetBandit1.png", AF+"idleSpriteSheetBandit2.png", AF+"idleSpriteSheetBandit3.png", AF+"idleSpriteSheetBandit4.png", AF+"attackSpriteSheetBandit1.png", AF+"attackSpriteSheetBandit2.png", AF+"attackSpriteSheetBandit3.png", AF+"attackSpriteSheetBandit4.png", AF+"walkSpriteSheet.png"};
+			AnimationBlob head2Blob = new AnimationBlob(ANIMATION_ORDER, head2Files, TILE_WIDTHS);
+			this.animations.put("BanditFull", head2Blob);
+			
 			String[] muleFiles = {AF+"mule.png", AF+"muleDead.png"};
 			AnimationBlob muleBlob = new AnimationBlob(new Animation[]{Animation.IDLE_MELEE, Animation.DEAD}, muleFiles, new int[]{30, 30});
 			this.animations.put("MuleFull", muleBlob);
