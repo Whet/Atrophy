@@ -134,9 +134,8 @@ public class ThinkingAi extends Ai{
 				this.aiMode = (AiMode.LOOT);
 			}
 			
-			if(Maths.getDistance(this.getLocation(), this.getMoveLocation()) > 0){
+			if(Maths.getDistance(this.getLocation(), this.getMoveLocation()) > 0 && !this.getAction().toLowerCase().startsWith("weld")){
 				this.aiPathing.move(this);
-				
 				this.setActionTurns(0);
 			}
 			else if(this.getTargetAi() != null && !this.aiMode.equals(AiMode.LOOT)&&!this.getAction().equals("Loot") && !this.getAction().equals("Looting")){
@@ -246,29 +245,11 @@ public class ThinkingAi extends Ai{
 	
 	private void tryToClearPath() {
 		// if the path is blocked by a portal then open it
-		if(this.getAbilities().contains(Abilities.WELDING)){
-			for(int i = 0; i < this.getLevelBlock().getPortalCount(); i++){
-				
-				if(!this.getLevelBlock().getPortal(i).canUse() &&
-				   this.getPortalPathway().contains(this.getLevelBlock().getPortal(i))){
-					this.setWeldingOpen(this.getLevelBlock().getPortal(i));
-					break;
-				}
-			}
+		if(this.getAbilities().contains(Abilities.WELDING) && this.getPortalPathway() != null && this.getPortalPathway().size() > 0 && !this.getPortalPathway().peek().canUse()){
+			this.setWeldingOpen(this.getPortalPathway().peek());
 		}
 		else {
-			for(int i = 0; i < this.getLevelBlock().getPortalCount(); i++){
-				
-				if(!this.getLevelBlock().getPortal(i).canUse() &&
-				   this.getPortalPathway().contains(this.getLevelBlock().getPortal(i))){
-					// if the request to get the door open is denied
-					if(!this.getCommander().requestDoorOpen(this.getLevelBlock().getPortal(i))){
-						this.idle();
-					}
-					
-					break;
-				}
-			}
+			// Flag commander to open door
 		}
 	}
 
@@ -336,6 +317,8 @@ public class ThinkingAi extends Ai{
 		if(this.aiMode.equals(AiMode.CAMPING) && this.turnCounter == 1 && !this.getAction().startsWith("Applying:")){
 			doingJob = true;
 		}
+		
+		tryToClearPath();
 	}
 
 	private void fleeingAction() {
