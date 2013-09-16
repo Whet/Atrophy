@@ -325,6 +325,7 @@ public class AiCrowd extends Crowd {
 	public Squad saveToSquad() {
 		Squad squad = new Squad();
 		
+		squad.setFactionRelations(this.squad.getFactionRelation(AiGenerator.WHITE_VISTA), this.squad.getFactionRelation(AiGenerator.BANDITS));
 		squad.setAdvance(this.squad.getAdvance());
 		
 		for(int i = 0; i < this.actors.size(); i++){
