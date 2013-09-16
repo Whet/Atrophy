@@ -133,9 +133,11 @@ public class AtrophyScriptReader {
 					
 					
 					for(String tag: tags) {
-						if(child.getChild(1).toString().equals("NOTIF") && missions.hasMemCode(tag)) {
-							condMet = false;
-							break;
+						if(child.getChild(1).toString().equals("NOTIF")) {
+							if(missions.hasMemCode(tag)) {
+								condMet = false;
+								break;
+							}
 						}
 						else if(!missions.hasMemCode(tag)) {
 							condMet = false;
