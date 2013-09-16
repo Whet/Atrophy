@@ -17,6 +17,7 @@ import atrophy.combat.level.LevelBlock;
 import atrophy.combat.level.LevelManager;
 import atrophy.combat.level.Portal;
 import atrophy.combat.mechanics.TurnProcess;
+import atrophy.gameMenu.saveFile.Squad;
 
 public class TeamsCommander {
 	
@@ -46,9 +47,11 @@ public class TeamsCommander {
 
 	private TurnProcess turnProcess;
 	private LevelManager levelManager;
+	private Squad squad;
 
-	public TeamsCommander(TurnProcess turnProcess, String faction, LevelManager levelManager){
+	public TeamsCommander(Squad squad, TurnProcess turnProcess, String faction, LevelManager levelManager){
 
+		this.squad = squad;
 		this.faction = faction;
 		this.levelManager = levelManager;
 		this.turnProcess = turnProcess;
@@ -466,6 +469,9 @@ public class TeamsCommander {
 	
 	public void addHatedAi(Ai hatedAi){
 		this.hatedAi.add(hatedAi);
+		
+		if(hatedAi.getFaction().equals(AiGenerator.PLAYER))
+			squad.incrementFactionRelation(this.getFaction(), -1.8);
 	}
 	
 	public boolean isAiHated(Ai ai){
@@ -544,6 +550,9 @@ public class TeamsCommander {
 		}
 //		System.out.println(killer.getName() + " is wanted!");
 		this.suspectedAi.put(killer, 30);
+		
+		if(killer.getFaction().equals(AiGenerator.PLAYER))
+			squad.incrementFactionRelation(this.getFaction(), -0.2);
 	}
 	
 	public boolean isSuspected(Ai suspect) {
@@ -552,6 +561,9 @@ public class TeamsCommander {
 
 	public void removeSuspected(Ai ai) {
 		this.suspectedAi.remove(ai);
+		
+		if(ai.getFaction().equals(AiGenerator.PLAYER))
+			squad.incrementFactionRelation(this.getFaction(), 0.2);
 	}
 
 	public void removeHatedAi(Ai speaker) {

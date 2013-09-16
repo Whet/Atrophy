@@ -94,9 +94,9 @@ public class CombatMembersManager {
 	}
 	
 	public void createCommanders(double banditRep, double wvRep) {
-		WhiteVistaCommander whiteVistaCommander = new WhiteVistaCommander(turnProcess, levelManager);
+		WhiteVistaCommander whiteVistaCommander = new WhiteVistaCommander(aiCrowd.getSquad(), turnProcess, levelManager);
 		commanders.add(whiteVistaCommander);
-		BanditCommander banditCommander = new BanditCommander(turnProcess, levelManager);
+		BanditCommander banditCommander = new BanditCommander(aiCrowd.getSquad(), turnProcess, levelManager);
 		commanders.add(banditCommander);
 		
 		if(banditRep >= 1)
@@ -106,13 +106,13 @@ public class CombatMembersManager {
 	}
 	
 	public LonerCommander createLonerCommander() {
-		LonerCommander lonerCommander = new LonerCommander(turnProcess, levelManager);
+		LonerCommander lonerCommander = new LonerCommander(aiCrowd.getSquad(), turnProcess, levelManager);
 		commanders.add(lonerCommander);
 		return lonerCommander;
 	}
 	
 	private DaemonCommander createDaemonCommander() {
-		DaemonCommander daemonCommander = new DaemonCommander(turnProcess, levelManager);
+		DaemonCommander daemonCommander = new DaemonCommander(aiCrowd.getSquad(), turnProcess, levelManager);
 		commanders.add(daemonCommander);
 		return daemonCommander;
 	}
