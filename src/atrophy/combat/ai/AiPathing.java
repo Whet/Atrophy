@@ -297,18 +297,18 @@ public class AiPathing {
 
 	public void resetMoveUnits(Ai invoker) {
 		
-		// Chance to be majorly slowed
-		if(new Random().nextInt(10) > 8) {
-			this.moveUnits = MAJOR_SLOW_MAX_MOVE;
-			return;
-		}
-		
-		
 		if(this.moveDistance > SLOW_MAX_MOVE) {
 			// Decrease move distance if ai nearby
 			for (Ai ai : aiCrowd.getActors()) {
 				if(!ai.getFaction().equals(invoker.getFaction()) && ai.getLevelBlock() == invoker.getLevelBlock() && ai.getTargetAi() == invoker &&
 				   Maths.getDistance(ai.getLocation(), invoker.getLocation()) < SLOWING_DISTANCE) {
+					
+					// Chance to be majorly slowed
+					if(new Random().nextInt(10) > 8) {
+						this.moveUnits = MAJOR_SLOW_MAX_MOVE;
+						return;
+					}
+					
 					this.moveUnits = SLOW_MAX_MOVE;
 					return;
 				}
