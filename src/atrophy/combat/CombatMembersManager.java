@@ -93,9 +93,16 @@ public class CombatMembersManager {
 		
 	}
 	
-	public void createCommanders() {
-		commanders.add(new WhiteVistaCommander(turnProcess, levelManager));
-		commanders.add(new BanditCommander(turnProcess, levelManager));
+	public void createCommanders(double banditRep, double wvRep) {
+		WhiteVistaCommander whiteVistaCommander = new WhiteVistaCommander(turnProcess, levelManager);
+		commanders.add(whiteVistaCommander);
+		BanditCommander banditCommander = new BanditCommander(turnProcess, levelManager);
+		commanders.add(banditCommander);
+		
+		if(banditRep >= 1)
+			banditCommander.addAlliance(AiGenerator.PLAYER);
+		if(wvRep >= 1)
+			whiteVistaCommander.addAlliance(AiGenerator.PLAYER);
 	}
 	
 	public LonerCommander createLonerCommander() {
