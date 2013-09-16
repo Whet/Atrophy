@@ -454,10 +454,10 @@ public class AtrophyScriptReader {
 				createRegion(tree);
 			break;
 			case "TRIGGER":
-				triggers.add(createTrigger(tree, missionManager, missions, aiCrowd, messageBox, combatMembersManager, turnProcess, itemMarket, techTree, stashManager));
+				triggers.add(createTrigger(tree, missionManager, missions, aiCrowd, messageBox, combatMembersManager, turnProcess, itemMarket, techTree, stashManager, level));
 			break;
 			case "COMMAND":
-				commands.add(createCommand(tree, missionManager, missions, aiCrowd, messageBox, combatMembersManager, turnProcess, itemMarket, techTree, stashManager));
+				commands.add(createCommand(tree, missionManager, missions, aiCrowd, messageBox, combatMembersManager, turnProcess, itemMarket, techTree, stashManager, level));
 			break;
 			case "TALK":
 				TalkInfo talkInfo = createTalkTopic(tree, missions, missionManager, messageBox);
@@ -539,7 +539,7 @@ public class AtrophyScriptReader {
 	
 	private static StoredCommand createCommand(Tree tree, MissionManager missionManager, Missions missions, AiCrowd aiCrowd,
 										       MessageBox messageBox, CombatMembersManager combatMembersManager, TurnProcess turnProcess,
-										       ItemMarket itemMarket, TechTree techTree, StashManager stashManager) {
+										       ItemMarket itemMarket, TechTree techTree, StashManager stashManager, Level level) {
 		
 		String name = "";
 		List<TriggerEffect> effects = new ArrayList<>();
@@ -547,7 +547,7 @@ public class AtrophyScriptReader {
 		for(int i = 0; i < tree.getChildCount(); i++) {
 			switch(tree.getChild(i).toString()) {
 				case "TRIGGEREFFECT":
-					effects = createEffects(tree.getChild(i), missionManager, missions, aiCrowd, messageBox, combatMembersManager, turnProcess, itemMarket, techTree, stashManager);
+					effects = createEffects(tree.getChild(i), missionManager, missions, aiCrowd, messageBox, combatMembersManager, turnProcess, itemMarket, techTree, stashManager, level);
 				break;
 				case "VAR":
 					name = tree.getChild(i).getChild(0).toString();
@@ -561,7 +561,7 @@ public class AtrophyScriptReader {
 
 	private static TriggerCommand createTrigger(Tree tree, MissionManager missionManager, Missions missions, AiCrowd aiCrowd,
 												MessageBox messageBox, CombatMembersManager combatMembersManager, TurnProcess turnProcess,
-												ItemMarket itemMarket, TechTree techTree, StashManager stashManager) {
+												ItemMarket itemMarket, TechTree techTree, StashManager stashManager, Level level) {
 		
 		String name = "";
 		TriggerCond condition = null;
@@ -573,7 +573,7 @@ public class AtrophyScriptReader {
 					condition = new TriggerCond(tree.getChild(i), aiCrowd, missionManager);
 				break;
 				case "TRIGGEREFFECT":
-					effects = createEffects(tree.getChild(i), missionManager, missions, aiCrowd, messageBox, combatMembersManager, turnProcess, itemMarket, techTree, stashManager);
+					effects = createEffects(tree.getChild(i), missionManager, missions, aiCrowd, messageBox, combatMembersManager, turnProcess, itemMarket, techTree, stashManager, level);
 				break;
 				case "VAR":
 					name = tree.getChild(i).getChild(0).toString();
@@ -1641,7 +1641,7 @@ public class AtrophyScriptReader {
 	
 	private static List<TriggerEffect> createEffects(Tree tree, MissionManager missionManager, Missions missions, AiCrowd aiCrowd,
 													 MessageBox messageBox, CombatMembersManager combatMembersManager, TurnProcess turnProcess,
-													 ItemMarket itemMarket, TechTree techTree, StashManager stashManager) {
+													 ItemMarket itemMarket, TechTree techTree, StashManager stashManager, Level level) {
 		
 		List<TriggerEffect> effects = new ArrayList<>();
 		
@@ -2015,7 +2015,15 @@ public class AtrophyScriptReader {
 			
 			modules.clear();
 		}
-		
+		else if(commTree.toString().equals("MAPSPAWNS")) {
+			Set<String> allowedSpawns = new HashSet<>();
+			
+			for(int k = 0 ; k < commTree.getChildCount(); k++) {
+				allowedSpawns.add(createString(commTree.getChild(k)));
+			}
+			
+			level.setAllowedSpawns(allowedSpawns);
+		}
 	}
 
 	public static Level readBlocks(File file) throws RecognitionException, IOException {
