@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import watoydoEngine.designObjects.display.TextButton;
 import watoydoEngine.sounds.SoundBoard;
 import watoydoEngine.utils.GraphicsFunctions;
+import atrophy.combat.ai.AiGenerator;
 import atrophy.gameMenu.saveFile.Missions;
 
 /**
@@ -41,7 +42,7 @@ public class MissionsMenu extends Menu{
 	 * @param stashManager 
 	 */
 	public MissionsMenu(WindowManager windowManager, Missions missions, StashManager stashManager) {
-		super(windowManager, new double[]{400,270});
+		super(windowManager, new double[]{440,270});
 		page = 0;
 		addComponents(missions, stashManager);
 		
@@ -161,7 +162,7 @@ public class MissionsMenu extends Menu{
 	private void drawTitle(Graphics2D drawShape) {
 		drawShape.setComposite(GraphicsFunctions.makeComposite(1.0f));
 		drawShape.setColor(Color.white);
-		drawShape.drawString("Missions   Page " + page, (int)this.getLocation()[0] + 20, (int)this.getLocation()[1] + 21);
+		drawShape.drawString("Missions   Page " + page + "   Rep: Bandits ("+missions.getSquad().getFactionRelation(AiGenerator.BANDITS) + ") White Vista (" + missions.getSquad().getFactionRelation(AiGenerator.WHITE_VISTA) + ")", (int)this.getLocation()[0] + 20, (int)this.getLocation()[1] + 21);
 	}
 	
 	/**

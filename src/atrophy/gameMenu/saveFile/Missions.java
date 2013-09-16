@@ -292,6 +292,12 @@ public class Missions{
 			
 			if(requirements[0] == 0 && requirements[1] == 0 && requirements[2] == 0 && requirements[3] == 0) {
 				techTree.research(tech);
+				
+				if(missions.squad.getFactionRelation(faction) >= 0)
+					missions.squad.incrementFactionRelation(this.faction, 0.1);
+				else
+					missions.squad.incrementFactionRelation(this.faction, 0.05);
+				
 				return true;
 			}
 			
