@@ -122,13 +122,40 @@ public class AtrophyScriptReader {
 			else if(child.toString().equals("SEQUENCE")) {
 				String treeName = child.getChild(0).toString();
 				
-				List<Tree> subTree = new ArrayList<>();
+				boolean condMet = true;
 				
-				for(int j = 1; j < child.getChildCount(); j++) {
-					subTree.add(child.getChild(j));
+				if(child.getChild(1).toString().equals("IF") || child.getChild(1).toString().equals("NOTIF")) {
+					
+					List<String> tags = new ArrayList<>();
+					for(int j = 0; j < child.getChild(1).getChildCount(); j++) {
+						tags.add(createString(child.getChild(1).getChild(j)));
+					}
+					
+					
+					for(String tag: tags) {
+						if(child.getChild(1).toString().equals("NOTIF") && missions.hasMemCode(tag)) {
+							condMet = false;
+							break;
+						}
+						else if(!missions.hasMemCode(tag)) {
+							condMet = false;
+							break;
+						}
+					}
+					
 				}
 				
-				commandTrees.put(treeName, subTree);
+				
+				if(condMet) {
+					List<Tree> subTree = new ArrayList<>();
+					
+					for(int j = 2; j < child.getChildCount(); j++) {
+						
+						subTree.add(child.getChild(j));
+					}
+					
+					commandTrees.put(treeName, subTree);
+				}
 			}
 			
 		}
