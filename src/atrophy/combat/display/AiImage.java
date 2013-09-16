@@ -191,7 +191,8 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 			// Not dead and not ally and in the same room, aim weapon at this ai
 			if(!this.getAi().isDead() && !this.getAi().getFaction().equals("Player")){
 				
-				if(CombatVisualManager.isInFiringSight(combatMembersManager.getCurrentAi().getLocation()[0], combatMembersManager.getCurrentAi().getLocation()[1], this.getAi().getLocation()[0], this.getAi().getLocation()[1], this.getAi().getLevelBlock())){
+				if(this.getAi().getLevelBlock() == combatMembersManager.getCurrentAi().getLevelBlock() &&
+				   (combatMembersManager.getCurrentAi().getWeapon().ignoresLOS() || CombatVisualManager.isInFiringSight(combatMembersManager.getCurrentAi().getLocation()[0], combatMembersManager.getCurrentAi().getLocation()[1], this.getAi().getLocation()[0], this.getAi().getLocation()[1], this.getAi().getLevelBlock()))){
 					combatMembersManager.getCurrentAi().aim(this.getAi());
 				}
 				

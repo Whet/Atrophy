@@ -334,11 +334,11 @@ public class TurnProcess {
 			if((actor.getAction().equals(AiCombatActions.AIMING) || actor.getAction().equals(AiCombatActions.SHOOTING)) &&
 			   (actor.getTargetAi() == null || actor.getTargetAi().isDead() || 
 			    actor.getTargetAi().getLevelBlock() != actor.getLevelBlock() ||
-			    !CombatVisualManager.isInFiringSight(actor.getLocation()[0],
+			    (!actor.getWeapon().ignoresLOS() && !CombatVisualManager.isInFiringSight(actor.getLocation()[0],
 			    									 actor.getLocation()[1], 
 											         actor.getTargetAi().getLocation()[0], 
 											         actor.getTargetAi().getLocation()[1],
-											         actor.getLevelBlock()))){
+											         actor.getLevelBlock())))){
 				
 				actor.setAction("");
 				actor.setTargetAi(null);

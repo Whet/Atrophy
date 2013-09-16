@@ -5,11 +5,8 @@ package atrophy.gameMenu.ui;
 
 import java.util.ArrayList;
 
-import atrophy.combat.items.EngineeringSupply;
-import atrophy.combat.items.MedicalSupply;
-import atrophy.combat.items.ScienceSupply;
+import atrophy.combat.items.Railgun;
 import atrophy.combat.items.Weapon;
-import atrophy.combat.items.WeaponSupply;
 import atrophy.gameMenu.saveFile.Squad.Squaddie;
 import atrophy.gameMenu.ui.popups.ShopSellPopup;
 
