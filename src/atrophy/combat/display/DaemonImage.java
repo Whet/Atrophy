@@ -68,7 +68,7 @@ public class DaemonImage extends AiImage {
 			deathFrame++;
 		
 		if(this.frame >= maxFrame && !this.getAi().isDead()) {
-			this.setAnimation(this.getIdleAnimation(), 4);
+			this.setAnimation(Animation.IDLE_MELEE, 4);
 		}
 		
 		this.setImage(aiCrowd.getAnimationFrame("DaemonFull", frame, animation));

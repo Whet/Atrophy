@@ -424,7 +424,13 @@ public class AiCrowd extends Crowd {
 		}
 		
 		public BufferedImage getFrame(int frame, Animation animation) {
-			return this.animations.get(animation)[frame];
+			try {
+				return this.animations.get(animation)[frame];
+			}
+			catch(NullPointerException e) {
+				System.out.println(frame + "  " + animation.toString());
+				throw e;
+			}
 		}
 		
 	}

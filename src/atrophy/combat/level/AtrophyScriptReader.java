@@ -1449,8 +1449,6 @@ public class AtrophyScriptReader {
 
 		@Override
 		public void run() {
-			// TODO Auto-generated method stub
-			
 		}
 		
 	}
