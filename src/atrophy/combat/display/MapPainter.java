@@ -60,7 +60,7 @@ public class MapPainter {
 		}
 	}
 	
-	public static void applyImage(BufferedImage texture, MapDrawer.MapDrawBlock drawBlock, double[] location, double alpha){
+	public static void applyImage(BufferedImage texture, MapDrawer.MapDrawBlock drawBlock, double[] location){
 		// only draw pixels where there are already pixels and in the same room
 		if(texture != null){
 			
@@ -75,7 +75,9 @@ public class MapPainter {
 						Color roomColour = new Color(drawBlock.getImage().getRGB((int)(i + location[0] - (texture.getWidth() * 0.5) - drawBlock.getHitbox().getBounds2D().getMinX()),
 																				 (int)(j + location[1] - (texture.getHeight() * 0.5) - drawBlock.getHitbox().getBounds2D().getMinY())));
 						
-						Color moddedColour = alphaColours(textureColour, roomColour, alpha);
+						Color pixel = new Color(texture.getRGB(i, j), true);
+						
+						Color moddedColour = alphaColours(textureColour, roomColour, pixel.getAlpha() / (double)255);
 						
 						drawBlock.getImage().setRGB((int)(i + location[0] - (texture.getWidth() * 0.5) - drawBlock.getHitbox().getBounds2D().getMinX()), 
 													(int)(j + location[1] - (texture.getHeight() * 0.5) - drawBlock.getHitbox().getBounds2D().getMinY()),
@@ -88,9 +90,26 @@ public class MapPainter {
 	}
 	
 	public static Color alphaColours(Color textureColour, Color roomColour, double alpha) {
-		return new Color((int)(textureColour.getRed() * alpha + roomColour.getRed() * (1 - alpha)),
-				         (int)(textureColour.getGreen() * alpha + roomColour.getGreen() * (1 - alpha)),
-					     (int)(textureColour.getBlue() * alpha + roomColour.getBlue() * (1 - alpha)));
+		int red = (int)(textureColour.getRed() * alpha + roomColour.getRed() * (1 - alpha));
+		int green = (int)(textureColour.getGreen() * alpha + roomColour.getGreen() * (1 - alpha));
+		int blue = (int)(textureColour.getBlue() * alpha + roomColour.getBlue() * (1 - alpha));
+		
+//		if(alpha != 1)
+//			System.out.println(alpha);
+//		
+//		if(red < 0)
+//			red = 0;
+//		else if (red > 255)
+//			red = 255;
+//		if(green < 0)
+//			green = 0;
+//		else if (green > 255)
+//			green = 255;
+//		if(blue < 0)
+//			blue = 0;
+//		else if (blue > 255)
+//			blue = 255;
+		return new Color(red,green,blue);
 	}
 
 	public static void applyMapTexture(BufferedImage texture, LevelBlock textureBlock, BufferedImage mapBlock) {

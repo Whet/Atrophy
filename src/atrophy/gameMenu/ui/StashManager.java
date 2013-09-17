@@ -5,7 +5,6 @@ package atrophy.gameMenu.ui;
 
 import java.util.ArrayList;
 
-import atrophy.combat.items.Railgun;
 import atrophy.combat.items.Weapon;
 import atrophy.gameMenu.saveFile.Squad.Squaddie;
 import atrophy.gameMenu.ui.popups.ShopSellPopup;
@@ -19,7 +18,7 @@ public class StashManager {
 	 * The items.
 	 */
 	protected ArrayList<String> items = new ArrayList<String>();
-	
+//	
 	/**
 	 * The selected item.
 	 */

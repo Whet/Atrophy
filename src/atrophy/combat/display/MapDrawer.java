@@ -5,6 +5,7 @@ import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.geom.AffineTransform;
 import java.awt.image.BufferedImage;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -94,6 +95,17 @@ public class MapDrawer implements Displayable {
 			
 			map[mapNumber].drawRegions(levelBlock);
 			
+			// Draw random glowsticks
+			for(int i = 0; i < new Random().nextInt(3); i++) {
+				try {
+					MapPainter.applyImage(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/texture/glowSticks1.png")), map[mapNumber], levelManager.randomInPosition(levelBlock));
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
+			
 			mapNumber++;
 		}
 	}
@@ -175,8 +187,7 @@ public class MapDrawer implements Displayable {
 				MapPainter.applyImage(COVER[new Random().nextInt(COVER.length)],
 									  this,
 									  new double[] {block.getCover().get(i).getBounds2D().getCenterX() + block.getLocation()[0],
-													block.getCover().get(i).getBounds2D().getCenterY() + block.getLocation()[1]},
-						                            1.0);
+													block.getCover().get(i).getBounds2D().getCenterY() + block.getLocation()[1]});
 			}
 			
 			// Make sure stash holes are drawn on top of the cover!
@@ -184,8 +195,7 @@ public class MapDrawer implements Displayable {
 				MapPainter.applyImage(STASH_HOLES[new Random().nextInt(STASH_HOLES.length)],
 									  this,
 									  new double[] {block.getStealthRegion().get(i).getBounds2D().getCenterX() + block.getLocation()[0],
-						                            block.getStealthRegion().get(i).getBounds2D().getCenterY() + block.getLocation()[1]},
-						                            1.0);
+						                            block.getStealthRegion().get(i).getBounds2D().getCenterY() + block.getLocation()[1]});
 				
 			}
 			
