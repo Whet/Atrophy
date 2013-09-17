@@ -8,7 +8,6 @@ import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
@@ -26,8 +25,8 @@ import atrophy.combat.ai.Ai;
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.level.LevelBlock;
 import atrophy.combat.level.LevelBlockGrid;
-import atrophy.combat.level.LevelManager;
 import atrophy.combat.level.LevelBlockGrid.GridBlock;
+import atrophy.combat.level.LevelManager;
 
 
 public class MapDrawer implements Displayable {
@@ -96,7 +95,8 @@ public class MapDrawer implements Displayable {
 			map[mapNumber].drawRegions(levelBlock);
 			
 			// Draw random glowsticks
-			for(int i = 0; i < new Random().nextInt(3); i++) {
+			double glowstickArea = levelBlock.getHitBox().getBounds2D().getWidth() * levelBlock.getHitBox().getBounds2D().getHeight();
+			for(int i = 0; i < glowstickArea / 100000; i++) {
 				try {
 					MapPainter.applyImage(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/texture/glowSticks1.png")), map[mapNumber], levelManager.randomInPosition(levelBlock));
 				} catch (FileNotFoundException e) {
@@ -183,11 +183,20 @@ public class MapDrawer implements Displayable {
 				System.exit(-1);
 			}
 			
+			Random rand = new Random(Long.valueOf(block.getCode()));
+			
 			for(int i = 0; i < block.getCover().size(); i++){
-				MapPainter.applyImage(COVER[new Random().nextInt(COVER.length)],
-									  this,
-									  new double[] {block.getCover().get(i).getBounds2D().getCenterX() + block.getLocation()[0],
-													block.getCover().get(i).getBounds2D().getCenterY() + block.getLocation()[1]});
+				int[] coverRegions = new int[10];
+				
+				for(int j = 0; j < coverRegions.length; j++) {
+					coverRegions[j] = rand.nextInt(COVER.length);
+				}
+				
+				for(int k = 0; k < coverRegions.length; k++) {
+					MapPainter.applyImage(COVER[coverRegions[k]],
+										  this.getImage(), block.getCover().get(i),
+										  new int[] {COVER[coverRegions[k]].getWidth() / (k + 1), k * 5});
+				}
 			}
 			
 			// Make sure stash holes are drawn on top of the cover!
@@ -195,7 +204,8 @@ public class MapDrawer implements Displayable {
 				MapPainter.applyImage(STASH_HOLES[new Random().nextInt(STASH_HOLES.length)],
 									  this,
 									  new double[] {block.getStealthRegion().get(i).getBounds2D().getCenterX() + block.getLocation()[0],
-						                            block.getStealthRegion().get(i).getBounds2D().getCenterY() + block.getLocation()[1]});
+									                block.getStealthRegion().get(i).getBounds2D().getCenterY() + block.getLocation()[1]});
+
 				
 			}
 			

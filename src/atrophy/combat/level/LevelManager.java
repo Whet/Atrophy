@@ -64,8 +64,10 @@ public class LevelManager {
 	}
 	
 	public double[] randomInPosition(LevelBlock room){
-		
-		Random rand = new Random();
+		return randomInPosition(room, new Random());
+	}
+	
+	public double[] randomInPosition(LevelBlock room, Random rand){
 		
 		double[] vertex;
 		

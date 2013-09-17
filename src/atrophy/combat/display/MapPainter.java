@@ -238,14 +238,14 @@ public class MapPainter {
 		return 0;
 	}
 
-	public static void applyImage(BufferedImage texture, BufferedImage drawShape, Polygon drawPoly, double[] offset) {
+	public static void applyImage(BufferedImage texture, BufferedImage drawShape, Polygon drawPoly, int[] offset) {
 
 		for(int i = 0; i < drawShape.getWidth(); i++){
 			for(int j = 0; j < drawShape.getHeight(); j++){
 				
-				if(drawPoly.contains(i + offset[0], j + offset[1])){
+				if(drawPoly.contains(i, j)){
 					
-					int[] location = {i,j};
+					int[] location = {i + offset[0], j + offset[1]};
 					
 					while(location[0] >= texture.getWidth()){
 						location[0] -= texture.getWidth();
@@ -254,7 +254,11 @@ public class MapPainter {
 						location[1] -= texture.getHeight();
 					}
 					
-					drawShape.setRGB(i,j, texture.getRGB(location[0],location[1]));
+					Color pixel = new Color(texture.getRGB(location[0], location[1]), true);
+					
+					Color moddedColour = alphaColours(pixel, new Color(drawShape.getRGB(i, j)), pixel.getAlpha() / (double)255);
+					
+					drawShape.setRGB(i,j, moddedColour.getRGB());
 				}
 				
 			}
