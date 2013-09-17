@@ -1162,6 +1162,7 @@ public class AtrophyScriptReader {
 				ai = matchAi.get(new Random().nextInt(matchAi.size()));
 			
 			if(ai != null && ai instanceof ThinkingAi && ((ThinkingAi) ai).getAiNode() != null && ((ThinkingAi) ai).getAiNode().getInitiatorDialogue() != null) {
+				((ThinkingAi) ai).getAiNode().getInitiatorDialogue().talkedTo(combatMembersManager.getCurrentAi());
 				messageBox.setConversation(combatMembersManager.getCurrentAi(), ai, ((ThinkingAi) ai).getAiNode().getInitiatorDialogue());
 			}
 			else if(ai != null) {

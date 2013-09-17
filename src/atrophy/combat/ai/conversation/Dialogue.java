@@ -1,6 +1,5 @@
 package atrophy.combat.ai.conversation;
 
-import java.awt.Color;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -12,7 +11,6 @@ import atrophy.combat.display.ui.MessageBox;
 import atrophy.combat.items.Item;
 import atrophy.combat.items.Weapon;
 import atrophy.combat.level.MissionManager;
-import atrophy.gameMenu.saveFile.Missions;
 
 public class Dialogue{
 	
