@@ -83,11 +83,16 @@ public class MapDrawer implements Displayable {
 			System.exit(-1);
 		}
 		
-		BufferedImage[] debrisImages = new BufferedImage[2];
+		BufferedImage[] debrisImages = new BufferedImage[7];
 		
 		try{
 			debrisImages[0] = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/texture/debris1.png"));
 			debrisImages[1] = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/texture/debris2.png"));
+			debrisImages[1] = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/texture/debris3.png"));
+			debrisImages[1] = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/texture/debris4.png"));
+			debrisImages[1] = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/texture/debris5.png"));
+			debrisImages[1] = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/texture/debris6.png"));
+			debrisImages[1] = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/texture/debris7.png"));
 		}
 		catch(IOException e){
 			System.err.println("No debris textures");
@@ -103,15 +108,15 @@ public class MapDrawer implements Displayable {
 			
 			MapPainter.applyMapTexture(floorTextures, floorTextInfo, levelBlock, map[mapNumber].getImage());
 			
-			// Draw random debris
-			double debrisArea = levelBlock.getHitBox().getBounds2D().getWidth() * levelBlock.getHitBox().getBounds2D().getHeight();
-			for(int i = 0; i < Math.floor(debrisArea / 200000); i++) {
-				
-				
-				int debris = new Random().nextInt(debrisImages.length);
-				
-				MapPainter.applyImage(debrisImages[debris], map[mapNumber], levelManager.randomInPosition(levelBlock));
-			}
+//			// Draw random debris
+//			double debrisArea = levelBlock.getHitBox().getBounds2D().getWidth() * levelBlock.getHitBox().getBounds2D().getHeight();
+//			for(int i = 0; i < Math.floor(debrisArea / 50000); i++) {
+//				
+//				
+//				int debris = new Random().nextInt(debrisImages.length);
+//				
+//				MapPainter.applyImage(debrisImages[debris], map[mapNumber], levelManager.randomInPosition(levelBlock));
+//			}
 			
 			map[mapNumber].drawRegions(levelBlock);
 			
