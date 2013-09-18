@@ -16,7 +16,7 @@ public class Squad implements Serializable {
 
 	private static final long serialVersionUID = 1922138873692593530L;
 
-	public static final int MAX_STABILITY = 100;
+	public static final int MAX_STABILITY = 30;
 	
 	private int advance;
 	private int stability;
@@ -67,6 +67,12 @@ public class Squad implements Serializable {
 
 	public void setStability(int stability) {
 		this.stability = stability;
+		
+		if(this.stability > MAX_STABILITY)
+			this.stability = MAX_STABILITY;
+		
+		if(this.stability < 0)
+			this.stability = 0;
 	}
 	
 	public void setAdvance(int advance) {

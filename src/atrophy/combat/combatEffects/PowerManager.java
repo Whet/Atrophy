@@ -83,12 +83,6 @@ public class PowerManager {
 	
 	private void modifyStability(int modification) {
 		squad.setStability(squad.getStability() + modification);
-		
-		if(squad.getStability() < 0)
-			squad.setStability(0);
-		
-		if(squad.getStability() > Squad.MAX_STABILITY)
-			squad.setStability(Squad.MAX_STABILITY);
 	}
 	
 	public int getRankedStability() {
