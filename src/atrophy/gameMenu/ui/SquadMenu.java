@@ -42,7 +42,7 @@ public class SquadMenu extends Menu{
 	 * @param shopManager 
 	 */
 	public SquadMenu(WindowManager windowManager, ShopManager shopManager, StashManager stashManager, Squad squad, TechTree techTree){
-		super(windowManager, new double[]{300,460});
+		super(windowManager, new double[]{300,240});
 		
 		this.squad = squad;
 		this.shopManager = shopManager;
@@ -138,7 +138,7 @@ public class SquadMenu extends Menu{
 		
 		}
 		
-		Text squadListTag = new Text(windowLocation[0] + 21, windowLocation[1] + 121, "Squad Members");
+		Text squadListTag = new Text(windowLocation[0] + 21, windowLocation[1] + 121, "Squad Members (" + squad.getSquadCount() + "/" + MAX_SQUAD_COUNT + ")");
 		this.addDisplayItem(squadListTag);
 		
 		for(int i = 0; i < squad.getSquad().size(); i++){
