@@ -43,15 +43,18 @@ public class Dialogue{
 		
 		for(int i = 0; i < requirements.length; i++){
 
-			if((Item.isItem(requirements[i]) &&
+			String itemNameCleaned = requirements[i].replaceAll("!", "");
+			itemNameCleaned = itemNameCleaned.trim();
+			
+			if((Item.isItem(itemNameCleaned) &&
 			   (
-			   (currentAi.getInventory().hasItemByName(requirements[i]) && requirements[i].startsWith("!")) ||
-			   (!currentAi.getInventory().hasItemByName(requirements[i]) && !requirements[i].startsWith("!"))
+			   (currentAi.getInventory().hasItemByName(itemNameCleaned) && requirements[i].startsWith("!")) ||
+			   (!currentAi.getInventory().hasItemByName(itemNameCleaned) && !requirements[i].startsWith("!"))
 			   )) ||
-			   (!Item.isItem(requirements[i]) && (
-			   (missionManager.hasMemCode(requirements[i]) &&
+			   (!Item.isItem(itemNameCleaned) && (
+			   (missionManager.hasMemCode(itemNameCleaned) &&
 					   requirements[i].startsWith("!")) ||
-			   (!missionManager.hasMemCode(requirements[i]) &&
+			   (!missionManager.hasMemCode(itemNameCleaned) &&
 					   !requirements[i].startsWith("!"))
 			   )))
 				return false;
