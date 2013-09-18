@@ -8,6 +8,7 @@ import atrophy.combat.ai.Ai;
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.ai.AiGeneratorInterface;
 import atrophy.combat.ai.AiGeneratorInterface.GenerateCommand;
+import atrophy.combat.ai.director.HealthDirector;
 import atrophy.combat.items.DaemonWeapon;
 import atrophy.gameMenu.saveFile.Squad;
 
@@ -15,15 +16,17 @@ public class PowerManager {
 
 	private static final int POWER_STABILITY_DEDUCTION = 20;
 	
+	private HealthDirector director;
 	private AiGenerator aiGenerator;
 	private Squad squad;
 	
 	private List<PowerEffect> powerBuffer;
 	private List<PowerEffect> powers;
 	
-	public PowerManager(Squad squad, AiGenerator aiGenerator) {
+	public PowerManager(Squad squad, HealthDirector healthDirector, AiGenerator aiGenerator) {
 		this.aiGenerator = aiGenerator;
 		this.squad = squad;
+		this.director = healthDirector;
 		
 		this.powers = new ArrayList<>();
 		this.powerBuffer = new ArrayList<>();
@@ -42,7 +45,7 @@ public class PowerManager {
 			case HELP:
 			break;
 			case KILL:
-				if(!((Ai) target).isDead())
+				if(!((Ai) target).isDead() && !director.isImmuneToDeath((Ai) target))
 					this.powerBuffer.add(new KillEffect(this, (Ai) target, aiGenerator, getRankedStability()));
 			break;
 			case PROTECT:

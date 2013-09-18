@@ -171,6 +171,14 @@ public class HealthDirector {
 		this.playerAttacker = false;
 		return r;
 	}
+
+	public boolean isImmuneToDeath(Ai target) {
+		return this.clf.get(target).getType().equals(DirectorArchetype.SPEAKER);
+	}
+
+	public void changeClassification(Ai ai, String classification) {
+		this.clf.get(ai).setType(classification);
+	}
 	
 	
 }

@@ -24,6 +24,10 @@ public class DirectorClassification {
 	public void setType(DirectorArchetype type) {
 		this.type = type;
 	}
+	
+	public void setType(String type) {
+		this.type = DirectorArchetype.getEnum(type);
+	}
 
 	public void addAttackRecord(int turn) {
 		if(attackInfo[0] < turn) {

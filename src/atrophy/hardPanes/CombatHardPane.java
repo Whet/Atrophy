@@ -83,7 +83,7 @@ public class CombatHardPane implements HardPaneDefineable {
 		crowd.addCrowd(aiCrowd);
 		aiCrowd.setVisible(true);
 		
-		PowerManager powerManager = new PowerManager(aiCrowd.getSquad(), aiGenerator);
+		PowerManager powerManager = new PowerManager(aiCrowd.getSquad(), aiCrowd.getDirector(), aiGenerator);
 		
 		turnProcess.setPowerManager(powerManager);
 		actionSuite.getMouseAbilityHandler().setPowerManager(powerManager);
