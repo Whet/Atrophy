@@ -1441,14 +1441,22 @@ public class AtrophyScriptReader {
 		
 	}
 	
-	protected static final class ModifyDirectorEffect extends TriggerEffect {
+	protected static final class ModifyDirectorEffect extends UnitInfoEffect {
 		
-		public ModifyDirectorEffect(Tree tree) {
-			
+		private String classification;
+		
+		public ModifyDirectorEffect(Tree tree, AiCrowd aiCrowd, MissionManager missionManager) {
+			super(tree, aiCrowd, missionManager);
+			this.classification = tree.getChild(0).toString();
 		}
 
 		@Override
 		public void run() {
+			List<Ai> findMatch = this.findMatch();
+			
+			for(Ai ai: findMatch) {
+				aiCrowd.getDirector().changeClassification(ai, classification);
+			}
 		}
 		
 	}
@@ -1686,7 +1694,7 @@ public class AtrophyScriptReader {
 					effects.add(new RemoveTagEffect(tree.getChild(i), missionManager));
 				break;
 				case "DIRECTORBIAS":
-					effects.add(new ModifyDirectorEffect(tree.getChild(i)));
+					effects.add(new ModifyDirectorEffect(tree.getChild(i), aiCrowd, missionManager));
 				break;
 				case "CHANGEAINODE":
 					effects.add(new ChangeAiNodeEffect(tree.getChild(i), aiCrowd, messageBox, turnProcess, missionManager));
