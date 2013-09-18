@@ -74,25 +74,25 @@ public class Dialogue{
 			if(itemName.startsWith("#")){
 				
 				// id already included so exit
-				if(missionManager.hasMemCode(itemName.substring(1, 5)))
+				if(missionManager.hasMemCode(itemName.substring(1)))
 					return true;
 				
-				missionManager.addMemCode(itemName.substring(1, 5));
+				missionManager.addMemCode(itemName.substring(1));
 				
 				itemName = itemName.substring(5);
 			}
 			// Command
 			else if(itemName.startsWith("*")) {
-				missionManager.runCommand(itemName.substring(1, 5));
+				missionManager.runCommand(itemName.substring(1));
 				return true;
 			}
 			// Event code
 			else if(itemName.startsWith("!$")){
-				missionManager.removeMemCode(itemName.substring(2, 6));
+				missionManager.removeMemCode(itemName.substring(2));
 				return true;
 			}
 			else if(itemName.startsWith("$")){
-				missionManager.addMemCode(itemName.substring(1, 5));
+				missionManager.addMemCode(itemName.substring(1));
 				return true;
 			}
 			// Talktree update ^TAG#STAGE.NUMBER
