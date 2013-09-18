@@ -136,8 +136,21 @@ public class MapManager {
 	 * @param i the i
 	 * @return the sector
 	 */
-	public Sector getSector(int i){
-		return this.sectors.get(i);
+	public Sector getSector(int sectorInt){
+		int button  = 0;
+		
+		for(int i = 0; i < sectors.size(); i++){
+			
+			Sector sector = sectors.get(i);
+
+			if(sectorInt == button && sector.getUnlockedMapCount() > 0)
+				return sector;
+			
+			if(sector.getUnlockedMapCount() > 0) {
+				button++;
+			}
+		}
+		return null;
 	}
 	
 	/**

@@ -37,7 +37,7 @@ public class SectorsMenu extends Menu{
 			TextButton tb = new TextButton(Color.yellow, Color.red) {
 				
 				{
-					this.setText(mapWar.getSector(ind).getName());
+//					this.setText(mapWar.getSector(ind).getName());
 					this.setLocation((int)this.getLocation()[0] + 11, (int)this.getLocation()[1] + 41 + 20 * ind);
 				}
 				
@@ -91,7 +91,9 @@ public class SectorsMenu extends Menu{
 		for(int i = 0; i < buttons.size(); i++){
 			
 			Sector sector = mapWar.getSector(i);
-			String name = sector.getName();
+			String name = "";
+			if(sector != null)
+				name = sector.getName();
 			
 			// remove .txt
 			if(!name.isEmpty() && sector.getUnlockedMapCount() > 0) {
