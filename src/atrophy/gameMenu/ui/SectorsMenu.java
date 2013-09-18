@@ -1,6 +1,3 @@
-/*
- * 
- */
 package atrophy.gameMenu.ui;
 
 import java.awt.Color;
@@ -20,20 +17,12 @@ import atrophy.gameMenu.saveFile.Missions;
 import atrophy.gameMenu.saveFile.Squad;
 import atrophy.gameMenu.saveFile.TechTree;
 
-/**
- * The Class SectorsMenu.
- */
 public class SectorsMenu extends Menu{
 
 	private List<TextButton> buttons;
 	
 	private MapManager mapWar;
 	
-	/**
-	 * Instantiates a new sectors menu.
-	 * @param techTree 
-	 * @param stashManager 
-	 */
 	public SectorsMenu(MapManager mapWar, WindowManager windowManager, Missions missions, Squad squad, ItemMarket itemMarket, TechTree techTree, StashManager stashManager) {
 		super(windowManager, new double[]{180, 40 + mapWar.getSectorCount() * 20});
 		this.mapWar = mapWar;
@@ -41,9 +30,6 @@ public class SectorsMenu extends Menu{
 		updateText();
 	}
 
-	/**
-	 * Adds the components.
-	 */
 	private void addComponents(final Squad squad, final Missions missions, final ItemMarket itemMarket, final TechTree techTree, final StashManager stashManager) {
 		buttons = new ArrayList<TextButton>();
 		for(int i = 0; i < mapWar.getSectorCount(); i++){
@@ -74,9 +60,6 @@ public class SectorsMenu extends Menu{
 		
 	}
 
-	/* (non-Javadoc)
-	 * @see atrophy.gameMenu.ui.Menu#drawMethod(java.awt.Graphics2D)
-	 */
 	@Override
 	public void drawMethod(Graphics2D drawShape) {
 		super.drawMethod(drawShape);
@@ -84,11 +67,6 @@ public class SectorsMenu extends Menu{
 		drawTitle(drawShape);
 	}
 	
-	/**
-	 * Draw title.
-	 *
-	 * @param drawShape the draw shape
-	 */
 	private void drawTitle(Graphics2D drawShape) {
 		drawShape.setComposite(GraphicsFunctions.makeComposite(1.0f));
 		drawShape.setColor(Color.white);
@@ -101,29 +79,29 @@ public class SectorsMenu extends Menu{
 //		updateText();
 	}
 	
-	/* (non-Javadoc)
-	 * @see atrophy.gameMenu.ui.Menu#mO(java.awt.Point)
-	 */
 	@Override
 	public void mO(Point mousePosition) {
 		super.mO(mousePosition);
 		updateText();
 	}
 	
-	/**
-	 * Update text.
-	 */
 	private void updateText() {
+		int button  = 0;
+		
 		for(int i = 0; i < buttons.size(); i++){
 			
 			Sector sector = mapWar.getSector(i);
 			String name = sector.getName();
 			
 			// remove .txt
-			if(!name.isEmpty() && sector.getUnlockedMapCount() > 0)
-				buttons.get(i).setText(name);
-			else
-				buttons.get(i).setText("");
+			if(!name.isEmpty() && sector.getUnlockedMapCount() > 0) {
+				buttons.get(button).setText(name);
+				button++;
+			}
+		}
+		
+		for(int i = button; i < buttons.size(); i++){
+			buttons.get(i).setText("");
 		}
 	}
 	
