@@ -48,12 +48,12 @@ public class Dialogue{
 			   (currentAi.getInventory().hasItemByName(requirements[i]) && requirements[i].startsWith("!")) ||
 			   (!currentAi.getInventory().hasItemByName(requirements[i]) && !requirements[i].startsWith("!"))
 			   )) ||
-			   (
+			   (!Item.isItem(requirements[i]) && (
 			   (missionManager.hasMemCode(requirements[i]) &&
 					   requirements[i].startsWith("!")) ||
 			   (!missionManager.hasMemCode(requirements[i]) &&
 					   !requirements[i].startsWith("!"))
-			   ))
+			   )))
 				return false;
 		}
 		
