@@ -60,6 +60,8 @@ public class SectorsMenu extends Menu{
 					MapsMenu menu = new MapsMenu(windowManager, missions, squad, mapWar.getSector(ind), itemMarket, techTree, stashManager);
 					windowManager.addWindow(SectorsMenu.this, menu);
 					SoundBoard.getInstance().playEffect("tick");
+					//Close this menu
+					SectorsMenu.this.rMU(null, null);
 					return true;
 				}
 				
