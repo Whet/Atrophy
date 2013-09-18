@@ -1,4 +1,4 @@
-// $ANTLR 3.4 C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g 2013-09-16 19:36:50
+// $ANTLR 3.4 C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g 2013-09-18 16:18:14
 
 	package atrophy.combat.level;
 
@@ -2231,10 +2231,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__206;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:97:8: ( 'sciChance' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:97:10: 'sciChance'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:97:8: ( 'sciChance:' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:97:10: 'sciChance:'
             {
-            match("sciChance"); 
+            match("sciChance:"); 
 
 
 
@@ -4528,10 +4528,10 @@ public class AtrophyScriptLexer extends Lexer {
         "\1\54\1\uffff\1\u024c\1\54\1\u024e\3\54\1\u0252\1\u0253\1\uffff"+
         "\1\u0254\1\uffff\4\54\1\uffff\5\54\1\u025e\10\54\1\u0267\5\54\1"+
         "\uffff\5\54\1\u0272\2\uffff\7\54\1\uffff\6\54\1\uffff\1\54\1\uffff"+
-        "\3\54\3\uffff\1\u0284\4\54\1\uffff\3\54\1\uffff\1\u028c\3\54\1\u0290"+
-        "\1\54\1\u0292\1\54\1\uffff\11\54\1\u029d\1\uffff\11\54\1\uffff\2"+
-        "\54\2\uffff\3\54\1\uffff\1\54\1\uffff\3\54\1\uffff\1\u02b0\1\uffff"+
-        "\3\54\1\uffff\1\54\3\uffff\4\54\1\u02b9\2\54\2\uffff\1\54\1\uffff"+
+        "\3\54\3\uffff\1\u0284\4\54\1\uffff\3\54\1\uffff\4\54\1\u0290\1\54"+
+        "\1\u0292\1\54\1\uffff\11\54\1\u029d\1\uffff\11\54\1\uffff\2\54\2"+
+        "\uffff\3\54\1\uffff\1\54\1\uffff\3\54\1\uffff\1\u02b0\1\uffff\3"+
+        "\54\1\uffff\1\54\3\uffff\4\54\1\u02b9\2\54\2\uffff\1\54\1\uffff"+
         "\5\54\1\u02c2\2\54\1\uffff\1\54\1\u02c6\5\54\1\uffff\6\54\1\u02d2"+
         "\1\54\3\uffff\1\u02d4\1\uffff\1\54\1\u02d6\2\54\1\uffff\3\54\1\uffff"+
         "\1\54\3\uffff\2\54\1\uffff\2\54\1\u02e1\1\u02e2\1\uffff\1\54\1\uffff"+
@@ -4593,7 +4593,7 @@ public class AtrophyScriptLexer extends Lexer {
         "\1\uffff\1\157\1\143\1\154\1\145\1\123\1\60\2\uffff\1\117\1\163"+
         "\1\156\1\141\1\157\1\142\1\141\1\uffff\1\157\1\151\1\72\2\145\1"+
         "\72\1\uffff\1\72\1\uffff\1\147\1\157\1\163\3\uffff\1\60\1\172\1"+
-        "\72\1\172\1\156\1\uffff\1\145\1\72\1\164\1\uffff\1\60\1\162\1\147"+
+        "\72\1\172\1\156\1\uffff\1\145\1\72\1\164\1\uffff\1\72\1\162\1\147"+
         "\1\141\1\60\1\116\1\60\1\72\1\uffff\1\72\2\157\1\156\1\146\1\162"+
         "\1\150\1\153\1\72\1\60\1\uffff\1\103\1\72\1\144\1\156\1\144\1\151"+
         "\1\143\1\156\1\141\1\uffff\1\141\1\72\2\uffff\1\141\1\156\1\164"+
@@ -4661,7 +4661,7 @@ public class AtrophyScriptLexer extends Lexer {
         "\123\1\172\2\uffff\1\117\1\163\1\156\1\141\1\157\1\142\1\141\1\uffff"+
         "\1\157\1\151\1\72\2\145\1\72\1\uffff\1\72\1\uffff\1\147\1\157\1"+
         "\163\3\uffff\2\172\1\72\1\172\1\156\1\uffff\1\145\1\72\1\164\1\uffff"+
-        "\1\172\1\162\1\147\1\141\1\172\1\116\1\172\1\72\1\uffff\1\72\2\157"+
+        "\1\72\1\162\1\147\1\141\1\172\1\116\1\172\1\72\1\uffff\1\72\2\157"+
         "\1\156\1\146\1\162\1\150\1\153\1\72\1\172\1\uffff\1\103\1\72\1\144"+
         "\1\156\1\144\1\151\1\143\1\156\1\141\1\uffff\1\141\1\72\2\uffff"+
         "\1\141\1\156\1\164\1\uffff\1\145\1\uffff\2\145\1\162\1\uffff\1\172"+
@@ -5319,7 +5319,7 @@ public class AtrophyScriptLexer extends Lexer {
             "\1\u028a",
             "\1\u028b",
             "",
-            "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
+            "\1\u028c",
             "\1\u028d",
             "\1\u028e",
             "\1\u028f",
