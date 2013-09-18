@@ -31,5 +31,15 @@ public class TalkNode {
 		
 		return topics;
 	}
+
+	public Dialogue getInitiatorDialogue() {
+		
+		for(String topicTag : this.subscriptions){
+			if(this.missionManager.getTalkMap(topicTag).getDialogue().isInitiator())
+				return this.missionManager.getTalkMap(topicTag).getDialogue();
+		}
+		
+		return null;
+	}
 	
 }

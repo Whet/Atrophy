@@ -150,6 +150,11 @@ public class MessageManager{
 		
 		List<Dialogue> dialogues = talkNode.getDialogues();
 		
+		Dialogue initiatorDialogue = talkNode.getInitiatorDialogue();
+		
+		if(initiatorDialogue != null)
+			messageBox.addMessage(talkNode.getName() + ": " + initiatorDialogue.openingLine);
+		
 		for(Dialogue dialogue: dialogues) {
 		
 			// Add long speech setters
