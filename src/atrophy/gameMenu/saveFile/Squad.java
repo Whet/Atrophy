@@ -29,7 +29,7 @@ public class Squad implements Serializable {
 	
 	public Squad(){
 		this.squadMembers = new ArrayList<Squaddie>(5);
-		this.stability = 1;
+		this.stability = 0;
 		this.whiteVistaRelation = 1.0;
 		this.banditRelation = -1.0;
 	}
