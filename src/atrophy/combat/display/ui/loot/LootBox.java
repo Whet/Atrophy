@@ -592,5 +592,9 @@ public class LootBox extends Crowd{
 	public void toggleLock() {
 		this.mouseDragRegion.setActive(!this.mouseDragRegion.isActive());
 	}
+
+	public boolean isLocked() {
+		return this.mouseDragRegion.isActive();
+	}
 	
 }

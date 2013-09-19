@@ -115,7 +115,7 @@ public class CombatHardPane implements HardPaneDefineable {
 		crowd.addDisplayItem(uiUpdaterSuite.getCombatUiManager().getLargeEventText());
 		
 		crowd.addMouseActionItem(actionSuite.getCombatMouseHandler());
-		MousePanner mousePanner = new MousePanner(uiUpdaterSuite.getPanningManager());
+		MousePanner mousePanner = new MousePanner(uiUpdaterSuite.getPanningManager(), uiUpdaterSuite.getCombatUiManager());
 		crowd.addMouseActionItem(mousePanner);
 		// Order Z, higher numbers on top
 		// ai images at 2, dead ones at 1

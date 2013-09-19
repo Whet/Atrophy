@@ -3,6 +3,7 @@ package atrophy.combat.actions;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 
+import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.mechanics.TurnProcess;
@@ -17,17 +18,19 @@ public class MousePanner implements MouseRespondable{
 	private double[] panAtClick;
 	
 	private PanningManager panningManager;
+	private CombatUiManager combatUiManager;
 	private int actionZ;
 	
-	public MousePanner(PanningManager panningManager) {
+	public MousePanner(PanningManager panningManager, CombatUiManager combatUiManager) {
 		this.mousePanning = false;
 		this.panningManager = panningManager;
+		this.combatUiManager = combatUiManager;
 		actionZ = 0;
 	}
 
 	@Override
 	public boolean mD(Point mousePosition, MouseEvent e) {
-		if(!mousePanning && !CombatKeyboardHandler.SHIFT_DOWN) {
+		if(!mousePanning && !CombatKeyboardHandler.SHIFT_DOWN && !combatUiManager.isUiLocked()) {
 			this.mousePanning = true;
 			mousePanClickPoint = mousePosition;
 			panAtClick = panningManager.getOffset().clone();

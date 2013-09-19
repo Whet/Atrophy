@@ -144,4 +144,8 @@ public class CombatUiManager{
 	public TorchDrawer getTorchDrawer() {
 		return torchDrawer;
 	}
+	
+	public boolean isUiLocked() {
+		return this.lootBox.isLocked();
+	}
 }
