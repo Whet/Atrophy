@@ -23,6 +23,7 @@ import org.antlr.runtime.tree.Tree;
 
 import watoydoEngine.io.ReadWriter;
 import atrophy.combat.CombatMembersManager;
+import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.ai.Ai;
 import atrophy.combat.ai.AiGenerator;
@@ -34,6 +35,8 @@ import atrophy.combat.ai.ThinkingAi.AiNode;
 import atrophy.combat.ai.conversation.Dialogue;
 import atrophy.combat.ai.conversation.TalkMap;
 import atrophy.combat.display.AiCrowd;
+import atrophy.combat.display.MapDrawer;
+import atrophy.combat.display.TorchDrawer;
 import atrophy.combat.display.ui.MessageBox;
 import atrophy.combat.display.ui.loot.LootBox.Lootable;
 import atrophy.combat.items.EngineeringSupply;
@@ -60,11 +63,11 @@ public class AtrophyScriptReader {
 								     int engineeringChance, int medicalChance, int weaponChance, int scienceChance,
 								     PanningManager panningManager, TurnProcess turnProcess, MessageBox messageBox,
 								     AiCrowd aiCrowd, CombatMembersManager combatMembersManager, Missions missions,
-								     MissionManager missionManager, List<GenerateCommand> generationCommands, ItemMarket itemMarket, TechTree techTree, StashManager stashManager) throws RecognitionException, IOException {
+								     MissionManager missionManager, List<GenerateCommand> generationCommands, ItemMarket itemMarket, TechTree techTree, StashManager stashManager, CombatVisualManager combatVisualManager) throws RecognitionException, IOException {
 		
 		return readScript(new Level(owner), file,
 						  engineeringChance, medicalChance, weaponChance, scienceChance, panningManager, turnProcess,
-				   		  messageBox, aiCrowd, combatMembersManager, missions, missionManager, generationCommands, itemMarket, techTree, stashManager);
+				   		  messageBox, aiCrowd, combatMembersManager, missions, missionManager, generationCommands, itemMarket, techTree, stashManager, combatVisualManager);
 		
 	}
 	
@@ -72,7 +75,7 @@ public class AtrophyScriptReader {
 								     int engineeringChance, int medicalChance, int weaponChance, int scienceChance,
 								     PanningManager panningManager, TurnProcess turnProcess, MessageBox messageBox,
 								     AiCrowd aiCrowd, CombatMembersManager combatMembersManager, Missions missions,
-								     MissionManager missionManager, List<GenerateCommand> generationCommands, ItemMarket itemMarket, TechTree techTree, StashManager stashManager) throws RecognitionException, IOException {
+								     MissionManager missionManager, List<GenerateCommand> generationCommands, ItemMarket itemMarket, TechTree techTree, StashManager stashManager, CombatVisualManager combatVisualManager) throws RecognitionException, IOException {
 		
 		StringBuffer sb = new StringBuffer();
 		String lineString;
@@ -168,7 +171,7 @@ public class AtrophyScriptReader {
 			for(Tree tree: moduleLists.getValue()) {
 			
 				AtrophyScriptReader.walkTree(level, tree, blockStack, portalStack, commandStack, triggers, itemSpawnChances, missionManager,
-											 combatMembersManager, missions, messageBox, aiCrowd, turnProcess, itemMarket, techTree, stashManager);
+											 combatMembersManager, missions, messageBox, aiCrowd, turnProcess, itemMarket, techTree, stashManager, combatVisualManager);
 			
 			}
 		}
@@ -187,7 +190,7 @@ public class AtrophyScriptReader {
 		for(Entry<String, List<Tree>> commandLists: commandTrees.entrySet()) {
 			for(Tree tree: commandLists.getValue()) {
 					runCommands(tree, missionManager, level, combatMembersManager, missions, messageBox, aiCrowd,
-								turnProcess, itemMarket, techTree, stashManager, panningManager, engineeringChance, medicalChance, weaponChance, scienceChance, modulesSet);
+								turnProcess, itemMarket, techTree, stashManager, panningManager, engineeringChance, medicalChance, weaponChance, scienceChance, modulesSet, combatVisualManager);
 			}
 		}
 		
@@ -196,7 +199,7 @@ public class AtrophyScriptReader {
 	
 	private static void readScript(File file, Level level, MissionManager missionManager, CombatMembersManager combatMembersManager,
 								   Missions missions, MessageBox messageBox, AiCrowd aiCrowd, TurnProcess turnProcess, ItemMarket itemMarket,
-								   TechTree techTree, StashManager stashManager, Set<String> modules, Set<String> sequences, PanningManager panningManager, int engineeringChance, int medicalChance, int weaponChance, int scienceChance) throws IOException, RecognitionException {
+								   TechTree techTree, StashManager stashManager, Set<String> modules, Set<String> sequences, PanningManager panningManager, int engineeringChance, int medicalChance, int weaponChance, int scienceChance, CombatVisualManager combatVisualManager) throws IOException, RecognitionException {
 		
 		StringBuffer sb = new StringBuffer();
 		String lineString;
@@ -263,7 +266,7 @@ public class AtrophyScriptReader {
 			for(Tree tree: moduleLists.getValue()) {
 				if(modules.contains(moduleLists.getKey()))
 					AtrophyScriptReader.walkTree(level, tree, blockStack, portalStack, commandStack, triggers, itemSpawnChances, missionManager,
-												 combatMembersManager, missions, messageBox, aiCrowd, turnProcess, itemMarket, techTree, stashManager);
+												 combatMembersManager, missions, messageBox, aiCrowd, turnProcess, itemMarket, techTree, stashManager, combatVisualManager);
 			}
 		}
 		
@@ -286,7 +289,7 @@ public class AtrophyScriptReader {
 			for(Tree tree: commandLists.getValue()) {
 				if(sequences.contains(commandLists.getKey()))
 					runCommands(tree, missionManager, level, combatMembersManager, missions, messageBox, aiCrowd,
-							    turnProcess, itemMarket, techTree, stashManager, panningManager, engineeringChance, medicalChance, weaponChance, scienceChance, modulesSet);
+							    turnProcess, itemMarket, techTree, stashManager, panningManager, engineeringChance, medicalChance, weaponChance, scienceChance, modulesSet, combatVisualManager);
 			}
 		}
 	}
@@ -433,7 +436,7 @@ public class AtrophyScriptReader {
 								Stack<LevelBlockInfo> blockStack, Stack<PortalInfo> portalStack, Stack<StoredCommand> commands, Stack<TriggerCommand> triggers, Map<String, Integer> itemSpawns,
 								MissionManager missionManager, CombatMembersManager combatMembersManager, Missions missions,
 								MessageBox messageBox, AiCrowd aiCrowd, TurnProcess turnProcess,
-								ItemMarket itemMarket, TechTree techTree, StashManager stashManager) {
+								ItemMarket itemMarket, TechTree techTree, StashManager stashManager, CombatVisualManager combatVisualManager) {
 		
 		switch(tree.toString()) {
 			case "INIT":
@@ -454,10 +457,10 @@ public class AtrophyScriptReader {
 				createRegion(tree);
 			break;
 			case "TRIGGER":
-				triggers.add(createTrigger(tree, missionManager, missions, aiCrowd, messageBox, combatMembersManager, turnProcess, itemMarket, techTree, stashManager, level));
+				triggers.add(createTrigger(tree, missionManager, missions, aiCrowd, messageBox, combatMembersManager, turnProcess, itemMarket, techTree, stashManager, combatVisualManager, level));
 			break;
 			case "COMMAND":
-				commands.add(createCommand(tree, missionManager, missions, aiCrowd, messageBox, combatMembersManager, turnProcess, itemMarket, techTree, stashManager, level));
+				commands.add(createCommand(tree, missionManager, missions, aiCrowd, messageBox, combatMembersManager, turnProcess, itemMarket, techTree, stashManager, combatVisualManager, level));
 			break;
 			case "TALK":
 				TalkInfo talkInfo = createTalkTopic(tree, missions, missionManager, messageBox);
@@ -539,7 +542,7 @@ public class AtrophyScriptReader {
 	
 	private static StoredCommand createCommand(Tree tree, MissionManager missionManager, Missions missions, AiCrowd aiCrowd,
 										       MessageBox messageBox, CombatMembersManager combatMembersManager, TurnProcess turnProcess,
-										       ItemMarket itemMarket, TechTree techTree, StashManager stashManager, Level level) {
+										       ItemMarket itemMarket, TechTree techTree, StashManager stashManager, CombatVisualManager combatVisualManager, Level level) {
 		
 		String name = "";
 		List<TriggerEffect> effects = new ArrayList<>();
@@ -547,7 +550,7 @@ public class AtrophyScriptReader {
 		for(int i = 0; i < tree.getChildCount(); i++) {
 			switch(tree.getChild(i).toString()) {
 				case "TRIGGEREFFECT":
-					effects = createEffects(tree.getChild(i), missionManager, missions, aiCrowd, messageBox, combatMembersManager, turnProcess, itemMarket, techTree, stashManager, level);
+					effects = createEffects(tree.getChild(i), missionManager, missions, aiCrowd, messageBox, combatMembersManager, turnProcess, itemMarket, techTree, stashManager, combatVisualManager, level);
 				break;
 				case "VAR":
 					name = tree.getChild(i).getChild(0).toString();
@@ -561,7 +564,7 @@ public class AtrophyScriptReader {
 
 	private static TriggerCommand createTrigger(Tree tree, MissionManager missionManager, Missions missions, AiCrowd aiCrowd,
 												MessageBox messageBox, CombatMembersManager combatMembersManager, TurnProcess turnProcess,
-												ItemMarket itemMarket, TechTree techTree, StashManager stashManager, Level level) {
+												ItemMarket itemMarket, TechTree techTree, StashManager stashManager, CombatVisualManager combatVisualManager, Level level) {
 		
 		String name = "";
 		TriggerCond condition = null;
@@ -573,7 +576,7 @@ public class AtrophyScriptReader {
 					condition = new TriggerCond(tree.getChild(i), aiCrowd, missionManager);
 				break;
 				case "TRIGGEREFFECT":
-					effects = createEffects(tree.getChild(i), missionManager, missions, aiCrowd, messageBox, combatMembersManager, turnProcess, itemMarket, techTree, stashManager, level);
+					effects = createEffects(tree.getChild(i), missionManager, missions, aiCrowd, messageBox, combatMembersManager, turnProcess, itemMarket, techTree, stashManager, combatVisualManager, level);
 				break;
 				case "VAR":
 					name = tree.getChild(i).getChild(0).toString();
@@ -1121,8 +1124,15 @@ public class AtrophyScriptReader {
 	
 	protected static final class TeleportEffect extends UnitInfoEffect {
 
-		public TeleportEffect(Tree tree, AiCrowd aiCrowd, MissionManager missionManager) {
+		private CombatVisualManager combatVisualManager;
+		private CombatMembersManager combatMembersManager;
+		public TorchDrawer torchDrawer;
+		public MapDrawer mapDrawer;
+		
+		public TeleportEffect(Tree tree, AiCrowd aiCrowd, MissionManager missionManager, CombatVisualManager combatVisualManager, CombatMembersManager combatMembersManager) {
 			super(tree, aiCrowd, missionManager);
+			this.combatVisualManager = combatVisualManager;
+			this.combatMembersManager = combatMembersManager;
 		}
 
 		@Override
@@ -1136,8 +1146,15 @@ public class AtrophyScriptReader {
 				matchAi.get(i).setLocation(this.xList.get(rand), this.yList.get(rand));
 				
 				matchAi.get(i).updateLevelBlock();
+				matchAi.get(i).setMoveLocationToSelf();
 				aiCrowd.getActorMask(matchAi.get(i)).updateImage();
 			}
+			
+			combatVisualManager.updateVisibleAi();
+			mapDrawer.updateAlphas();
+			
+			if(matchAi.contains(combatMembersManager.getCurrentAi()));
+				torchDrawer.updateFovLight(combatMembersManager.getCurrentAi());
 		}
 		
 	}
@@ -1572,6 +1589,55 @@ public class AtrophyScriptReader {
 		
 	}
 	
+	protected static final class RemoveItemEffect extends UnitInfoEffect {
+
+		private MissionManager missionManager;
+		private List<String> possibleItems;
+		
+		public RemoveItemEffect(Tree tree, AiCrowd aiCrowd, MissionManager missionManager) {
+			super(tree, aiCrowd, missionManager);
+			
+			this.missionManager = missionManager;
+			this.possibleItems = new ArrayList<>();
+			
+			for(int i = 0; i < tree.getChildCount(); i++) {
+				switch(tree.getChild(i).toString()) {
+					case "STRING":
+						possibleItems.add(createString(tree.getChild(i)));
+					break;
+				}
+			}
+		}
+
+		@Override
+		public void run() {
+			List<Ai> matchAi = findMatch();
+			
+			for(Ai ai: matchAi) {
+				for(int i = 0; i < this.possibleItems.size(); i++) {
+					ai.getInventory().removeItem(Item.stringToItem(possibleItems.get(i)));
+				}
+			}
+			
+			if(this.possibleNames != null && this.possibleNames.size() > 0) {
+				for(int i = 0; i < this.possibleNames.size(); i++) {
+					Object object = this.missionManager.getVar(this.possibleNames.get(i));
+					
+					if(object != null && object instanceof Lootable) {
+						
+						Lootable lootable = (Lootable) object;
+						
+						for(int j = 0; j < this.possibleItems.size(); j++) {
+							lootable.getInventory().removeItem(Item.stringToItem(possibleItems.get(j)));
+						}
+					}
+				}
+			}
+			
+		}
+		
+	}
+	
 	protected static final class ChangeAiNodeEffect extends UnitInfoEffect {
 		
 		private AiNode aiNode;
@@ -1648,7 +1714,7 @@ public class AtrophyScriptReader {
 	
 	private static List<TriggerEffect> createEffects(Tree tree, MissionManager missionManager, Missions missions, AiCrowd aiCrowd,
 													 MessageBox messageBox, CombatMembersManager combatMembersManager, TurnProcess turnProcess,
-													 ItemMarket itemMarket, TechTree techTree, StashManager stashManager, Level level) {
+													 ItemMarket itemMarket, TechTree techTree, StashManager stashManager, CombatVisualManager combatVisualManager, Level level) {
 		
 		List<TriggerEffect> effects = new ArrayList<>();
 		
@@ -1667,7 +1733,7 @@ public class AtrophyScriptReader {
 					effects.add(new KillEffect(tree.getChild(i), aiCrowd, missionManager));
 				break;
 				case "TELEPORT":
-					effects.add(new TeleportEffect(tree.getChild(i), aiCrowd, missionManager));
+					effects.add(new TeleportEffect(tree.getChild(i), aiCrowd, missionManager, combatVisualManager, combatMembersManager));
 				break;
 				case "CONVERSE":
 					effects.add(new ConverseEffect(tree.getChild(i), aiCrowd, messageBox, combatMembersManager, missionManager));
@@ -1713,6 +1779,9 @@ public class AtrophyScriptReader {
 				break;
 				case "SPAWNITEM":
 					effects.add(new SpawnItemEffect(tree.getChild(i), aiCrowd, missionManager));
+				break;
+				case "REMOVEITEM":
+					effects.add(new RemoveItemEffect(tree.getChild(i), aiCrowd, missionManager));
 				break;
 				case "SPAWNTALKNODE":
 					effects.add(new SpawnTalkNodeEffect(tree.getChild(i), aiCrowd, missionManager));
@@ -1988,7 +2057,7 @@ public class AtrophyScriptReader {
 	private static void runCommands(Tree commTree, MissionManager missionManager, Level level,
 									CombatMembersManager combatMembersManager, Missions missions, MessageBox messageBox, AiCrowd aiCrowd,
 									TurnProcess turnProcess, ItemMarket itemMarket, TechTree techTree, StashManager stashManager,
-									PanningManager panningManager, int engineeringChance, int medicalChance, int weaponChance, int scienceChance, Set<String> modules) throws IOException, RecognitionException {
+									PanningManager panningManager, int engineeringChance, int medicalChance, int weaponChance, int scienceChance, Set<String> modules, CombatVisualManager combatVisualManager) throws IOException, RecognitionException {
 		
 		if(commTree.toString().equals("COMMAND_CALL")) {
 			String commandTag = commTree.getChild(0).toString();
@@ -2018,7 +2087,7 @@ public class AtrophyScriptReader {
 			readScript(file, level,
 					   missionManager, combatMembersManager, missions, messageBox, aiCrowd, turnProcess,
 					   itemMarket, techTree, stashManager, modules, sequences, panningManager,
-					   engineeringChance, medicalChance, weaponChance, scienceChance);
+					   engineeringChance, medicalChance, weaponChance, scienceChance, combatVisualManager);
 			
 			modules.clear();
 		}

@@ -14,6 +14,7 @@ import org.antlr.runtime.RecognitionException;
 import watoydoEngine.io.ReadWriter;
 
 import atrophy.combat.CombatMembersManager;
+import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.ai.AiGeneratorInterface.GenerateCommand;
 import atrophy.combat.display.AiCrowd;
@@ -103,8 +104,8 @@ public class LevelIO {
 		return level;
 	}
 	
-	public static Level loadLevel(File file, String owner, int engineeringChance, int medicalChance, int weaponChance, int scienceChance, PanningManager panningManager, TurnProcess turnProcess, MessageBox messageBox, AiCrowd aiCrowd, CombatMembersManager combatMembersManager, Missions missions, MissionManager missionsManager, List<GenerateCommand> generationCommands, ItemMarket itemMarket, TechTree techTree, StashManager stashManager) throws IOException, RecognitionException{
-		return AtrophyScriptReader.readScript(file, owner, engineeringChance, medicalChance, weaponChance, scienceChance, panningManager, turnProcess, messageBox, aiCrowd, combatMembersManager, missions, missionsManager, generationCommands, itemMarket, techTree, stashManager);
+	public static Level loadLevel(File file, String owner, int engineeringChance, int medicalChance, int weaponChance, int scienceChance, PanningManager panningManager, TurnProcess turnProcess, MessageBox messageBox, AiCrowd aiCrowd, CombatMembersManager combatMembersManager, Missions missions, MissionManager missionsManager, List<GenerateCommand> generationCommands, ItemMarket itemMarket, TechTree techTree, StashManager stashManager, CombatVisualManager combatVisualManager) throws IOException, RecognitionException{
+		return AtrophyScriptReader.readScript(file, owner, engineeringChance, medicalChance, weaponChance, scienceChance, panningManager, turnProcess, messageBox, aiCrowd, combatMembersManager, missions, missionsManager, generationCommands, itemMarket, techTree, stashManager, combatVisualManager);
 	}
 
 

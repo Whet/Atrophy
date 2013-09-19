@@ -1,4 +1,4 @@
-// $ANTLR 3.4 C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g 2013-09-19 10:08:54
+// $ANTLR 3.4 C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g 2013-09-19 12:07:59
 
 	package atrophy.combat.level;
 
@@ -11,7 +11,6 @@ import java.util.ArrayList;
 @SuppressWarnings({"all", "warnings", "unchecked"})
 public class AtrophyScriptLexer extends Lexer {
     public static final int EOF=-1;
-    public static final int T__121=121;
     public static final int T__122=122;
     public static final int T__123=123;
     public static final int T__124=124;
@@ -129,6 +128,8 @@ public class AtrophyScriptLexer extends Lexer {
     public static final int T__236=236;
     public static final int T__237=237;
     public static final int T__238=238;
+    public static final int T__239=239;
+    public static final int T__240=240;
     public static final int ADDTAG=4;
     public static final int ADD_TAG_PREFIX=5;
     public static final int AIINIT=6;
@@ -199,53 +200,54 @@ public class AtrophyScriptLexer extends Lexer {
     public static final int OR=71;
     public static final int PORTAL=72;
     public static final int PRIORITY=73;
-    public static final int REMOVESAFEROOM=74;
-    public static final int REMOVETAG=75;
-    public static final int REMOVEUNIT=76;
-    public static final int REMOVE_TAG_PREFIX=77;
-    public static final int REQ=78;
-    public static final int ROOMINFO=79;
-    public static final int SAFEROOM=80;
-    public static final int SCI=81;
-    public static final int SECTOR=82;
-    public static final int SEQUENCE=83;
-    public static final int SETTRIGGERRUNNING=84;
-    public static final int SHOWMESSAGE=85;
-    public static final int SPAWNCHARACTER=86;
-    public static final int SPAWNITEM=87;
-    public static final int SPAWNTALKNODE=88;
-    public static final int SPAWNTEAM=89;
-    public static final int SSUPPLY=90;
-    public static final int STAGELIST=91;
-    public static final int STASH=92;
-    public static final int STRING=93;
-    public static final int SUBSCRIBE=94;
-    public static final int TALK=95;
-    public static final int TALKMAP=96;
-    public static final int TALKPARENT=97;
-    public static final int TALKSTAGE=98;
-    public static final int TELEDEST=99;
-    public static final int TELEPORT=100;
-    public static final int TERRITORY=101;
-    public static final int TEXTURE=102;
-    public static final int TEXTUREBLOCK=103;
-    public static final int TOPIC=104;
-    public static final int TRIGGER=105;
-    public static final int TRIGGERCOND=106;
-    public static final int TRIGGEREFFECT=107;
-    public static final int TRIGGERTYPE=108;
-    public static final int UNITINFO=109;
-    public static final int UNLOCKDOOR=110;
-    public static final int UNLOCKTECH=111;
-    public static final int UPDATETALK=112;
-    public static final int UPDATE_TREE_PREFIX=113;
-    public static final int VAR=114;
-    public static final int WEP=115;
-    public static final int WS=116;
-    public static final int WSUPPLY=117;
-    public static final int XLIST=118;
-    public static final int YLIST=119;
-    public static final int ZONE=120;
+    public static final int REMOVEITEM=74;
+    public static final int REMOVESAFEROOM=75;
+    public static final int REMOVETAG=76;
+    public static final int REMOVEUNIT=77;
+    public static final int REMOVE_TAG_PREFIX=78;
+    public static final int REQ=79;
+    public static final int ROOMINFO=80;
+    public static final int SAFEROOM=81;
+    public static final int SCI=82;
+    public static final int SECTOR=83;
+    public static final int SEQUENCE=84;
+    public static final int SETTRIGGERRUNNING=85;
+    public static final int SHOWMESSAGE=86;
+    public static final int SPAWNCHARACTER=87;
+    public static final int SPAWNITEM=88;
+    public static final int SPAWNTALKNODE=89;
+    public static final int SPAWNTEAM=90;
+    public static final int SSUPPLY=91;
+    public static final int STAGELIST=92;
+    public static final int STASH=93;
+    public static final int STRING=94;
+    public static final int SUBSCRIBE=95;
+    public static final int TALK=96;
+    public static final int TALKMAP=97;
+    public static final int TALKPARENT=98;
+    public static final int TALKSTAGE=99;
+    public static final int TELEDEST=100;
+    public static final int TELEPORT=101;
+    public static final int TERRITORY=102;
+    public static final int TEXTURE=103;
+    public static final int TEXTUREBLOCK=104;
+    public static final int TOPIC=105;
+    public static final int TRIGGER=106;
+    public static final int TRIGGERCOND=107;
+    public static final int TRIGGEREFFECT=108;
+    public static final int TRIGGERTYPE=109;
+    public static final int UNITINFO=110;
+    public static final int UNLOCKDOOR=111;
+    public static final int UNLOCKTECH=112;
+    public static final int UPDATETALK=113;
+    public static final int UPDATE_TREE_PREFIX=114;
+    public static final int VAR=115;
+    public static final int WEP=116;
+    public static final int WS=117;
+    public static final int WSUPPLY=118;
+    public static final int XLIST=119;
+    public static final int YLIST=120;
+    public static final int ZONE=121;
 
     // delegates
     // delegators
@@ -262,10 +264,10 @@ public class AtrophyScriptLexer extends Lexer {
     }
     public String getGrammarFileName() { return "C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g"; }
 
-    // $ANTLR start "T__121"
-    public final void mT__121() throws RecognitionException {
+    // $ANTLR start "T__122"
+    public final void mT__122() throws RecognitionException {
         try {
-            int _type = T__121;
+            int _type = T__122;
             int _channel = DEFAULT_TOKEN_CHANNEL;
             // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:11:8: ( '!HAS' )
             // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:11:10: '!HAS'
@@ -283,27 +285,6 @@ public class AtrophyScriptLexer extends Lexer {
         	// do for sure before leaving
         }
     }
-    // $ANTLR end "T__121"
-
-    // $ANTLR start "T__122"
-    public final void mT__122() throws RecognitionException {
-        try {
-            int _type = T__122;
-            int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:12:8: ( '#' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:12:10: '#'
-            {
-            match('#'); 
-
-            }
-
-            state.type = _type;
-            state.channel = _channel;
-        }
-        finally {
-        	// do for sure before leaving
-        }
-    }
     // $ANTLR end "T__122"
 
     // $ANTLR start "T__123"
@@ -311,10 +292,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__123;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:13:8: ( '(' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:13:10: '('
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:12:8: ( '#' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:12:10: '#'
             {
-            match('('); 
+            match('#'); 
 
             }
 
@@ -332,10 +313,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__124;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:14:8: ( ')' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:14:10: ')'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:13:8: ( '(' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:13:10: '('
             {
-            match(')'); 
+            match('('); 
 
             }
 
@@ -353,10 +334,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__125;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:15:8: ( ',' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:15:10: ','
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:14:8: ( ')' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:14:10: ')'
             {
-            match(','); 
+            match(')'); 
 
             }
 
@@ -374,10 +355,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__126;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:16:8: ( '-' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:16:10: '-'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:15:8: ( ',' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:15:10: ','
             {
-            match('-'); 
+            match(','); 
 
             }
 
@@ -395,12 +376,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__127;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:17:8: ( '::' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:17:10: '::'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:16:8: ( '-' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:16:10: '-'
             {
-            match("::"); 
-
-
+            match('-'); 
 
             }
 
@@ -418,10 +397,12 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__128;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:18:8: ( '@' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:18:10: '@'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:17:8: ( '::' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:17:10: '::'
             {
-            match('@'); 
+            match("::"); 
+
+
 
             }
 
@@ -439,12 +420,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__129;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:19:8: ( 'AND' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:19:10: 'AND'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:18:8: ( '@' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:18:10: '@'
             {
-            match("AND"); 
-
-
+            match('@'); 
 
             }
 
@@ -462,10 +441,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__130;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:20:8: ( 'BLOCK' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:20:10: 'BLOCK'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:19:8: ( 'AND' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:19:10: 'AND'
             {
-            match("BLOCK"); 
+            match("AND"); 
 
 
 
@@ -485,10 +464,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__131;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:21:8: ( 'COMMAND' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:21:10: 'COMMAND'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:20:8: ( 'BLOCK' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:20:10: 'BLOCK'
             {
-            match("COMMAND"); 
+            match("BLOCK"); 
 
 
 
@@ -508,10 +487,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__132;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:22:8: ( 'COVER' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:22:10: 'COVER'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:21:8: ( 'COMMAND' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:21:10: 'COMMAND'
             {
-            match("COVER"); 
+            match("COMMAND"); 
 
 
 
@@ -531,10 +510,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__133;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:23:8: ( 'HAS' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:23:10: 'HAS'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:22:8: ( 'COVER' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:22:10: 'COVER'
             {
-            match("HAS"); 
+            match("COVER"); 
 
 
 
@@ -554,10 +533,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__134;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:24:8: ( 'IF' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:24:10: 'IF'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:23:8: ( 'HAS' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:23:10: 'HAS'
             {
-            match("IF"); 
+            match("HAS"); 
 
 
 
@@ -577,10 +556,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__135;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:25:8: ( 'ITEMSPAWNS' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:25:10: 'ITEMSPAWNS'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:24:8: ( 'IF' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:24:10: 'IF'
             {
-            match("ITEMSPAWNS"); 
+            match("IF"); 
 
 
 
@@ -600,10 +579,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__136;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:26:8: ( 'LOAD' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:26:10: 'LOAD'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:25:8: ( 'ITEMSPAWNS' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:25:10: 'ITEMSPAWNS'
             {
-            match("LOAD"); 
+            match("ITEMSPAWNS"); 
 
 
 
@@ -623,10 +602,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__137;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:27:8: ( 'MAPSIZE' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:27:10: 'MAPSIZE'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:26:8: ( 'LOAD' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:26:10: 'LOAD'
             {
-            match("MAPSIZE"); 
+            match("LOAD"); 
 
 
 
@@ -646,10 +625,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__138;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:28:8: ( 'MAPSPAWNS' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:28:10: 'MAPSPAWNS'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:27:8: ( 'MAPSIZE' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:27:10: 'MAPSIZE'
             {
-            match("MAPSPAWNS"); 
+            match("MAPSIZE"); 
 
 
 
@@ -669,10 +648,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__139;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:29:8: ( 'MODULE' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:29:10: 'MODULE'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:28:8: ( 'MAPSPAWNS' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:28:10: 'MAPSPAWNS'
             {
-            match("MODULE"); 
+            match("MAPSPAWNS"); 
 
 
 
@@ -692,10 +671,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__140;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:30:8: ( 'MODULE::' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:30:10: 'MODULE::'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:29:8: ( 'MODULE' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:29:10: 'MODULE'
             {
-            match("MODULE::"); 
+            match("MODULE"); 
 
 
 
@@ -715,10 +694,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__141;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:31:8: ( 'OR' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:31:10: 'OR'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:30:8: ( 'MODULE::' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:30:10: 'MODULE::'
             {
-            match("OR"); 
+            match("MODULE::"); 
 
 
 
@@ -738,10 +717,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__142;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:32:8: ( 'PORTAL' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:32:10: 'PORTAL'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:31:8: ( 'OR' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:31:10: 'OR'
             {
-            match("PORTAL"); 
+            match("OR"); 
 
 
 
@@ -761,10 +740,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__143;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:33:8: ( 'SEQUENCE' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:33:10: 'SEQUENCE'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:32:8: ( 'PORTAL' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:32:10: 'PORTAL'
             {
-            match("SEQUENCE"); 
+            match("PORTAL"); 
 
 
 
@@ -784,10 +763,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__144;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:34:8: ( 'SEQUENCE::' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:34:10: 'SEQUENCE::'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:33:8: ( 'SEQUENCE' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:33:10: 'SEQUENCE'
             {
-            match("SEQUENCE::"); 
+            match("SEQUENCE"); 
 
 
 
@@ -807,10 +786,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__145;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:35:8: ( 'STASH' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:35:10: 'STASH'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:34:8: ( 'SEQUENCE::' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:34:10: 'SEQUENCE::'
             {
-            match("STASH"); 
+            match("SEQUENCE::"); 
 
 
 
@@ -830,10 +809,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__146;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:36:8: ( 'TALK' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:36:10: 'TALK'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:35:8: ( 'STASH' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:35:10: 'STASH'
             {
-            match("TALK"); 
+            match("STASH"); 
 
 
 
@@ -853,10 +832,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__147;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:37:8: ( 'TEXTUREBLOCK' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:37:10: 'TEXTUREBLOCK'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:36:8: ( 'TALK' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:36:10: 'TALK'
             {
-            match("TEXTUREBLOCK"); 
+            match("TALK"); 
 
 
 
@@ -876,10 +855,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__148;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:38:8: ( 'TRIGGER' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:38:10: 'TRIGGER'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:37:8: ( 'TEXTUREBLOCK' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:37:10: 'TEXTUREBLOCK'
             {
-            match("TRIGGER"); 
+            match("TEXTUREBLOCK"); 
 
 
 
@@ -899,10 +878,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__149;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:39:8: ( 'a:' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:39:10: 'a:'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:38:8: ( 'TRIGGER' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:38:10: 'TRIGGER'
             {
-            match("a:"); 
+            match("TRIGGER"); 
 
 
 
@@ -922,10 +901,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__150;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:40:8: ( 'addTag:' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:40:10: 'addTag:'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:39:8: ( 'a:' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:39:10: 'a:'
             {
-            match("addTag:"); 
+            match("a:"); 
 
 
 
@@ -945,10 +924,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__151;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:41:8: ( 'aiInit:' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:41:10: 'aiInit:'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:40:8: ( 'addTag:' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:40:10: 'addTag:'
             {
-            match("aiInit:"); 
+            match("addTag:"); 
 
 
 
@@ -968,10 +947,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__152;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:42:8: ( 'aiNode' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:42:10: 'aiNode'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:41:8: ( 'aiInit:' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:41:10: 'aiInit:'
             {
-            match("aiNode"); 
+            match("aiInit:"); 
 
 
 
@@ -991,10 +970,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__153;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:43:8: ( 'behaviours:' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:43:10: 'behaviours:'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:42:8: ( 'aiNode' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:42:10: 'aiNode'
             {
-            match("behaviours:"); 
+            match("aiNode"); 
 
 
 
@@ -1014,10 +993,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__154;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:44:8: ( 'block' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:44:10: 'block'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:43:8: ( 'behaviours:' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:43:10: 'behaviours:'
             {
-            match("block"); 
+            match("behaviours:"); 
 
 
 
@@ -1037,10 +1016,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__155;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:45:8: ( 'callCommand:' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:45:10: 'callCommand:'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:44:8: ( 'block' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:44:10: 'block'
             {
-            match("callCommand:"); 
+            match("block"); 
 
 
 
@@ -1060,10 +1039,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__156;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:46:8: ( 'changeAdvance:' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:46:10: 'changeAdvance:'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:45:8: ( 'callCommand:' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:45:10: 'callCommand:'
             {
-            match("changeAdvance:"); 
+            match("callCommand:"); 
 
 
 
@@ -1083,10 +1062,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__157;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:47:8: ( 'changeAiNode' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:47:10: 'changeAiNode'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:46:8: ( 'changeAdvance:' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:46:10: 'changeAdvance:'
             {
-            match("changeAiNode"); 
+            match("changeAdvance:"); 
 
 
 
@@ -1106,10 +1085,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__158;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:48:8: ( 'changeStability:' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:48:10: 'changeStability:'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:47:8: ( 'changeAiNode' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:47:10: 'changeAiNode'
             {
-            match("changeStability:"); 
+            match("changeAiNode"); 
 
 
 
@@ -1129,10 +1108,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__159;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:49:8: ( 'command' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:49:10: 'command'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:48:8: ( 'changeStability:' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:48:10: 'changeStability:'
             {
-            match("command"); 
+            match("changeStability:"); 
 
 
 
@@ -1152,10 +1131,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__160;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:50:8: ( 'containsFaction:' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:50:10: 'containsFaction:'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:49:8: ( 'command' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:49:10: 'command'
             {
-            match("containsFaction:"); 
+            match("command"); 
 
 
 
@@ -1175,10 +1154,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__161;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:51:8: ( 'converse' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:51:10: 'converse'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:50:8: ( 'containsFaction:' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:50:10: 'containsFaction:'
             {
-            match("converse"); 
+            match("containsFaction:"); 
 
 
 
@@ -1198,10 +1177,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__162;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:52:8: ( 'cover' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:52:10: 'cover'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:51:8: ( 'converse' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:51:10: 'converse'
             {
-            match("cover"); 
+            match("converse"); 
 
 
 
@@ -1221,10 +1200,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__163;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:53:8: ( 'destination' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:53:10: 'destination'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:52:8: ( 'cover' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:52:10: 'cover'
             {
-            match("destination"); 
+            match("cover"); 
 
 
 
@@ -1244,10 +1223,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__164;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:54:8: ( 'directorBias' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:54:10: 'directorBias'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:53:8: ( 'destination' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:53:10: 'destination'
             {
-            match("directorBias"); 
+            match("destination"); 
 
 
 
@@ -1267,10 +1246,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__165;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:55:8: ( 'engChance:' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:55:10: 'engChance:'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:54:8: ( 'directorBias' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:54:10: 'directorBias'
             {
-            match("engChance:"); 
+            match("directorBias"); 
 
 
 
@@ -1290,10 +1269,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__166;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:56:8: ( 'expireRepeats:' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:56:10: 'expireRepeats:'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:55:8: ( 'engChance:' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:55:10: 'engChance:'
             {
-            match("expireRepeats:"); 
+            match("engChance:"); 
 
 
 
@@ -1313,10 +1292,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__167;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:57:8: ( 'expireTime:' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:57:10: 'expireTime:'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:56:8: ( 'expireRepeats:' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:56:10: 'expireRepeats:'
             {
-            match("expireTime:"); 
+            match("expireRepeats:"); 
 
 
 
@@ -1336,10 +1315,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__168;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:58:8: ( 'hasItem:' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:58:10: 'hasItem:'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:57:8: ( 'expireTime:' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:57:10: 'expireTime:'
             {
-            match("hasItem:"); 
+            match("expireTime:"); 
 
 
 
@@ -1359,10 +1338,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__169;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:59:8: ( 'hasWeapon:' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:59:10: 'hasWeapon:'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:58:8: ( 'hasItem:' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:58:10: 'hasItem:'
             {
-            match("hasWeapon:"); 
+            match("hasItem:"); 
 
 
 
@@ -1382,10 +1361,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__170;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:60:8: ( 'isAlive' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:60:10: 'isAlive'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:59:8: ( 'hasWeapon:' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:59:10: 'hasWeapon:'
             {
-            match("isAlive"); 
+            match("hasWeapon:"); 
 
 
 
@@ -1405,10 +1384,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__171;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:61:8: ( 'isDaemon' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:61:10: 'isDaemon'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:60:8: ( 'isAlive' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:60:10: 'isAlive'
             {
-            match("isDaemon"); 
+            match("isAlive"); 
 
 
 
@@ -1428,10 +1407,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__172;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:62:8: ( 'isDead' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:62:10: 'isDead'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:61:8: ( 'isDaemon' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:61:10: 'isDaemon'
             {
-            match("isDead"); 
+            match("isDaemon"); 
 
 
 
@@ -1451,10 +1430,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__173;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:63:8: ( 'isFaction:' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:63:10: 'isFaction:'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:62:8: ( 'isDead' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:62:10: 'isDead'
             {
-            match("isFaction:"); 
+            match("isDead"); 
 
 
 
@@ -1474,10 +1453,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__174;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:64:8: ( 'isInRoom' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:64:10: 'isInRoom'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:63:8: ( 'isFaction:' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:63:10: 'isFaction:'
             {
-            match("isInRoom"); 
+            match("isFaction:"); 
 
 
 
@@ -1497,10 +1476,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__175;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:65:8: ( 'isInvestigated' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:65:10: 'isInvestigated'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:64:8: ( 'isInRoom' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:64:10: 'isInRoom'
             {
-            match("isInvestigated"); 
+            match("isInRoom"); 
 
 
 
@@ -1520,10 +1499,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__176;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:66:8: ( 'isName:' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:66:10: 'isName:'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:65:8: ( 'isInvestigated' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:65:10: 'isInvestigated'
             {
-            match("isName:"); 
+            match("isInvestigated"); 
 
 
 
@@ -1543,10 +1522,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__177;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:67:8: ( 'isNotDaemon' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:67:10: 'isNotDaemon'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:66:8: ( 'isName:' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:66:10: 'isName:'
             {
-            match("isNotDaemon"); 
+            match("isName:"); 
 
 
 
@@ -1566,10 +1545,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__178;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:68:8: ( 'isNotInvestigated' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:68:10: 'isNotInvestigated'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:67:8: ( 'isNotDaemon' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:67:10: 'isNotDaemon'
             {
-            match("isNotInvestigated"); 
+            match("isNotDaemon"); 
 
 
 
@@ -1589,10 +1568,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__179;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:69:8: ( 'isPlayer' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:69:10: 'isPlayer'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:68:8: ( 'isNotInvestigated' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:68:10: 'isNotInvestigated'
             {
-            match("isPlayer"); 
+            match("isNotInvestigated"); 
 
 
 
@@ -1612,10 +1591,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__180;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:70:8: ( 'isRoom:' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:70:10: 'isRoom:'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:69:8: ( 'isPlayer' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:69:10: 'isPlayer'
             {
-            match("isRoom:"); 
+            match("isPlayer"); 
 
 
 
@@ -1635,10 +1614,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__181;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:71:8: ( 'killUnit' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:71:10: 'killUnit'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:70:8: ( 'isRoom:' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:70:10: 'isRoom:'
             {
-            match("killUnit"); 
+            match("isRoom:"); 
 
 
 
@@ -1658,10 +1637,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__182;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:72:8: ( 'l:' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:72:10: 'l:'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:71:8: ( 'killUnit' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:71:10: 'killUnit'
             {
-            match("l:"); 
+            match("killUnit"); 
 
 
 
@@ -1681,10 +1660,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__183;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:73:8: ( 'lines:' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:73:10: 'lines:'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:72:8: ( 'l:' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:72:10: 'l:'
             {
-            match("lines:"); 
+            match("l:"); 
 
 
 
@@ -1704,10 +1683,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__184;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:74:8: ( 'loadMap' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:74:10: 'loadMap'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:73:8: ( 'lines:' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:73:10: 'lines:'
             {
-            match("loadMap"); 
+            match("lines:"); 
 
 
 
@@ -1727,10 +1706,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__185;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:75:8: ( 'lockDoor' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:75:10: 'lockDoor'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:74:8: ( 'loadMap' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:74:10: 'loadMap'
             {
-            match("lockDoor"); 
+            match("loadMap"); 
 
 
 
@@ -1750,10 +1729,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__186;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:76:8: ( 'mapsize' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:76:10: 'mapsize'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:75:8: ( 'lockDoor' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:75:10: 'lockDoor'
             {
-            match("mapsize"); 
+            match("lockDoor"); 
 
 
 
@@ -1773,10 +1752,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__187;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:77:8: ( 'mapspawns' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:77:10: 'mapspawns'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:76:8: ( 'mapsize' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:76:10: 'mapsize'
             {
-            match("mapspawns"); 
+            match("mapsize"); 
 
 
 
@@ -1796,10 +1775,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__188;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:78:8: ( 'maxTeamSize:' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:78:10: 'maxTeamSize:'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:77:8: ( 'mapspawns' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:77:10: 'mapspawns'
             {
-            match("maxTeamSize:"); 
+            match("mapspawns"); 
 
 
 
@@ -1819,10 +1798,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__189;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:79:8: ( 'medChance:' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:79:10: 'medChance:'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:78:8: ( 'maxTeamSize:' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:78:10: 'maxTeamSize:'
             {
-            match("medChance:"); 
+            match("maxTeamSize:"); 
 
 
 
@@ -1842,10 +1821,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__190;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:80:8: ( 'minTeamSize:' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:80:10: 'minTeamSize:'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:79:8: ( 'medChance:' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:79:10: 'medChance:'
             {
-            match("minTeamSize:"); 
+            match("medChance:"); 
 
 
 
@@ -1865,10 +1844,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__191;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:81:8: ( 'o:' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:81:10: 'o:'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:80:8: ( 'minTeamSize:' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:80:10: 'minTeamSize:'
             {
-            match("o:"); 
+            match("minTeamSize:"); 
 
 
 
@@ -1888,10 +1867,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__192;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:82:8: ( 'onTime:' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:82:10: 'onTime:'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:81:8: ( 'o:' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:81:10: 'o:'
             {
-            match("onTime:"); 
+            match("o:"); 
 
 
 
@@ -1911,10 +1890,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__193;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:83:8: ( 'opening:' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:83:10: 'opening:'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:82:8: ( 'onTime:' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:82:10: 'onTime:'
             {
-            match("opening:"); 
+            match("onTime:"); 
 
 
 
@@ -1934,10 +1913,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__194;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:84:8: ( 'openingLine:' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:84:10: 'openingLine:'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:83:8: ( 'opening:' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:83:10: 'opening:'
             {
-            match("openingLine:"); 
+            match("opening:"); 
 
 
 
@@ -1957,10 +1936,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__195;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:85:8: ( 'option:' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:85:10: 'option:'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:84:8: ( 'openingLine:' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:84:10: 'openingLine:'
             {
-            match("option:"); 
+            match("openingLine:"); 
 
 
 
@@ -1980,10 +1959,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__196;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:86:8: ( 'p:' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:86:10: 'p:'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:85:8: ( 'option:' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:85:10: 'option:'
             {
-            match("p:"); 
+            match("option:"); 
 
 
 
@@ -2003,10 +1982,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__197;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:87:8: ( 'parent:' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:87:10: 'parent:'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:86:8: ( 'p:' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:86:10: 'p:'
             {
-            match("parent:"); 
+            match("p:"); 
 
 
 
@@ -2026,10 +2005,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__198;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:88:8: ( 'portal' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:88:10: 'portal'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:87:8: ( 'parent:' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:87:10: 'parent:'
             {
-            match("portal"); 
+            match("parent:"); 
 
 
 
@@ -2049,10 +2028,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__199;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:89:8: ( 'priority:' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:89:10: 'priority:'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:88:8: ( 'portal' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:88:10: 'portal'
             {
-            match("priority:"); 
+            match("portal"); 
 
 
 
@@ -2072,10 +2051,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__200;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:90:8: ( 'removeSaferoom' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:90:10: 'removeSaferoom'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:89:8: ( 'priority:' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:89:10: 'priority:'
             {
-            match("removeSaferoom"); 
+            match("priority:"); 
 
 
 
@@ -2095,10 +2074,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__201;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:91:8: ( 'removeTag:' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:91:10: 'removeTag:'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:90:8: ( 'removeItem' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:90:10: 'removeItem'
             {
-            match("removeTag:"); 
+            match("removeItem"); 
 
 
 
@@ -2118,10 +2097,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__202;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:92:8: ( 'removeUnit' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:92:10: 'removeUnit'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:91:8: ( 'removeSaferoom' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:91:10: 'removeSaferoom'
             {
-            match("removeUnit"); 
+            match("removeSaferoom"); 
 
 
 
@@ -2141,10 +2120,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__203;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:93:8: ( 'req:' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:93:10: 'req:'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:92:8: ( 'removeTag:' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:92:10: 'removeTag:'
             {
-            match("req:"); 
+            match("removeTag:"); 
 
 
 
@@ -2164,10 +2143,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__204;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:94:8: ( 's:' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:94:10: 's:'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:93:8: ( 'removeUnit' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:93:10: 'removeUnit'
             {
-            match("s:"); 
+            match("removeUnit"); 
 
 
 
@@ -2187,10 +2166,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__205;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:95:8: ( 'saferoom' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:95:10: 'saferoom'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:94:8: ( 'req:' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:94:10: 'req:'
             {
-            match("saferoom"); 
+            match("req:"); 
 
 
 
@@ -2210,10 +2189,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__206;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:96:8: ( 'sciChance:' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:96:10: 'sciChance:'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:95:8: ( 's:' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:95:10: 's:'
             {
-            match("sciChance:"); 
+            match("s:"); 
 
 
 
@@ -2233,10 +2212,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__207;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:97:8: ( 'sector:' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:97:10: 'sector:'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:96:8: ( 'saferoom' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:96:10: 'saferoom'
             {
-            match("sector:"); 
+            match("saferoom"); 
 
 
 
@@ -2256,10 +2235,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__208;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:98:8: ( 'setTriggerRunning:' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:98:10: 'setTriggerRunning:'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:97:8: ( 'sciChance:' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:97:10: 'sciChance:'
             {
-            match("setTriggerRunning:"); 
+            match("sciChance:"); 
 
 
 
@@ -2279,10 +2258,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__209;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:99:8: ( 'showMessage:' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:99:10: 'showMessage:'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:98:8: ( 'sector:' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:98:10: 'sector:'
             {
-            match("showMessage:"); 
+            match("sector:"); 
 
 
 
@@ -2302,10 +2281,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__210;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:100:8: ( 'spawnCharacter' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:100:10: 'spawnCharacter'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:99:8: ( 'setTriggerRunning:' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:99:10: 'setTriggerRunning:'
             {
-            match("spawnCharacter"); 
+            match("setTriggerRunning:"); 
 
 
 
@@ -2325,10 +2304,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__211;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:101:8: ( 'spawnItem' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:101:10: 'spawnItem'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:100:8: ( 'showMessage:' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:100:10: 'showMessage:'
             {
-            match("spawnItem"); 
+            match("showMessage:"); 
 
 
 
@@ -2348,10 +2327,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__212;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:102:8: ( 'spawnTalkNode' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:102:10: 'spawnTalkNode'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:101:8: ( 'spawnCharacter' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:101:10: 'spawnCharacter'
             {
-            match("spawnTalkNode"); 
+            match("spawnCharacter"); 
 
 
 
@@ -2371,10 +2350,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__213;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:103:8: ( 'spawnTeam' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:103:10: 'spawnTeam'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:102:8: ( 'spawnItem' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:102:10: 'spawnItem'
             {
-            match("spawnTeam"); 
+            match("spawnItem"); 
 
 
 
@@ -2394,10 +2373,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__214;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:104:8: ( 'stage:' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:104:10: 'stage:'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:103:8: ( 'spawnTalkNode' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:103:10: 'spawnTalkNode'
             {
-            match("stage:"); 
+            match("spawnTalkNode"); 
 
 
 
@@ -2417,10 +2396,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__215;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:105:8: ( 'stages:' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:105:10: 'stages:'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:104:8: ( 'spawnTeam' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:104:10: 'spawnTeam'
             {
-            match("stages:"); 
+            match("spawnTeam"); 
 
 
 
@@ -2440,10 +2419,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__216;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:106:8: ( 'stash' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:106:10: 'stash'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:105:8: ( 'stage:' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:105:10: 'stage:'
             {
-            match("stash"); 
+            match("stage:"); 
 
 
 
@@ -2463,10 +2442,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__217;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:107:8: ( 'subscribe:' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:107:10: 'subscribe:'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:106:8: ( 'stages:' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:106:10: 'stages:'
             {
-            match("subscribe:"); 
+            match("stages:"); 
 
 
 
@@ -2486,10 +2465,12 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__218;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:108:8: ( 't' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:108:10: 't'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:107:8: ( 'stash' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:107:10: 'stash'
             {
-            match('t'); 
+            match("stash"); 
+
+
 
             }
 
@@ -2507,10 +2488,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__219;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:109:8: ( 'talk' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:109:10: 'talk'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:108:8: ( 'subscribe:' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:108:10: 'subscribe:'
             {
-            match("talk"); 
+            match("subscribe:"); 
 
 
 
@@ -2530,12 +2511,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__220;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:110:8: ( 'tc' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:110:10: 'tc'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:109:8: ( 't' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:109:10: 't'
             {
-            match("tc"); 
-
-
+            match('t'); 
 
             }
 
@@ -2553,10 +2532,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__221;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:111:8: ( 'te' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:111:10: 'te'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:110:8: ( 'talk' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:110:10: 'talk'
             {
-            match("te"); 
+            match("talk"); 
 
 
 
@@ -2576,10 +2555,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__222;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:112:8: ( 'teleport' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:112:10: 'teleport'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:111:8: ( 'tc' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:111:10: 'tc'
             {
-            match("teleport"); 
+            match("tc"); 
 
 
 
@@ -2599,10 +2578,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__223;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:113:8: ( 'territory:' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:113:10: 'territory:'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:112:8: ( 'te' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:112:10: 'te'
             {
-            match("territory:"); 
+            match("te"); 
 
 
 
@@ -2622,10 +2601,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__224;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:114:8: ( 'textureBlock' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:114:10: 'textureBlock'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:113:8: ( 'teleport' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:113:10: 'teleport'
             {
-            match("textureBlock"); 
+            match("teleport"); 
 
 
 
@@ -2645,10 +2624,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__225;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:115:8: ( 'textureblock' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:115:10: 'textureblock'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:114:8: ( 'territory:' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:114:10: 'territory:'
             {
-            match("textureblock"); 
+            match("territory:"); 
 
 
 
@@ -2668,10 +2647,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__226;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:116:8: ( 'topic' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:116:10: 'topic'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:115:8: ( 'textureBlock' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:115:10: 'textureBlock'
             {
-            match("topic"); 
+            match("textureBlock"); 
 
 
 
@@ -2691,10 +2670,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__227;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:117:8: ( 'trigger' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:117:10: 'trigger'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:116:8: ( 'textureblock' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:116:10: 'textureblock'
             {
-            match("trigger"); 
+            match("textureblock"); 
 
 
 
@@ -2714,10 +2693,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__228;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:118:8: ( 'triggerCond' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:118:10: 'triggerCond'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:117:8: ( 'topic' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:117:10: 'topic'
             {
-            match("triggerCond"); 
+            match("topic"); 
 
 
 
@@ -2737,10 +2716,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__229;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:119:8: ( 'triggerEffect' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:119:10: 'triggerEffect'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:118:8: ( 'trigger' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:118:10: 'trigger'
             {
-            match("triggerEffect"); 
+            match("trigger"); 
 
 
 
@@ -2760,10 +2739,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__230;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:120:8: ( 'unlockDoor' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:120:10: 'unlockDoor'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:119:8: ( 'triggerCond' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:119:10: 'triggerCond'
             {
-            match("unlockDoor"); 
+            match("triggerCond"); 
 
 
 
@@ -2783,10 +2762,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__231;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:121:8: ( 'unlockTech:' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:121:10: 'unlockTech:'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:120:8: ( 'triggerEffect' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:120:10: 'triggerEffect'
             {
-            match("unlockTech:"); 
+            match("triggerEffect"); 
 
 
 
@@ -2806,10 +2785,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__232;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:122:8: ( 'updateTalk:' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:122:10: 'updateTalk:'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:121:8: ( 'unlockDoor' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:121:10: 'unlockDoor'
             {
-            match("updateTalk:"); 
+            match("unlockDoor"); 
 
 
 
@@ -2829,10 +2808,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__233;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:123:8: ( 'wepChance:' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:123:10: 'wepChance:'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:122:8: ( 'unlockTech:' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:122:10: 'unlockTech:'
             {
-            match("wepChance:"); 
+            match("unlockTech:"); 
 
 
 
@@ -2852,10 +2831,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__234;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:124:8: ( 'x:' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:124:10: 'x:'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:123:8: ( 'updateTalk:' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:123:10: 'updateTalk:'
             {
-            match("x:"); 
+            match("updateTalk:"); 
 
 
 
@@ -2875,10 +2854,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__235;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:125:8: ( 'y:' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:125:10: 'y:'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:124:8: ( 'wepChance:' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:124:10: 'wepChance:'
             {
-            match("y:"); 
+            match("wepChance:"); 
 
 
 
@@ -2898,10 +2877,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__236;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:126:8: ( 'zone:' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:126:10: 'zone:'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:125:8: ( 'x:' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:125:10: 'x:'
             {
-            match("zone:"); 
+            match("x:"); 
 
 
 
@@ -2921,10 +2900,12 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__237;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:127:8: ( '{' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:127:10: '{'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:126:8: ( 'y:' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:126:10: 'y:'
             {
-            match('{'); 
+            match("y:"); 
+
+
 
             }
 
@@ -2942,10 +2923,12 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = T__238;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:128:8: ( '}' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:128:10: '}'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:127:8: ( 'zone:' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:127:10: 'zone:'
             {
-            match('}'); 
+            match("zone:"); 
+
+
 
             }
 
@@ -2958,6 +2941,48 @@ public class AtrophyScriptLexer extends Lexer {
     }
     // $ANTLR end "T__238"
 
+    // $ANTLR start "T__239"
+    public final void mT__239() throws RecognitionException {
+        try {
+            int _type = T__239;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:128:8: ( '{' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:128:10: '{'
+            {
+            match('{'); 
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally {
+        	// do for sure before leaving
+        }
+    }
+    // $ANTLR end "T__239"
+
+    // $ANTLR start "T__240"
+    public final void mT__240() throws RecognitionException {
+        try {
+            int _type = T__240;
+            int _channel = DEFAULT_TOKEN_CHANNEL;
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:129:8: ( '}' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:129:10: '}'
+            {
+            match('}'); 
+
+            }
+
+            state.type = _type;
+            state.channel = _channel;
+        }
+        finally {
+        	// do for sure before leaving
+        }
+    }
+    // $ANTLR end "T__240"
+
     // $ANTLR start "STRING"
     public final void mSTRING() throws RecognitionException {
         try {
@@ -2967,12 +2992,12 @@ public class AtrophyScriptLexer extends Lexer {
             int normal;
 
             StringBuilder lBuf = new StringBuilder();
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:615:5: ( '\"' (escaped= ESC |normal=~ ( '\"' | '\\\\' | '\\n' | '\\r' ) )* '\"' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:616:12: '\"' (escaped= ESC |normal=~ ( '\"' | '\\\\' | '\\n' | '\\r' ) )* '\"'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:621:5: ( '\"' (escaped= ESC |normal=~ ( '\"' | '\\\\' | '\\n' | '\\r' ) )* '\"' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:622:12: '\"' (escaped= ESC |normal=~ ( '\"' | '\\\\' | '\\n' | '\\r' ) )* '\"'
             {
             match('\"'); 
 
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:617:12: (escaped= ESC |normal=~ ( '\"' | '\\\\' | '\\n' | '\\r' ) )*
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:623:12: (escaped= ESC |normal=~ ( '\"' | '\\\\' | '\\n' | '\\r' ) )*
             loop1:
             do {
                 int alt1=3;
@@ -2988,15 +3013,15 @@ public class AtrophyScriptLexer extends Lexer {
 
                 switch (alt1) {
             	case 1 :
-            	    // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:617:14: escaped= ESC
+            	    // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:623:14: escaped= ESC
             	    {
-            	    int escapedStart1022 = getCharIndex();
-            	    int escapedStartLine1022 = getLine();
-            	    int escapedStartCharPos1022 = getCharPositionInLine();
+            	    int escapedStart1030 = getCharIndex();
+            	    int escapedStartLine1030 = getLine();
+            	    int escapedStartCharPos1030 = getCharPositionInLine();
             	    mESC(); 
-            	    escaped = new CommonToken(input, Token.INVALID_TOKEN_TYPE, Token.DEFAULT_CHANNEL, escapedStart1022, getCharIndex()-1);
-            	    escaped.setLine(escapedStartLine1022);
-            	    escaped.setCharPositionInLine(escapedStartCharPos1022);
+            	    escaped = new CommonToken(input, Token.INVALID_TOKEN_TYPE, Token.DEFAULT_CHANNEL, escapedStart1030, getCharIndex()-1);
+            	    escaped.setLine(escapedStartLine1030);
+            	    escaped.setCharPositionInLine(escapedStartCharPos1030);
 
 
             	    lBuf.append(getText());
@@ -3004,7 +3029,7 @@ public class AtrophyScriptLexer extends Lexer {
             	    }
             	    break;
             	case 2 :
-            	    // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:618:14: normal=~ ( '\"' | '\\\\' | '\\n' | '\\r' )
+            	    // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:624:14: normal=~ ( '\"' | '\\\\' | '\\n' | '\\r' )
             	    {
             	    normal= input.LA(1);
 
@@ -3047,12 +3072,12 @@ public class AtrophyScriptLexer extends Lexer {
     // $ANTLR start "ESC"
     public final void mESC() throws RecognitionException {
         try {
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:626:5: ( '\\\\' ( 'n' | 'r' | 't' | 'b' | 'f' | '\"' | '\\'' | '/' ) )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:626:9: '\\\\' ( 'n' | 'r' | 't' | 'b' | 'f' | '\"' | '\\'' | '/' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:632:5: ( '\\\\' ( 'n' | 'r' | 't' | 'b' | 'f' | '\"' | '\\'' | '/' ) )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:632:9: '\\\\' ( 'n' | 'r' | 't' | 'b' | 'f' | '\"' | '\\'' | '/' )
             {
             match('\\'); 
 
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:627:9: ( 'n' | 'r' | 't' | 'b' | 'f' | '\"' | '\\'' | '/' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:633:9: ( 'n' | 'r' | 't' | 'b' | 'f' | '\"' | '\\'' | '/' )
             int alt2=8;
             switch ( input.LA(1) ) {
             case 'n':
@@ -3105,7 +3130,7 @@ public class AtrophyScriptLexer extends Lexer {
 
             switch (alt2) {
                 case 1 :
-                    // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:627:13: 'n'
+                    // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:633:13: 'n'
                     {
                     match('n'); 
 
@@ -3114,7 +3139,7 @@ public class AtrophyScriptLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:628:13: 'r'
+                    // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:634:13: 'r'
                     {
                     match('r'); 
 
@@ -3123,7 +3148,7 @@ public class AtrophyScriptLexer extends Lexer {
                     }
                     break;
                 case 3 :
-                    // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:629:13: 't'
+                    // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:635:13: 't'
                     {
                     match('t'); 
 
@@ -3132,7 +3157,7 @@ public class AtrophyScriptLexer extends Lexer {
                     }
                     break;
                 case 4 :
-                    // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:630:13: 'b'
+                    // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:636:13: 'b'
                     {
                     match('b'); 
 
@@ -3141,7 +3166,7 @@ public class AtrophyScriptLexer extends Lexer {
                     }
                     break;
                 case 5 :
-                    // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:631:13: 'f'
+                    // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:637:13: 'f'
                     {
                     match('f'); 
 
@@ -3150,7 +3175,7 @@ public class AtrophyScriptLexer extends Lexer {
                     }
                     break;
                 case 6 :
-                    // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:632:13: '\"'
+                    // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:638:13: '\"'
                     {
                     match('\"'); 
 
@@ -3159,7 +3184,7 @@ public class AtrophyScriptLexer extends Lexer {
                     }
                     break;
                 case 7 :
-                    // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:633:13: '\\''
+                    // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:639:13: '\\''
                     {
                     match('\''); 
 
@@ -3168,7 +3193,7 @@ public class AtrophyScriptLexer extends Lexer {
                     }
                     break;
                 case 8 :
-                    // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:634:13: '/'
+                    // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:640:13: '/'
                     {
                     match('/'); 
 
@@ -3195,8 +3220,8 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = NOT_PREFIX;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:637:12: ( '!' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:637:14: '!'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:643:12: ( '!' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:643:14: '!'
             {
             match('!'); 
 
@@ -3216,8 +3241,8 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = ADD_TAG_PREFIX;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:638:16: ( '#$' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:638:18: '#$'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:644:16: ( '#$' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:644:18: '#$'
             {
             match("#$"); 
 
@@ -3239,8 +3264,8 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = REMOVE_TAG_PREFIX;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:639:19: ( '#!$' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:639:21: '#!$'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:645:19: ( '#!$' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:645:21: '#!$'
             {
             match("#!$"); 
 
@@ -3262,8 +3287,8 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = UPDATE_TREE_PREFIX;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:640:20: ( '#^' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:640:22: '#^'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:646:20: ( '#^' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:646:22: '#^'
             {
             match("#^"); 
 
@@ -3285,8 +3310,8 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = COMMAND_CALL_PREFIX;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:641:21: ( '#*' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:641:23: '#*'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:647:21: ( '#*' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:647:23: '#*'
             {
             match("#*"); 
 
@@ -3308,7 +3333,7 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = BOOL;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:642:6: ( 'true' | 'false' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:648:6: ( 'true' | 'false' )
             int alt3=2;
             int LA3_0 = input.LA(1);
 
@@ -3327,7 +3352,7 @@ public class AtrophyScriptLexer extends Lexer {
             }
             switch (alt3) {
                 case 1 :
-                    // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:642:8: 'true'
+                    // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:648:8: 'true'
                     {
                     match("true"); 
 
@@ -3336,7 +3361,7 @@ public class AtrophyScriptLexer extends Lexer {
                     }
                     break;
                 case 2 :
-                    // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:642:17: 'false'
+                    // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:648:17: 'false'
                     {
                     match("false"); 
 
@@ -3360,8 +3385,8 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = IDENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:643:7: ( ( 'a' .. 'z' | 'A' .. 'Z' ) ( '_' | 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )* )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:643:9: ( 'a' .. 'z' | 'A' .. 'Z' ) ( '_' | 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )*
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:649:7: ( ( 'a' .. 'z' | 'A' .. 'Z' ) ( '_' | 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )* )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:649:9: ( 'a' .. 'z' | 'A' .. 'Z' ) ( '_' | 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )*
             {
             if ( (input.LA(1) >= 'A' && input.LA(1) <= 'Z')||(input.LA(1) >= 'a' && input.LA(1) <= 'z') ) {
                 input.consume();
@@ -3373,7 +3398,7 @@ public class AtrophyScriptLexer extends Lexer {
             }
 
 
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:643:30: ( '_' | 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )*
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:649:30: ( '_' | 'a' .. 'z' | 'A' .. 'Z' | '0' .. '9' )*
             loop4:
             do {
                 int alt4=2;
@@ -3423,10 +3448,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = INT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:644:5: ( ( '0' .. '9' )+ )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:644:7: ( '0' .. '9' )+
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:650:5: ( ( '0' .. '9' )+ )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:650:7: ( '0' .. '9' )+
             {
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:644:7: ( '0' .. '9' )+
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:650:7: ( '0' .. '9' )+
             int cnt5=0;
             loop5:
             do {
@@ -3481,10 +3506,10 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = WS;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:645:4: ( ( ' ' | '\\t' | '\\n' | '\\r' | '\\f' )+ )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:645:6: ( ' ' | '\\t' | '\\n' | '\\r' | '\\f' )+
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:651:4: ( ( ' ' | '\\t' | '\\n' | '\\r' | '\\f' )+ )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:651:6: ( ' ' | '\\t' | '\\n' | '\\r' | '\\f' )+
             {
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:645:6: ( ' ' | '\\t' | '\\n' | '\\r' | '\\f' )+
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:651:6: ( ' ' | '\\t' | '\\n' | '\\r' | '\\f' )+
             int cnt6=0;
             loop6:
             do {
@@ -3541,14 +3566,14 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:646:9: ( '//' ( . )* ( '\\n' | '\\r' ) )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:646:11: '//' ( . )* ( '\\n' | '\\r' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:652:9: ( '//' ( . )* ( '\\n' | '\\r' ) )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:652:11: '//' ( . )* ( '\\n' | '\\r' )
             {
             match("//"); 
 
 
 
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:646:16: ( . )*
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:652:16: ( . )*
             loop7:
             do {
                 int alt7=2;
@@ -3564,7 +3589,7 @@ public class AtrophyScriptLexer extends Lexer {
 
                 switch (alt7) {
             	case 1 :
-            	    // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:646:16: .
+            	    // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:652:16: .
             	    {
             	    matchAny(); 
 
@@ -3605,14 +3630,14 @@ public class AtrophyScriptLexer extends Lexer {
         try {
             int _type = MULTILINE_COMMENT;
             int _channel = DEFAULT_TOKEN_CHANNEL;
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:647:19: ( '/*' ( . )* '*/' )
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:647:21: '/*' ( . )* '*/'
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:653:19: ( '/*' ( . )* '*/' )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:653:21: '/*' ( . )* '*/'
             {
             match("/*"); 
 
 
 
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:647:26: ( . )*
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:653:26: ( . )*
             loop8:
             do {
                 int alt8=2;
@@ -3637,7 +3662,7 @@ public class AtrophyScriptLexer extends Lexer {
 
                 switch (alt8) {
             	case 1 :
-            	    // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:647:26: .
+            	    // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:653:26: .
             	    {
             	    matchAny(); 
 
@@ -3668,1044 +3693,1052 @@ public class AtrophyScriptLexer extends Lexer {
     // $ANTLR end "MULTILINE_COMMENT"
 
     public void mTokens() throws RecognitionException {
-        // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:8: ( T__121 | T__122 | T__123 | T__124 | T__125 | T__126 | T__127 | T__128 | T__129 | T__130 | T__131 | T__132 | T__133 | T__134 | T__135 | T__136 | T__137 | T__138 | T__139 | T__140 | T__141 | T__142 | T__143 | T__144 | T__145 | T__146 | T__147 | T__148 | T__149 | T__150 | T__151 | T__152 | T__153 | T__154 | T__155 | T__156 | T__157 | T__158 | T__159 | T__160 | T__161 | T__162 | T__163 | T__164 | T__165 | T__166 | T__167 | T__168 | T__169 | T__170 | T__171 | T__172 | T__173 | T__174 | T__175 | T__176 | T__177 | T__178 | T__179 | T__180 | T__181 | T__182 | T__183 | T__184 | T__185 | T__186 | T__187 | T__188 | T__189 | T__190 | T__191 | T__192 | T__193 | T__194 | T__195 | T__196 | T__197 | T__198 | T__199 | T__200 | T__201 | T__202 | T__203 | T__204 | T__205 | T__206 | T__207 | T__208 | T__209 | T__210 | T__211 | T__212 | T__213 | T__214 | T__215 | T__216 | T__217 | T__218 | T__219 | T__220 | T__221 | T__222 | T__223 | T__224 | T__225 | T__226 | T__227 | T__228 | T__229 | T__230 | T__231 | T__232 | T__233 | T__234 | T__235 | T__236 | T__237 | T__238 | STRING | NOT_PREFIX | ADD_TAG_PREFIX | REMOVE_TAG_PREFIX | UPDATE_TREE_PREFIX | COMMAND_CALL_PREFIX | BOOL | IDENT | INT | WS | COMMENT | MULTILINE_COMMENT )
-        int alt9=130;
+        // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:8: ( T__122 | T__123 | T__124 | T__125 | T__126 | T__127 | T__128 | T__129 | T__130 | T__131 | T__132 | T__133 | T__134 | T__135 | T__136 | T__137 | T__138 | T__139 | T__140 | T__141 | T__142 | T__143 | T__144 | T__145 | T__146 | T__147 | T__148 | T__149 | T__150 | T__151 | T__152 | T__153 | T__154 | T__155 | T__156 | T__157 | T__158 | T__159 | T__160 | T__161 | T__162 | T__163 | T__164 | T__165 | T__166 | T__167 | T__168 | T__169 | T__170 | T__171 | T__172 | T__173 | T__174 | T__175 | T__176 | T__177 | T__178 | T__179 | T__180 | T__181 | T__182 | T__183 | T__184 | T__185 | T__186 | T__187 | T__188 | T__189 | T__190 | T__191 | T__192 | T__193 | T__194 | T__195 | T__196 | T__197 | T__198 | T__199 | T__200 | T__201 | T__202 | T__203 | T__204 | T__205 | T__206 | T__207 | T__208 | T__209 | T__210 | T__211 | T__212 | T__213 | T__214 | T__215 | T__216 | T__217 | T__218 | T__219 | T__220 | T__221 | T__222 | T__223 | T__224 | T__225 | T__226 | T__227 | T__228 | T__229 | T__230 | T__231 | T__232 | T__233 | T__234 | T__235 | T__236 | T__237 | T__238 | T__239 | T__240 | STRING | NOT_PREFIX | ADD_TAG_PREFIX | REMOVE_TAG_PREFIX | UPDATE_TREE_PREFIX | COMMAND_CALL_PREFIX | BOOL | IDENT | INT | WS | COMMENT | MULTILINE_COMMENT )
+        int alt9=131;
         alt9 = dfa9.predict(input);
         switch (alt9) {
             case 1 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:10: T__121
-                {
-                mT__121(); 
-
-
-                }
-                break;
-            case 2 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:17: T__122
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:10: T__122
                 {
                 mT__122(); 
 
 
                 }
                 break;
-            case 3 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:24: T__123
+            case 2 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:17: T__123
                 {
                 mT__123(); 
 
 
                 }
                 break;
-            case 4 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:31: T__124
+            case 3 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:24: T__124
                 {
                 mT__124(); 
 
 
                 }
                 break;
-            case 5 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:38: T__125
+            case 4 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:31: T__125
                 {
                 mT__125(); 
 
 
                 }
                 break;
-            case 6 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:45: T__126
+            case 5 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:38: T__126
                 {
                 mT__126(); 
 
 
                 }
                 break;
-            case 7 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:52: T__127
+            case 6 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:45: T__127
                 {
                 mT__127(); 
 
 
                 }
                 break;
-            case 8 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:59: T__128
+            case 7 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:52: T__128
                 {
                 mT__128(); 
 
 
                 }
                 break;
-            case 9 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:66: T__129
+            case 8 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:59: T__129
                 {
                 mT__129(); 
 
 
                 }
                 break;
-            case 10 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:73: T__130
+            case 9 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:66: T__130
                 {
                 mT__130(); 
 
 
                 }
                 break;
-            case 11 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:80: T__131
+            case 10 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:73: T__131
                 {
                 mT__131(); 
 
 
                 }
                 break;
-            case 12 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:87: T__132
+            case 11 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:80: T__132
                 {
                 mT__132(); 
 
 
                 }
                 break;
-            case 13 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:94: T__133
+            case 12 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:87: T__133
                 {
                 mT__133(); 
 
 
                 }
                 break;
-            case 14 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:101: T__134
+            case 13 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:94: T__134
                 {
                 mT__134(); 
 
 
                 }
                 break;
-            case 15 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:108: T__135
+            case 14 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:101: T__135
                 {
                 mT__135(); 
 
 
                 }
                 break;
-            case 16 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:115: T__136
+            case 15 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:108: T__136
                 {
                 mT__136(); 
 
 
                 }
                 break;
-            case 17 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:122: T__137
+            case 16 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:115: T__137
                 {
                 mT__137(); 
 
 
                 }
                 break;
-            case 18 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:129: T__138
+            case 17 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:122: T__138
                 {
                 mT__138(); 
 
 
                 }
                 break;
-            case 19 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:136: T__139
+            case 18 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:129: T__139
                 {
                 mT__139(); 
 
 
                 }
                 break;
-            case 20 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:143: T__140
+            case 19 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:136: T__140
                 {
                 mT__140(); 
 
 
                 }
                 break;
-            case 21 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:150: T__141
+            case 20 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:143: T__141
                 {
                 mT__141(); 
 
 
                 }
                 break;
-            case 22 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:157: T__142
+            case 21 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:150: T__142
                 {
                 mT__142(); 
 
 
                 }
                 break;
-            case 23 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:164: T__143
+            case 22 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:157: T__143
                 {
                 mT__143(); 
 
 
                 }
                 break;
-            case 24 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:171: T__144
+            case 23 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:164: T__144
                 {
                 mT__144(); 
 
 
                 }
                 break;
-            case 25 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:178: T__145
+            case 24 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:171: T__145
                 {
                 mT__145(); 
 
 
                 }
                 break;
-            case 26 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:185: T__146
+            case 25 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:178: T__146
                 {
                 mT__146(); 
 
 
                 }
                 break;
-            case 27 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:192: T__147
+            case 26 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:185: T__147
                 {
                 mT__147(); 
 
 
                 }
                 break;
-            case 28 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:199: T__148
+            case 27 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:192: T__148
                 {
                 mT__148(); 
 
 
                 }
                 break;
-            case 29 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:206: T__149
+            case 28 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:199: T__149
                 {
                 mT__149(); 
 
 
                 }
                 break;
-            case 30 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:213: T__150
+            case 29 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:206: T__150
                 {
                 mT__150(); 
 
 
                 }
                 break;
-            case 31 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:220: T__151
+            case 30 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:213: T__151
                 {
                 mT__151(); 
 
 
                 }
                 break;
-            case 32 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:227: T__152
+            case 31 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:220: T__152
                 {
                 mT__152(); 
 
 
                 }
                 break;
-            case 33 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:234: T__153
+            case 32 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:227: T__153
                 {
                 mT__153(); 
 
 
                 }
                 break;
-            case 34 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:241: T__154
+            case 33 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:234: T__154
                 {
                 mT__154(); 
 
 
                 }
                 break;
-            case 35 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:248: T__155
+            case 34 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:241: T__155
                 {
                 mT__155(); 
 
 
                 }
                 break;
-            case 36 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:255: T__156
+            case 35 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:248: T__156
                 {
                 mT__156(); 
 
 
                 }
                 break;
-            case 37 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:262: T__157
+            case 36 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:255: T__157
                 {
                 mT__157(); 
 
 
                 }
                 break;
-            case 38 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:269: T__158
+            case 37 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:262: T__158
                 {
                 mT__158(); 
 
 
                 }
                 break;
-            case 39 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:276: T__159
+            case 38 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:269: T__159
                 {
                 mT__159(); 
 
 
                 }
                 break;
-            case 40 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:283: T__160
+            case 39 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:276: T__160
                 {
                 mT__160(); 
 
 
                 }
                 break;
-            case 41 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:290: T__161
+            case 40 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:283: T__161
                 {
                 mT__161(); 
 
 
                 }
                 break;
-            case 42 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:297: T__162
+            case 41 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:290: T__162
                 {
                 mT__162(); 
 
 
                 }
                 break;
-            case 43 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:304: T__163
+            case 42 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:297: T__163
                 {
                 mT__163(); 
 
 
                 }
                 break;
-            case 44 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:311: T__164
+            case 43 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:304: T__164
                 {
                 mT__164(); 
 
 
                 }
                 break;
-            case 45 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:318: T__165
+            case 44 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:311: T__165
                 {
                 mT__165(); 
 
 
                 }
                 break;
-            case 46 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:325: T__166
+            case 45 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:318: T__166
                 {
                 mT__166(); 
 
 
                 }
                 break;
-            case 47 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:332: T__167
+            case 46 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:325: T__167
                 {
                 mT__167(); 
 
 
                 }
                 break;
-            case 48 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:339: T__168
+            case 47 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:332: T__168
                 {
                 mT__168(); 
 
 
                 }
                 break;
-            case 49 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:346: T__169
+            case 48 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:339: T__169
                 {
                 mT__169(); 
 
 
                 }
                 break;
-            case 50 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:353: T__170
+            case 49 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:346: T__170
                 {
                 mT__170(); 
 
 
                 }
                 break;
-            case 51 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:360: T__171
+            case 50 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:353: T__171
                 {
                 mT__171(); 
 
 
                 }
                 break;
-            case 52 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:367: T__172
+            case 51 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:360: T__172
                 {
                 mT__172(); 
 
 
                 }
                 break;
-            case 53 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:374: T__173
+            case 52 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:367: T__173
                 {
                 mT__173(); 
 
 
                 }
                 break;
-            case 54 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:381: T__174
+            case 53 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:374: T__174
                 {
                 mT__174(); 
 
 
                 }
                 break;
-            case 55 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:388: T__175
+            case 54 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:381: T__175
                 {
                 mT__175(); 
 
 
                 }
                 break;
-            case 56 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:395: T__176
+            case 55 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:388: T__176
                 {
                 mT__176(); 
 
 
                 }
                 break;
-            case 57 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:402: T__177
+            case 56 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:395: T__177
                 {
                 mT__177(); 
 
 
                 }
                 break;
-            case 58 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:409: T__178
+            case 57 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:402: T__178
                 {
                 mT__178(); 
 
 
                 }
                 break;
-            case 59 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:416: T__179
+            case 58 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:409: T__179
                 {
                 mT__179(); 
 
 
                 }
                 break;
-            case 60 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:423: T__180
+            case 59 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:416: T__180
                 {
                 mT__180(); 
 
 
                 }
                 break;
-            case 61 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:430: T__181
+            case 60 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:423: T__181
                 {
                 mT__181(); 
 
 
                 }
                 break;
-            case 62 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:437: T__182
+            case 61 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:430: T__182
                 {
                 mT__182(); 
 
 
                 }
                 break;
-            case 63 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:444: T__183
+            case 62 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:437: T__183
                 {
                 mT__183(); 
 
 
                 }
                 break;
-            case 64 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:451: T__184
+            case 63 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:444: T__184
                 {
                 mT__184(); 
 
 
                 }
                 break;
-            case 65 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:458: T__185
+            case 64 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:451: T__185
                 {
                 mT__185(); 
 
 
                 }
                 break;
-            case 66 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:465: T__186
+            case 65 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:458: T__186
                 {
                 mT__186(); 
 
 
                 }
                 break;
-            case 67 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:472: T__187
+            case 66 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:465: T__187
                 {
                 mT__187(); 
 
 
                 }
                 break;
-            case 68 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:479: T__188
+            case 67 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:472: T__188
                 {
                 mT__188(); 
 
 
                 }
                 break;
-            case 69 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:486: T__189
+            case 68 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:479: T__189
                 {
                 mT__189(); 
 
 
                 }
                 break;
-            case 70 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:493: T__190
+            case 69 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:486: T__190
                 {
                 mT__190(); 
 
 
                 }
                 break;
-            case 71 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:500: T__191
+            case 70 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:493: T__191
                 {
                 mT__191(); 
 
 
                 }
                 break;
-            case 72 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:507: T__192
+            case 71 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:500: T__192
                 {
                 mT__192(); 
 
 
                 }
                 break;
-            case 73 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:514: T__193
+            case 72 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:507: T__193
                 {
                 mT__193(); 
 
 
                 }
                 break;
-            case 74 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:521: T__194
+            case 73 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:514: T__194
                 {
                 mT__194(); 
 
 
                 }
                 break;
-            case 75 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:528: T__195
+            case 74 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:521: T__195
                 {
                 mT__195(); 
 
 
                 }
                 break;
-            case 76 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:535: T__196
+            case 75 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:528: T__196
                 {
                 mT__196(); 
 
 
                 }
                 break;
-            case 77 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:542: T__197
+            case 76 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:535: T__197
                 {
                 mT__197(); 
 
 
                 }
                 break;
-            case 78 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:549: T__198
+            case 77 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:542: T__198
                 {
                 mT__198(); 
 
 
                 }
                 break;
-            case 79 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:556: T__199
+            case 78 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:549: T__199
                 {
                 mT__199(); 
 
 
                 }
                 break;
-            case 80 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:563: T__200
+            case 79 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:556: T__200
                 {
                 mT__200(); 
 
 
                 }
                 break;
-            case 81 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:570: T__201
+            case 80 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:563: T__201
                 {
                 mT__201(); 
 
 
                 }
                 break;
-            case 82 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:577: T__202
+            case 81 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:570: T__202
                 {
                 mT__202(); 
 
 
                 }
                 break;
-            case 83 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:584: T__203
+            case 82 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:577: T__203
                 {
                 mT__203(); 
 
 
                 }
                 break;
-            case 84 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:591: T__204
+            case 83 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:584: T__204
                 {
                 mT__204(); 
 
 
                 }
                 break;
-            case 85 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:598: T__205
+            case 84 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:591: T__205
                 {
                 mT__205(); 
 
 
                 }
                 break;
-            case 86 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:605: T__206
+            case 85 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:598: T__206
                 {
                 mT__206(); 
 
 
                 }
                 break;
-            case 87 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:612: T__207
+            case 86 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:605: T__207
                 {
                 mT__207(); 
 
 
                 }
                 break;
-            case 88 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:619: T__208
+            case 87 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:612: T__208
                 {
                 mT__208(); 
 
 
                 }
                 break;
-            case 89 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:626: T__209
+            case 88 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:619: T__209
                 {
                 mT__209(); 
 
 
                 }
                 break;
-            case 90 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:633: T__210
+            case 89 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:626: T__210
                 {
                 mT__210(); 
 
 
                 }
                 break;
-            case 91 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:640: T__211
+            case 90 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:633: T__211
                 {
                 mT__211(); 
 
 
                 }
                 break;
-            case 92 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:647: T__212
+            case 91 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:640: T__212
                 {
                 mT__212(); 
 
 
                 }
                 break;
-            case 93 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:654: T__213
+            case 92 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:647: T__213
                 {
                 mT__213(); 
 
 
                 }
                 break;
-            case 94 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:661: T__214
+            case 93 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:654: T__214
                 {
                 mT__214(); 
 
 
                 }
                 break;
-            case 95 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:668: T__215
+            case 94 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:661: T__215
                 {
                 mT__215(); 
 
 
                 }
                 break;
-            case 96 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:675: T__216
+            case 95 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:668: T__216
                 {
                 mT__216(); 
 
 
                 }
                 break;
-            case 97 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:682: T__217
+            case 96 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:675: T__217
                 {
                 mT__217(); 
 
 
                 }
                 break;
-            case 98 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:689: T__218
+            case 97 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:682: T__218
                 {
                 mT__218(); 
 
 
                 }
                 break;
-            case 99 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:696: T__219
+            case 98 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:689: T__219
                 {
                 mT__219(); 
 
 
                 }
                 break;
-            case 100 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:703: T__220
+            case 99 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:696: T__220
                 {
                 mT__220(); 
 
 
                 }
                 break;
-            case 101 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:710: T__221
+            case 100 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:703: T__221
                 {
                 mT__221(); 
 
 
                 }
                 break;
-            case 102 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:717: T__222
+            case 101 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:710: T__222
                 {
                 mT__222(); 
 
 
                 }
                 break;
-            case 103 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:724: T__223
+            case 102 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:717: T__223
                 {
                 mT__223(); 
 
 
                 }
                 break;
-            case 104 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:731: T__224
+            case 103 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:724: T__224
                 {
                 mT__224(); 
 
 
                 }
                 break;
-            case 105 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:738: T__225
+            case 104 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:731: T__225
                 {
                 mT__225(); 
 
 
                 }
                 break;
-            case 106 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:745: T__226
+            case 105 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:738: T__226
                 {
                 mT__226(); 
 
 
                 }
                 break;
-            case 107 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:752: T__227
+            case 106 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:745: T__227
                 {
                 mT__227(); 
 
 
                 }
                 break;
-            case 108 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:759: T__228
+            case 107 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:752: T__228
                 {
                 mT__228(); 
 
 
                 }
                 break;
-            case 109 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:766: T__229
+            case 108 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:759: T__229
                 {
                 mT__229(); 
 
 
                 }
                 break;
-            case 110 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:773: T__230
+            case 109 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:766: T__230
                 {
                 mT__230(); 
 
 
                 }
                 break;
-            case 111 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:780: T__231
+            case 110 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:773: T__231
                 {
                 mT__231(); 
 
 
                 }
                 break;
-            case 112 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:787: T__232
+            case 111 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:780: T__232
                 {
                 mT__232(); 
 
 
                 }
                 break;
-            case 113 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:794: T__233
+            case 112 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:787: T__233
                 {
                 mT__233(); 
 
 
                 }
                 break;
-            case 114 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:801: T__234
+            case 113 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:794: T__234
                 {
                 mT__234(); 
 
 
                 }
                 break;
-            case 115 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:808: T__235
+            case 114 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:801: T__235
                 {
                 mT__235(); 
 
 
                 }
                 break;
-            case 116 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:815: T__236
+            case 115 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:808: T__236
                 {
                 mT__236(); 
 
 
                 }
                 break;
-            case 117 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:822: T__237
+            case 116 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:815: T__237
                 {
                 mT__237(); 
 
 
                 }
                 break;
-            case 118 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:829: T__238
+            case 117 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:822: T__238
                 {
                 mT__238(); 
 
 
                 }
                 break;
+            case 118 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:829: T__239
+                {
+                mT__239(); 
+
+
+                }
+                break;
             case 119 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:836: STRING
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:836: T__240
+                {
+                mT__240(); 
+
+
+                }
+                break;
+            case 120 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:843: STRING
                 {
                 mSTRING(); 
 
 
                 }
                 break;
-            case 120 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:843: NOT_PREFIX
+            case 121 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:850: NOT_PREFIX
                 {
                 mNOT_PREFIX(); 
 
 
                 }
                 break;
-            case 121 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:854: ADD_TAG_PREFIX
+            case 122 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:861: ADD_TAG_PREFIX
                 {
                 mADD_TAG_PREFIX(); 
 
 
                 }
                 break;
-            case 122 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:869: REMOVE_TAG_PREFIX
+            case 123 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:876: REMOVE_TAG_PREFIX
                 {
                 mREMOVE_TAG_PREFIX(); 
 
 
                 }
                 break;
-            case 123 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:887: UPDATE_TREE_PREFIX
+            case 124 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:894: UPDATE_TREE_PREFIX
                 {
                 mUPDATE_TREE_PREFIX(); 
 
 
                 }
                 break;
-            case 124 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:906: COMMAND_CALL_PREFIX
+            case 125 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:913: COMMAND_CALL_PREFIX
                 {
                 mCOMMAND_CALL_PREFIX(); 
 
 
                 }
                 break;
-            case 125 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:926: BOOL
+            case 126 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:933: BOOL
                 {
                 mBOOL(); 
 
 
                 }
                 break;
-            case 126 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:931: IDENT
+            case 127 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:938: IDENT
                 {
                 mIDENT(); 
 
 
                 }
                 break;
-            case 127 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:937: INT
+            case 128 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:944: INT
                 {
                 mINT(); 
 
 
                 }
                 break;
-            case 128 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:941: WS
+            case 129 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:948: WS
                 {
                 mWS(); 
 
 
                 }
                 break;
-            case 129 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:944: COMMENT
+            case 130 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:951: COMMENT
                 {
                 mCOMMENT(); 
 
 
                 }
                 break;
-            case 130 :
-                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:952: MULTILINE_COMMENT
+            case 131 :
+                // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:1:959: MULTILINE_COMMENT
                 {
                 mMULTILINE_COMMENT(); 
 
@@ -4731,26 +4764,26 @@ public class AtrophyScriptLexer extends Lexer {
         "\54\1\uffff\1\u015e\1\uffff\1\54\1\uffff\3\54\1\u01b5\1\u01b6\1"+
         "\54\1\uffff\4\54\1\u01bc\1\54\1\uffff\5\54\1\uffff\10\54\1\u01cd"+
         "\11\54\1\uffff\13\54\1\u01e2\12\54\1\uffff\1\54\1\uffff\4\54\1\uffff"+
-        "\4\54\1\u01fa\1\54\1\u01fc\1\54\3\uffff\2\54\1\u0200\3\uffff\4\54"+
-        "\1\u0206\11\54\1\u0210\1\54\1\uffff\3\54\1\uffff\3\54\1\uffff\1"+
-        "\54\1\u0219\1\54\1\u021b\4\54\1\uffff\1\54\3\uffff\6\54\1\uffff"+
-        "\6\54\1\uffff\4\54\1\u0235\4\54\1\uffff\1\54\1\uffff\1\54\1\u023d"+
-        "\1\54\1\uffff\5\54\1\uffff\1\54\1\u0245\5\54\1\uffff\1\54\1\uffff"+
-        "\1\u024c\1\54\1\u024e\3\54\1\u0252\1\u0253\1\uffff\1\u0254\1\uffff"+
-        "\4\54\1\uffff\5\54\1\u025e\10\54\1\u0267\5\54\1\uffff\5\54\1\u0272"+
-        "\2\uffff\7\54\1\uffff\6\54\1\uffff\1\54\1\uffff\3\54\3\uffff\1\u0284"+
-        "\4\54\1\uffff\3\54\1\uffff\4\54\1\u0290\1\54\1\u0292\1\54\1\uffff"+
-        "\11\54\1\u029d\1\uffff\11\54\1\uffff\2\54\2\uffff\3\54\1\uffff\1"+
-        "\54\1\uffff\3\54\1\uffff\1\u02b0\1\uffff\3\54\1\uffff\1\54\3\uffff"+
-        "\4\54\1\u02b9\2\54\2\uffff\1\54\1\uffff\5\54\1\u02c2\2\54\1\uffff"+
-        "\1\54\1\u02c6\5\54\1\uffff\6\54\1\u02d2\1\54\3\uffff\1\u02d4\1\uffff"+
-        "\1\54\1\u02d6\2\54\1\uffff\1\u02d9\2\54\1\uffff\1\54\3\uffff\2\54"+
-        "\1\uffff\2\54\1\u02e1\1\u02e2\1\uffff\1\54\1\uffff\1\54\1\uffff"+
-        "\2\54\1\uffff\6\54\1\u02ed\2\uffff\1\u02ee\1\uffff\2\54\1\uffff"+
-        "\1\u02f1\1\54\1\u02f3\1\54\1\u02f5\2\uffff\2\54\1\uffff\1\54\1\uffff"+
-        "\1\54\3\uffff\2\54\1\u02fc\1\54\2\uffff";
+        "\4\54\1\u01fb\1\54\1\u01fd\1\54\3\uffff\2\54\1\u0201\3\uffff\4\54"+
+        "\1\u0207\11\54\1\u0211\1\54\1\uffff\3\54\1\uffff\3\54\1\uffff\1"+
+        "\54\1\u021a\1\54\1\u021c\4\54\1\uffff\1\54\3\uffff\7\54\1\uffff"+
+        "\6\54\1\uffff\4\54\1\u0237\4\54\1\uffff\1\54\1\uffff\1\54\1\u023f"+
+        "\1\54\1\uffff\5\54\1\uffff\1\54\1\u0247\5\54\1\uffff\1\54\1\uffff"+
+        "\1\u024e\1\54\1\u0250\3\54\1\u0254\1\u0255\1\uffff\1\u0256\1\uffff"+
+        "\4\54\1\uffff\6\54\1\u0261\10\54\1\u026a\5\54\1\uffff\5\54\1\u0275"+
+        "\2\uffff\7\54\1\uffff\6\54\1\uffff\1\54\1\uffff\3\54\3\uffff\1\u0287"+
+        "\4\54\1\uffff\4\54\1\uffff\4\54\1\u0294\1\54\1\u0296\1\54\1\uffff"+
+        "\11\54\1\u02a1\1\uffff\11\54\1\uffff\2\54\2\uffff\3\54\1\uffff\1"+
+        "\54\1\uffff\2\54\1\u02b3\1\54\1\uffff\1\u02b5\1\uffff\3\54\1\uffff"+
+        "\1\54\3\uffff\4\54\1\u02be\2\54\2\uffff\1\54\1\uffff\5\54\1\u02c7"+
+        "\2\54\1\uffff\1\54\1\u02cb\4\54\1\uffff\1\54\1\uffff\6\54\1\u02d7"+
+        "\1\54\3\uffff\1\u02d9\1\uffff\1\54\1\u02db\2\54\1\uffff\1\u02de"+
+        "\2\54\1\uffff\1\54\3\uffff\2\54\1\uffff\2\54\1\u02e6\1\u02e7\1\uffff"+
+        "\1\54\1\uffff\1\54\1\uffff\2\54\1\uffff\6\54\1\u02f2\2\uffff\1\u02f3"+
+        "\1\uffff\2\54\1\uffff\1\u02f6\1\54\1\u02f8\1\54\1\u02fa\2\uffff"+
+        "\2\54\1\uffff\1\54\1\uffff\1\54\3\uffff\2\54\1\u0301\1\54\2\uffff";
     static final String DFA9_eofS =
-        "\u02fe\uffff";
+        "\u0303\uffff";
     static final String DFA9_minS =
         "\1\11\1\110\1\41\6\uffff\1\116\1\114\1\117\1\101\1\106\1\117\1\101"+
         "\1\122\1\117\1\105\1\101\1\72\1\145\1\141\1\145\1\156\1\141\1\163"+
@@ -4787,37 +4820,38 @@ public class AtrophyScriptLexer extends Lexer {
         "\155\1\101\1\144\1\156\1\163\1\uffff\1\141\1\157\1\156\1\122\1\155"+
         "\1\160\1\145\1\157\1\60\1\151\1\157\1\163\1\72\1\141\1\156\1\145"+
         "\1\72\1\151\1\uffff\1\160\1\157\1\145\1\167\1\155\1\156\1\155\1"+
-        "\72\1\147\2\72\1\60\1\164\1\123\1\157\1\156\1\72\1\147\1\163\1\150"+
+        "\72\1\147\2\72\1\60\1\164\1\111\1\157\1\156\1\72\1\147\1\163\1\150"+
         "\1\164\1\141\1\uffff\1\72\1\uffff\1\151\1\162\1\157\1\145\1\uffff"+
         "\1\162\1\104\1\124\1\156\1\60\1\127\1\60\1\116\3\uffff\1\105\1\102"+
         "\1\60\3\uffff\1\165\1\155\1\144\1\164\1\60\1\163\1\145\1\164\1\162"+
         "\1\143\1\145\1\151\1\72\1\157\1\60\1\156\1\uffff\1\157\1\155\1\164"+
         "\1\uffff\1\145\1\166\1\162\1\uffff\1\164\1\60\1\162\1\60\1\156\1"+
-        "\123\1\143\1\123\1\uffff\1\72\3\uffff\1\171\2\141\1\156\1\155\1"+
-        "\143\1\uffff\1\147\1\163\1\141\1\145\1\154\1\141\1\uffff\1\142\1"+
-        "\164\1\162\1\102\1\60\1\157\1\145\1\141\1\143\1\uffff\1\116\1\uffff"+
-        "\1\123\1\60\1\114\1\uffff\1\162\1\141\1\166\1\116\1\141\1\uffff"+
-        "\1\106\1\60\1\151\1\102\1\145\1\160\1\155\1\uffff\1\156\1\uffff"+
-        "\1\60\1\156\1\60\1\151\1\155\1\145\2\60\1\uffff\1\60\1\uffff\1\163"+
-        "\1\151\1\145\1\151\1\uffff\1\151\1\72\1\146\1\147\1\151\1\60\2\145"+
-        "\1\141\1\162\1\155\1\153\1\155\1\145\1\60\1\171\2\154\1\157\1\146"+
-        "\1\uffff\1\157\1\143\1\154\1\145\1\123\1\60\2\uffff\1\117\1\163"+
-        "\1\156\1\141\1\157\1\142\1\141\1\uffff\1\157\1\151\1\72\2\145\1"+
-        "\72\1\uffff\1\72\1\uffff\1\147\1\157\1\163\3\uffff\1\60\1\172\1"+
-        "\72\1\172\1\156\1\uffff\1\145\1\72\1\164\1\uffff\1\72\1\162\1\147"+
-        "\1\141\1\60\1\116\1\60\1\72\1\uffff\1\72\2\157\1\156\1\146\1\162"+
-        "\1\150\1\153\1\72\1\60\1\uffff\1\103\1\72\1\144\1\156\1\144\1\151"+
-        "\1\143\1\156\1\141\1\uffff\1\141\1\72\2\uffff\1\141\1\156\1\164"+
-        "\1\uffff\1\145\1\uffff\2\145\1\162\1\uffff\1\60\1\uffff\1\122\1"+
-        "\145\1\143\1\uffff\1\157\3\uffff\2\143\1\144\1\145\1\60\2\72\2\uffff"+
-        "\1\113\1\uffff\1\72\1\143\1\145\1\154\1\164\1\60\1\163\1\164\1\uffff"+
-        "\1\164\1\60\1\151\3\72\1\157\1\uffff\1\165\1\72\1\164\1\144\2\153"+
-        "\1\60\1\143\3\uffff\1\60\1\uffff\1\145\1\60\2\151\1\uffff\1\60\1"+
-        "\163\1\145\1\uffff\1\147\3\uffff\1\157\1\156\1\uffff\2\145\2\60"+
-        "\1\uffff\1\164\1\uffff\1\72\1\uffff\1\164\1\157\1\uffff\1\72\1\144"+
-        "\1\141\1\155\1\156\1\162\1\60\2\uffff\1\60\1\uffff\1\171\1\156\1"+
-        "\uffff\1\60\1\164\1\60\1\151\1\60\2\uffff\2\72\1\uffff\1\145\1\uffff"+
-        "\1\156\3\uffff\1\144\1\147\1\60\1\72\2\uffff";
+        "\123\1\143\1\123\1\uffff\1\72\3\uffff\1\171\1\164\2\141\1\156\1"+
+        "\155\1\143\1\uffff\1\147\1\163\1\141\1\145\1\154\1\141\1\uffff\1"+
+        "\142\1\164\1\162\1\102\1\60\1\157\1\145\1\141\1\143\1\uffff\1\116"+
+        "\1\uffff\1\123\1\60\1\114\1\uffff\1\162\1\141\1\166\1\116\1\141"+
+        "\1\uffff\1\106\1\60\1\151\1\102\1\145\1\160\1\155\1\uffff\1\156"+
+        "\1\uffff\1\60\1\156\1\60\1\151\1\155\1\145\2\60\1\uffff\1\60\1\uffff"+
+        "\1\163\1\151\1\145\1\151\1\uffff\1\151\1\72\1\145\1\146\1\147\1"+
+        "\151\1\60\2\145\1\141\1\162\1\155\1\153\1\155\1\145\1\60\1\171\2"+
+        "\154\1\157\1\146\1\uffff\1\157\1\143\1\154\1\145\1\123\1\60\2\uffff"+
+        "\1\117\1\163\1\156\1\141\1\157\1\142\1\141\1\uffff\1\157\1\151\1"+
+        "\72\2\145\1\72\1\uffff\1\72\1\uffff\1\147\1\157\1\163\3\uffff\1"+
+        "\60\1\172\1\72\1\172\1\156\1\uffff\1\155\1\145\1\72\1\164\1\uffff"+
+        "\1\72\1\162\1\147\1\141\1\60\1\116\1\60\1\72\1\uffff\1\72\2\157"+
+        "\1\156\1\146\1\162\1\150\1\153\1\72\1\60\1\uffff\1\103\1\72\1\144"+
+        "\1\156\1\144\1\151\1\143\1\156\1\141\1\uffff\1\141\1\72\2\uffff"+
+        "\1\141\1\156\1\164\1\uffff\1\145\1\uffff\2\145\1\60\1\162\1\uffff"+
+        "\1\60\1\uffff\1\122\1\145\1\143\1\uffff\1\157\3\uffff\2\143\1\144"+
+        "\1\145\1\60\2\72\2\uffff\1\113\1\uffff\1\72\1\143\1\145\1\154\1"+
+        "\164\1\60\1\163\1\164\1\uffff\1\164\1\60\1\151\3\72\1\uffff\1\157"+
+        "\1\uffff\1\165\1\72\1\164\1\144\2\153\1\60\1\143\3\uffff\1\60\1"+
+        "\uffff\1\145\1\60\2\151\1\uffff\1\60\1\163\1\145\1\uffff\1\147\3"+
+        "\uffff\1\157\1\156\1\uffff\2\145\2\60\1\uffff\1\164\1\uffff\1\72"+
+        "\1\uffff\1\164\1\157\1\uffff\1\72\1\144\1\141\1\155\1\156\1\162"+
+        "\1\60\2\uffff\1\60\1\uffff\1\171\1\156\1\uffff\1\60\1\164\1\60\1"+
+        "\151\1\60\2\uffff\2\72\1\uffff\1\145\1\uffff\1\156\3\uffff\1\144"+
+        "\1\147\1\60\1\72\2\uffff";
     static final String DFA9_maxS =
         "\1\175\1\110\1\136\6\uffff\1\116\1\114\1\117\1\101\1\124\2\117\1"+
         "\122\1\117\1\124\1\122\1\151\1\154\1\157\1\151\1\170\1\141\1\163"+
@@ -4861,57 +4895,57 @@ public class AtrophyScriptLexer extends Lexer {
         "\145\1\164\1\162\1\143\1\145\1\151\1\72\1\157\1\172\1\156\1\uffff"+
         "\1\157\1\155\1\164\1\uffff\1\145\1\166\1\162\1\uffff\1\164\1\172"+
         "\1\162\1\172\1\156\1\123\1\143\1\123\1\uffff\1\114\3\uffff\1\171"+
-        "\2\141\1\156\1\155\1\143\1\uffff\1\147\1\163\1\141\1\145\1\154\1"+
-        "\141\1\uffff\1\142\1\164\1\162\1\142\1\172\1\157\1\145\1\141\1\143"+
-        "\1\uffff\1\116\1\uffff\1\123\1\172\1\114\1\uffff\1\162\1\141\1\166"+
-        "\1\116\1\141\1\uffff\1\106\1\172\1\151\1\102\1\145\1\160\1\155\1"+
-        "\uffff\1\156\1\uffff\1\172\1\156\1\172\1\151\1\155\1\145\2\172\1"+
-        "\uffff\1\172\1\uffff\1\163\1\151\1\145\1\151\1\uffff\1\151\1\72"+
-        "\1\146\1\147\1\151\1\172\2\145\1\141\1\162\1\155\1\153\1\155\1\145"+
-        "\1\172\1\171\2\154\1\157\1\146\1\uffff\1\157\1\143\1\154\1\145\1"+
-        "\123\1\172\2\uffff\1\117\1\163\1\156\1\141\1\157\1\142\1\141\1\uffff"+
-        "\1\157\1\151\1\72\2\145\1\72\1\uffff\1\72\1\uffff\1\147\1\157\1"+
-        "\163\3\uffff\2\172\1\72\1\172\1\156\1\uffff\1\145\1\72\1\164\1\uffff"+
-        "\1\72\1\162\1\147\1\141\1\172\1\116\1\172\1\72\1\uffff\1\72\2\157"+
-        "\1\156\1\146\1\162\1\150\1\153\1\72\1\172\1\uffff\1\103\1\72\1\144"+
-        "\1\156\1\144\1\151\1\143\1\156\1\141\1\uffff\1\141\1\72\2\uffff"+
-        "\1\141\1\156\1\164\1\uffff\1\145\1\uffff\2\145\1\162\1\uffff\1\172"+
-        "\1\uffff\1\122\1\145\1\143\1\uffff\1\157\3\uffff\2\143\1\144\1\145"+
-        "\1\172\2\72\2\uffff\1\113\1\uffff\1\72\1\143\1\145\1\154\1\164\1"+
-        "\172\1\163\1\164\1\uffff\1\164\1\172\1\151\3\72\1\157\1\uffff\1"+
-        "\165\1\72\1\164\1\144\2\153\1\172\1\143\3\uffff\1\172\1\uffff\1"+
-        "\145\1\172\2\151\1\uffff\1\172\1\163\1\145\1\uffff\1\147\3\uffff"+
-        "\1\157\1\156\1\uffff\2\145\2\172\1\uffff\1\164\1\uffff\1\72\1\uffff"+
-        "\1\164\1\157\1\uffff\1\72\1\144\1\141\1\155\1\156\1\162\1\172\2"+
-        "\uffff\1\172\1\uffff\1\171\1\156\1\uffff\1\172\1\164\1\172\1\151"+
-        "\1\172\2\uffff\2\72\1\uffff\1\145\1\uffff\1\156\3\uffff\1\144\1"+
-        "\147\1\172\1\72\2\uffff";
+        "\1\164\2\141\1\156\1\155\1\143\1\uffff\1\147\1\163\1\141\1\145\1"+
+        "\154\1\141\1\uffff\1\142\1\164\1\162\1\142\1\172\1\157\1\145\1\141"+
+        "\1\143\1\uffff\1\116\1\uffff\1\123\1\172\1\114\1\uffff\1\162\1\141"+
+        "\1\166\1\116\1\141\1\uffff\1\106\1\172\1\151\1\102\1\145\1\160\1"+
+        "\155\1\uffff\1\156\1\uffff\1\172\1\156\1\172\1\151\1\155\1\145\2"+
+        "\172\1\uffff\1\172\1\uffff\1\163\1\151\1\145\1\151\1\uffff\1\151"+
+        "\1\72\1\145\1\146\1\147\1\151\1\172\2\145\1\141\1\162\1\155\1\153"+
+        "\1\155\1\145\1\172\1\171\2\154\1\157\1\146\1\uffff\1\157\1\143\1"+
+        "\154\1\145\1\123\1\172\2\uffff\1\117\1\163\1\156\1\141\1\157\1\142"+
+        "\1\141\1\uffff\1\157\1\151\1\72\2\145\1\72\1\uffff\1\72\1\uffff"+
+        "\1\147\1\157\1\163\3\uffff\2\172\1\72\1\172\1\156\1\uffff\1\155"+
+        "\1\145\1\72\1\164\1\uffff\1\72\1\162\1\147\1\141\1\172\1\116\1\172"+
+        "\1\72\1\uffff\1\72\2\157\1\156\1\146\1\162\1\150\1\153\1\72\1\172"+
+        "\1\uffff\1\103\1\72\1\144\1\156\1\144\1\151\1\143\1\156\1\141\1"+
+        "\uffff\1\141\1\72\2\uffff\1\141\1\156\1\164\1\uffff\1\145\1\uffff"+
+        "\2\145\1\172\1\162\1\uffff\1\172\1\uffff\1\122\1\145\1\143\1\uffff"+
+        "\1\157\3\uffff\2\143\1\144\1\145\1\172\2\72\2\uffff\1\113\1\uffff"+
+        "\1\72\1\143\1\145\1\154\1\164\1\172\1\163\1\164\1\uffff\1\164\1"+
+        "\172\1\151\3\72\1\uffff\1\157\1\uffff\1\165\1\72\1\164\1\144\2\153"+
+        "\1\172\1\143\3\uffff\1\172\1\uffff\1\145\1\172\2\151\1\uffff\1\172"+
+        "\1\163\1\145\1\uffff\1\147\3\uffff\1\157\1\156\1\uffff\2\145\2\172"+
+        "\1\uffff\1\164\1\uffff\1\72\1\uffff\1\164\1\157\1\uffff\1\72\1\144"+
+        "\1\141\1\155\1\156\1\162\1\172\2\uffff\1\172\1\uffff\1\171\1\156"+
+        "\1\uffff\1\172\1\164\1\172\1\151\1\172\2\uffff\2\72\1\uffff\1\145"+
+        "\1\uffff\1\156\3\uffff\1\144\1\147\1\172\1\72\2\uffff";
     static final String DFA9_acceptS =
-        "\3\uffff\1\3\1\4\1\5\1\6\1\7\1\10\37\uffff\1\165\1\166\1\167\1\uffff"+
-        "\1\176\1\177\1\u0080\1\uffff\1\1\1\170\1\171\1\172\1\173\1\174\1"+
-        "\2\20\uffff\1\35\16\uffff\1\76\5\uffff\1\107\2\uffff\1\114\4\uffff"+
-        "\1\124\14\uffff\1\142\3\uffff\1\162\1\163\2\uffff\1\u0081\1\u0082"+
-        "\5\uffff\1\16\4\uffff\1\25\65\uffff\1\144\3\uffff\1\145\10\uffff"+
-        "\1\11\3\uffff\1\15\63\uffff\1\123\31\uffff\1\20\6\uffff\1\32\66"+
-        "\uffff\1\143\5\uffff\1\175\3\uffff\1\164\1\uffff\1\12\1\uffff\1"+
+        "\3\uffff\1\3\1\4\1\5\1\6\1\7\1\10\37\uffff\1\166\1\167\1\170\1\uffff"+
+        "\1\177\1\u0080\1\u0081\1\uffff\1\1\1\171\1\172\1\173\1\174\1\175"+
+        "\1\2\20\uffff\1\35\16\uffff\1\76\5\uffff\1\107\2\uffff\1\114\4\uffff"+
+        "\1\125\14\uffff\1\143\3\uffff\1\163\1\164\2\uffff\1\u0082\1\u0083"+
+        "\5\uffff\1\16\4\uffff\1\25\65\uffff\1\145\3\uffff\1\146\10\uffff"+
+        "\1\11\3\uffff\1\15\63\uffff\1\124\31\uffff\1\20\6\uffff\1\32\66"+
+        "\uffff\1\144\5\uffff\1\176\3\uffff\1\165\1\uffff\1\12\1\uffff\1"+
         "\14\6\uffff\1\31\6\uffff\1\42\5\uffff\1\52\22\uffff\1\77\26\uffff"+
-        "\1\136\1\uffff\1\140\4\uffff\1\152\10\uffff\1\24\1\23\1\26\3\uffff"+
+        "\1\137\1\uffff\1\141\4\uffff\1\153\10\uffff\1\24\1\23\1\26\3\uffff"+
         "\1\36\1\37\1\40\20\uffff\1\64\3\uffff\1\70\3\uffff\1\74\10\uffff"+
-        "\1\110\1\uffff\1\113\1\115\1\116\6\uffff\1\127\6\uffff\1\137\11"+
+        "\1\110\1\uffff\1\113\1\115\1\116\7\uffff\1\130\6\uffff\1\140\11"+
         "\uffff\1\13\1\uffff\1\21\3\uffff\1\34\5\uffff\1\47\7\uffff\1\60"+
-        "\1\uffff\1\62\10\uffff\1\100\1\uffff\1\102\4\uffff\1\111\24\uffff"+
-        "\1\153\6\uffff\1\30\1\27\7\uffff\1\51\6\uffff\1\63\1\uffff\1\66"+
-        "\3\uffff\1\73\1\75\1\101\5\uffff\1\117\3\uffff\1\125\10\uffff\1"+
-        "\146\12\uffff\1\22\11\uffff\1\55\2\uffff\1\61\1\65\3\uffff\1\103"+
-        "\1\uffff\1\105\3\uffff\1\121\1\uffff\1\126\3\uffff\1\133\1\uffff"+
-        "\1\135\1\141\1\147\7\uffff\1\161\1\17\1\uffff\1\41\10\uffff\1\57"+
-        "\7\uffff\1\122\10\uffff\1\156\1\157\1\160\1\uffff\1\43\4\uffff\1"+
-        "\53\3\uffff\1\71\1\uffff\1\104\1\106\1\112\2\uffff\1\131\4\uffff"+
-        "\1\154\1\uffff\1\33\1\uffff\1\45\2\uffff\1\54\7\uffff\1\150\1\151"+
-        "\1\uffff\1\44\2\uffff\1\56\5\uffff\1\134\1\155\2\uffff\1\67\1\uffff"+
-        "\1\120\1\uffff\1\132\1\46\1\50\4\uffff\1\72\1\130";
+        "\1\uffff\1\62\10\uffff\1\100\1\uffff\1\102\4\uffff\1\111\25\uffff"+
+        "\1\154\6\uffff\1\30\1\27\7\uffff\1\51\6\uffff\1\63\1\uffff\1\66"+
+        "\3\uffff\1\73\1\75\1\101\5\uffff\1\117\4\uffff\1\126\10\uffff\1"+
+        "\147\12\uffff\1\22\11\uffff\1\55\2\uffff\1\61\1\65\3\uffff\1\103"+
+        "\1\uffff\1\105\4\uffff\1\122\1\uffff\1\127\3\uffff\1\134\1\uffff"+
+        "\1\136\1\142\1\150\7\uffff\1\162\1\17\1\uffff\1\41\10\uffff\1\57"+
+        "\6\uffff\1\120\1\uffff\1\123\10\uffff\1\157\1\160\1\161\1\uffff"+
+        "\1\43\4\uffff\1\53\3\uffff\1\71\1\uffff\1\104\1\106\1\112\2\uffff"+
+        "\1\132\4\uffff\1\155\1\uffff\1\33\1\uffff\1\45\2\uffff\1\54\7\uffff"+
+        "\1\151\1\152\1\uffff\1\44\2\uffff\1\56\5\uffff\1\135\1\156\2\uffff"+
+        "\1\67\1\uffff\1\121\1\uffff\1\133\1\46\1\50\4\uffff\1\72\1\131";
     static final String DFA9_specialS =
-        "\u02fe\uffff}>";
+        "\u0303\uffff}>";
     static final String[] DFA9_transitionS = {
             "\2\56\1\uffff\2\56\22\uffff\1\56\1\1\1\52\1\2\4\uffff\1\3\1"+
             "\4\2\uffff\1\5\1\6\1\uffff\1\57\12\55\1\7\5\uffff\1\10\1\11"+
@@ -5333,46 +5367,45 @@ public class AtrophyScriptLexer extends Lexer {
             "\1\u01e1",
             "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
             "\1\u01e3",
-            "\1\u01e4\1\u01e5\1\u01e6",
-            "\1\u01e7",
+            "\1\u01e4\11\uffff\1\u01e5\1\u01e6\1\u01e7",
             "\1\u01e8",
             "\1\u01e9",
             "\1\u01ea",
             "\1\u01eb",
             "\1\u01ec",
             "\1\u01ed",
-            "\1\u01ee\3\uffff\1\u01ef",
-            "",
-            "\1\u01f0",
+            "\1\u01ee",
+            "\1\u01ef\3\uffff\1\u01f0",
             "",
             "\1\u01f1",
+            "",
             "\1\u01f2",
             "\1\u01f3",
             "\1\u01f4",
-            "",
             "\1\u01f5",
-            "\1\u01f6\17\uffff\1\u01f7",
-            "\1\u01f8",
+            "",
+            "\1\u01f6",
+            "\1\u01f7\17\uffff\1\u01f8",
             "\1\u01f9",
+            "\1\u01fa",
             "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
-            "\1\u01fb",
+            "\1\u01fc",
             "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
-            "\1\u01fd",
-            "",
-            "",
-            "",
             "\1\u01fe",
+            "",
+            "",
+            "",
             "\1\u01ff",
+            "\1\u0200",
             "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
             "",
             "",
             "",
-            "\1\u0201",
             "\1\u0202",
-            "\1\u0203\4\uffff\1\u0204",
-            "\1\u0205",
+            "\1\u0203",
+            "\1\u0204\4\uffff\1\u0205",
+            "\1\u0206",
             "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
-            "\1\u0207",
             "\1\u0208",
             "\1\u0209",
             "\1\u020a",
@@ -5381,151 +5414,150 @@ public class AtrophyScriptLexer extends Lexer {
             "\1\u020d",
             "\1\u020e",
             "\1\u020f",
+            "\1\u0210",
             "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
-            "\1\u0211",
-            "",
             "\1\u0212",
+            "",
             "\1\u0213",
             "\1\u0214",
-            "",
             "\1\u0215",
+            "",
             "\1\u0216",
             "\1\u0217",
-            "",
             "\1\u0218",
+            "",
+            "\1\u0219",
             "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
-            "\1\u021a",
+            "\1\u021b",
             "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
-            "\1\u021c",
             "\1\u021d",
             "\1\u021e",
             "\1\u021f",
+            "\1\u0220",
             "",
-            "\1\u0220\21\uffff\1\u0221",
+            "\1\u0221\21\uffff\1\u0222",
             "",
             "",
             "",
-            "\1\u0222",
             "\1\u0223",
             "\1\u0224",
             "\1\u0225",
             "\1\u0226",
             "\1\u0227",
-            "",
             "\1\u0228",
             "\1\u0229",
+            "",
             "\1\u022a",
             "\1\u022b",
             "\1\u022c",
             "\1\u022d",
-            "",
             "\1\u022e",
             "\1\u022f",
+            "",
             "\1\u0230",
-            "\1\u0231\37\uffff\1\u0232",
-            "\12\54\7\uffff\2\54\1\u0233\1\54\1\u0234\25\54\4\uffff\1\54"+
+            "\1\u0231",
+            "\1\u0232",
+            "\1\u0233\37\uffff\1\u0234",
+            "\12\54\7\uffff\2\54\1\u0235\1\54\1\u0236\25\54\4\uffff\1\54"+
             "\1\uffff\32\54",
-            "\1\u0236",
-            "\1\u0237",
             "\1\u0238",
             "\1\u0239",
-            "",
             "\1\u023a",
-            "",
             "\1\u023b",
-            "\12\54\1\u023c\6\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
-            "\1\u023e",
             "",
-            "\1\u023f",
+            "\1\u023c",
+            "",
+            "\1\u023d",
+            "\12\54\1\u023e\6\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
             "\1\u0240",
+            "",
             "\1\u0241",
             "\1\u0242",
             "\1\u0243",
-            "",
             "\1\u0244",
-            "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
+            "\1\u0245",
+            "",
             "\1\u0246",
-            "\1\u0247",
+            "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
             "\1\u0248",
             "\1\u0249",
             "\1\u024a",
-            "",
             "\1\u024b",
+            "\1\u024c",
             "",
-            "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
             "\1\u024d",
+            "",
             "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
             "\1\u024f",
-            "\1\u0250",
+            "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
             "\1\u0251",
+            "\1\u0252",
+            "\1\u0253",
             "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
             "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
             "",
             "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
             "",
-            "\1\u0255",
-            "\1\u0256",
             "\1\u0257",
             "\1\u0258",
-            "",
             "\1\u0259",
             "\1\u025a",
+            "",
             "\1\u025b",
             "\1\u025c",
             "\1\u025d",
-            "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
+            "\1\u025e",
             "\1\u025f",
             "\1\u0260",
-            "\1\u0261",
+            "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
             "\1\u0262",
             "\1\u0263",
             "\1\u0264",
             "\1\u0265",
             "\1\u0266",
-            "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
+            "\1\u0267",
             "\1\u0268",
             "\1\u0269",
-            "\1\u026a",
+            "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
             "\1\u026b",
             "\1\u026c",
-            "",
             "\1\u026d",
             "\1\u026e",
             "\1\u026f",
+            "",
             "\1\u0270",
             "\1\u0271",
+            "\1\u0272",
+            "\1\u0273",
+            "\1\u0274",
             "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
             "",
             "",
-            "\1\u0273",
-            "\1\u0274",
-            "\1\u0275",
             "\1\u0276",
             "\1\u0277",
             "\1\u0278",
             "\1\u0279",
-            "",
             "\1\u027a",
             "\1\u027b",
             "\1\u027c",
+            "",
             "\1\u027d",
             "\1\u027e",
             "\1\u027f",
-            "",
             "\1\u0280",
-            "",
             "\1\u0281",
             "\1\u0282",
+            "",
             "\1\u0283",
+            "",
+            "\1\u0284",
+            "\1\u0285",
+            "\1\u0286",
             "",
             "",
             "",
             "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
-            "\1\u0285",
-            "\1\u0286",
-            "\1\u0287",
             "\1\u0288",
-            "",
             "\1\u0289",
             "\1\u028a",
             "\1\u028b",
@@ -5534,159 +5566,166 @@ public class AtrophyScriptLexer extends Lexer {
             "\1\u028d",
             "\1\u028e",
             "\1\u028f",
-            "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
-            "\1\u0291",
-            "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
-            "\1\u0293",
             "",
-            "\1\u0294",
+            "\1\u0290",
+            "\1\u0291",
+            "\1\u0292",
+            "\1\u0293",
+            "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
             "\1\u0295",
-            "\1\u0296",
+            "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
             "\1\u0297",
+            "",
             "\1\u0298",
             "\1\u0299",
             "\1\u029a",
             "\1\u029b",
             "\1\u029c",
-            "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
-            "",
+            "\1\u029d",
             "\1\u029e",
             "\1\u029f",
             "\1\u02a0",
-            "\1\u02a1",
+            "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
+            "",
             "\1\u02a2",
             "\1\u02a3",
             "\1\u02a4",
             "\1\u02a5",
             "\1\u02a6",
-            "",
             "\1\u02a7",
             "\1\u02a8",
-            "",
-            "",
             "\1\u02a9",
             "\1\u02aa",
-            "\1\u02ab",
             "",
+            "\1\u02ab",
             "\1\u02ac",
+            "",
             "",
             "\1\u02ad",
             "\1\u02ae",
             "\1\u02af",
             "",
-            "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
+            "\1\u02b0",
             "",
             "\1\u02b1",
             "\1\u02b2",
-            "\1\u02b3",
-            "",
+            "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
             "\1\u02b4",
             "",
+            "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
             "",
-            "",
-            "\1\u02b5",
             "\1\u02b6",
             "\1\u02b7",
             "\1\u02b8",
-            "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
+            "",
+            "\1\u02b9",
+            "",
+            "",
+            "",
             "\1\u02ba",
             "\1\u02bb",
-            "",
-            "",
             "\1\u02bc",
-            "",
             "\1\u02bd",
-            "\1\u02be",
+            "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
             "\1\u02bf",
             "\1\u02c0",
+            "",
+            "",
             "\1\u02c1",
-            "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
+            "",
+            "\1\u02c2",
             "\1\u02c3",
             "\1\u02c4",
-            "",
             "\1\u02c5",
+            "\1\u02c6",
             "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
-            "\1\u02c7",
             "\1\u02c8",
             "\1\u02c9",
-            "\1\u02ca",
-            "\1\u02cb",
             "",
+            "\1\u02ca",
+            "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
             "\1\u02cc",
             "\1\u02cd",
             "\1\u02ce",
             "\1\u02cf",
+            "",
             "\1\u02d0",
+            "",
             "\1\u02d1",
-            "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
+            "\1\u02d2",
             "\1\u02d3",
-            "",
-            "",
-            "",
-            "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
-            "",
+            "\1\u02d4",
             "\1\u02d5",
+            "\1\u02d6",
             "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
-            "\1\u02d7",
             "\1\u02d8",
             "",
+            "",
+            "",
             "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
+            "",
             "\1\u02da",
-            "\1\u02db",
-            "",
+            "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
             "\1\u02dc",
-            "",
-            "",
-            "",
             "\1\u02dd",
-            "\1\u02de",
             "",
+            "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
             "\1\u02df",
             "\1\u02e0",
-            "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
-            "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
             "",
+            "\1\u02e1",
+            "",
+            "",
+            "",
+            "\1\u02e2",
             "\1\u02e3",
             "",
             "\1\u02e4",
-            "",
             "\1\u02e5",
-            "\1\u02e6",
+            "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
+            "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
             "",
-            "\1\u02e7",
             "\1\u02e8",
+            "",
             "\1\u02e9",
+            "",
             "\1\u02ea",
             "\1\u02eb",
+            "",
             "\1\u02ec",
-            "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
-            "",
-            "",
-            "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
-            "",
+            "\1\u02ed",
+            "\1\u02ee",
             "\1\u02ef",
             "\1\u02f0",
+            "\1\u02f1",
+            "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
+            "",
             "",
             "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
-            "\1\u02f2",
-            "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
+            "",
             "\1\u02f4",
+            "\1\u02f5",
+            "",
             "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
-            "",
-            "",
-            "\1\u02f6",
             "\1\u02f7",
-            "",
-            "\1\u02f8",
-            "",
-            "\1\u02f9",
-            "",
-            "",
-            "",
-            "\1\u02fa",
-            "\1\u02fb",
             "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
+            "\1\u02f9",
+            "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
+            "",
+            "",
+            "\1\u02fb",
+            "\1\u02fc",
+            "",
             "\1\u02fd",
+            "",
+            "\1\u02fe",
+            "",
+            "",
+            "",
+            "\1\u02ff",
+            "\1\u0300",
+            "\12\54\7\uffff\32\54\4\uffff\1\54\1\uffff\32\54",
+            "\1\u0302",
             "",
             ""
     };
@@ -5721,7 +5760,7 @@ public class AtrophyScriptLexer extends Lexer {
             this.transition = DFA9_transition;
         }
         public String getDescription() {
-            return "1:1: Tokens : ( T__121 | T__122 | T__123 | T__124 | T__125 | T__126 | T__127 | T__128 | T__129 | T__130 | T__131 | T__132 | T__133 | T__134 | T__135 | T__136 | T__137 | T__138 | T__139 | T__140 | T__141 | T__142 | T__143 | T__144 | T__145 | T__146 | T__147 | T__148 | T__149 | T__150 | T__151 | T__152 | T__153 | T__154 | T__155 | T__156 | T__157 | T__158 | T__159 | T__160 | T__161 | T__162 | T__163 | T__164 | T__165 | T__166 | T__167 | T__168 | T__169 | T__170 | T__171 | T__172 | T__173 | T__174 | T__175 | T__176 | T__177 | T__178 | T__179 | T__180 | T__181 | T__182 | T__183 | T__184 | T__185 | T__186 | T__187 | T__188 | T__189 | T__190 | T__191 | T__192 | T__193 | T__194 | T__195 | T__196 | T__197 | T__198 | T__199 | T__200 | T__201 | T__202 | T__203 | T__204 | T__205 | T__206 | T__207 | T__208 | T__209 | T__210 | T__211 | T__212 | T__213 | T__214 | T__215 | T__216 | T__217 | T__218 | T__219 | T__220 | T__221 | T__222 | T__223 | T__224 | T__225 | T__226 | T__227 | T__228 | T__229 | T__230 | T__231 | T__232 | T__233 | T__234 | T__235 | T__236 | T__237 | T__238 | STRING | NOT_PREFIX | ADD_TAG_PREFIX | REMOVE_TAG_PREFIX | UPDATE_TREE_PREFIX | COMMAND_CALL_PREFIX | BOOL | IDENT | INT | WS | COMMENT | MULTILINE_COMMENT );";
+            return "1:1: Tokens : ( T__122 | T__123 | T__124 | T__125 | T__126 | T__127 | T__128 | T__129 | T__130 | T__131 | T__132 | T__133 | T__134 | T__135 | T__136 | T__137 | T__138 | T__139 | T__140 | T__141 | T__142 | T__143 | T__144 | T__145 | T__146 | T__147 | T__148 | T__149 | T__150 | T__151 | T__152 | T__153 | T__154 | T__155 | T__156 | T__157 | T__158 | T__159 | T__160 | T__161 | T__162 | T__163 | T__164 | T__165 | T__166 | T__167 | T__168 | T__169 | T__170 | T__171 | T__172 | T__173 | T__174 | T__175 | T__176 | T__177 | T__178 | T__179 | T__180 | T__181 | T__182 | T__183 | T__184 | T__185 | T__186 | T__187 | T__188 | T__189 | T__190 | T__191 | T__192 | T__193 | T__194 | T__195 | T__196 | T__197 | T__198 | T__199 | T__200 | T__201 | T__202 | T__203 | T__204 | T__205 | T__206 | T__207 | T__208 | T__209 | T__210 | T__211 | T__212 | T__213 | T__214 | T__215 | T__216 | T__217 | T__218 | T__219 | T__220 | T__221 | T__222 | T__223 | T__224 | T__225 | T__226 | T__227 | T__228 | T__229 | T__230 | T__231 | T__232 | T__233 | T__234 | T__235 | T__236 | T__237 | T__238 | T__239 | T__240 | STRING | NOT_PREFIX | ADD_TAG_PREFIX | REMOVE_TAG_PREFIX | UPDATE_TREE_PREFIX | COMMAND_CALL_PREFIX | BOOL | IDENT | INT | WS | COMMENT | MULTILINE_COMMENT );";
         }
     }
  

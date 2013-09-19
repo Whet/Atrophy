@@ -176,7 +176,6 @@ public class AiGenerator{
 		generateRosters();
 		combatUiManager.getAllyRoster().generatePortraits();
 		aiCrowd.shuffleAi();
-		turnProcess.updateTriggers();
 	}
 	
 	public void spawnAi(GenerateCommand command) {

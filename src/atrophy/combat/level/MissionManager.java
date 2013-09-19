@@ -11,8 +11,10 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
 
+import atrophy.combat.CombatUiManager;
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.ai.conversation.TalkMap;
+import atrophy.combat.display.MapDrawer;
 import atrophy.combat.display.ui.LargeEventText;
 import atrophy.combat.display.ui.loot.LootBox.Lootable;
 import atrophy.combat.items.ArmourPlates1;
@@ -34,6 +36,7 @@ import atrophy.combat.level.AtrophyScriptParser.spawnTalkNode_return;
 import atrophy.combat.level.AtrophyScriptReader.SpawnTalkNodeEffect;
 import atrophy.combat.level.AtrophyScriptReader.SpawnTeamEffect;
 import atrophy.combat.level.AtrophyScriptReader.StoredCommand;
+import atrophy.combat.level.AtrophyScriptReader.TeleportEffect;
 import atrophy.combat.level.AtrophyScriptReader.TriggerCommand;
 import atrophy.combat.level.AtrophyScriptReader.TriggerEffect;
 import atrophy.gameMenu.saveFile.Missions;
@@ -70,7 +73,7 @@ public class MissionManager {
 		this.largeEventText = largeEventText;
 	}
 	
-	public void lazyLoad(AiGenerator aiGenerator) {
+	public void lazyLoad(AiGenerator aiGenerator, CombatUiManager combatUiManager) {
 		this.aiGenerator = aiGenerator;
 		
 		for(StoredCommand command : this.commands.values()) {
@@ -79,6 +82,10 @@ public class MissionManager {
 					((SpawnTeamEffect) effect).aiGenerator = aiGenerator;
 				else if(effect instanceof SpawnTalkNodeEffect)
 					((SpawnTalkNodeEffect) effect).aiGenerator = aiGenerator;
+				else if(effect instanceof TeleportEffect) {
+					((TeleportEffect) effect).mapDrawer = combatUiManager.getMapDrawer();
+					((TeleportEffect) effect).torchDrawer = combatUiManager.getTorchDrawer();
+				}
 			}
 		}
 		for(TriggerCommand command : this.triggers.values()) {
@@ -87,6 +94,10 @@ public class MissionManager {
 					((SpawnTeamEffect) effect).aiGenerator = aiGenerator;
 				else if(effect instanceof SpawnTalkNodeEffect)
 					((SpawnTalkNodeEffect) effect).aiGenerator = aiGenerator;
+				else if(effect instanceof TeleportEffect) {
+					((TeleportEffect) effect).mapDrawer = combatUiManager.getMapDrawer();
+					((TeleportEffect) effect).torchDrawer = combatUiManager.getTorchDrawer();
+				}
 			}
 		}
 		

@@ -78,7 +78,7 @@ public class CombatHardPane implements HardPaneDefineable {
 		aiGenerator.generateAi(generationCommands);
 		aiCrowd.getShuffledStack();
 		
-		missionManager.lazyLoad(aiGenerator);
+		missionManager.lazyLoad(aiGenerator, uiUpdaterSuite.getCombatUiManager());
 		
 		crowd.addCrowd(aiCrowd);
 		aiCrowd.setVisible(true);
