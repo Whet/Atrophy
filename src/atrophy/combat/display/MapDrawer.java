@@ -83,16 +83,13 @@ public class MapDrawer implements Displayable {
 			System.exit(-1);
 		}
 		
-		BufferedImage[] debrisImages = new BufferedImage[7];
+		BufferedImage[] debrisImages = new BufferedImage[4];
 		
 		try{
 			debrisImages[0] = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/texture/debris1.png"));
 			debrisImages[1] = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/texture/debris2.png"));
-			debrisImages[1] = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/texture/debris3.png"));
-			debrisImages[1] = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/texture/debris4.png"));
-			debrisImages[1] = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/texture/debris5.png"));
-			debrisImages[1] = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/texture/debris6.png"));
-			debrisImages[1] = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/texture/debris7.png"));
+			debrisImages[2] = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/texture/debris3.png"));
+			debrisImages[3] = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/texture/debris4.png"));
 		}
 		catch(IOException e){
 			System.err.println("No debris textures");
@@ -109,14 +106,14 @@ public class MapDrawer implements Displayable {
 			MapPainter.applyMapTexture(floorTextures, floorTextInfo, levelBlock, map[mapNumber].getImage());
 			
 //			// Draw random debris
-//			double debrisArea = levelBlock.getHitBox().getBounds2D().getWidth() * levelBlock.getHitBox().getBounds2D().getHeight();
-//			for(int i = 0; i < Math.floor(debrisArea / 50000); i++) {
-//				
-//				
-//				int debris = new Random().nextInt(debrisImages.length);
-//				
-//				MapPainter.applyImage(debrisImages[debris], map[mapNumber], levelManager.randomInPosition(levelBlock));
-//			}
+			double debrisArea = levelBlock.getHitBox().getBounds2D().getWidth() * levelBlock.getHitBox().getBounds2D().getHeight();
+			for(int i = 0; i < Math.floor(debrisArea / 200000); i++) {
+				
+				
+				int debris = new Random().nextInt(debrisImages.length);
+				
+				MapPainter.applyImage(debrisImages[debris], map[mapNumber], levelManager.randomInPosition(levelBlock));
+			}
 			
 			map[mapNumber].drawRegions(levelBlock);
 			
@@ -221,7 +218,7 @@ public class MapDrawer implements Displayable {
 				for(int k = 0; k < coverRegions.length; k++) {
 					MapPainter.applyImage(COVER[coverRegions[k]],
 										  this.getImage(), block.getCover().get(i),
-										  new int[] {COVER[coverRegions[k]].getWidth() / (k + 1), k * 5});
+										  new int[] {COVER[coverRegions[k]].getWidth() / (k + 1), k});
 				}
 			}
 			

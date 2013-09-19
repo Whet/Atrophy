@@ -110,14 +110,14 @@ public class MapManager {
 		
 		sectors.add(new Sector("Bridge",			5,5,10,0));
 		sectors.add(new Sector("Energy",			10,5,5,5));
-		sectors.add(new Sector("Engineering Beta",	10,5,0,5));
+		sectors.add(new Sector("Engineering Beta",	10,5,0,10));
 		sectors.add(new Sector("Mixed Sciences",	10,5,0,10));
 		sectors.add(new Sector("Production",		20,5,10,5));
 		sectors.add(new Sector("Residence One",		5,10,0,0));
 		sectors.add(new Sector("Robotics",			10,5,0,10));
 		sectors.add(new Sector("Shrapnel",			6,6,6,0));
 		sectors.add(new Sector("Stores",			10,10,5,5));
-		sectors.add(new Sector("Underbelly",		5,5,2,2));
+		sectors.add(new Sector("Underbelly",		5,5,5,2));
 		
 	}
 	
