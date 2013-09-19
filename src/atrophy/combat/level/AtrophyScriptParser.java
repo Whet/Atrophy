@@ -1,4 +1,4 @@
-// $ANTLR 3.4 C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g 2013-09-18 23:23:17
+// $ANTLR 3.4 C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g 2013-09-19 10:08:54
 
 	package atrophy.combat.level;
 
@@ -14,11 +14,10 @@ import org.antlr.runtime.tree.*;
 @SuppressWarnings({"all", "warnings", "unchecked"})
 public class AtrophyScriptParser extends Parser {
     public static final String[] tokenNames = new String[] {
-        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "ADDTAG", "ADD_TAG_PREFIX", "AIINIT", "AINODE", "AND", "ATCALL_MODULE", "ATCALL_SEQUENCE", "BEHAVIOUR", "BLOCK", "BOOL", "CHANGEADVANCE", "CHANGEAINODE", "CHANGESTABILITY", "COMMAND", "COMMAND_CALL", "COMMAND_CALL_PREFIX", "COMMENT", "CONDITIONAL", "CONTAINSFACTION", "CONVERSE", "COVER", "DIRECTORBIAS", "DOORNAMES", "EMPTY", "ENG", "ESUPPLY", "EXPIREREPEATS", "EXPIRETIME", "HASITEM", "HASWEAPON", "IDENT", "IF", "INIT", "INROOM", "INT", "ISALIVE", "ISDAEMON", "ISDEAD", "ISFACTION", "ISINROOM", "ISINVESTIGATED", "ISNAME", "ISNOTDAEMON", "ISNOTINVESTIGATED", "ISPLAYER", "ISROOM", "ITEMSPAWNS", "KILLUNIT", "LINE", "LOADMAP", "LOCKDOOR", "LOGIC", "MAPSIZE", "MAPSPAWNS", "MAXTEAMSIZE", "MED", "MINTEAMSIZE", "MODULE", "MSUPPLY", "MULTILINE_COMMENT", "NEGATION", "NOTIF", "NOT_PREFIX", "ONTIME", "OPENINGLINE", "OPTION", "OR", "PORTAL", "PRIORITY", "REMOVESAFEROOM", "REMOVETAG", "REMOVEUNIT", "REMOVE_TAG_PREFIX", "REQ", "ROOMINFO", "SAFEROOM", "SCI", "SECTOR", "SEQUENCE", "SETTRIGGERRUNNING", "SHOWMESSAGE", "SPAWNCHARACTER", "SPAWNITEM", "SPAWNTALKNODE", "SPAWNTEAM", "SSUPPLY", "STAGELIST", "STASH", "STRING", "SUBSCRIBE", "TALK", "TALKMAP", "TALKPARENT", "TALKSTAGE", "TELEDEST", "TELEPORT", "TERRITORY", "TEXTURE", "TEXTUREBLOCK", "TOPIC", "TRIGGER", "TRIGGERCOND", "TRIGGEREFFECT", "TRIGGERTYPE", "UNITINFO", "UNLOCKDOOR", "UNLOCKTECH", "UPDATETALK", "UPDATE_TREE_PREFIX", "VAR", "WEP", "WS", "WSUPPLY", "XLIST", "YLIST", "ZONE", "'!HAS'", "'\"'", "'#'", "'('", "')'", "','", "'-'", "'::'", "'@'", "'AND'", "'BLOCK'", "'COMMAND'", "'COVER'", "'HAS'", "'IF'", "'ITEMSPAWNS'", "'LOAD'", "'MAPSIZE'", "'MAPSPAWNS'", "'MODULE'", "'MODULE::'", "'OR'", "'PORTAL'", "'SEQUENCE'", "'SEQUENCE::'", "'STASH'", "'TALK'", "'TEXTUREBLOCK'", "'TRIGGER'", "'a:'", "'addTag:'", "'aiInit:'", "'aiNode'", "'behaviours:'", "'block'", "'callCommand:'", "'changeAdvance:'", "'changeAiNode'", "'changeStability:'", "'command'", "'containsFaction:'", "'converse'", "'cover'", "'destination'", "'directorBias'", "'engChance:'", "'expireRepeats:'", "'expireTime:'", "'hasItem:'", "'hasWeapon:'", "'isAlive'", "'isDaemon'", "'isDead'", "'isFaction:'", "'isInRoom'", "'isInvestigated'", "'isName:'", "'isNotDaemon'", "'isNotInvestigated'", "'isPlayer'", "'isRoom:'", "'killUnit'", "'l:'", "'lines:'", "'loadMap'", "'lockDoor'", "'mapsize'", "'mapspawns'", "'maxTeamSize:'", "'medChance:'", "'minTeamSize:'", "'o:'", "'onTime:'", "'opening:'", "'openingLine:'", "'option:'", "'p:'", "'parent:'", "'portal'", "'priority:'", "'removeSaferoom'", "'removeTag:'", "'removeUnit'", "'req:'", "'s:'", "'saferoom'", "'sciChance:'", "'sector:'", "'setTriggerRunning:'", "'showMessage:'", "'spawnCharacter'", "'spawnItem'", "'spawnTalkNode'", "'spawnTeam'", "'stage:'", "'stages:'", "'stash'", "'subscribe:'", "'t'", "'talk'", "'tc'", "'te'", "'teleport'", "'territory:'", "'textureBlock'", "'textureblock'", "'topic'", "'trigger'", "'triggerCond'", "'triggerEffect'", "'unlockDoor'", "'unlockTech:'", "'updateTalk:'", "'wepChance:'", "'x:'", "'y:'", "'zone:'", "'{'", "'}'"
+        "<invalid>", "<EOR>", "<DOWN>", "<UP>", "ADDTAG", "ADD_TAG_PREFIX", "AIINIT", "AINODE", "AND", "ATCALL_MODULE", "ATCALL_SEQUENCE", "BEHAVIOUR", "BLOCK", "BOOL", "CHANGEADVANCE", "CHANGEAINODE", "CHANGESTABILITY", "COMMAND", "COMMAND_CALL", "COMMAND_CALL_PREFIX", "COMMENT", "CONDITIONAL", "CONTAINSFACTION", "CONVERSE", "COVER", "DIRECTORBIAS", "DOORNAMES", "EMPTY", "ENG", "ESC", "ESUPPLY", "EXPIREREPEATS", "EXPIRETIME", "HASITEM", "HASWEAPON", "IDENT", "IF", "INIT", "INROOM", "INT", "ISALIVE", "ISDAEMON", "ISDEAD", "ISFACTION", "ISINROOM", "ISINVESTIGATED", "ISNAME", "ISNOTDAEMON", "ISNOTINVESTIGATED", "ISPLAYER", "ISROOM", "ITEMSPAWNS", "KILLUNIT", "LINE", "LOADMAP", "LOCKDOOR", "LOGIC", "MAPSIZE", "MAPSPAWNS", "MAXTEAMSIZE", "MED", "MINTEAMSIZE", "MODULE", "MSUPPLY", "MULTILINE_COMMENT", "NEGATION", "NOTIF", "NOT_PREFIX", "ONTIME", "OPENINGLINE", "OPTION", "OR", "PORTAL", "PRIORITY", "REMOVESAFEROOM", "REMOVETAG", "REMOVEUNIT", "REMOVE_TAG_PREFIX", "REQ", "ROOMINFO", "SAFEROOM", "SCI", "SECTOR", "SEQUENCE", "SETTRIGGERRUNNING", "SHOWMESSAGE", "SPAWNCHARACTER", "SPAWNITEM", "SPAWNTALKNODE", "SPAWNTEAM", "SSUPPLY", "STAGELIST", "STASH", "STRING", "SUBSCRIBE", "TALK", "TALKMAP", "TALKPARENT", "TALKSTAGE", "TELEDEST", "TELEPORT", "TERRITORY", "TEXTURE", "TEXTUREBLOCK", "TOPIC", "TRIGGER", "TRIGGERCOND", "TRIGGEREFFECT", "TRIGGERTYPE", "UNITINFO", "UNLOCKDOOR", "UNLOCKTECH", "UPDATETALK", "UPDATE_TREE_PREFIX", "VAR", "WEP", "WS", "WSUPPLY", "XLIST", "YLIST", "ZONE", "'!HAS'", "'#'", "'('", "')'", "','", "'-'", "'::'", "'@'", "'AND'", "'BLOCK'", "'COMMAND'", "'COVER'", "'HAS'", "'IF'", "'ITEMSPAWNS'", "'LOAD'", "'MAPSIZE'", "'MAPSPAWNS'", "'MODULE'", "'MODULE::'", "'OR'", "'PORTAL'", "'SEQUENCE'", "'SEQUENCE::'", "'STASH'", "'TALK'", "'TEXTUREBLOCK'", "'TRIGGER'", "'a:'", "'addTag:'", "'aiInit:'", "'aiNode'", "'behaviours:'", "'block'", "'callCommand:'", "'changeAdvance:'", "'changeAiNode'", "'changeStability:'", "'command'", "'containsFaction:'", "'converse'", "'cover'", "'destination'", "'directorBias'", "'engChance:'", "'expireRepeats:'", "'expireTime:'", "'hasItem:'", "'hasWeapon:'", "'isAlive'", "'isDaemon'", "'isDead'", "'isFaction:'", "'isInRoom'", "'isInvestigated'", "'isName:'", "'isNotDaemon'", "'isNotInvestigated'", "'isPlayer'", "'isRoom:'", "'killUnit'", "'l:'", "'lines:'", "'loadMap'", "'lockDoor'", "'mapsize'", "'mapspawns'", "'maxTeamSize:'", "'medChance:'", "'minTeamSize:'", "'o:'", "'onTime:'", "'opening:'", "'openingLine:'", "'option:'", "'p:'", "'parent:'", "'portal'", "'priority:'", "'removeSaferoom'", "'removeTag:'", "'removeUnit'", "'req:'", "'s:'", "'saferoom'", "'sciChance:'", "'sector:'", "'setTriggerRunning:'", "'showMessage:'", "'spawnCharacter'", "'spawnItem'", "'spawnTalkNode'", "'spawnTeam'", "'stage:'", "'stages:'", "'stash'", "'subscribe:'", "'t'", "'talk'", "'tc'", "'te'", "'teleport'", "'territory:'", "'textureBlock'", "'textureblock'", "'topic'", "'trigger'", "'triggerCond'", "'triggerEffect'", "'unlockDoor'", "'unlockTech:'", "'updateTalk:'", "'wepChance:'", "'x:'", "'y:'", "'zone:'", "'{'", "'}'"
     };
 
     public static final int EOF=-1;
-    public static final int T__120=120;
     public static final int T__121=121;
     public static final int T__122=122;
     public static final int T__123=123;
@@ -162,97 +161,98 @@ public class AtrophyScriptParser extends Parser {
     public static final int DOORNAMES=26;
     public static final int EMPTY=27;
     public static final int ENG=28;
-    public static final int ESUPPLY=29;
-    public static final int EXPIREREPEATS=30;
-    public static final int EXPIRETIME=31;
-    public static final int HASITEM=32;
-    public static final int HASWEAPON=33;
-    public static final int IDENT=34;
-    public static final int IF=35;
-    public static final int INIT=36;
-    public static final int INROOM=37;
-    public static final int INT=38;
-    public static final int ISALIVE=39;
-    public static final int ISDAEMON=40;
-    public static final int ISDEAD=41;
-    public static final int ISFACTION=42;
-    public static final int ISINROOM=43;
-    public static final int ISINVESTIGATED=44;
-    public static final int ISNAME=45;
-    public static final int ISNOTDAEMON=46;
-    public static final int ISNOTINVESTIGATED=47;
-    public static final int ISPLAYER=48;
-    public static final int ISROOM=49;
-    public static final int ITEMSPAWNS=50;
-    public static final int KILLUNIT=51;
-    public static final int LINE=52;
-    public static final int LOADMAP=53;
-    public static final int LOCKDOOR=54;
-    public static final int LOGIC=55;
-    public static final int MAPSIZE=56;
-    public static final int MAPSPAWNS=57;
-    public static final int MAXTEAMSIZE=58;
-    public static final int MED=59;
-    public static final int MINTEAMSIZE=60;
-    public static final int MODULE=61;
-    public static final int MSUPPLY=62;
-    public static final int MULTILINE_COMMENT=63;
-    public static final int NEGATION=64;
-    public static final int NOTIF=65;
-    public static final int NOT_PREFIX=66;
-    public static final int ONTIME=67;
-    public static final int OPENINGLINE=68;
-    public static final int OPTION=69;
-    public static final int OR=70;
-    public static final int PORTAL=71;
-    public static final int PRIORITY=72;
-    public static final int REMOVESAFEROOM=73;
-    public static final int REMOVETAG=74;
-    public static final int REMOVEUNIT=75;
-    public static final int REMOVE_TAG_PREFIX=76;
-    public static final int REQ=77;
-    public static final int ROOMINFO=78;
-    public static final int SAFEROOM=79;
-    public static final int SCI=80;
-    public static final int SECTOR=81;
-    public static final int SEQUENCE=82;
-    public static final int SETTRIGGERRUNNING=83;
-    public static final int SHOWMESSAGE=84;
-    public static final int SPAWNCHARACTER=85;
-    public static final int SPAWNITEM=86;
-    public static final int SPAWNTALKNODE=87;
-    public static final int SPAWNTEAM=88;
-    public static final int SSUPPLY=89;
-    public static final int STAGELIST=90;
-    public static final int STASH=91;
-    public static final int STRING=92;
-    public static final int SUBSCRIBE=93;
-    public static final int TALK=94;
-    public static final int TALKMAP=95;
-    public static final int TALKPARENT=96;
-    public static final int TALKSTAGE=97;
-    public static final int TELEDEST=98;
-    public static final int TELEPORT=99;
-    public static final int TERRITORY=100;
-    public static final int TEXTURE=101;
-    public static final int TEXTUREBLOCK=102;
-    public static final int TOPIC=103;
-    public static final int TRIGGER=104;
-    public static final int TRIGGERCOND=105;
-    public static final int TRIGGEREFFECT=106;
-    public static final int TRIGGERTYPE=107;
-    public static final int UNITINFO=108;
-    public static final int UNLOCKDOOR=109;
-    public static final int UNLOCKTECH=110;
-    public static final int UPDATETALK=111;
-    public static final int UPDATE_TREE_PREFIX=112;
-    public static final int VAR=113;
-    public static final int WEP=114;
-    public static final int WS=115;
-    public static final int WSUPPLY=116;
-    public static final int XLIST=117;
-    public static final int YLIST=118;
-    public static final int ZONE=119;
+    public static final int ESC=29;
+    public static final int ESUPPLY=30;
+    public static final int EXPIREREPEATS=31;
+    public static final int EXPIRETIME=32;
+    public static final int HASITEM=33;
+    public static final int HASWEAPON=34;
+    public static final int IDENT=35;
+    public static final int IF=36;
+    public static final int INIT=37;
+    public static final int INROOM=38;
+    public static final int INT=39;
+    public static final int ISALIVE=40;
+    public static final int ISDAEMON=41;
+    public static final int ISDEAD=42;
+    public static final int ISFACTION=43;
+    public static final int ISINROOM=44;
+    public static final int ISINVESTIGATED=45;
+    public static final int ISNAME=46;
+    public static final int ISNOTDAEMON=47;
+    public static final int ISNOTINVESTIGATED=48;
+    public static final int ISPLAYER=49;
+    public static final int ISROOM=50;
+    public static final int ITEMSPAWNS=51;
+    public static final int KILLUNIT=52;
+    public static final int LINE=53;
+    public static final int LOADMAP=54;
+    public static final int LOCKDOOR=55;
+    public static final int LOGIC=56;
+    public static final int MAPSIZE=57;
+    public static final int MAPSPAWNS=58;
+    public static final int MAXTEAMSIZE=59;
+    public static final int MED=60;
+    public static final int MINTEAMSIZE=61;
+    public static final int MODULE=62;
+    public static final int MSUPPLY=63;
+    public static final int MULTILINE_COMMENT=64;
+    public static final int NEGATION=65;
+    public static final int NOTIF=66;
+    public static final int NOT_PREFIX=67;
+    public static final int ONTIME=68;
+    public static final int OPENINGLINE=69;
+    public static final int OPTION=70;
+    public static final int OR=71;
+    public static final int PORTAL=72;
+    public static final int PRIORITY=73;
+    public static final int REMOVESAFEROOM=74;
+    public static final int REMOVETAG=75;
+    public static final int REMOVEUNIT=76;
+    public static final int REMOVE_TAG_PREFIX=77;
+    public static final int REQ=78;
+    public static final int ROOMINFO=79;
+    public static final int SAFEROOM=80;
+    public static final int SCI=81;
+    public static final int SECTOR=82;
+    public static final int SEQUENCE=83;
+    public static final int SETTRIGGERRUNNING=84;
+    public static final int SHOWMESSAGE=85;
+    public static final int SPAWNCHARACTER=86;
+    public static final int SPAWNITEM=87;
+    public static final int SPAWNTALKNODE=88;
+    public static final int SPAWNTEAM=89;
+    public static final int SSUPPLY=90;
+    public static final int STAGELIST=91;
+    public static final int STASH=92;
+    public static final int STRING=93;
+    public static final int SUBSCRIBE=94;
+    public static final int TALK=95;
+    public static final int TALKMAP=96;
+    public static final int TALKPARENT=97;
+    public static final int TALKSTAGE=98;
+    public static final int TELEDEST=99;
+    public static final int TELEPORT=100;
+    public static final int TERRITORY=101;
+    public static final int TEXTURE=102;
+    public static final int TEXTUREBLOCK=103;
+    public static final int TOPIC=104;
+    public static final int TRIGGER=105;
+    public static final int TRIGGERCOND=106;
+    public static final int TRIGGEREFFECT=107;
+    public static final int TRIGGERTYPE=108;
+    public static final int UNITINFO=109;
+    public static final int UNLOCKDOOR=110;
+    public static final int UNLOCKTECH=111;
+    public static final int UPDATETALK=112;
+    public static final int UPDATE_TREE_PREFIX=113;
+    public static final int VAR=114;
+    public static final int WEP=115;
+    public static final int WS=116;
+    public static final int WSUPPLY=117;
+    public static final int XLIST=118;
+    public static final int YLIST=119;
+    public static final int ZONE=120;
 
     // delegates
     public Parser[] getDelegates() {
@@ -1265,7 +1265,7 @@ public TreeAdaptor getTreeAdaptor() {
             int alt7=2;
             int LA7_0 = input.LA(1);
 
-            if ( (LA7_0==121) ) {
+            if ( (LA7_0==STRING) ) {
                 alt7=1;
             }
             switch (alt7) {
@@ -1596,7 +1596,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
             // AST REWRITE
-            // elements: varAssignment, properties
+            // elements: properties, varAssignment
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -1752,7 +1752,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
             // AST REWRITE
-            // elements: varAssignment, properties
+            // elements: properties, varAssignment
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -2073,7 +2073,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
             // AST REWRITE
-            // elements: properties, requiredAssignment
+            // elements: requiredAssignment, properties
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -2229,7 +2229,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
             // AST REWRITE
-            // elements: requiredAssignment, triggerEffectList
+            // elements: triggerEffectList, requiredAssignment
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -4271,7 +4271,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
             // AST REWRITE
-            // elements: requiredAssignment, topicProperties
+            // elements: topicProperties, requiredAssignment
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -4728,7 +4728,7 @@ public TreeAdaptor getTreeAdaptor() {
             if ( (LA27_0==NOT_PREFIX) ) {
                 alt27=1;
             }
-            else if ( (LA27_0==121) ) {
+            else if ( (LA27_0==STRING) ) {
                 alt27=2;
             }
             else {
@@ -5003,7 +5003,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
             // AST REWRITE
-            // elements: saferoomInfo, unitInfo
+            // elements: unitInfo, saferoomInfo
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -5699,7 +5699,7 @@ public TreeAdaptor getTreeAdaptor() {
                     stream_queryNegation.add(b2.getTree());
 
                     // AST REWRITE
-                    // elements: b2, b1
+                    // elements: b1, b2
                     // token labels: 
                     // rule labels: retval, b1, b2
                     // token list labels: 
@@ -6393,7 +6393,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
             // AST REWRITE
-            // elements: properties, varAssignment
+            // elements: varAssignment, properties
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -7183,7 +7183,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
                     // AST REWRITE
-                    // elements: INT, stringLiteral
+                    // elements: stringLiteral, INT
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -7241,7 +7241,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
                     // AST REWRITE
-                    // elements: INT, stringLiteral
+                    // elements: stringLiteral, INT
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -7799,7 +7799,7 @@ public TreeAdaptor getTreeAdaptor() {
                 if ( (LA39_0==125) ) {
                     int LA39_2 = input.LA(2);
 
-                    if ( (LA39_2==121) ) {
+                    if ( (LA39_2==STRING) ) {
                         alt39=1;
                     }
 
@@ -8432,7 +8432,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
             // AST REWRITE
-            // elements: xListProperty, yListProperty
+            // elements: yListProperty, xListProperty
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -11967,7 +11967,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
             // AST REWRITE
-            // elements: unitInfo, stringLiteral
+            // elements: stringLiteral, unitInfo
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -12428,7 +12428,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
             // AST REWRITE
-            // elements: unitInfo, stringList
+            // elements: stringList, unitInfo
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -12839,7 +12839,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
                     // AST REWRITE
-                    // elements: INT, 126
+                    // elements: 126, INT
                     // token labels: 
                     // rule labels: retval
                     // token list labels: 
@@ -13001,7 +13001,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
             // AST REWRITE
-            // elements: commandCallList, commandConditional, stringLiteral
+            // elements: stringLiteral, commandCallList, commandConditional
             // token labels: 
             // rule labels: retval
             // token list labels: 
@@ -13096,9 +13096,9 @@ public TreeAdaptor getTreeAdaptor() {
         CommonTree char_literal417_tree=null;
         RewriteRuleTokenStream stream_134=new RewriteRuleTokenStream(adaptor,"token 134");
         RewriteRuleTokenStream stream_133=new RewriteRuleTokenStream(adaptor,"token 133");
+        RewriteRuleTokenStream stream_121=new RewriteRuleTokenStream(adaptor,"token 121");
         RewriteRuleTokenStream stream_123=new RewriteRuleTokenStream(adaptor,"token 123");
         RewriteRuleTokenStream stream_124=new RewriteRuleTokenStream(adaptor,"token 124");
-        RewriteRuleTokenStream stream_120=new RewriteRuleTokenStream(adaptor,"token 120");
         RewriteRuleSubtreeStream stream_stringList=new RewriteRuleSubtreeStream(adaptor,"rule stringList");
         try {
             // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:588:19: ( 'IF' 'HAS' '(' stringList ')' -> ^( IF stringList ) | 'IF' '!HAS' '(' stringList ')' -> ^( NOTIF stringList ) | -> ^( EMPTY ) )
@@ -13111,7 +13111,7 @@ public TreeAdaptor getTreeAdaptor() {
                 if ( (LA52_1==133) ) {
                     alt52=1;
                 }
-                else if ( (LA52_1==120) ) {
+                else if ( (LA52_1==121) ) {
                     alt52=2;
                 }
                 else {
@@ -13198,8 +13198,8 @@ public TreeAdaptor getTreeAdaptor() {
                     stream_134.add(string_literal413);
 
 
-                    string_literal414=(Token)match(input,120,FOLLOW_120_in_commandConditional3912);  
-                    stream_120.add(string_literal414);
+                    string_literal414=(Token)match(input,121,FOLLOW_121_in_commandConditional3912);  
+                    stream_121.add(string_literal414);
 
 
                     char_literal415=(Token)match(input,123,FOLLOW_123_in_commandConditional3914);  
@@ -13769,7 +13769,7 @@ public TreeAdaptor getTreeAdaptor() {
                     stream_stringLiteral.add(s2.getTree());
 
                     // AST REWRITE
-                    // elements: s2, stringList
+                    // elements: stringList, s2
                     // token labels: 
                     // rule labels: retval, s2
                     // token list labels: 
@@ -13834,7 +13834,7 @@ public TreeAdaptor getTreeAdaptor() {
 
 
     // $ANTLR start "stringLiteral"
-    // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:610:1: stringLiteral : '\"' ! ( . )* '\"' !;
+    // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:610:1: stringLiteral : STRING ;
     public final AtrophyScriptParser.stringLiteral_return stringLiteral() throws RecognitionException {
         AtrophyScriptParser.stringLiteral_return retval = new AtrophyScriptParser.stringLiteral_return();
         retval.start = input.LT(1);
@@ -13842,58 +13842,23 @@ public TreeAdaptor getTreeAdaptor() {
 
         CommonTree root_0 = null;
 
-        Token char_literal435=null;
-        Token wildcard436=null;
-        Token char_literal437=null;
+        Token STRING435=null;
 
-        CommonTree char_literal435_tree=null;
-        CommonTree wildcard436_tree=null;
-        CommonTree char_literal437_tree=null;
+        CommonTree STRING435_tree=null;
 
         try {
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:610:14: ( '\"' ! ( . )* '\"' !)
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:611:4: '\"' ! ( . )* '\"' !
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:610:14: ( STRING )
+            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:611:4: STRING
             {
             root_0 = (CommonTree)adaptor.nil();
 
 
-            char_literal435=(Token)match(input,121,FOLLOW_121_in_stringLiteral4094); 
+            STRING435=(Token)match(input,STRING,FOLLOW_STRING_in_stringLiteral4094); 
+            STRING435_tree = 
+            (CommonTree)adaptor.create(STRING435)
+            ;
+            adaptor.addChild(root_0, STRING435_tree);
 
-            // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:611:9: ( . )*
-            loop56:
-            do {
-                int alt56=2;
-                int LA56_0 = input.LA(1);
-
-                if ( (LA56_0==121) ) {
-                    alt56=2;
-                }
-                else if ( ((LA56_0 >= ADDTAG && LA56_0 <= 120)||(LA56_0 >= 122 && LA56_0 <= 238)) ) {
-                    alt56=1;
-                }
-
-
-                switch (alt56) {
-            	case 1 :
-            	    // C:\\Users\\Daedalus\\workspaceAntlr\\AtrophyScript\\src\\atrophy\\atrophyScript\\AtrophyScript.g:611:9: .
-            	    {
-            	    wildcard436=(Token)input.LT(1);
-
-            	    matchAny(input); 
-            	    wildcard436_tree = (CommonTree)adaptor.create(wildcard436);
-            	    adaptor.addChild(root_0, wildcard436_tree);
-
-
-            	    }
-            	    break;
-
-            	default :
-            	    break loop56;
-                }
-            } while (true);
-
-
-            char_literal437=(Token)match(input,121,FOLLOW_121_in_stringLiteral4100); 
 
             }
 
@@ -13923,28 +13888,24 @@ public TreeAdaptor getTreeAdaptor() {
 
     protected DFA53 dfa53 = new DFA53(this);
     static final String DFA53_eotS =
-        "\117\uffff";
+        "\33\uffff";
     static final String DFA53_eofS =
-        "\117\uffff";
+        "\33\uffff";
     static final String DFA53_minS =
-        "\1\23\1\5\1\uffff\2\171\1\u008b\2\u00ed\2\4\3\171\1\uffff\1\4\1"+
-        "\uffff\4\4\1\uffff\13\4\1\uffff\13\4\1\uffff\7\4\1\uffff\2\4\1\uffff"+
-        "\4\4\2\uffff\2\4\2\uffff\1\4\1\uffff\3\4\1\uffff\3\4\4\uffff";
+        "\1\23\1\5\1\uffff\2\135\1\u008b\2\u00ed\2\uffff\3\135\3\175\1\uffff"+
+        "\5\135\1\175\1\uffff\1\175\1\uffff\1\175";
     static final String DFA53_maxS =
-        "\1\u00ee\1\u00e8\1\uffff\2\171\1\u008f\2\u00ed\2\u00ee\2\171\1\u00ee"+
-        "\1\uffff\1\u00ee\1\uffff\4\u00ee\1\uffff\13\u00ee\1\uffff\13\u00ee"+
-        "\1\uffff\7\u00ee\1\uffff\2\u00ee\1\uffff\4\u00ee\2\uffff\2\u00ee"+
-        "\2\uffff\1\u00ee\1\uffff\3\u00ee\1\uffff\3\u00ee\4\uffff";
+        "\1\u00ee\1\u00e8\1\uffff\2\135\1\u008f\2\u00ed\2\uffff\2\135\1\u00ee"+
+        "\2\u0080\1\u00ee\1\uffff\5\135\1\u0080\1\uffff\1\u0080\1\uffff\1"+
+        "\u00ee";
     static final String DFA53_acceptS =
-        "\2\uffff\1\2\12\uffff\1\1\1\uffff\1\1\4\uffff\1\1\13\uffff\1\1\13"+
-        "\uffff\1\1\7\uffff\1\1\2\uffff\1\1\4\uffff\2\1\2\uffff\2\1\1\uffff"+
-        "\1\1\3\uffff\1\1\3\uffff\4\1";
+        "\2\uffff\1\2\5\uffff\2\1\6\uffff\1\1\6\uffff\1\1\1\uffff\1\1\1\uffff";
     static final String DFA53_specialS =
-        "\117\uffff}>";
+        "\33\uffff}>";
     static final String[] DFA53_transitionS = {
             "\1\2\151\uffff\1\1\12\uffff\1\2\1\uffff\1\2\20\uffff\1\2\37"+
             "\uffff\1\2\62\uffff\1\2",
-            "\1\2\15\uffff\1\4\70\uffff\1\2\43\uffff\1\2\27\uffff\1\5\1"+
+            "\1\2\15\uffff\1\4\71\uffff\1\2\43\uffff\1\2\26\uffff\1\5\1"+
             "\uffff\1\6\13\uffff\1\2\4\uffff\1\3\3\2\2\uffff\1\2\2\uffff"+
             "\1\2\20\uffff\1\2\2\uffff\2\2\1\uffff\1\7\14\uffff\3\2\2\uffff"+
             "\1\2\2\uffff\6\2\10\uffff\1\2\7\uffff\3\2",
@@ -13954,77 +13915,25 @@ public TreeAdaptor getTreeAdaptor() {
             "\1\12\3\uffff\1\13",
             "\1\14",
             "\1\14",
-            "\165\16\1\15\165\16",
-            "\165\20\1\17\165\20",
-            "\1\21",
-            "\1\22",
-            "\1\23\164\uffff\1\24",
-            "",
-            "\165\16\1\15\165\16",
-            "",
-            "\165\20\1\17\165\20",
-            "\165\26\1\25\165\26",
-            "\165\30\1\27\165\30",
-            "\165\32\1\31\165\32",
-            "",
-            "\165\26\1\25\3\26\1\33\2\26\1\34\156\26",
-            "\165\26\1\25\165\26",
-            "\165\30\1\27\3\30\1\35\2\30\1\36\156\30",
-            "\165\30\1\27\165\30",
-            "\165\32\1\31\3\32\1\37\160\32\1\40",
-            "\165\32\1\31\165\32",
-            "\165\26\1\41\165\26",
-            "\165\26\1\42\165\26",
-            "\165\30\1\43\165\30",
-            "\165\30\1\44\165\30",
-            "\165\32\1\45\165\32",
-            "",
-            "\165\51\1\50\3\51\1\46\2\51\1\47\156\51",
-            "\165\55\1\54\3\55\1\52\2\55\1\53\156\55",
-            "\165\61\1\60\3\61\1\56\2\61\1\57\156\61",
-            "\165\65\1\64\3\65\1\62\2\65\1\63\156\65",
-            "\165\71\1\70\3\71\1\66\160\71\1\67",
-            "\165\51\1\72\165\51",
-            "\165\51\1\73\165\51",
-            "\165\51\1\50\3\51\1\46\2\51\1\47\156\51",
-            "\165\51\1\50\165\51",
-            "\165\55\1\74\165\55",
-            "\165\55\1\75\165\55",
-            "",
-            "\165\55\1\54\165\55",
-            "\165\61\1\76\165\61",
-            "\165\61\1\77\165\61",
-            "\165\61\1\60\3\61\1\56\2\61\1\57\156\61",
-            "\165\61\1\60\165\61",
-            "\165\65\1\100\165\65",
-            "\165\65\1\101\165\65",
-            "",
-            "\165\65\1\64\165\65",
-            "\165\71\1\102\165\71",
-            "",
-            "\165\71\1\70\3\71\1\66\160\71\1\67",
-            "\165\71\1\70\165\71",
-            "\165\51\1\50\3\51\1\46\2\51\1\47\156\51",
-            "\165\106\1\103\3\106\1\104\2\106\1\105\156\106",
             "",
             "",
-            "\165\61\1\60\3\61\1\56\2\61\1\57\156\61",
-            "\165\112\1\107\3\112\1\110\2\112\1\111\156\112",
+            "\1\15",
+            "\1\16",
+            "\1\17\u0090\uffff\1\20",
+            "\1\21\2\uffff\1\22",
+            "\1\23\2\uffff\1\24",
+            "\1\25\160\uffff\1\20",
             "",
+            "\1\26",
+            "\1\27",
+            "\1\30",
+            "\1\31",
+            "\1\32",
+            "\1\21\2\uffff\1\22",
             "",
-            "\165\71\1\70\3\71\1\66\160\71\1\67",
+            "\1\23\2\uffff\1\24",
             "",
-            "\165\106\1\113\165\106",
-            "\165\106\1\114\165\106",
-            "\165\106\1\103\165\106",
-            "",
-            "\165\112\1\115\165\112",
-            "\165\112\1\116\165\112",
-            "\165\112\1\107\165\112",
-            "",
-            "",
-            "",
-            ""
+            "\1\25\160\uffff\1\20"
     };
 
     static final short[] DFA53_eot = DFA.unpackEncodedString(DFA53_eotS);
@@ -14065,7 +13974,7 @@ public TreeAdaptor getTreeAdaptor() {
     public static final BitSet FOLLOW_sequenceDecl_in_prog480 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000011000L});
     public static final BitSet FOLLOW_moduleDecl_in_prog484 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000011000L});
     public static final BitSet FOLLOW_EOF_in_prog492 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_140_in_moduleDecl508 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000000L});
+    public static final BitSet FOLLOW_140_in_moduleDecl508 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
     public static final BitSet FOLLOW_stringLiteral_in_moduleDecl510 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000200000000000L});
     public static final BitSet FOLLOW_237_in_moduleDecl512 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0C000000841C468CL,0x0000400B08000040L});
     public static final BitSet FOLLOW_command_in_moduleDecl518 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0C000000841C468CL,0x0000400B08000040L});
@@ -14079,33 +13988,33 @@ public TreeAdaptor getTreeAdaptor() {
     public static final BitSet FOLLOW_triggerDecl_in_command591 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_commandDecl_in_command598 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_talkDecl_in_command605 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_127_in_requiredAssignment618 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000000L});
+    public static final BitSet FOLLOW_127_in_requiredAssignment618 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
     public static final BitSet FOLLOW_stringLiteral_in_requiredAssignment620 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_requiredAssignment_in_varAssignment644 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_137_in_mapSize671 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000200000000000L});
     public static final BitSet FOLLOW_186_in_mapSize675 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000200000000000L});
-    public static final BitSet FOLLOW_237_in_mapSize678 = new BitSet(new long[]{0x0000004000000000L});
+    public static final BitSet FOLLOW_237_in_mapSize678 = new BitSet(new long[]{0x0000008000000000L});
     public static final BitSet FOLLOW_INT_in_mapSize680 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_125_in_mapSize682 = new BitSet(new long[]{0x0000004000000000L});
+    public static final BitSet FOLLOW_125_in_mapSize682 = new BitSet(new long[]{0x0000008000000000L});
     public static final BitSet FOLLOW_INT_in_mapSize684 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_125_in_mapSize686 = new BitSet(new long[]{0x0000004000000000L});
+    public static final BitSet FOLLOW_125_in_mapSize686 = new BitSet(new long[]{0x0000008000000000L});
     public static final BitSet FOLLOW_INT_in_mapSize688 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_125_in_mapSize690 = new BitSet(new long[]{0x0000004000000000L});
+    public static final BitSet FOLLOW_125_in_mapSize690 = new BitSet(new long[]{0x0000008000000000L});
     public static final BitSet FOLLOW_INT_in_mapSize692 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000400000000000L});
     public static final BitSet FOLLOW_238_in_mapSize694 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_138_in_mapSpawns719 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000200000000000L});
     public static final BitSet FOLLOW_187_in_mapSpawns723 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000200000000000L});
-    public static final BitSet FOLLOW_237_in_mapSpawns726 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000000L,0x0000000000000000L,0x0000400000000000L});
+    public static final BitSet FOLLOW_237_in_mapSpawns726 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L,0x0000000000000000L,0x0000400000000000L});
     public static final BitSet FOLLOW_stringList_in_mapSpawns728 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000400000000000L});
     public static final BitSet FOLLOW_238_in_mapSpawns731 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_135_in_itemSpawns755 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000200000000000L});
-    public static final BitSet FOLLOW_237_in_itemSpawns757 = new BitSet(new long[]{0x0000004000000000L});
+    public static final BitSet FOLLOW_237_in_itemSpawns757 = new BitSet(new long[]{0x0000008000000000L});
     public static final BitSet FOLLOW_INT_in_itemSpawns759 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_125_in_itemSpawns761 = new BitSet(new long[]{0x0000004000000000L});
+    public static final BitSet FOLLOW_125_in_itemSpawns761 = new BitSet(new long[]{0x0000008000000000L});
     public static final BitSet FOLLOW_INT_in_itemSpawns763 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_125_in_itemSpawns765 = new BitSet(new long[]{0x0000004000000000L});
+    public static final BitSet FOLLOW_125_in_itemSpawns765 = new BitSet(new long[]{0x0000008000000000L});
     public static final BitSet FOLLOW_INT_in_itemSpawns767 = new BitSet(new long[]{0x0000000000000000L,0x2000000000000000L});
-    public static final BitSet FOLLOW_125_in_itemSpawns769 = new BitSet(new long[]{0x0000004000000000L});
+    public static final BitSet FOLLOW_125_in_itemSpawns769 = new BitSet(new long[]{0x0000008000000000L});
     public static final BitSet FOLLOW_INT_in_itemSpawns771 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000400000000000L});
     public static final BitSet FOLLOW_238_in_itemSpawns773 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_130_in_blockDecl798 = new BitSet(new long[]{0x0000000000000000L,0x8000000000000000L,0x0000000000000000L,0x0000200000000000L});
@@ -14135,7 +14044,7 @@ public TreeAdaptor getTreeAdaptor() {
     public static final BitSet FOLLOW_131_in_commandDecl954 = new BitSet(new long[]{0x0000000000000000L,0x8000000000000000L});
     public static final BitSet FOLLOW_159_in_commandDecl958 = new BitSet(new long[]{0x0000000000000000L,0x8000000000000000L});
     public static final BitSet FOLLOW_requiredAssignment_in_commandDecl961 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000200000000000L});
-    public static final BitSet FOLLOW_237_in_commandDecl963 = new BitSet(new long[]{0x0000000000080020L,0x0001000000001000L,0x0B20001278400500L,0x000001C0403F2700L});
+    public static final BitSet FOLLOW_237_in_commandDecl963 = new BitSet(new long[]{0x0000000000080020L,0x0002000000002000L,0x0B20001278400500L,0x000001C0403F2700L});
     public static final BitSet FOLLOW_triggerEffectList_in_commandDecl965 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000400000000000L});
     public static final BitSet FOLLOW_238_in_commandDecl967 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_146_in_talkDecl997 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000200000000000L});
@@ -14159,39 +14068,39 @@ public TreeAdaptor getTreeAdaptor() {
     public static final BitSet FOLLOW_triggerEffectProperty_in_properties1123 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000000L,0x8040000400A20010L,0x00001C34B5C0303EL});
     public static final BitSet FOLLOW_coverDecl_in_properties1130 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000000L,0x8040000400A20010L,0x00001C34B5C0303EL});
     public static final BitSet FOLLOW_stashDecl_in_properties1137 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000000L,0x8040000400A20010L,0x00001C34B5C0303EL});
-    public static final BitSet FOLLOW_234_in_xListProperty1154 = new BitSet(new long[]{0x0000004000000000L});
+    public static final BitSet FOLLOW_234_in_xListProperty1154 = new BitSet(new long[]{0x0000008000000000L});
     public static final BitSet FOLLOW_INT_in_xListProperty1156 = new BitSet(new long[]{0x0000000000000002L,0x2000000000000000L});
-    public static final BitSet FOLLOW_125_in_xListProperty1159 = new BitSet(new long[]{0x0000004000000000L});
+    public static final BitSet FOLLOW_125_in_xListProperty1159 = new BitSet(new long[]{0x0000008000000000L});
     public static final BitSet FOLLOW_INT_in_xListProperty1160 = new BitSet(new long[]{0x0000000000000002L,0x2000000000000000L});
-    public static final BitSet FOLLOW_235_in_yListProperty1184 = new BitSet(new long[]{0x0000004000000000L});
+    public static final BitSet FOLLOW_235_in_yListProperty1184 = new BitSet(new long[]{0x0000008000000000L});
     public static final BitSet FOLLOW_INT_in_yListProperty1186 = new BitSet(new long[]{0x0000000000000002L,0x2000000000000000L});
-    public static final BitSet FOLLOW_125_in_yListProperty1189 = new BitSet(new long[]{0x0000004000000000L});
+    public static final BitSet FOLLOW_125_in_yListProperty1189 = new BitSet(new long[]{0x0000008000000000L});
     public static final BitSet FOLLOW_INT_in_yListProperty1190 = new BitSet(new long[]{0x0000000000000002L,0x2000000000000000L});
-    public static final BitSet FOLLOW_223_in_factionTerritoryProperty1216 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000000L});
-    public static final BitSet FOLLOW_stringLiteral_in_factionTerritoryProperty1218 = new BitSet(new long[]{0x0000004000000000L});
+    public static final BitSet FOLLOW_223_in_factionTerritoryProperty1216 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
+    public static final BitSet FOLLOW_stringLiteral_in_factionTerritoryProperty1218 = new BitSet(new long[]{0x0000008000000000L});
     public static final BitSet FOLLOW_INT_in_factionTerritoryProperty1220 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_236_in_factionZoneProperty1249 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000000L});
+    public static final BitSet FOLLOW_236_in_factionZoneProperty1249 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
     public static final BitSet FOLLOW_stringList_in_factionZoneProperty1251 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_205_in_saferoomProperty1274 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_215_in_stageDeclProperty1295 = new BitSet(new long[]{0x0000004000000000L});
+    public static final BitSet FOLLOW_215_in_stageDeclProperty1295 = new BitSet(new long[]{0x0000008000000000L});
     public static final BitSet FOLLOW_INT_in_stageDeclProperty1297 = new BitSet(new long[]{0x0000000000000002L,0x2000000000000000L});
-    public static final BitSet FOLLOW_125_in_stageDeclProperty1300 = new BitSet(new long[]{0x0000004000000000L});
+    public static final BitSet FOLLOW_125_in_stageDeclProperty1300 = new BitSet(new long[]{0x0000008000000000L});
     public static final BitSet FOLLOW_INT_in_stageDeclProperty1302 = new BitSet(new long[]{0x0000000000000002L,0x2000000000000000L});
-    public static final BitSet FOLLOW_197_in_talkMapParentProperty1329 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000000L});
-    public static final BitSet FOLLOW_196_in_talkMapParentProperty1333 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000000L});
+    public static final BitSet FOLLOW_197_in_talkMapParentProperty1329 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
+    public static final BitSet FOLLOW_196_in_talkMapParentProperty1333 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
     public static final BitSet FOLLOW_stringLiteral_in_talkMapParentProperty1336 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_214_in_stageProperty1360 = new BitSet(new long[]{0x0000004000000000L});
-    public static final BitSet FOLLOW_204_in_stageProperty1364 = new BitSet(new long[]{0x0000004000000000L});
+    public static final BitSet FOLLOW_214_in_stageProperty1360 = new BitSet(new long[]{0x0000008000000000L});
+    public static final BitSet FOLLOW_204_in_stageProperty1364 = new BitSet(new long[]{0x0000008000000000L});
     public static final BitSet FOLLOW_INT_in_stageProperty1367 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_151_in_aiInitProperty1391 = new BitSet(new long[]{0x0000000000002000L});
     public static final BitSet FOLLOW_149_in_aiInitProperty1395 = new BitSet(new long[]{0x0000000000002000L});
     public static final BitSet FOLLOW_BOOL_in_aiInitProperty1398 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_191_in_openingLineProperty1422 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000000L});
-    public static final BitSet FOLLOW_193_in_openingLineProperty1426 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000000L});
-    public static final BitSet FOLLOW_194_in_openingLineProperty1430 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000000L});
+    public static final BitSet FOLLOW_191_in_openingLineProperty1422 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
+    public static final BitSet FOLLOW_193_in_openingLineProperty1426 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
+    public static final BitSet FOLLOW_194_in_openingLineProperty1430 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
     public static final BitSet FOLLOW_stringLiteral_in_openingLineProperty1433 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_182_in_optionProperty1455 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000000L});
-    public static final BitSet FOLLOW_195_in_optionProperty1459 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000000L});
+    public static final BitSet FOLLOW_182_in_optionProperty1455 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
+    public static final BitSet FOLLOW_195_in_optionProperty1459 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
     public static final BitSet FOLLOW_stringLiteral_in_optionProperty1462 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_218_in_topicProperty1486 = new BitSet(new long[]{0x0000000000000000L,0x8000000000000000L});
     public static final BitSet FOLLOW_226_in_topicProperty1490 = new BitSet(new long[]{0x0000000000000000L,0x8000000000000000L});
@@ -14201,15 +14110,15 @@ public TreeAdaptor getTreeAdaptor() {
     public static final BitSet FOLLOW_238_in_topicProperty1499 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_topicLine_in_topicProperties1526 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000000L,0x0080000000000000L,0x0000000000000800L});
     public static final BitSet FOLLOW_topicRequiement_in_topicProperties1530 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000000L,0x0080000000000000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_183_in_topicLine1547 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000000L});
+    public static final BitSet FOLLOW_183_in_topicLine1547 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
     public static final BitSet FOLLOW_stringLiteral_in_topicLine1548 = new BitSet(new long[]{0x0000000000000002L,0x2000000000000000L});
-    public static final BitSet FOLLOW_125_in_topicLine1551 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000000L});
+    public static final BitSet FOLLOW_125_in_topicLine1551 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
     public static final BitSet FOLLOW_stringLiteral_in_topicLine1553 = new BitSet(new long[]{0x0000000000000002L,0x2000000000000000L});
-    public static final BitSet FOLLOW_203_in_topicRequiement1579 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000004L});
+    public static final BitSet FOLLOW_203_in_topicRequiement1579 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000008L});
     public static final BitSet FOLLOW_reqString_in_topicRequiement1581 = new BitSet(new long[]{0x0000000000000002L,0x2000000000000000L});
-    public static final BitSet FOLLOW_125_in_topicRequiement1584 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000004L});
+    public static final BitSet FOLLOW_125_in_topicRequiement1584 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000008L});
     public static final BitSet FOLLOW_reqString_in_topicRequiement1586 = new BitSet(new long[]{0x0000000000000002L,0x2000000000000000L});
-    public static final BitSet FOLLOW_NOT_PREFIX_in_reqString1612 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000000L});
+    public static final BitSet FOLLOW_NOT_PREFIX_in_reqString1612 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
     public static final BitSet FOLLOW_stringLiteral_in_reqString1614 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_stringLiteral_in_reqString1629 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_170_in_aliveQuery1644 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000200000000000L});
@@ -14223,13 +14132,13 @@ public TreeAdaptor getTreeAdaptor() {
     public static final BitSet FOLLOW_237_in_roomQuery1681 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0001000100000000L,0x0000400000000000L});
     public static final BitSet FOLLOW_saferoomInfo_in_roomQuery1683 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000400000000000L});
     public static final BitSet FOLLOW_238_in_roomQuery1685 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_192_in_timeQuery1719 = new BitSet(new long[]{0x0000004000000000L});
+    public static final BitSet FOLLOW_192_in_timeQuery1719 = new BitSet(new long[]{0x0000008000000000L});
     public static final BitSet FOLLOW_INT_in_timeQuery1721 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000000L,0x000000C000000000L});
-    public static final BitSet FOLLOW_167_in_timeQuery1727 = new BitSet(new long[]{0x0000004000000000L});
+    public static final BitSet FOLLOW_167_in_timeQuery1727 = new BitSet(new long[]{0x0000008000000000L});
     public static final BitSet FOLLOW_INT_in_timeQuery1729 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_166_in_timeQuery1749 = new BitSet(new long[]{0x0000004000000000L});
+    public static final BitSet FOLLOW_166_in_timeQuery1749 = new BitSet(new long[]{0x0000008000000000L});
     public static final BitSet FOLLOW_INT_in_timeQuery1751 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_123_in_boolQuery1793 = new BitSet(new long[]{0x0000000000000000L,0x0800000000000004L,0x0000440000000000L,0x0000000000000001L});
+    public static final BitSet FOLLOW_123_in_boolQuery1793 = new BitSet(new long[]{0x0000000000000000L,0x0800000000000008L,0x0000440000000000L,0x0000000000000001L});
     public static final BitSet FOLLOW_queryLogic_in_boolQuery1796 = new BitSet(new long[]{0x0000000000000000L,0x1000000000000000L});
     public static final BitSet FOLLOW_124_in_boolQuery1798 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_aliveQuery_in_boolQuery1805 = new BitSet(new long[]{0x0000000000000002L});
@@ -14239,18 +14148,18 @@ public TreeAdaptor getTreeAdaptor() {
     public static final BitSet FOLLOW_NOT_PREFIX_in_queryNegation1836 = new BitSet(new long[]{0x0000000000000000L,0x0800000000000000L,0x0000440000000000L,0x0000000000000001L});
     public static final BitSet FOLLOW_boolQuery_in_queryNegation1838 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_queryNegation_in_queryLogic1862 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000000L,0x0000000000002002L});
-    public static final BitSet FOLLOW_129_in_queryLogic1867 = new BitSet(new long[]{0x0000000000000000L,0x0800000000000004L,0x0000440000000000L,0x0000000000000001L});
+    public static final BitSet FOLLOW_129_in_queryLogic1867 = new BitSet(new long[]{0x0000000000000000L,0x0800000000000008L,0x0000440000000000L,0x0000000000000001L});
     public static final BitSet FOLLOW_queryNegation_in_queryLogic1871 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_141_in_queryLogic1888 = new BitSet(new long[]{0x0000000000000000L,0x0800000000000004L,0x0000440000000000L,0x0000000000000001L});
+    public static final BitSet FOLLOW_141_in_queryLogic1888 = new BitSet(new long[]{0x0000000000000000L,0x0800000000000008L,0x0000440000000000L,0x0000000000000001L});
     public static final BitSet FOLLOW_queryNegation_in_queryLogic1892 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_220_in_triggerCondProperty1932 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000200000000000L});
     public static final BitSet FOLLOW_228_in_triggerCondProperty1936 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000200000000000L});
-    public static final BitSet FOLLOW_237_in_triggerCondProperty1939 = new BitSet(new long[]{0x0000000000000000L,0x0800000000000004L,0x0000440000000000L,0x0000000000000001L});
+    public static final BitSet FOLLOW_237_in_triggerCondProperty1939 = new BitSet(new long[]{0x0000000000000000L,0x0800000000000008L,0x0000440000000000L,0x0000000000000001L});
     public static final BitSet FOLLOW_queryLogic_in_triggerCondProperty1941 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000400000000000L});
     public static final BitSet FOLLOW_238_in_triggerCondProperty1943 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_221_in_triggerEffectProperty1965 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000200000000000L});
     public static final BitSet FOLLOW_229_in_triggerEffectProperty1969 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000200000000000L});
-    public static final BitSet FOLLOW_237_in_triggerEffectProperty1972 = new BitSet(new long[]{0x0000000000080020L,0x0001000000001000L,0x0B20001278400500L,0x000001C0403F2700L});
+    public static final BitSet FOLLOW_237_in_triggerEffectProperty1972 = new BitSet(new long[]{0x0000000000080020L,0x0002000000002000L,0x0B20001278400500L,0x000001C0403F2700L});
     public static final BitSet FOLLOW_triggerEffectList_in_triggerEffectProperty1974 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000400000000000L});
     public static final BitSet FOLLOW_238_in_triggerEffectProperty1976 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_132_in_coverDecl2000 = new BitSet(new long[]{0x0000000000000000L,0x8000000000000000L,0x0000000000000000L,0x0000200000000000L});
@@ -14266,7 +14175,7 @@ public TreeAdaptor getTreeAdaptor() {
     public static final BitSet FOLLOW_properties_in_stashDecl2050 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000400000000000L});
     public static final BitSet FOLLOW_238_in_stashDecl2052 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_triggerEffect_in_triggerEffectList2075 = new BitSet(new long[]{0x0000000000000002L,0x2000000000000000L});
-    public static final BitSet FOLLOW_125_in_triggerEffectList2078 = new BitSet(new long[]{0x0000000000080020L,0x0001000000001000L,0x0B20001278400500L,0x000001C0403F2700L});
+    public static final BitSet FOLLOW_125_in_triggerEffectList2078 = new BitSet(new long[]{0x0000000000080020L,0x0002000000002000L,0x0B20001278400500L,0x000001C0403F2700L});
     public static final BitSet FOLLOW_triggerEffect_in_triggerEffectList2081 = new BitSet(new long[]{0x0000000000000002L,0x2000000000000000L});
     public static final BitSet FOLLOW_updateTalkTree_in_triggerEffect2096 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_spawnTeam_in_triggerEffect2103 = new BitSet(new long[]{0x0000000000000002L});
@@ -14291,25 +14200,25 @@ public TreeAdaptor getTreeAdaptor() {
     public static final BitSet FOLLOW_unlockTech_in_triggerEffect2236 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_changeStat_in_triggerEffect2243 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_commandCallList_in_triggerEffect2250 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_232_in_updateTalkTree2265 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000000L});
-    public static final BitSet FOLLOW_stringLiteral_in_updateTalkTree2267 = new BitSet(new long[]{0x0000004000000000L});
+    public static final BitSet FOLLOW_232_in_updateTalkTree2265 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
+    public static final BitSet FOLLOW_stringLiteral_in_updateTalkTree2267 = new BitSet(new long[]{0x0000008000000000L});
     public static final BitSet FOLLOW_INT_in_updateTalkTree2269 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_UPDATE_TREE_PREFIX_in_updateTalkTree2286 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000000L});
+    public static final BitSet FOLLOW_UPDATE_TREE_PREFIX_in_updateTalkTree2286 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
     public static final BitSet FOLLOW_stringLiteral_in_updateTalkTree2288 = new BitSet(new long[]{0x0000000000000000L,0x0400000000000000L});
-    public static final BitSet FOLLOW_122_in_updateTalkTree2290 = new BitSet(new long[]{0x0000004000000000L});
+    public static final BitSet FOLLOW_122_in_updateTalkTree2290 = new BitSet(new long[]{0x0000008000000000L});
     public static final BitSet FOLLOW_INT_in_updateTalkTree2292 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_176_in_isName2317 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000000L});
+    public static final BitSet FOLLOW_176_in_isName2317 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
     public static final BitSet FOLLOW_stringList_in_isName2319 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_173_in_isFaction2342 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000000L});
+    public static final BitSet FOLLOW_173_in_isFaction2342 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
     public static final BitSet FOLLOW_stringList_in_isFaction2344 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_180_in_isRoom2367 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000000L});
+    public static final BitSet FOLLOW_180_in_isRoom2367 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
     public static final BitSet FOLLOW_stringList_in_isRoom2369 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_168_in_hasItem2392 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000000L});
+    public static final BitSet FOLLOW_168_in_hasItem2392 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
     public static final BitSet FOLLOW_stringList_in_hasItem2394 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_169_in_hasWeapon2417 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000000L});
+    public static final BitSet FOLLOW_169_in_hasWeapon2417 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
     public static final BitSet FOLLOW_stringList_in_hasWeapon2419 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_stringLiteral_in_stringList2442 = new BitSet(new long[]{0x0000000000000002L,0x2000000000000000L});
-    public static final BitSet FOLLOW_125_in_stringList2445 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000000L});
+    public static final BitSet FOLLOW_125_in_stringList2445 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
     public static final BitSet FOLLOW_stringLiteral_in_stringList2447 = new BitSet(new long[]{0x0000000000000002L,0x2000000000000000L});
     public static final BitSet FOLLOW_170_in_isAlive2471 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_172_in_isDead2492 = new BitSet(new long[]{0x0000000000000002L});
@@ -14322,9 +14231,9 @@ public TreeAdaptor getTreeAdaptor() {
     public static final BitSet FOLLOW_xListProperty_in_teleDestination2599 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000080000000000L});
     public static final BitSet FOLLOW_yListProperty_in_teleDestination2601 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000400000000000L});
     public static final BitSet FOLLOW_238_in_teleDestination2603 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_188_in_maxTeamSize2628 = new BitSet(new long[]{0x0000004000000000L});
+    public static final BitSet FOLLOW_188_in_maxTeamSize2628 = new BitSet(new long[]{0x0000008000000000L});
     public static final BitSet FOLLOW_INT_in_maxTeamSize2630 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_190_in_minTeamSize2651 = new BitSet(new long[]{0x0000004000000000L});
+    public static final BitSet FOLLOW_190_in_minTeamSize2651 = new BitSet(new long[]{0x0000008000000000L});
     public static final BitSet FOLLOW_INT_in_minTeamSize2653 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_179_in_isPlayer2676 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_152_in_aiNode2697 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000200000000000L});
@@ -14334,11 +14243,11 @@ public TreeAdaptor getTreeAdaptor() {
     public static final BitSet FOLLOW_subscribeTalkMaps_in_aiNodeOptions2726 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000000L,0x0000000002000000L,0x0000000002000080L});
     public static final BitSet FOLLOW_behaviours_in_aiNodeOptions2731 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000000L,0x0000000002000000L,0x0000000002000080L});
     public static final BitSet FOLLOW_aiNodePriority_in_aiNodeOptions2736 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000000L,0x0000000002000000L,0x0000000002000080L});
-    public static final BitSet FOLLOW_217_in_subscribeTalkMaps2753 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000000L});
+    public static final BitSet FOLLOW_217_in_subscribeTalkMaps2753 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
     public static final BitSet FOLLOW_stringList_in_subscribeTalkMaps2754 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_153_in_behaviours2777 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000000L});
+    public static final BitSet FOLLOW_153_in_behaviours2777 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
     public static final BitSet FOLLOW_stringList_in_behaviours2779 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_199_in_aiNodePriority2802 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000000L});
+    public static final BitSet FOLLOW_199_in_aiNodePriority2802 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
     public static final BitSet FOLLOW_stringList_in_aiNodePriority2804 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_isName_in_unitInfo2828 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000000L,0x501FBF0801000000L,0x0000000002000000L});
     public static final BitSet FOLLOW_isFaction_in_unitInfo2835 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000000L,0x501FBF0801000000L,0x0000000002000000L});
@@ -14389,7 +14298,7 @@ public TreeAdaptor getTreeAdaptor() {
     public static final BitSet FOLLOW_237_in_removeSaferoom3164 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0001000100000000L,0x0000400000000000L});
     public static final BitSet FOLLOW_saferoomInfo_in_removeSaferoom3166 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000400000000000L});
     public static final BitSet FOLLOW_238_in_removeSaferoom3168 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_160_in_containsFaction3191 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000000L});
+    public static final BitSet FOLLOW_160_in_containsFaction3191 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
     public static final BitSet FOLLOW_stringList_in_containsFaction3193 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_containsFaction_in_saferoomInfo3217 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000000L,0x0001000100000000L});
     public static final BitSet FOLLOW_isName_in_saferoomInfo3224 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000000L,0x0001000100000000L});
@@ -14397,15 +14306,15 @@ public TreeAdaptor getTreeAdaptor() {
     public static final BitSet FOLLOW_isFaction_in_mapInfo3246 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000000L,0x2001202000000000L,0x000002000000C000L});
     public static final BitSet FOLLOW_itemSpawnChance_in_mapInfo3250 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000000L,0x2001202000000000L,0x000002000000C000L});
     public static final BitSet FOLLOW_sector_in_mapInfo3254 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000000L,0x2001202000000000L,0x000002000000C000L});
-    public static final BitSet FOLLOW_165_in_itemSpawnChance3271 = new BitSet(new long[]{0x0000004000000000L});
+    public static final BitSet FOLLOW_165_in_itemSpawnChance3271 = new BitSet(new long[]{0x0000008000000000L});
     public static final BitSet FOLLOW_INT_in_itemSpawnChance3273 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_189_in_itemSpawnChance3288 = new BitSet(new long[]{0x0000004000000000L});
+    public static final BitSet FOLLOW_189_in_itemSpawnChance3288 = new BitSet(new long[]{0x0000008000000000L});
     public static final BitSet FOLLOW_INT_in_itemSpawnChance3290 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_233_in_itemSpawnChance3305 = new BitSet(new long[]{0x0000004000000000L});
+    public static final BitSet FOLLOW_233_in_itemSpawnChance3305 = new BitSet(new long[]{0x0000008000000000L});
     public static final BitSet FOLLOW_INT_in_itemSpawnChance3307 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_206_in_itemSpawnChance3322 = new BitSet(new long[]{0x0000004000000000L});
+    public static final BitSet FOLLOW_206_in_itemSpawnChance3322 = new BitSet(new long[]{0x0000008000000000L});
     public static final BitSet FOLLOW_INT_in_itemSpawnChance3324 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_207_in_sector3347 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000000L});
+    public static final BitSet FOLLOW_207_in_sector3347 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
     public static final BitSet FOLLOW_stringLiteral_in_sector3349 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_184_in_loadMap3372 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000200000000000L});
     public static final BitSet FOLLOW_237_in_loadMap3374 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x2001202000000000L,0x000042000000C000L});
@@ -14420,19 +14329,19 @@ public TreeAdaptor getTreeAdaptor() {
     public static final BitSet FOLLOW_doorInfo_in_unlockDoor3434 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000400000000000L});
     public static final BitSet FOLLOW_238_in_unlockDoor3436 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_isName_in_doorInfo3459 = new BitSet(new long[]{0x0000000000000002L,0x0000000000000000L,0x0001000000000000L});
-    public static final BitSet FOLLOW_150_in_addTag3475 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000000L});
+    public static final BitSet FOLLOW_150_in_addTag3475 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
     public static final BitSet FOLLOW_stringLiteral_in_addTag3477 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_ADD_TAG_PREFIX_in_addTag3492 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000000L});
+    public static final BitSet FOLLOW_ADD_TAG_PREFIX_in_addTag3492 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
     public static final BitSet FOLLOW_stringLiteral_in_addTag3494 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_201_in_removeTag3517 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000000L});
+    public static final BitSet FOLLOW_201_in_removeTag3517 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
     public static final BitSet FOLLOW_stringLiteral_in_removeTag3519 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_REMOVE_TAG_PREFIX_in_removeTag3534 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000000L});
+    public static final BitSet FOLLOW_REMOVE_TAG_PREFIX_in_removeTag3534 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
     public static final BitSet FOLLOW_stringLiteral_in_removeTag3536 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_164_in_directorBias3559 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000200000000000L});
     public static final BitSet FOLLOW_237_in_directorBias3561 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000200000000000L});
     public static final BitSet FOLLOW_237_in_directorBias3563 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x501FBF0801000000L,0x0000400002000000L});
     public static final BitSet FOLLOW_unitInfo_in_directorBias3565 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000400000000000L});
-    public static final BitSet FOLLOW_238_in_directorBias3567 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000000L});
+    public static final BitSet FOLLOW_238_in_directorBias3567 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
     public static final BitSet FOLLOW_stringLiteral_in_directorBias3569 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000400000000000L});
     public static final BitSet FOLLOW_238_in_directorBias3571 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_157_in_changeAiNode3596 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000200000000000L});
@@ -14444,12 +14353,12 @@ public TreeAdaptor getTreeAdaptor() {
     public static final BitSet FOLLOW_aiNodeOptions_in_changeAiNode3608 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000400000000000L});
     public static final BitSet FOLLOW_238_in_changeAiNode3610 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000400000000000L});
     public static final BitSet FOLLOW_238_in_changeAiNode3612 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_209_in_showMessage3637 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000000L});
+    public static final BitSet FOLLOW_209_in_showMessage3637 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
     public static final BitSet FOLLOW_stringLiteral_in_showMessage3639 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_208_in_setTriggerRunning3662 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000000L});
+    public static final BitSet FOLLOW_208_in_setTriggerRunning3662 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
     public static final BitSet FOLLOW_stringLiteral_in_setTriggerRunning3664 = new BitSet(new long[]{0x0000000000002000L});
     public static final BitSet FOLLOW_BOOL_in_setTriggerRunning3666 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_211_in_spawnItem3695 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000000L});
+    public static final BitSet FOLLOW_211_in_spawnItem3695 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
     public static final BitSet FOLLOW_stringList_in_spawnItem3697 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000200000000000L});
     public static final BitSet FOLLOW_237_in_spawnItem3699 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x501FBF0801000000L,0x0000400002000000L});
     public static final BitSet FOLLOW_unitInfo_in_spawnItem3701 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000400000000000L});
@@ -14458,15 +14367,15 @@ public TreeAdaptor getTreeAdaptor() {
     public static final BitSet FOLLOW_237_in_spawnTalkNode3730 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x501FBF0801000000L,0x0000400002000000L});
     public static final BitSet FOLLOW_unitInfo_in_spawnTalkNode3732 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000400000000000L});
     public static final BitSet FOLLOW_238_in_spawnTalkNode3734 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_231_in_unlockTech3757 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000000L});
+    public static final BitSet FOLLOW_231_in_unlockTech3757 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
     public static final BitSet FOLLOW_stringList_in_unlockTech3759 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_156_in_changeStat3782 = new BitSet(new long[]{0x0000004000000000L,0x4000000000000000L});
-    public static final BitSet FOLLOW_126_in_changeStat3784 = new BitSet(new long[]{0x0000004000000000L});
+    public static final BitSet FOLLOW_156_in_changeStat3782 = new BitSet(new long[]{0x0000008000000000L,0x4000000000000000L});
+    public static final BitSet FOLLOW_126_in_changeStat3784 = new BitSet(new long[]{0x0000008000000000L});
     public static final BitSet FOLLOW_INT_in_changeStat3787 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_158_in_changeStat3805 = new BitSet(new long[]{0x0000004000000000L,0x4000000000000000L});
-    public static final BitSet FOLLOW_126_in_changeStat3807 = new BitSet(new long[]{0x0000004000000000L});
+    public static final BitSet FOLLOW_158_in_changeStat3805 = new BitSet(new long[]{0x0000008000000000L,0x4000000000000000L});
+    public static final BitSet FOLLOW_126_in_changeStat3807 = new BitSet(new long[]{0x0000008000000000L});
     public static final BitSet FOLLOW_INT_in_changeStat3810 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_144_in_sequenceDecl3836 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000000L});
+    public static final BitSet FOLLOW_144_in_sequenceDecl3836 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
     public static final BitSet FOLLOW_stringLiteral_in_sequenceDecl3838 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000000L,0x0000200000000000L});
     public static final BitSet FOLLOW_237_in_sequenceDecl3840 = new BitSet(new long[]{0x0000000000080000L,0x0000000000000000L,0x0800000008000540L,0x0000400000000000L});
     public static final BitSet FOLLOW_commandConditional_in_sequenceDecl3845 = new BitSet(new long[]{0x0000000000080000L,0x0000000000000000L,0x0800000008000500L,0x0000400000000000L});
@@ -14474,34 +14383,33 @@ public TreeAdaptor getTreeAdaptor() {
     public static final BitSet FOLLOW_238_in_sequenceDecl3858 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_134_in_commandConditional3890 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000020L});
     public static final BitSet FOLLOW_133_in_commandConditional3891 = new BitSet(new long[]{0x0000000000000000L,0x0800000000000000L});
-    public static final BitSet FOLLOW_123_in_commandConditional3893 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000000L});
+    public static final BitSet FOLLOW_123_in_commandConditional3893 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
     public static final BitSet FOLLOW_stringList_in_commandConditional3895 = new BitSet(new long[]{0x0000000000000000L,0x1000000000000000L});
     public static final BitSet FOLLOW_124_in_commandConditional3897 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_134_in_commandConditional3911 = new BitSet(new long[]{0x0000000000000000L,0x0100000000000000L});
-    public static final BitSet FOLLOW_120_in_commandConditional3912 = new BitSet(new long[]{0x0000000000000000L,0x0800000000000000L});
-    public static final BitSet FOLLOW_123_in_commandConditional3914 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000000L});
+    public static final BitSet FOLLOW_134_in_commandConditional3911 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000000L});
+    public static final BitSet FOLLOW_121_in_commandConditional3912 = new BitSet(new long[]{0x0000000000000000L,0x0800000000000000L});
+    public static final BitSet FOLLOW_123_in_commandConditional3914 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
     public static final BitSet FOLLOW_stringList_in_commandConditional3916 = new BitSet(new long[]{0x0000000000000000L,0x1000000000000000L});
     public static final BitSet FOLLOW_124_in_commandConditional3918 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_commandCall_in_commandCallList3949 = new BitSet(new long[]{0x0000000000000002L,0x2000000000000000L});
     public static final BitSet FOLLOW_125_in_commandCallList3952 = new BitSet(new long[]{0x0000000000080000L,0x0000000000000000L,0x0800000008000500L});
     public static final BitSet FOLLOW_commandCall_in_commandCallList3955 = new BitSet(new long[]{0x0000000000000002L,0x2000000000000000L});
-    public static final BitSet FOLLOW_155_in_commandCall3972 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000000L});
+    public static final BitSet FOLLOW_155_in_commandCall3972 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
     public static final BitSet FOLLOW_stringLiteral_in_commandCall3974 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_COMMAND_CALL_PREFIX_in_commandCall3989 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000000L});
+    public static final BitSet FOLLOW_COMMAND_CALL_PREFIX_in_commandCall3989 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
     public static final BitSet FOLLOW_stringLiteral_in_commandCall3991 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_atCall_in_commandCall4006 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_mapSpawns_in_commandCall4013 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_136_in_atCall4028 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000800L});
-    public static final BitSet FOLLOW_139_in_atCall4030 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000000L});
+    public static final BitSet FOLLOW_139_in_atCall4030 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
     public static final BitSet FOLLOW_stringList_in_atCall4032 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000001L});
-    public static final BitSet FOLLOW_128_in_atCall4034 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000000L});
+    public static final BitSet FOLLOW_128_in_atCall4034 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
     public static final BitSet FOLLOW_stringLiteral_in_atCall4038 = new BitSet(new long[]{0x0000000000000002L});
     public static final BitSet FOLLOW_136_in_atCall4056 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000008000L});
-    public static final BitSet FOLLOW_143_in_atCall4058 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000000L});
+    public static final BitSet FOLLOW_143_in_atCall4058 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
     public static final BitSet FOLLOW_stringList_in_atCall4060 = new BitSet(new long[]{0x0000000000000000L,0x0000000000000000L,0x0000000000000001L});
-    public static final BitSet FOLLOW_128_in_atCall4062 = new BitSet(new long[]{0x0000000000000000L,0x0200000000000000L});
+    public static final BitSet FOLLOW_128_in_atCall4062 = new BitSet(new long[]{0x0000000000000000L,0x0000000020000000L});
     public static final BitSet FOLLOW_stringLiteral_in_atCall4066 = new BitSet(new long[]{0x0000000000000002L});
-    public static final BitSet FOLLOW_121_in_stringLiteral4094 = new BitSet(new long[]{0xFFFFFFFFFFFFFFF0L,0xFFFFFFFFFFFFFFFFL,0xFFFFFFFFFFFFFFFFL,0x00007FFFFFFFFFFFL});
-    public static final BitSet FOLLOW_121_in_stringLiteral4100 = new BitSet(new long[]{0x0000000000000002L});
+    public static final BitSet FOLLOW_STRING_in_stringLiteral4094 = new BitSet(new long[]{0x0000000000000002L});
 
 }
