@@ -178,14 +178,16 @@ public abstract class MissionGiver implements Serializable{
 	protected String randomTech() {
 		Set<String> nextTechs = techTree.getNextTechs();
 		
-		int rand = new Random().nextInt(nextTechs.size());
-		int i = 0;
-		
-		for(String tech : nextTechs){
-			if(i == rand)
-				return tech;
+		if(nextTechs.size() > 0) {
+			int rand = new Random().nextInt(nextTechs.size());
+			int i = 0;
 			
-			i++;
+			for(String tech : nextTechs){
+				if(i == rand)
+					return tech;
+				
+				i++;
+			}
 		}
 		
 		// No techs to research
