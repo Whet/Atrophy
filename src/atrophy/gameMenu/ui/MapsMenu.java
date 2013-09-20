@@ -266,17 +266,17 @@ public class MapsMenu extends Menu {
 			else
 				buttons.get(i).setText("");
 			
-//			mapOwners.get(i).setText(sector.getOwner(i + (page * MAX_ITEMS)));
-//			
-//			if(sector.getOwner(i + (page * MAX_ITEMS)).equals(AiGenerator.BANDITS)){
-//				mapOwners.get(i).setColour(Color.red.darker());
-//			}
-//			else if(sector.getOwner(i + (page * MAX_ITEMS)).equals(AiGenerator.WHITE_VISTA)){
-//				mapOwners.get(i).setColour(Color.white);
-//			}
-//			else{
-//				mapOwners.get(i).setColour(Color.gray);
-//			}
+			mapOwners.get(i).setText(sector.getOwner(i + (page * MAX_ITEMS)));
+			
+			if(sector.getOwner(i + (page * MAX_ITEMS)).equals(AiGenerator.BANDITS)){
+				mapOwners.get(i).setColour(Color.red.darker());
+			}
+			else if(sector.getOwner(i + (page * MAX_ITEMS)).equals(AiGenerator.WHITE_VISTA)){
+				mapOwners.get(i).setColour(Color.white);
+			}
+			else{
+				mapOwners.get(i).setColour(Color.gray);
+			}
 		}
 	}
 	

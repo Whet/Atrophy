@@ -484,4 +484,15 @@ public class Missions{
 		return null;
 	}
 
+	public String getMapOwner(String mapName, String sectorName) {
+		
+		if(this.wvResearchAi.ownsMap(mapName, sectorName))
+			return AiGenerator.WHITE_VISTA;
+		
+		if(this.banditsResearchAi.ownsMap(mapName, sectorName))
+			return AiGenerator.BANDITS;
+		
+		return AiGenerator.LONER;
+	}
+
 }
