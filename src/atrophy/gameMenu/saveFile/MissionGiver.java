@@ -19,7 +19,7 @@ public abstract class MissionGiver implements Serializable{
 	private Mission mission;
 	private String name;
 	
-	private String faction;
+	protected String faction;
 	protected String tech;
 	
 	protected int scienceSupply, weaponSupply, engineeringSupply, medicalSupply;
@@ -218,7 +218,7 @@ public abstract class MissionGiver implements Serializable{
 		 */
 		@Override
 		public void computeMission() {
-			if(this.tech.isEmpty() || techTree.isResearched(this.tech) )
+			if(this.tech.isEmpty() || techTree.isResearched(this.tech, this.faction) )
 				this.tech = randomTech();
 			
 			shoppingListMission(squad, missions, stashManager, techTree.getRequirements(this.tech), this.tech);
@@ -249,7 +249,7 @@ public abstract class MissionGiver implements Serializable{
 		 */
 		@Override
 		public void computeMission() {
-			if(this.tech.isEmpty() || techTree.isResearched(this.tech) )
+			if(this.tech.isEmpty() || techTree.isResearched(this.tech, this.faction) )
 				this.tech = randomTech();
 			
 			shoppingListMission(squad, missions, stashManager, techTree.getRequirements(this.tech), this.tech);
@@ -280,7 +280,7 @@ public abstract class MissionGiver implements Serializable{
 		 */
 		@Override
 		public void computeMission() {
-			if(this.tech.isEmpty() || techTree.isResearched(this.tech) )
+			if(this.tech.isEmpty() || techTree.isResearched(this.tech, this.faction) )
 				this.tech = randomTech();
 			
 			shoppingListMission(squad, missions, stashManager, techTree.getRequirements(this.tech), this.tech);
@@ -311,7 +311,7 @@ public abstract class MissionGiver implements Serializable{
 		 */
 		@Override
 		public void computeMission() {
-			if(this.tech.isEmpty() || techTree.isResearched(this.tech) )
+			if(this.tech.isEmpty() || techTree.isResearched(this.tech, this.faction) )
 				this.tech = randomTech();
 			
 			shoppingListMission(squad, missions, stashManager, techTree.getRequirements(this.tech), this.tech);
@@ -342,7 +342,7 @@ public abstract class MissionGiver implements Serializable{
 		 */
 		@Override
 		public void computeMission() {
-			if(this.tech.isEmpty() || techTree.isResearched(this.tech) )
+			if(this.tech.isEmpty() || techTree.isResearched(this.tech, this.faction) )
 				this.tech = randomTech();
 			
 			shoppingListMission(squad, missions, stashManager, techTree.getRequirements(this.tech), this.tech);
@@ -373,7 +373,7 @@ public abstract class MissionGiver implements Serializable{
 		 */
 		@Override
 		public void computeMission() {
-			if(this.tech.isEmpty() || techTree.isResearched(this.tech) )
+			if(this.tech.isEmpty() || techTree.isResearched(this.tech, this.faction) )
 				this.tech = randomTech();
 			
 			shoppingListMission(squad, missions, stashManager, techTree.getRequirements(this.tech), this.tech);

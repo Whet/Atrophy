@@ -114,7 +114,7 @@ public class SquadMenu extends Menu{
 		this.addDisplayItem(buySquaddie);
 		this.addMouseActionItem(buySquaddie);
 		
-		if(techTree.isResearched(TechTree.MULE)){
+		if(techTree.isResearched(TechTree.MULE, AiGenerator.LONER)){
 		
 			TextButton buyMule = new TextButton(Color.yellow, Color.red) {
 				{

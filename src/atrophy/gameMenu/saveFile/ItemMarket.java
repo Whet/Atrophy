@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.items.ArmourPlates1;
 import atrophy.combat.items.ArmourPlates2;
 import atrophy.combat.items.EngineeringSupply;
@@ -41,12 +42,19 @@ public class ItemMarket {
 	private Map<String, ItemData> itemData = new HashMap<String, ItemData>();
 	private Set<String> weaponsInMarket;
 	private Set<String> itemsInMarket;
+	private Set<String> banditItems;
+	private Set<String> banditWeapons;
+	private Set<String> wvItems;
+	private Set<String> wvWeapons;
 	
 	public ItemMarket(){
 		
 		this.weaponsInMarket = new HashSet<String>();
 		this.itemsInMarket = new HashSet<String>();
-		
+		this.banditItems = new HashSet<String>();
+		this.banditWeapons = new HashSet<String>();
+		this.wvItems = new HashSet<String>();
+		this.wvWeapons = new HashSet<String>();
 	}
 	
 	public void lazyLoad(TechTree techTree) {
@@ -88,11 +96,23 @@ public class ItemMarket {
 		while(itemIt.hasNext()){
 			String next = itemIt.next();
 			
-			if(itemData.get(next).isUnlocked())
+			if(itemData.get(next).isUnlocked(AiGenerator.LONER))
 				if(itemData.get(next).isWeapon)
 					weaponsInMarket.add(next);
 				else
 					itemsInMarket.add(next);
+			
+			if(itemData.get(next).isUnlocked(AiGenerator.BANDITS))
+				if(itemData.get(next).isWeapon)
+					banditWeapons.add(next);
+				else
+					banditItems.add(next);
+			
+			if(itemData.get(next).isUnlocked(AiGenerator.WHITE_VISTA))
+				if(itemData.get(next).isWeapon)
+					wvWeapons.add(next);
+				else
+					wvItems.add(next);
 				
 		}
 	}
@@ -130,8 +150,8 @@ public class ItemMarket {
 			this.isWeapon = isWeapon;
 		}
 		
-		public boolean isUnlocked(){
-			return techTree.isResearched(requiredTechnology);
+		public boolean isUnlocked(String faction){
+			return techTree.isResearched(requiredTechnology, faction);
 		}
 	}
 
@@ -139,7 +159,6 @@ public class ItemMarket {
 	public ArrayList<String> getLonerAllowedItems() {
 		return new ArrayList<>(this.itemsInMarket);
 	}
-
 
 	public ArrayList<String> getLonerAllowedWeapons() {
 		return new ArrayList<>(this.weaponsInMarket);

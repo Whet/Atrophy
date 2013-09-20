@@ -181,7 +181,7 @@ public class Missions{
 			this.missions = missions;
 			this.squad = squad;
 			this.stashManager = stashManager;
-			this.timeToLive = 5;
+			this.timeToLive = 10;
 			this.faction = faction;
 		}
 		
@@ -296,7 +296,7 @@ public class Missions{
 					  + "@nReward per Supply: " + rewardPerItem;
 			
 			if(requirements[0] == 0 && requirements[1] == 0 && requirements[2] == 0 && requirements[3] == 0) {
-				techTree.research(tech);
+				techTree.research(tech, this.faction);
 				
 				if(missions.squad.getFactionRelation(faction) >= 0)
 					missions.squad.incrementFactionRelation(this.faction, 0.1);
@@ -328,7 +328,7 @@ public class Missions{
 		
 		@Override
 		public boolean isExpired() {
-			return super.isExpired() || techTree.isResearched(this.tech);
+			return super.isExpired() || techTree.isResearched(this.tech, this.faction);
 		}
 		
 	}

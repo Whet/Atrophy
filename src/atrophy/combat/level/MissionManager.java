@@ -287,7 +287,7 @@ public class MissionManager {
 	}
 
 	public void unlockTech(String tech) {
-		missions.getSquad().getTechTree().research(tech);
+		missions.getSquad().getTechTree().research(tech, AiGenerator.LONER);
 	}
 
 	public void changeStability(int stabilityMod) {
