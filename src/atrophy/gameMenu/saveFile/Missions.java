@@ -239,6 +239,7 @@ public class Missions{
 		private int[] requirements;
 		private TechTree techTree;
 		private String tech;
+		private Object rewardPerItem;
 		
 		public ShoppingListMission(Missions missions, Squad squad, StashManager stashManager, TechTree techTree, int[] requirements, Object rewardPerItem, String tech, String faction) {
 			super(missions, stashManager, faction,
@@ -249,6 +250,7 @@ public class Missions{
 			this.requirements = requirements;
 			this.techTree = techTree;
 			this.tech = tech;
+			this.rewardPerItem = rewardPerItem;
 		}
 		
 		@Override
@@ -289,6 +291,9 @@ public class Missions{
 				else
 					break;
 			}
+			
+			this.description = "Obj: To unlock the mysteries of " + tech + "@nThe following are required:@nSci. "+ requirements[0] + " Eng. " + requirements[1] + " Wep. " + requirements[2] + " Med. " + requirements[3]
+					  + "@nReward per Supply: " + rewardPerItem;
 			
 			if(requirements[0] == 0 && requirements[1] == 0 && requirements[2] == 0 && requirements[3] == 0) {
 				techTree.research(tech);

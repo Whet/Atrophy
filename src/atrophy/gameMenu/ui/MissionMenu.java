@@ -92,6 +92,8 @@ public class MissionMenu extends Menu {
 					missions.updateMissions();
 				}
 				
+				updateText();
+				
 				return true;
 			}
 			
