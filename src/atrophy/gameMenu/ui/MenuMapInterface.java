@@ -34,7 +34,7 @@ import atrophy.hardPanes.CombatHardPane;
 
 public class MenuMapInterface {
 	
-	private static final int DAEMON_SPAWN_CHANCE = 2;
+//	private static final int DAEMON_SPAWN_CHANCE = 2;
 
 	public static void loadLevel(final File chosenLevel, final String owner, final Squad squad, final int engineeringChance, final int medicalChance, final int weaponChance, final int scienceChance, final Missions missions, final ItemMarket itemMarket, final TechTree techTree, final StashManager stashManager, final String sector) throws IOException, RecognitionException {
 
@@ -75,12 +75,12 @@ public class MenuMapInterface {
 
 	private static void setSpawns(String owner, LevelManager levelManager, Squad squad, ItemMarket itemMarket, List<AiGeneratorInterface.GenerateCommand> generationCommands, Missions missions, String sector) {
 		
-		if(new Random().nextInt(10) < DAEMON_SPAWN_CHANCE && levelManager.getCurrentLevel().allowedSpawn(AiGenerator.DAEMON)) {
-			// Spawn daemon only map
-			generationCommands.add(new AiGeneratorInterface.DaemonRandomSpawn(AiGeneratorInterface.DaemonRandomSpawn.AXE));
-			generationCommands.add(new GenerateCommand(squad.getSquad(), AiGenerator.PLAYER));
-			return;
-		}
+//		if(new Random().nextInt(10) < DAEMON_SPAWN_CHANCE && levelManager.getCurrentLevel().allowedSpawn(AiGenerator.DAEMON)) {
+//			// Spawn daemon only map
+//			generationCommands.add(new AiGeneratorInterface.DaemonRandomSpawn(AiGeneratorInterface.DaemonRandomSpawn.AXE));
+//			generationCommands.add(new GenerateCommand(squad.getSquad(), AiGenerator.PLAYER));
+//			return;
+//		}
 		
 		int banditTeamSpawn = levelManager.getBlocks().length / 4 + 1;
 		
