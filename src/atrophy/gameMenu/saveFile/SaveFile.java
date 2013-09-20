@@ -26,7 +26,6 @@ public class SaveFile implements Serializable{
 	public ArrayList<Sector> sectors;
 	public ArrayList<String> stash;
 	public ArrayList<MissionGiver> quests;
-	public ArrayList<String> economyEffects;
 	public Integer advance;
 	public Double whiteVistaRelation, banditRelation;
 	
@@ -34,16 +33,19 @@ public class SaveFile implements Serializable{
 	public Set<String> spawnCodes;
 	public String saveURL;
 	
+	public FactionMissionPlanner wvResearchAi, banditsResearchAi;
+	
 	public SaveFile(Squad squad, Missions missions, ArrayList<Sector> sectors, ArrayList<String> stash, TechTree techTree, Set<String> spawnCodes) {
 		this.advance = squad.getAdvance();
 		this.squad = squad;
 		this.sectors = sectors;
 		this.stash = stash;
-		this.economyEffects = missions.getEconomyEffects();
 		this.techTree = techTree;
 		this.spawnCodes = spawnCodes;
 		this.whiteVistaRelation = 1.0;
 		this.banditRelation = -1.0;
+		this.wvResearchAi = missions.getResearchAi(AiGenerator.WHITE_VISTA);
+		this.banditsResearchAi = missions.getResearchAi(AiGenerator.BANDITS);
 	}
 
 	public static void saveGame(File file, Squad squad, Missions missions, ArrayList<Sector> sectors, ArrayList<String> stash, TechTree techTree, Set<String> spawnCodes){
@@ -103,7 +105,7 @@ public class SaveFile implements Serializable{
 			mapWar.setSectors(save.sectors);
 			itemMarket.lazyLoad(save.techTree);
 			shopManager.randomItems();
-			missions.setEconomyEffects(save.economyEffects);
+			missions.setResearchAi(save.banditsResearchAi, save.wvResearchAi);
 			windowManager.updateWindows();
 			missions.setMemCodes(save.spawnCodes);
 			

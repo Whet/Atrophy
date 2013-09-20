@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 
 import atrophy.combat.ai.Ai;
+import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.items.EngineeringSupply;
 import atrophy.combat.items.MedicalSupply;
@@ -23,20 +24,21 @@ public class Missions{
 	private Squaddie interactingMember;
 	private ArrayList<Mission> missions;
 	private ArrayList<MissionGiver> missionGivers;
-	private ArrayList<String> economyEffects;
 	private Set<String> memCodes;
 	private Set<String> characterCodes;
 	private Map<String, String> tempCharacterCodes;
 	private Squad squad;
+	private FactionMissionPlanner wvResearchAi, banditsResearchAi;
 
 	public Missions(){
 		missions = new ArrayList<>();
 		missionGivers = new ArrayList<MissionGiver>();
-		economyEffects = new ArrayList<String>();
 		memCodes = new HashSet<>();
 		characterCodes = new HashSet<>();
 		tempCharacterCodes = new HashMap<>();
 		memCodes.add(DEFAULT_MEM_CODE);
+		this.wvResearchAi = new FactionMissionPlanner(AiGenerator.WHITE_VISTA);
+		this.banditsResearchAi = new FactionMissionPlanner(AiGenerator.BANDITS);
 	}
 	
 	public void lazyLoad(Squad squad, StashManager stashManager, ItemMarket itemMarket, TechTree techTree) {
@@ -126,14 +128,6 @@ public class Missions{
 	public void setMissionGivers(ArrayList<MissionGiver> missionGivers) {
 		this.missionGivers = missionGivers;
 		this.updateMissions();
-	}
-	
-	public ArrayList<String> getEconomyEffects() {
-		return economyEffects;
-	}
-
-	public void setEconomyEffects(ArrayList<String> economyEffects) {
-		this.economyEffects = economyEffects;
 	}
 	
 	public boolean addMemCode(String memCode){
@@ -471,6 +465,23 @@ public class Missions{
 		
 		this.tempCharacterCodes.clear();
 		
+	}
+
+	public void setResearchAi(FactionMissionPlanner banditsResearchAi, FactionMissionPlanner wvResearchAi) {
+		this.wvResearchAi = wvResearchAi;
+		this.banditsResearchAi = banditsResearchAi;
+	}
+
+	public FactionMissionPlanner getResearchAi(String faction) {
+		
+		switch(faction) {
+			case AiGenerator.WHITE_VISTA:
+				return this.wvResearchAi;
+			case AiGenerator.BANDITS:
+				return this.banditsResearchAi;
+		}
+		
+		return null;
 	}
 
 }
