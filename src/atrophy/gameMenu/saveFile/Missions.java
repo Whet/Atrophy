@@ -492,7 +492,7 @@ public class Missions{
 		if(this.banditsResearchAi.ownsMap(mapName, sectorName))
 			return AiGenerator.BANDITS;
 		
-		return AiGenerator.LONER;
+		return "Unclaimed";
 	}
 
 }

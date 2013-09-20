@@ -115,14 +115,20 @@ public class MapManager {
 								
 								String propertyName = mapProperties.next();
 								
-								JSONArray property = map.getJSONArray(propertyName);
-								
 								if(propertyName.equals("req")) {
+									
+									JSONArray property = map.getJSONArray(propertyName);
 									
 									for(int i = 0; i < property.length(); i++) {
 										String requirement = property.getString(i);
 										mapObject.requirements.add(requirement);
 									}
+								}
+								else if(propertyName.equals("cap")) {
+									
+									boolean property = map.getBoolean(propertyName);
+									
+									mapObject.cap = property;
 								}
 							}
 						}
@@ -324,11 +330,14 @@ public class MapManager {
 	}
 	
 	private static class Map {
+		
+		public boolean cap;
 		public String name;
 		public List<String> requirements;
 		
 		public Map(String name) {
 			this.name = name;
+			this.cap = false;
 			this.requirements = new ArrayList<>();
 		}
 
@@ -345,6 +354,10 @@ public class MapManager {
 			
 			return allCodesUnlocked;
 			
+		}
+		
+		public boolean canBeCaptured() {
+			return cap;
 		}
 	}
 
