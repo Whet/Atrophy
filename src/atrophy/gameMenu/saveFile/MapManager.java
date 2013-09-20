@@ -1,5 +1,6 @@
 package atrophy.gameMenu.saveFile;
 
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.Serializable;
@@ -7,11 +8,14 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.json.JSONTokener;
+
 import watoydoEngine.io.ReadWriter;
-import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.level.LevelIO;
 
 public class MapManager {
@@ -37,37 +41,102 @@ public class MapManager {
 	}
 	
 	public void loadMaps() throws FileNotFoundException, IOException{
-		LevelIO.createLevelFolders();
 		
-		for(int j = 0; j < sectors.size(); j++){
-			String maps = ReadWriter.readFromFile(ReadWriter.getRootFile("Sectors.txt"), j);
-			int arraySize = ReadWriter.getArraySize(maps);
-			List<String> mapNames = new ArrayList<String>();
-			List<List<String>> mapCodes = new ArrayList<List<String>>();
-			List<String> mapMemCodes;
+		try {
+			String fileLocation = ReadWriter.HOME_LOCATION + LevelIO.SUB_FOLDER + "/Sectors.json";
+			JSONTokener tokener = new JSONTokener(new FileInputStream(fileLocation));
+			JSONObject root = new JSONObject(tokener);
 			
-			for(int i = 0; i < arraySize; i++){
+			Iterator<String> sectors = root.keys();
+
+			while(sectors.hasNext()) {
+			
+				String sectorName = (String) sectors.next();
 				
-				mapMemCodes = new ArrayList<>();
-				mapCodes.add(mapMemCodes);
+				JSONObject sector = root.getJSONObject(sectorName);
 				
-				String[] mapNameCode = ReadWriter.readFromArray(maps, i).split("#");
+				// Create sector
+				Sector sectorObject = new Sector(missions, sectorName, 0, 0, 0, 0);
+				this.sectors.add(sectorObject);
 				
-				if(mapNameCode.length <= 1)
-					continue;
+				Iterator<String> sectorChildren = sector.keys();
 				
-				mapNames.add(mapNameCode[0]);
+				while(sectorChildren.hasNext()) {
 				
-				for(int k = 1; k < mapNameCode.length; k++) {
-					mapMemCodes.add(mapNameCode[k]);
+					String sectorChildName = sectorChildren.next();
+					
+					JSONObject sectorChild = sector.getJSONObject(sectorChildName);
+					
+					if(sectorChildName.equals("spawnChances")) {
+						
+						Iterator<String> spawnInfo = sectorChild.keys();
+						
+						while(spawnInfo.hasNext()) {
+							
+							String spawnChanceTag = spawnInfo.next();
+							
+							int spawnChance = sectorChild.getInt(spawnChanceTag);
+							
+							switch(spawnChanceTag) {
+								case "eChance":
+									sectorObject.engineeringChance = spawnChance;
+								break;
+								case "wChance":
+									sectorObject.weaponChance = spawnChance;
+								break;
+								case "sChance":
+									sectorObject.scienceChance = spawnChance;
+								break;
+								case "mChance":
+									sectorObject.medicalChance = spawnChance;
+								break;
+							}
+							
+						}
+						
+					}
+					else if(sectorChildName.equals("maps")) {
+						
+						Iterator<String> mapNames = sectorChild.keys();
+						
+						while(mapNames.hasNext()) {
+							
+							String mapName = mapNames.next();
+							
+							JSONObject map = sectorChild.getJSONObject(mapName);
+							
+							sectorObject.addMap(mapName);
+							
+							Map mapObject = sectorObject.getMapObject(mapName);
+							
+							Iterator<String> mapProperties = map.keys();
+							
+							while(mapProperties.hasNext()) {
+								
+								String propertyName = mapProperties.next();
+								
+								JSONArray property = map.getJSONArray(propertyName);
+								
+								if(propertyName.equals("req")) {
+									
+									for(int i = 0; i < property.length(); i++) {
+										String requirement = property.getString(i);
+										mapObject.requirements.add(requirement);
+									}
+								}
+							}
+						}
+					}
 				}
-				
-				if(!ReadWriter.getRootFile("Maps/" + mapNames.get(mapNames.size() - 1)).exists())
-					continue;
 			}
-			
-			sectors.get(j).setMaps(mapNames, mapCodes);
 		}
+		catch(JSONException e) {
+			e.printStackTrace();
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+		
+		
 		
 		Iterator<Sector> sectorIt = sectors.iterator();
 		
@@ -75,7 +144,7 @@ public class MapManager {
 			
 			Sector next = sectorIt.next();
 			
-			if(next.getMaps().length == 0)
+			if(next.getMaps().size() == 0)
 				sectorIt.remove();
 			
 		}
@@ -130,7 +199,6 @@ public class MapManager {
 	
 	public void updateSectors(){
 		for(int i = 0 ; i < this.sectors.size(); i++){
-			sectors.get(i).updateOwnership();
 			sectors.get(i).updateUnlockedMaps(missions);
 		}
 	}
@@ -139,9 +207,7 @@ public class MapManager {
 		
 		private static final long serialVersionUID = -995475499404526582L;
 		private String name;
-		private String[] maps;
-		private List<List<String>> mapMemCodes;
-		private String[] owner;
+		private List<Map> maps;
 		private int engineeringChance,medicalChance,weaponChance,scienceChance;
 		private Missions missions;
 
@@ -155,14 +221,37 @@ public class MapManager {
 			this.scienceChance = s;
 			this.unlockedMaps = new HashSet<>();
 			this.missions = missions;
+			this.maps = new ArrayList<>();
 		}
 		
+		public Map getMapObject(String name) {
+
+			for(Map map: maps) {
+				if(map.name.equals(name))
+					return map;
+			}
+			
+			return null;
+			
+		}
+
+		public void addMap(String name) {
+			this.maps.add(new Map(name));
+		}
+
 		public String getName(){
 			return this.name;
 		}
 
-		public String[] getMaps() {
-			return maps;
+		public List<String> getMaps() {
+			
+			List<String> mapNames = new ArrayList<>();
+			
+			for(Map map: this.maps) {
+				mapNames.add(map.name);
+			}
+			
+			return mapNames;
 		}
 		
 		public String getMap(int mapIndex){
@@ -180,73 +269,20 @@ public class MapManager {
 		}
 
 		public void updateUnlockedMaps(Missions missions) {
-			boolean allCodesUnlocked;
+			unlockedMaps.clear();
 			
-			for(int i = 0; i < maps.length; i++) {
-				
-				allCodesUnlocked = true;
-				
-				for(String mapCode : mapMemCodes.get(i)) {
-					if((!mapCode.startsWith("!") && !missions.hasMemCode(mapCode)) ||
-					   (mapCode.startsWith("!") && missions.hasMemCode(mapCode.substring(1)))) {
-						allCodesUnlocked = false;
-						break;
-					}
-				}
-				
-				if(allCodesUnlocked)
-					unlockedMaps.add(this.maps[i]);
+			for(Map map: this.maps) {
+				if(map.isUnlocked(missions))
+					this.unlockedMaps.add(map.name);
 			}
 		}
 		
 		public String getOwner(int mapIndex){
 			
-			int i = 0;
+			if(this.getMap(mapIndex).isEmpty())
+				return "";
 			
-			for(@SuppressWarnings("unused") String mapName : unlockedMaps) {
-				if(i == mapIndex)
-					return this.owner[i];
-					
-				i++;
-			}
-			
-			return "";
-		}
-
-		public void setMaps(List<String> mapNames, List<List<String>> mapCodes) {
-			
-			this.maps = new String[mapNames.size()];
-			
-			for(int i = 0; i < mapNames.size(); i++){
-				this.maps[i] = mapNames.get(i);
-			}
-			
-			this.mapMemCodes = mapCodes;
-			this.owner = new String[mapNames.size()];
-			
-			updateOwnership();
-		}
-
-		public void updateOwnership() {
-			for(int i = 0; i < this.owner.length; i++) {
-				this.owner[i] = this.missions.getMapOwner(this.maps[i], this.name);
-			}
-		}
-
-		private String randomFaction(String currentFaction) {
-			switch(new Random().nextInt(5)){
-				case 0:
-					return AiGenerator.LONER;
-				case 1:
-					return AiGenerator.WHITE_VISTA;
-				case 2:
-					return AiGenerator.BANDITS;
-			}
-			
-			if(currentFaction == null)
-				return AiGenerator.LONER;
-			
-			return currentFaction;
+			return this.missions.getMapOwner(this.getMap(mapIndex), this.name);
 		}
 
 		public int getEngineeringChance() {
@@ -285,6 +321,31 @@ public class MapManager {
 			return this.unlockedMaps.size();
 		}
 
+	}
+	
+	private static class Map {
+		public String name;
+		public List<String> requirements;
+		
+		public Map(String name) {
+			this.name = name;
+			this.requirements = new ArrayList<>();
+		}
+
+		public boolean isUnlocked(Missions missions) {
+			boolean allCodesUnlocked = true;
+				
+			for(String mapCode : this.requirements) {
+				if((!mapCode.startsWith("!") && !missions.hasMemCode(mapCode)) ||
+				   (mapCode.startsWith("!") && missions.hasMemCode(mapCode.substring(1)))) {
+					allCodesUnlocked = false;
+					break;
+				}
+			}
+			
+			return allCodesUnlocked;
+			
+		}
 	}
 
 	public void setSectors(ArrayList<Sector> sectors) {
