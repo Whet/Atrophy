@@ -57,6 +57,7 @@ public class Missions{
 	}
 
 	public void updateMissions(){
+		this.missions.clear();
 		for(Mission mission: wvResearchAi.getMissions()) {
 			this.missions.add(mission);
 		}
