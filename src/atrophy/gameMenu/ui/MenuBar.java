@@ -1,6 +1,3 @@
-/*
- * 
- */
 package atrophy.gameMenu.ui;
 
 import java.awt.Color;
@@ -12,10 +9,13 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
 import watoydoEngine.designObjects.display.Crowd;
+import watoydoEngine.designObjects.display.Text;
 import watoydoEngine.designObjects.display.TextButton;
 import watoydoEngine.io.ReadWriter;
 import watoydoEngine.sounds.SoundBoard;
 import watoydoEngine.workings.displayActivity.ActivePane;
+import atrophy.combat.ai.AiGenerator;
+import atrophy.gameMenu.saveFile.FactionMissionPlanner;
 import atrophy.gameMenu.saveFile.ItemMarket;
 import atrophy.gameMenu.saveFile.MapManager;
 import atrophy.gameMenu.saveFile.Missions;
@@ -23,19 +23,8 @@ import atrophy.gameMenu.saveFile.SaveFile;
 import atrophy.gameMenu.saveFile.Squad;
 import atrophy.gameMenu.saveFile.TechTree;
 
-/**
- * The Class MenuBar.
- */
 public class MenuBar extends Crowd{
 	
-	/**
-	 * Instantiates a new menu bar.
-	 * @param windowManager 
-	 * @param mapWar 
-	 * @param missions 
-	 * @param shopManager 
-	 * @param stashManager 
-	 */
 	public MenuBar() {
 		super(true);
 		
@@ -46,9 +35,6 @@ public class MenuBar extends Crowd{
 		addTextButtons(windowManager, mapWar, missions, squad, shopManager, stashManager, techTree, itemMarket);
 	}
 	
-	/**
-	 * Adds the text buttons.
-	 */
 	private void addTextButtons(final WindowManager windowManager, final MapManager mapWar, final Missions missions, final Squad squad, final ShopManager shopManager, final StashManager stashManager, final TechTree techTree, final ItemMarket itemMarket) {
 		
 		TextButton mapSelection = new TextButton(Color.yellow, Color.red) {
@@ -145,34 +131,22 @@ public class MenuBar extends Crowd{
 		this.addMouseActionItem(saveGame);
 		this.addDisplayItem(saveGame);
 		
-//		TextButton loadGame = new TextButton("Load", Color.yellow, Color.red) {
-//			
-//			{
-//				this.setText("Load");
-//				this.setVisible(true);
-//			}
-//			
-//			@Override
-//			public boolean mU(Point mousePosition, MouseEvent e) {
-//				
-//				ActivePane.getInstance().setVisible(false);
-//				
-//				JFileChooser chooser = new JFileChooser(new File(System.getProperty("user.home") + "/Atrophy"));
-//				int returnValue = chooser.showOpenDialog(new JFrame());
-//				
-//				if(returnValue == JFileChooser.APPROVE_OPTION){
-//					SaveFile.loadGame(chooser.getSelectedFile(), stashManager, mapWar, shopManager, missions, windowManager);
-//				}
-//				
-//				ActivePane.getInstance().setVisible(true);
-//				windowManager.updateWindows();
-//				return true;
-//			}
-//		};
-//		loadGame.setLocation(this.getLocation()[0] + 4, this.getLocation()[1] + 100);
-//		this.addMouseActionItem(loadGame);
-//		this.addDisplayItem(loadGame);
+		Text newsTicker = new Text();
+		this.addDisplayItem(newsTicker);
 		
+		newsTicker.setLocation(this.getLocation()[0] + 4, this.getLocation()[1] + 115);
+		
+		newsTicker.setColour(Color.orange);
+		
+		StringBuffer sb = new StringBuffer();
+		
+		sb.append("NEWS@nWHITE VISTA@n");
+
+		sb.append(missions.getResearchAi(AiGenerator.WHITE_VISTA).getNews() + "@n@nBANDITS@n");
+		
+		sb.append(missions.getResearchAi(AiGenerator.BANDITS).getNews());
+		
+		newsTicker.setText(sb.toString());
 		
 	}
 

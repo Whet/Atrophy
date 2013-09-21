@@ -28,6 +28,8 @@ public class FactionMissionPlanner {
 	
 	private String targetTech;
 	
+	private StringBuffer news;
+	
 	public FactionMissionPlanner(String faction) {
 		this.faction = faction;
 		this.mapsOwned = new HashMap<>();
@@ -36,6 +38,7 @@ public class FactionMissionPlanner {
 		this.scienceSupply = 0;
 		this.medicalSupply = 0;
 		this.activeMissions = new ArrayList<>();
+		this.news = new StringBuffer();
 	}
 
 	public boolean ownsMap(String mapName, String sectorName) {
@@ -47,6 +50,7 @@ public class FactionMissionPlanner {
 	}
 	
 	public void updatePlanner(MapManager mapManager, TechTree techTree, Missions missions, Squad squad, StashManager stashManager) {
+		news.delete(0, news.length());
 		addResources(mapManager);
 		updateMissions();
 		spendResources(techTree, missions, squad, stashManager);
@@ -98,9 +102,15 @@ public class FactionMissionPlanner {
 	}
 	
 	private void spendResources(TechTree techTree, Missions missions, Squad squad, StashManager stashManager) {
+		
+		System.out.println(faction + "   e:" + engineeringSupply + " w:" + weaponSupply + " m:" + medicalSupply + " s:" + scienceSupply);
+		
 		List<String> nextTechs = new ArrayList<>(techTree.getNextTechs());
 		
 		Collections.shuffle(nextTechs);
+		
+		if(targetTech != null && canBuyTech(techTree.getRequirements(targetTech)))
+			this.research(techTree, targetTech);
 		
 		int[] maxRequirement = new int[]{0,0,0,0};
 		
@@ -109,25 +119,35 @@ public class FactionMissionPlanner {
 			int[] requirements = techTree.getRequirements(tech);
 		
 			
-			if(canBuyTech(requirements))
-				techTree.research(tech, this.faction);
+			if(canBuyTech(requirements)) {
+				this.research(techTree, tech);
+			}
 			else if(requirementDistance(requirements) > requirementDistance(maxRequirement)) {
 				maxRequirement = requirements;
+				targetTech = tech;
 			}
 				
 		}
 		
-		if(this.activeMissions.isEmpty())
+		if(this.activeMissions.isEmpty() && targetTech != null)
 			this.activeMissions.add(new Missions.ShoppingListMission(missions, squad, stashManager, maxRequirement, 200, faction));
 		
 	}
 	
+	private void research(TechTree techTree, String tech) {
+		techTree.research(tech, this.faction);
+		news.append("Researched " + tech + "@n");
+		
+		if(tech.equals(targetTech))
+			targetTech = null;
+	}
+
 	private int requirementDistance(int[] requirements) {
 		return (requirements[0] - this.scienceSupply) +  (requirements[1] - this.engineeringSupply) + (requirements[2] - this.weaponSupply) + (requirements[3] - this.medicalSupply);
 	}
 
 	private boolean canBuyTech(int[] requirements) {
-		return this.scienceSupply > requirements[0] && this.engineeringSupply > requirements[1] && this.weaponSupply > requirements[2] && this.medicalSupply > requirements[3];
+		return this.scienceSupply >= requirements[0] && this.engineeringSupply >= requirements[1] && this.weaponSupply >= requirements[2] && this.medicalSupply >= requirements[3];
 	}
 
 	public List<Mission> getMissions() {
@@ -149,6 +169,10 @@ public class FactionMissionPlanner {
 				this.medicalSupply += quantity;
 			break;
 		}
+	}
+
+	public String getNews() {
+		return news.toString();
 	}
 	
 }

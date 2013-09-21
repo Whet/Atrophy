@@ -220,6 +220,7 @@ public class Missions{
 					stashManager.getItems().remove(EngineeringSupply.NAME);
 					giveReward();
 					requirements[1]--;
+					missions.getResearchAi(faction).give(EngineeringSupply.NAME, 1);
 				}
 				else
 					break;
@@ -229,6 +230,7 @@ public class Missions{
 					stashManager.getItems().remove(WeaponSupply.NAME);
 					giveReward();
 					requirements[2]--;
+					missions.getResearchAi(faction).give(WeaponSupply.NAME, 1);
 				}
 				else
 					break;
@@ -238,6 +240,7 @@ public class Missions{
 					stashManager.getItems().remove(MedicalSupply.NAME);
 					giveReward();
 					requirements[3]--;
+					missions.getResearchAi(faction).give(MedicalSupply.NAME, 1);
 				}
 				else
 					break;
