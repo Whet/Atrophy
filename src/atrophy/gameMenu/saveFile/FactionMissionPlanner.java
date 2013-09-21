@@ -62,7 +62,7 @@ public class FactionMissionPlanner {
 			Mission next = iterator.next();
 			next.tickTimeToLive();
 			
-			if(next.timeToLive <= 0)
+			if(next.isExpired())
 				iterator.remove();
 		}
 	}
@@ -103,16 +103,13 @@ public class FactionMissionPlanner {
 	
 	private void spendResources(TechTree techTree, Missions missions, Squad squad, StashManager stashManager) {
 		
-		System.out.println(faction + "   e:" + engineeringSupply + " w:" + weaponSupply + " m:" + medicalSupply + " s:" + scienceSupply);
-		
-		List<String> nextTechs = new ArrayList<>(techTree.getNextTechs());
-		
-		Collections.shuffle(nextTechs);
-		
 		if(targetTech != null && canBuyTech(techTree.getRequirements(targetTech)))
 			this.research(techTree, targetTech);
 		
 		int[] maxRequirement = new int[]{0,0,0,0};
+		
+		List<String> nextTechs = new ArrayList<>(techTree.getNextTechs());
+		Collections.shuffle(nextTechs);
 		
 		for(String tech: nextTechs) {
 			// Science, Engineering, Weapon, Medical
@@ -123,7 +120,10 @@ public class FactionMissionPlanner {
 				this.research(techTree, tech);
 			}
 			else if(requirementDistance(requirements) > requirementDistance(maxRequirement)) {
-				maxRequirement = requirements;
+				maxRequirement[0] = requirements[0];
+				maxRequirement[1] = requirements[1];
+				maxRequirement[2] = requirements[2];
+				maxRequirement[3] = requirements[3];
 				targetTech = tech;
 			}
 				
@@ -140,6 +140,18 @@ public class FactionMissionPlanner {
 		
 		if(tech.equals(targetTech))
 			targetTech = null;
+		
+		System.out.println(faction + " preresearch " + tech);
+		System.out.println(faction + "   e:" + engineeringSupply + " w:" + weaponSupply + " m:" + medicalSupply + " s:" + scienceSupply);
+		int[] requirements = techTree.getRequirements(tech);
+		
+		this.scienceSupply -= requirements[0];
+		this.engineeringSupply -= requirements[1];
+		this.weaponSupply -= requirements[2];
+		this.medicalSupply -= requirements[3];
+		
+		System.out.println(faction + " researched " + tech);
+		System.out.println(faction + "   e:" + engineeringSupply + " w:" + weaponSupply + " m:" + medicalSupply + " s:" + scienceSupply);
 	}
 
 	private int requirementDistance(int[] requirements) {

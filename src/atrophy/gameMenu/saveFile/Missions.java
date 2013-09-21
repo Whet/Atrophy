@@ -280,7 +280,7 @@ public class Missions{
 		
 		@Override
 		public boolean isExpired() {
-			return super.isExpired();
+			return super.isExpired() || (this.requirements[0] == 0 && this.requirements[1] == 0 && this.requirements[2] == 0 && this.requirements[3] == 0);
 		}
 		
 	}
