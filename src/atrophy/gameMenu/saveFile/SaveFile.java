@@ -25,11 +25,9 @@ public class SaveFile implements Serializable{
 	public Squad squad;
 	public ArrayList<Sector> sectors;
 	public ArrayList<String> stash;
-	public ArrayList<MissionGiver> quests;
 	public Integer advance;
 	public Double whiteVistaRelation, banditRelation;
 	
-	public TechTree techTree;
 	public Set<String> spawnCodes;
 	public String saveURL;
 	
@@ -40,7 +38,6 @@ public class SaveFile implements Serializable{
 		this.squad = squad;
 		this.sectors = sectors;
 		this.stash = stash;
-		this.techTree = techTree;
 		this.spawnCodes = spawnCodes;
 		this.whiteVistaRelation = 1.0;
 		this.banditRelation = -1.0;
@@ -103,7 +100,7 @@ public class SaveFile implements Serializable{
 			
 			stashManager.setItems(save.stash);
 			mapWar.setSectors(save.sectors);
-			itemMarket.lazyLoad(save.techTree);
+			itemMarket.lazyLoad(save.squad.getTechTree());
 			shopManager.randomItems();
 			missions.setResearchAi(save.banditsResearchAi, save.wvResearchAi);
 			windowManager.updateWindows();
@@ -111,7 +108,6 @@ public class SaveFile implements Serializable{
 			
 			// set advance to true value
 			save.squad.setAdvance(save.advance);
-			save.squad.setTechTree(save.techTree);
 			save.squad.setFactionRelations(save.whiteVistaRelation, save.banditRelation);
 			SaveFile.saveLocation = save.saveURL;
 		}

@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
@@ -23,17 +24,18 @@ public class Missions{
 	
 	private Squaddie interactingMember;
 	private ArrayList<Mission> missions;
-	private ArrayList<MissionGiver> missionGivers;
 	private Set<String> memCodes;
 	private Set<String> characterCodes;
 	private Map<String, String> tempCharacterCodes;
 	private Squad squad;
 	private FactionMissionPlanner wvResearchAi, banditsResearchAi;
 	private MapManager mapWar;
+	private TechTree techTree;
+	private StashManager stashManager;
+	private ItemMarket itemMarket;
 
 	public Missions(){
 		missions = new ArrayList<>();
-		missionGivers = new ArrayList<MissionGiver>();
 		memCodes = new HashSet<>();
 		characterCodes = new HashSet<>();
 		tempCharacterCodes = new HashMap<>();
@@ -45,35 +47,21 @@ public class Missions{
 	public void lazyLoad(Squad squad, StashManager stashManager, ItemMarket itemMarket, TechTree techTree, MapManager mapWar) {
 		this.squad = squad;
 		this.mapWar = mapWar;
-		defaultMissions(stashManager, itemMarket, techTree);
+		this.techTree = techTree;
+		this.stashManager = stashManager;
+		this.itemMarket = itemMarket;
 	}
 	
-	private void defaultMissions(StashManager stashManager, ItemMarket itemMarkert, TechTree techTree) {
-		
-		if(this.missionGivers.isEmpty()) {
-			this.missionGivers.add(new MissionGiver.WVGiver1(squad, this, techTree, stashManager, itemMarkert));
-			this.missionGivers.add(new MissionGiver.LonerGiver1(squad, this, techTree, stashManager, itemMarkert));
-			this.missionGivers.add(new MissionGiver.BanditGiver1(squad, this, techTree, stashManager, itemMarkert));
-			this.missionGivers.add(new MissionGiver.WVGiver2(squad, this, techTree, stashManager, itemMarkert));
-			this.missionGivers.add(new MissionGiver.LonerGiver2(squad, this, techTree, stashManager, itemMarkert));
-			this.missionGivers.add(new MissionGiver.BanditGiver2(squad, this, techTree, stashManager, itemMarkert));
-		}
-		
-		this.updateMissions();
-	}
-
 	public Squaddie getInteractingMember() {
 		return interactingMember;
 	}
 
 	public void updateMissions(){
-		this.missions.clear();
-		for(int i = 0; i < missionGivers.size(); i++){
-			if(missionGivers.get(i).getMission() != null){
-				if(missionGivers.get(i).getMission().isExpired())
-					missionGivers.get(i).computeMission();
-				this.missions.add(missionGivers.get(i).getMission());
-			}
+		for(Mission mission: wvResearchAi.getMissions()) {
+			this.missions.add(mission);
+		}
+		for(Mission mission: banditsResearchAi.getMissions()) {
+			this.missions.add(mission);
 		}
 	}
 	
@@ -81,10 +69,6 @@ public class Missions{
 		this.interactingMember = interactingMember;
 	}
 	
-	public boolean interactMission(int i) {
-		return missions.get(i).interact();
-	}
-
 	public int getMissionCount() {
 		return this.missions.size();
 	}
@@ -103,33 +87,6 @@ public class Missions{
 			return "";
 		
 		return this.missions.get(i).name;
-	}
-	
-	public MissionGiver getGiver(Mission mission) {
-		for(int i = 0; i < this.missionGivers.size(); i++){
-			if(this.missionGivers.get(i).getMission() == mission)
-				return this.missionGivers.get(i);
-		}
-		return null;
-	}
-	
-	public String getGiverShortFaction(Mission mission) {
-		if(mission == null)
-			return "";
-		
-		if(this.getGiver(mission) == null)
-			return "";
-		
-		return this.getGiver(mission).getShortFaction();
-	}
-
-	public ArrayList<MissionGiver> getMissionGivers() {
-		return missionGivers;
-	}
-
-	public void setMissionGivers(ArrayList<MissionGiver> missionGivers) {
-		this.missionGivers = missionGivers;
-		this.updateMissions();
 	}
 	
 	public boolean addMemCode(String memCode){
@@ -233,19 +190,15 @@ public class Missions{
 
 		// science, engineering, weapon, medical
 		private int[] requirements;
-		private TechTree techTree;
-		private String tech;
 		private Object rewardPerItem;
 		
-		public ShoppingListMission(Missions missions, Squad squad, StashManager stashManager, TechTree techTree, int[] requirements, Object rewardPerItem, String tech, String faction) {
+		public ShoppingListMission(Missions missions, Squad squad, StashManager stashManager, int[] requirements, Object rewardPerItem, String faction) {
 			super(missions, stashManager, faction,
-				  "Unlock the Mysteries of: " + tech,
-				  "Obj: To unlock the mysteries of " + tech + "@nThe following are required:@nSci. "+ requirements[0] + " Eng. " + requirements[1] + " Wep. " + requirements[2] + " Med. " + requirements[3]
-						  + "@nReward per Supply: " + rewardPerItem,
+				  "Gather Supplies",
+				  "Obj: The following are required:@nSci. "+ requirements[0] + " Eng. " + requirements[1] + " Wep. " + requirements[2] + " Med. " + requirements[3]
+			    + "@nReward per Supply: " + rewardPerItem,
 				  false, rewardPerItem, squad);
 			this.requirements = requirements;
-			this.techTree = techTree;
-			this.tech = tech;
 			this.rewardPerItem = rewardPerItem;
 		}
 		
@@ -256,6 +209,7 @@ public class Missions{
 					stashManager.getItems().remove(ScienceSupply.NAME);
 					giveReward();
 					requirements[0]--;
+					missions.getResearchAi(faction).give(ScienceSupply.NAME, 1);
 				}
 				else
 					break;
@@ -288,12 +242,10 @@ public class Missions{
 					break;
 			}
 			
-			this.description = "Obj: To unlock the mysteries of " + tech + "@nThe following are required:@nSci. "+ requirements[0] + " Eng. " + requirements[1] + " Wep. " + requirements[2] + " Med. " + requirements[3]
-					  + "@nReward per Supply: " + rewardPerItem;
+			this.description = "Obj: The following are required:@nSci. "+ requirements[0] + " Eng. " + requirements[1] + " Wep. " + requirements[2] + " Med. " + requirements[3]
+					         + "@nReward per Supply: " + rewardPerItem;
 			
 			if(requirements[0] == 0 && requirements[1] == 0 && requirements[2] == 0 && requirements[3] == 0) {
-				techTree.research(tech, this.faction);
-				
 				if(missions.squad.getFactionRelation(faction) >= 0)
 					missions.squad.incrementFactionRelation(this.faction, 0.1);
 				else
@@ -324,76 +276,14 @@ public class Missions{
 		
 		@Override
 		public boolean isExpired() {
-			return super.isExpired() || techTree.isResearched(this.tech, this.faction);
+			return super.isExpired();
 		}
 		
-	}
-	
-	/**
-	 * The Class GatherMission.
-	 */
-	public static class GatherMission extends Mission{
-		
-		/**
-		 * The Constant serialVersionUID.
-		 */
-		private static final long serialVersionUID = 4770545418826076066L;
-		
-		/**
-		 * The target item.
-		 */
-		private String targetItem;
-		
-		/**
-		 * Instantiates a new gather mission.
-		 *
-		 * @param targetItem the target item
-		 * @param rewardItem the reward item
-		 * @param reward the reward
-		 */
-		public GatherMission(Missions missions, Squad squad, StashManager stashManager, String targetItem, boolean rewardItem, Object reward, String faction){
-			super(missions, stashManager, faction,
-				  "Req: " + targetItem,
-				  "Obj: Hand in a " + targetItem + "@nReward: " + reward,
-				  rewardItem, reward, squad);
-			
-			this.targetItem = targetItem;
-		}
-		
-		/* (non-Javadoc)
-		 * @see atrophy.gameMenu.saveFile.Missions.Mission#interact()
-		 */
-		@Override
-		public boolean interact() {
-			if(stashHas(targetItem)){
-				stashManager.getItems().remove(targetItem);
-				giveReward();
-				return true;
-			}
-			return false;
-		}
-
-		/**
-		 * Stash has.
-		 *
-		 * @param targetItem2 the target item2
-		 * @return true, if successful
-		 */
-		private boolean stashHas(String targetItem2) {
-			for(int i = 0; i < stashManager.getItemCount(); i++){
-				if(stashManager.getItem(i).equals(targetItem2))
-					return true;
-			}
-			return false;
-		}
 	}
 	
 	public void update() {
-		for(Mission mission: this.missions) {
-			mission.tickTimeToLive();
-		}
-		this.wvResearchAi.updatePlanner(mapWar);
-		this.banditsResearchAi.updatePlanner(mapWar);
+		this.wvResearchAi.updatePlanner(mapWar, techTree, this, squad, stashManager);
+		this.banditsResearchAi.updatePlanner(mapWar, techTree, this, squad, stashManager);
 	}
 
 	public Squad getSquad() {
@@ -401,7 +291,6 @@ public class Missions{
 	}
 
 	public boolean isCharacterFree(String characterCode) {
-		System.out.println("CODE: " + characterCode + "///" + this.characterCodes + "  " + this.tempCharacterCodes);
 		return !this.characterCodes.contains(characterCode) && !this.tempCharacterCodes.values().contains(characterCode);
 	}
 
