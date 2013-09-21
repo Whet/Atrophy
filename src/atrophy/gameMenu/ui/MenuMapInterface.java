@@ -57,7 +57,7 @@ public class MenuMapInterface {
 			@Override
 			public void run() {
 
-				missions.update();
+				missions.updatePlanners();
 				
 				// A.
 				levelManager.setCurrentLevel(level);

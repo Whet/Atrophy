@@ -195,7 +195,7 @@ public class Missions{
 		
 		public ShoppingListMission(Missions missions, Squad squad, StashManager stashManager, int[] requirements, Object rewardPerItem, String faction) {
 			super(missions, stashManager, faction,
-				  "Gather Supplies",
+				  "Gather Supplies for "+faction,
 				  "Obj: The following are required:@nSci. "+ requirements[0] + " Eng. " + requirements[1] + " Wep. " + requirements[2] + " Med. " + requirements[3]
 			    + "@nReward per Supply: " + rewardPerItem,
 				  false, rewardPerItem, squad);
@@ -285,7 +285,7 @@ public class Missions{
 		
 	}
 	
-	public void update() {
+	public void updatePlanners() {
 		this.wvResearchAi.updatePlanner(mapWar, techTree, this, squad, stashManager);
 		this.banditsResearchAi.updatePlanner(mapWar, techTree, this, squad, stashManager);
 	}

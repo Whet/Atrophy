@@ -59,8 +59,8 @@ public class GameMenuHardPane implements HardPaneDefineable{
 		
 		mapWar.updateSectors();
 		shopManager.randomItems();
+		missions.updatePlanners();
 		missions.updateMissions();
-		
 		windowManager.updateWindows();
 		
 		windowManager.releaseWindowKey();
