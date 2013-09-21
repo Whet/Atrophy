@@ -51,7 +51,7 @@ public class GameMenuHardPane implements HardPaneDefineable{
 		shopManager.lazyLoad(squad);
 		menuBar.lazyLoad(windowManager, mapWar, missions, squad, shopManager, stashManager, techTree, itemMarket);
 		stashManager.lazyLoad(shopManager);
-		missions.lazyLoad(squad, stashManager, itemMarket, techTree);
+		missions.lazyLoad(squad, stashManager, itemMarket, techTree, mapWar);
 		
 		crowd.addKeyListener(new GameMenuKeyHandler(windowManager));
 		crowd.addCrowd(menuBar);

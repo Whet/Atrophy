@@ -96,7 +96,7 @@ public class SplashMenu extends Crowd {
 					shopManager.lazyLoad(squad);
 					menuBar.lazyLoad(windowManager, mapWar, missions, squad, shopManager, stashManager, techTree, itemMarket);
 					stashManager.lazyLoad(shopManager);
-					missions.lazyLoad(squad, stashManager, itemMarket, techTree);
+					missions.lazyLoad(squad, stashManager, itemMarket, techTree, mapWar);
 					
 					ActivePane.getInstance().changeRootCrowd(new Crowd(new GameMenuHardPane(squad, techTree, stashManager, missions)));
 				}

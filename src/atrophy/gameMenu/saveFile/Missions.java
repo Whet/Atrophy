@@ -29,6 +29,7 @@ public class Missions{
 	private Map<String, String> tempCharacterCodes;
 	private Squad squad;
 	private FactionMissionPlanner wvResearchAi, banditsResearchAi;
+	private MapManager mapWar;
 
 	public Missions(){
 		missions = new ArrayList<>();
@@ -41,8 +42,9 @@ public class Missions{
 		this.banditsResearchAi = new FactionMissionPlanner(AiGenerator.BANDITS);
 	}
 	
-	public void lazyLoad(Squad squad, StashManager stashManager, ItemMarket itemMarket, TechTree techTree) {
+	public void lazyLoad(Squad squad, StashManager stashManager, ItemMarket itemMarket, TechTree techTree, MapManager mapWar) {
 		this.squad = squad;
+		this.mapWar = mapWar;
 		defaultMissions(stashManager, itemMarket, techTree);
 	}
 	
@@ -386,60 +388,12 @@ public class Missions{
 		}
 	}
 	
-	/**
-	 * The Class KillMission.
-	 */
-//	public static class KillMission extends Mission{
-//		
-//		/**
-//		 * The Constant serialVersionUID.
-//		 */
-//		private static final long serialVersionUID = -6825128197446409509L;
-//		
-//		/**
-//		 * The target faction.
-//		 */
-//		private String targetFaction;
-//		
-//		/**
-//		 * The required kills.
-//		 */
-//		private int requiredKills;
-//		
-//		/**
-//		 * Instantiates a new kill mission.
-//		 *
-//		 * @param faction the faction
-//		 * @param count the count
-//		 * @param rewardItem the reward item
-//		 * @param reward the reward
-//		 */
-//		public KillMission(Missions missions, Squad squad, StashManager stashManager, String faction, int count, boolean rewardItem, Object reward){
-//			super(missions, stashManager, "Kill: " + faction,
-//				  "Obj: Kill " + count + " members of " + faction + "@nReward: " + reward,
-//				  rewardItem, reward, squad);
-//			
-//			this.targetFaction = faction;
-//			this.requiredKills = count;
-//		}
-//		
-//		/* (non-Javadoc)
-//		 * @see atrophy.gameMenu.saveFile.Missions.Mission#interact()
-//		 */
-//		@Override
-//		public boolean interact() {
-//			if(missions.squad.getFactionKills(targetFaction) > this.requiredKills){
-//				giveReward();
-//				return true;
-//			}
-//			return false;
-//		}
-//	}
-
-	public void tickMissions() {
+	public void update() {
 		for(Mission mission: this.missions) {
 			mission.tickTimeToLive();
 		}
+		this.wvResearchAi.updatePlanner(mapWar);
+		this.banditsResearchAi.updatePlanner(mapWar);
 	}
 
 	public Squad getSquad() {

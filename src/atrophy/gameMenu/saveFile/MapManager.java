@@ -329,7 +329,7 @@ public class MapManager {
 
 	}
 	
-	private static class Map {
+	protected static class Map {
 		
 		public boolean cap;
 		public String name;
