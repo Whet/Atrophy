@@ -1,5 +1,7 @@
 package atrophy.gameMenu.saveFile;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -7,6 +9,10 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
+
+import org.antlr.runtime.RecognitionException;
+
+import watoydoEngine.io.ReadWriter;
 
 import atrophy.combat.ai.Ai;
 import atrophy.combat.ai.AiGenerator;
@@ -16,6 +22,7 @@ import atrophy.combat.items.MedicalSupply;
 import atrophy.combat.items.ScienceSupply;
 import atrophy.combat.items.WeaponSupply;
 import atrophy.gameMenu.saveFile.Squad.Squaddie;
+import atrophy.gameMenu.ui.MenuMapInterface;
 import atrophy.gameMenu.ui.StashManager;
 
 public class Missions{
@@ -187,7 +194,58 @@ public class Missions{
 		
 	}
 	
-	public static class ShoppingListMission extends Mission{
+	public static class AttackMission extends Mission {
+
+		private String mapName;
+		private String mapOwner;
+		private Integer eChance;
+		private Integer mChance;
+		private Integer wChance;
+		private Integer sChance;
+		private ItemMarket itemMarket;
+		private TechTree techTree;
+		private String sectorName;
+
+		public AttackMission(Missions missions, StashManager stashManager, String faction, Squad squad, Object rewardForAttack, String mapName, String mapOwner, Integer eChance, Integer mChance, Integer wChance, Integer sChance, ItemMarket itemMarket, TechTree techTree, String sectorName) {
+			super(missions, stashManager, faction, "Secure " + mapName.substring(0, mapName.length() - 4) + " for "+faction, "Go to the target location and kill opposition", false, rewardForAttack, squad);
+			this.mapName = mapName;
+			this.mapOwner = mapOwner;
+			this.eChance = eChance;
+			this.mChance = mChance;
+			this.wChance = wChance;
+			this.sChance = sChance;
+			this.itemMarket = itemMarket;
+			this.techTree = techTree;
+			this.sectorName = sectorName;
+		}
+
+		@Override
+		public boolean interact() {
+			
+			missions.squad.incrementFactionRelation(this.faction, 2);
+			if(this.faction.equals(AiGenerator.WHITE_VISTA))
+				missions.squad.incrementFactionRelation(AiGenerator.BANDITS, -2);
+			else
+				missions.squad.incrementFactionRelation(AiGenerator.WHITE_VISTA, -2);
+			
+			squad.setAdvance(squad.getAdvance() + ((Integer) reward));
+			
+			try {
+				MenuMapInterface.loadLevel(ReadWriter.getRootFile("Maps/" + mapName), mapOwner, squad, eChance, mChance, wChance, sChance, missions, itemMarket, techTree, stashManager, sectorName);
+			} catch (FileNotFoundException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			} catch (RecognitionException e) {
+				e.printStackTrace();
+			}
+			
+			return true;
+		}
+		
+	}
+	
+	public static class ShoppingListMission extends Mission {
 
 		// science, engineering, weapon, medical
 		private int[] requirements;
@@ -286,13 +344,13 @@ public class Missions{
 	}
 	
 	public void updatePlanners() {
-		this.wvResearchAi.updatePlanner(mapWar, techTree, this, squad, stashManager);
-		this.banditsResearchAi.updatePlanner(mapWar, techTree, this, squad, stashManager);
+		this.wvResearchAi.updatePlanner(mapWar, techTree, this, squad, stashManager, banditsResearchAi, itemMarket);
+		this.banditsResearchAi.updatePlanner(mapWar, techTree, this, squad, stashManager, wvResearchAi, itemMarket);
 	}
 	
 	public void updatePlannersKeepNews() {
-		this.wvResearchAi.updatePlannerKeepNews(mapWar, techTree, this, squad, stashManager);
-		this.banditsResearchAi.updatePlannerKeepNews(mapWar, techTree, this, squad, stashManager);
+		this.wvResearchAi.updatePlannerKeepNews(mapWar, techTree, this, squad, stashManager, banditsResearchAi, itemMarket);
+		this.banditsResearchAi.updatePlannerKeepNews(mapWar, techTree, this, squad, stashManager, wvResearchAi, itemMarket);
 	}
 
 	public Squad getSquad() {

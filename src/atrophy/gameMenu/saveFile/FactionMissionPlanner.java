@@ -1,11 +1,14 @@
 package atrophy.gameMenu.saveFile;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.Map.Entry;
 import java.util.Random;
 import java.util.Set;
@@ -18,17 +21,21 @@ import atrophy.gameMenu.saveFile.MapManager.Sector;
 import atrophy.gameMenu.saveFile.Missions.Mission;
 import atrophy.gameMenu.ui.StashManager;
 
-public class FactionMissionPlanner {
+public class FactionMissionPlanner implements Serializable{
 
+	private static final Object SUPPLY_BASE_COST = 100;
+	private static final Object ATTACK_REWARD = 300;
+	
 	private String faction;
 	// sector, maps
 	private Map<String, Set<String>> mapsOwned;
 	private int weaponSupply, engineeringSupply, scienceSupply, medicalSupply;
-	private List<Mission> activeMissions;
+	private transient List<Mission> activeMissions;
 	
 	private String targetTech;
-	
 	private StringBuffer news;
+	private int researchCount;
+	private int territoryAttacks;
 	
 	public FactionMissionPlanner(String faction) {
 		this.faction = faction;
@@ -37,6 +44,7 @@ public class FactionMissionPlanner {
 		this.engineeringSupply = 0;
 		this.scienceSupply = 0;
 		this.medicalSupply = 0;
+		this.researchCount = 0;
 		this.activeMissions = new ArrayList<>();
 		this.news = new StringBuffer();
 	}
@@ -49,16 +57,77 @@ public class FactionMissionPlanner {
 		return this.mapsOwned.get(sectorName).contains(mapName);
 	}
 	
-	public void updatePlanner(MapManager mapManager, TechTree techTree, Missions missions, Squad squad, StashManager stashManager) {
+	public void updatePlanner(MapManager mapManager, TechTree techTree, Missions missions, Squad squad, StashManager stashManager, FactionMissionPlanner enemyPlanner, ItemMarket itemMarket) {
 		news.delete(0, news.length());
-		System.out.println("Removed news");
-		updatePlannerKeepNews(mapManager, techTree, missions, squad, stashManager);
+		updatePlannerKeepNews(mapManager, techTree, missions, squad, stashManager, enemyPlanner, itemMarket);
 	}
 	
-	public void updatePlannerKeepNews(MapManager mapManager, TechTree techTree, Missions missions, Squad squad, StashManager stashManager) {
+	public void updatePlannerKeepNews(MapManager mapManager, TechTree techTree, Missions missions, Squad squad, StashManager stashManager, FactionMissionPlanner enemyPlanner, ItemMarket itemMarket) {
+		
+		territoryAttacks = getResearchDifference(enemyPlanner) + new Random().nextInt(3);
+		
 		addResources(mapManager);
 		updateMissions();
 		spendResources(techTree, missions, squad, stashManager);
+		setAttackTargets(mapManager, missions, stashManager, squad, itemMarket, techTree);
+	}
+
+	private void setAttackTargets(MapManager mapManager, Missions missions, StashManager stashManager, Squad squad, ItemMarket itemMarket, TechTree techTree) {
+		ArrayList<Sector> sectors = mapManager.getSectors();
+		
+		PriorityQueue<AttackLocation> possibleAttackLocations = new PriorityQueue<AttackLocation>(20, new Comparator<AttackLocation>() {
+
+			@Override
+			public int compare(AttackLocation o1, AttackLocation o2) {
+				
+				if(o1.getValue() < o2.getValue())
+					return -1;
+				else if(o1.getValue() > o2.getValue())
+					return 1;
+				
+				return 0;
+			}
+		});
+		
+		for(Sector sector: sectors) {
+			for(MapManager.Map map:sector.getUnlockedMaps()) {
+				if(map.canBeCaptured() && (this.mapsOwned.get(sector.getName()) == null || !this.mapsOwned.get(sector.getName()).contains(map.name)))
+					possibleAttackLocations.add(new AttackLocation(sector.getName(), map.name, sector.getEngineeringChance(), sector.getMedicalChance(), sector.getWeaponChance(), sector.getScienceChance()));
+			}
+		}
+		
+		// Create attack missions
+		for(int i = 0; i < territoryAttacks; i++) {
+			
+			if(possibleAttackLocations.size() == 0)
+				break;
+			
+			AttackLocation attackLocation = possibleAttackLocations.poll();
+			
+			this.activeMissions.add(new Missions.AttackMission(missions, stashManager, faction, squad, ATTACK_REWARD,
+									attackLocation.mapName, mapManager.getSector(attackLocation.sector).getOwner(attackLocation.mapName),
+									attackLocation.eChance, attackLocation.mChance, attackLocation.wChance, attackLocation.sChance,
+									itemMarket, techTree, attackLocation.sector));
+		}
+	}
+	
+	private static class AttackLocation {
+		public final int eChance, mChance, wChance, sChance;
+		public final String sector, mapName;
+		
+		public AttackLocation(String sector, String mapName, int eChance, int mChance, int wChance, int sChance) {
+			this.eChance = eChance;
+			this.mChance = mChance;
+			this.wChance = wChance;
+			this.sChance = sChance;
+			
+			this.sector = sector;
+			this.mapName = mapName;
+		}
+
+		public int getValue() {
+			return eChance + mChance + wChance + sChance;
+		}
 	}
 
 	private void updateMissions() {
@@ -135,19 +204,17 @@ public class FactionMissionPlanner {
 		}
 		
 		if(this.activeMissions.isEmpty() && targetTech != null)
-			this.activeMissions.add(new Missions.ShoppingListMission(missions, squad, stashManager, maxRequirement, 200, faction));
+			this.activeMissions.add(new Missions.ShoppingListMission(missions, squad, stashManager, maxRequirement, SUPPLY_BASE_COST, faction));
 		
 	}
 	
 	private void research(TechTree techTree, String tech) {
 		techTree.research(tech, this.faction);
-		news.append("Researched " + tech + "@n");
+		researchCount++;
 		
 		if(tech.equals(targetTech))
 			targetTech = null;
 		
-		System.out.println(faction + " preresearch " + tech);
-		System.out.println(faction + "   e:" + engineeringSupply + " w:" + weaponSupply + " m:" + medicalSupply + " s:" + scienceSupply);
 		int[] requirements = techTree.getRequirements(tech);
 		
 		this.scienceSupply -= requirements[0];
@@ -155,8 +222,6 @@ public class FactionMissionPlanner {
 		this.weaponSupply -= requirements[2];
 		this.medicalSupply -= requirements[3];
 		
-		System.out.println(faction + " researched " + tech);
-		System.out.println(faction + "   e:" + engineeringSupply + " w:" + weaponSupply + " m:" + medicalSupply + " s:" + scienceSupply);
 	}
 
 	private int requirementDistance(int[] requirements) {
@@ -191,6 +256,14 @@ public class FactionMissionPlanner {
 	public String getNews() {
 		return news.toString();
 	}
+	
+	public int getResearchDifference(FactionMissionPlanner enemyPlanner) {
+		return this.researchCount - enemyPlanner.getResearchCount();
+	}
 
+	public int getResearchCount() {
+		return researchCount;
+	}
+	
 }
 	

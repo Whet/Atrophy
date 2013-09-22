@@ -115,7 +115,7 @@ public class MapManager {
 								
 								String propertyName = mapProperties.next();
 								
-								if(propertyName.equals("req")) {
+					if(propertyName.equals("req")) {
 									
 									JSONArray property = map.getJSONArray(propertyName);
 									
@@ -124,7 +124,7 @@ public class MapManager {
 										mapObject.requirements.add(requirement);
 									}
 								}
-								else if(propertyName.equals("cap")) {
+								else if(propertyName.equals("canBeCaptured") || propertyName.equals("cap")) {
 									
 									boolean property = map.getBoolean(propertyName);
 									
@@ -290,6 +290,10 @@ public class MapManager {
 			
 			return this.missions.getMapOwner(this.getMap(mapIndex), this.name);
 		}
+		
+		public String getOwner(String mapName){
+			return this.missions.getMapOwner(mapName, this.name);
+		}
 
 		public int getEngineeringChance() {
 			return engineeringChance;
@@ -327,9 +331,18 @@ public class MapManager {
 			return this.unlockedMaps.size();
 		}
 
+		public List<Map> getUnlockedMaps() {
+			List<Map> maps = new ArrayList<>();
+			
+			for(String map: this.unlockedMaps) {
+				maps.add(getMapObject(map));
+			}
+			return maps;
+		}
+
 	}
 	
-	protected static class Map {
+	protected static class Map implements Serializable {
 		
 		public boolean cap;
 		public String name;
