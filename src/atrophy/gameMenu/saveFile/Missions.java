@@ -207,7 +207,7 @@ public class Missions{
 		private String sectorName;
 
 		public AttackMission(Missions missions, StashManager stashManager, String faction, Squad squad, Object rewardForAttack, String mapName, String mapOwner, Integer eChance, Integer mChance, Integer wChance, Integer sChance, ItemMarket itemMarket, TechTree techTree, String sectorName) {
-			super(missions, stashManager, faction, "Secure " + mapName.substring(0, mapName.length() - 4) + " for "+faction, "Go to the target location and kill opposition", false, rewardForAttack, squad);
+			super(missions, stashManager, faction, "Secure " + mapName.substring(0, mapName.length() - 4) + " for "+faction, "Kill all enemies in the area for a reward of " + rewardForAttack, false, rewardForAttack, squad);
 			this.mapName = mapName;
 			this.mapOwner = mapOwner;
 			this.eChance = eChance;

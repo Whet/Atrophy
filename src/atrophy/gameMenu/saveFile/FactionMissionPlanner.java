@@ -23,8 +23,8 @@ import atrophy.gameMenu.ui.StashManager;
 
 public class FactionMissionPlanner implements Serializable{
 
-	private static final Object SUPPLY_BASE_COST = 100;
-	private static final Object ATTACK_REWARD = 300;
+	private static final Integer SUPPLY_BASE_COST = 100;
+	private static final Integer ATTACK_REWARD = 20;
 	
 	private String faction;
 	// sector, maps
@@ -104,7 +104,7 @@ public class FactionMissionPlanner implements Serializable{
 			
 			AttackLocation attackLocation = possibleAttackLocations.poll();
 			
-			this.activeMissions.add(new Missions.AttackMission(missions, stashManager, faction, squad, ATTACK_REWARD,
+			this.activeMissions.add(new Missions.AttackMission(missions, stashManager, faction, squad, ATTACK_REWARD * attackLocation.getValue(),
 									attackLocation.mapName, mapManager.getSector(attackLocation.sector).getOwner(missions, attackLocation.mapName),
 									attackLocation.eChance, attackLocation.mChance, attackLocation.wChance, attackLocation.sChance,
 									itemMarket, techTree, attackLocation.sector));
