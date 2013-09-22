@@ -289,6 +289,11 @@ public class Missions{
 		this.wvResearchAi.updatePlanner(mapWar, techTree, this, squad, stashManager);
 		this.banditsResearchAi.updatePlanner(mapWar, techTree, this, squad, stashManager);
 	}
+	
+	public void updatePlannersKeepNews() {
+		this.wvResearchAi.updatePlannerKeepNews(mapWar, techTree, this, squad, stashManager);
+		this.banditsResearchAi.updatePlannerKeepNews(mapWar, techTree, this, squad, stashManager);
+	}
 
 	public Squad getSquad() {
 		return this.squad;

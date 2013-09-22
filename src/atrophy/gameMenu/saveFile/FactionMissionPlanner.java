@@ -51,6 +51,11 @@ public class FactionMissionPlanner {
 	
 	public void updatePlanner(MapManager mapManager, TechTree techTree, Missions missions, Squad squad, StashManager stashManager) {
 		news.delete(0, news.length());
+		System.out.println("Removed news");
+		updatePlannerKeepNews(mapManager, techTree, missions, squad, stashManager);
+	}
+	
+	public void updatePlannerKeepNews(MapManager mapManager, TechTree techTree, Missions missions, Squad squad, StashManager stashManager) {
 		addResources(mapManager);
 		updateMissions();
 		spendResources(techTree, missions, squad, stashManager);
@@ -186,6 +191,6 @@ public class FactionMissionPlanner {
 	public String getNews() {
 		return news.toString();
 	}
-	
+
 }
 	

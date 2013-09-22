@@ -15,7 +15,6 @@ import watoydoEngine.io.ReadWriter;
 import watoydoEngine.sounds.SoundBoard;
 import watoydoEngine.workings.displayActivity.ActivePane;
 import atrophy.combat.ai.AiGenerator;
-import atrophy.gameMenu.saveFile.FactionMissionPlanner;
 import atrophy.gameMenu.saveFile.ItemMarket;
 import atrophy.gameMenu.saveFile.MapManager;
 import atrophy.gameMenu.saveFile.Missions;
