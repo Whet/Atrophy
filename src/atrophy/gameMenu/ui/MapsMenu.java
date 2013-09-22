@@ -39,29 +39,17 @@ public class MapsMenu extends Menu {
 	private ArrayList<Text> mapOwners;
 	private Sector sector;
 	private MiniMapLines miniMapLines;
+	private Missions missions;
 	
-	/**
-	 * Instantiates a new maps menu.
-	 *
-	 * @param sector the sector
-	 * @param itemMarket 
-	 * @param techTree 
-	 * @param stashManager 
-	 * @param missionManager 
-	 * @param squadMenu 
-	 */
 	public MapsMenu(WindowManager windowManager, Missions missions, Squad squad, Sector sector, ItemMarket itemMarket, TechTree techTree, StashManager stashManager){
-//		super(windowManager, new double[]{380,270});
 		super(windowManager, new double[]{820,270});
 		page = 0;
 		addComponents(squad, missions, itemMarket, techTree, stashManager);
 		this.sector = sector;
-		updateText();
+		this.missions = missions;
+		updateText(missions);
 	}
 	
-	/**
-	 * Adds the components.
-	 */
 	private void addComponents(final Squad squad, final Missions missions, final ItemMarket itemMarket, final TechTree techTree, final StashManager stashManager) {
 		buttons = new ArrayList<TextButton>(MAX_ITEMS);
 		for(int i = 0; i < MAX_ITEMS; i++){
@@ -80,7 +68,7 @@ public class MapsMenu extends Menu {
 				public boolean mD(Point mousePosition, MouseEvent e) {;
 					try {
 						setPriorityMode(false);
-						MenuMapInterface.loadLevel(ReadWriter.getRootFile("Maps/" + sector.getMap(ind + (page * MAX_ITEMS))), sector.getOwner(ind + (page * MAX_ITEMS)),
+						MenuMapInterface.loadLevel(ReadWriter.getRootFile("Maps/" + sector.getMap(ind + (page * MAX_ITEMS))), sector.getOwner(missions, ind + (page * MAX_ITEMS)),
 																		  squad, sector.getEngineeringChance(),sector.getMedicalChance(),sector.getWeaponChance(),sector.getScienceChance(), missions, itemMarket, techTree, stashManager, sector.getName());
 					} 
 					catch (IOException e1) {
@@ -173,11 +161,6 @@ public class MapsMenu extends Menu {
 		this.addMouseActionItem(next);
 	}
 	
-	/**
-	 * Change page.
-	 *
-	 * @param change the change
-	 */
 	private void changePage(int change){
 		if(change == -1 && page == 0){
 			page = (int)Math.ceil(sector.getMaps().size() / MAX_ITEMS);
@@ -191,9 +174,6 @@ public class MapsMenu extends Menu {
 	}
 
 
-	/* (non-Javadoc)
-	 * @see atrophy.gameMenu.ui.Menu#drawMethod(java.awt.Graphics2D)
-	 */
 	@Override
 	public void drawMethod(Graphics2D drawShape) {
 		super.drawMethod(drawShape);
@@ -204,11 +184,6 @@ public class MapsMenu extends Menu {
 			drawContents(drawShape);
 	}
 	
-	/**
-	 * Draw contents.
-	 *
-	 * @param drawShape the draw shape
-	 */
 	protected void drawContents(Graphics2D drawShape) {
 //		drawTitle(drawShape);
 		drawComponents(drawShape);
@@ -216,46 +191,27 @@ public class MapsMenu extends Menu {
 			miniMapLines.drawMethod(drawShape);
 	}
 
-	/**
-	 * Draw title.
-	 *
-	 * @param drawShape the draw shape
-	 */
 	private void drawTitle(Graphics2D drawShape) {
 		drawShape.setComposite(GraphicsFunctions.makeComposite(1.0f));
 		drawShape.setColor(Color.white);
 		drawShape.drawString(this.sector.getName() + "  Page " + page, (int)this.getLocation()[0] + 20, (int)this.getLocation()[1] + 21);
 	}
 	
-	/**
-	 * Draw components.
-	 *
-	 * @param drawShape the draw shape
-	 */
 	private void drawComponents(@SuppressWarnings("unused") Graphics2D drawShape) {
 	}
 	
-	/* (non-Javadoc)
-	 * @see atrophy.gameMenu.ui.Menu#mI(java.awt.Point)
-	 */
 	@Override
 	public void mI(Point mousePosition) {
 		super.mI(mousePosition);
 	}
 	
-	/* (non-Javadoc)
-	 * @see atrophy.gameMenu.ui.Menu#mO(java.awt.Point)
-	 */
 	@Override
 	public void mO(Point mousePosition) {
-		updateText();
+		updateText(missions);
 		super.mO(mousePosition);
 	}
 	
-	/**
-	 * Update text.
-	 */
-	private void updateText() {
+	private void updateText(Missions missions) {
 		for(int i = 0; i < buttons.size(); i++){
 			
 			String name = sector.getMap(i + (page * MAX_ITEMS));
@@ -266,12 +222,12 @@ public class MapsMenu extends Menu {
 			else
 				buttons.get(i).setText("");
 			
-			mapOwners.get(i).setText(sector.getOwner(i + (page * MAX_ITEMS)));
+			mapOwners.get(i).setText(sector.getOwner(missions, i + (page * MAX_ITEMS)));
 			
-			if(sector.getOwner(i + (page * MAX_ITEMS)).equals(AiGenerator.BANDITS)){
+			if(sector.getOwner(missions, i + (page * MAX_ITEMS)).equals(AiGenerator.BANDITS)){
 				mapOwners.get(i).setColour(Color.red.darker());
 			}
-			else if(sector.getOwner(i + (page * MAX_ITEMS)).equals(AiGenerator.WHITE_VISTA)){
+			else if(sector.getOwner(missions, i + (page * MAX_ITEMS)).equals(AiGenerator.WHITE_VISTA)){
 				mapOwners.get(i).setColour(Color.white);
 			}
 			else{

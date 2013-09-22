@@ -105,7 +105,7 @@ public class FactionMissionPlanner implements Serializable{
 			AttackLocation attackLocation = possibleAttackLocations.poll();
 			
 			this.activeMissions.add(new Missions.AttackMission(missions, stashManager, faction, squad, ATTACK_REWARD,
-									attackLocation.mapName, mapManager.getSector(attackLocation.sector).getOwner(attackLocation.mapName),
+									attackLocation.mapName, mapManager.getSector(attackLocation.sector).getOwner(missions, attackLocation.mapName),
 									attackLocation.eChance, attackLocation.mChance, attackLocation.wChance, attackLocation.sChance,
 									itemMarket, techTree, attackLocation.sector));
 		}

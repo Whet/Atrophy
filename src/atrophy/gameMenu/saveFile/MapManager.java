@@ -56,7 +56,7 @@ public class MapManager {
 				JSONObject sector = root.getJSONObject(sectorName);
 				
 				// Create sector
-				Sector sectorObject = new Sector(missions, sectorName, 0, 0, 0, 0);
+				Sector sectorObject = new Sector(sectorName, 0, 0, 0, 0);
 				this.sectors.add(sectorObject);
 				
 				Iterator<String> sectorChildren = sector.keys();
@@ -161,16 +161,16 @@ public class MapManager {
 		
 		//Engineering, Medical, Weapon supplies, Science
 		
-		sectors.add(new Sector(missions, "Bridge",			5,5,10,0));
-		sectors.add(new Sector(missions, "Energy",			10,5,5,5));
-		sectors.add(new Sector(missions, "Engineering Beta",10,5,0,10));
-		sectors.add(new Sector(missions, "Mixed Sciences",	10,5,0,10));
-		sectors.add(new Sector(missions, "Production",		20,5,10,5));
-		sectors.add(new Sector(missions, "Residence One",	5,10,0,0));
-		sectors.add(new Sector(missions, "Robotics",		10,5,0,10));
-		sectors.add(new Sector(missions, "Shrapnel",		6,6,6,0));
-		sectors.add(new Sector(missions, "Stores",			10,10,5,5));
-		sectors.add(new Sector(missions, "Underbelly",		5,5,5,2));
+		sectors.add(new Sector("Bridge",			5,5,10,0));
+		sectors.add(new Sector("Energy",			10,5,5,5));
+		sectors.add(new Sector("Engineering Beta",10,5,0,10));
+		sectors.add(new Sector("Mixed Sciences",	10,5,0,10));
+		sectors.add(new Sector("Production",		20,5,10,5));
+		sectors.add(new Sector("Residence One",	5,10,0,0));
+		sectors.add(new Sector("Robotics",		10,5,0,10));
+		sectors.add(new Sector("Shrapnel",		6,6,6,0));
+		sectors.add(new Sector("Stores",			10,10,5,5));
+		sectors.add(new Sector("Underbelly",		5,5,5,2));
 		
 	}
 	
@@ -215,18 +215,16 @@ public class MapManager {
 		private String name;
 		private List<Map> maps;
 		private int engineeringChance,medicalChance,weaponChance,scienceChance;
-		private Missions missions;
 
 		private Set<String> unlockedMaps;
 
-		public Sector(Missions missions, String name,int e, int m, int w, int s){
+		public Sector(String name,int e, int m, int w, int s){
 			this.name = name;
 			this.engineeringChance = e;
 			this.medicalChance = m;
 			this.weaponChance = w;
 			this.scienceChance = s;
 			this.unlockedMaps = new HashSet<>();
-			this.missions = missions;
 			this.maps = new ArrayList<>();
 		}
 		
@@ -283,16 +281,16 @@ public class MapManager {
 			}
 		}
 		
-		public String getOwner(int mapIndex){
+		public String getOwner(Missions missions, int mapIndex){
 			
 			if(this.getMap(mapIndex).isEmpty())
 				return "";
 			
-			return this.missions.getMapOwner(this.getMap(mapIndex), this.name);
+			return missions.getMapOwner(this.getMap(mapIndex), this.name);
 		}
 		
-		public String getOwner(String mapName){
-			return this.missions.getMapOwner(mapName, this.name);
+		public String getOwner(Missions missions, String mapName){
+			return missions.getMapOwner(mapName, this.name);
 		}
 
 		public int getEngineeringChance() {
