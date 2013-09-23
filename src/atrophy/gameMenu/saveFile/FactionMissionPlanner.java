@@ -40,6 +40,7 @@ public class FactionMissionPlanner implements Serializable{
 	private StringBuffer news;
 	private int researchCount;
 	private int territoryAttacks;
+	private Set<String> attackTargets;
 	
 	public FactionMissionPlanner(String faction) {
 		this.faction = faction;
@@ -99,6 +100,12 @@ public class FactionMissionPlanner implements Serializable{
 		
 		for(Sector sector: sectors) {
 			for(MapManager.Map map:sector.getUnlockedMaps()) {
+				
+				for(Mission mission: this.activeMissions) {
+					if(mission instanceof AttackMission && ((AttackMission)mission).mapName.equals(map.name) && ((AttackMission)mission).sectorName.equals(sector.getName()))
+							continue;
+				}
+				
 				if(map.canBeCaptured() && (this.mapsOwned.get(sector.getName()) == null || !this.mapsOwned.get(sector.getName()).contains(map.name)))
 					possibleAttackLocations.add(new AttackLocation(sector.getName(), map.name, sector.getEngineeringChance(), sector.getMedicalChance(), sector.getWeaponChance(), sector.getScienceChance()));
 			}
