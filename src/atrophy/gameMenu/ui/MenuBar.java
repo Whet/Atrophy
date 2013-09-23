@@ -141,9 +141,9 @@ public class MenuBar extends Crowd{
 		
 		sb.append("NEWS@nWHITE VISTA@n");
 
-		sb.append(missions.getResearchAi(AiGenerator.WHITE_VISTA).getNews() + "@n@nBANDITS@n");
+		sb.append(missions.getPlanner(AiGenerator.WHITE_VISTA).getNews() + "@n@nBANDITS@n");
 		
-		sb.append(missions.getResearchAi(AiGenerator.BANDITS).getNews());
+		sb.append(missions.getPlanner(AiGenerator.BANDITS).getNews());
 		
 		newsTicker.setText(sb.toString());
 		

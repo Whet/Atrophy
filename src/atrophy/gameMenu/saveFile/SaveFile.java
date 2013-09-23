@@ -41,8 +41,8 @@ public class SaveFile implements Serializable{
 		this.spawnCodes = spawnCodes;
 		this.whiteVistaRelation = 1.0;
 		this.banditRelation = -1.0;
-		this.wvResearchAi = missions.getResearchAi(AiGenerator.WHITE_VISTA);
-		this.banditsResearchAi = missions.getResearchAi(AiGenerator.BANDITS);
+		this.wvResearchAi = missions.getPlanner(AiGenerator.WHITE_VISTA);
+		this.banditsResearchAi = missions.getPlanner(AiGenerator.BANDITS);
 	}
 
 	public static void saveGame(File file, Squad squad, Missions missions, ArrayList<Sector> sectors, ArrayList<String> stash, TechTree techTree, Set<String> spawnCodes){

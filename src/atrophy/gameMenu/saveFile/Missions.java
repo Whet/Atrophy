@@ -6,14 +6,12 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
 import org.antlr.runtime.RecognitionException;
 
 import watoydoEngine.io.ReadWriter;
-
 import atrophy.combat.ai.Ai;
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.display.AiCrowd;
@@ -201,20 +199,22 @@ public class Missions{
 		public int getTimeToLive() {
 			return this.timeToLive;
 		}
-		
+
 	}
 	
 	public static class AttackMission extends Mission {
 
-		private String mapName;
-		private String mapOwner;
+		public String mapName;
+		public String mapOwner;
 		private Integer eChance;
 		private Integer mChance;
 		private Integer wChance;
 		private Integer sChance;
 		private ItemMarket itemMarket;
 		private TechTree techTree;
-		private String sectorName;
+		public String sectorName;
+		private boolean missionTaken;
+		public boolean isChecked;
 
 		public AttackMission(Missions missions, StashManager stashManager, String faction, Squad squad, Object rewardForAttack, String mapName, String mapOwner, Integer eChance, Integer mChance, Integer wChance, Integer sChance, ItemMarket itemMarket, TechTree techTree, String sectorName) {
 			super(missions, stashManager, faction, "Secure " + mapName.substring(0, mapName.length() - 4) + " for "+faction, "Kill all enemies in the area for a reward of " + rewardForAttack, false, rewardForAttack, squad);
@@ -227,6 +227,8 @@ public class Missions{
 			this.itemMarket = itemMarket;
 			this.techTree = techTree;
 			this.sectorName = sectorName;
+			this.missionTaken = false;
+			this.isChecked = false;
 		}
 
 		@Override
@@ -240,6 +242,8 @@ public class Missions{
 			
 			squad.setAdvance(squad.getAdvance() + ((Integer) reward));
 			
+			this.missionTaken = true;
+			
 			try {
 				MenuMapInterface.loadLevel(ReadWriter.getRootFile("Maps/" + mapName), mapOwner, squad, eChance, mChance, wChance, sChance, missions, itemMarket, techTree, stashManager, sectorName);
 			} catch (FileNotFoundException e) {
@@ -251,6 +255,15 @@ public class Missions{
 			}
 			
 			return true;
+		}
+		
+		@Override
+		public boolean isExpired() {
+			return (super.isExpired() && !missionTaken) || isChecked;
+		}
+		
+		public boolean isTaken() {
+			return this.missionTaken;
 		}
 		
 	}
@@ -278,7 +291,7 @@ public class Missions{
 					stashManager.getItems().remove(ScienceSupply.NAME);
 					giveReward();
 					requirements[0]--;
-					missions.getResearchAi(faction).give(ScienceSupply.NAME, 1);
+					missions.getPlanner(faction).give(ScienceSupply.NAME, 1);
 				}
 				else
 					break;
@@ -288,7 +301,7 @@ public class Missions{
 					stashManager.getItems().remove(EngineeringSupply.NAME);
 					giveReward();
 					requirements[1]--;
-					missions.getResearchAi(faction).give(EngineeringSupply.NAME, 1);
+					missions.getPlanner(faction).give(EngineeringSupply.NAME, 1);
 				}
 				else
 					break;
@@ -298,7 +311,7 @@ public class Missions{
 					stashManager.getItems().remove(WeaponSupply.NAME);
 					giveReward();
 					requirements[2]--;
-					missions.getResearchAi(faction).give(WeaponSupply.NAME, 1);
+					missions.getPlanner(faction).give(WeaponSupply.NAME, 1);
 				}
 				else
 					break;
@@ -308,7 +321,7 @@ public class Missions{
 					stashManager.getItems().remove(MedicalSupply.NAME);
 					giveReward();
 					requirements[3]--;
-					missions.getResearchAi(faction).give(MedicalSupply.NAME, 1);
+					missions.getPlanner(faction).give(MedicalSupply.NAME, 1);
 				}
 				else
 					break;
@@ -392,7 +405,7 @@ public class Missions{
 		this.banditsResearchAi = banditsResearchAi;
 	}
 
-	public FactionMissionPlanner getResearchAi(String faction) {
+	public FactionMissionPlanner getPlanner(String faction) {
 		
 		switch(faction) {
 			case AiGenerator.WHITE_VISTA:
@@ -467,6 +480,20 @@ public class Missions{
 
 	public int getLivingWV() {
 		return livingWV;
+	}
+
+	public int getPlayerKillCount(String faction) {
+		
+		switch(faction) {
+			case AiGenerator.LONER:
+			return this.playerLonerKillCount;
+			case AiGenerator.WHITE_VISTA:
+			return this.playerWhiteVistaKillCount;
+			case AiGenerator.BANDITS:
+			return this.playerBanditKillCount;
+		}
+		
+		return 0;
 	}
 
 }

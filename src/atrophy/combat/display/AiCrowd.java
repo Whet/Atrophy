@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 import java.util.Timer;
@@ -36,7 +37,7 @@ public class AiCrowd extends Crowd {
 
 	private Map<String, TalkNode> talkNodes;
 	private ArrayList<Ai> actors;
-	private ArrayList<AiImage> masks;
+	private List<AiImage> masks;
 	private Map<Ai, AiImage> actorToMask;
 	
 	private Stack<Ai> masterStack;
@@ -59,7 +60,7 @@ public class AiCrowd extends Crowd {
 		animations = new HashMap<>();
 		talkNodes= new HashMap<>();
 		actors = new ArrayList<Ai>();
-		masks = new ArrayList<AiImage>();
+		masks = Collections.synchronizedList(new ArrayList<AiImage>());
 		loadPortraits();
 		loadAnimations();
 		
@@ -316,7 +317,7 @@ public class AiCrowd extends Crowd {
 		this.actorToMask.put(aiImg.getAi(), aiImg);
 	}
 
-	public ArrayList<AiImage> getMasks() {
+	public List<AiImage> getMasks() {
 		return this.masks;
 	}
 

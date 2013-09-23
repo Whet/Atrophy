@@ -5,19 +5,22 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.PriorityQueue;
 import java.util.Map.Entry;
+import java.util.PriorityQueue;
 import java.util.Random;
 import java.util.Set;
 
+import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.items.EngineeringSupply;
 import atrophy.combat.items.MedicalSupply;
 import atrophy.combat.items.ScienceSupply;
 import atrophy.combat.items.WeaponSupply;
 import atrophy.gameMenu.saveFile.MapManager.Sector;
+import atrophy.gameMenu.saveFile.Missions.AttackMission;
 import atrophy.gameMenu.saveFile.Missions.Mission;
 import atrophy.gameMenu.ui.StashManager;
 
@@ -25,6 +28,7 @@ public class FactionMissionPlanner implements Serializable{
 
 	private static final Integer SUPPLY_BASE_COST = 100;
 	private static final Integer ATTACK_REWARD = 20;
+	private static final double FAILED_MISSION_REP = -2;
 	
 	private String faction;
 	// sector, maps
@@ -67,7 +71,7 @@ public class FactionMissionPlanner implements Serializable{
 		territoryAttacks = getResearchDifference(enemyPlanner) + new Random().nextInt(3);
 		
 		addResources(mapManager);
-		updateMissions();
+		updateMissions(missions);
 		spendResources(techTree, missions, squad, stashManager);
 		setAttackTargets(mapManager, missions, stashManager, squad, itemMarket, techTree);
 	}
@@ -130,15 +134,50 @@ public class FactionMissionPlanner implements Serializable{
 		}
 	}
 
-	private void updateMissions() {
+	private void updateMissions(Missions missions) {
 		Iterator<Mission> iterator = activeMissions.iterator();
 		while(iterator.hasNext()) {
 			Mission next = iterator.next();
 			next.tickTimeToLive();
 			
+			// See if faction took location
+			if(next instanceof AttackMission && ((AttackMission) next).isChecked) {
+				
+				AttackMission atkMission = (AttackMission) next;
+				
+				if(this.faction.equals(AiGenerator.WHITE_VISTA) && missions.getPlayerBanditKillCount() == 0 ||
+				   this.faction.equals(AiGenerator.BANDITS) && missions.getPlayerWhiteVistaKillCount() == 0) {
+					// Penalise player
+					missions.getSquad().incrementFactionRelation(this.faction, FAILED_MISSION_REP);
+				}
+				if(missions.getPlayerKillCount(this.faction) > 0) {
+					missions.getSquad().incrementFactionRelation(this.faction, -4);
+				}
+				if((this.faction.equals(AiGenerator.WHITE_VISTA) && missions.getLivingBandits() == 0 && missions.getLivingWV() > 0) ||
+				   (this.faction.equals(AiGenerator.BANDITS) && missions.getLivingWV() == 0 && missions.getLivingBandits() > 0)) {
+					// take territory
+					this.addTerritory(atkMission.sectorName, atkMission.mapName);
+				}
+			}
+			
+			// If attack mission taken wait to see results next call of updateMissions
+			if(next instanceof AttackMission && ((AttackMission) next).isTaken() && !((AttackMission) next).isChecked) {
+				((AttackMission) next).isChecked = true;
+				continue;
+			}
+
 			if(next.isExpired())
 				iterator.remove();
 		}
+	}
+
+	private void addTerritory(String sectorName, String mapName) {
+		if(!this.mapsOwned.containsKey(sectorName))
+			this.mapsOwned.put(sectorName, new HashSet<String>());
+		
+		this.mapsOwned.get(sectorName).add(mapName);
+		
+		news.append("Captured territory " + mapName + " in sector: " + sectorName + "@n");
 	}
 
 	private void addResources(MapManager mapManager) {
