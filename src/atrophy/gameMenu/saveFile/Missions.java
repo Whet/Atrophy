@@ -229,6 +229,7 @@ public class Missions{
 			this.sectorName = sectorName;
 			this.missionTaken = false;
 			this.isChecked = false;
+			this.timeToLive = 1;
 		}
 
 		@Override
