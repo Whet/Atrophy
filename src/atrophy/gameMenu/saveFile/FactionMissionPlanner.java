@@ -52,6 +52,10 @@ public class FactionMissionPlanner implements Serializable{
 		this.activeMissions = new ArrayList<>();
 		this.news = new StringBuffer();
 	}
+	
+	public void loadFromSerialized() {
+		this.activeMissions = new ArrayList<>();
+	}
 
 	public boolean ownsMap(String mapName, String sectorName) {
 		

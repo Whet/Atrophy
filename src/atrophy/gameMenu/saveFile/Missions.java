@@ -257,7 +257,7 @@ public class Missions{
 		
 		@Override
 		public boolean isExpired() {
-			return (super.isExpired() && !missionTaken) || isChecked;
+			return (super.isExpired() && !missionTaken) || isChecked || missions.getMapOwner(this.mapName, this.sectorName).equals(this.faction);
 		}
 		
 		public boolean isTaken() {

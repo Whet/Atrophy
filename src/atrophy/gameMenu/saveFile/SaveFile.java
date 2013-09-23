@@ -102,6 +102,8 @@ public class SaveFile implements Serializable{
 			mapWar.setSectors(save.sectors);
 			itemMarket.lazyLoad(save.squad.getTechTree());
 			shopManager.randomItems();
+			save.banditsResearchAi.loadFromSerialized();
+			save.wvResearchAi.loadFromSerialized();
 			missions.setResearchAi(save.banditsResearchAi, save.wvResearchAi);
 			windowManager.updateWindows();
 			missions.setMemCodes(save.spawnCodes);
