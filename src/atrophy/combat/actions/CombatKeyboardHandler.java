@@ -24,6 +24,7 @@ import atrophy.combat.level.LevelManager;
 import atrophy.combat.level.MissionManager;
 import atrophy.combat.mechanics.TurnProcess;
 import atrophy.gameMenu.saveFile.Missions;
+import atrophy.gameMenu.saveFile.Squad;
 import atrophy.gameMenu.saveFile.TechTree;
 import atrophy.gameMenu.ui.StashManager;
 import atrophy.hardPanes.GameMenuHardPane;
@@ -162,7 +163,14 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 					
 					missions.checkDeadSpecialCharacters(aiCrowd);
 					
-					ActivePane.getInstance().changeRootCrowd(new Crowd(new GameMenuHardPane(aiCrowd.saveToSquad(), techTree, stashManager, missions)));
+					Squad saveToSquad = aiCrowd.saveToSquad();
+					
+					// saveToSquad calculates mission kills, must be called first
+					missions.setPlayerMissionKills(aiCrowd.getBanditKillCount(), aiCrowd.getLonerKillCount(), aiCrowd.getWhiteVistaKillCount());
+					missions.setTotalMissionDeaths(aiCrowd.getDirector().getTotalBanditDeaths(), aiCrowd.getDirector().getTotalLonerDeaths(), aiCrowd.getDirector().getTotalWVDeaths());
+					missions.setLivingMembers(aiCrowd.getLivingActors(AiGenerator.BANDITS), aiCrowd.getLivingActors(AiGenerator.LONER), aiCrowd.getLivingActors(AiGenerator.WHITE_VISTA));
+					
+					ActivePane.getInstance().changeRootCrowd(new Crowd(new GameMenuHardPane(saveToSquad, techTree, stashManager, missions)));
 				}
 				
 			break;

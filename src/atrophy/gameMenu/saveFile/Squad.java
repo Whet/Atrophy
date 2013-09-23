@@ -27,13 +27,44 @@ public class Squad implements Serializable {
 	private Double whiteVistaRelation;
 	private Double banditRelation;
 	
+	public ArrayList<String> lonerKills;
+	public ArrayList<String> banditKills;
+	public ArrayList<String> wvKills;
+	
 	public Squad(){
 		this.squadMembers = new ArrayList<Squaddie>(5);
 		this.stability = 0;
 		this.whiteVistaRelation = 1.0;
 		this.banditRelation = -1.0;
+		this.lonerKills = new ArrayList<>();
+		this.banditKills = new ArrayList<>();
+		this.wvKills = new ArrayList<>();
 	}
 	
+	public ArrayList<String> getLonerKills() {
+		return lonerKills;
+	}
+
+	public void setLonerKills(ArrayList<String> lonerKills) {
+		this.lonerKills = lonerKills;
+	}
+
+	public ArrayList<String> getBanditKills() {
+		return banditKills;
+	}
+
+	public void setBanditKills(ArrayList<String> banditKills) {
+		this.banditKills = banditKills;
+	}
+
+	public ArrayList<String> getWvKills() {
+		return wvKills;
+	}
+
+	public void setWvKills(ArrayList<String> wvKills) {
+		this.wvKills = wvKills;
+	}
+
 	public ArrayList<Squaddie> getSquad(){
 		return this.squadMembers;
 	}

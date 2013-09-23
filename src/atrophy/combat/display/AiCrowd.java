@@ -51,6 +51,8 @@ public class AiCrowd extends Crowd {
 	
 	private static Timer animationTimer;
 	
+	private int banditKillCount, whiteVistaKillCount, lonerKillCount;
+	
 	public AiCrowd(Squad squad) {
 		super(false);
 		images = new HashMap<>();
@@ -328,6 +330,25 @@ public class AiCrowd extends Crowd {
 		squad.setFactionRelations(this.squad.getFactionRelation(AiGenerator.WHITE_VISTA), this.squad.getFactionRelation(AiGenerator.BANDITS));
 		squad.setAdvance(this.squad.getAdvance());
 		
+		ArrayList<String> lonerKills = new ArrayList<>();
+		ArrayList<String> banditKills = new ArrayList<>();
+		ArrayList<String> wvKills = new ArrayList<>();
+		
+		lonerKills.addAll(this.squad.getLonerKills());
+		lonerKills.addAll(director.getLonerKills());
+		banditKills.addAll(this.squad.getBanditKills());
+		banditKills.addAll(director.getBanditKills());
+		wvKills.addAll(this.squad.getWvKills());
+		wvKills.addAll(director.getWvKills());
+		
+		squad.setWvKills(wvKills);
+		squad.setBanditKills(banditKills);
+		squad.setLonerKills(lonerKills);
+		
+		whiteVistaKillCount = wvKills.size() - this.squad.getWvKills().size();
+		lonerKillCount = lonerKills.size() - this.squad.getLonerKills().size();
+		banditKillCount = banditKills.size() - this.squad.getBanditKills().size();
+		
 		for(int i = 0; i < this.actors.size(); i++){
 			if(actors.get(i).getFaction().equals(AiGenerator.PLAYER) && !actors.get(i).isDead()){
 				Ai ai = actors.get(i);
@@ -358,6 +379,18 @@ public class AiCrowd extends Crowd {
 		
 		return squad;
 		
+	}
+	
+	public int getBanditKillCount() {
+		return banditKillCount;
+	}
+
+	public int getWhiteVistaKillCount() {
+		return whiteVistaKillCount;
+	}
+
+	public int getLonerKillCount() {
+		return lonerKillCount;
 	}
 
 	public void replaceAi(ThinkingAi thinkingAi, Ai playerAi) {
@@ -437,6 +470,17 @@ public class AiCrowd extends Crowd {
 
 	public void shuffleAi() {
 		Collections.shuffle(this.masterStack);
+	}
+	
+	public int getLivingActors(String faction) {
+		int t = 0;
+		
+		for(Ai actor:this.actors) {
+			if(actor.getFaction().equals(faction) && !actor.isDead())
+				t++;
+		}
+		
+		return t;
 	}
 	
 }

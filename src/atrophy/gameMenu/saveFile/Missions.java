@@ -41,6 +41,16 @@ public class Missions{
 	private StashManager stashManager;
 	private ItemMarket itemMarket;
 
+	private int playerBanditKillCount = 0;
+	private int playerLonerKillCount = 0;
+	private int playerWhiteVistaKillCount = 0;
+	private int banditDeaths = 0;
+	private int lonerDeaths = 0;
+	private int wvDeaths = 0;
+	private int livingBandits = 0;
+	private int livingLoners = 0;
+	private int livingWV = 0;
+	
 	public Missions(){
 		missions = new ArrayList<>();
 		memCodes = new HashSet<>();
@@ -403,6 +413,60 @@ public class Missions{
 			return AiGenerator.BANDITS;
 		
 		return "Unclaimed";
+	}
+
+	public void setPlayerMissionKills(int banditKillCount, int lonerKillCount, int whiteVistaKillCount) {
+		this.playerBanditKillCount = banditKillCount;
+		this.playerLonerKillCount = lonerKillCount;
+		this.playerWhiteVistaKillCount = whiteVistaKillCount;
+	}
+
+	public void setTotalMissionDeaths(int totalBanditDeaths, int totalLonerDeaths, int totalWVDeaths) {
+		this.banditDeaths = totalBanditDeaths;
+		this.lonerDeaths = totalLonerDeaths;
+		this.wvDeaths = totalWVDeaths;
+	}
+
+	public void setLivingMembers(int livingBandits, int livingLoners, int livingWV) {
+		this.livingBandits = livingBandits;
+		this.livingLoners = livingLoners;
+		this.livingWV = livingWV;
+	}
+
+	public int getPlayerBanditKillCount() {
+		return playerBanditKillCount;
+	}
+
+	public int getPlayerLonerKillCount() {
+		return playerLonerKillCount;
+	}
+
+	public int getPlayerWhiteVistaKillCount() {
+		return playerWhiteVistaKillCount;
+	}
+
+	public int getBanditDeaths() {
+		return banditDeaths;
+	}
+
+	public int getWVDeaths() {
+		return wvDeaths;
+	}
+	
+	public int getLonerDeaths() {
+		return lonerDeaths;
+	}
+
+	public int getLivingBandits() {
+		return livingBandits;
+	}
+
+	public int getLivingLoners() {
+		return livingLoners;
+	}
+
+	public int getLivingWV() {
+		return livingWV;
 	}
 
 }

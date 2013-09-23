@@ -1,11 +1,12 @@
 package atrophy.combat.ai.director;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Random;
 
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.ai.Ai;
+import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.mechanics.ScoringMechanics;
 
@@ -19,24 +20,88 @@ public class HealthDirector {
 	private boolean playerAttacked;
 	private boolean playerAttacker;
 	
+	private ArrayList<String> lonerKills;
+	private ArrayList<String> banditKills;
+	private ArrayList<String> wvKills;
+	
+	private int totalLonerDeaths, totalWVDeaths, totalBanditDeaths;
+	
 	public HealthDirector(AiCrowd aiCrowd) {
 		this.clf = new HashMap<>();
 		this.stealthKills = 0;
 		this.aiCrowd = aiCrowd;
 		this.playerAttacked = false;
 		this.playerAttacker = false;
+		
+		this.totalLonerDeaths = 0;
+		this.totalWVDeaths = 0;
+		this.totalBanditDeaths = 0;
+		
+		this.lonerKills = new ArrayList<>();
+		this.banditKills = new ArrayList<>();
+		this.wvKills = new ArrayList<>();
+	}
+	
+	public boolean addKill(Ai killer, Ai killedAi, boolean dead) {
+		
+		if(!dead)
+			return dead;
+		
+		switch(killedAi.getFaction()) {
+			case AiGenerator.LONER:
+				totalLonerDeaths++;
+				if(killer.getFaction().equals(AiGenerator.PLAYER))
+					lonerKills.add(killedAi.getName());
+			break;
+			case AiGenerator.WHITE_VISTA:
+				totalWVDeaths++;
+				if(killer.getFaction().equals(AiGenerator.PLAYER))
+					wvKills.add(killedAi.getName());
+			break;
+			case AiGenerator.BANDITS:
+				totalBanditDeaths++;
+				if(killer.getFaction().equals(AiGenerator.PLAYER))
+					banditKills.add(killedAi.getName());
+			break;
+		}
+		
+		return dead;
+	}
+	
+	public int getTotalLonerDeaths() {
+		return totalLonerDeaths;
+	}
+
+	public int getTotalWVDeaths() {
+		return totalWVDeaths;
+	}
+
+	public int getTotalBanditDeaths() {
+		return totalBanditDeaths;
+	}
+
+	public ArrayList<String> getLonerKills() {
+		return lonerKills;
+	}
+
+	public ArrayList<String> getBanditKills() {
+		return banditKills;
+	}
+
+	public ArrayList<String> getWvKills() {
+		return wvKills;
 	}
 
 	public boolean judge(boolean dead, Ai killedAi, Ai killer, int turn) {
 		
 		// Handle attackers that shouldn't be able to attack
 		if(killer.getStunnedTurns() > 0 || killer.getIncapTurns() > 0) {
-			return false;
+			return addKill(killer, killedAi, false);
 		}
 		
 		// Don't handle ai on ai conflict beyond pure dice rolling
 		if(!this.clf.get(killedAi).getType().equals(DirectorArchetype.PLAYER) && !this.clf.get(killer).getType().equals(DirectorArchetype.PLAYER)) {
-			return dead;
+			return addKill(killer, killedAi, dead);
 		}
 		
 		if(this.clf.get(killedAi).getType().equals(DirectorArchetype.PLAYER)) {
@@ -50,7 +115,7 @@ public class HealthDirector {
 		if(clf.get(killer).getType().equals(DirectorArchetype.COD)) {
 			
 			appealArchetypeChange(dead, killer, clf.get(killer).getOriginalType());
-			return false;
+			return addKill(killer, killedAi, false);
 		}
 		
 		
@@ -67,7 +132,7 @@ public class HealthDirector {
 				changeClassification(killedAi, DirectorArchetype.COD);
 			}
 			
-			return true;
+			return addKill(killer, killedAi, true);
 		}
 		
 		// Handle swarm attacking
@@ -75,14 +140,14 @@ public class HealthDirector {
 			
 			// Complete swarming will kill careless player
 			if(clf.get(killedAi).getAttackedCount(turn) == getFactionInRoom(killer) && getFactionInRoom(killer) > 3)
-				return true;
+				return addKill(killer, killedAi, true);
 			
 			// Some swarming, give the swarm a chance
 			if(getFactionInRoom(killer) > 2)
-				return dead;
+				return addKill(killer, killedAi, dead);
 			
 			// A lone swarmer cannot kill
-			return false;
+			return addKill(killer, killedAi, false);
 		}
 		
 		// Handle elite attacking
@@ -92,22 +157,22 @@ public class HealthDirector {
 				
 				changeClassification(killedAi, DirectorArchetype.UNDECIDED);
 				
-				return dead;
+				return addKill(killer, killedAi, dead);
 			}
 			
 			// Make the attacker re-roll
 			if(dead)
-				return ScoringMechanics.killedTarget(killer, killedAi);
+				return addKill(killer, killedAi, ScoringMechanics.killedTarget(killer, killedAi));
 			
-			return dead;
+			return addKill(killer, killedAi, dead);
 		}
 		
 		// Handle stealth kills
 		if(dead || (!clf.get(killedAi).getType().equals(DirectorArchetype.SPEAKER) && stealthKillChecks(killedAi, killer))) {
-			return true;
+			return addKill(killer, killedAi, true);
 		}
 		
-		return false;
+		return addKill(killer, killedAi, false);
 	}
 
 	private void appealArchetypeChange(boolean dead, Ai killer, DirectorArchetype desiredArchetype) {
