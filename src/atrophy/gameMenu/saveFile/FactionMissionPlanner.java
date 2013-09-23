@@ -71,7 +71,7 @@ public class FactionMissionPlanner implements Serializable{
 		territoryAttacks = getResearchDifference(enemyPlanner) + new Random().nextInt(3);
 		
 		addResources(mapManager);
-		updateMissions(missions);
+		updateMissions(missions, squad);
 		spendResources(techTree, missions, squad, stashManager);
 		setAttackTargets(mapManager, missions, stashManager, squad, itemMarket, techTree);
 	}
@@ -134,7 +134,7 @@ public class FactionMissionPlanner implements Serializable{
 		}
 	}
 
-	private void updateMissions(Missions missions) {
+	private void updateMissions(Missions missions, Squad squad) {
 		Iterator<Mission> iterator = activeMissions.iterator();
 		while(iterator.hasNext()) {
 			Mission next = iterator.next();
@@ -157,6 +157,8 @@ public class FactionMissionPlanner implements Serializable{
 				   (this.faction.equals(AiGenerator.BANDITS) && missions.getLivingWV() == 0 && missions.getLivingBandits() > 0)) {
 					// take territory
 					this.addTerritory(atkMission.sectorName, atkMission.mapName);
+					
+					squad.setAdvance(squad.getAdvance() + ((Integer) next.reward));
 				}
 			}
 			

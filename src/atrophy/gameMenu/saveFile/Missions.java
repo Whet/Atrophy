@@ -240,8 +240,6 @@ public class Missions{
 			else
 				missions.squad.incrementFactionRelation(AiGenerator.WHITE_VISTA, -2);
 			
-			squad.setAdvance(squad.getAdvance() + ((Integer) reward));
-			
 			this.missionTaken = true;
 			
 			try {
