@@ -60,7 +60,7 @@ public class AiCrowd extends Crowd {
 		animations = new HashMap<>();
 		talkNodes= new HashMap<>();
 		actors = new ArrayList<Ai>();
-		masks = Collections.synchronizedList(new ArrayList<AiImage>());
+		masks = new ArrayList<AiImage>();
 		loadPortraits();
 		loadAnimations();
 		
@@ -411,10 +411,13 @@ public class AiCrowd extends Crowd {
 		super.drawMethod(drawShape);
 	}
 
-	public synchronized void updateAnimations() {
-		for(AiImage image : this.masks) {
-			image.updateAnimation();
-			image.setZ((int) image.getLocation()[1]);
+	public void updateAnimations() {
+		
+		AiImage[] images = this.masks.toArray(new AiImage[this.masks.size()]);
+		
+		for(int i = 0; i < images.length; i++) {
+			images[i].updateAnimation();
+			images[i].setZ((int) images[i].getLocation()[1]);
 		}
 		computeZOrder();
 	}
