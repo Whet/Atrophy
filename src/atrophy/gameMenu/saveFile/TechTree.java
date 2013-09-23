@@ -1,9 +1,12 @@
 package atrophy.gameMenu.saveFile;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
 
 import atrophy.combat.ai.AiGenerator;
@@ -212,6 +215,19 @@ LOOP: for(TechnologyNode node :this.techTree.values()) {
 
 	public int[] getRequirements(String tech) {
 		return this.getTech(tech).getResearchRequirements();
+	}
+
+	public List<String> getStealableTechs(String stolenFaction, String robberFaction) {
+
+		List<String> stealableTechs = new ArrayList<>();
+		
+		for(Entry<String, TechnologyNode> techEntry: this.techTree.entrySet()) {
+			if(techEntry.getValue().researchers.contains(stolenFaction) && !techEntry.getValue().researchers.contains(robberFaction))
+				stealableTechs.add(techEntry.getKey());
+		}
+		
+		return stealableTechs;
+		
 	}
 
 }

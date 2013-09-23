@@ -29,6 +29,7 @@ public class FactionMissionPlanner implements Serializable{
 	private static final Integer SUPPLY_BASE_COST = 100;
 	private static final Integer ATTACK_REWARD = 20;
 	private static final double FAILED_MISSION_REP = -2;
+	private static final int TECH_STEAL_CHANCE = 4;
 	
 	private String faction;
 	// sector, maps
@@ -39,7 +40,7 @@ public class FactionMissionPlanner implements Serializable{
 	private String targetTech;
 	private StringBuffer news;
 	private int researchCount;
-	private int territoryAttacks;
+	private int actionPoints;
 	
 	public FactionMissionPlanner(String faction) {
 		this.faction = faction;
@@ -72,15 +73,21 @@ public class FactionMissionPlanner implements Serializable{
 	
 	public void updatePlannerKeepNews(MapManager mapManager, TechTree techTree, Missions missions, Squad squad, StashManager stashManager, FactionMissionPlanner enemyPlanner, ItemMarket itemMarket) {
 		
-		territoryAttacks = getResearchDifference(enemyPlanner) + new Random().nextInt(3);
+		actionPoints = new Random().nextInt(3);
 		
 		addResources(mapManager);
 		updateMissions(missions, squad);
 		spendResources(techTree, missions, squad, stashManager);
-		setAttackTargets(mapManager, missions, stashManager, squad, itemMarket, techTree);
+		setAttackTargets(mapManager, missions, stashManager, squad, itemMarket, techTree, enemyPlanner);
 	}
 
-	private void setAttackTargets(MapManager mapManager, Missions missions, StashManager stashManager, Squad squad, ItemMarket itemMarket, TechTree techTree) {
+	private void setAttackTargets(MapManager mapManager, Missions missions, StashManager stashManager, Squad squad, ItemMarket itemMarket, TechTree techTree, FactionMissionPlanner enemyPlanner) {
+		
+		
+		//Try to steal techs if behind
+		if(getResearchDifference(enemyPlanner) < -2)
+			stealTech(enemyPlanner, techTree);
+		
 		ArrayList<Sector> sectors = mapManager.getSectors();
 		
 		PriorityQueue<AttackLocation> possibleAttackLocations = new PriorityQueue<AttackLocation>(20, new Comparator<AttackLocation>() {
@@ -111,7 +118,7 @@ public class FactionMissionPlanner implements Serializable{
 		}
 		
 		// Create attack missions
-		for(int i = 0; i < territoryAttacks; i++) {
+		for(int i = 0; i < actionPoints; i++) {
 			
 			if(possibleAttackLocations.size() == 0)
 				break;
@@ -191,7 +198,7 @@ public class FactionMissionPlanner implements Serializable{
 		
 		news.append("Captured territory " + mapName + " in sector: " + sectorName + "@n");
 	}
-
+	
 	private void addResources(MapManager mapManager) {
 		for(Entry<String, Set<String>> entry: mapsOwned.entrySet()) {
 			Sector sector = mapManager.getSector(entry.getKey());
@@ -277,6 +284,23 @@ public class FactionMissionPlanner implements Serializable{
 		
 	}
 
+	private void stealTech(FactionMissionPlanner enemyPlanner, TechTree techTree) {
+		
+		List<String> stealableTechs = techTree.getStealableTechs(enemyPlanner.faction, this.faction);
+		
+		if(stealableTechs.size() > 0) {
+			
+			this.actionPoints--;
+			
+			if(new Random().nextInt(10) <= TECH_STEAL_CHANCE) {
+				String tech = stealableTechs.get(new Random().nextInt(stealableTechs.size()));
+				this.news.append("Stole technology " + tech + "@n");
+				techTree.research(tech, this.faction);
+			}
+		}
+		
+	}
+	
 	private int requirementDistance(int[] requirements) {
 		return (requirements[0] - this.scienceSupply) +  (requirements[1] - this.engineeringSupply) + (requirements[2] - this.weaponSupply) + (requirements[3] - this.medicalSupply);
 	}
