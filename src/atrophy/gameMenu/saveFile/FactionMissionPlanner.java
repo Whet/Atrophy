@@ -40,7 +40,6 @@ public class FactionMissionPlanner implements Serializable{
 	private StringBuffer news;
 	private int researchCount;
 	private int territoryAttacks;
-	private Set<String> attackTargets;
 	
 	public FactionMissionPlanner(String faction) {
 		this.faction = faction;
@@ -273,6 +272,8 @@ public class FactionMissionPlanner implements Serializable{
 		this.engineeringSupply -= requirements[1];
 		this.weaponSupply -= requirements[2];
 		this.medicalSupply -= requirements[3];
+		
+		this.news.append("Researched "+ tech + "@n");
 		
 	}
 
