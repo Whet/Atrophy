@@ -165,19 +165,19 @@ public class ItemMarket {
 	}
 	
 	public ArrayList<String> getBanditsAllowedItems() {
-		return new ArrayList<>(this.itemsInMarket);
+		return new ArrayList<>(this.banditItems);
 	}
 	
 	public ArrayList<String> getBanditsAllowedWeapons() {
-		return new ArrayList<>(this.weaponsInMarket);
+		return new ArrayList<>(this.banditWeapons);
 	}
 	
 	public ArrayList<String> getWhiteVistaAllowedItems() {
-		return new ArrayList<>(this.itemsInMarket);
+		return new ArrayList<>(this.wvItems);
 	}
 	
 	public ArrayList<String> getWhiteVistaAllowedWeapons() {
-		return new ArrayList<>(this.weaponsInMarket);
+		return new ArrayList<>(this.wvWeapons);
 	}
 
 
