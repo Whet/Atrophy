@@ -31,6 +31,7 @@ import atrophy.combat.level.LevelManager;
 
 public class MapDrawer implements Displayable {
 
+	private static final Color[] RADIATION_COLOURS = new Color[]{Color.white, Color.gray, Color.black, Color.yellow, new Color(139,60,19)};
 	private static final Color COVER_COLOUR = Color.white;
 	private static final Color STEALTH_COLOUR = Color.gray;
 	private static final float OCCUPIED_ALPHA = 1.0f;
@@ -101,7 +102,7 @@ public class MapDrawer implements Displayable {
 		
 		for(LevelBlock levelBlock : levelManager.getCurrentLevel().getBlocks()){
 		
-			map[mapNumber] = new MapDrawBlock(panningManager, new BufferedImage((int)levelBlock.getSize()[0],(int)levelBlock.getSize()[1], BufferedImage.TYPE_INT_ARGB),levelBlock);
+			map[mapNumber] = new MapDrawBlock(panningManager, new BufferedImage((int)levelBlock.getSize()[0],(int)levelBlock.getSize()[1], BufferedImage.TYPE_INT_ARGB),levelBlock, levelBlock.getTexture());
 			
 			MapPainter.applyMapTexture(floorTextures, floorTextInfo, levelBlock, map[mapNumber].getImage());
 			
@@ -161,12 +162,14 @@ public class MapDrawer implements Displayable {
 		private final List<Polygon> stealthRegions;
 		private final int levelBlockCode;
 		private PanningManager panningManager;
+		private MapTextures texture;
 
-		public MapDrawBlock(PanningManager panningManager, BufferedImage bufferedImage, LevelBlock levelBlock) {
+		public MapDrawBlock(PanningManager panningManager, BufferedImage bufferedImage, LevelBlock levelBlock, MapTextures texture) {
 			this.image = bufferedImage;
 			this.hitbox = levelBlock.getHitBox();
 			this.location = levelBlock.getLocation().clone();
 			this.alpha = 1.0f;
+			this.texture = texture;
 			
 			this.cover = levelBlock.getCover();
 			this.stealthRegions = levelBlock.getStealthRegion();
@@ -293,6 +296,10 @@ public class MapDrawer implements Displayable {
 			return stealthRegions;
 		}
 
+		public MapTextures getTexture() {
+			return this.texture;
+		}
+
 	}
 
 	public void updateAlphas(){
@@ -344,7 +351,30 @@ public class MapDrawer implements Displayable {
 				
 				drawShape.setTransform(panTransform);
 				
-				drawShape.drawImage(mapDraw.getImage(), null, null);
+				if(mapDraw.getTexture().equals(MapTextures.SPACE)) {
+					
+					drawShape.setComposite(GraphicsFunctions.makeComposite(0.2f));
+					
+					for(int i = 0; i < mapDraw.getHitbox().getBounds2D().getWidth() * mapDraw.getHitbox().getBounds2D().getHeight() / 100; i++) {
+							
+						int[] location = new int[]{0,0};
+						
+						location[0] += new Random().nextInt((int) mapDraw.getHitbox().getBounds2D().getWidth());
+						location[1] += new Random().nextInt((int) mapDraw.getHitbox().getBounds2D().getHeight());
+						
+						if(!mapDraw.getHitbox().contains(location[0] + mapDraw.getLocation()[0], location[1] + mapDraw.getLocation()[1]))
+							continue;
+							
+						drawShape.setColor(RADIATION_COLOURS[new Random().nextInt(RADIATION_COLOURS.length)]);
+						
+						int size = new Random().nextInt(3);
+						
+						drawShape.fillOval(location[0], location[1], size, size);
+					}
+				}
+				else {
+					drawShape.drawImage(mapDraw.getImage(), null, null);
+				}
 				
 				drawShape.setColor(COVER_COLOUR);
 				drawShape.setComposite(GraphicsFunctions.makeComposite(0.4f));
@@ -368,6 +398,7 @@ public class MapDrawer implements Displayable {
 					
 					drawShape.drawPolygon(levelManager.getBlock(mapDraw.levelBlockCode).getHitBox());
 				}
+				
 			}
 			// Debug
 //			else {

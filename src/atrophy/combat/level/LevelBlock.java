@@ -13,6 +13,7 @@ import atrophy.combat.CombatVisualManager;
 import atrophy.combat.ai.Ai;
 import atrophy.combat.ai.PathNotFoundException;
 import atrophy.combat.ai.ThinkingAi.AiNode;
+import atrophy.combat.display.MapTextures;
 import atrophy.combat.display.ui.loot.LootBox.Lootable;
 import atrophy.combat.display.ui.loot.LootContainer;
 
@@ -20,54 +21,31 @@ public class LevelBlock {
 	
 	private List<Portal> portals;
 	private Polygon hitbox;
-	private Stack<Polygon> texturePolygons;
-	private Stack<Integer> textures;
 	private List<Polygon> coverPolygons;
 	private List<Polygon> stashPolygons;
 	private List<Lootable> stashes;
 	private List<AiNode> nodes;
-	
 	private LevelBlockGrid grid;
-	
 	private int code;
-	
-	private int textureCode;
-
 	private boolean containsScience;
-
 	private MissionManager missionManager;
-
 	private boolean discovered;
+	private MapTextures texture;
 	
-	/**
-	 * Instantiates a new level block.
-	 *
-	 * @param code the code
-	 * @param missionManager 
-	 */
-	public LevelBlock(int code, MissionManager missionManager){
+	public LevelBlock(int code, MissionManager missionManager, MapTextures texture){
 		
 		portals = new ArrayList<Portal>(1);
-		
 		hitbox = new Polygon();
-		
-		this.texturePolygons = new Stack<Polygon>();
-		this.textures = new Stack<Integer>();
 		
 		this.coverPolygons = new ArrayList<Polygon>(1);
 		this.stashPolygons = new ArrayList<Polygon>(1);
 		this.stashes = new ArrayList<Lootable>(1);
 		this.nodes = new ArrayList<AiNode>(1);
-		
 		this.code = code;
-		
-		this.textureCode = 0;
-		
 		this.containsScience = false;
-		
 		this.missionManager = missionManager;
-		
 		this.discovered = false;
+		this.texture = texture;
 		
 	}
 	
@@ -372,22 +350,6 @@ public class LevelBlock {
 		this.coverPolygons.add(region);
 	}
 
-	public void setTextureCode(int textureCode){
-		this.textureCode = textureCode;
-	}
-	
-	public int getFloorTextureCode() {
-		return this.textureCode;
-	}
-	
-	public Stack<Polygon> getTexturePolygons() {
-		return texturePolygons;
-	}
-
-	public void addTexturePolygon(Polygon texturePolygon) {
-		this.texturePolygons.add(texturePolygon);
-	}
-
 	public void addNode(AiNode node){
 		this.nodes.add(node);
 	}
@@ -411,10 +373,10 @@ public class LevelBlock {
 		return this.stashes;
 	}
 
-	public Stack<Integer> getTextures() {
-		return this.textures;
+	public MapTextures getTexture() {
+		return this.texture;
 	}
-
+	
 	public void setContainsScience(boolean containsScience) {
 		this.containsScience = containsScience;
 	}

@@ -36,6 +36,7 @@ import atrophy.combat.ai.conversation.Dialogue;
 import atrophy.combat.ai.conversation.TalkMap;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.MapDrawer;
+import atrophy.combat.display.MapTextures;
 import atrophy.combat.display.TorchDrawer;
 import atrophy.combat.display.ui.MessageBox;
 import atrophy.combat.display.ui.loot.LootBox.Lootable;
@@ -322,8 +323,9 @@ public class AtrophyScriptReader {
 		private Level level;
 		private CombatMembersManager combatMembersManager;
 		private boolean saferoom;
+		private MapTextures texture;
 		
-		public LevelBlockInfo(int number, String name, List<Integer> xList, List<Integer> yList, Map<String, Integer> territory, List<String> zone, boolean saferoom, MissionManager missionManager, Level level, CombatMembersManager combatMembersManager) {
+		public LevelBlockInfo(int number, String name, List<Integer> xList, List<Integer> yList, Map<String, Integer> territory, List<String> zone, boolean saferoom, MissionManager missionManager, Level level, CombatMembersManager combatMembersManager, MapTextures texture) {
 			this.number = number;
 			this.name = name;
 			this.xList = xList;
@@ -336,7 +338,7 @@ public class AtrophyScriptReader {
 			this.zone = zone;
 			
 			this.saferoom = saferoom;
-			
+			this.texture = texture;
 			this.missionManager = missionManager;
 			this.level = level;
 			this.combatMembersManager = combatMembersManager;
@@ -351,7 +353,7 @@ public class AtrophyScriptReader {
 		}
 
 		public LevelBlock toLevelBlock() {
-			LevelBlock levelBlock = new LevelBlock(number, missionManager);
+			LevelBlock levelBlock = new LevelBlock(number, missionManager, texture);
 			for(int i = 0; i < xList.size(); i++) {
 				levelBlock.addVertex(xList.get(i), yList.get(i));
 			}
@@ -1987,6 +1989,7 @@ public class AtrophyScriptReader {
 		boolean saferoom = false;
 		List<RegionInfo> stashes = new ArrayList<>();
 		List<RegionInfo> cover = new ArrayList<>();
+		MapTextures texture = MapTextures.METAL;
 		
 		for(int i = 0; i < tree.getChildCount(); i++) {
 			switch(tree.getChild(i).toString()) {
@@ -2017,10 +2020,13 @@ public class AtrophyScriptReader {
 				case "STASH":
 					stashes.add(createRegion(tree.getChild(i)));
 				break;
+				case "TEXTURE":
+					texture = MapTextures.valueOf(createString(tree.getChild(i)));
+				break;
 			}
 		}
 		
-		LevelBlockInfo levelBlockInfo = new LevelBlockInfo(blockNumber, name, xList, yList, territory, zone, saferoom, missionManager, level, combatMembersManager);
+		LevelBlockInfo levelBlockInfo = new LevelBlockInfo(blockNumber, name, xList, yList, territory, zone, saferoom, missionManager, level, combatMembersManager, texture);
 		
 		for(RegionInfo info : stashes) {
 			levelBlockInfo.addStash(info);
