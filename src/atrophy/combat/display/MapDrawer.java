@@ -104,32 +104,34 @@ public class MapDrawer implements Displayable {
 		
 			map[mapNumber] = new MapDrawBlock(panningManager, new BufferedImage((int)levelBlock.getSize()[0],(int)levelBlock.getSize()[1], BufferedImage.TYPE_INT_ARGB),levelBlock, levelBlock.getTexture());
 			
-			MapPainter.applyMapTexture(floorTextures, floorTextInfo, levelBlock, map[mapNumber].getImage());
+			if(!levelBlock.getTexture().equals(MapTextures.SPACE)) {
 			
-//			// Draw random debris
-			double debrisArea = levelBlock.getHitBox().getBounds2D().getWidth() * levelBlock.getHitBox().getBounds2D().getHeight();
-			for(int i = 0; i < Math.floor(debrisArea / 200000); i++) {
+				MapPainter.applyMapTexture(floorTextures, floorTextInfo, levelBlock, map[mapNumber].getImage());
 				
+	//			// Draw random debris
+				double debrisArea = levelBlock.getHitBox().getBounds2D().getWidth() * levelBlock.getHitBox().getBounds2D().getHeight();
+				for(int i = 0; i < Math.floor(debrisArea / 200000); i++) {
+					
+					
+					int debris = new Random().nextInt(debrisImages.length);
+					
+					MapPainter.applyImage(debrisImages[debris], map[mapNumber], levelManager.randomInPosition(levelBlock));
+				}
 				
-				int debris = new Random().nextInt(debrisImages.length);
+				map[mapNumber].drawRegions(levelBlock);
 				
-				MapPainter.applyImage(debrisImages[debris], map[mapNumber], levelManager.randomInPosition(levelBlock));
-			}
-			
-			map[mapNumber].drawRegions(levelBlock);
-			
-			// Draw random glowsticks
-			double glowstickArea = levelBlock.getHitBox().getBounds2D().getWidth() * levelBlock.getHitBox().getBounds2D().getHeight();
-			for(int i = 0; i < Math.floor(glowstickArea / 100000); i++) {
-				try {
-					MapPainter.applyImage(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/texture/glowSticks1.png")), map[mapNumber], levelManager.randomInPosition(levelBlock));
-				} catch (FileNotFoundException e) {
-					e.printStackTrace();
-				} catch (IOException e) {
-					e.printStackTrace();
+				// Draw random glowsticks
+				double glowstickArea = levelBlock.getHitBox().getBounds2D().getWidth() * levelBlock.getHitBox().getBounds2D().getHeight();
+				for(int i = 0; i < Math.floor(glowstickArea / 100000); i++) {
+					try {
+						MapPainter.applyImage(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/texture/glowSticks1.png")), map[mapNumber], levelManager.randomInPosition(levelBlock));
+					} catch (FileNotFoundException e) {
+						e.printStackTrace();
+					} catch (IOException e) {
+						e.printStackTrace();
+					}
 				}
 			}
-			
 			mapNumber++;
 		}
 	}
@@ -353,27 +355,14 @@ public class MapDrawer implements Displayable {
 				
 				if(mapDraw.getTexture().equals(MapTextures.SPACE)) {
 					
-					drawShape.setComposite(GraphicsFunctions.makeComposite(0.2f));
-					
-					for(int i = 0; i < mapDraw.getHitbox().getBounds2D().getWidth() * mapDraw.getHitbox().getBounds2D().getHeight() / 100; i++) {
-							
-						int[] location = new int[]{0,0};
-						
-						location[0] += new Random().nextInt((int) mapDraw.getHitbox().getBounds2D().getWidth());
-						location[1] += new Random().nextInt((int) mapDraw.getHitbox().getBounds2D().getHeight());
-						
-						if(!mapDraw.getHitbox().contains(location[0] + mapDraw.getLocation()[0], location[1] + mapDraw.getLocation()[1]))
-							continue;
-							
-						drawShape.setColor(RADIATION_COLOURS[new Random().nextInt(RADIATION_COLOURS.length)]);
-						
-						int size = new Random().nextInt(3);
-						
-						drawShape.fillOval(location[0], location[1], size, size);
-					}
+					radiationEffect(drawShape, mapDraw);
 				}
 				else {
 					drawShape.drawImage(mapDraw.getImage(), null, null);
+				}
+				
+				if(mapDraw.getTexture().equals(MapTextures.RAD_METAL)) {
+					radiationEffect(drawShape, mapDraw);
 				}
 				
 				drawShape.setColor(COVER_COLOUR);
@@ -414,6 +403,27 @@ public class MapDrawer implements Displayable {
 		drawShape.setTransform(new AffineTransform());
 	}
 	
+	private void radiationEffect(Graphics2D drawShape, MapDrawBlock mapDraw) {
+		drawShape.setComposite(GraphicsFunctions.makeComposite(0.2f));
+		
+		for(int i = 0; i < mapDraw.getHitbox().getBounds2D().getWidth() * mapDraw.getHitbox().getBounds2D().getHeight() / 100; i++) {
+				
+			int[] location = new int[]{0,0};
+			
+			location[0] += new Random().nextInt((int) mapDraw.getHitbox().getBounds2D().getWidth());
+			location[1] += new Random().nextInt((int) mapDraw.getHitbox().getBounds2D().getHeight());
+			
+			if(!mapDraw.getHitbox().contains(location[0] + mapDraw.getLocation()[0], location[1] + mapDraw.getLocation()[1]))
+				continue;
+				
+			drawShape.setColor(RADIATION_COLOURS[new Random().nextInt(RADIATION_COLOURS.length)]);
+			
+			int size = new Random().nextInt(3);
+			
+			drawShape.fillOval(location[0], location[1], size, size);
+		}
+	}
+
 	private void drawPathGrid(Graphics2D drawShape, LevelBlockGrid levelBlockGrid, double x, double y) {
 		drawShape.setColor(Color.white);
 	    for(int i = 0; i < levelBlockGrid.getBlocks().size(); i++){
