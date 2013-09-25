@@ -153,6 +153,8 @@ public class CombatHardPane implements HardPaneDefineable {
 		
 		uiUpdaterSuite.getCombatUiManager().updateUi();
 		
+		crowd.addKeyListener(actionSuite.getCombatKeyboardHandler());
+		
 		crowd.computeZOrder();
 		
 		// Hide ai if not in sight
@@ -167,8 +169,6 @@ public class CombatHardPane implements HardPaneDefineable {
 		uiUpdaterSuite.getPanningManager().panToPlayer();
 		
 		//crowd.addDisplayItem(DebugText.getInstance());
-		
-		crowd.addKeyListener(actionSuite.getCombatKeyboardHandler());
 		
 		uiUpdaterSuite.getCombatUiManager().getMapDrawer().updateAlphas();
 		

@@ -21,22 +21,8 @@ public class TextInput extends Text implements MouseRespondable,KeyboardResponda
 	private Rectangle2D boundBox;
 	private boolean drawBox;
 
-	public TextInput(){
-		active = true;
-		focus = false;
-		this.drawBox = true;
-	}
-	
 	public void setDrawBox(boolean drawBox) {
 		this.drawBox = drawBox;
-	}
-
-	public TextInput(double x, double y){
-		super(x,y,"");
-		
-		active = true;
-		focus = false;
-		this.drawBox = true;
 	}
 
 	public TextInput(double x, double y, String message) {
@@ -76,7 +62,7 @@ public class TextInput extends Text implements MouseRespondable,KeyboardResponda
 	protected void updateText(){};
 
 	public boolean kD(KeyEvent e){
-		return false;
+		return true;
 	}
 
 	public boolean kU(KeyEvent e){
@@ -114,12 +100,29 @@ public class TextInput extends Text implements MouseRespondable,KeyboardResponda
 		return false;
 	}
 
-	public void mI(Point mousePosition){}
-
+	@Override
+	public void setFocus(boolean focus) {
+		if(focus){
+			this.setColour(Color.white);
+		}
+		else{
+			this.setColour(TextButton.DEFAULT_ON_COLOUR);
+		}
+		this.focus = focus;
+	}
+	
+	@Override
+	public void mI(Point mousePosition) {
+		if(!this.isFocused())
+			this.setColour(TextButton.DEFAULT_ON_COLOUR);
+	}
+	
+	@Override
 	public void mO(Point mousePosition) {
 		this.setFocus(false);
+		this.setColour(TextButton.DEFAULT_OFF_COLOUR);
 	}
-
+	
 	public boolean mMC(Point mousePosition, MouseEvent e) {return false;}
 	
 	public boolean isActive(){
@@ -143,10 +146,6 @@ public class TextInput extends Text implements MouseRespondable,KeyboardResponda
 
 	public void setActive(boolean active){
 		this.active = active;
-	}
-
-	public void setFocus(boolean focus){
-		this.focus = focus;
 	}
 
 	public void setMaxLetters(int maxLetters){

@@ -36,7 +36,7 @@ public class MenuBar extends Crowd{
 	
 	private void addTextButtons(final WindowManager windowManager, final MapManager mapWar, final Missions missions, final Squad squad, final ShopManager shopManager, final StashManager stashManager, final TechTree techTree, final ItemMarket itemMarket) {
 		
-		TextButton mapSelection = new TextButton(Color.yellow, Color.red) {
+		TextButton mapSelection = new TextButton(TextButton.DEFAULT_ON_COLOUR,TextButton.DEFAULT_OFF_COLOUR) {
 			
 			{
 				this.setText("Map Menu");
@@ -55,7 +55,7 @@ public class MenuBar extends Crowd{
 		this.addMouseActionItem(mapSelection);
 		this.addDisplayItem(mapSelection);
 		
-		TextButton squadMenu = new TextButton(Color.yellow, Color.red) {
+		TextButton squadMenu = new TextButton(TextButton.DEFAULT_ON_COLOUR,TextButton.DEFAULT_OFF_COLOUR) {
 			
 			{
 				this.setText("Squad Menu");
@@ -74,7 +74,7 @@ public class MenuBar extends Crowd{
 		this.addMouseActionItem(squadMenu);
 		this.addDisplayItem(squadMenu);
 		
-		TextButton missionMenu = new TextButton(Color.yellow, Color.red) {
+		TextButton missionMenu = new TextButton(TextButton.DEFAULT_ON_COLOUR,TextButton.DEFAULT_OFF_COLOUR) {
 			
 			{
 				this.setText("Missions Menu");
@@ -92,7 +92,7 @@ public class MenuBar extends Crowd{
 		this.addMouseActionItem(missionMenu);
 		this.addDisplayItem(missionMenu);
 		
-		TextButton saveGame = new TextButton(Color.yellow, Color.red) {
+		TextButton saveGame = new TextButton(TextButton.DEFAULT_ON_COLOUR,TextButton.DEFAULT_OFF_COLOUR) {
 			
 			{
 				this.setText("Save");

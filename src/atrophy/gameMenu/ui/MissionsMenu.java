@@ -32,7 +32,7 @@ public class MissionsMenu extends Menu{
 		buttons = new ArrayList<TextButton>(MAX_ITEMS);
 		for(int i = 0; i < MAX_ITEMS; i++){
 			final int ind = i;
-			TextButton tb = new TextButton(Color.yellow, Color.red) {
+			TextButton tb = new TextButton(TextButton.DEFAULT_ON_COLOUR,TextButton.DEFAULT_OFF_COLOUR) {
 				
 				{
 					this.setLocation((int)this.getLocation()[0] + 11, (int)this.getLocation()[1] + 41 + 20 * ind);
@@ -60,6 +60,7 @@ public class MissionsMenu extends Menu{
 			{
 				this.setText("Next");
 				this.setLocation((int)this.getLocation()[0] + 100, (int)this.getLocation()[1] + 250);
+				this.setDrawBox(false);
 			}
 			
 			@Override
@@ -76,6 +77,7 @@ public class MissionsMenu extends Menu{
 			{
 				this.setText("Previous");
 				this.setLocation((int)this.getLocation()[0] + 20, (int)this.getLocation()[1] + 250);
+				this.setDrawBox(false);
 			}
 			
 			@Override

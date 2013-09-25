@@ -34,7 +34,7 @@ public class SectorsMenu extends Menu{
 		buttons = new ArrayList<TextButton>();
 		for(int i = 0; i < mapWar.getSectorCount(); i++){
 			final int ind = i;
-			TextButton tb = new TextButton(Color.yellow, Color.red) {
+			TextButton tb = new TextButton(TextButton.DEFAULT_ON_COLOUR,TextButton.DEFAULT_OFF_COLOUR) {
 				
 				{
 //					this.setText(mapWar.getSector(ind).getName());

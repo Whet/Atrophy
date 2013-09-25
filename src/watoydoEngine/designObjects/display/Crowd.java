@@ -166,6 +166,19 @@ public class Crowd implements Displayable, MouseRespondable, KeyboardRespondable
 				return 0;
 			}
 		});
+		Collections.sort(keyboardActionList, new Comparator<KeyboardRespondable>() {
+
+			@Override
+			public int compare(KeyboardRespondable o1, KeyboardRespondable o2) {
+				if(o2.getActionZ() > o1.getActionZ()){
+					 return -1;
+				}
+				else if(o2.getActionZ() < o1.getActionZ()){
+					return 1;
+				}
+				return 0;
+			}
+		});
     }
 
     public void kickTween(){

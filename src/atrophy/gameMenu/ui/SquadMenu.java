@@ -60,7 +60,7 @@ public class SquadMenu extends Menu{
 		final int[] windowLocation = new int[]{(int) (this.getLocation()[0]),(int) (this.getLocation()[1])};
 		final int spacing = 20;
 		
-		TextButton stashOpen = new TextButton(Color.yellow, Color.red) {
+		TextButton stashOpen = new TextButton(TextButton.DEFAULT_ON_COLOUR,TextButton.DEFAULT_OFF_COLOUR) {
 			{
 				this.setText("Open Stash");
 				this.setLocation(windowLocation[0] + 21, windowLocation[1] + 40);
@@ -77,7 +77,7 @@ public class SquadMenu extends Menu{
 		this.addDisplayItem(stashOpen);
 		this.addMouseActionItem(stashOpen);
 		
-		TextButton openShop = new TextButton(Color.yellow, Color.red) {
+		TextButton openShop = new TextButton(TextButton.DEFAULT_ON_COLOUR,TextButton.DEFAULT_OFF_COLOUR) {
 			{
 				this.setText("Open Shop");
 				this.setLocation(windowLocation[0] + 21, windowLocation[1] + 60);
@@ -94,7 +94,7 @@ public class SquadMenu extends Menu{
 		this.addDisplayItem(openShop);
 		this.addMouseActionItem(openShop);
 		
-		TextButton buySquaddie = new TextButton(Color.yellow, Color.red) {
+		TextButton buySquaddie = new TextButton(TextButton.DEFAULT_ON_COLOUR,TextButton.DEFAULT_OFF_COLOUR) {
 			{
 				int BUY_MEMBER_COST = 1400;
 				this.setText(FontList.digitString(5, squad.getAdvance()) + " *" + FontList.digitString(5, BUY_MEMBER_COST) + "   " + "Hire Squaddie");
@@ -116,7 +116,7 @@ public class SquadMenu extends Menu{
 		
 		if(techTree.isResearched(TechTree.MULE, AiGenerator.LONER)){
 		
-			TextButton buyMule = new TextButton(Color.yellow, Color.red) {
+			TextButton buyMule = new TextButton(TextButton.DEFAULT_ON_COLOUR,TextButton.DEFAULT_OFF_COLOUR) {
 				{
 					int BUY_MEMBER_COST = 800;
 					this.setText(FontList.digitString(5, squad.getAdvance()) + " *" + FontList.digitString(5, BUY_MEMBER_COST) + "   " + "Buy Mule");
@@ -161,7 +161,7 @@ public class SquadMenu extends Menu{
 //					};
 //				}
 //				else{
-					squaddieName = new TextButton(Color.yellow, Color.red) {
+					squaddieName = new TextButton(TextButton.DEFAULT_ON_COLOUR,TextButton.DEFAULT_OFF_COLOUR) {
 						
 						private int squadIndex = index;
 						

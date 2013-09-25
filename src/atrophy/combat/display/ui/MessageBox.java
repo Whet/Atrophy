@@ -502,7 +502,7 @@ public class MessageBox extends Crowd{
 		private MessageBox messageBox;
 		
 		public SpeechOption(MessageBox messageBox, int topicNumber) {
-			super(Color.yellow.darker(), Color.red.darker());
+			super(TextButton.DEFAULT_ON_COLOUR, TextButton.DEFAULT_OFF_COLOUR);
 			this.messageBox = messageBox;
 			this.topicNumber = topicNumber;
 			this.setActive(false);

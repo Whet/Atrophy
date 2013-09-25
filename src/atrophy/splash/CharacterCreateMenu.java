@@ -57,32 +57,7 @@ public class CharacterCreateMenu extends Crowd{
 		Text nameTag = new Text(this.getLocation()[0] + 30, this.getLocation()[1] + 50, "Name: ");
 		this.addDisplayItem(nameTag);
 		
-		name = new TextInput(this.getLocation()[0] + 66, this.getLocation()[1] + 50,"Julian"){
-			@Override
-			public void setFocus(boolean focus) {
-				super.setFocus(focus);
-				
-				if(focus){
-					this.setColour(Color.white);
-				}
-				else{
-					this.setColour(Color.red);
-				}
-			}
-			
-			@Override
-			public void mI(Point mousePosition) {
-				super.mI(mousePosition);
-				if(!this.isFocused())
-					this.setColour(Color.yellow);
-			}
-			
-			@Override
-			public void mO(Point mousePosition) {
-				super.mO(mousePosition);
-				this.setColour(Color.red);
-			}
-		};
+		name = new TextInput(this.getLocation()[0] + 66, this.getLocation()[1] + 50,"Julian");
 		name.setMaxLetters(20);
 		this.addInputText(name);
 		
@@ -91,7 +66,7 @@ public class CharacterCreateMenu extends Crowd{
 			
 			final int ind = i;
 			
-			TextButton newGame = new TextButton(Color.yellow, Color.red) {
+			TextButton newGame = new TextButton(TextButton.DEFAULT_ON_COLOUR,TextButton.DEFAULT_OFF_COLOUR) {
 				
 				{
 					this.setText(getTypeName(ind));

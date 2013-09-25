@@ -382,7 +382,7 @@ public class TurnProcess {
 		
 		combatVisualManager.revealAll();
 		
-		TextButton newGame = new TextButton(Color.yellow, Color.red) {
+		TextButton newGame = new TextButton(TextButton.DEFAULT_ON_COLOUR,TextButton.DEFAULT_OFF_COLOUR) {
 			
 			{
 				this.setText("To Title Screen");

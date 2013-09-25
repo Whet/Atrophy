@@ -92,7 +92,7 @@ public class SquadMemberMenu extends Menu {
 			
 			final String skillF = skillIt.next();
 			final int ind = i;
-			TextButton tb = new TextButton(Color.yellow, Color.red) {
+			TextButton tb = new TextButton(TextButton.DEFAULT_ON_COLOUR,TextButton.DEFAULT_OFF_COLOUR) {
 				
 				{
 					this.setLocation((int)this.getLocation()[0] + 160, (int)this.getLocation()[1] + 68 + 20 * ind);
@@ -127,7 +127,7 @@ public class SquadMemberMenu extends Menu {
 		
 		for(int i = 0; i < 5; i++){
 			final int ind = i;
-			TextButton tb = new TextButton(Color.yellow, Color.red) {
+			TextButton tb = new TextButton(TextButton.DEFAULT_ON_COLOUR,TextButton.DEFAULT_OFF_COLOUR) {
 				
 				private int index;
 				
@@ -160,7 +160,7 @@ public class SquadMemberMenu extends Menu {
 		Text weaponTag = new Text((int)this.getLocation()[0] + 21, (int)this.getLocation()[1] + 201,"Weapon");
 		this.addDisplayItem(weaponTag);
 		
-		TextButton tb = new TextButton(Color.yellow, Color.red) {
+		TextButton tb = new TextButton(TextButton.DEFAULT_ON_COLOUR,TextButton.DEFAULT_OFF_COLOUR) {
 			
 			{
 				this.setLocation((int)this.getLocation()[0] + 21, (int)this.getLocation()[1] + 220);

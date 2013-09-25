@@ -14,9 +14,11 @@ import watoydoEngine.workings.displayActivity.ActivePane;
 public class GameMenuKeyHandler implements KeyboardRespondable{
 		
 	private WindowManager windowManager;
-
+	private int actionZ;
+	
 	public GameMenuKeyHandler(WindowManager windowManager) {
 		this.windowManager = windowManager;
+		this.actionZ = 0;
 	}
 	
 	/* (non-Javadoc)
@@ -65,6 +67,11 @@ public class GameMenuKeyHandler implements KeyboardRespondable{
 	@Override
 	public boolean isFocused() {
 		return true;
+	}
+
+	@Override
+	public int getActionZ() {
+		return this.actionZ;
 	}
 	
 }

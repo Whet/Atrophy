@@ -52,5 +52,7 @@ public interface KeyboardRespondable{
 	 * @param active the new focus
 	 */
 	public void setFocus(boolean active);
+
+	public int getActionZ();
 	
 }

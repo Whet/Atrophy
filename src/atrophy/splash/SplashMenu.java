@@ -47,7 +47,7 @@ public class SplashMenu extends Crowd {
 	 */
 	private void addButtons() {
 		
-		TextButton newGame = new TextButton(Color.yellow, Color.red) {
+		TextButton newGame = new TextButton(TextButton.DEFAULT_ON_COLOUR,TextButton.DEFAULT_OFF_COLOUR) {
 			
 			{
 				this.setText("New Game");
@@ -65,7 +65,7 @@ public class SplashMenu extends Crowd {
 		this.addMouseActionItem(newGame);
 		this.addDisplayItem(newGame);
 		
-		TextButton loadGame = new TextButton(Color.yellow, Color.red) {
+		TextButton loadGame = new TextButton(TextButton.DEFAULT_ON_COLOUR,TextButton.DEFAULT_OFF_COLOUR) {
 			
 			{
 				this.setText("Load");
