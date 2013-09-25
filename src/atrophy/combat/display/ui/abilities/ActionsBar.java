@@ -150,14 +150,6 @@ public class ActionsBar extends Crowd{
 				return true;
 			}
 		});
-		
-		this.addMouseActionItem(new HelpPowerButton(104, DisplayManager.getInstance().getResolution()[1] - abilityBack.getSize()[1] + 2, 30, 30, combatUiManager) {
-			@Override
-			public boolean mU(Point mousePosition, MouseEvent e) {
-				mouseAbilityHandler.setAbility("PowerHelp");
-				return true;
-			}
-		});
 	}
 	
 	public void setPowerManager(PowerManager powerManager) {
@@ -376,37 +368,6 @@ public class ActionsBar extends Crowd{
 		@Override
 		public String getUiHint() {
 			return "Protect Power";
-		}
-
-		@Override
-		public int getHintLines() {
-			return 1;
-		}
-		
-		@Override
-		public void mI(Point mousePosition){
-			combatUiManager.getInfoText().setInfoText(this);
-		}
-		
-		@Override
-		public void mO(Point mousePosition){
-			combatUiManager.getInfoText().removeInfoText(this);
-		}
-		
-	}
-	
-	private static class HelpPowerButton extends ActionRegion implements InfoTextDisplayable {
-
-		private CombatUiManager combatUiManager;
-
-		public HelpPowerButton(double x, double y, double width, double height, CombatUiManager combatUiManager) {
-			super(x, y, width, height);
-			this.combatUiManager = combatUiManager;
-		}
-
-		@Override
-		public String getUiHint() {
-			return "Help Power";
 		}
 
 		@Override
