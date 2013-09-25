@@ -18,13 +18,19 @@ public abstract class TextButton extends Text implements MouseRespondable{
 	private boolean active;
 	private int actionZ;
 	private Rectangle2D boundBox;
+	private boolean drawBox;
 	
 	public TextButton(Color onColour, Color offColour) {
 		this.active = true;
 		this.setColour(offColour);
 		this.onColour = onColour;
 		this.offColour = offColour;
+		this.drawBox = true;
 		boundBox = null;
+	}
+	
+	public void setDrawBox(boolean drawBox) {
+		this.drawBox = drawBox;
 	}
 
 	@Override
@@ -137,11 +143,18 @@ public abstract class TextButton extends Text implements MouseRespondable{
 
 	@Override
 	public void drawMethod(Graphics2D drawShape) {
+		if(drawBox && this.boundBox != null && this.getText().length() > 0) {
+			drawShape.setColor(this.getColour().darker().darker());
+			drawShape.fillRect((int)this.getLocation()[0] - 5, (int)this.getLocation()[1] - (int)this.boundBox.getHeight() + ((int)this.boundBox.getHeight() / 4), (int)this.boundBox.getWidth() + 10, (int)(this.boundBox.getHeight() * 1.25));
+		}
+		
 		super.drawMethod(drawShape);
+		
 		if(this.boundBox == null){
 			FontMetrics metric = drawShape.getFontMetrics(this.getFont());
 			this.boundBox = metric.getStringBounds(this.getText(), drawShape);
 		}
+		
 	}
 
 	@Override

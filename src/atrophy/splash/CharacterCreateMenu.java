@@ -69,8 +69,21 @@ public class CharacterCreateMenu extends Crowd{
 					this.setColour(Color.red);
 				}
 			}
+			
+			@Override
+			public void mI(Point mousePosition) {
+				super.mI(mousePosition);
+				if(!this.isFocused())
+					this.setColour(Color.yellow);
+			}
+			
+			@Override
+			public void mO(Point mousePosition) {
+				super.mO(mousePosition);
+				this.setColour(Color.red);
+			}
 		};
-		name.setMaxLetters(14);
+		name.setMaxLetters(20);
 		this.addInputText(name);
 		
 		
@@ -83,6 +96,7 @@ public class CharacterCreateMenu extends Crowd{
 				{
 					this.setText(getTypeName(ind));
 					this.setVisible(true);
+					this.setDrawBox(true);
 				}
 				
 				@Override

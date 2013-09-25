@@ -1,5 +1,6 @@
 package watoydoEngine.designObjects.display;
 
+import java.awt.Color;
 import java.awt.FontMetrics;
 import java.awt.Graphics2D;
 import java.awt.Point;
@@ -18,10 +19,16 @@ public class TextInput extends Text implements MouseRespondable,KeyboardResponda
 	private int maxLetters;
 	private int minLetters;
 	private Rectangle2D boundBox;
+	private boolean drawBox;
 
 	public TextInput(){
 		active = true;
 		focus = false;
+		this.drawBox = true;
+	}
+	
+	public void setDrawBox(boolean drawBox) {
+		this.drawBox = drawBox;
 	}
 
 	public TextInput(double x, double y){
@@ -29,6 +36,7 @@ public class TextInput extends Text implements MouseRespondable,KeyboardResponda
 		
 		active = true;
 		focus = false;
+		this.drawBox = true;
 	}
 
 	public TextInput(double x, double y, String message) {
@@ -36,14 +44,26 @@ public class TextInput extends Text implements MouseRespondable,KeyboardResponda
 		
 		active = true;
 		focus = false;
+		this.drawBox = true;
 	}
 
 	public final void drawMethod(Graphics2D drawShape){
 		
+		if(drawBox && this.boundBox != null && this.getText().length() > 0) {
+			drawShape.setColor(this.getColour().darker().darker());
+			drawShape.fillRect((int)this.getLocation()[0] - 5, (int)this.getLocation()[1] - (int)this.boundBox.getHeight() + ((int)this.boundBox.getHeight() / 4), (int)this.boundBox.getWidth() + 10, (int)(this.boundBox.getHeight() * 1.25));
+			
+			if(this.getText().equals(""))
+				drawShape.setColor(Color.gray.brighter());
+			else
+				drawShape.setColor(this.getColour().darker());
+			drawShape.drawRect((int)this.getLocation()[0] - 5, (int)this.getLocation()[1] - (int)this.boundBox.getHeight() + ((int)this.boundBox.getHeight() / 4), (int)this.boundBox.getWidth() + 10, (int)(this.boundBox.getHeight() * 1.25));
+		}
+		
 		updateText();
 		
 		
-		if(this.boundBox == null){
+		if(this.getText().length() > 0){
 			FontMetrics metric = drawShape.getFontMetrics(this.getFont());
 			this.boundBox = metric.getStringBounds(this.getText(), drawShape);
 		}
