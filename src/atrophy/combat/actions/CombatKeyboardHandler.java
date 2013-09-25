@@ -69,6 +69,7 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 		this.stashManager = stashManager;
 		
 		this.missionManager = missionManager;
+		this.setActionZ(1);
 	}
 	
 	public void setPowerManager(PowerManager powerManager) {
@@ -82,22 +83,22 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 		switch(e.getKeyCode()){
 			// left
 			case 37:
-			case 65:
+//			case 65:
 				panningManager.panX((int)(100 / (60/ ActivePaneTimer.redrawRate)));
 			break;
 			// right
 			case 39:
-			case 68:
+//			case 68:
 				panningManager.panX((int)(-100 / (60/ ActivePaneTimer.redrawRate)));
 			break;
 			// up
 			case 38:
-			case 87:
+//			case 87:
 				panningManager.panY((int)(100 / (60/ ActivePaneTimer.redrawRate)));
 			break;
 			// down
 			case 40:
-			case 83:
+//			case 83:
 				panningManager.panY((int)(-100 / (60/ ActivePaneTimer.redrawRate)));
 			break;
 			
@@ -253,15 +254,15 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 			// X panning
 			case 37:
 			case 39:
-			case 65:
-			case 68:
+//			case 65:
+//			case 68:
 				panningManager.panX(0);
 			break;
 			// Y panning
 			case 38:
 			case 40:
-			case 87:
-			case 83:
+//			case 87:
+//			case 83:
 				panningManager.panY(0);
 			break;
 		
