@@ -1,11 +1,11 @@
 package atrophy.splash;
 
-import java.awt.Color;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 
@@ -28,6 +28,7 @@ import atrophy.gameMenu.saveFile.Squad;
 import atrophy.gameMenu.saveFile.Squad.Squaddie;
 import atrophy.gameMenu.saveFile.TechTree;
 import atrophy.gameMenu.ui.StashManager;
+import atrophy.gameMenu.ui.Wallpaper;
 import atrophy.hardPanes.GameMenuHardPane;
 
 public class CharacterCreateMenu extends Crowd{
@@ -43,6 +44,8 @@ public class CharacterCreateMenu extends Crowd{
 	}
 
 	private void addComponents() {
+		
+		this.addDisplayItem(new Wallpaper(new Random().nextLong()));
 		
 		try {
 			image = new ImageSelect();

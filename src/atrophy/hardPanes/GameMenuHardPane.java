@@ -3,6 +3,8 @@
  */
 package atrophy.hardPanes;
 
+import java.util.Random;
+
 import watoydoEngine.designObjects.display.Crowd;
 import watoydoEngine.hardPanes.HardPaneDefineable;
 import atrophy.gameMenu.saveFile.ItemMarket;
@@ -14,6 +16,7 @@ import atrophy.gameMenu.ui.GameMenuKeyHandler;
 import atrophy.gameMenu.ui.MenuBar;
 import atrophy.gameMenu.ui.ShopManager;
 import atrophy.gameMenu.ui.StashManager;
+import atrophy.gameMenu.ui.Wallpaper;
 import atrophy.gameMenu.ui.WindowManager;
 
 
@@ -40,6 +43,7 @@ public class GameMenuHardPane implements HardPaneDefineable{
 	 */
 	public void load(Crowd crowd){
 	
+		crowd.addDisplayItem(new Wallpaper(new Random().nextLong()));
 		MenuBar menuBar = new MenuBar();
 		WindowManager windowManager = new WindowManager(menuBar);
 		stashManager.setWindowManager(windowManager);

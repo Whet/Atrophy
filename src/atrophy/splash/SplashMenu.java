@@ -3,10 +3,10 @@
  */
 package atrophy.splash;
 
-import java.awt.Color;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.util.Random;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -15,7 +15,6 @@ import watoydoEngine.designObjects.display.Crowd;
 import watoydoEngine.designObjects.display.TextButton;
 import watoydoEngine.io.ReadWriter;
 import watoydoEngine.workings.displayActivity.ActivePane;
-import atrophy.combat.display.ui.LargeEventText;
 import atrophy.gameMenu.saveFile.ItemMarket;
 import atrophy.gameMenu.saveFile.MapManager;
 import atrophy.gameMenu.saveFile.Missions;
@@ -25,6 +24,7 @@ import atrophy.gameMenu.saveFile.TechTree;
 import atrophy.gameMenu.ui.MenuBar;
 import atrophy.gameMenu.ui.ShopManager;
 import atrophy.gameMenu.ui.StashManager;
+import atrophy.gameMenu.ui.Wallpaper;
 import atrophy.gameMenu.ui.WindowManager;
 import atrophy.hardPanes.CharacterCreatePane;
 import atrophy.hardPanes.GameMenuHardPane;
@@ -39,6 +39,7 @@ public class SplashMenu extends Crowd {
 	 */
 	public SplashMenu() {
 		super(true);
+		this.addDisplayItem(new Wallpaper(new Random().nextLong()));
 		addButtons();
 	}
 
