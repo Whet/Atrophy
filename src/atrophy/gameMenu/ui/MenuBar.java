@@ -1,6 +1,5 @@
 package atrophy.gameMenu.ui;
 
-import java.awt.Color;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -9,12 +8,10 @@ import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
 import watoydoEngine.designObjects.display.Crowd;
-import watoydoEngine.designObjects.display.Text;
 import watoydoEngine.designObjects.display.TextButton;
 import watoydoEngine.io.ReadWriter;
 import watoydoEngine.sounds.SoundBoard;
 import watoydoEngine.workings.displayActivity.ActivePane;
-import atrophy.combat.ai.AiGenerator;
 import atrophy.gameMenu.saveFile.ItemMarket;
 import atrophy.gameMenu.saveFile.MapManager;
 import atrophy.gameMenu.saveFile.Missions;
@@ -92,6 +89,24 @@ public class MenuBar extends Crowd{
 		this.addMouseActionItem(missionMenu);
 		this.addDisplayItem(missionMenu);
 		
+		TextButton newsMenu = new TextButton(TextButton.DEFAULT_ON_COLOUR,TextButton.DEFAULT_OFF_COLOUR) {
+			
+			{
+				this.setText("News Menu");
+				this.setVisible(true);
+			}
+			
+			@Override
+			public boolean mU(Point mousePosition, MouseEvent e) {
+				windowManager.addWindow(MenuBar.this, new NewsMenu(windowManager, missions));
+				SoundBoard.getInstance().playEffect("tick");
+				return true;
+			}
+		};
+		newsMenu.setLocation(this.getLocation()[0] + 4, this.getLocation()[1] + 60);
+		this.addMouseActionItem(newsMenu);
+		this.addDisplayItem(newsMenu);
+		
 		TextButton saveGame = new TextButton(TextButton.DEFAULT_ON_COLOUR,TextButton.DEFAULT_OFF_COLOUR) {
 			
 			{
@@ -126,26 +141,9 @@ public class MenuBar extends Crowd{
 				return true;
 			}
 		};
-		saveGame.setLocation(this.getLocation()[0] + 4, this.getLocation()[1] + 75);
+		saveGame.setLocation(this.getLocation()[0] + 4, this.getLocation()[1] + 95);
 		this.addMouseActionItem(saveGame);
 		this.addDisplayItem(saveGame);
-		
-		Text newsTicker = new Text();
-		this.addDisplayItem(newsTicker);
-		
-		newsTicker.setLocation(this.getLocation()[0] + 4, this.getLocation()[1] + 115);
-		
-		newsTicker.setColour(Color.orange);
-		
-		StringBuffer sb = new StringBuffer();
-		
-		sb.append("NEWS@nWHITE VISTA@n");
-
-		sb.append(missions.getPlanner(AiGenerator.WHITE_VISTA).getNews() + "@n@nBANDITS@n");
-		
-		sb.append(missions.getPlanner(AiGenerator.BANDITS).getNews());
-		
-		newsTicker.setText(sb.toString());
 		
 	}
 

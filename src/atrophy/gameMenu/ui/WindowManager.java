@@ -198,6 +198,11 @@ public class WindowManager extends Crowd{
 				menu7.moveAll(window.location[0], window.location[1]);
 				addWindow(null, menu7);
 				break;
+				case "NewsMenu":
+				NewsMenu menu8 = new NewsMenu(this, missions);
+				menu8.moveAll(window.location[0], window.location[1]);
+				addWindow(null, menu8);
+				break;
 			}
 			
 		}

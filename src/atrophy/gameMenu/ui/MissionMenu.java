@@ -52,7 +52,6 @@ public class MissionMenu extends Menu {
 					windowManager.updateWindows();
 					stashManager.removeSelectedItem();
 					setPriorityMode(false);
-					missions.updatePlannersKeepNews();
 					missions.updateMissions();
 				}
 				
