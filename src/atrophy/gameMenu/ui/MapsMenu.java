@@ -176,6 +176,7 @@ public class MapsMenu extends Menu {
 		else{
 			page += change;
 		}
+		updateText(missions);
 	}
 
 
