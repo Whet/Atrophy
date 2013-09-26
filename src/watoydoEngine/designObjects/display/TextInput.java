@@ -20,9 +20,14 @@ public class TextInput extends Text implements MouseRespondable,KeyboardResponda
 	private int minLetters;
 	private Rectangle2D boundBox;
 	private boolean drawBox;
+	private Color onColour;
+	private Color offColour;
 
 	public void setDrawBox(boolean drawBox) {
 		this.drawBox = drawBox;
+		this.onColour = TextButton.DEFAULT_ON_COLOUR;
+		this.offColour = TextButton.DEFAULT_OFF_COLOUR;
+		this.setColour(offColour);
 	}
 
 	public TextInput(double x, double y, String message) {
@@ -31,6 +36,9 @@ public class TextInput extends Text implements MouseRespondable,KeyboardResponda
 		active = true;
 		focus = false;
 		this.drawBox = true;
+		this.onColour = TextButton.DEFAULT_ON_COLOUR;
+		this.offColour = TextButton.DEFAULT_OFF_COLOUR;
+		this.setColour(offColour);
 	}
 
 	public final void drawMethod(Graphics2D drawShape){
@@ -38,11 +46,7 @@ public class TextInput extends Text implements MouseRespondable,KeyboardResponda
 		if(drawBox && this.boundBox != null && this.getText().length() > 0) {
 			drawShape.setColor(this.getColour().darker().darker());
 			drawShape.fillRect((int)this.getLocation()[0] - 5, (int)this.getLocation()[1] - (int)this.boundBox.getHeight() + ((int)this.boundBox.getHeight() / 4), (int)this.boundBox.getWidth() + 10, (int)(this.boundBox.getHeight() * 1.25));
-			
-			if(this.getText().equals(""))
-				drawShape.setColor(Color.gray.brighter());
-			else
-				drawShape.setColor(this.getColour().darker());
+			drawShape.setColor(this.getColour().darker());
 			drawShape.drawRect((int)this.getLocation()[0] - 5, (int)this.getLocation()[1] - (int)this.boundBox.getHeight() + ((int)this.boundBox.getHeight() / 4), (int)this.boundBox.getWidth() + 10, (int)(this.boundBox.getHeight() * 1.25));
 		}
 		
@@ -106,7 +110,7 @@ public class TextInput extends Text implements MouseRespondable,KeyboardResponda
 			this.setColour(Color.white);
 		}
 		else{
-			this.setColour(TextButton.DEFAULT_ON_COLOUR);
+			this.setColour(onColour);
 		}
 		this.focus = focus;
 	}
@@ -114,13 +118,13 @@ public class TextInput extends Text implements MouseRespondable,KeyboardResponda
 	@Override
 	public void mI(Point mousePosition) {
 		if(!this.isFocused())
-			this.setColour(TextButton.DEFAULT_ON_COLOUR);
+			this.setColour(onColour);
 	}
 	
 	@Override
 	public void mO(Point mousePosition) {
 		this.setFocus(false);
-		this.setColour(TextButton.DEFAULT_OFF_COLOUR);
+		this.setColour(offColour);
 	}
 	
 	public boolean mMC(Point mousePosition, MouseEvent e) {return false;}
@@ -184,6 +188,23 @@ public class TextInput extends Text implements MouseRespondable,KeyboardResponda
 	public void setVisible(boolean visible) {
 		super.setVisible(visible);
 		this.setActive(visible);
+	}
+
+	public Color getOnColour() {
+		return onColour;
+	}
+
+	public void setOnColour(Color onColour) {
+		this.onColour = onColour;
+	}
+
+	public Color getOffColour() {
+		return offColour;
+	}
+
+	public void setOffColour(Color offColour) {
+		this.offColour = offColour;
+		this.setColour(offColour);
 	}
 	
 }
