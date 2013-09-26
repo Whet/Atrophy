@@ -13,7 +13,7 @@ import watoydoEngine.designObjects.actions.MouseRespondable;
 public abstract class TextButton extends Text implements MouseRespondable{
 
 	public static Color DEFAULT_ON_COLOUR = new Color(240,198,18);
-	public static Color DEFAULT_OFF_COLOUR = new Color(233,73,59);
+	public static Color DEFAULT_OFF_COLOUR = new Color(0,120,120);
 	
 	private Color onColour;
 	private Color offColour;

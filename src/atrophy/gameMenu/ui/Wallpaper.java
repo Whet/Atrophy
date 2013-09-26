@@ -17,7 +17,7 @@ public class Wallpaper implements Displayable {
 	private static final int WIDTH = 20;
 	private static final int HEIGHT = 20;
 
-	private static final Color SEED_COLOUR = new Color(193, 154, 107);
+	private static final Color SEED_COLOUR = new Color(0, 90, 90);
 
 	private double[] location;
 
@@ -63,7 +63,7 @@ public class Wallpaper implements Displayable {
 	private void makeImage() {
 		Point2D center = new Point((int) (screenWidth * 0.75), (int) (screenHeight * 0.1));
 		float radius = screenWidth;
-		float[] dist = {0.0f, 0.8f, 0.9f};
+		float[] dist = {0.0f, 0.4f, 0.9f};
 		Color[] colors = {SEED_COLOUR, new Color(20, 20, 20), new Color(0, 0, 0)};
 		
 		RadialGradientPaint gp = new RadialGradientPaint(center, radius, dist, colors);
