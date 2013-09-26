@@ -313,6 +313,16 @@ public class FactionMissionPlanner implements Serializable{
 	}
 
 	public List<Mission> getMissions() {
+		
+		// Clear missions that are completed
+		Iterator<Mission> iterator = this.activeMissions.iterator();
+		
+		while(iterator.hasNext()) {
+			Mission next = iterator.next();
+			if(next.isExpired())
+				iterator.remove();
+		}
+		
 		return this.activeMissions;
 	}
 
