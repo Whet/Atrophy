@@ -105,7 +105,7 @@ public class PathFinder {
 		// For each door try to connect to another door
 		Iterator<int[]> iterator = doorLocations.iterator();
 
-		if(levelBlock.getPortalCount() > 1)
+		if(doorLocations.size() > 1)
 			while (iterator.hasNext()) {
 				int[] doorLoc = (int[]) iterator.next();
 	
