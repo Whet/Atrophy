@@ -2,18 +2,22 @@ package atrophy.gameMenu.ui;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.util.Random;
+import java.awt.Point;
+import java.awt.RadialGradientPaint;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Point2D;
+import java.awt.image.BufferedImage;
 
 import watoydoEngine.designObjects.display.Displayable;
 import watoydoEngine.display.tweens.TweenDefinable;
-import watoydoEngine.workings.DisplayManager;
+import watoydoEngine.workings.displayActivity.ActivePane;
 
 public class Wallpaper implements Displayable {
 
-	private static final int WIDTH = 30;
-	private static final int HEIGHT = 10;
+	private static final int WIDTH = 20;
+	private static final int HEIGHT = 20;
 
-	private static final Color SEED_COLOUR = new Color(10,10,10);
+	private static final Color SEED_COLOUR = new Color(193, 154, 107);
 
 	private double[] location;
 
@@ -23,13 +27,15 @@ public class Wallpaper implements Displayable {
 	private int screenWidth, screenHeight;
 	private long seed;
 	
+	private BufferedImage image;
+	
 	public Wallpaper(long seed) {
 		this.location = new double[]{0,0};
 		this.z = 0;
 		this.visible = true;
 		
-		this.screenWidth = DisplayManager.getInstance().getResolution()[0];
-		this.screenHeight = DisplayManager.getInstance().getResolution()[1];
+		this.screenWidth = ActivePane.getInstance().getWidth();
+		this.screenHeight = ActivePane.getInstance().getHeight();
 		this.seed = seed;
 	}
 	
@@ -46,19 +52,41 @@ public class Wallpaper implements Displayable {
 
 	@Override
 	public void drawMethod(Graphics2D drawShape) {
-		Color dynamicColour = SEED_COLOUR;
-		Random random = new Random(seed);
+
+		if(image == null)
+			makeImage();
 		
-		for(int i = 0; i < screenHeight; i+= HEIGHT) {
-			for(int j = 0; j < screenWidth; j+= WIDTH * 2) {
-				double mod = random.nextDouble();
-				Color color = new Color((int)(dynamicColour.getRed() - (5 * mod)), (int)(dynamicColour.getGreen() - (5 * mod)), (int)(dynamicColour.getBlue() - (5 * mod)));
-				drawShape.setColor(color);
-				drawShape.fillRect(j, i, WIDTH, HEIGHT);
-				drawShape.setColor(color.darker());
-				drawShape.fillRect(j + WIDTH, i, WIDTH, HEIGHT);
+		drawShape.drawImage(image, new AffineTransform(), null);
+
+	}
+
+	private void makeImage() {
+		Point2D center = new Point((int) (screenWidth * 0.75), (int) (screenHeight * 0.1));
+		float radius = screenWidth;
+		float[] dist = {0.0f, 0.8f, 0.9f};
+		Color[] colors = {SEED_COLOUR, new Color(20, 20, 20), new Color(0, 0, 0)};
+		
+		RadialGradientPaint gp = new RadialGradientPaint(center, radius, dist, colors);
+		BufferedImage image = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB);
+		Graphics2D imageGraphics = image.createGraphics();
+		((Graphics2D) imageGraphics).setPaint(gp);
+		imageGraphics.fillRect(0, 0, screenWidth, screenHeight);
+		
+		BufferedImage pixelImage = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB); 
+		Graphics2D pixelGraphics = pixelImage.createGraphics();
+		
+		for(int i = 0; i < image.getHeight(); i+= HEIGHT) {
+			for(int j = 0; j < image.getWidth(); j+= WIDTH) {
+				
+				Color pixelColour = new Color(image.getRGB(j, i));
+				
+				pixelGraphics.setColor(pixelColour);
+				pixelGraphics.fillRect(j, i, WIDTH, HEIGHT);
+				
 			}
 		}
+		
+		this.image = pixelImage;
 	}
 
 	@Override
