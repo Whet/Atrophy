@@ -318,7 +318,7 @@ public class CartographerBox extends Crowd{
 		
 		public void setMarkerColour(Color markerColour) {
 			this.markerColour = markerColour;
-			this.setColour(markerColour);
+			this.setOffColour(markerColour);
 		}
 		
 	}
