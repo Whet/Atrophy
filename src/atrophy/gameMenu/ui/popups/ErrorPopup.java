@@ -7,10 +7,9 @@ import java.awt.Color;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 
-import atrophy.gameMenu.ui.WindowManager;
-
 import watoydoEngine.designObjects.display.Text;
 import watoydoEngine.designObjects.display.TextButton;
+import atrophy.gameMenu.ui.WindowManager;
 
 /**
  * The Class ErrorPopup.
@@ -24,7 +23,7 @@ public class ErrorPopup extends Popup {
 	 */
 	public ErrorPopup(final WindowManager windowManager, String message) {
 		super(windowManager, new Text(0,0,message), new TextButton[]{
-				new TextButton(Color.yellow,Color.red) {
+				new TextButton(Color.green,Color.green.darker()) {
 					{
 						this.setText("Close");
 					}
@@ -38,4 +37,9 @@ public class ErrorPopup extends Popup {
 		});
 	}
 
+	@Override
+	public String[] getMenuInfo() {
+		return null;
+	}
+	
 }

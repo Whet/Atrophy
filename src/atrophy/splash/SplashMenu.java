@@ -87,17 +87,17 @@ public class SplashMenu extends Crowd {
 					WindowManager windowManager = new WindowManager(menuBar);
 					StashManager stashManager = new StashManager(windowManager);
 					Missions missions = new Missions();
-					MapManager mapWar = new MapManager(missions);
+					MapManager mapManager = new MapManager(missions);
 					ItemMarket itemMarket = new ItemMarket();
 					ShopManager shopManager = new ShopManager(windowManager, stashManager, itemMarket);
-					Squad squad = SaveFile.loadGame(chooser.getSelectedFile(), stashManager, mapWar, shopManager, missions, windowManager, itemMarket);
+					Squad squad = SaveFile.loadGame(chooser.getSelectedFile(), stashManager, mapManager, shopManager, missions, windowManager, itemMarket);
 					
 					TechTree techTree = squad.getTechTree();
 					
 					shopManager.lazyLoad(squad);
-					menuBar.lazyLoad(windowManager, mapWar, missions, squad, shopManager, stashManager, techTree, itemMarket);
+					menuBar.lazyLoad(windowManager, mapManager, missions, squad, shopManager, stashManager, techTree, itemMarket);
 					stashManager.lazyLoad(shopManager);
-					missions.lazyLoad(squad, stashManager, itemMarket, techTree, mapWar);
+					missions.lazyLoad(squad, stashManager, itemMarket, techTree, mapManager);
 					
 					ActivePane.getInstance().changeRootCrowd(new Crowd(new GameMenuHardPane(squad, techTree, stashManager, missions)));
 				}

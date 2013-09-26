@@ -193,4 +193,9 @@ public class ShopMenu extends Menu{
 		}
 	}
 
+	@Override
+	public String[] getMenuInfo() {
+		return new String[]{"ShopMenu"};
+	}
+	
 }

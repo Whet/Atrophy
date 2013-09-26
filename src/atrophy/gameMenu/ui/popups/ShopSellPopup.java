@@ -1,6 +1,3 @@
-/*
- * 
- */
 package atrophy.gameMenu.ui.popups;
 
 import java.awt.Color;
@@ -13,26 +10,12 @@ import atrophy.gameMenu.ui.ShopManager;
 import atrophy.gameMenu.ui.StashManager;
 import atrophy.gameMenu.ui.WindowManager;
 
-/**
- * The Class ShopSellPopup.
- */
 public class ShopSellPopup extends Popup {
 	
-	/**
-	 * Instantiates a new shop sell popup.
-	 *
-	 * @param item the item
-	 */
 	public ShopSellPopup(WindowManager windowManager, ShopManager shopManager, StashManager stashManager, String item) {
 		super(windowManager, new Text(0, 0, "Are you sure you want to sell " + item + " for " + shopManager.sellCost(item) + "?"),getOptions(windowManager, shopManager, stashManager, item));
 	}
 
-	/**
-	 * Gets the options.
-	 *
-	 * @param item the item
-	 * @return the options
-	 */
 	private static TextButton[] getOptions(final WindowManager windowManager, final ShopManager shopManager, final StashManager stashManager, final String item) {
 		TextButton[] options = new TextButton[2];
 		
@@ -68,5 +51,11 @@ public class ShopSellPopup extends Popup {
 		
 		return options;
 	}
+
+	@Override
+	public String[] getMenuInfo() {
+		return null;
+	}
+	
 
 }

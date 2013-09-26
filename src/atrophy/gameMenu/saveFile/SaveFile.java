@@ -19,21 +19,16 @@ import atrophy.gameMenu.ui.WindowManager;
 public class SaveFile implements Serializable{
 
 	public static String saveLocation = "";
-	
-	private static final long serialVersionUID = -9063488604100773309L;
-	
 	public Squad squad;
 	public ArrayList<Sector> sectors;
 	public ArrayList<String> stash;
 	public Integer advance;
 	public Double whiteVistaRelation, banditRelation;
-	
 	public Set<String> spawnCodes;
 	public String saveURL;
-	
 	public FactionMissionPlanner wvResearchAi, banditsResearchAi;
 	
-	public SaveFile(Squad squad, Missions missions, ArrayList<Sector> sectors, ArrayList<String> stash, TechTree techTree, Set<String> spawnCodes) {
+	public SaveFile(Squad squad, Missions missions, ArrayList<Sector> sectors, ArrayList<String> stash, TechTree techTree, Set<String> spawnCodes, WindowManager windowManager) {
 		this.advance = squad.getAdvance();
 		this.squad = squad;
 		this.sectors = sectors;
@@ -43,10 +38,11 @@ public class SaveFile implements Serializable{
 		this.banditRelation = -1.0;
 		this.wvResearchAi = missions.getPlanner(AiGenerator.WHITE_VISTA);
 		this.banditsResearchAi = missions.getPlanner(AiGenerator.BANDITS);
+		squad.createWindowLayout(windowManager);
 	}
-
-	public static void saveGame(File file, Squad squad, Missions missions, ArrayList<Sector> sectors, ArrayList<String> stash, TechTree techTree, Set<String> spawnCodes){
-		SaveFile save = new SaveFile(squad,missions,sectors,stash,techTree,spawnCodes);
+	
+	public static void saveGame(File file, Squad squad, Missions missions, ArrayList<Sector> sectors, ArrayList<String> stash, TechTree techTree, Set<String> spawnCodes, WindowManager windowManager){
+		SaveFile save = new SaveFile(squad,missions,sectors,stash,techTree,spawnCodes, windowManager);
 		save.whiteVistaRelation = squad.getFactionRelation(AiGenerator.WHITE_VISTA);
 		save.banditRelation = squad.getFactionRelation(AiGenerator.BANDITS);
 		save.saveURL = file.getAbsolutePath();
@@ -102,16 +98,16 @@ public class SaveFile implements Serializable{
 			mapWar.setSectors(save.sectors);
 			itemMarket.lazyLoad(save.squad.getTechTree());
 			shopManager.randomItems();
-			save.banditsResearchAi.loadFromSerialized();
-			save.wvResearchAi.loadFromSerialized();
+			save.banditsResearchAi.loadFromSerialized(windowManager);
+			save.wvResearchAi.loadFromSerialized(windowManager);
 			missions.setResearchAi(save.banditsResearchAi, save.wvResearchAi);
-			windowManager.updateWindows();
 			missions.setMemCodes(save.spawnCodes);
 			
 			// set advance to true value
 			save.squad.setAdvance(save.advance);
 			save.squad.setFactionRelations(save.whiteVistaRelation, save.banditRelation);
 			SaveFile.saveLocation = save.saveURL;
+			windowManager.updateWindows();
 		}
 		
 		return save.squad;

@@ -1,6 +1,3 @@
-/*
- * 
- */
 package atrophy.gameMenu.ui;
 
 import java.awt.Color;
@@ -14,52 +11,28 @@ import watoydoEngine.sounds.SoundBoard;
 import watoydoEngine.utils.GraphicsFunctions;
 import watoydoEngine.workings.displayActivity.ActivePane;
 
-/**
- * The Class Menu.
- */
 public abstract class Menu extends Crowd{
 
-	/**
-	 * The window z.
-	 */
 	public static int windowZ = 0;
 	
 	private final int DEFAULT_WINDOW_Z;
 	
-	/**
-	 * The mouse down.
-	 */
 	boolean mouseDown;
 	
-//	private final int TARGET_SMALL_X = 200;
 	private final int TARGET_SMALL_Y = 40;
 	
 	private final double[] defaultSize;
 	
 	private final double[] smallSize;
 	
-	/**
-	 * The size.
-	 */
 	private double[] size;
 	
-	/**
-	 * The drag location.
-	 */
 	private int[] dragLocation;
 	
-	/**
-	 * The draw less.
-	 */
 	protected boolean drawLess;
 	
 	protected WindowManager windowManager;
 	
-	/**
-	 * Instantiates a new menu.
-	 *
-	 * @param size the size
-	 */
 	public Menu(WindowManager windowManager, double[] size) {
 		super(true);
 		mouseDown = false;
@@ -84,9 +57,6 @@ public abstract class Menu extends Crowd{
 		
 	}
 	
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Crowd#mD(java.awt.Point, java.awt.event.MouseEvent)
-	 */
 	@Override
 	public boolean mD(Point mousePosition, MouseEvent e) {
 		if(super.mD(mousePosition, e)){
@@ -97,9 +67,6 @@ public abstract class Menu extends Crowd{
 		return true;
 	}
 
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Crowd#mU(java.awt.Point, java.awt.event.MouseEvent)
-	 */
 	@Override
 	public boolean mU(Point mousePosition, MouseEvent e) {
 		super.mU(mousePosition, e);
@@ -107,9 +74,6 @@ public abstract class Menu extends Crowd{
 		return false;
 	}
 
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Crowd#mI(java.awt.Point)
-	 */
 	@Override
 	public void mI(Point mousePosition) {
 		super.mI(mousePosition);
@@ -124,16 +88,11 @@ public abstract class Menu extends Crowd{
 		setPriorityMode(windowManager.requestWindowKey(this));
 	}
 	
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Crowd#mO(java.awt.Point)
-	 */
 	@Override
 	public void mO(Point mousePosition) {
 		if(mouseDown){
 			mouseDown = false;
 		}
-//		super.mO(mousePosition);
-		
 		setPriorityMode(false);
 	}
 	
@@ -157,9 +116,6 @@ public abstract class Menu extends Crowd{
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Crowd#drawMethod(java.awt.Graphics2D)
-	 */
 	@Override
 	public void drawMethod(Graphics2D drawShape) {
 		drawBackground(drawShape);
@@ -169,11 +125,6 @@ public abstract class Menu extends Crowd{
 		}
 	}
 	
-	/**
-	 * Draw background.
-	 *
-	 * @param drawShape the draw shape
-	 */
 	private void drawBackground(Graphics2D drawShape) {
 		drawShape.setColor(Color.black);
 		drawShape.setComposite(GraphicsFunctions.makeComposite(0.9f));
@@ -190,13 +141,6 @@ public abstract class Menu extends Crowd{
 							    (int)size[1],
 							    14,14);
 		
-//		if(drawLess){
-//			drawShape.setColor(new Color(5,5,5));
-//			drawShape.drawRect((int)this.getLocation()[0] + 6,
-//							   (int)this.getLocation()[1] + 6, 
-//							   (int)size[0] - 12,
-//							   (int)size[1] - 12);
-//		}
 		if(!drawLess){
 			drawShape.setColor(new Color(2,2,2));
 			drawShape.fillRect((int)this.getLocation()[0] + 6,
@@ -206,21 +150,12 @@ public abstract class Menu extends Crowd{
 		}
 	}
 
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Crowd#mC(java.awt.Point, java.awt.event.MouseEvent)
-	 */
 	@Override
 	public boolean mC(Point mousePosition, MouseEvent e) {return false;}
 
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Crowd#rMD(java.awt.Point, java.awt.event.MouseEvent)
-	 */
 	@Override
 	public boolean rMD(Point mousePosition, MouseEvent e) {return false;}
 
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Crowd#rMU(java.awt.Point, java.awt.event.MouseEvent)
-	 */
 	@Override
 	public boolean rMU(Point mousePosition, MouseEvent e) {
 		this.setVisible(false);
@@ -230,15 +165,9 @@ public abstract class Menu extends Crowd{
 		return true;
 	}
 
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Crowd#rMC(java.awt.Point, java.awt.event.MouseEvent)
-	 */
 	@Override
 	public boolean rMC(Point mousePosition, MouseEvent e) {return false;}
 
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Crowd#isInBounds(double, double)
-	 */
 	@Override
 	public boolean isInBounds(double x, double y) {
 		if(x >= this.getLocation()[0] && x <= this.getLocation()[0] + this.size[0] && y >= this.getLocation()[1] && y <= this.getLocation()[1] + this.size[1])
@@ -246,17 +175,11 @@ public abstract class Menu extends Crowd{
 		return false;
 	}
 
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Crowd#getScale()
-	 */
 	@Override
 	public double getScale() {
 		return 1;
 	}
 
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Crowd#getSize()
-	 */
 	@Override
 	public double[] getSize() {
 		return this.size;
@@ -266,43 +189,25 @@ public abstract class Menu extends Crowd{
 		this.size = size;
 	}
 
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Crowd#setScale(double)
-	 */
 	@Override
 	public void setScale(double scale) {}
 
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Crowd#setTween(watoydoEngine.display.tweens.TweenDefinable)
-	 */
 	@Override
 	public void setTween(TweenDefinable tween) {}
 
-	/**
-	 * Update information.
-	 */
 	public void updateInformation() {}
 
-	/**
-	 * Sets the draw less.
-	 *
-	 * @param drawLess the new draw less
-	 */
 	public void setDrawLess(boolean drawLess) {
 		this.drawLess = drawLess;
 	}
-	
-	/**
-	 * Move all.
-	 *
-	 * @param x the x
-	 * @param y the y
-	 */
+
 	public void moveAll(double x, double y){
 		for(int i = 0; i < this.getDisplayList().size(); i++){
 			this.getDisplayList().get(i).move(x, y);
 		}
 		this.move(x, y);
 	}
+	
+	public abstract String[] getMenuInfo();
 
 }

@@ -22,6 +22,7 @@ import atrophy.combat.items.WeaponSupply;
 import atrophy.gameMenu.saveFile.Squad.Squaddie;
 import atrophy.gameMenu.ui.MenuMapInterface;
 import atrophy.gameMenu.ui.StashManager;
+import atrophy.gameMenu.ui.WindowManager;
 
 public class Missions{
 
@@ -215,8 +216,9 @@ public class Missions{
 		public String sectorName;
 		private boolean missionTaken;
 		public boolean isChecked;
+		private WindowManager windowManager;
 
-		public AttackMission(Missions missions, StashManager stashManager, String faction, Squad squad, Object rewardForAttack, String mapName, String mapOwner, Integer eChance, Integer mChance, Integer wChance, Integer sChance, ItemMarket itemMarket, TechTree techTree, String sectorName) {
+		public AttackMission(Missions missions, StashManager stashManager, String faction, Squad squad, Object rewardForAttack, String mapName, String mapOwner, Integer eChance, Integer mChance, Integer wChance, Integer sChance, ItemMarket itemMarket, TechTree techTree, String sectorName, WindowManager windowManager) {
 			super(missions, stashManager, faction, "Secure " + mapName.substring(0, mapName.length() - 4) + " for "+faction, "Kill all enemies in the area for a reward of " + rewardForAttack, false, rewardForAttack, squad);
 			this.mapName = mapName;
 			this.mapOwner = mapOwner;
@@ -230,6 +232,7 @@ public class Missions{
 			this.missionTaken = false;
 			this.isChecked = false;
 			this.timeToLive = 1;
+			this.windowManager = windowManager;
 		}
 
 		@Override
@@ -242,6 +245,8 @@ public class Missions{
 				missions.squad.incrementFactionRelation(AiGenerator.WHITE_VISTA, -2);
 			
 			this.missionTaken = true;
+			
+			squad.createWindowLayout(windowManager);
 			
 			try {
 				MenuMapInterface.loadLevel(ReadWriter.getRootFile("Maps/" + mapName), mapOwner, squad, eChance, mChance, wChance, sChance, missions, itemMarket, techTree, stashManager, sectorName);

@@ -1,6 +1,3 @@
-/*
- * 
- */
 package atrophy.gameMenu.ui;
 
 import java.awt.Color;
@@ -21,26 +18,15 @@ import atrophy.gameMenu.saveFile.Squad;
 import atrophy.gameMenu.saveFile.Squad.Squaddie;
 import atrophy.gameMenu.saveFile.TechTree;
 
-/**
- * The Class SquadMenu.
- */
 public class SquadMenu extends Menu{
 
 	protected static final int MAX_SQUAD_COUNT = 3;
 	
-	/**
-	 * The squad.
-	 */
 	private Squad squad;
 	private ShopManager shopManager;
 	private StashManager stashManager;
 	private TechTree techTree;
 	
-	/**
-	 * Instantiates a new squad menu.
-	 * @param squad 
-	 * @param shopManager 
-	 */
 	public SquadMenu(WindowManager windowManager, ShopManager shopManager, StashManager stashManager, Squad squad, TechTree techTree){
 		super(windowManager, new double[]{300,240});
 		
@@ -53,9 +39,6 @@ public class SquadMenu extends Menu{
 		updateInformation();
 	}
 
-	/**
-	 * Creates the squad components.
-	 */
 	private void createSquadComponents(final ShopManager shopManager, final StashManager stashManager) {
 		final int[] windowLocation = new int[]{(int) (this.getLocation()[0]),(int) (this.getLocation()[1])};
 		final int spacing = 20;
@@ -200,15 +183,17 @@ public class SquadMenu extends Menu{
 		drawShape.drawString("Squad Menu", (int)this.getLocation()[0] + 20, (int)this.getLocation()[1] + 21);
 	}
 	
-	/* (non-Javadoc)
-	 * @see atrophy.gameMenu.ui.Menu#updateInformation()
-	 */
 	@Override
 	public void updateInformation() {
 		this.getDisplayList().clear();
 		this.getMouseActionList().clear();
 		
 		this.createSquadComponents(shopManager, stashManager);
+	}
+	
+	@Override
+	public String[] getMenuInfo() {
+		return new String[]{"SquadMenu"};
 	}
 	
 }

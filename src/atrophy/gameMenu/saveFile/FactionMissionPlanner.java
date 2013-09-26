@@ -23,6 +23,7 @@ import atrophy.gameMenu.saveFile.MapManager.Sector;
 import atrophy.gameMenu.saveFile.Missions.AttackMission;
 import atrophy.gameMenu.saveFile.Missions.Mission;
 import atrophy.gameMenu.ui.StashManager;
+import atrophy.gameMenu.ui.WindowManager;
 
 public class FactionMissionPlanner implements Serializable{
 
@@ -41,6 +42,7 @@ public class FactionMissionPlanner implements Serializable{
 	private StringBuffer news;
 	private int researchCount;
 	private int actionPoints;
+	private transient WindowManager windowManager;
 	
 	public FactionMissionPlanner(String faction) {
 		this.faction = faction;
@@ -54,8 +56,9 @@ public class FactionMissionPlanner implements Serializable{
 		this.news = new StringBuffer();
 	}
 	
-	public void loadFromSerialized() {
+	public void loadFromSerialized(WindowManager windowManager) {
 		this.activeMissions = new ArrayList<>();
+		this.windowManager = windowManager;
 	}
 
 	public boolean ownsMap(String mapName, String sectorName) {
@@ -128,7 +131,7 @@ public class FactionMissionPlanner implements Serializable{
 			this.activeMissions.add(new Missions.AttackMission(missions, stashManager, faction, squad, ATTACK_REWARD * attackLocation.getValue(),
 									attackLocation.mapName, mapManager.getSector(attackLocation.sector).getOwner(missions, attackLocation.mapName),
 									attackLocation.eChance, attackLocation.mChance, attackLocation.wChance, attackLocation.sChance,
-									itemMarket, techTree, attackLocation.sector));
+									itemMarket, techTree, attackLocation.sector, windowManager));
 		}
 	}
 	

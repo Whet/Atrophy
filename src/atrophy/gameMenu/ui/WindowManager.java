@@ -1,46 +1,35 @@
-/*
- * 
- */
 package atrophy.gameMenu.ui;
 
 import java.awt.AWTException;
 import java.awt.Robot;
+import java.util.ArrayList;
+import java.util.List;
 
 import watoydoEngine.designObjects.display.Crowd;
 import watoydoEngine.designObjects.display.Displayable;
 import watoydoEngine.workings.DisplayManager;
 import watoydoEngine.workings.displayActivity.ActivePane;
+import atrophy.gameMenu.saveFile.ItemMarket;
+import atrophy.gameMenu.saveFile.MapManager;
+import atrophy.gameMenu.saveFile.Missions;
+import atrophy.gameMenu.saveFile.Squad;
+import atrophy.gameMenu.saveFile.Squad.WindowInfo;
+import atrophy.gameMenu.saveFile.TechTree;
 import atrophy.gameMenu.ui.popups.Popup;
 
-/**
- * The Class WindowManager.
- */
 public class WindowManager extends Crowd{
 
-	/**
-	 * The popup open.
-	 */
 	private boolean popupOpen;
-	
-	/**
-	 * The popup.
-	 */
 	private Menu popup;
 	private Menu selectedMenu;
 	private MenuBar menuBar;
 	
-	/**
-	 * Instantiates a new window manager.
-	 */
 	public WindowManager(MenuBar menuBar){
 		super(true);
 		popupOpen = false;
 		this.menuBar = menuBar;
 	}
 	
-	/**
-	 * Update windows.
-	 */
 	public void updateWindows(){
 		for(int i = 0; i < this.getDisplayList().size(); i++){
 			if(this.getDisplayList().get(i) instanceof Menu){
@@ -49,27 +38,19 @@ public class WindowManager extends Crowd{
 		}
 	}
 	
-	/**
-	 * Adds the window.
-	 *
-	 * @param menu the menu
-	 */
 	public void addWindow(Displayable parent, Menu menu){
 		this.addDisplayItem(menu);
 		this.addMouseActionItem(menu);
 		menu.setVisible(true);
-		menu.moveAll(parent.getLocation()[0] + 20, parent.getLocation()[1] + 5);
+		
+		if(parent != null)
+			menu.moveAll(parent.getLocation()[0] + 20, parent.getLocation()[1] + 5);
 		
 		this.releaseWindowKey();
 		this.requestWindowKey(menu);
 		this.computeZOrder();
 	}
 	
-	/**
-	 * Adds the popup.
-	 *
-	 * @param popup the popup
-	 */
 	public void addPopup(Menu invoker, Menu popup){
 		
 		if(invoker != null){
@@ -94,31 +75,16 @@ public class WindowManager extends Crowd{
 		catch (AWTException e) {}
 	}
 
-	/**
-	 * Checks if is popup visible.
-	 *
-	 * @return true, if is popup visible
-	 */
 	public boolean isPopupVisible() {
 		return popupOpen;
 	}
 	
-	/**
-	 * Open popup.
-	 *
-	 * @param popup the popup
-	 */
 	public void openPopup(Menu popup){
 		this.addDisplayItem(popup);
 		this.addMouseActionItem(popup);
 		this.popup = popup;
 	}
 	
-	/**
-	 * Sets the popup open.
-	 *
-	 * @param open the new popup open
-	 */
 	public void setPopupOpen(boolean open){
 		this.popupOpen = open;
 		
@@ -150,9 +116,6 @@ public class WindowManager extends Crowd{
 
 	// Sets all window.z values to their minimum (nearest to 0) without changing order
 	// done so that windowz will not overflow when menus are constantly opened and closed
-	/**
-	 * Defrag window z.
-	 */
 	public void defragWindowZ() {
 		int i;
 		
@@ -184,6 +147,60 @@ public class WindowManager extends Crowd{
 	
 	public void releaseWindowKey(){
 		selectedMenu = null;
+	}
+
+	public List<Menu> getWindows() {
+		List<Menu> menus = new ArrayList<>();
+		
+		for(Displayable m: this.getDisplayList()) {
+			menus.add((Menu) m);
+		}
+		
+		return menus;
+	}
+	
+	public void createWindowsFromLayout(List<WindowInfo> windows, Missions missions, Squad squad, ItemMarket itemMarket, TechTree techTree, StashManager stashManager, MapManager mapManager, ShopManager shopManager) {
+		for(WindowInfo window:windows) {
+			
+			switch(window.info[0]) {
+				case "MapsMenu":
+				MapsMenu menu = new MapsMenu(this, missions, squad, mapManager.getSector(window.info[1]), itemMarket, techTree, stashManager);
+				menu.moveAll(window.location[0], window.location[1]);
+				addWindow(null, menu);
+				break;
+				case "MissionsMenu":
+				MissionsMenu menu2 = new MissionsMenu(this, missions, stashManager);
+				menu2.moveAll(window.location[0], window.location[1]);
+				addWindow(null,	menu2);
+				break;
+				case "SectorsMenu":
+				SectorsMenu menu3 = new SectorsMenu(mapManager, this, missions, squad, itemMarket, techTree, stashManager);
+				menu3.moveAll(window.location[0], window.location[1]);
+				addWindow(null, menu3);
+				break;
+				case "ShopMenu":
+				ShopMenu menu4 = new ShopMenu(this, shopManager, stashManager);
+				menu4.moveAll(window.location[0], window.location[1]);
+				addWindow(null, menu4);
+				break;
+				case "SquadMemberMenu":
+				SquadMemberMenu menu5 = new SquadMemberMenu(this, squad, stashManager, Integer.parseInt(window.info[1]));
+				menu5.moveAll(window.location[0], window.location[1]);
+				addWindow(null, menu5);
+				break;
+				case "SquadMenu":
+				SquadMenu menu6 = new SquadMenu(this, shopManager, stashManager, squad, techTree);
+				menu6.moveAll(window.location[0], window.location[1]);
+				addWindow(null, menu6);
+				break;
+				case "StashMenu":
+				StashMenu menu7 = new StashMenu(this, stashManager);
+				menu7.moveAll(window.location[0], window.location[1]);
+				addWindow(null, menu7);
+				break;
+			}
+			
+		}
 	}
 	
 }

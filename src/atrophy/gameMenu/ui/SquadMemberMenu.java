@@ -242,9 +242,6 @@ public class SquadMemberMenu extends Menu {
 		drawShape.drawString(squadMember.getName(), (int)this.getLocation()[0] + 20, (int)this.getLocation()[1] + 21);
 	}
 	
-	/* (non-Javadoc)
-	 * @see atrophy.gameMenu.ui.Menu#updateInformation()
-	 */
 	@Override
 	public void updateInformation() {
 		if(squad.getSquad().size() < this.index + 1){
@@ -252,6 +249,11 @@ public class SquadMemberMenu extends Menu {
 		}
 		this.squadMember = squad.getSquadMember(index);
 		updateText();
+	}
+	
+	@Override
+	public String[] getMenuInfo() {
+		return new String[]{"SquadMemberMenu",Integer.toString(this.index)};
 	}
 
 }

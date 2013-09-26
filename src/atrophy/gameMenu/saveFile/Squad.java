@@ -7,10 +7,14 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 
+import watoydoEngine.designObjects.display.Displayable;
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.ai.MuleAi;
 import atrophy.combat.mechanics.Abilities;
+import atrophy.gameMenu.ui.Menu;
+import atrophy.gameMenu.ui.WindowManager;
 
 public class Squad implements Serializable {
 
@@ -31,6 +35,8 @@ public class Squad implements Serializable {
 	public ArrayList<String> banditKills;
 	public ArrayList<String> wvKills;
 	
+	public List<WindowInfo> windowLayout;
+	
 	public Squad(){
 		this.squadMembers = new ArrayList<Squaddie>(5);
 		this.stability = 0;
@@ -39,6 +45,16 @@ public class Squad implements Serializable {
 		this.lonerKills = new ArrayList<>();
 		this.banditKills = new ArrayList<>();
 		this.wvKills = new ArrayList<>();
+		this.windowLayout = new ArrayList<>();
+	}
+	
+	public void createWindowLayout(WindowManager windowManager) {
+		for(Displayable window: windowManager.getDisplayList()) {
+			
+			Menu menu = (Menu) window;
+			
+			this.windowLayout.add(new WindowInfo(menu.getMenuInfo(), menu.getLocation()));
+		}
 	}
 	
 	public ArrayList<String> getLonerKills() {
@@ -114,10 +130,20 @@ public class Squad implements Serializable {
 		return this.squadMembers.size();
 	}
 
+	public static class WindowInfo implements Serializable {
+		
+		public final String[] info;
+		public final double[] location;
+		
+		public WindowInfo(String[] info, double[] location) {
+			this.info = info;
+			this.location = location;
+		}
+		
+	}
+	
 	public static class Squaddie implements Serializable {
 		
-		private static final long serialVersionUID = 1495637406141508899L;
-
 		private String name;
 		private String image;
 		private String vehicleType;

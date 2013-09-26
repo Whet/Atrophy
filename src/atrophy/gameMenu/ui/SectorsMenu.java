@@ -107,4 +107,9 @@ public class SectorsMenu extends Menu{
 		}
 	}
 	
+	@Override
+	public String[] getMenuInfo() {
+		return new String[]{"SectorsMenu"};
+	}
+	
 }

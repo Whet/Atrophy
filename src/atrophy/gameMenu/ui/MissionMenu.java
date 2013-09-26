@@ -99,5 +99,10 @@ public class MissionMenu extends Menu {
 	public void updateInformation() {
 		updateText();
 	}
+	
+	@Override
+	public String[] getMenuInfo() {
+		return new String[]{"MissionMenu"};
+	}
 
 }

@@ -346,6 +346,8 @@ public class AiCrowd extends Crowd {
 		squad.setBanditKills(banditKills);
 		squad.setLonerKills(lonerKills);
 		
+		squad.windowLayout = this.squad.windowLayout;
+		
 		whiteVistaKillCount = wvKills.size() - this.squad.getWvKills().size();
 		lonerKillCount = lonerKills.size() - this.squad.getLonerKills().size();
 		banditKillCount = banditKills.size() - this.squad.getBanditKills().size();

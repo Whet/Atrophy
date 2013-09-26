@@ -48,23 +48,25 @@ public class GameMenuHardPane implements HardPaneDefineable{
 		WindowManager windowManager = new WindowManager(menuBar);
 		stashManager.setWindowManager(windowManager);
 		ItemMarket itemMarket = new ItemMarket();
-		MapManager mapWar = new MapManager(missions);
+		MapManager mapManager = new MapManager(missions);
 		ShopManager shopManager = new ShopManager(windowManager, stashManager, itemMarket);
 		
 		itemMarket.lazyLoad(techTree);
 		shopManager.lazyLoad(squad);
-		menuBar.lazyLoad(windowManager, mapWar, missions, squad, shopManager, stashManager, techTree, itemMarket);
+		menuBar.lazyLoad(windowManager, mapManager, missions, squad, shopManager, stashManager, techTree, itemMarket);
 		stashManager.lazyLoad(shopManager);
-		missions.lazyLoad(squad, stashManager, itemMarket, techTree, mapWar);
+		missions.lazyLoad(squad, stashManager, itemMarket, techTree, mapManager);
 		
 		crowd.addKeyListener(new GameMenuKeyHandler(windowManager));
 		crowd.addCrowd(menuBar);
 		crowd.addCrowd(windowManager);
 		
-		mapWar.updateSectors();
+		mapManager.updateSectors();
 		shopManager.randomItems();
 		missions.updatePlanners();
 		missions.updateMissions();
+		windowManager.createWindowsFromLayout(squad.windowLayout, missions, squad, itemMarket, techTree, stashManager, mapManager, shopManager);
+		squad.windowLayout.clear();
 		windowManager.updateWindows();
 		
 		windowManager.releaseWindowKey();
