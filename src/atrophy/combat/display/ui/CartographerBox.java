@@ -6,6 +6,7 @@ package atrophy.combat.display.ui;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 import watoydoEngine.designObjects.actions.ActionRegion;
@@ -179,6 +180,16 @@ public class CartographerBox extends Crowd{
 	public void drawMethod(Graphics2D drawShape) {
 		drawBackdrop(drawShape);
 		super.drawMethod(drawShape);
+	}
+	
+	@Override
+	public boolean kD(KeyEvent e) {
+		for(int i = 0; i < this.addMarkerButtons.length; i++) {
+			AddMarkerText addMarkerText = this.addMarkerButtons[i];
+			if(addMarkerText.isFocused() && addMarkerText.kD(e))
+				return true;
+		}
+		return false;
 	}
 
 	/**
