@@ -10,7 +10,6 @@ import atrophy.combat.actions.MouseAbilityHandler;
 import atrophy.combat.combatEffects.Effect;
 import atrophy.combat.items.ArmourPlates1;
 import atrophy.combat.items.ArmourPlates2;
-import atrophy.combat.items.GrenadeItem;
 import atrophy.combat.items.Inventory;
 import atrophy.combat.items.Item;
 import atrophy.combat.items.LightStealthField;
@@ -20,7 +19,6 @@ import atrophy.combat.items.MeleeWeapon2;
 import atrophy.combat.items.ScienceScanner;
 import atrophy.combat.items.SensorSuite;
 import atrophy.combat.items.SpeedBooster;
-import atrophy.combat.items.StunGrenadeItem;
 import atrophy.combat.items.UnitDetector;
 import atrophy.combat.items.Weapon;
 import atrophy.combat.items.WeldingTorch;
@@ -84,14 +82,12 @@ public class AiData {
 	}
 	
 	private void defaultSkills() {
-		this.setSkill(Abilities.GRENADETHROWER, 0);
 		this.setSkill(Abilities.SCAN_SCIENCE, 0);
 		this.setSkill(Abilities.XRAY_SCAN, 0);
 		this.setSkill(Abilities.SPEED_BOOSTER, 0);
 		this.setSkill(Abilities.STEALTH1, 0);
 		this.setSkill(Abilities.STEALTH2, 0);
 		this.setSkill(Abilities.INVESTIGATE, 0);
-		this.setSkill(Abilities.STUNGRENADETHROWER, 0);
 		this.setSkill(Abilities.WELDING, 0);
 	}
 	
@@ -107,12 +103,6 @@ public class AiData {
 		this.abilities.add(Abilities.INVESTIGATE);
 		
 		// Ability Items
-		if(this.inventory.hasItem(GrenadeItem.getInstance())){
-			this.abilities.add(Abilities.GRENADETHROWER);
-		}
-		if(this.inventory.hasItem(StunGrenadeItem.getInstance())){
-			this.abilities.add(Abilities.STUNGRENADETHROWER);
-		}
 		if(this.inventory.hasItem(WeldingTorch.getInstance())){
 			this.abilities.add(Abilities.WELDING);
 		}
@@ -316,14 +306,6 @@ public class AiData {
 
 	public boolean addItem(Item item) {
 		return this.inventory.addItem(item);
-	}
-
-	public void removeGrenade() {
-		this.inventory.removeGrenade();
-	}
-
-	public void removeStunGrenade() {
-		this.inventory.removeStunGrenade();
 	}
 
 	public boolean hasAbility(String ability) {

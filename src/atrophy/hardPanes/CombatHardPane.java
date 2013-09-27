@@ -1,6 +1,3 @@
-/*
- * 
- */
 package atrophy.hardPanes;
 
 import java.util.List;
@@ -29,15 +26,8 @@ import atrophy.gameMenu.saveFile.ItemMarket;
 import atrophy.gameMenu.saveFile.Missions;
 
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class CombatHardPane.
- */
 public class CombatHardPane implements HardPaneDefineable {
 	
-	/**
-	 * The Constant NAME.
-	 */
 	private TurnProcess turnProcess;
 	private AiManagementSuite aiManagementSuite;
 	private UiUpdaterSuite uiUpdaterSuite;
@@ -66,9 +56,6 @@ public class CombatHardPane implements HardPaneDefineable {
 		this.messageBox = messageBox;
 	}
 	
-	/* (non-Javadoc)
-	 * @see watoydoEngine.hardPanes.ModdableHardPane#load(java.lang.String, watoydoEngine.designObjects.display.Crowd)
-	 */
 	public void load(Crowd crowd){
 		
 		//Load images

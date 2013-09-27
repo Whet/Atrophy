@@ -1,6 +1,3 @@
-/*
- * 
- */
 package atrophy.combat.ai;
 
 import atrophy.combat.level.LevelManager;

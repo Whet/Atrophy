@@ -54,14 +54,6 @@ public class ActionsBar extends Crowd{
 			actionButtonMap.put("blockDoor", blockDoor);
 			this.addButton(blockDoor);
 			
-			ThrowGrenadeAction throwGrenade = new ThrowGrenadeAction(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/throwGrenade.png")));
-			actionButtonMap.put("throwGrenade", throwGrenade);
-			this.addButton(throwGrenade);
-			
-			ThrowStunGrenadeAction throwStunGrenade = new ThrowStunGrenadeAction(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/throwStunGrenade.png")));
-			actionButtonMap.put("throwStunGrenade", throwStunGrenade);
-			this.addButton(throwStunGrenade);
-			
 			ScanRoomAction scanRoom = new ScanRoomAction(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/scanRoom.png")));
 			actionButtonMap.put("scanRoom", scanRoom);
 			this.addButton(scanRoom);
@@ -167,12 +159,6 @@ public class ActionsBar extends Crowd{
 					break;
 					case Abilities.WELDING:
 						this.visibleButtons.add(actionButtonMap.get("blockDoor"));
-					break;
-					case Abilities.GRENADETHROWER:
-						this.visibleButtons.add(actionButtonMap.get("throwGrenade"));
-					break;
-					case Abilities.STUNGRENADETHROWER:
-						this.visibleButtons.add(actionButtonMap.get("throwStunGrenade"));
 					break;
 					case Abilities.XRAY_SCAN:
 						this.visibleButtons.add(actionButtonMap.get("scanRoom"));

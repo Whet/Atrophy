@@ -5,11 +5,9 @@ package atrophy.combat.ai;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Random;
-import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -36,9 +34,7 @@ import atrophy.combat.display.ui.loot.LootBox;
 import atrophy.combat.items.ArmourPlates1;
 import atrophy.combat.items.ArmourPlates2;
 import atrophy.combat.items.DaemonWeapon;
-import atrophy.combat.items.GrenadeItem;
 import atrophy.combat.items.Item;
-import atrophy.combat.items.StunGrenadeItem;
 import atrophy.combat.items.Weapon;
 import atrophy.combat.level.LevelBlock;
 import atrophy.combat.level.LevelManager;
@@ -472,13 +468,8 @@ public class AiGenerator{
 			for(int i = 0; i < randomItemCount; i++){
 				String item = allowedItems.get(new Random().nextInt(allowedItems.size()));
 				
-				Set<String> allowedDuplicateItems = new HashSet<String>();
-				
-				allowedDuplicateItems.add(GrenadeItem.NAME);
-				allowedDuplicateItems.add(StunGrenadeItem.NAME);
-				
 				if(item != null && (!(item.equals(ArmourPlates1.NAME) || item.equals(ArmourPlates2.NAME)) || !hasArmour) &&
-						           (!ai.getInventory().hasItem(Item.stringToItem(item)) || allowedDuplicateItems.contains(item))) {
+						           (!ai.getInventory().hasItem(Item.stringToItem(item)))) {
 					ai.addItem(Item.stringToItem(item));
 					
 					if(item.equals(ArmourPlates1.NAME) || item.equals(ArmourPlates2.NAME))

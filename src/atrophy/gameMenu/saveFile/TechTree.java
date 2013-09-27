@@ -35,8 +35,6 @@ public class TechTree implements Serializable{
 	public static final String MECHANICAL_WEAPONS = 		"Mechanical Weapons";
 	public static final String HEAVY_ARMOUR = 				"Heavy Armour";
 	public static final String BASIC_ARMOUR = 				"Basic Armour";
-	public static final String BASIC_INCAPACITATION = 		"Basic Incapacitation";
-	public static final String BASIC_EXPLOSIVES = 			"Basic Explosives";
 	public static final String SPACE_WALKING = 				"Space Walking";
 	public static final String MULE = 						"Robotics";
 	
@@ -57,13 +55,6 @@ public class TechTree implements Serializable{
 		base.setResearched(true, AiGenerator.LONER);
 		techTree.put(SPACE_WALKING,base);
 		
-		TechnologyNode grenades = new TechnologyNode(new TechnologyNode[]{base}, BASIC_EXPLOSIVES,0,1,2,0);
-		techTree.put(BASIC_EXPLOSIVES,grenades);
-		
-		TechnologyNode stunGrenades = new TechnologyNode(new TechnologyNode[]{grenades}, BASIC_INCAPACITATION,0,0,0,0);
-		techTree.put(BASIC_INCAPACITATION,stunGrenades);
-		
-		
 		TechnologyNode basicArmour = new TechnologyNode(new TechnologyNode[]{base}, BASIC_ARMOUR,0,2,0,0);
 		techTree.put(BASIC_ARMOUR,basicArmour);
 		
@@ -77,9 +68,6 @@ public class TechTree implements Serializable{
 		
 		TechnologyNode impMechanicalWeapons = new TechnologyNode(new TechnologyNode[]{mechanicalWeapons}, CALIBRATION,1,2,0,0);
 		techTree.put(CALIBRATION,impMechanicalWeapons);
-		
-//		TechnologyNode cadTags = new TechnologyNode(new TechnologyNode[]{mechanicalWeapons}, BOUNTY_HUNTING,1,0,0,3);
-//		techTree.put(BOUNTY_HUNTING,cadTags);
 		
 		TechnologyNode firearm1 = new TechnologyNode(new TechnologyNode[]{impMechanicalWeapons}, FIREARMS,0,1,5,0);
 		techTree.put(FIREARMS,firearm1);

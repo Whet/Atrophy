@@ -10,8 +10,6 @@ public class Abilities{
 
 	// Skill levels go 0,1,2,3,4
 	
-	public static final String GRENADETHROWER = "Grenadier";
-	public static final String STUNGRENADETHROWER = "Blitzer";
 	public static final String XRAY_SCAN = "Scanning";
 	public static final String SPEED_BOOSTER = "Scouting";
 	public static final String STEALTH1 = "Ambushing";
@@ -28,12 +26,6 @@ public class Abilities{
 	
 	public static void applyAbility(Ai initiator, String ability, int skillLevel){
 		switch(ability){
-			case GRENADETHROWER:
-				initiator.throwGrenadeAction(skillLevel);
-			break;
-			case STUNGRENADETHROWER:
-				initiator.throwStunGrenadeTurnAction(skillLevel);
-			break;
 			case XRAY_SCAN:
 				if(skillLevel == 0){
 					initiator.setFov(150);

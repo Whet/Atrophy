@@ -5,7 +5,6 @@ import atrophy.combat.actions.MouseAbilityHandler;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.AiImage;
 import atrophy.combat.mechanics.ScoringMechanics;
-import atrophy.combat.mechanics.TurnProcess;
 
 public class AiCombatActions {
 

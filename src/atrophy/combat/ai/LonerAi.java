@@ -1,6 +1,3 @@
-/*
- * 
- */
 package atrophy.combat.ai;
 
 import java.util.ArrayList;
@@ -19,41 +16,22 @@ import atrophy.combat.display.ui.loot.LootBox;
 import atrophy.combat.level.LevelManager;
 import atrophy.combat.mechanics.TurnProcess;
 
-/**
- * The Class LonerAi.
- */
 public class LonerAi extends ThinkingAi{
 
 	private AiCrowd aiCrowd;
 	private CombatMembersManager combatMembersManager;
 	
-	/**
-	 * Instantiates a new loner ai.
-	 *
-	 * @param randomName the random name
-	 * @param levelManager 
-	 * @param combatInorganicManager 
-	 * @param dialoguePool 
-	 * @param d the d
-	 * @param e the e
-	 */
 	public LonerAi(PanningManager panningManager, AiCrowd aiCrowd,CombatVisualManager combatVisualManager, TurnProcess turnProcess, FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, CombatMembersManager combatMembersManager, String randomName, double x, double y, LevelManager levelManager, CombatNCEManager combatInorganicManager, CombatUiManager combatUiManager, LootBox lootBox, DialoguePool dialoguePool) {
 		super(dialoguePool, panningManager, combatVisualManager, turnProcess, floatingIcons, mouseAbilityHandler, aiCrowd, combatMembersManager, randomName,x,y, levelManager, combatInorganicManager, combatUiManager, lootBox);
 		this.aiCrowd = aiCrowd;
 		this.combatMembersManager = combatMembersManager;
 	}
 	
-	/* (non-Javadoc)
-	 * @see atrophy.combat.ai.thinkingAi.ThinkingAi#isTargetHostile(atrophy.combat.ai.Ai)
-	 */
 	@Override
 	public boolean isTargetHostile(Ai target) {
 		return !target.isDead() && target != this && !this.getCommander().isAlliedWith(target.getFaction()) && !this.getCommander().isAiFriend(target);
 	}
 	
-	/* (non-Javadoc)
-	 * @see atrophy.combat.ai.thinkingAi.ThinkingAi#isBeingTargeted()
-	 */
 	@Override
 	protected boolean isBeingTargeted() {
 		for(Ai ai : aiCrowd.getActors()){
@@ -64,9 +42,6 @@ public class LonerAi extends ThinkingAi{
 		return false;
 	}
 	
-	/* (non-Javadoc)
-	 * @see atrophy.combat.ai.thinkingAi.ThinkingAi#canBeEngaged(atrophy.combat.ai.Ai)
-	 */
 	@Override
 	protected boolean canBeEngaged(Ai ai) {
 		if(this.isTargetHostile(ai) &&
@@ -77,9 +52,6 @@ public class LonerAi extends ThinkingAi{
 		return false;
 	}
 	
-	/* (non-Javadoc)
-	 * @see atrophy.combat.ai.thinkingAi.ThinkingAi#engageWithHostiles()
-	 */
 	protected void engageWithHostiles(){
 
 		int enemyCount = 0;
@@ -132,9 +104,6 @@ public class LonerAi extends ThinkingAi{
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see atrophy.combat.ai.thinkingAi.ThinkingAi#willJoinPlayer(atrophy.combat.ai.Ai)
-	 */
 	@Override
 	public boolean willJoinPlayer(Ai player) {
 //		return ScoringMechanics.weakIntimidateCheck(player, this, combatMembersManager);

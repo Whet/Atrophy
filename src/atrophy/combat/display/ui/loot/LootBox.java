@@ -26,7 +26,6 @@ import atrophy.combat.display.ui.MessageBox;
 import atrophy.combat.items.ArmourPlates1;
 import atrophy.combat.items.ArmourPlates2;
 import atrophy.combat.items.EngineeringSupply;
-import atrophy.combat.items.GrenadeItem;
 import atrophy.combat.items.Harpoon1;
 import atrophy.combat.items.Harpoon2;
 import atrophy.combat.items.Inventory;
@@ -48,7 +47,6 @@ import atrophy.combat.items.ScienceSupply;
 import atrophy.combat.items.SensorSuite;
 import atrophy.combat.items.Shotgun1;
 import atrophy.combat.items.SpeedBooster;
-import atrophy.combat.items.StunGrenadeItem;
 import atrophy.combat.items.UnarmedWeapon;
 import atrophy.combat.items.UnitDetector;
 import atrophy.combat.items.Weapon;
@@ -147,8 +145,6 @@ public class LootBox extends Crowd{
 							  "images/atrophy/combat/ui/sensorSuite.png",
 							  "images/atrophy/combat/ui/stealthModule.png",
 							  "images/atrophy/combat/ui/stealthModule.png",
-							  "images/atrophy/combat/ui/throwGrenade.png",
-							  "images/atrophy/combat/ui/throwStunGrenade.png",
 							  "images/atrophy/combat/ui/speedBooster.png",
 							  "images/atrophy/combat/ui/armour1.png",
 							  "images/atrophy/combat/ui/armour2.png",
@@ -174,7 +170,6 @@ public class LootBox extends Crowd{
 			String[] names = {WeldingTorch.getInstance().getName(),ScienceScanner.getInstance().getName(),UnitDetector.getInstance().getName(),
 							  SensorSuite.getInstance().getName(),
 							  LightStealthField.getInstance().getName(),MediumStealthField.getInstance().getName(),
-							  GrenadeItem.getInstance().getName(), StunGrenadeItem.getInstance().getName(),
 							  SpeedBooster.getInstance().getName(),
 							  ArmourPlates1.getInstance().getName(), ArmourPlates2.getInstance().getName(),
 							  EngineeringSupply.NAME, ScienceSupply.NAME, MedicalSupply.NAME, WeaponSupply.NAME,

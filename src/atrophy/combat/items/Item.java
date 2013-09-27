@@ -24,8 +24,6 @@ public abstract class Item {
 				return ArmourPlates1.getInstance();
 			case ArmourPlates2.NAME:
 				return ArmourPlates2.getInstance();
-			case GrenadeItem.NAME:
-				return GrenadeItem.getInstance();
 			case LightStealthField.NAME:
 				return LightStealthField.getInstance();
 			case MediumStealthField.NAME:
@@ -36,8 +34,6 @@ public abstract class Item {
 				return SensorSuite.getInstance();
 			case SpeedBooster.NAME:
 				return SpeedBooster.getInstance();
-			case StunGrenadeItem.NAME:
-				return StunGrenadeItem.getInstance();
 			case UnitDetector.NAME:
 				return UnitDetector.getInstance();
 			case WeldingTorch.NAME:
@@ -57,13 +53,11 @@ public abstract class Item {
 	public static boolean isItem(String item){
 		if(item.equals(ArmourPlates1.NAME) ||
 			item.equals(ArmourPlates2.NAME) ||
-			item.equals(GrenadeItem.NAME) ||
 			item.equals(LightStealthField.NAME) ||
 			item.equals(MediumStealthField.NAME) ||
 			item.equals(ScienceScanner.NAME) ||
 			item.equals(SensorSuite.NAME) ||
 			item.equals(SpeedBooster.NAME) ||
-			item.equals(StunGrenadeItem.NAME) ||
 			item.equals(UnitDetector.NAME) ||
 			item.equals(WeldingTorch.NAME) ||
 			item.equals(WeaponSupply.NAME) ||

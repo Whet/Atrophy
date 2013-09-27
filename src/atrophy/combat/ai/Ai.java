@@ -304,22 +304,6 @@ public class Ai implements Lootable{
 		this.aiActions.setWelding(this);
 	}
 	
-	public void throwGrenade(double x, double y){
-		this.aiActions.throwGrenade(this, x, y);
-	}
-	
-	public void throwGrenadeAction(int skillLevel){
-		this.aiActions.throwGrenadeAction(this, skillLevel);
-	}
-	
-	public void throwStunGrenade(double x, double y){
-		this.aiActions.throwStunGrenade(this, x, y);
-	}
-	
-	public void throwStunGrenadeTurnAction(int skillLevel){
-		this.aiActions.throwStunGrenadeTurnAction(this, skillLevel);
-	}
-	
 	public void xrayScan(){
 		this.aiActions.xrayScan(this);
 	}

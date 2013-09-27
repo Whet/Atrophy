@@ -14,13 +14,11 @@ import java.util.Stack;
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.ai.conversation.TalkMap;
-import atrophy.combat.display.MapDrawer;
 import atrophy.combat.display.ui.LargeEventText;
 import atrophy.combat.display.ui.loot.LootBox.Lootable;
 import atrophy.combat.items.ArmourPlates1;
 import atrophy.combat.items.ArmourPlates2;
 import atrophy.combat.items.EngineeringSupply;
-import atrophy.combat.items.GrenadeItem;
 import atrophy.combat.items.Item;
 import atrophy.combat.items.LightStealthField;
 import atrophy.combat.items.MedicalSupply;
@@ -28,11 +26,9 @@ import atrophy.combat.items.MediumStealthField;
 import atrophy.combat.items.ScienceScanner;
 import atrophy.combat.items.SensorSuite;
 import atrophy.combat.items.SpeedBooster;
-import atrophy.combat.items.StunGrenadeItem;
 import atrophy.combat.items.UnitDetector;
 import atrophy.combat.items.WeaponSupply;
 import atrophy.combat.items.WeldingTorch;
-import atrophy.combat.level.AtrophyScriptParser.spawnTalkNode_return;
 import atrophy.combat.level.AtrophyScriptReader.SpawnTalkNodeEffect;
 import atrophy.combat.level.AtrophyScriptReader.SpawnTeamEffect;
 import atrophy.combat.level.AtrophyScriptReader.StoredCommand;
@@ -189,9 +185,6 @@ public class MissionManager {
 				case "ARMOUR2":
 				case "Forged Armour Plates":
 					return ArmourPlates2.getInstance();
-				case "GRENADE":
-				case "Grenade":
-					return GrenadeItem.getInstance();
 				case "LSTEALTH":
 				case "Light Stealth Field":
 					return LightStealthField.getInstance();
@@ -207,9 +200,6 @@ public class MissionManager {
 				case "SPEEDBOOST":
 				case "Speed Booster":
 					return SpeedBooster.getInstance();
-				case "STUNNADE":
-				case "Stun Grenade":
-					return StunGrenadeItem.getInstance();
 				case "UNITSENSOR":
 				case  "Unit Detector":
 					return UnitDetector.getInstance();

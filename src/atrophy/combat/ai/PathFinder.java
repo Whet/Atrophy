@@ -1,6 +1,3 @@
-/*
- * 
- */
 package atrophy.combat.ai;
 
 import java.awt.Polygon;

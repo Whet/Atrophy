@@ -3,9 +3,7 @@ package atrophy.combat;
 import java.util.ArrayList;
 import java.util.ListIterator;
 
-import atrophy.combat.level.LevelBlock;
 import atrophy.combat.level.LevelManager;
-import atrophy.combat.levelAssets.Grenade;
 import atrophy.combat.levelAssets.NonCharacterEntity;
 
 public class CombatNCEManager {
@@ -45,15 +43,6 @@ public class CombatNCEManager {
 	
 	public NonCharacterEntity getLevelAsset(int i){
 		return this.assets.get(i);
-	}
-
-	public boolean isGrenadeInRoom(LevelBlock levelBlock) {
-		for(NonCharacterEntity asset : this.assets){
-			if(asset instanceof Grenade && levelManager.getBlock(asset.getLocation()) == levelBlock){
-				return true;
-			}
-		}
-		return false;
 	}
 	
 }

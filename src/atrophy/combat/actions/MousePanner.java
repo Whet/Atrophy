@@ -3,13 +3,10 @@ package atrophy.combat.actions;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 
-import atrophy.combat.CombatUiManager;
-import atrophy.combat.CombatVisualManager;
-import atrophy.combat.PanningManager;
-import atrophy.combat.mechanics.TurnProcess;
-
 import watoydoEngine.designObjects.actions.MouseRespondable;
 import watoydoEngine.workings.displayActivity.ActivePane;
+import atrophy.combat.CombatUiManager;
+import atrophy.combat.PanningManager;
 
 public class MousePanner implements MouseRespondable{
 

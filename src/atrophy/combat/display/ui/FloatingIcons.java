@@ -23,15 +23,12 @@ import atrophy.combat.PanningManager;
 import atrophy.combat.ai.Ai;
 import atrophy.combat.combatEffects.Power;
 import atrophy.combat.combatEffects.PowerManager;
-import atrophy.combat.combatEffects.ProtectPowerEffect;
 import atrophy.combat.combatEffects.PowerManager.PowerEffect;
+import atrophy.combat.combatEffects.ProtectPowerEffect;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.AiImage;
-import atrophy.combat.display.LineDrawer;
 import atrophy.combat.display.MapDrawer;
 import atrophy.combat.display.MapPainter;
-import atrophy.combat.items.GrenadeItem;
-import atrophy.combat.items.StunGrenadeItem;
 import atrophy.combat.level.LevelBlock;
 import atrophy.combat.level.LevelManager;
 import atrophy.combat.levelAssets.NonCharacterEntity;
@@ -71,9 +68,6 @@ public class FloatingIcons extends Crowd{
 		try{
 			imageBlockedDoor = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/lockedDoor.png"));
 			imageOpenDoor = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/openDoor.png"));
-			
-			images.put(GrenadeItem.NAME, ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/items/bomb.png")));
-			images.put(StunGrenadeItem.NAME, ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/items/stunBomb.png")));
 		}
 		catch(IOException ioExcept){
 			System.err.println("Could not load FloatingIcons image. Terminating.");

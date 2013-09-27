@@ -72,28 +72,7 @@ public class MouseAbilityHandler {
 	}
 	
 	public void applyAbility(Point mousePoint){
-		if(levelManager.getBlock(mousePoint.x - panningManager.getOffset()[0],
-								 mousePoint.y - panningManager.getOffset()[1]) != null){
-			switch(abilityApplied){
-				case Abilities.GRENADETHROWER:
-					if(levelManager.getBlock(mousePoint.x - panningManager.getOffset()[0],
-														   mousePoint.y - panningManager.getOffset()[1]) == combatMembersManager.getCurrentAi().getLevelBlock()){
-						
-						combatMembersManager.getCurrentAi().throwGrenade(mousePoint.x - panningManager.getOffset()[0],
-																					   mousePoint.y - panningManager.getOffset()[1]);
-					}
-				break;
-				case Abilities.STUNGRENADETHROWER:
-					if(levelManager.getBlock(mousePoint.x - panningManager.getOffset()[0],
-							    						   mousePoint.y - panningManager.getOffset()[1]) == combatMembersManager.getCurrentAi().getLevelBlock()){
 
-					combatMembersManager.getCurrentAi().throwStunGrenade(mousePoint.x - panningManager.getOffset()[0],
-																			           mousePoint.y - panningManager.getOffset()[1]);
-					}
-				break;
-			}
-		}
-		
 		final int AI_CLICK_RADIUS = 60;
 		
 		// abilities that don't need to be in a room
@@ -137,22 +116,6 @@ public class MouseAbilityHandler {
 				// avoid the ui update
 				this.cancelAbilitySetting();
 				return;
-				
-			case "CadTag":
-//				targetAi = getClosestAiToMouse(mousePoint, AI_CLICK_RADIUS, true);
-//				if(targetAi != null && 
-//				   !(targetAi instanceof TurretAi) &&
-//				   targetAi.isDead() &&
-//				   Maths.getDistance(targetAi.getLocation(), combatMembersManager.getCurrentAi().getLocation()) <= AiData.INTERACTION_RANGE){
-//					
-//					squad.addKill(targetAi.getFaction());
-//					combatUiManager.getLargeEventText().flashText(targetAi.getName() + " Tagged", Color.yellow);
-//				}
-			break;
-//			case "DebugKill":
-//				targetAi = getClosestAiToMouse(mousePoint, AI_CLICK_RADIUS, true);
-//				targetAi.setDead(true);
-//			break;
 			case "PowerKill":
 				targetAi = getClosestAiToMouse(mousePoint, AI_CLICK_RADIUS, false);
 				powerManager.usePower(Power.KILL, targetAi);
@@ -184,25 +147,10 @@ public class MouseAbilityHandler {
 		this.cancelAbilitySetting();
 	}
 	
-	/**
-	 * Gets the closest ai to mouse.
-	 *
-	 * @param mousePosition the mouse position
-	 * @param minRadius the min radius
-	 * @return the closest ai to mouse
-	 */
 	public Ai getClosestAiToMouse(Point mousePosition, int minRadius){
 		return this.getClosestAiToMouse(mousePosition, minRadius, false);
 	}
 	
-	/**
-	 * Gets the closest ai to mouse.
-	 *
-	 * @param mousePosition the mouse position
-	 * @param minRadius the min radius
-	 * @param allowDead the allow dead
-	 * @return the closest ai to mouse
-	 */
 	private Ai getClosestAiToMouse(Point mousePosition, int minRadius, boolean allowDead){
 		
 		AiImage closestAiImage = null;

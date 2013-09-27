@@ -3,8 +3,8 @@ package atrophy.combat.ai;
 import java.util.Random;
 
 import watoydoEngine.utils.Maths;
-import atrophy.combat.CombatNCEManager;
 import atrophy.combat.CombatMembersManager;
+import atrophy.combat.CombatNCEManager;
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.actions.MouseAbilityHandler;
@@ -16,8 +16,6 @@ import atrophy.combat.items.MeleeWeapon1;
 import atrophy.combat.items.ScienceSupply;
 import atrophy.combat.level.LevelManager;
 import atrophy.combat.level.Portal;
-import atrophy.combat.levelAssets.Grenade;
-import atrophy.combat.levelAssets.StunGrenade;
 import atrophy.combat.mechanics.Abilities;
 
 public class AiActions {
@@ -354,46 +352,6 @@ public class AiActions {
 		}
 	}
 	
-	public void throwGrenade(Ai invoker, double x, double y){
-		invoker.removeOrdersWithoutUpdate(mouseAbilityHandler);
-		invoker.setAbilityLocation(x, y);
-		this.setAction(THROW_GRENADE);
-	}
-	
-	public void throwGrenadeAction(Ai invoker, int skillLevel){
-		combatInorganicManager.addLevelAsset(new Grenade(aiCrowd, floatingIcons, levelManager, 
-														invoker,
-													   invoker.getLocation().clone(), 
-													   Maths.getRads(invoker.getLocation(), this.actionLocation), 
-													   Maths.getDistance(invoker.getLocation(), this.actionLocation) / Grenade.FUSE_TIME,
-													   skillLevel));
-		invoker.aiData.removeGrenade();
-		invoker.assignAbilities();
-		invoker.removeOrdersWithoutUpdate(mouseAbilityHandler);
-		invoker.setLookAngle(this.actionLocation);
-		this.setActionTurns(0);
-	}
-	
-	public void throwStunGrenade(Ai invoker, double x, double y){
-		invoker.removeOrdersWithoutUpdate(mouseAbilityHandler);
-		invoker.setAbilityLocation(x, y);
-		this.setAction(THROW_STUN_GRENADE);
-	}
-	
-	public void throwStunGrenadeTurnAction(Ai invoker, int skillLevel){
-		combatInorganicManager.addLevelAsset(new StunGrenade(aiCrowd, floatingIcons, levelManager,
-															invoker,
-														   invoker.getLocation().clone(), 
-														   Maths.getRads(invoker.getLocation(), this.actionLocation), 
-														   Maths.getDistance(invoker.getLocation(), this.actionLocation) / StunGrenade.FUSE_TIME,
-														   skillLevel));
-		invoker.aiData.removeStunGrenade();
-		invoker.assignAbilities();
-		invoker.removeOrdersWithoutUpdate(mouseAbilityHandler);
-		invoker.setLookAngle(this.actionLocation);
-		this.setActionTurns(0);
-	}
-	
 	public void xrayScan(Ai invoker){
 		invoker.removeOrdersWithoutUpdate(mouseAbilityHandler);
 		this.setAction(Abilities.XRAY_SCAN);
@@ -531,10 +489,6 @@ public class AiActions {
 			breakAlliance(invoker);
 			
 			invoker.getTargetAi().setStunnedTurns(2);
-			if(invoker.getSkillLevel(Abilities.STUNGRENADETHROWER) >= 2){
-				invoker.getTargetAi().setStunnedTurns(3);
-			}
-			
 			makeHatedWithTarget(invoker);
 			
 			invoker.setTargetAi(null);
@@ -626,12 +580,6 @@ public class AiActions {
 			break;
 			case WELD_OPEN:
 				weldTurnAction(invoker,true);
-			break;
-			case THROW_GRENADE:
-				Abilities.applyAbility(invoker, Abilities.GRENADETHROWER, invoker.getSkillLevel(Abilities.GRENADETHROWER));
-			break;
-			case THROW_STUN_GRENADE:
-				Abilities.applyAbility(invoker, Abilities.STUNGRENADETHROWER, invoker.getSkillLevel(Abilities.STUNGRENADETHROWER));
 			break;
 			case Abilities.XRAY_SCAN:
 				Abilities.applyAbility(invoker, Abilities.XRAY_SCAN, invoker.getSkillLevel(Abilities.XRAY_SCAN));

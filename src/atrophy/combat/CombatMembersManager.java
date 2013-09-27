@@ -1,6 +1,3 @@
-/*
- * 
- */
 package atrophy.combat;
 
 import java.util.ArrayList;

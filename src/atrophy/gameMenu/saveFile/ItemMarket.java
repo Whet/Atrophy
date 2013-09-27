@@ -12,7 +12,6 @@ import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.items.ArmourPlates1;
 import atrophy.combat.items.ArmourPlates2;
 import atrophy.combat.items.EngineeringSupply;
-import atrophy.combat.items.GrenadeItem;
 import atrophy.combat.items.Harpoon1;
 import atrophy.combat.items.Harpoon2;
 import atrophy.combat.items.LightStealthField;
@@ -32,7 +31,6 @@ import atrophy.combat.items.ScienceSupply;
 import atrophy.combat.items.SensorSuite;
 import atrophy.combat.items.Shotgun1;
 import atrophy.combat.items.SpeedBooster;
-import atrophy.combat.items.StunGrenadeItem;
 import atrophy.combat.items.UnitDetector;
 import atrophy.combat.items.WeaponSupply;
 import atrophy.combat.items.WeldingTorch;
@@ -78,8 +76,6 @@ public class ItemMarket {
 		
 		itemData.put(ArmourPlates1.NAME, 			new ItemData(techTree, 300,TechTree.BASIC_ARMOUR,false));
 		itemData.put(ArmourPlates2.NAME, 			new ItemData(techTree, 800,TechTree.HEAVY_ARMOUR,false));
-		itemData.put(GrenadeItem.NAME, 				new ItemData(techTree, 300,TechTree.BASIC_EXPLOSIVES,false));
-		itemData.put(StunGrenadeItem.NAME, 			new ItemData(techTree, 240,TechTree.BASIC_INCAPACITATION,false));
 		itemData.put(LightStealthField.NAME, 		new ItemData(techTree, 5000,TechTree.STATIONARY_CLOAKING,false));
 		itemData.put(MediumStealthField.NAME, 		new ItemData(techTree, 5000,TechTree.MOBILE_CLOAKING,false));
 		itemData.put(ScienceScanner.NAME, 			new ItemData(techTree, 3200,TechTree.SCIENTIFIC_OBSERVATIONS,false));

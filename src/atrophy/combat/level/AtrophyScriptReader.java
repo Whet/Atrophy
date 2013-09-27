@@ -41,11 +41,9 @@ import atrophy.combat.display.TorchDrawer;
 import atrophy.combat.display.ui.MessageBox;
 import atrophy.combat.display.ui.loot.LootBox.Lootable;
 import atrophy.combat.items.EngineeringSupply;
-import atrophy.combat.items.GrenadeItem;
 import atrophy.combat.items.Item;
 import atrophy.combat.items.MedicalSupply;
 import atrophy.combat.items.ScienceSupply;
-import atrophy.combat.items.StunGrenadeItem;
 import atrophy.combat.items.Weapon;
 import atrophy.combat.items.WeaponSupply;
 import atrophy.combat.level.AtrophyScriptParser.prog_return;
@@ -961,7 +959,7 @@ public class AtrophyScriptReader {
 				for(int i = 0; i < randomItemCount; i++){
 					String item = this.possibleItems.get(new Random().nextInt(possibleItems.size()));
 					
-					if(itemList.contains(item) && !item.equals(GrenadeItem.NAME) && !item.equals(StunGrenadeItem.NAME))
+					if(!itemList.contains(item))
 						itemList.add(item);
 				}
 

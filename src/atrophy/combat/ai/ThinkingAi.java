@@ -9,8 +9,8 @@ import java.util.Random;
 import java.util.Set;
 
 import watoydoEngine.utils.Maths;
-import atrophy.combat.CombatNCEManager;
 import atrophy.combat.CombatMembersManager;
+import atrophy.combat.CombatNCEManager;
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
@@ -27,15 +27,12 @@ import atrophy.combat.display.ui.FloatingIcons;
 import atrophy.combat.display.ui.MessageBox;
 import atrophy.combat.display.ui.loot.LootBox;
 import atrophy.combat.display.ui.loot.LootBox.Lootable;
-import atrophy.combat.items.GrenadeItem;
 import atrophy.combat.items.Item;
-import atrophy.combat.items.StunGrenadeItem;
 import atrophy.combat.items.Weapon;
 import atrophy.combat.level.LevelBlock;
 import atrophy.combat.level.LevelManager;
 import atrophy.combat.level.MissionManager;
 import atrophy.combat.level.Portal;
-import atrophy.combat.levelAssets.Grenade;
 import atrophy.combat.mechanics.Abilities;
 import atrophy.combat.mechanics.TurnProcess;
 
@@ -200,9 +197,6 @@ public class ThinkingAi extends Ai{
 	private void computeAiMode(){
 		
 		try{
-			
-			fleeFromGrenades();
-			
 			if(!this.aiMode.equals(AiMode.ENGAGING) &&
 			   !this.aiMode.equals(AiMode.FLEEING) &&
 			   !this.aiMode.equals(AiMode.LOOT) &&
@@ -359,43 +353,6 @@ public class ThinkingAi extends Ai{
 		return this.getLevelBlock().moveTowardsRandomRegion(this, regions, true);
 	}
 
-	private void fleeFromGrenades() throws PathNotFoundException{
-		
-		if(!this.aiMode.equals(AiMode.FLEEING)){
-			// if a grenade is spotted then flee
-			for(int i = 0; i < combatInorganicManager.getLevelAssets().size(); i++){
-				if(combatInorganicManager.getLevelAsset(i) instanceof Grenade &&
-				   levelManager.getBlock(combatInorganicManager.getLevelAsset(i).getLocation())	== this.getLevelBlock()){
-
-					Portal fleePortal = null;
-					
-					for(int j = 0; j < this.getLevelBlock().getPortalCount(); j++){
-						if(this.getLevelBlock().getPortal(j).canUse() && Maths.getDistance(this.getLevelBlock().getPortal(j).getLocation(), this.getLocation()) / this.getMoveDistance() <= Grenade.FUSE_TIME &&
-						   (fleePortal == null || Maths.getDistance(fleePortal.getLocation(), this.getLocation()) > 
-						                          Maths.getDistance(this.getLevelBlock().getPortal(j).getLocation(), this.getLocation())
-						   )){
-							
-							fleePortal = this.getLevelBlock().getPortal(j);
-						}
-					}
-					
-					if(fleePortal != null){
-						this.aiMode = AiMode.FLEEING;
-						this.doingJob = false;
-						this.chaseAi = null;
-						this.setTargetAi(null);
-						this.setMoveLocation(levelManager.randomInPosition(fleePortal.linksTo(this.getLevelBlock())));
-					}
-					else if(this.getLevelBlock().getCover().size() > 0){
-						this.moveTowardsNearestRegion(this.getLevelBlock().getCover());
-					}
-
-					break;
-				}
-			}
-		}
-	}
-	
 	protected void flee() throws PathNotFoundException{
 		
 		// run through closest door
@@ -797,10 +754,6 @@ public class ThinkingAi extends Ai{
 				this.getInventory().addItem(item);
 				itemIt.remove();
 			}
-			else if(item instanceof GrenadeItem || item instanceof StunGrenadeItem){
-				this.getInventory().addItem(item);
-				itemIt.remove();
-			}
 			
 			if(this.getInventory().isFull()){
 				break;
@@ -885,9 +838,7 @@ public class ThinkingAi extends Ai{
 			if(!this.getInventory().hasItem(item)){
 				return true;
 			}
-			else if(item instanceof GrenadeItem || item instanceof StunGrenadeItem){
-				return true;
-			}
+			
 		}
 		
 		return false;
