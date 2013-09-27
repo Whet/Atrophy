@@ -43,7 +43,7 @@ public class TextInput extends Text implements MouseRespondable,KeyboardResponda
 
 	public final void drawMethod(Graphics2D drawShape){
 		
-		if(drawBox && this.boundBox != null && this.getText().length() > 0) {
+		if(drawBox && this.boundBox != null) {
 			drawShape.setColor(this.getColour().darker().darker());
 			drawShape.fillRect((int)this.getLocation()[0] - 5, (int)this.getLocation()[1] - (int)this.boundBox.getHeight() + ((int)this.boundBox.getHeight() / 4), (int)this.boundBox.getWidth() + 10, (int)(this.boundBox.getHeight() * 1.25));
 			drawShape.setColor(this.getColour().darker());
