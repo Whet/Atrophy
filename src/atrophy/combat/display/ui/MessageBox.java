@@ -349,6 +349,14 @@ public class MessageBox extends Crowd{
 		}
 	}
 	
+	public void addParagraph(StringBuffer sb) {
+		String[] messageLines = sb.toString().split("\n");
+		
+		for(int i = 0; i < messageLines.length; i++) {
+			this.addMessage(messageLines[i]);
+		}
+	}
+	
 	public void updateMessages(){
 		this.messageBoard.setText("");
 		
@@ -436,7 +444,8 @@ public class MessageBox extends Crowd{
 		}
 
 		private String parseMessage(String message) {
-			message = message.replaceAll("playername", conversers[0].getName());
+			if(conversers[0] != null)
+				message = message.replaceAll("playername", conversers[0].getName());
 			if(conversers[1] != null) {
 				message = message.replaceAll("ainame", conversers[1].getName());
 				message = message.replaceAll("aifaction", conversers[1].getFaction());

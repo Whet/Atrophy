@@ -1159,6 +1159,27 @@ public class AtrophyScriptReader {
 		
 	}
 	
+	protected static final class StoryMessageEffect extends TriggerEffect {
+
+		private StringBuffer sb;
+		private MessageBox messageBox;
+		
+		public StoryMessageEffect(Tree tree, MessageBox messageBox) {
+			this.messageBox = messageBox;
+			sb = new StringBuffer();
+			for(int i = 0; i < tree.getChildCount(); i++) {
+				sb.append(createString(tree.getChild(i)) + "\n");
+			}
+		}
+		
+		@Override
+		public void run() {
+			messageBox.addParagraph(sb);
+			messageBox.setVisible(true);
+		}
+		
+	}
+	
 	protected static final class ConverseEffect extends UnitInfoEffect {
 
 		private MessageBox messageBox;
@@ -1794,6 +1815,9 @@ public class AtrophyScriptReader {
 				break;
 				case "CHANGEADVANCE":
 					effects.add(new GiveAdvanceEffect(tree.getChild(i), missionManager));
+				break;
+				case "SHOWLONGMESSAGE":
+					effects.add(new StoryMessageEffect(tree.getChild(i), messageBox));
 				break;
 			}
 		}
