@@ -18,8 +18,11 @@ public class TalkNode {
 		this.name = name;
 		this.subscriptions = subscriptions;
 		this.missionManager = missionManager;
-		this.x = xList.get(new Random().nextInt(xList.size()));
-		this.y = yList.get(new Random().nextInt(yList.size()));
+		
+		if(xList != null && xList.size() > 0)
+			this.x = xList.get(new Random().nextInt(xList.size()));
+		if(yList != null && yList.size() > 0)
+			this.y = yList.get(new Random().nextInt(yList.size()));
 	}
 
 	public String getName() {
