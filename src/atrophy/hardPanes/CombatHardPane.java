@@ -61,7 +61,7 @@ public class CombatHardPane implements HardPaneDefineable {
 		//Load images
 		MapPainter.loadTextures();
 		
-		AiGenerator aiGenerator = new AiGenerator(aiManagementSuite.getAiCrowd(), aiManagementSuite.getCombatMembersManager(), uiUpdaterSuite.getCombatUiManager(), uiUpdaterSuite.getCombatVisualManager(), levelManager, uiUpdaterSuite.getPanningManager(), actionSuite.getMouseAbilityHandler(), turnProcess, uiUpdaterSuite.getFloatingIcons(), combatInorganicManager, uiUpdaterSuite.getLootBox(), missions, missionManager, cartographer, messageBox);
+		AiGenerator aiGenerator = new AiGenerator(aiManagementSuite.getAiCrowd(), aiManagementSuite.getCombatMembersManager(), uiUpdaterSuite.getCombatUiManager(), uiUpdaterSuite.getCombatVisualManager(), levelManager, uiUpdaterSuite.getPanningManager(), actionSuite.getMouseAbilityHandler(), turnProcess, uiUpdaterSuite.getFloatingIcons(), combatInorganicManager, uiUpdaterSuite.getLootBox(), missions, missionManager, cartographer, messageBox, uiUpdaterSuite.getMapDrawer());
 		aiGenerator.generateAi(generationCommands);
 		aiCrowd.getShuffledStack();
 		

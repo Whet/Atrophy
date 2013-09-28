@@ -10,6 +10,7 @@ import atrophy.combat.PanningManager;
 import atrophy.combat.ai.Ai;
 import atrophy.combat.ai.AiDebugger;
 import atrophy.combat.ai.AiGenerator;
+import atrophy.combat.ai.TalkNode;
 import atrophy.combat.ai.ThinkingAi;
 import atrophy.combat.combatEffects.Power;
 import atrophy.combat.combatEffects.PowerManager;
@@ -88,6 +89,14 @@ public class MouseAbilityHandler {
 					this.cancelAbilitySetting();
 					return;
 				}
+				TalkNode talkNode = getClosestTalkNodeToMouse(mousePoint, AI_CLICK_RADIUS);
+				if(talkNode != null && levelManager.getBlock(new double[]{talkNode.getX(), talkNode.getY()}) == combatMembersManager.getCurrentAi().getLevelBlock()) {
+					messageBox.setConversation(combatMembersManager.getCurrentAi(), talkNode);
+					lootBox.closeLootUi(lootBox.isVisible());
+					messageBox.setVisible(true);
+					this.cancelAbilitySetting();
+					return;
+				}
 			break;
 			case Abilities.STUN_MELEE:
 				Ai targetAi = getClosestAiToMouse(mousePoint, AI_CLICK_RADIUS);
@@ -147,6 +156,29 @@ public class MouseAbilityHandler {
 		this.cancelAbilitySetting();
 	}
 	
+	private TalkNode getClosestTalkNodeToMouse(Point mousePosition, int minRadius) {
+		
+		TalkNode nearestNode = null;
+		double nearestDist = 0;
+		
+		for(TalkNode node: aiCrowd.getNodes()) {
+			if(node.hasLocation() && Maths.getDistance(mousePosition.x - panningManager.getOffset()[0],
+													   mousePosition.y - panningManager.getOffset()[1],
+													   node.getX(),
+													   node.getY()) < minRadius && 
+													   (nearestNode == null || Maths.getDistance(mousePosition.x - panningManager.getOffset()[0],
+															   									 mousePosition.y - panningManager.getOffset()[1],
+																							     node.getX(),
+																							     node.getY()) < nearestDist)) {
+				
+				nearestDist = Maths.getDistance(mousePosition.x - panningManager.getOffset()[0], mousePosition.y - panningManager.getOffset()[1], node.getX(), node.getY()) ;
+				nearestNode = node;
+			}
+		}
+		
+		return nearestNode;
+	}
+
 	public Ai getClosestAiToMouse(Point mousePosition, int minRadius){
 		return this.getClosestAiToMouse(mousePosition, minRadius, false);
 	}

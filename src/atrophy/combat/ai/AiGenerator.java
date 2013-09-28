@@ -3,6 +3,8 @@
  */
 package atrophy.combat.ai;
 
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -10,6 +12,10 @@ import java.util.List;
 import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import javax.imageio.ImageIO;
+
+import watoydoEngine.io.ReadWriter;
 
 import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatNCEManager;
@@ -26,6 +32,8 @@ import atrophy.combat.ai.director.DirectorClassification;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.AiImage;
 import atrophy.combat.display.DaemonImage;
+import atrophy.combat.display.MapDrawer;
+import atrophy.combat.display.MapPainter;
 import atrophy.combat.display.VehicleImage;
 import atrophy.combat.display.ui.Cartographer;
 import atrophy.combat.display.ui.FloatingIcons;
@@ -74,6 +82,7 @@ public class AiGenerator{
 	private MissionManager missionManager;
 	private Cartographer cartographer;
 	private MessageBox messageBox;
+	private MapDrawer mapDrawer;
 	
 	private int squadCount;
 	static {
@@ -103,7 +112,7 @@ public class AiGenerator{
 		surnameHashMap.put(10,"Mussorgsky");	surnameHashMap.put(21,"Kingsly");		surnameHashMap.put(32, "Simon");
     }
 	
-	public AiGenerator(AiCrowd aiCrowd, CombatMembersManager combatMembersManager, CombatUiManager combatUiManager, CombatVisualManager combatVisualManager, LevelManager levelManager, PanningManager panningManager, MouseAbilityHandler mouseAbilityHandler, TurnProcess turnProcess, FloatingIcons floatingIcons, CombatNCEManager combatInorganicManager, LootBox lootbox, Missions missions, MissionManager missionManager, Cartographer cartographer, MessageBox messageBox) {
+	public AiGenerator(AiCrowd aiCrowd, CombatMembersManager combatMembersManager, CombatUiManager combatUiManager, CombatVisualManager combatVisualManager, LevelManager levelManager, PanningManager panningManager, MouseAbilityHandler mouseAbilityHandler, TurnProcess turnProcess, FloatingIcons floatingIcons, CombatNCEManager combatInorganicManager, LootBox lootbox, Missions missions, MissionManager missionManager, Cartographer cartographer, MessageBox messageBox, MapDrawer mapDrawer) {
 		this.combatMembersManager = combatMembersManager; 
 		this.aiCrowd = aiCrowd;
 		this.combatUiManager = combatUiManager;
@@ -119,6 +128,7 @@ public class AiGenerator{
 		this.missionManager = missionManager;
 		this.cartographer = cartographer;
 		this.messageBox = messageBox;
+		this.mapDrawer = mapDrawer;
 	}
 	
 	public void generateAi(List<AiGeneratorInterface.GenerateCommand> generationCommands){
@@ -208,6 +218,18 @@ public class AiGenerator{
 	
 	public void spawnTalkNode(TalkNode talkNode) {
 		aiCrowd.addTalkNode(talkNode);
+		
+		BufferedImage computerImage = null;
+		try {
+			computerImage = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/icons/computer.png"));
+		} catch (IOException e1) {
+			System.err.println("No computer textures");
+			System.exit(-1);
+		}
+		
+		// Draw pc's to show talknode locations
+		if(talkNode.hasLocation())
+			MapPainter.applyImage(computerImage, new double[]{talkNode.getX(), talkNode.getY()}, 1.0f, mapDrawer);
 	}
 	
 	private void generateSoloAi(SoloGenerateCommand command, int team) {

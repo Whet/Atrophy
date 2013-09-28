@@ -2,6 +2,7 @@ package atrophy.combat.ai;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 import atrophy.combat.ai.conversation.Dialogue;
 import atrophy.combat.level.MissionManager;
@@ -11,11 +12,14 @@ public class TalkNode {
 	private List<String> subscriptions;
 	private String name;
 	private MissionManager missionManager;
+	private Integer x,y;
 	
-	public TalkNode(String name, List<String> subscriptions, MissionManager missionManager) {
+	public TalkNode(String name, List<String> subscriptions, MissionManager missionManager, List<Integer> xList, List<Integer> yList) {
 		this.name = name;
 		this.subscriptions = subscriptions;
 		this.missionManager = missionManager;
+		this.x = xList.get(new Random().nextInt(xList.size()));
+		this.y = yList.get(new Random().nextInt(yList.size()));
 	}
 
 	public String getName() {
@@ -40,6 +44,18 @@ public class TalkNode {
 		}
 		
 		return null;
+	}
+
+	public Integer getX() {
+		return x;
+	}
+
+	public Integer getY() {
+		return y;
+	}
+
+	public boolean hasLocation() {
+		return this.x != null;
 	}
 	
 }

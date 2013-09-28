@@ -1065,7 +1065,7 @@ public class AtrophyScriptReader {
 		
 		@Override
 		public void run() {
-			aiGenerator.spawnTalkNode(new TalkNode(this.possibleNames.get(new Random().nextInt(this.possibleNames.size())), this.subscriptions, missionManager));
+			aiGenerator.spawnTalkNode(new TalkNode(this.possibleNames.get(new Random().nextInt(this.possibleNames.size())), this.subscriptions, missionManager, this.xList, this.yList));
 		}
 		
 	}
