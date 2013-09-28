@@ -130,6 +130,7 @@ public class HealthDirector {
 			
 			if(Math.random() > 0.8) {
 				changeClassification(killedAi, DirectorArchetype.COD);
+				return false;
 			}
 			
 			return addKill(killer, killedAi, true);
