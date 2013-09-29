@@ -1821,19 +1821,18 @@ public class AtrophyScriptReader {
 	
 	private static class ConditionalEffect extends TriggerEffect {
 
-		private Missions missions;
+		private MissionManager missionManager;
 		private List<String> tags;
 		private List<TriggerEffect> effects;
 		
 		public ConditionalEffect(Tree tree, MissionManager missionManager, Missions missions, AiCrowd aiCrowd, MessageBox messageBox, CombatMembersManager combatMembersManager, TurnProcess turnProcess, ItemMarket itemMarket, TechTree techTree, StashManager stashManager, CombatVisualManager combatVisualManager, Level level) {
-			this.missions = missions;
+			this.missionManager = missionManager;
 			
 			this.tags = new ArrayList<>();
 			
 			for(int j = 0; j < tree.getChild(0).getChildCount(); j++) {
 				tags.add(createString(tree.getChild(0).getChild(j)));
 			}
-			System.out.println();
 			
 			effects = createEffects(tree.getChild(1), missionManager, missions, aiCrowd, messageBox, combatMembersManager, turnProcess, itemMarket, techTree, stashManager, combatVisualManager, level);
 		}
@@ -1844,12 +1843,12 @@ public class AtrophyScriptReader {
 			
 			for(String tag: tags) {
 				if(tag.startsWith("!")) {
-					if(missions.hasMemCode(tag.substring(1))) {
+					if(missionManager.hasMemCode(tag.substring(1))) {
 						condMet = false;
 						break;
 					}
 				}
-				else if(!missions.hasMemCode(tag)) {
+				else if(!missionManager.hasMemCode(tag)) {
 					condMet = false;
 					break;
 				}
