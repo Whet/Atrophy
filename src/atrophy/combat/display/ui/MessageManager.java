@@ -257,7 +257,7 @@ public class MessageManager{
 					speech = dialogue.nextSpeechDialogue();
 	
 					// if the next speech text is a trigger then skip to next speech segment until text is reached
-					while(dialogue.checkTriggers(speech, messageBox)){
+					while(dialogue.checkTriggers(dialogue, speech, messageBox)){
 						speech = dialogue.nextSpeechDialogue();
 					}
 					
@@ -319,7 +319,7 @@ public class MessageManager{
 				speech = dialogue.nextSpeechDialogue();
 
 				// if the next speech text is a trigger then skip to next speech segment until text is reached
-				while(dialogue.checkTriggers(speech, messageBox)){
+				while(dialogue.checkTriggers(dialogue, speech, messageBox)){
 					speech = dialogue.nextSpeechDialogue();
 				}
 
@@ -376,7 +376,7 @@ public class MessageManager{
 					speech = dialogue.nextSpeechDialogue();
 	
 					// if the next speech text is a trigger then skip to next speech segment until text is reached
-					while(dialogue.checkTriggers(speech, messageBox)){
+					while(dialogue.checkTriggers(dialogue, speech, messageBox)){
 						speech = dialogue.nextSpeechDialogue();
 					}
 					

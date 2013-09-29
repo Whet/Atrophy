@@ -63,7 +63,7 @@ public class Dialogue{
 		return true;
 	}
 
-	public boolean checkTriggers(String speech, MessageBox messageBox) {
+	public boolean checkTriggers(Dialogue dialogue, String speech, MessageBox messageBox) {
 		if(speech.startsWith("#")){
 			
 			// remove the # and spaces
@@ -84,6 +84,10 @@ public class Dialogue{
 			// Command
 			else if(itemName.startsWith("*")) {
 				missionManager.runCommand(itemName.substring(1));
+				return true;
+			}
+			else if(itemName.startsWith("<")) {
+				dialogue.resetLongSpeechPoint();
 				return true;
 			}
 			// Event code
@@ -133,6 +137,10 @@ public class Dialogue{
 		return false;
 	}
 	
+	private void resetLongSpeechPoint() {
+		this.longSpeechPoint = 0;
+	}
+
 	private String correctBlankSpaces(String itemName) {
 		String returnName = itemName;
 		switch(itemName) {
