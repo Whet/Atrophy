@@ -126,7 +126,7 @@ public class AtrophyScriptReader {
 				
 				boolean condMet = true;
 				
-				if(child.getChild(1).toString().equals("IF") || child.getChild(1).toString().equals("NOTIF")) {
+				if(child.getChild(1).toString().equals("IF")) {
 					
 					List<String> tags = new ArrayList<>();
 					for(int j = 0; j < child.getChild(1).getChildCount(); j++) {
@@ -135,8 +135,8 @@ public class AtrophyScriptReader {
 					
 					
 					for(String tag: tags) {
-						if(child.getChild(1).toString().equals("NOTIF")) {
-							if(missions.hasMemCode(tag)) {
+						if(tag.startsWith("!")) {
+							if(missions.hasMemCode(tag.substring(1))) {
 								condMet = false;
 								break;
 							}
@@ -482,15 +482,6 @@ public class AtrophyScriptReader {
 				itemSpawns.put(ScienceSupply.NAME, chances.get(3));
 			break;
 		}
-		
-		
-//		for(int i = 0; i < tree.getChildCount(); i++) {
-//			walkTree(level, tree.getChild(i),
-//					   blockStack, portalStack, commands, triggers, missionManager,
-//					   combatMembersManager, missions, messageBox,
-//					   aiCrowd, turnProcess, itemMarket, techTree, stashManager);
-//			
-//		}
 		
 	}
 	
@@ -1789,7 +1780,7 @@ public class AtrophyScriptReader {
 				case "UPDATETALK":
 					effects.add(new UpdateTalkEffect(tree.getChild(i), missionManager));
 				break;
-				case "COMMAND CALL":
+				case "COMMAND_CALL":
 					effects.add(new CommandCallEffect(tree.getChild(i), missionManager));
 				break;
 				case "SHOWMESSAGE":
@@ -1819,10 +1810,58 @@ public class AtrophyScriptReader {
 				case "SHOWLONGMESSAGE":
 					effects.add(new StoryMessageEffect(tree.getChild(i), messageBox));
 				break;
+				case "EFFECTCOND":
+					effects.add(new ConditionalEffect(tree.getChild(i), missionManager, missions, aiCrowd, messageBox, combatMembersManager, turnProcess, itemMarket, techTree, stashManager, combatVisualManager, level));
+				break;
 			}
 		}
 		
 		return effects;
+	}
+	
+	private static class ConditionalEffect extends TriggerEffect {
+
+		private Missions missions;
+		private List<String> tags;
+		private List<TriggerEffect> effects;
+		
+		public ConditionalEffect(Tree tree, MissionManager missionManager, Missions missions, AiCrowd aiCrowd, MessageBox messageBox, CombatMembersManager combatMembersManager, TurnProcess turnProcess, ItemMarket itemMarket, TechTree techTree, StashManager stashManager, CombatVisualManager combatVisualManager, Level level) {
+			this.missions = missions;
+			
+			this.tags = new ArrayList<>();
+			
+			for(int j = 0; j < tree.getChild(0).getChildCount(); j++) {
+				tags.add(createString(tree.getChild(0).getChild(j)));
+			}
+			System.out.println();
+			
+			effects = createEffects(tree.getChild(1), missionManager, missions, aiCrowd, messageBox, combatMembersManager, turnProcess, itemMarket, techTree, stashManager, combatVisualManager, level);
+		}
+		
+		@Override
+		public void run() {
+			boolean condMet = true;
+			
+			for(String tag: tags) {
+				if(tag.startsWith("!")) {
+					if(missions.hasMemCode(tag.substring(1))) {
+						condMet = false;
+						break;
+					}
+				}
+				else if(!missions.hasMemCode(tag)) {
+					condMet = false;
+					break;
+				}
+			}
+			
+			if(condMet) {
+				for(TriggerEffect effect: effects) {
+					effect.run();
+				}
+			}
+		}
+		
 	}
 	
 	private static class GiveStabilityEffect extends TriggerEffect {
