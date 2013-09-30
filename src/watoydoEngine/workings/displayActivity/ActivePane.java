@@ -19,6 +19,7 @@ import java.awt.image.BufferStrategy;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.concurrent.Semaphore;
 
 import javax.imageio.ImageIO;
 import javax.swing.JFrame;
@@ -31,8 +32,6 @@ import watoydoEngine.fonts.FontList;
 import watoydoEngine.io.ReadWriter;
 import watoydoEngine.workings.DisplayManager;
 import atrophy.hardPanes.SplashPane;
-
-import com.sun.corba.se.impl.orbutil.concurrent.Mutex;
 
 @SuppressWarnings("serial")
 public class ActivePane extends JFrame implements MouseListener, KeyListener, WindowListener{
@@ -58,7 +57,7 @@ public class ActivePane extends JFrame implements MouseListener, KeyListener, Wi
 	
 	private Color backgroundColour;
 	
-	private static final Mutex loadedMutex = new Mutex();
+	private static final Semaphore loadedMutex = new Semaphore(1);
 	
 	public static boolean L_MOUSE_DOWN = false;
 	

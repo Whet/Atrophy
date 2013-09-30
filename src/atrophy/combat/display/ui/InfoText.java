@@ -2,18 +2,17 @@ package atrophy.combat.display.ui;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.Semaphore;
 
 import watoydoEngine.designObjects.display.Text;
 import watoydoEngine.fonts.FontList;
 import watoydoEngine.workings.DisplayManager;
 import atrophy.combat.CombatUiManager;
 
-import com.sun.corba.se.impl.orbutil.concurrent.Mutex;
-
 public class InfoText extends Text {
 	
 	
-	private static final Mutex hintEditMutex = new Mutex();
+	private static final Semaphore hintEditMutex = new Semaphore(1);
 	
 	private List<InfoTextDisplayable> hints;
 	private List<String> specialHints;
