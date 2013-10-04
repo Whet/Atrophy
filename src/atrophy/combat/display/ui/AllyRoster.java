@@ -73,8 +73,7 @@ public class AllyRoster extends Crowd {
 			}
 			
 			// image behind button
-			ImageSingle backdrop = new ImageSingle(combatMembersManager.getAlly(i).getName() +"Background",
-												   backgroundImage,
+			ImageSingle backdrop = new ImageSingle(backgroundImage,
 												   20 + PORTRAIT_SPACING_X * portraitX,
 												   ActivePane.getInstance().getInsets().top + (portraitY * backgroundImage.getHeight()));
 			this.addDisplayItem(backdrop);

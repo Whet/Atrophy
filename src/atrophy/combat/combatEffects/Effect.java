@@ -133,7 +133,7 @@ public abstract class Effect {
 	/**
 	 * Stop effect.
 	 */
-	protected void stopEffect(){
+	public void stopEffect(){
 		this.timeLeft = 0;
 	}
 	
@@ -145,4 +145,9 @@ public abstract class Effect {
 	public String getName(){
 		return this.name;
 	}
+
+	public int getSkillLevel() {
+		return skillLevel;
+	}
+	
 }

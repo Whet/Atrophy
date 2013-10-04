@@ -1,6 +1,6 @@
 package atrophy.combat.ai;
 
-import atrophy.combat.CombatInorganicManager;
+import atrophy.combat.CombatNCEManager;
 import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
@@ -24,12 +24,12 @@ public class MuleAi extends VehicleAi {
 	private static final int ARMOUR = 60;
 	public static final String MULE = "MULE";
 
-	public MuleAi(PanningManager panningManager, FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, String name, double x, double y, CombatInorganicManager combatInorganicManager, LevelManager levelManager, LootBox lootBox, CombatMembersManager combatMembersManager, CombatUiManager combatUiManager, CombatVisualManager combatVisualManager, AiCrowd aiCrowd, TurnProcess turnProcess) {
+	public MuleAi(PanningManager panningManager, FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, String name, double x, double y, CombatNCEManager combatInorganicManager, LevelManager levelManager, LootBox lootBox, CombatMembersManager combatMembersManager, CombatUiManager combatUiManager, CombatVisualManager combatVisualManager, AiCrowd aiCrowd, TurnProcess turnProcess) {
 		super(panningManager, floatingIcons, mouseAbilityHandler, name, MuleAi.MULE, x, y, levelManager, combatInorganicManager, lootBox, combatMembersManager, combatUiManager, combatVisualManager, aiCrowd, turnProcess);
 		this.setArmour(ARMOUR);
 		this.setDefaultArmour(ARMOUR);
-		this.setFov(0);
-		this.setDefaultFov(0);
+		this.setFov(20);
+		this.setDefaultFov(20);
 		this.setMoveDistance(34);
 		this.setDefaultMoveDistance(34);
 		

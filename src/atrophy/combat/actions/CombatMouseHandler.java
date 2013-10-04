@@ -1,6 +1,3 @@
-/*
- * 
- */
 package atrophy.combat.actions;
 
 import java.awt.Point;
@@ -17,15 +14,8 @@ import atrophy.combat.display.AiManagementSuite;
 import atrophy.combat.display.ui.UiUpdaterSuite;
 import atrophy.combat.level.LevelManager;
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class CombatMouseHandler.
- */
 public class CombatMouseHandler extends ActionRegion {
 	
-	/**
-	 * The z.
-	 */
 	private int z;
 
 	private PanningManager panningManager;
@@ -34,10 +24,7 @@ public class CombatMouseHandler extends ActionRegion {
 	private MouseAbilityHandler mouseAbilityHandler;
 	private CombatVisualManager combatVisualManager;
 	private LevelManager levelManager;
-	
-	/**
-	 * Instantiates a new combat mouse handler.
-	 */
+
 	public CombatMouseHandler(LevelManager levelManager, MouseAbilityHandler mouseAbilityHandler, AiManagementSuite aiManagementSuite, UiUpdaterSuite uiUpdaterSuite) {
 		super(0, 0, DisplayManager.getInstance().getResolution()[0], DisplayManager.getInstance().getResolution()[1]);
 		z = 0;
@@ -51,23 +38,16 @@ public class CombatMouseHandler extends ActionRegion {
 		
 	}
 	
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.actions.ActionRegion#mI(java.awt.Point)
-	 */
 	@Override
 	public void mI(Point mousePosition){
 		panningManager.updatePan();
 	}
 	
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.actions.ActionRegion#mD(java.awt.Point, java.awt.event.MouseEvent)
-	 */
 	@Override
-	public boolean mD(Point mousePosition, MouseEvent e){return false;}
+	public boolean mD(Point mousePosition, MouseEvent e){
+		return false;
+	}
 	
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.actions.ActionRegion#mU(java.awt.Point, java.awt.event.MouseEvent)
-	 */
 	@Override
 	public boolean mU(Point mousePosition, MouseEvent e){
 		// shift click makes ai look at point
@@ -89,9 +69,6 @@ public class CombatMouseHandler extends ActionRegion {
 		return false;
 	}
 	
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.actions.ActionRegion#rMU(java.awt.Point, java.awt.event.MouseEvent)
-	 */
 	@Override
 	public boolean rMU(Point mousePosition, MouseEvent e){
 		
@@ -107,15 +84,12 @@ public class CombatMouseHandler extends ActionRegion {
 			// set move flag position
 			combatUiManager.getMoveFlag().setAiMoveLocation(mousePosition.x - panningManager.getOffset()[0],
 														    mousePosition.y - panningManager.getOffset()[1]);
-			SoundBoard.getInstance().playEffect("cancel");
+			SoundBoard.getInstance().playEffect("tick");
 			return true;
 		}
 		return false;
 	}
 	
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.actions.ActionRegion#mMC(java.awt.Point, java.awt.event.MouseEvent)
-	 */
 	@Override
 	public boolean mMC(Point mousePosition, MouseEvent e) {
 		double pointDouble[] = {mousePosition.x - panningManager.getOffset()[0],
@@ -128,27 +102,14 @@ public class CombatMouseHandler extends ActionRegion {
 		return true;
 	}
 	
-	/**
-	 * Gets the z.
-	 *
-	 * @return the z
-	 */
 	public int getZ() {
 		return z;
 	}
 
-	/**
-	 * Sets the z.
-	 *
-	 * @param z the new z
-	 */
 	public void setZ(int z) {
 		this.z = z;
 	}
 	
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.actions.ActionRegion#isInBounds(double, double)
-	 */
 	@Override
 	public boolean isInBounds(double x, double y) {
 		return true;

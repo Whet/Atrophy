@@ -1,6 +1,3 @@
-/*
- * 
- */
 package watoydoEngine.io;
 
 import java.io.BufferedReader;
@@ -12,30 +9,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import atrophy.combat.level.LevelIO;
 
-
-// TODO: Auto-generated Javadoc
-//reads and writes files with .watoydo
-/*
- * Under heavy reconstruction
- */
-/**
- * The Class ReadWriter.
- */
 public class ReadWriter{
 	
-	/**
-	 * The Constant ESCAPE_COMMA.
-	 */
+	public static String HOME_LOCATION;
 	private static final Character ESCAPE_COMMA = '~';
 	
-	/**
-	 * Read from array.
-	 *
-	 * @param inputline the inputline
-	 * @param index the index
-	 * @return the string
-	 */
 	public static String readFromArray(String inputline, int index){
 		if(!inputline.equals("")){
 			char[] inputChars = new char[inputline.length()];
@@ -91,12 +71,6 @@ public class ReadWriter{
 	
 	// get size of a text array by counting commas
 	// it is assumed that the entry is an array
-	/**
-	 * Gets the array size.
-	 *
-	 * @param inputline the inputline
-	 * @return the array size
-	 */
 	public static int getArraySize(String inputline){
 		
 		int entries = 1;
@@ -120,13 +94,6 @@ public class ReadWriter{
 	}
 	
 	// Code from anon on /v/idya gamedev thread
-    /**
-	 * Gets the resource as input stream.
-	 *
-	 * @param resource the resource
-	 * @return the resource as input stream
-	 * @throws FileNotFoundException the file not found exception
-	 */
 	public static InputStream getResourceAsInputStream(String resource) throws FileNotFoundException {
     	
 		InputStream resourceInputStream = ReadWriter.class.getClassLoader().getResourceAsStream("watoydoEngine/mods/"+resource);
@@ -145,22 +112,10 @@ public class ReadWriter{
 		return resourceInputStream;
 	}
 	
-	/**
-	 * Gets the root file.
-	 *
-	 * @param resource the resource
-	 * @return the root file
-	 * @throws FileNotFoundException the file not found exception
-	 */
 	public static File getRootFile(String resource) throws FileNotFoundException {
-		String homeLocation = System.getProperty("user.home");
-		
-//		System.out.println(homeLocation);
-//		System.out.println(homeLocation + "/" + resource);
-		
-		File file =  new File(homeLocation + "/Atrophy/" + resource);
-		
-//		System.out.println("FILE EXISTS:  " + file.exists());
+
+		String homeLocation = HOME_LOCATION;
+		File file =  new File(homeLocation + "/" + LevelIO.SUB_FOLDER + "/" + resource);
 		
 		if(!file.exists())
 			throw new FileNotFoundException();
@@ -168,14 +123,6 @@ public class ReadWriter{
 		return file;
 	}
 	
-	/**
-	 * Read from file.
-	 *
-	 * @param file the file
-	 * @param line the line
-	 * @return the string
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 */
 	public static String readFromFile(File file, int line) throws IOException{
 		
 		BufferedReader in = null;
@@ -196,14 +143,6 @@ public class ReadWriter{
 		return returnString;
 	}
 
-	/**
-	 * Read from file.
-	 *
-	 * @param inputStream the input stream
-	 * @param line the line
-	 * @return the string
-	 * @throws IOException Signals that an I/O exception has occurred.
-	 */
 	public static String readFromFile(InputStream inputStream, int line) throws IOException{
 		BufferedReader in = null;
 		String returnString = "";
@@ -222,8 +161,5 @@ public class ReadWriter{
 		
 		return returnString;
 	}
-	
-	
-	
-	
+
 }

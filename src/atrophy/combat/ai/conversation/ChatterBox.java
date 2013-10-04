@@ -79,6 +79,7 @@ public class ChatterBox{
 				message = "";
 			break;
 			case ATTACK:
+				message = pickAString(ATTACK);
 			break;
 			case PAY:
 			break;
@@ -195,4 +196,5 @@ public class ChatterBox{
 	private static final String[] JOIN_FAIL = {"No, I think I'll manage without you"};
 
 		
+	private static final String[] ATTACK = {"I was hoping we could handle this peacefully"};
 	}

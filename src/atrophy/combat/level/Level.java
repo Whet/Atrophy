@@ -3,12 +3,12 @@
  */
 package atrophy.combat.level;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Random;
 import java.util.Set;
+import java.util.Stack;
 
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.display.ui.loot.LootBox.Lootable;
@@ -16,6 +16,8 @@ import atrophy.combat.items.EngineeringSupply;
 import atrophy.combat.items.MedicalSupply;
 import atrophy.combat.items.ScienceSupply;
 import atrophy.combat.items.WeaponSupply;
+import atrophy.combat.level.AtrophyScriptReader.LevelBlockInfo;
+import atrophy.combat.level.AtrophyScriptReader.PortalInfo;
 
 
 // TODO: Auto-generated Javadoc
@@ -26,17 +28,10 @@ import atrophy.combat.items.WeaponSupply;
 public class Level {
 	
 	private LevelBlock[] levelBlocks;
-	
 	private int[] size;
-
 	private HashMap<LevelBlock, Set<String>> bannedBlocks;
-	
 	private String mapOwner;
-	
 	private Set<String> allowedSpawns;
-
-	private Set<LevelBlock> safeRooms;
-
 	private LevelBlock playerSpawn;
 	
 	public Level(String mapOwner){
@@ -51,26 +46,31 @@ public class Level {
 		allowedSpawns.add(AiGenerator.WHITE_VISTA);
 		allowedSpawns.add(AiGenerator.LONER);
 		
-		safeRooms = new HashSet<>();
-		
 	}
 	
-	public void generatePortals(ArrayList<double[]> portalData, ArrayList<String> portalSecurity, Level level) {
+	public void generatePortals(Stack<PortalInfo> portalStack, Level level, MissionManager missionManager) {
+		
+		PortalInfo portalData;
+		
 		// add portals to blocks
-		for(int i = 0; i < portalData.size(); i++){
-			
+		while(!portalStack.isEmpty()) {
+			portalData = portalStack.pop();
 			// Add block at end location
-			LevelBlock block1 = level.getBlockAt(portalData.get(i)[2], portalData.get(i)[3]);
-			LevelBlock block2 = level.getBlockAt(portalData.get(i)[4], portalData.get(i)[5]);
+			LevelBlock block1 = level.getBlockAt(portalData.xList.get(1), portalData.yList.get(1));
+			LevelBlock block2 = level.getBlockAt(portalData.xList.get(2), portalData.yList.get(2));
 			
-			Portal newPortal = new Portal(portalData.get(i)[0], portalData.get(i)[1], 
-										  block1, portalData.get(i)[2], portalData.get(i)[3],
-										  block2, portalData.get(i)[4], portalData.get(i)[5]);
-			newPortal.setFactionWatch(portalSecurity.get(i));
+			Portal newPortal = new Portal(portalData.xList.get(0), portalData.yList.get(0), 
+										  block1, portalData.xList.get(1), portalData.yList.get(1),
+										  block2, portalData.xList.get(2), portalData.yList.get(2));
+			
+			newPortal.setFactionWatch(portalData.getSecurity());
 			
 			// Add portal to blocks
 			block1.addPortal(newPortal);
 			block2.addPortal(newPortal);
+			
+			if(!portalData.name.isEmpty())
+				missionManager.addVariableObject(portalData.name, newPortal);
 		}
 	}
 	
@@ -95,7 +95,7 @@ public class Level {
 				}
 			}
 			
-			if(rand.nextInt(100) < scienceChance * 3)
+			if(rand.nextInt(100) < scienceChance)
 				this.levelBlocks[i].setContainsScience(true);
 		}
 	}
@@ -124,8 +124,16 @@ public class Level {
 		return this.levelBlocks.length;
 	}
 	
-	public void setBlocks(LevelBlock[] levelBlocks){
-		this.levelBlocks = levelBlocks;
+	public void setBlocks(Stack<LevelBlockInfo> blockStack){
+		this.levelBlocks = new LevelBlock[blockStack.size()];
+		
+		int i = 0;
+		LevelBlockInfo blockInfo;
+		while(!blockStack.isEmpty()) {
+			blockInfo = blockStack.pop();
+			this.levelBlocks[i] = blockInfo.toLevelBlock();
+			i++;
+		}
 	}
 	
 	public LevelBlock[] getBlocks(){
@@ -166,12 +174,8 @@ public class Level {
 		return this.mapOwner;
 	}
 
-	public void setAllowedSpawns(String[] allowedSpawns) {
-		this.allowedSpawns = new HashSet<String>();
-		
-		for(int i = 0 ; i < allowedSpawns.length; i++){
-			this.allowedSpawns.add(allowedSpawns[i]);
-		}
+	public void setAllowedSpawns(Set<String> allowedSpawns) {
+		this.allowedSpawns = allowedSpawns;
 	}
 
 	public boolean allowedSpawn(String faction) {
@@ -182,14 +186,6 @@ public class Level {
 		this.playerSpawn = playerSpawn;
 	}
 	
-	public void addSaferoom(LevelBlock safeRoom){
-		this.safeRooms.add(safeRoom);
-	}
-
-	public boolean isInSaferoom(LevelBlock levelBlock) {
-		return this.safeRooms.contains(levelBlock);
-	}
-
 	public LevelBlock getPlayerSpawn() {
 		return this.playerSpawn;
 	}

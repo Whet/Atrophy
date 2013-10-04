@@ -1,23 +1,26 @@
-/*
- * 
- */
 package atrophy.combat;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import atrophy.combat.actions.MouseAbilityHandler;
 import atrophy.combat.ai.Ai;
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.ai.BanditCommander;
+import atrophy.combat.ai.DaemonAi;
+import atrophy.combat.ai.DaemonCommander;
+import atrophy.combat.ai.LonerAi;
 import atrophy.combat.ai.LonerCommander;
 import atrophy.combat.ai.TeamsCommander;
 import atrophy.combat.ai.ThinkingAi;
 import atrophy.combat.ai.WhiteVistaCommander;
 import atrophy.combat.display.AiCrowd;
-import atrophy.combat.display.LineDrawer;
+import atrophy.combat.display.MapDrawer;
+import atrophy.combat.display.TorchDrawer;
 import atrophy.combat.display.ui.UiUpdaterSuite;
 import atrophy.combat.level.LevelBlock;
 import atrophy.combat.level.LevelManager;
@@ -33,11 +36,13 @@ public class CombatMembersManager {
 	private TurnProcess turnProcess;
 	private UiUpdaterSuite uiUpdaterSuite;
 	private MouseAbilityHandler mouseAbilityHandler;
-	private CombatInorganicManager combatInorganicManager;
+	private CombatNCEManager combatInorganicManager;
 	private LevelManager levelManager;
-	private LineDrawer lineDrawer;
+	private TorchDrawer torchDrawer;
+	private MapDrawer mapDrawer;
+	private Map<LevelBlock, StrengthStub> factionStrengthScores;
 	
-	public CombatMembersManager(AiCrowd aiCrowd, TurnProcess turnProcess, LevelManager levelManager, CombatInorganicManager combatInorganicManager){
+	public CombatMembersManager(AiCrowd aiCrowd, TurnProcess turnProcess, LevelManager levelManager, CombatNCEManager combatInorganicManager){
 		commanders = new ArrayList<TeamsCommander>(2);
 		playerTeam = new ArrayList<Ai>(1);
 		
@@ -45,23 +50,78 @@ public class CombatMembersManager {
 		this.turnProcess = turnProcess;
 		this.combatInorganicManager = combatInorganicManager;
 		this.levelManager = levelManager;
+		
 	}
 	
-	public void createCommanders() {
-		commanders.add(new WhiteVistaCommander(turnProcess, levelManager));
-		commanders.add(new BanditCommander(turnProcess, levelManager));
+	private class StrengthStub {
+		
+		private int code;
+		//Faction, [Strength, Turn]
+		private Map<String, Integer[]> strengthInfo;
+		
+		public StrengthStub(int code) {
+			
+			this.code = code;
+			
+			strengthInfo = new HashMap<>();
+			
+			strengthInfo.put(AiGenerator.BANDITS, new Integer[]{0,-1});
+			strengthInfo.put(AiGenerator.WHITE_VISTA, new Integer[]{0,-1});
+			strengthInfo.put(AiGenerator.LONER, new Integer[]{0,-1});
+			strengthInfo.put(AiGenerator.PLAYER, new Integer[]{0,-1});
+		}
+
+		public int getStrength(String faction) {
+			
+			if(this.strengthInfo.get(faction)[1] == turnProcess.getTurnCount())
+				return this.strengthInfo.get(faction)[0];
+			
+			int strength = 0;
+			
+			for(int i = 0; i < aiCrowd.getActorCount(); i++){
+				if(aiCrowd.getActor(i).getFaction().equals(faction) && aiCrowd.getActor(i).getLevelBlock().getCode() == code)
+					strength += aiCrowd.getActor(i).getCombatScore();
+			}
+			
+			this.strengthInfo.put(faction, new Integer[]{strength, turnProcess.getTurnCount()});
+			
+			return strength;
+		}
+		
+	}
+	
+	public void createCommanders(double banditRep, double wvRep) {
+		WhiteVistaCommander whiteVistaCommander = new WhiteVistaCommander(aiCrowd.getSquad(), turnProcess, levelManager);
+		commanders.add(whiteVistaCommander);
+		BanditCommander banditCommander = new BanditCommander(aiCrowd.getSquad(), turnProcess, levelManager);
+		commanders.add(banditCommander);
+		
+		if(banditRep >= 1)
+			banditCommander.addAlliance(AiGenerator.PLAYER);
+		if(wvRep >= 1)
+			whiteVistaCommander.addAlliance(AiGenerator.PLAYER);
 	}
 	
 	public LonerCommander createLonerCommander() {
-		LonerCommander lonerCommander = new LonerCommander(turnProcess, levelManager);
+		LonerCommander lonerCommander = new LonerCommander(aiCrowd.getSquad(), turnProcess, levelManager);
 		commanders.add(lonerCommander);
 		return lonerCommander;
+	}
+	
+	private DaemonCommander createDaemonCommander() {
+		DaemonCommander daemonCommander = new DaemonCommander(aiCrowd.getSquad(), turnProcess, levelManager);
+		commanders.add(daemonCommander);
+		return daemonCommander;
 	}
 	
 	public void addAi(Ai ai) {
 		switch(ai.getFaction()) {
 			case AiGenerator.BANDITS:
 				this.getCommander(AiGenerator.BANDITS).addAi((ThinkingAi) ai);
+			break;
+			case AiGenerator.DAEMON:
+				DaemonCommander daemonCommander = this.createDaemonCommander();
+				daemonCommander.addAi((ThinkingAi) ai);
 			break;
 			case AiGenerator.LONER:
 				LonerCommander lonerCommander = this.createLonerCommander();
@@ -79,7 +139,13 @@ public class CombatMembersManager {
 	public void lazyLoad(UiUpdaterSuite uiUpdaterSuite, MouseAbilityHandler mouseAbilityHandler){
 		this.uiUpdaterSuite = uiUpdaterSuite;
 		this.mouseAbilityHandler = mouseAbilityHandler;
-		this.lineDrawer = uiUpdaterSuite.getLineDrawer();
+		this.torchDrawer = uiUpdaterSuite.getTorchDrawer();
+		this.mapDrawer = uiUpdaterSuite.getMapDrawer();
+		
+		this.factionStrengthScores = new HashMap<>();
+		for(int i = 0; i < this.levelManager.getCurrentLevel().getBlockCount(); i++) {
+			this.factionStrengthScores.put(this.levelManager.getCurrentLevel().getBlock(i), new StrengthStub(this.levelManager.getBlock(i).getCode()));
+		}
 	}
 	
 	public Ai getCurrentAi(){
@@ -95,8 +161,27 @@ public class CombatMembersManager {
 	}
 
 	public TeamsCommander getCommander(String faction) {
+		
 		for(TeamsCommander commander : this.commanders){
 			if(commander.getFaction().equals(faction)){
+				return commander;
+			}
+		}
+		return null;
+	}
+	
+	public TeamsCommander getCommander(LonerAi ai) {
+		for(TeamsCommander commander : this.commanders){
+			if(commander.hasAi(ai)){
+				return commander;
+			}
+		}
+		return null;
+	}
+	
+	public TeamsCommander getCommander(DaemonAi ai) {
+		for(TeamsCommander commander : this.commanders){
+			if(commander.hasAi(ai)){
 				return commander;
 			}
 		}
@@ -109,8 +194,8 @@ public class CombatMembersManager {
 	
 	public void setCurrentAi(Ai currentAi){
 		this.currentAi = currentAi;
-		lineDrawer.updateFovLight(currentAi);
-		lineDrawer.updateAlphas();
+		torchDrawer.updateFovLight(currentAi);
+		mapDrawer.updateAlphas();
 	}
 
 	public void changeCurrentAi(Ai currentAi){
@@ -126,11 +211,11 @@ public class CombatMembersManager {
 		else{
 			uiUpdaterSuite.getLootBox().closeLootUi(false);
 		}
-		lineDrawer.updateAlphas();
+		mapDrawer.updateAlphas();
 	}
 
 	public void changeCurrentAi(int i){
-		if(this.getAlly(i) != null){
+		if(i < this.getAllyCount() && this.getAlly(i) != null && !this.getAlly(i).isDead()){
 			
 			this.changeCurrentAi(this.getAlly(i));
 			
@@ -165,14 +250,7 @@ public class CombatMembersManager {
 	}
 	
 	public int getFactionStrength(String faction, LevelBlock levelBlock) {
-		int strength = 0;
-		
-		for(int i = 0; i < aiCrowd.getActorCount(); i++){
-			if(aiCrowd.getActor(i).getFaction().equals(faction) && aiCrowd.getActor(i).getLevelBlock() == levelBlock)
-				strength += aiCrowd.getActor(i).getCombatScore();
-		}
-		
-		return strength;
+		return this.factionStrengthScores.get(levelBlock).getStrength(faction);
 	}
 	
 	public boolean factionsAllied(String faction, String faction2) {

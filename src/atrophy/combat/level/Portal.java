@@ -5,7 +5,7 @@ package atrophy.combat.level;
 
 import java.util.HashMap;
 
-import watoydoEngine.gubbinz.Maths;
+import watoydoEngine.utils.Maths;
 import atrophy.combat.ai.Ai;
 
 // TODO: Auto-generated Javadoc
@@ -58,7 +58,7 @@ public class Portal {
 	 * @param link2Locx the link2 locx
 	 * @param link2Locy the link2 locy
 	 */
-	public Portal(double x, double y, LevelBlock link1, double link1Locx, double link1Locy, LevelBlock link2, double link2Locx, double link2Locy){
+	public Portal(int x, int y, LevelBlock link1, int link1Locx, int link1Locy, LevelBlock link2, int link2Locx, int link2Locy){
 		
 		this.linkedBlocks = new LevelBlock[2];
 		this.linkedBlocks[0] = link1;

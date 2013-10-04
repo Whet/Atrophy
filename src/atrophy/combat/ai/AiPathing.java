@@ -1,14 +1,22 @@
 package atrophy.combat.ai;
 
+import java.util.Random;
 import java.util.Stack;
 
-import watoydoEngine.gubbinz.Maths;
+import watoydoEngine.utils.Maths;
 import atrophy.combat.CombatVisualManager;
+import atrophy.combat.display.AiCrowd;
+import atrophy.combat.items.MeleeWeapon1;
 import atrophy.combat.level.LevelBlock;
 import atrophy.combat.level.LevelManager;
 import atrophy.combat.level.Portal;
+import atrophy.combat.level.LevelBlockGrid.GridBlock;
 
 public class AiPathing {
+
+	private static final int SLOWING_DISTANCE = MeleeWeapon1.RANGE;
+	private static final int SLOW_MAX_MOVE = SLOWING_DISTANCE + 10;
+	private static final int MAJOR_SLOW_MAX_MOVE = 5;
 
 	private Stack<Portal> portalPathway;
 	
@@ -28,11 +36,14 @@ public class AiPathing {
 	
 	private LevelManager levelManager;
 	
-	public AiPathing(LevelManager levelManager, double x, double y){
+	private AiCrowd aiCrowd;
+	
+	public AiPathing(AiCrowd aiCrowd, LevelManager levelManager, double x, double y){
 		
+		this.aiCrowd = aiCrowd;
 		this.levelManager = levelManager;
 		
-		moveDistance = 40;
+		moveDistance = 60;
 		defaultMoveDistance = moveDistance;
 		location = new double[2];
 		location[0] = x;
@@ -46,6 +57,9 @@ public class AiPathing {
 	}
 	
 	public void move(Ai invoker){
+		
+//		long time = System.currentTimeMillis();
+		
 		try{
 			invoker.setSwing(0);
 			invoker.setOldTargetSwing(0);
@@ -159,6 +173,7 @@ public class AiPathing {
 								                targetPortal.getLocation(this.getLevelBlock())[1], this.getLevelBlock().getHitBox())){
 							
 							roomPathway = null;
+							moveIntra(invoker,targetPortal.getLocation(this.getLevelBlock()));
 							continue;
 						}
 						
@@ -188,6 +203,7 @@ public class AiPathing {
 						} 
 						catch (PathNotFoundException e) {
 							System.out.println("Bad internal path to portal " + invoker.getName());
+							return;
 						}
 						
 						if(roomPathway.size() > 0) {
@@ -218,12 +234,12 @@ public class AiPathing {
 				}
 				
 				// couldn't move anywhere
-				if(this.moveUnits == moveUnitLast){
-					//return;
-					invoker.setMoveLocationToSelf();
-					invoker.setAction("");
-					return;
-				}
+//				if(this.moveUnits == moveUnitLast){
+//					//return;
+//					invoker.setMoveLocationToSelf();
+//					invoker.setAction("");
+//					return;
+//				}
 				moveUnitLast = this.moveUnits;
 			}
 			
@@ -233,6 +249,14 @@ public class AiPathing {
 		}
 		// cannot find what actually throws this, nothing shows when stepped through
 		catch(NullPointerException npe){}
+		
+//		System.out.println("Path Time Millis: " + (System.currentTimeMillis() - time));
+		
+		// Fix for being outside level
+		if(levelManager.getBlock(this.getLocation()) == null) {
+			GridBlock navBlock = this.getLevelBlock().getLevelBlockGrid().getNearestGridBlock(this.getLocation());
+			this.setLocation(navBlock.getPathLocation()[0], navBlock.getPathLocation()[1]);
+		}
 	}
 	 
 	/**
@@ -271,15 +295,34 @@ public class AiPathing {
 		}
 	}
 
-	public void resetMoveUnits() {
-		moveUnits = this.moveDistance;
+	public void resetMoveUnits(Ai invoker) {
+		
+		if(this.moveDistance > SLOW_MAX_MOVE) {
+			// Decrease move distance if ai nearby
+			for (Ai ai : aiCrowd.getActors()) {
+				if(!ai.getFaction().equals(invoker.getFaction()) && ai.getLevelBlock() == invoker.getLevelBlock() && ai.getTargetAi() == invoker &&
+				   Maths.getDistance(ai.getLocation(), invoker.getLocation()) < SLOWING_DISTANCE) {
+					
+					// Chance to be majorly slowed
+					if(new Random().nextInt(10) > 8) {
+						this.moveUnits = MAJOR_SLOW_MAX_MOVE;
+						return;
+					}
+					
+					this.moveUnits = SLOW_MAX_MOVE;
+					return;
+				}
+			}
+		}
+		
+		this.moveUnits = this.moveDistance;
 	}
 
 	public LevelBlock getLevelBlock() {
 		
 		if(this.residentBlock == null)
-			this.residentBlock = levelManager.getBlock(location);
-		
+			this.updateLevelBlock();
+			
 		return this.residentBlock;
 	}
 
@@ -445,6 +488,10 @@ public class AiPathing {
 				invoker.setMoveLocationToSelf();
 			}
 		}
+	}
+
+	public void updateLevelBlock() {
+		this.residentBlock = levelManager.getBlock(this.getLocation());
 	}
 	
 }

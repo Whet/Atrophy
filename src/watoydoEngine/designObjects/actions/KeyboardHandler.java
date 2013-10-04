@@ -16,13 +16,24 @@ public abstract class KeyboardHandler implements KeyboardRespondable{
 	 */
 	private boolean focused;
 	
+	private int actionZ;
+	
 	/**
 	 * Instantiates a new keyboard handler.
 	 */
 	public KeyboardHandler(){
 		focused = true;
+		this.actionZ = 0;
 	}
 	
+	public int getActionZ() {
+		return actionZ;
+	}
+
+	public void setActionZ(int actionZ) {
+		this.actionZ = actionZ;
+	}
+
 	/* (non-Javadoc)
 	 * @see watoydoEngine.designObjects.actions.KeyboardRespondable#kD(java.awt.event.KeyEvent)
 	 */

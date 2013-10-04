@@ -3,16 +3,17 @@
  */
 package atrophy.splash;
 
-import java.awt.Color;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.io.File;
+import java.util.Random;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 
 import watoydoEngine.designObjects.display.Crowd;
 import watoydoEngine.designObjects.display.TextButton;
+import watoydoEngine.io.ReadWriter;
 import watoydoEngine.workings.displayActivity.ActivePane;
 import atrophy.gameMenu.saveFile.ItemMarket;
 import atrophy.gameMenu.saveFile.MapManager;
@@ -23,6 +24,7 @@ import atrophy.gameMenu.saveFile.TechTree;
 import atrophy.gameMenu.ui.MenuBar;
 import atrophy.gameMenu.ui.ShopManager;
 import atrophy.gameMenu.ui.StashManager;
+import atrophy.gameMenu.ui.Wallpaper;
 import atrophy.gameMenu.ui.WindowManager;
 import atrophy.hardPanes.CharacterCreatePane;
 import atrophy.hardPanes.GameMenuHardPane;
@@ -37,6 +39,7 @@ public class SplashMenu extends Crowd {
 	 */
 	public SplashMenu() {
 		super(true);
+		this.addDisplayItem(new Wallpaper(new Random().nextLong()));
 		addButtons();
 	}
 
@@ -45,7 +48,7 @@ public class SplashMenu extends Crowd {
 	 */
 	private void addButtons() {
 		
-		TextButton newGame = new TextButton(Color.yellow, Color.red) {
+		TextButton newGame = new TextButton(TextButton.DEFAULT_ON_COLOUR,TextButton.DEFAULT_OFF_COLOUR) {
 			
 			{
 				this.setText("New Game");
@@ -54,7 +57,7 @@ public class SplashMenu extends Crowd {
 			
 			@Override
 			public boolean mD(Point mousePosition, MouseEvent e) {
-				ActivePane.getInstance().changePane(new Crowd(new CharacterCreatePane()));
+				ActivePane.getInstance().changeRootCrowd(new Crowd(new CharacterCreatePane()));
 				return true;
 			}
 		};
@@ -63,7 +66,7 @@ public class SplashMenu extends Crowd {
 		this.addMouseActionItem(newGame);
 		this.addDisplayItem(newGame);
 		
-		TextButton loadGame = new TextButton(Color.yellow, Color.red) {
+		TextButton loadGame = new TextButton(TextButton.DEFAULT_ON_COLOUR,TextButton.DEFAULT_OFF_COLOUR) {
 			
 			{
 				this.setText("Load");
@@ -75,7 +78,7 @@ public class SplashMenu extends Crowd {
 				
 				ActivePane.getInstance().setVisible(false);
 				
-				JFileChooser chooser = new JFileChooser(new File(System.getProperty("user.home") + "/Atrophy"));
+				JFileChooser chooser = new JFileChooser(new File(ReadWriter.HOME_LOCATION + "/GameData/Saves"));
 				int returnValue = chooser.showOpenDialog(new JFrame());
 				
 				if(returnValue == JFileChooser.APPROVE_OPTION){
@@ -83,19 +86,20 @@ public class SplashMenu extends Crowd {
 					MenuBar menuBar = new MenuBar();
 					WindowManager windowManager = new WindowManager(menuBar);
 					StashManager stashManager = new StashManager(windowManager);
-					TechTree techTree = new TechTree();
-					ItemMarket itemMarket = new ItemMarket(techTree);
 					Missions missions = new Missions();
-					MapManager mapWar = new MapManager(missions);
+					MapManager mapManager = new MapManager(missions);
+					ItemMarket itemMarket = new ItemMarket();
 					ShopManager shopManager = new ShopManager(windowManager, stashManager, itemMarket);
-					Squad squad = SaveFile.loadGame(chooser.getSelectedFile(), stashManager, mapWar, shopManager, missions, windowManager);
+					Squad squad = SaveFile.loadGame(chooser.getSelectedFile(), stashManager, mapManager, shopManager, missions, windowManager, itemMarket);
+					
+					TechTree techTree = squad.getTechTree();
 					
 					shopManager.lazyLoad(squad);
-					menuBar.lazyLoad(windowManager, mapWar, missions, squad, shopManager, stashManager, techTree, itemMarket);
+					menuBar.lazyLoad(windowManager, mapManager, missions, squad, shopManager, stashManager, techTree, itemMarket);
 					stashManager.lazyLoad(shopManager);
-					missions.lazyLoad(squad, stashManager, itemMarket, techTree);
+					missions.lazyLoad(squad, stashManager, itemMarket, techTree, mapManager);
 					
-					ActivePane.getInstance().changePane(new Crowd(new GameMenuHardPane(squad, techTree, stashManager, missions)));
+					ActivePane.getInstance().changeRootCrowd(new Crowd(new GameMenuHardPane(squad, techTree, stashManager, missions)));
 				}
 				
 				ActivePane.getInstance().setVisible(true);

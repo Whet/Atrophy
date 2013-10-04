@@ -1,6 +1,3 @@
-/*
- * 
- */
 package atrophy.combat.ai;
 
 import java.awt.Color;
@@ -11,14 +8,15 @@ import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import watoydoEngine.gubbinz.Maths;
-import atrophy.combat.CombatInorganicManager;
+import watoydoEngine.utils.Maths;
 import atrophy.combat.CombatMembersManager;
+import atrophy.combat.CombatNCEManager;
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.actions.MouseAbilityHandler;
 import atrophy.combat.combatEffects.Effect;
+import atrophy.combat.combatEffects.ProtectPowerEffect;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.ui.FloatingIcons;
 import atrophy.combat.display.ui.loot.LootBox;
@@ -33,41 +31,24 @@ import atrophy.combat.level.Portal;
 import atrophy.combat.mechanics.Abilities;
 import atrophy.combat.mechanics.TurnProcess;
 
-// TODO: Auto-generated Javadoc
-// Contains vars and functions for Ai game mechanics
-/**
- * The Class Ai.
- */
 public class Ai implements Lootable{
 
 	protected AiData aiData;
-	
 	protected AiPathing aiPathing;
-	
 	protected AiActions aiActions;
-	
-	private String name;
-	
-	private String image;
-	
-	private String team;
-	
-	protected boolean dead;
-	
-	private boolean killCounted;
-	
-	private double lookAngle;
-	
-	private double editLookAngle;
-	
-	private int stunnedTurns;
-	
-	private int incapTurns;
-	
-	private boolean broadcastingLocation;
 
+	private AiDeathReport deathReport;
+	private String name;
+	private String image;
+	private String team;
+	protected boolean dead;
+	private boolean killCounted;
+	private double lookAngle;
+	private double editLookAngle;
+	private int stunnedTurns;
+	private int incapTurns;
+	private boolean broadcastingLocation;
 	private boolean ignoreLOS;
-	
 	private boolean skippingTurns;
 
 	protected MouseAbilityHandler mouseAbilityHandler;
@@ -79,8 +60,14 @@ public class Ai implements Lootable{
 	protected TurnProcess turnProcess;
 	protected LootBox lootBox;
 	protected PanningManager panningManager;
+	private Ai nextAi;
 
-	public Ai(FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, String name, double x, double y, CombatInorganicManager combatInorganicManager, LevelManager levelManager, LootBox lootBox, CombatMembersManager combatMembersManager, CombatUiManager combatUiManager, CombatVisualManager combatVisualManager, AiCrowd aiCrowd, PanningManager panningManager, TurnProcess turnProcess){
+	public Ai(FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler,
+			  String name, double x, double y,
+			  CombatNCEManager combatInorganicManager, LevelManager levelManager, LootBox lootBox,
+			  CombatMembersManager combatMembersManager, CombatUiManager combatUiManager, CombatVisualManager combatVisualManager,
+			  AiCrowd aiCrowd, PanningManager panningManager, TurnProcess turnProcess){
+		
 		this.name = name;
 		image = "";
 		
@@ -108,7 +95,7 @@ public class Ai implements Lootable{
 		this.panningManager = panningManager;
 		
 		aiActions = new AiActions(aiCrowd, combatVisualManager, combatUiManager, combatMembersManager, combatInorganicManager, floatingIcons, mouseAbilityHandler, lootBox, levelManager);
-		aiPathing = new AiPathing(levelManager, x,y);
+		aiPathing = new AiPathing(aiCrowd, levelManager, x,y);
 		aiData = new AiData(mouseAbilityHandler, this, new MeleeWeapon1());
 		
 		this.mouseAbilityHandler = mouseAbilityHandler;
@@ -117,7 +104,7 @@ public class Ai implements Lootable{
 		
 	}
 	
-	public Ai(ThinkingAi thinkingAi, LevelManager levelManager, CombatInorganicManager combatInorganicManager) {
+	public Ai(ThinkingAi thinkingAi, LevelManager levelManager, CombatNCEManager combatInorganicManager) {
 		this.name = thinkingAi.getName();
 		image = thinkingAi.getImage();
 		
@@ -139,7 +126,7 @@ public class Ai implements Lootable{
 
 		skippingTurns = false;
 		aiActions = new AiActions(thinkingAi.aiCrowd, thinkingAi.combatVisualManager, thinkingAi.combatUiManager, thinkingAi.combatMembersManager, combatInorganicManager, floatingIcons, mouseAbilityHandler, thinkingAi.lootBox, levelManager);
-		aiPathing = new AiPathing(levelManager, thinkingAi.getLocation()[0], thinkingAi.getLocation()[1]);
+		aiPathing = new AiPathing(aiCrowd, levelManager, thinkingAi.getLocation()[0], thinkingAi.getLocation()[1]);
 		aiData = new AiData(mouseAbilityHandler, thinkingAi, thinkingAi.getWeapon());
 		
 		this.setMoveLocationToSelf();
@@ -156,8 +143,6 @@ public class Ai implements Lootable{
 		
 	}
 	
-	// The Void
-
 	public double[] getActionLocation() {
 		return this.aiActions.getActionLocation();
 	}
@@ -167,6 +152,11 @@ public class Ai implements Lootable{
 	}
 	
 	public void action(){
+		
+		if(this.isDead()) {
+			endTurn();
+			return;
+		}
 		
 		resetMoveUnits();
 		
@@ -210,8 +200,19 @@ public class Ai implements Lootable{
 		
 		this.setOldAction(this.getAction());
 		this.setOldActionTurns(this.getActionTurns());
+		endTurn();
+	}
+	
+	protected void endTurn() {
 		
-		turnProcess.currentAiDone(this.isSkippingTurns());
+		if(nextAi == null || nextAi == this) {
+			turnProcess.lastAiUpdated();
+			this.nextAi = null;
+		}
+		else {
+			nextAi.action();
+			this.nextAi = null;
+		}
 	}
 
 	public int getIncapTurns() {
@@ -223,7 +224,7 @@ public class Ai implements Lootable{
 	}
 
 	protected void resetMoveUnits(){
-		this.aiPathing.resetMoveUnits();
+		this.aiPathing.resetMoveUnits(this);
 	}
 	
 	public int getOldActionTurns() {
@@ -303,22 +304,6 @@ public class Ai implements Lootable{
 		this.aiActions.setWelding(this);
 	}
 	
-	public void throwGrenade(double x, double y){
-		this.aiActions.throwGrenade(this, x, y);
-	}
-	
-	public void throwGrenadeAction(int skillLevel){
-		this.aiActions.throwGrenadeAction(this, skillLevel);
-	}
-	
-	public void throwStunGrenade(double x, double y){
-		this.aiActions.throwStunGrenade(this, x, y);
-	}
-	
-	public void throwStunGrenadeTurnAction(int skillLevel){
-		this.aiActions.throwStunGrenadeTurnAction(this, skillLevel);
-	}
-	
 	public void xrayScan(){
 		this.aiActions.xrayScan(this);
 	}
@@ -373,19 +358,18 @@ public class Ai implements Lootable{
 		this.aiActions.setStunTarget(this, targetAi);
 	}
 	
-	public void setBackstabTarget(Ai targetAi){
-		this.aiActions.setBackstabTarget(this, targetAi);
+	public void setGrappleTarget(Ai targetAi) {
+		this.aiActions.setGrappleTarget(this, targetAi);		
 	}
 	
-	public void setHackTarget(TurretAi turret) {
-		this.aiActions.setHackTarget(this, turret);		
+	public void setBackstabTarget(Ai targetAi){
+		this.aiActions.setBackstabTarget(this, targetAi);
 	}
 	
 	public void backstabTarget(){
 		this.aiActions.backstabTarget(this);
 	}
 	
-	// Getters
 	public boolean didMove() {
 		return this.aiPathing.didMove();
 	}
@@ -551,7 +535,6 @@ public class Ai implements Lootable{
 		return this.aiData.getWeapon().getCombatScore();
 	}
 	
-	// Setters
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -607,11 +590,34 @@ public class Ai implements Lootable{
 		this.aiActions.setSwing(swing);
 	}
 	
-	public void setDead(boolean dead) {
+	public void setDead(Ai killer, boolean dead) {
+		
+		if(this.hasActiveEffect(ProtectPowerEffect.NAME))
+			return;
+		
 		// Make sure dead unit show smashed helmet
 		if(dead && !this.dead){	
 			this.setTargetAi(null); 
 			this.setSkippingTurns(true);
+			
+			this.deathReport = new AiDeathReport(this, killer, killer.getWeapon(), this.getLevelBlock(), turnProcess.getTurnCount());
+		}
+		
+		this.dead = dead;
+		
+	}
+	
+	public void setDead(boolean dead) {
+		
+		if(this.hasActiveEffect(ProtectPowerEffect.NAME))
+			return;
+		
+		// Make sure dead unit show smashed helmet
+		if(dead && !this.dead){	
+			this.setTargetAi(null); 
+			this.setSkippingTurns(true);
+			
+			this.deathReport = new AiDeathReport(this, this.getLevelBlock(), turnProcess.getTurnCount());
 		}
 		
 		this.dead = dead;
@@ -620,6 +626,10 @@ public class Ai implements Lootable{
 	
 	public void bodyFound(boolean killCounted) {
 		this.killCounted = killCounted;
+	}
+	
+	public AiDeathReport getDeathReport() {
+		return this.deathReport;
 	}
 	
 	public void setTeam(String team){
@@ -813,6 +823,14 @@ public class Ai implements Lootable{
 			break;
 		}
 		return returnColour;
+	}
+
+	public void setNextAi(Ai nextAi) {
+		this.nextAi = nextAi;
+	}
+
+	public void updateLevelBlock() {
+		this.aiPathing.updateLevelBlock();
 	}
 
 }

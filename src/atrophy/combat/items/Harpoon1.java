@@ -52,7 +52,7 @@ public class Harpoon1 extends Weapon {
 	/**
 	 * The Constant DAMAGE.
 	 */
-	public static final int DAMAGE = 20;
+	public static final int DAMAGE = 25;
 	
 	/**
 	 * The Constant DESCRIPTION.

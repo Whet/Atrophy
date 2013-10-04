@@ -1,17 +1,17 @@
-/*
- * 
- */
 package atrophy.combat.display;
 
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Stack;
 import java.util.Timer;
@@ -21,19 +21,25 @@ import javax.imageio.ImageIO;
 
 import watoydoEngine.designObjects.display.Crowd;
 import watoydoEngine.io.ReadWriter;
+import atrophy.combat.CombatVisualManager;
 import atrophy.combat.ai.Ai;
 import atrophy.combat.ai.AiGenerator;
+import atrophy.combat.ai.TalkNode;
 import atrophy.combat.ai.ThinkingAi;
 import atrophy.combat.ai.VehicleAi;
+import atrophy.combat.ai.director.DirectorClassification;
+import atrophy.combat.ai.director.HealthDirector;
 import atrophy.gameMenu.saveFile.Squad;
 import atrophy.gameMenu.saveFile.Squad.Squaddie;
 
 public class AiCrowd extends Crowd {
 	
-	private static final int ANIMATION_FRAME_LENGTH = 300;
+	private static final int ANIMATION_FRAME_LENGTH = 200;
 
+	private Map<String, TalkNode> talkNodes;
 	private ArrayList<Ai> actors;
-	private ArrayList<AiImage> masks;
+	private List<AiImage> masks;
+	private Map<Ai, AiImage> actorToMask;
 	
 	private Stack<Ai> masterStack;
 	private Stack<Ai> shuffledStack;
@@ -43,12 +49,17 @@ public class AiCrowd extends Crowd {
 	
 	private Squad squad;
 	
+	private HealthDirector director;
+	
 	private static Timer animationTimer;
+	
+	private int banditKillCount, whiteVistaKillCount, lonerKillCount;
 	
 	public AiCrowd(Squad squad) {
 		super(false);
 		images = new HashMap<>();
 		animations = new HashMap<>();
+		talkNodes= new HashMap<>();
 		actors = new ArrayList<Ai>();
 		masks = new ArrayList<AiImage>();
 		loadPortraits();
@@ -63,8 +74,22 @@ public class AiCrowd extends Crowd {
 		
 		animationTimer = new Timer();
 		animationTimer.scheduleAtFixedRate(new AnimationTimerEvent(this), 0, ANIMATION_FRAME_LENGTH);
+		
+		this.masterStack = new Stack<Ai>();
+		
+		this.director = new HealthDirector(this);
+		this.actorToMask = new HashMap<>();
+		
 	}
 	
+	public void lazyLoad(CombatVisualManager combatVisualManager) {
+		this.director.lazyLoad(combatVisualManager);
+	}
+	
+	public HealthDirector getDirector() {
+		return director;
+	}
+
 	private static class AnimationTimerEvent extends TimerTask {
 
 		private AiCrowd aiCrowd;
@@ -116,9 +141,6 @@ public class AiCrowd extends Crowd {
 							  "images/atrophy/combat/heads/armourHead.png",
 							  "images/atrophy/combat/heads/armourHeadDamaged.png",
 							  
-							  "images/atrophy/combat/heads/turret.png",
-							  "images/atrophy/combat/heads/turret.png",
-							  
 							  "images/atrophy/combat/heads/mule.png",
 							  "images/atrophy/combat/heads/muleDead.png",
 							  };
@@ -135,7 +157,6 @@ public class AiCrowd extends Crowd {
 							  "Stealthed", "StealthedDead",
 							  "Scout",	   "ScoutDead",
 							  "Armour",	   "ArmourDead",
-							  "Turret",    "TurretDead",
 							  "Mule",	   "MuleDead"
 							  };
 			
@@ -155,6 +176,12 @@ public class AiCrowd extends Crowd {
 	private void loadAnimations() {
 		try{
 			
+			final String AF = "images/atrophy/combat/heads/animations/";
+			
+			String[] daemonFiles = {AF+"daemonIdleSpriteSheet.png", AF+"daemonAttackSpriteSheet.png"};
+			AnimationBlob daemonBlob = new AnimationBlob(new Animation[]{Animation.IDLE_MELEE, Animation.ATTACK_MELEE}, daemonFiles, new int[]{62, 79});
+			this.animations.put("DaemonFull", daemonBlob);
+			
 			final Animation[] ANIMATION_ORDER = {Animation.DEAD,
 												 Animation.IDLE_MELEE, Animation.IDLE_WEP1, Animation.IDLE_WEP2, Animation.IDLE_WEP3,
 												 Animation.ATTACK_MELEE, Animation.ATTACK_WEP1, Animation.ATTACK_WEP2, Animation.ATTACK_WEP3,
@@ -165,51 +192,28 @@ public class AiCrowd extends Crowd {
 									   68, 64, 72, 74,
 									   33};
 			
-			final String AF = "images/atrophy/combat/heads/animations/";
 			
 			String[] head1Files = {AF+"deadSpriteSheet.png", AF+"idleSpriteSheet1.png", AF+"idleSpriteSheet2.png", AF+"idleSpriteSheet3.png", AF+"idleSpriteSheet4.png", AF+"attackSpriteSheet1.png", AF+"attackSpriteSheet2.png", AF+"attackSpriteSheet3.png", AF+"attackSpriteSheet4.png", AF+"walkSpriteSheet.png"};
 			AnimationBlob head1Blob = new AnimationBlob(ANIMATION_ORDER, head1Files, TILE_WIDTHS);
 			this.animations.put("BeardHeadFull", head1Blob);
+			this.animations.put("MessyHeadFull", head1Blob);
+			this.animations.put("NazcaHeadFull", head1Blob);
+			this.animations.put("PlainHeadFull", head1Blob);
+			this.animations.put("RazielFull", head1Blob);
+			this.animations.put("StripeHeadFull", head1Blob);
+			this.animations.put("EngineerFull", head1Blob);
+			this.animations.put("SensorFull", head1Blob);
+			this.animations.put("StealthedFull", head1Blob);
+			this.animations.put("ScoutFull", head1Blob);
+			this.animations.put("ArmourFull", head1Blob);
 			
-			String[] head2Files = {AF+"deadSpriteSheet.png", AF+"idleSpriteSheet1.png", AF+"idleSpriteSheet2.png", AF+"idleSpriteSheet3.png", AF+"idleSpriteSheet4.png", AF+"attackSpriteSheet1.png", AF+"attackSpriteSheet2.png", AF+"attackSpriteSheet3.png", AF+"attackSpriteSheet4.png", AF+"walkSpriteSheet.png"};
+			String[] head2Files = {AF+"deadSpriteSheetBandit.png", AF+"idleSpriteSheetBandit1.png", AF+"idleSpriteSheetBandit2.png", AF+"idleSpriteSheetBandit3.png", AF+"idleSpriteSheetBandit4.png", AF+"attackSpriteSheetBandit1.png", AF+"attackSpriteSheetBandit2.png", AF+"attackSpriteSheetBandit3.png", AF+"attackSpriteSheetBandit4.png", AF+"walkSpriteSheet.png"};
 			AnimationBlob head2Blob = new AnimationBlob(ANIMATION_ORDER, head2Files, TILE_WIDTHS);
-			this.animations.put("MessyHeadFull", head2Blob);
+			this.animations.put("BanditFull", head2Blob);
 			
-			String[] head3Files = {AF+"deadSpriteSheet.png", AF+"idleSpriteSheet1.png", AF+"idleSpriteSheet2.png", AF+"idleSpriteSheet3.png", AF+"idleSpriteSheet4.png", AF+"attackSpriteSheet1.png", AF+"attackSpriteSheet2.png", AF+"attackSpriteSheet3.png", AF+"attackSpriteSheet4.png", AF+"walkSpriteSheet.png"};
-			AnimationBlob head3Blob = new AnimationBlob(ANIMATION_ORDER, head3Files, TILE_WIDTHS);
-			this.animations.put("NazcaHeadFull", head3Blob);
-			
-			String[] head4Files = {AF+"deadSpriteSheet.png", AF+"idleSpriteSheet1.png", AF+"idleSpriteSheet2.png", AF+"idleSpriteSheet3.png", AF+"idleSpriteSheet4.png", AF+"attackSpriteSheet1.png", AF+"attackSpriteSheet2.png", AF+"attackSpriteSheet3.png", AF+"attackSpriteSheet4.png", AF+"walkSpriteSheet.png"};
-			AnimationBlob head4Blob = new AnimationBlob(ANIMATION_ORDER, head4Files, TILE_WIDTHS);
-			this.animations.put("PlainHeadFull", head4Blob);
-			
-			String[] head5Files = {AF+"deadSpriteSheet.png", AF+"idleSpriteSheet1.png", AF+"idleSpriteSheet2.png", AF+"idleSpriteSheet3.png", AF+"idleSpriteSheet4.png", AF+"attackSpriteSheet1.png", AF+"attackSpriteSheet2.png", AF+"attackSpriteSheet3.png", AF+"attackSpriteSheet4.png", AF+"walkSpriteSheet.png"};
-			AnimationBlob head5Blob = new AnimationBlob(ANIMATION_ORDER, head5Files, TILE_WIDTHS);
-			this.animations.put("RazielFull", head5Blob);
-			
-			String[] head6Files = {AF+"deadSpriteSheet.png", AF+"idleSpriteSheet1.png", AF+"idleSpriteSheet2.png", AF+"idleSpriteSheet3.png", AF+"idleSpriteSheet4.png", AF+"attackSpriteSheet1.png", AF+"attackSpriteSheet2.png", AF+"attackSpriteSheet3.png", AF+"attackSpriteSheet4.png", AF+"walkSpriteSheet.png"};
-			AnimationBlob head6Blob = new AnimationBlob(ANIMATION_ORDER, head6Files, TILE_WIDTHS);
-			this.animations.put("StripeHeadFull", head6Blob);
-			
-			String[] head7Files = {AF+"deadSpriteSheet.png", AF+"idleSpriteSheet1.png", AF+"idleSpriteSheet2.png", AF+"idleSpriteSheet3.png", AF+"idleSpriteSheet4.png", AF+"attackSpriteSheet1.png", AF+"attackSpriteSheet2.png", AF+"attackSpriteSheet3.png", AF+"attackSpriteSheet4.png", AF+"walkSpriteSheet.png"};
-			AnimationBlob head7Blob = new AnimationBlob(ANIMATION_ORDER, head7Files, TILE_WIDTHS);
-			this.animations.put("EngineerFull", head7Blob);
-			
-			String[] head8Files = {AF+"deadSpriteSheet.png", AF+"idleSpriteSheet1.png", AF+"idleSpriteSheet2.png", AF+"idleSpriteSheet3.png", AF+"idleSpriteSheet4.png", AF+"attackSpriteSheet1.png", AF+"attackSpriteSheet2.png", AF+"attackSpriteSheet3.png", AF+"attackSpriteSheet4.png", AF+"walkSpriteSheet.png"};
-			AnimationBlob head8Blob = new AnimationBlob(ANIMATION_ORDER, head8Files, TILE_WIDTHS);
-			this.animations.put("SensorFull", head8Blob);
-			
-			String[] head9Files = {AF+"deadSpriteSheet.png", AF+"idleSpriteSheet1.png", AF+"idleSpriteSheet2.png", AF+"idleSpriteSheet3.png", AF+"idleSpriteSheet4.png", AF+"attackSpriteSheet1.png", AF+"attackSpriteSheet2.png", AF+"attackSpriteSheet3.png", AF+"attackSpriteSheet4.png", AF+"walkSpriteSheet.png"};
-			AnimationBlob head9Blob = new AnimationBlob(ANIMATION_ORDER, head9Files, TILE_WIDTHS);
-			this.animations.put("StealthedFull", head9Blob);
-			
-			String[] head10Files = {AF+"deadSpriteSheet.png", AF+"idleSpriteSheet1.png", AF+"idleSpriteSheet2.png", AF+"idleSpriteSheet3.png", AF+"idleSpriteSheet4.png", AF+"attackSpriteSheet1.png", AF+"attackSpriteSheet2.png", AF+"attackSpriteSheet3.png", AF+"attackSpriteSheet4.png", AF+"walkSpriteSheet.png"};
-			AnimationBlob head10Blob = new AnimationBlob(ANIMATION_ORDER, head10Files, TILE_WIDTHS);
-			this.animations.put("ScoutFull", head10Blob);
-			
-			String[] head11Files = {AF+"deadSpriteSheet.png", AF+"idleSpriteSheet1.png", AF+"idleSpriteSheet2.png", AF+"idleSpriteSheet3.png", AF+"idleSpriteSheet4.png", AF+"attackSpriteSheet1.png", AF+"attackSpriteSheet2.png", AF+"attackSpriteSheet3.png", AF+"attackSpriteSheet4.png", AF+"walkSpriteSheet.png"};
-			AnimationBlob head11Blob = new AnimationBlob(ANIMATION_ORDER, head11Files, TILE_WIDTHS);
-			this.animations.put("ArmourFull", head11Blob);
+			String[] muleFiles = {AF+"mule.png", AF+"muleDead.png"};
+			AnimationBlob muleBlob = new AnimationBlob(new Animation[]{Animation.IDLE_MELEE, Animation.DEAD}, muleFiles, new int[]{30, 30});
+			this.animations.put("MuleFull", muleBlob);
 			
 		}
 		catch(IOException ioexcept){
@@ -233,14 +237,6 @@ public class AiCrowd extends Crowd {
 	}
 	
 	public Stack<Ai> getShuffledStack() {
-		
-		if(this.masterStack == null || this.masterStack.size() == 0){
-			masterStack = new Stack<Ai>();
-			
-			masterStack.addAll(this.actors);
-			
-			Collections.shuffle(masterStack);
-		}
 		
 		if(this.shuffledStack == null){
 			this.shuffledStack = new Stack<Ai>(); 
@@ -288,16 +284,16 @@ public class AiCrowd extends Crowd {
 		return actors.size();
 	}
 	
+	public TalkNode getTalkNode(String name) {
+		return this.talkNodes.get(name);
+	}
+	
+	public void addTalkNode(TalkNode talkNode) {
+		this.talkNodes.put(talkNode.getName(), talkNode);
+	}
+	
 	public AiImage getActorMask(Ai ai){
-		int i;
-		
-		for(i = 0; i < this.masks.size(); i++){
-			if(this.masks.get(i).getAi() == ai){
-				break;
-			}
-		}
-		
-		return this.masks.get(i);
+		return this.actorToMask.get(ai);
 	}
 	
 	public AiImage getMask(int i){
@@ -308,24 +304,54 @@ public class AiCrowd extends Crowd {
 		return this.actors;
 	}
 	
-	public void addActor(Ai ai){
+	public void addActor(Ai ai, DirectorClassification aiClass){
 		actors.add(ai);
+		
+		this.masterStack.push(ai);
+		
+		this.director.addAi(ai, aiClass);
 	}
 	
 	public void addMask(AiImage aiImg){
 		masks.add(aiImg);
 		aiImg.updateImage();
+		this.actorToMask.put(aiImg.getAi(), aiImg);
 	}
 
-	public ArrayList<AiImage> getMasks() {
+	public List<AiImage> getMasks() {
 		return this.masks;
+	}
+
+	public Squad getSquad() {
+		return squad;
 	}
 
 	public Squad saveToSquad() {
 		Squad squad = new Squad();
 		
+		squad.setFactionRelations(this.squad.getFactionRelation(AiGenerator.WHITE_VISTA), this.squad.getFactionRelation(AiGenerator.BANDITS));
 		squad.setAdvance(this.squad.getAdvance());
-		squad.setKills(this.squad.getSquadKills());
+		
+		ArrayList<String> lonerKills = new ArrayList<>();
+		ArrayList<String> banditKills = new ArrayList<>();
+		ArrayList<String> wvKills = new ArrayList<>();
+		
+		lonerKills.addAll(this.squad.getLonerKills());
+		lonerKills.addAll(director.getLonerKills());
+		banditKills.addAll(this.squad.getBanditKills());
+		banditKills.addAll(director.getBanditKills());
+		wvKills.addAll(this.squad.getWvKills());
+		wvKills.addAll(director.getWvKills());
+		
+		squad.setWvKills(wvKills);
+		squad.setBanditKills(banditKills);
+		squad.setLonerKills(lonerKills);
+		
+		squad.windowLayout = this.squad.windowLayout;
+		
+		whiteVistaKillCount = wvKills.size() - this.squad.getWvKills().size();
+		lonerKillCount = lonerKills.size() - this.squad.getLonerKills().size();
+		banditKillCount = banditKills.size() - this.squad.getBanditKills().size();
 		
 		for(int i = 0; i < this.actors.size(); i++){
 			if(actors.get(i).getFaction().equals(AiGenerator.PLAYER) && !actors.get(i).isDead()){
@@ -353,9 +379,22 @@ public class AiCrowd extends Crowd {
 				squad.addSquaddie(squadMember);
 			}
 		}
+		squad.setTechTree(this.squad.getTechTree());
 		
 		return squad;
 		
+	}
+	
+	public int getBanditKillCount() {
+		return banditKillCount;
+	}
+
+	public int getWhiteVistaKillCount() {
+		return whiteVistaKillCount;
+	}
+
+	public int getLonerKillCount() {
+		return lonerKillCount;
 	}
 
 	public void replaceAi(ThinkingAi thinkingAi, Ai playerAi) {
@@ -369,15 +408,31 @@ public class AiCrowd extends Crowd {
 	public BufferedImage getPortraitImage(String image) {
 		return this.images.get(image);
 	}
+	
+	@Override
+	public void drawMethod(Graphics2D drawShape) {
+		super.drawMethod(drawShape);
+	}
 
 	public void updateAnimations() {
-		for(AiImage image : this.masks) {
-			image.updateAnimation();
+		
+		AiImage[] images = this.masks.toArray(new AiImage[this.masks.size()]);
+		
+		for(int i = 0; i < images.length; i++) {
+			images[i].updateAnimation();
+			images[i].setZ((int) images[i].getLocation()[1]);
 		}
+		computeZOrder();
 	}
 
 	public BufferedImage getAnimationFrame(String image, int frame, Animation animation) {
-		return this.animations.get(image).getFrame(frame, animation);
+		try {
+			return this.animations.get(image).getFrame(frame, animation);
+		}
+		catch(NullPointerException e) {
+			System.out.println(image + "  FRAME: " + frame + "  ANIMATION: " + animation.toString());
+			throw e;
+		}
 	}
 	
 	private static class AnimationBlob {
@@ -409,9 +464,34 @@ public class AiCrowd extends Crowd {
 		}
 		
 		public BufferedImage getFrame(int frame, Animation animation) {
-			return this.animations.get(animation)[frame];
+			try {
+				return this.animations.get(animation)[frame];
+			}
+			catch(NullPointerException e) {
+				System.out.println(frame + "  " + animation.toString());
+				throw e;
+			}
 		}
 		
+	}
+
+	public void shuffleAi() {
+		Collections.shuffle(this.masterStack);
+	}
+	
+	public int getLivingActors(String faction) {
+		int t = 0;
+		
+		for(Ai actor:this.actors) {
+			if(actor.getFaction().equals(faction) && !actor.isDead())
+				t++;
+		}
+		
+		return t;
+	}
+
+	public Collection<TalkNode> getNodes() {
+		return this.talkNodes.values();
 	}
 	
 }

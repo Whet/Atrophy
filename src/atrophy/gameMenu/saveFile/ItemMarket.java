@@ -8,13 +8,12 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
+import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.items.ArmourPlates1;
 import atrophy.combat.items.ArmourPlates2;
 import atrophy.combat.items.EngineeringSupply;
-import atrophy.combat.items.GrenadeItem;
 import atrophy.combat.items.Harpoon1;
 import atrophy.combat.items.Harpoon2;
-import atrophy.combat.items.KillTags;
 import atrophy.combat.items.LightStealthField;
 import atrophy.combat.items.MedicalSupply;
 import atrophy.combat.items.MediumStealthField;
@@ -32,7 +31,6 @@ import atrophy.combat.items.ScienceSupply;
 import atrophy.combat.items.SensorSuite;
 import atrophy.combat.items.Shotgun1;
 import atrophy.combat.items.SpeedBooster;
-import atrophy.combat.items.StunGrenadeItem;
 import atrophy.combat.items.UnitDetector;
 import atrophy.combat.items.WeaponSupply;
 import atrophy.combat.items.WeldingTorch;
@@ -42,12 +40,22 @@ public class ItemMarket {
 	private Map<String, ItemData> itemData = new HashMap<String, ItemData>();
 	private Set<String> weaponsInMarket;
 	private Set<String> itemsInMarket;
+	private Set<String> banditItems;
+	private Set<String> banditWeapons;
+	private Set<String> wvItems;
+	private Set<String> wvWeapons;
 	
-	public ItemMarket(TechTree techTree){
+	public ItemMarket(){
 		
 		this.weaponsInMarket = new HashSet<String>();
 		this.itemsInMarket = new HashSet<String>();
-		
+		this.banditItems = new HashSet<String>();
+		this.banditWeapons = new HashSet<String>();
+		this.wvItems = new HashSet<String>();
+		this.wvWeapons = new HashSet<String>();
+	}
+	
+	public void lazyLoad(TechTree techTree) {
 		loadItemData(techTree);
 		updateMarket();
 	}
@@ -68,15 +76,12 @@ public class ItemMarket {
 		
 		itemData.put(ArmourPlates1.NAME, 			new ItemData(techTree, 300,TechTree.BASIC_ARMOUR,false));
 		itemData.put(ArmourPlates2.NAME, 			new ItemData(techTree, 800,TechTree.HEAVY_ARMOUR,false));
-		itemData.put(GrenadeItem.NAME, 				new ItemData(techTree, 300,TechTree.BASIC_EXPLOSIVES,false));
-		itemData.put(StunGrenadeItem.NAME, 			new ItemData(techTree, 240,TechTree.BASIC_INCAPACITATION,false));
 		itemData.put(LightStealthField.NAME, 		new ItemData(techTree, 5000,TechTree.STATIONARY_CLOAKING,false));
 		itemData.put(MediumStealthField.NAME, 		new ItemData(techTree, 5000,TechTree.MOBILE_CLOAKING,false));
 		itemData.put(ScienceScanner.NAME, 			new ItemData(techTree, 3200,TechTree.SCIENTIFIC_OBSERVATIONS,false));
 		itemData.put(SensorSuite.NAME, 				new ItemData(techTree, 5000,TechTree.OPTICS,false));
 		itemData.put(SpeedBooster.NAME, 			new ItemData(techTree, 3200,TechTree.ADVANCED_SUIT_THRUSTERS,false));
 		itemData.put(UnitDetector.NAME, 			new ItemData(techTree, 1200,TechTree.SUIT_COMMUNICATION,false));
-		itemData.put(KillTags.NAME, 				new ItemData(techTree, 600,TechTree.BOUNTY_HUNTING,false));
 		itemData.put(WeldingTorch.NAME, 			new ItemData(techTree, 1000,TechTree.BASIC_TOOLS,false));
 	}
 	
@@ -87,11 +92,23 @@ public class ItemMarket {
 		while(itemIt.hasNext()){
 			String next = itemIt.next();
 			
-			if(itemData.get(next).isUnlocked())
+			if(itemData.get(next).isUnlocked(AiGenerator.LONER))
 				if(itemData.get(next).isWeapon)
 					weaponsInMarket.add(next);
 				else
 					itemsInMarket.add(next);
+			
+			if(itemData.get(next).isUnlocked(AiGenerator.BANDITS))
+				if(itemData.get(next).isWeapon)
+					banditWeapons.add(next);
+				else
+					banditItems.add(next);
+			
+			if(itemData.get(next).isUnlocked(AiGenerator.WHITE_VISTA))
+				if(itemData.get(next).isWeapon)
+					wvWeapons.add(next);
+				else
+					wvItems.add(next);
 				
 		}
 	}
@@ -129,8 +146,8 @@ public class ItemMarket {
 			this.isWeapon = isWeapon;
 		}
 		
-		public boolean isUnlocked(){
-			return techTree.isResearched(requiredTechnology);
+		public boolean isUnlocked(String faction){
+			return techTree.isResearched(requiredTechnology, faction);
 		}
 	}
 
@@ -139,25 +156,24 @@ public class ItemMarket {
 		return new ArrayList<>(this.itemsInMarket);
 	}
 
-
 	public ArrayList<String> getLonerAllowedWeapons() {
 		return new ArrayList<>(this.weaponsInMarket);
 	}
 	
 	public ArrayList<String> getBanditsAllowedItems() {
-		return new ArrayList<>(this.itemsInMarket);
+		return new ArrayList<>(this.banditItems);
 	}
 	
 	public ArrayList<String> getBanditsAllowedWeapons() {
-		return new ArrayList<>(this.weaponsInMarket);
+		return new ArrayList<>(this.banditWeapons);
 	}
 	
 	public ArrayList<String> getWhiteVistaAllowedItems() {
-		return new ArrayList<>(this.itemsInMarket);
+		return new ArrayList<>(this.wvItems);
 	}
 	
 	public ArrayList<String> getWhiteVistaAllowedWeapons() {
-		return new ArrayList<>(this.weaponsInMarket);
+		return new ArrayList<>(this.wvWeapons);
 	}
 
 

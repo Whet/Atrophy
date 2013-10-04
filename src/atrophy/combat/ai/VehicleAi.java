@@ -1,6 +1,6 @@
 package atrophy.combat.ai;
 
-import atrophy.combat.CombatInorganicManager;
+import atrophy.combat.CombatNCEManager;
 import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
@@ -17,23 +17,18 @@ public class VehicleAi extends Ai {
 
 	private String vehicleType;
 	
-	public VehicleAi(PanningManager panningManager, FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, String name, String vehicleType, double x, double y, LevelManager levelManager, CombatInorganicManager combatInorganicManager, LootBox lootBox, CombatMembersManager combatMembersManager, CombatUiManager combatUiManager, CombatVisualManager combatVisualManager, AiCrowd aiCrowd, TurnProcess turnProcess) {
+	public VehicleAi(PanningManager panningManager, FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, String name, String vehicleType, double x, double y, LevelManager levelManager, CombatNCEManager combatInorganicManager, LootBox lootBox, CombatMembersManager combatMembersManager, CombatUiManager combatUiManager, CombatVisualManager combatVisualManager, AiCrowd aiCrowd, TurnProcess turnProcess) {
 		super(floatingIcons, mouseAbilityHandler, name, x, y, combatInorganicManager, levelManager, lootBox, combatMembersManager, combatUiManager, combatVisualManager, aiCrowd, panningManager, turnProcess);
 		this.vehicleType = vehicleType;
 	}
 
 	@Override
-	public void setDead(boolean dead) {
+	public void setDead(Ai killer, boolean dead) {
 		this.dead = dead;
 		
 		if(this.dead){	
-			
 			this.setTargetAi(null); 
 			this.setSkippingTurns(true);
-			
-			if(!this.getImage().endsWith("Dead")){
-				this.setImage(getImage() + "Dead");
-			}
 		}
 		
 	}
@@ -49,7 +44,5 @@ public class VehicleAi extends Ai {
 	public String getVehicleType() {
 		return this.vehicleType;
 	}
-	
-	
-	
+
 }

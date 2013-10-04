@@ -8,6 +8,8 @@ import watoydoEngine.io.ReadWriter;
 import atrophy.combat.actions.MouseAbilityHandler;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.LineDrawer;
+import atrophy.combat.display.MapDrawer;
+import atrophy.combat.display.TorchDrawer;
 import atrophy.combat.display.ui.ActionTextBox;
 import atrophy.combat.display.ui.AllyRoster;
 import atrophy.combat.display.ui.Cartographer;
@@ -34,7 +36,8 @@ public class CombatUiManager{
 	private FloatingIcons floatingIcons;
 	private MiniMap miniMap;
 	private LargeEventText largeEventText;
-
+	private MapDrawer mapDrawer;
+	private TorchDrawer torchDrawer;
 	private CombatMembersManager combatMembersManager;
 	private LootBox lootBox;
 
@@ -63,14 +66,16 @@ public class CombatUiManager{
 		}
 	}
 	
-	public void lazyLoad(MouseAbilityHandler mouseAbilityHandler, CombatUiManager combatUiManager, FloatingIcons floatingIcons, CombatVisualManager combatVisualManager, LootBox lootBox, LevelManager levelManager, AiCrowd aiCrowd, PanningManager panningManager) {
+	public void lazyLoad(MouseAbilityHandler mouseAbilityHandler, CombatUiManager combatUiManager, FloatingIcons floatingIcons, CombatVisualManager combatVisualManager, LootBox lootBox, LevelManager levelManager, AiCrowd aiCrowd, PanningManager panningManager, TurnProcess turnProcess) {
 		lineSurface = new LineDrawer(aiCrowd, panningManager, combatVisualManager, combatMembersManager, levelManager);
 		actionsBar.lazyLoad(combatMembersManager, mouseAbilityHandler, combatUiManager);
-		lineSurface.makeMap();
+		mapDrawer = new MapDrawer(levelManager, panningManager, aiCrowd, combatVisualManager);
+		torchDrawer = new TorchDrawer(combatMembersManager, panningManager);
 		miniMap.init();
 		this.floatingIcons = floatingIcons;
-		combatInfo = new CombatInfo(combatMembersManager, this, floatingIcons, combatVisualManager);
+		combatInfo = new CombatInfo(combatMembersManager, this, floatingIcons, combatVisualManager, turnProcess);
 		this.lootBox = lootBox;
+		this.actionsBar.lazyLoad(mouseAbilityHandler, combatUiManager);
 	}
 	
 	public void updateUi(){
@@ -85,7 +90,7 @@ public class CombatUiManager{
 		   combatMembersManager.getCurrentAi().getAction().equals("Looting")){
 			lootBox.loadLootDisplay(combatMembersManager.getCurrentAi(), 
 					                              combatMembersManager.getCurrentAi().getTargetAi(),
-					                              false);
+					                              true);
 		}
 		else{
 			lootBox.closeLootUi(false);
@@ -132,4 +137,15 @@ public class CombatUiManager{
 		return largeEventText;
 	}
 
+	public MapDrawer getMapDrawer() {
+		return mapDrawer;
+	}
+
+	public TorchDrawer getTorchDrawer() {
+		return torchDrawer;
+	}
+	
+	public boolean isUiLocked() {
+		return this.lootBox.isLocked();
+	}
 }

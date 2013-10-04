@@ -1,10 +1,15 @@
 package atrophy.gameMenu.saveFile;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Set;
+
+import atrophy.combat.ai.AiGenerator;
 
 public class TechTree implements Serializable{
 
@@ -30,8 +35,6 @@ public class TechTree implements Serializable{
 	public static final String MECHANICAL_WEAPONS = 		"Mechanical Weapons";
 	public static final String HEAVY_ARMOUR = 				"Heavy Armour";
 	public static final String BASIC_ARMOUR = 				"Basic Armour";
-	public static final String BASIC_INCAPACITATION = 		"Basic Incapacitation";
-	public static final String BASIC_EXPLOSIVES = 			"Basic Explosives";
 	public static final String SPACE_WALKING = 				"Space Walking";
 	public static final String MULE = 						"Robotics";
 	
@@ -49,15 +52,8 @@ public class TechTree implements Serializable{
 
 		// Always unlocked
 		TechnologyNode base = new TechnologyNode(null, SPACE_WALKING,0,0,0,0);
-		base.setResearched(true);
+		base.setResearched(true, AiGenerator.LONER);
 		techTree.put(SPACE_WALKING,base);
-		
-		TechnologyNode grenades = new TechnologyNode(new TechnologyNode[]{base}, BASIC_EXPLOSIVES,0,1,2,0);
-		techTree.put(BASIC_EXPLOSIVES,grenades);
-		
-		TechnologyNode stunGrenades = new TechnologyNode(new TechnologyNode[]{grenades}, BASIC_INCAPACITATION,0,0,0,0);
-		techTree.put(BASIC_INCAPACITATION,stunGrenades);
-		
 		
 		TechnologyNode basicArmour = new TechnologyNode(new TechnologyNode[]{base}, BASIC_ARMOUR,0,2,0,0);
 		techTree.put(BASIC_ARMOUR,basicArmour);
@@ -67,13 +63,11 @@ public class TechTree implements Serializable{
 		
 		
 		TechnologyNode mechanicalWeapons = new TechnologyNode(new TechnologyNode[]{base}, MECHANICAL_WEAPONS,0,1,1,0);
+		mechanicalWeapons.setResearched(true, AiGenerator.LONER);
 		techTree.put(MECHANICAL_WEAPONS,mechanicalWeapons);
 		
 		TechnologyNode impMechanicalWeapons = new TechnologyNode(new TechnologyNode[]{mechanicalWeapons}, CALIBRATION,1,2,0,0);
 		techTree.put(CALIBRATION,impMechanicalWeapons);
-		
-		TechnologyNode cadTags = new TechnologyNode(new TechnologyNode[]{mechanicalWeapons}, BOUNTY_HUNTING,1,0,0,3);
-		techTree.put(BOUNTY_HUNTING,cadTags);
 		
 		TechnologyNode firearm1 = new TechnologyNode(new TechnologyNode[]{impMechanicalWeapons}, FIREARMS,0,1,5,0);
 		techTree.put(FIREARMS,firearm1);
@@ -128,8 +122,8 @@ public class TechTree implements Serializable{
 		
 	}
 	
-	public boolean isResearched(String techName){
-		return getTech(techName).isResearched();
+	public boolean isResearched(String techName, String faction){
+		return getTech(techName).isResearched(faction);
 	}
 	
 	private TechnologyNode getTech(String techName){
@@ -151,12 +145,15 @@ public class TechTree implements Serializable{
 		private int[] researchRequirements;
 		
 		private boolean isResearched;
+
+		private Set<String> researchers;
 		
 		public TechnologyNode(TechnologyNode[] parentNodes, String tech, int science, int engineering, int weapons, int medical){
 			this.parentNodes = parentNodes;
 			this.tech = tech;
 			this.researchRequirements = new int[]{science,engineering,weapons,medical};
 			this.isResearched = false;
+			this.researchers = new HashSet<>(3);
 		}
 
 		public TechnologyNode[] getParentNodes() {
@@ -171,12 +168,13 @@ public class TechTree implements Serializable{
 			return researchRequirements;
 		}
 
-		public boolean isResearched() {
-			return isResearched;
+		public boolean isResearched(String faction) {
+			return isResearched && (this.researchers.contains(faction) || this.researchers.contains(AiGenerator.LONER));
 		}
 
-		public void setResearched(boolean isResearched) {
+		public void setResearched(boolean isResearched, String faction) {
 			this.isResearched = isResearched;
+			this.researchers.add(faction);
 		}
 		
 	}
@@ -199,12 +197,25 @@ LOOP: for(TechnologyNode node :this.techTree.values()) {
 		return nextTechs;
 	}
 
-	public void research(String techName) {
-		this.getTech(techName).setResearched(true);
+	public void research(String techName, String faction) {
+		this.getTech(techName).setResearched(true, faction);
 	}
 
 	public int[] getRequirements(String tech) {
 		return this.getTech(tech).getResearchRequirements();
+	}
+
+	public List<String> getStealableTechs(String stolenFaction, String robberFaction) {
+
+		List<String> stealableTechs = new ArrayList<>();
+		
+		for(Entry<String, TechnologyNode> techEntry: this.techTree.entrySet()) {
+			if(techEntry.getValue().researchers.contains(stolenFaction) && !techEntry.getValue().researchers.contains(robberFaction))
+				stealableTechs.add(techEntry.getKey());
+		}
+		
+		return stealableTechs;
+		
 	}
 
 }

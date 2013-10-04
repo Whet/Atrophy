@@ -1,8 +1,10 @@
 package atrophy.combat.ai;
 
-import watoydoEngine.gubbinz.Maths;
-import atrophy.combat.CombatInorganicManager;
+import java.util.Random;
+
+import watoydoEngine.utils.Maths;
 import atrophy.combat.CombatMembersManager;
+import atrophy.combat.CombatNCEManager;
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.actions.MouseAbilityHandler;
@@ -14,8 +16,6 @@ import atrophy.combat.items.MeleeWeapon1;
 import atrophy.combat.items.ScienceSupply;
 import atrophy.combat.level.LevelManager;
 import atrophy.combat.level.Portal;
-import atrophy.combat.levelAssets.Grenade;
-import atrophy.combat.levelAssets.StunGrenade;
 import atrophy.combat.mechanics.Abilities;
 
 public class AiActions {
@@ -40,6 +40,8 @@ public class AiActions {
 
 	public static final String LOOTING = "Looting";
 
+	private static final String GRAPPLE_TARGET = "Grapple";
+
 	private int actionTurns;
 	
 	private int oldActionTurns;
@@ -63,10 +65,10 @@ public class AiActions {
 	private CombatMembersManager combatMembersManager;
 	private CombatVisualManager combatVisualManager;
 	private CombatUiManager combatUiManager;
-	private CombatInorganicManager combatInorganicManager;
+	private CombatNCEManager combatInorganicManager;
 	private LevelManager levelManager;
 	
-	public AiActions(AiCrowd aiCrowd, CombatVisualManager combatVisualManager, CombatUiManager combatUiManager, CombatMembersManager combatMembersManager, CombatInorganicManager combatInorganicManager, FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, LootBox lootBox, LevelManager levelManager){
+	public AiActions(AiCrowd aiCrowd, CombatVisualManager combatVisualManager, CombatUiManager combatUiManager, CombatMembersManager combatMembersManager, CombatNCEManager combatInorganicManager, FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, LootBox lootBox, LevelManager levelManager){
 		actionTurns = 0;
 		oldActionTurns = 0;
 		oldAction = NO_ACTION;
@@ -350,46 +352,6 @@ public class AiActions {
 		}
 	}
 	
-	public void throwGrenade(Ai invoker, double x, double y){
-		invoker.removeOrdersWithoutUpdate(mouseAbilityHandler);
-		invoker.setAbilityLocation(x, y);
-		this.setAction(THROW_GRENADE);
-	}
-	
-	public void throwGrenadeAction(Ai invoker, int skillLevel){
-		combatInorganicManager.addLevelAsset(new Grenade(aiCrowd, floatingIcons, levelManager, 
-														invoker,
-													   invoker.getLocation().clone(), 
-													   Maths.getRads(invoker.getLocation(), this.actionLocation), 
-													   Maths.getDistance(invoker.getLocation(), this.actionLocation) / Grenade.FUSE_TIME,
-													   skillLevel));
-		invoker.aiData.removeGrenade();
-		invoker.assignAbilities();
-		invoker.removeOrdersWithoutUpdate(mouseAbilityHandler);
-		invoker.setLookAngle(this.actionLocation);
-		this.setActionTurns(0);
-	}
-	
-	public void throwStunGrenade(Ai invoker, double x, double y){
-		invoker.removeOrdersWithoutUpdate(mouseAbilityHandler);
-		invoker.setAbilityLocation(x, y);
-		this.setAction(THROW_STUN_GRENADE);
-	}
-	
-	public void throwStunGrenadeTurnAction(Ai invoker, int skillLevel){
-		combatInorganicManager.addLevelAsset(new StunGrenade(aiCrowd, floatingIcons, levelManager,
-															invoker,
-														   invoker.getLocation().clone(), 
-														   Maths.getRads(invoker.getLocation(), this.actionLocation), 
-														   Maths.getDistance(invoker.getLocation(), this.actionLocation) / StunGrenade.FUSE_TIME,
-														   skillLevel));
-		invoker.aiData.removeStunGrenade();
-		invoker.assignAbilities();
-		invoker.removeOrdersWithoutUpdate(mouseAbilityHandler);
-		invoker.setLookAngle(this.actionLocation);
-		this.setActionTurns(0);
-	}
-	
 	public void xrayScan(Ai invoker){
 		invoker.removeOrdersWithoutUpdate(mouseAbilityHandler);
 		this.setAction(Abilities.XRAY_SCAN);
@@ -485,7 +447,41 @@ public class AiActions {
 		this.setAction(STUN_TARGET);
 	}
 	
+	public void setGrappleTarget(Ai invoker, Ai targetAi) {
+		invoker.setTargetAi(targetAi);
+		this.setAction(GRAPPLE_TARGET);
+	}
+	
 	public void stunTarget(Ai invoker){
+		
+		if(invoker.getTargetAi() != null && Maths.getDistance(invoker.getLocation(), invoker.getTargetAi().getLocation()) <= MeleeWeapon1.RANGE){
+			
+			// break any alliances with the faction if visible
+			breakAlliance(invoker);
+			
+			makeHatedWithTarget(invoker);
+			
+			if(new Random().nextInt(5) < 2)
+				invoker.getTargetAi().setStunnedTurns(3);
+			
+			invoker.setTargetAi(null);
+			this.setAction(NO_ACTION);
+			invoker.setMoveLocationToSelf();
+			
+			
+		}
+		else {
+			Ai targetAi = invoker.getTargetAi();
+			invoker.moveWithinRadius(invoker.getTargetAi().getLocation(), invoker.getWeapon().getRange());
+			invoker.aiPathing.move(invoker);
+			this.setAction(STUN_TARGET);
+			invoker.setTargetAi(targetAi);
+		}
+		
+		this.setActionTurns(0);
+	}
+	
+	public void grappleTarget(Ai invoker){
 		
 		if(Maths.getDistance(invoker.getLocation(), invoker.getTargetAi().getLocation()) <= MeleeWeapon1.RANGE){
 			
@@ -493,10 +489,6 @@ public class AiActions {
 			breakAlliance(invoker);
 			
 			invoker.getTargetAi().setStunnedTurns(2);
-			if(invoker.getSkillLevel(Abilities.STUNGRENADETHROWER) >= 2){
-				invoker.getTargetAi().setStunnedTurns(3);
-			}
-			
 			makeHatedWithTarget(invoker);
 			
 			invoker.setTargetAi(null);
@@ -506,7 +498,7 @@ public class AiActions {
 		else{
 			invoker.moveWithinRadius(invoker.getTargetAi().getLocation(), invoker.getWeapon().getRange());
 			invoker.aiPathing.move(invoker);
-			this.setAction(STUN_TARGET);
+			this.setAction(GRAPPLE_TARGET);
 		}
 		
 		this.setActionTurns(0);
@@ -525,7 +517,7 @@ public class AiActions {
 			makeHatedWithTarget(invoker);
 			
 			if(!CombatVisualManager.spotFovNoRadius(invoker.getTargetAi(),invoker.getLocation())){
-				invoker.getTargetAi().setDead(true);
+				invoker.getTargetAi().setDead(invoker, true);
 			}
 			
 			invoker.setLocation(invoker.getTargetAi().getLocation().clone());
@@ -546,9 +538,8 @@ public class AiActions {
 	}
 
 	private void breakAlliance(Ai invoker) {
-		if(!invoker.getFaction().equals(AiGenerator.LONER) &&
-		   invoker.getTargetAi() instanceof ThinkingAi &&
-		   combatVisualManager.isAiInSight(invoker, invoker.getTargetAi().getFaction())){
+		if(invoker.getTargetAi() instanceof ThinkingAi &&
+		   combatVisualManager.isAiInSight(invoker.getTargetAi(), invoker, invoker.getTargetAi().getFaction())){
 			
 			((ThinkingAi) invoker.getTargetAi()).getCommander().removeAlliance(invoker.getFaction());
 			
@@ -556,12 +547,11 @@ public class AiActions {
 	}
 	
 	private void makeHatedWithTarget(Ai invoker) {
-		if(!invoker.getFaction().equals(AiGenerator.LONER) &&
-		   invoker.getTargetAi() instanceof ThinkingAi &&
-		   combatVisualManager.isAiInSight(invoker, invoker.getTargetAi().getFaction())){
+		if(invoker.getTargetAi() instanceof ThinkingAi && combatVisualManager.isAiInSight(invoker.getTargetAi(), invoker, invoker.getTargetAi().getFaction())){
 			
-			((ThinkingAi) invoker.getTargetAi()).getCommander().removeAlliance(invoker.getFaction());
-			combatMembersManager.getCommander(invoker.getTargetAi().getFaction()).addHatedAi(invoker);
+			TeamsCommander commander = ((ThinkingAi) invoker.getTargetAi()).getCommander();
+			commander.removeAlliance(invoker.getFaction());
+			commander.addHatedAi(invoker);
 			
 		}
 	}
@@ -579,6 +569,9 @@ public class AiActions {
 			case STUN_TARGET:
 				stunTarget(invoker);
 			break;
+			case GRAPPLE_TARGET:
+				grappleTarget(invoker);
+			break;
 			case WELD_TOGGLE:
 				weldTurnAction(invoker);
 			break;
@@ -587,12 +580,6 @@ public class AiActions {
 			break;
 			case WELD_OPEN:
 				weldTurnAction(invoker,true);
-			break;
-			case THROW_GRENADE:
-				Abilities.applyAbility(invoker, Abilities.GRENADETHROWER, invoker.getSkillLevel(Abilities.GRENADETHROWER));
-			break;
-			case THROW_STUN_GRENADE:
-				Abilities.applyAbility(invoker, Abilities.STUNGRENADETHROWER, invoker.getSkillLevel(Abilities.STUNGRENADETHROWER));
 			break;
 			case Abilities.XRAY_SCAN:
 				Abilities.applyAbility(invoker, Abilities.XRAY_SCAN, invoker.getSkillLevel(Abilities.XRAY_SCAN));
@@ -616,13 +603,6 @@ public class AiActions {
 			break;
 			case Abilities.STASH_SEARCH:
 				this.stashSearch(invoker);
-			break;
-			case Abilities.HACK:
-				if(getActionTurns() > Abilities.turnsToDo(Abilities.HACK, invoker.getSkillLevel(Abilities.SCAN_SCIENCE))){
-					((TurretAi) invoker.getTargetAi()).hack(AiGenerator.BANDITS);
-					this.setAction(NO_ACTION);
-				}
-				invoker.aiActions.incrementActionTurns();
 			break;
 			case NO_ACTION:
 			default:
@@ -677,12 +657,4 @@ public class AiActions {
 		this.aiCombatActions.setSwing(swing);
 	}
 
-	public void setHackTarget(Ai invoker, TurretAi targetAi) {
-		invoker.removeOrders(mouseAbilityHandler);
-		invoker.setTargetAi(targetAi);
-		this.setAction(Abilities.HACK);
-	}
-	
-	
-	
 }

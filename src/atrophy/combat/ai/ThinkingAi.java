@@ -1,6 +1,3 @@
-/*
- * 
- */
 package atrophy.combat.ai;
 
 import java.awt.Polygon;
@@ -11,14 +8,15 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-import watoydoEngine.gubbinz.Maths;
-import atrophy.combat.CombatInorganicManager;
+import watoydoEngine.utils.Maths;
 import atrophy.combat.CombatMembersManager;
+import atrophy.combat.CombatNCEManager;
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.actions.MouseAbilityHandler;
 import atrophy.combat.ai.conversation.Dialogue;
+import atrophy.combat.ai.conversation.DialoguePool;
 import atrophy.combat.ai.conversation.Topic;
 import atrophy.combat.combatEffects.MobileInvisibility;
 import atrophy.combat.combatEffects.Parrying;
@@ -29,22 +27,15 @@ import atrophy.combat.display.ui.FloatingIcons;
 import atrophy.combat.display.ui.MessageBox;
 import atrophy.combat.display.ui.loot.LootBox;
 import atrophy.combat.display.ui.loot.LootBox.Lootable;
-import atrophy.combat.items.GrenadeItem;
 import atrophy.combat.items.Item;
-import atrophy.combat.items.StunGrenadeItem;
 import atrophy.combat.items.Weapon;
 import atrophy.combat.level.LevelBlock;
 import atrophy.combat.level.LevelManager;
 import atrophy.combat.level.MissionManager;
 import atrophy.combat.level.Portal;
-import atrophy.combat.levelAssets.Grenade;
 import atrophy.combat.mechanics.Abilities;
 import atrophy.combat.mechanics.TurnProcess;
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class ThinkingAi.
- */
 public class ThinkingAi extends Ai{
 	
 	protected static enum AiMode {
@@ -64,11 +55,12 @@ public class ThinkingAi extends Ai{
 
 	private boolean blockPlayerConvo;
 	
-	ThinkingAiEmotion emotionManager;
-	private CombatInorganicManager combatInorganicManager;
+	private ThinkingAiEmotion emotionManager;
+	private CombatNCEManager combatInorganicManager;
 	private LevelManager levelManager;
+	private DialoguePool dialoguePool;
 
-	public ThinkingAi(PanningManager panningManager, CombatVisualManager combatVisualManager, TurnProcess turnProcess, FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, AiCrowd aiCrowd, CombatMembersManager combatMembersManager, String name, double x, double y, LevelManager levelManager, CombatInorganicManager combatInorganicManager, CombatUiManager combatUiManager, LootBox lootBox){
+	public ThinkingAi(DialoguePool dialoguePool, PanningManager panningManager, CombatVisualManager combatVisualManager, TurnProcess turnProcess, FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, AiCrowd aiCrowd, CombatMembersManager combatMembersManager, String name, double x, double y, LevelManager levelManager, CombatNCEManager combatInorganicManager, CombatUiManager combatUiManager, LootBox lootBox){
 		super(floatingIcons, mouseAbilityHandler, name,x,y, combatInorganicManager, levelManager, lootBox, combatMembersManager, combatUiManager, combatVisualManager, aiCrowd, panningManager, turnProcess);
 		aiMode = AiMode.EMPTY;
 		turnCounter = 0;
@@ -82,10 +74,16 @@ public class ThinkingAi extends Ai{
 		this.combatInorganicManager = combatInorganicManager;
 		this.levelManager = levelManager;
 		this.emotionManager = new ThinkingAiEmotion(this);
+		this.dialoguePool = dialoguePool;
 	}
 
 	@Override
 	public void action(){
+		
+		if(this.isDead()) {
+			endTurn();
+			return;
+		}
 		
 		this.resetMoveUnits();
 		
@@ -93,12 +91,17 @@ public class ThinkingAi extends Ai{
 			turnCounter -= 1;
 		}
 		
-		if(this.getStunnedTurns() == 0){
+		if(this.getStunnedTurns() == 0 && this.getIncapTurns() == 0){
 			think();
 		}
-		else{
-			this.setStunnedTurns(this.getStunnedTurns() - 1);
-			turnProcess.currentAiDone(this.isSkippingTurns());
+		else if(this.getStunnedTurns() > 0){
+			this.setStunnedTurns(getStunnedTurns() - 1);
+			this.setIncapTurns(0);
+			endTurn();
+		}
+		else if(this.getIncapTurns() > 0){
+			this.setIncapTurns(this.getIncapTurns() - 1);
+			endTurn();
 		}
 	}
 	
@@ -128,9 +131,8 @@ public class ThinkingAi extends Ai{
 				this.aiMode = (AiMode.LOOT);
 			}
 			
-			if(Maths.getDistance(this.getLocation(), this.getMoveLocation()) > 0){
+			if(Maths.getDistance(this.getLocation(), this.getMoveLocation()) > 0 && !this.getAction().toLowerCase().startsWith("weld")){
 				this.aiPathing.move(this);
-				
 				this.setActionTurns(0);
 			}
 			else if(this.getTargetAi() != null && !this.aiMode.equals(AiMode.LOOT)&&!this.getAction().equals("Loot") && !this.getAction().equals("Looting")){
@@ -150,13 +152,9 @@ public class ThinkingAi extends Ai{
 			}
 		}
 		
-		if(this.getIncapTurns() > 0){
-			this.setIncapTurns(this.getIncapTurns() - 1);
-		}
-		
 		this.setOldAction(this.getAction());
 		this.setOldActionTurns(this.getActionTurns());
-		turnProcess.currentAiDone(this.isSkippingTurns());
+		endTurn();
 	}
 
 	protected void gatherEnvironmentData(){
@@ -199,9 +197,6 @@ public class ThinkingAi extends Ai{
 	private void computeAiMode(){
 		
 		try{
-			
-			fleeFromGrenades();
-			
 			if(!this.aiMode.equals(AiMode.ENGAGING) &&
 			   !this.aiMode.equals(AiMode.FLEEING) &&
 			   !this.aiMode.equals(AiMode.LOOT) &&
@@ -244,29 +239,11 @@ public class ThinkingAi extends Ai{
 	
 	private void tryToClearPath() {
 		// if the path is blocked by a portal then open it
-		if(this.getAbilities().contains(Abilities.WELDING)){
-			for(int i = 0; i < this.getLevelBlock().getPortalCount(); i++){
-				
-				if(!this.getLevelBlock().getPortal(i).canUse() &&
-				   this.getPortalPathway().contains(this.getLevelBlock().getPortal(i))){
-					this.setWeldingOpen(this.getLevelBlock().getPortal(i));
-					break;
-				}
-			}
+		if(this.getAbilities().contains(Abilities.WELDING) && this.getPortalPathway() != null && this.getPortalPathway().size() > 0 && !this.getPortalPathway().peek().canUse()){
+			this.setWeldingOpen(this.getPortalPathway().peek());
 		}
 		else {
-			for(int i = 0; i < this.getLevelBlock().getPortalCount(); i++){
-				
-				if(!this.getLevelBlock().getPortal(i).canUse() &&
-				   this.getPortalPathway().contains(this.getLevelBlock().getPortal(i))){
-					// if the request to get the door open is denied
-					if(!this.getCommander().requestDoorOpen(this.getLevelBlock().getPortal(i))){
-						this.idle();
-					}
-					
-					break;
-				}
-			}
+			// Flag commander to open door
 		}
 	}
 
@@ -278,7 +255,7 @@ public class ThinkingAi extends Ai{
 
 	private void act() throws PathNotFoundException {
 		if(this.chaseAi != null){
-			if(this.emotionManager.getAggression() > 0 && (this.getCommander().canPursue(this) || this.chaseAi.getLevelBlock() == this.getLevelBlock())){
+			if(this.emotionManager.getAggression() > 0 && !(this.chaseAi instanceof DaemonAi) && (this.getCommander().canPursue(this) || this.chaseAi.getLevelBlock() == this.getLevelBlock())){
 				chasetarget();
 			}
 			else{
@@ -286,10 +263,10 @@ public class ThinkingAi extends Ai{
 			}
 		}
 		else if(this.aiInRoomToLoot()){
-			this.lootAiInRoom();
+			this.interactWithDeadAi();
 		}
 		else if(this.job != null && levelManager.getBlock(this.getMoveLocation()) != this.job.getJobBlock()){
-			this.job.getJobBlock().moveTowardsRandomRegion(this, this.job.getJobBlock().getCover(), true);
+			this.setMoveLocation(levelManager.randomInPosition(this.job.getJobBlock()));
 		}
 		else if(Maths.getDistance(this.getLocation(), this.getMoveLocation()) == 0 && this.turnCounter == 0){
 		
@@ -320,7 +297,7 @@ public class ThinkingAi extends Ai{
 			else if(this.getAbilities().contains(Abilities.STEALTH1) && !this.hasActiveEffect(StationaryInvisibility.NAME) && Maths.getDistance(this.getLocation(), this.getMoveLocation()) == 0){
 				this.addEffect(new StationaryInvisibility(this.getSkillLevel(Abilities.STEALTH1)));
 			}
-			else if(random.nextInt(4) >= 3){
+			else if(this.job != null && random.nextInt(4) >= 3){
 				this.job.getJobBlock().moveTowardsRandomRegion(this, this.job.getJobBlock().getCover(), false);
 				this.turnCounter = random.nextInt(20) + 16;
 			}
@@ -334,6 +311,8 @@ public class ThinkingAi extends Ai{
 		if(this.aiMode.equals(AiMode.CAMPING) && this.turnCounter == 1 && !this.getAction().startsWith("Applying:")){
 			doingJob = true;
 		}
+		
+		tryToClearPath();
 	}
 
 	private void fleeingAction() {
@@ -374,43 +353,6 @@ public class ThinkingAi extends Ai{
 		return this.getLevelBlock().moveTowardsRandomRegion(this, regions, true);
 	}
 
-	private void fleeFromGrenades() throws PathNotFoundException{
-		
-		if(!this.aiMode.equals(AiMode.FLEEING)){
-			// if a grenade is spotted then flee
-			for(int i = 0; i < combatInorganicManager.getLevelAssets().size(); i++){
-				if(combatInorganicManager.getLevelAsset(i) instanceof Grenade &&
-				   levelManager.getBlock(combatInorganicManager.getLevelAsset(i).getLocation())	== this.getLevelBlock()){
-					flee();
-
-					// if can't flee in time then move to cover
-					if(this.getLevelBlock().getCover().size() > 0 &&
-					    Maths.getDistance(this.getMoveLocation(), this.getLocation()) / this.getMoveDistance() >= Grenade.FUSE_TIME){
-						
-						this.moveTowardsNearestRegion(this.getLevelBlock().getCover());
-						
-					}
-					// otherwise run to a corner to try and escape los (not calculated, just random)
-					else{
-						double shortestDistance = 0;
-						int index = 0;
-						for(int j = 0; j < this.getLevelBlock().getHitBox().npoints; j++){
-							if(j == 0 || shortestDistance > Maths.getDistance(this.getLocation()[0], this.getLocation()[1],
-									                                           this.getLevelBlock().getHitBox().xpoints[j], this.getLevelBlock().getHitBox().ypoints[j])){
-								shortestDistance = Maths.getDistance(this.getLocation()[0], this.getLocation()[1],
-												   this.getLevelBlock().getHitBox().xpoints[j], this.getLevelBlock().getHitBox().ypoints[j]);
-								index = j;
-							}
-						}
-						
-						this.setMoveLocation(this.getLevelBlock().getHitBox().xpoints[index],this.getLevelBlock().getHitBox().ypoints[index]);
-					}
-					break;
-				}
-			}
-		}
-	}
-	
 	protected void flee() throws PathNotFoundException{
 		
 		// run through closest door
@@ -446,7 +388,7 @@ public class ThinkingAi extends Ai{
 		ArrayList<Ai> hostileAiInRoom = new ArrayList<Ai>(2);
 		
 		for(Ai ai : aiCrowd.getActors()){
-			if(this.isTargetHostile(ai) && combatVisualManager.isAiInSight(ai, this.getFaction())){
+			if(this.isTargetHostile(ai) && combatVisualManager.isAiInSight(this, ai, this.getFaction())){
 				hostileAiInRoom.add(ai);
 			}
 		}
@@ -454,9 +396,6 @@ public class ThinkingAi extends Ai{
 		for(int j = 0; j < this.getLevelBlock().getPortalCount(); j++){
 			// check that enemies aren't closer to the target than unit
 			if(this.getLevelBlock().getPortal(j).canUse() && !levelManager.isRoomBanned(this.getFaction(), getLevelBlock().getPortal(j).linksTo(this.getLevelBlock())) && 
-			   closestDistanceToPoint(hostileAiInRoom, this.getLevelBlock().getPortal(j).getLocation()) > 
-			                          Maths.getDistance(this.getLevelBlock().getPortal(j).getLocation(), this.getLocation()) &&
-			                          
 			   (fleePortal == null || (Maths.getDistance(fleePortal.getLocation(), this.getLocation()) > 
 			                          Maths.getDistance(this.getLevelBlock().getPortal(j).getLocation(), this.getLocation()))
 			   )){
@@ -476,19 +415,6 @@ public class ThinkingAi extends Ai{
 			// all doors closed or ai blocking path, throw path not found exception
 			throw new PathNotFoundException(this.getLevelBlock());
 		}
-	}
-	
-	private double closestDistanceToPoint(ArrayList<Ai> units, double[] location){
-		
-		Double distance = null;
-		
-		for(Ai ai : units){
-			if(distance == null || Maths.getDistance(ai.getLocation(), location) < distance){
-				distance = Maths.getDistance(ai.getLocation(), location);
-			}
-		}
-		
-		return distance;
 	}
 	
 	protected void cleanupIntraTurnVars(){
@@ -535,19 +461,47 @@ public class ThinkingAi extends Ai{
 		for(int i = 0; i < shuffledAi.size(); i++){
 			
 			// determine if target is hostile and if it is visible by the team
-			if(canBeEngaged(shuffledAi.get(i))){
+			Ai ai = shuffledAi.get(i);
+			
+			if(this.getCommander().isSuspected(ai) && ai.getLevelBlock() == this.getLevelBlock() && combatVisualManager.isAiInSight(this, ai, this.getFaction())) {
+				
+				if(ai instanceof ThinkingAi) {
+					
+					if(!ai.getFaction().equals(AiGenerator.LONER))
+						this.getCommander().removeAlliance(ai.getFaction());
+
+					this.getCommander().addHatedAi(ai);
+					this.getCommander().removeFriend(ai);
+				}
+				else {
+					
+					if(!ai.getFaction().equals(AiGenerator.LONER))
+						this.getCommander().removeAlliance(ai.getFaction());
+
+					this.getCommander().addHatedAi(ai);
+					this.getCommander().removeFriend(ai);
+					this.getCommander().removeSuspected(ai);
+					
+					this.dialoguePool.getMessageBox().setConversation(ai, this, this.dialoguePool.getMurderAccusation());
+					this.dialoguePool.getMessageBox().setVisible(true);
+					return;
+				}
+				
+			}
+			
+			if(canBeEngaged(ai)){
 				
 				// Prioritise hatedAi or ai aiming at ai
-				if(this.getCommander().isAiHated(shuffledAi.get(i)) || shuffledAi.get(i).getTargetAi() == this){
-					target = shuffledAi.get(i);
+				if(this.getCommander().isAiHated(ai) || ai.getTargetAi() == this){
+					target = ai;
 					break;
 				}
 				
 			    // find closest target
-			    if(this.getTargetAi() == null || Maths.getDistance(this.getLocation(), shuffledAi.get(i).getLocation()) <
+			    if(this.getTargetAi() == null || Maths.getDistance(this.getLocation(), ai.getLocation()) <
 						  						 Maths.getDistance(this.getLocation(), this.getTargetAi().getLocation())){
 
-				   target = shuffledAi.get(i);
+				   target = ai;
 				}
 			   
 			}
@@ -560,18 +514,18 @@ public class ThinkingAi extends Ai{
 			this.getCommander().reportUnits(enemyCount,this.getLevelBlock());
 		}
 		else{
-			this.lootAiInRoom();
+			this.interactWithDeadAi();
 			
 			respondToEnvironmentData();
 			
-			this.getCommander().reportUnits(0,this.getLevelBlock());
+			this.getCommander().reportUnits(0, this.getLevelBlock());
 		}
 	}
 	
 	protected boolean canBeEngaged(Ai ai) {
 		if(this.isTargetHostile(ai) &&
 		   ai.getLevelBlock() == this.getLevelBlock() &&
-		   combatVisualManager.isAiInSight(ai, this.getFaction())){
+		   combatVisualManager.isAiInSight(this, ai, this.getFaction())){
 			return true;
 		}
 		return false;
@@ -614,7 +568,7 @@ public class ThinkingAi extends Ai{
 		// if being aimed at then engage
 		if(this.isBeingTargeted() || this.getCommander().isAiHated(target) && emotionManager.getAggression() > ThinkingAiEmotion.PASSIVE){
 			// if fight is possible then engage
-			if(friendlyCount >= enemyCount){
+			if(friendlyCount >= enemyCount || target.getStunnedTurns() > 0 || target.getIncapTurns() > 0){
 				this.aiMode = AiMode.ENGAGING;
 				this.aim(target);
 				emotionManager.modifyAggression(ThinkingAiEmotion.AIMING_AGGRESSION);
@@ -661,7 +615,7 @@ public class ThinkingAi extends Ai{
 		}
 		
 		// if fight is possible then engage
-		if(friendlyCount >= enemyCount || emotionManager.getAggression() >= ThinkingAiEmotion.MINDLESS_TERROR){
+		if(friendlyCount >= enemyCount || emotionManager.getAggression() >= ThinkingAiEmotion.MINDLESS_TERROR || target.getStunnedTurns() > 0 || target.getIncapTurns() > 0){
 			this.aiMode = AiMode.ENGAGING;
 			this.aim(target);
 		}
@@ -800,10 +754,6 @@ public class ThinkingAi extends Ai{
 				this.getInventory().addItem(item);
 				itemIt.remove();
 			}
-			else if(item instanceof GrenadeItem || item instanceof StunGrenadeItem){
-				this.getInventory().addItem(item);
-				itemIt.remove();
-			}
 			
 			if(this.getInventory().isFull()){
 				break;
@@ -818,30 +768,55 @@ public class ThinkingAi extends Ai{
 	private boolean aiInRoomToLoot() {
 		if(!this.getInventory().isFull())
 		for(Ai ai : aiCrowd.getActors()){
-			if(ai.getLevelBlock() == this.getLevelBlock() && (ai.isDead() || (this.isTargetHostile(ai) && ai.getIncapTurns() > 0)) && !this.getCommander().isAiLooted(ai) && hasStuffToLoot(ai) && combatVisualManager.isAiInSight(ai, this.getFaction())){
+			if(ai.getLevelBlock() == this.getLevelBlock() && (ai.isDead() || (this.isTargetHostile(ai) && ai.getIncapTurns() > 0)) && !this.getCommander().isAiLooted(ai) && hasStuffToLoot(ai) && combatVisualManager.isAiInSight(this, ai, this.getFaction())){
 				return true;
 			}
 		}
 		return false;
 	}
 
-	protected void lootAiInRoom() {
-		if(!this.getInventory().isFull())
-		for(Ai ai : aiCrowd.getActors()){
-			if(ai.getLevelBlock() == this.getLevelBlock() && (ai.isDead() || (this.isTargetHostile(ai) && ai.getIncapTurns() > 0)) && !this.getCommander().isAiLooted(ai) && hasStuffToLoot(ai) && combatVisualManager.isAiInSight(ai, this.getFaction())){
-				this.aiMode = AiMode.LOOT;
-				this.setAction("Loot");
-				this.loot(ai);
-				
-				this.setTrueLookAngle(ai.getLocation());
-				
-				return;
+	protected void interactWithDeadAi() {
+		// Loot
+		if(!this.getInventory().isFull()) {
+			for(Ai ai : aiCrowd.getActors()){
+				if(ai.getLevelBlock() == this.getLevelBlock() && (ai.isDead() || (this.isTargetHostile(ai) && ai.getIncapTurns() > 0)) && !this.getCommander().isAiLooted(ai) && hasStuffToLoot(ai) && combatVisualManager.isAiInSight(this, ai, this.getFaction())){
+					this.aiMode = AiMode.LOOT;
+					this.setAction("Loot");
+					this.loot(ai);
+					
+					this.setTrueLookAngle(ai.getLocation());
+					
+					return;
+				}
+			}
+			// Stash Loot
+			if(this.hasAbility(Abilities.STASH_SEARCH)){
+				this.computeWhatToLoot(this.stashSearch());
 			}
 		}
 		
-		if(this.hasAbility(Abilities.STASH_SEARCH)){
-			this.computeWhatToLoot(this.stashSearch());
+		// Investigate dead bodies
+		for(Ai ai : aiCrowd.getActors()){
+			if(ai.getLevelBlock() == this.getLevelBlock() && ai.isDead() && !this.getCommander().isInvestigated(ai) && combatVisualManager.isAiInSight(this, ai)) {
+				this.getCommander().addInvestigatedAi(ai);
+				
+				// Chance to recognise killer
+				AiDeathReport deathReport = ai.getDeathReport();
+				
+				// Don't investigate deaths we caused
+				if(deathReport == null || deathReport.killer == null || (deathReport.killer.getFaction().equals(this.getFaction()) && (!this.getFaction().equals(AiGenerator.LONER) || deathReport.killer == this)))
+					return;
+				
+				if(turnProcess.getTurnCount() - deathReport.timeOfDeath < 20 && deathReport.weapon.getName().equals(deathReport.killer.getWeapon().getName()) &&
+				  (combatVisualManager.isAiInSight(this, deathReport.killer) || new Random().nextInt(10) < 7)) {
+					
+//					System.out.println(this.getName() + " suspects " + deathReport.killer.getName() + " of murder");
+					
+					this.getCommander().addSuspectedAi(deathReport.killer, deathReport.killed);
+				}
+			}
 		}
+		
 	}
 	
 	@Override
@@ -863,9 +838,7 @@ public class ThinkingAi extends Ai{
 			if(!this.getInventory().hasItem(item)){
 				return true;
 			}
-			else if(item instanceof GrenadeItem || item instanceof StunGrenadeItem){
-				return true;
-			}
+			
 		}
 		
 		return false;
@@ -875,7 +848,7 @@ public class ThinkingAi extends Ai{
 		for(Ai ai : aiCrowd.getActors()){
 			if(!ai.getFaction().equals(this.getFaction()) && 
 			   (ai.getTargetAi() != null && ai.getTargetAi().getFaction().equals(this.getFaction()) && ( ai.getAction().equals(AiCombatActions.SHOOTING) || ai.getAction().equals(AiCombatActions.AIMING))) &&
-			   combatVisualManager.isAiInSight(ai, this.getFaction())){
+			   combatVisualManager.isAiInSight(this, ai, this.getFaction())){
 				return true;
 			}
 		}
@@ -894,7 +867,7 @@ public class ThinkingAi extends Ai{
 	
 	@Override
 	public boolean isTargetHostile(Ai target){
-		if(!target.isDead() && !this.getFaction().equals(target.getFaction()) && !this.getCommander().isAlliedWith(target.getFaction())){
+		if(!target.isDead() && !this.getFaction().equals(target.getFaction()) && !this.getCommander().isAlliedWith(target.getFaction()) && !this.getCommander().isAiFriend(target)){
 			return true;
 		}
 		return false;
@@ -908,6 +881,22 @@ public class ThinkingAi extends Ai{
 		if(this.aiNode != null && !this.aiNode.hasPriority(this.getName())){
 			this.aiNode.releaseNode(this);
 			this.aiNode = null;
+		}
+	}
+	
+	@Override
+	public void setDead(Ai killer, boolean dead) {
+		super.setDead(killer, dead);
+		if(this.aiNode != null && this.aiNode.behaviours.contains(AiNode.COMMAND_ON_DEATH)) {
+			this.aiNode.runDeathCommands();
+		}
+	}
+	
+	@Override
+	public void setDead(boolean dead) {
+		super.setDead(dead);
+		if(this.aiNode != null && this.aiNode.behaviours.contains(AiNode.COMMAND_ON_DEATH)) {
+			this.aiNode.runDeathCommands();
 		}
 	}
 	
@@ -925,7 +914,8 @@ public class ThinkingAi extends Ai{
 			case ATTACK:
 				this.aiMode = AiMode.ENGAGING;
 				this.aim(speaker);
-				this.aiNode.freeThinkTurns = 6;
+				if(this.aiNode != null)
+					this.aiNode.freeThinkTurns = 6;
 			break;
 			// Take money from ai
 			case PAY:
@@ -940,7 +930,10 @@ public class ThinkingAi extends Ai{
 				int stunTurns = (int)Math.ceil((Maths.getDistance(this.getLocation(), speaker.getLocation()) / this.getMoveDistance())) + 6;
 				
 				speaker.setIncapTurns(stunTurns);
-				this.aiNode.freeThinkTurns = stunTurns + 1;
+				if(this.aiNode != null)
+					this.aiNode.freeThinkTurns = stunTurns + 1;
+				
+				this.getCommander().removeHatedAi(speaker);
 			break;
 			// Open trade with ai
 			case TRADE:
@@ -980,6 +973,8 @@ public class ThinkingAi extends Ai{
 		public static final String PRI_SHOPKEEP = "SHOP";
 		public static final String PRI_DEFENDER = "DEFENDER";
 		private static final String FOLLOW_PLAYER = "FOLLOW_PLAYER";
+		private static final String COMMAND_ON_DEATH = "COMMAND_ON_DEATH";
+		private static final String STAY_IN_ROOM = "STAY_IN_ROOM";
 		
 		private double[] location;
 		private double angle;
@@ -995,14 +990,16 @@ public class ThinkingAi extends Ai{
 		private int freeThinkTurns;
 		private int maxUsers;
 		private HashSet<ThinkingAi> users;
-
 		private HashSet<String> priorities;
 		private ArrayList<String> behaviours;
+		
+		private LevelBlock startBlock;
 		
 		// whether this node will think for the ai
 		// can be used to make nodes purely for dialogue
 		private boolean thinks;
 
+		@SuppressWarnings("unused")
 		private TurnProcess turnProcess;
 		private MessageBox messageBox;
 		private AiCrowd aiCrowd;
@@ -1037,6 +1034,13 @@ public class ThinkingAi extends Ai{
 			this.missionManager = missionManager;
 		}
 		
+		public void runDeathCommands() {
+			for(int i = 0; i < this.behaviours.size(); i++) {
+				if(this.behaviours.get(i).startsWith("#"))
+					this.missionManager.runCommand(this.behaviours.get(i).substring(1).replaceAll(" ", ""));
+			}
+		}
+
 		public boolean grabNode(ThinkingAi ai){
 			if(users.size() < maxUsers || maxUsers == 0){
 				this.users.add(ai);
@@ -1051,6 +1055,9 @@ public class ThinkingAi extends Ai{
 		
 		public void think(ThinkingAi ai){
 			
+			if(this.behaviours.contains(STAY_IN_ROOM) && this.startBlock == null)
+				this.startBlock = ai.getLevelBlock();
+				
 			if(!thinks || this.behaviours.size() > 0){
 				if(!useDialogue(ai)){
 					
@@ -1059,6 +1066,20 @@ public class ThinkingAi extends Ai{
 							ai.setMoveLocation(ai.levelManager.randomInPosition(ai.combatMembersManager.getCurrentAi().getLevelBlock()));
 						} catch (PathNotFoundException e) {
 							// can't move to target
+						}
+					}
+					else if(this.behaviours.contains(STAY_IN_ROOM) && ai.levelManager.getBlock(ai.getMoveLocation()) != this.startBlock) {
+						try {
+							ai.setMoveLocation(ai.levelManager.randomInPosition(startBlock));
+						} catch (PathNotFoundException e) {
+							// can't move to target
+						}
+					}
+					else if(!this.behaviours.contains(STAY_IN_ROOM) && !this.behaviours.contains(FOLLOW_PLAYER)){
+						if(ai.doingJob) {
+							ai.job = ai.getCommander().getJob(ai);
+							if(ai.getLevelBlock() == ai.job.getJobBlock())
+								ai.job.tickJob();
 						}
 					}
 
@@ -1105,7 +1126,7 @@ public class ThinkingAi extends Ai{
 			}
 
 			if(!useDialogue(ai))
-				turnProcess.currentAiDone(ai.isSkippingTurns());
+				ai.endTurn();
 		}
 
 		private boolean useDialogue(ThinkingAi ai) {
@@ -1118,7 +1139,7 @@ public class ThinkingAi extends Ai{
 				
 				// find a player unit in sight
 				for(Ai actor : aiCrowd.getActors()){
-					if(actor.getFaction().equals(AiGenerator.PLAYER) && !actor.isDead() && !(actor instanceof VehicleAi) && dialogue.canTalkTo(actor) && CombatVisualManager.isAiInSight(ai, actor)){
+					if(actor.getFaction().equals(AiGenerator.PLAYER) && !actor.isDead() && !(actor instanceof VehicleAi) && dialogue.canTalkTo(actor) && ai.combatVisualManager.isAiInSight(ai, actor)){
 						talkTarget = actor;
 						break;
 					}
@@ -1153,6 +1174,13 @@ public class ThinkingAi extends Ai{
 				switch(disabler){
 					case "WHITE_VISTA_PRESENT":
 						if(checkForFactionInBlock(ai.getLevelBlock(), AiGenerator.WHITE_VISTA) && inverse){
+							
+//							if(ai.doingJob) {
+//								ai.job = ai.getCommander().getJob(ai);
+//								if(ai.getLevelBlock() == ai.job.getJobBlock())
+//									ai.job.tickJob();
+//							}
+							
 							ai.gatherEnvironmentData();
 							return true;
 						}
@@ -1160,6 +1188,13 @@ public class ThinkingAi extends Ai{
 							
 					case "BANDITS_PRESENT":
 						if(checkForFactionInBlock(ai.getLevelBlock(), AiGenerator.BANDITS) && inverse){
+							
+//							if(ai.doingJob) {
+//								ai.job = ai.getCommander().getJob(ai);
+//								if(ai.getLevelBlock() == ai.job.getJobBlock())
+//									ai.job.tickJob();
+//							}
+							
 							ai.gatherEnvironmentData();
 							return true;
 						}
@@ -1167,6 +1202,13 @@ public class ThinkingAi extends Ai{
 							
 					case "PLAYER_PRESENT":
 						if(checkForFactionInBlock(ai.getLevelBlock(), AiGenerator.PLAYER) && inverse){
+							
+//							if(ai.doingJob) {
+//								ai.job = ai.getCommander().getJob(ai);
+//								if(ai.getLevelBlock() == ai.job.getJobBlock())
+//									ai.job.tickJob();
+//							}
+							
 							ai.gatherEnvironmentData();
 							return true;
 						}
@@ -1174,6 +1216,13 @@ public class ThinkingAi extends Ai{
 							
 					case "LONER_PRESENT":
 						if(checkForFactionInBlock(ai.getLevelBlock(), AiGenerator.LONER) && inverse){
+							
+//							if(ai.doingJob) {
+//								ai.job = ai.getCommander().getJob(ai);
+//								if(ai.getLevelBlock() == ai.job.getJobBlock())
+//									ai.job.tickJob();
+//							}
+							
 							ai.gatherEnvironmentData();
 							return true;
 						}
@@ -1256,7 +1305,7 @@ public class ThinkingAi extends Ai{
 		
 		public boolean hasDialogue(){
 			for(String talkMap : talkMapTags){
-				if(missionManager.getTalkMap(talkMap).getDialogue().isInitiator())
+				if(missionManager.getTalkMap(talkMap) != null && missionManager.getTalkMap(talkMap).getDialogue().isInitiator())
 					return true;
 			}
 			return false;
@@ -1274,24 +1323,16 @@ public class ThinkingAi extends Ai{
 			this.disabler = disabler;
 		}
 
-		public void finish(ThinkingAi ai) {
-			if(this.thinks){
-				turnProcess.currentAiDone(ai.isSkippingTurns());
-			}
-			else{
-				ai.gatherEnvironmentData();
-			}
-		}
-
 		public void setThinks(boolean hasThoughts) {
 			this.thinks = hasThoughts;
 		}
 
-		public List<Dialogue> getTopics() {
+		public List<Dialogue> getTopic() {
+			
 			List<Dialogue> topics = new ArrayList<>();
 			
 			for(String topicTag : this.talkMapTags){
-				topics.add(missionManager.getTalkMap(topicTag).getDialogue());
+				topics.add(this.missionManager.getTalkMap(topicTag).getDialogue());
 			}
 			
 			return topics;
@@ -1337,6 +1378,14 @@ public class ThinkingAi extends Ai{
 		
 	}
 
+	public void finish() {
+		if(this.aiNode != null && this.aiNode.thinks){
+			this.endTurn();
+		}
+		else{
+			this.gatherEnvironmentData();
+		}
+	}
 
 	public AiNode getAiNode() {
 		return this.aiNode;
@@ -1345,7 +1394,7 @@ public class ThinkingAi extends Ai{
 	public void setAiNode(AiNode aiNode) {
 		
 		// Only release a node if it isn't personalised
-		if(this.aiNode != null && this.aiNode.hasPriority(this.getName()))
+		if(this.aiNode != null && this.aiNode.hasPriority(this.getName()) && !aiNode.hasPriority(this.getName()))
 			return;
 			
 		this.aiNode = aiNode;
@@ -1369,5 +1418,9 @@ public class ThinkingAi extends Ai{
 
 	public TeamsCommander getCommander() {
 		return combatMembersManager.getCommander(this.getFaction());
+	}
+
+	protected AiJob getJob() {
+		return this.job;
 	}
 }

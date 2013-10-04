@@ -1,14 +1,11 @@
-/*
- * 
- */
 package atrophy.splash;
 
-import java.awt.Color;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.Random;
 
 import javax.imageio.ImageIO;
 
@@ -19,16 +16,11 @@ import watoydoEngine.designObjects.display.TextButton;
 import watoydoEngine.designObjects.display.TextInput;
 import watoydoEngine.io.ReadWriter;
 import watoydoEngine.workings.displayActivity.ActivePane;
-import atrophy.combat.items.EngineeringSupply;
-import atrophy.combat.items.KillTags;
-import atrophy.combat.items.MedicalSupply;
 import atrophy.combat.items.MeleeWeapon2;
 import atrophy.combat.items.Pistol1;
 import atrophy.combat.items.ScienceScanner;
-import atrophy.combat.items.ScienceSupply;
 import atrophy.combat.items.SensorSuite;
 import atrophy.combat.items.UnitDetector;
-import atrophy.combat.items.WeaponSupply;
 import atrophy.combat.items.WeldingTorch;
 import atrophy.combat.mechanics.Abilities;
 import atrophy.gameMenu.saveFile.Missions;
@@ -36,39 +28,24 @@ import atrophy.gameMenu.saveFile.Squad;
 import atrophy.gameMenu.saveFile.Squad.Squaddie;
 import atrophy.gameMenu.saveFile.TechTree;
 import atrophy.gameMenu.ui.StashManager;
+import atrophy.gameMenu.ui.Wallpaper;
 import atrophy.hardPanes.GameMenuHardPane;
 
-/**
- * The Class CharacterCreateMenu.
- */
 public class CharacterCreateMenu extends Crowd{
 
-	private static final int START_ADVANCE = 99999999;
+	private static final int START_ADVANCE = 200;
 
-	/**
-	 * The name.
-	 */
 	private TextInput name;
-	
-	/**
-	 * The image.
-	 */
 	private ImageSelect image;
-	
-	/**
-	 * Instantiates a new character create menu.
-	 * @param windowManager 
-	 * @param stashManager 
-	 */
+
 	public CharacterCreateMenu() {
 		super(true);
 		addComponents();
 	}
 
-	/**
-	 * Adds the components.
-	 */
 	private void addComponents() {
+		
+		this.addDisplayItem(new Wallpaper(new Random().nextLong()));
 		
 		try {
 			image = new ImageSelect();
@@ -83,20 +60,8 @@ public class CharacterCreateMenu extends Crowd{
 		Text nameTag = new Text(this.getLocation()[0] + 30, this.getLocation()[1] + 50, "Name: ");
 		this.addDisplayItem(nameTag);
 		
-		name = new TextInput(this.getLocation()[0] + 66, this.getLocation()[1] + 50,"Julian"){
-			@Override
-			public void setFocus(boolean focus) {
-				super.setFocus(focus);
-				
-				if(focus){
-					this.setColour(Color.white);
-				}
-				else{
-					this.setColour(Color.red);
-				}
-			}
-		};
-		name.setMaxLetters(14);
+		name = new TextInput(this.getLocation()[0] + 66, this.getLocation()[1] + 50,"Julian");
+		name.setMaxLetters(20);
 		this.addInputText(name);
 		
 		
@@ -104,11 +69,12 @@ public class CharacterCreateMenu extends Crowd{
 			
 			final int ind = i;
 			
-			TextButton newGame = new TextButton(Color.yellow, Color.red) {
+			TextButton newGame = new TextButton(TextButton.DEFAULT_ON_COLOUR,TextButton.DEFAULT_OFF_COLOUR) {
 				
 				{
 					this.setText(getTypeName(ind));
 					this.setVisible(true);
+					this.setDrawBox(true);
 				}
 				
 				@Override
@@ -127,12 +93,6 @@ public class CharacterCreateMenu extends Crowd{
 		}
 	}
 	
-	/**
-	 * Gets the type name.
-	 *
-	 * @param ind the ind
-	 * @return the type name
-	 */
 	private String getTypeName(int ind) {
 		switch(ind){
 			case 0:
@@ -149,12 +109,6 @@ public class CharacterCreateMenu extends Crowd{
 		return "";
 	}
 	
-	/**
-	 * Gets the description.
-	 *
-	 * @param ind the ind
-	 * @return the description
-	 */
 	private String getDescription(int ind) {
 		switch(ind){
 			case 0:
@@ -162,7 +116,7 @@ public class CharacterCreateMenu extends Crowd{
 			case 1:
 				return "Your upbringing made you handy with tools.@nYou have a welding torch and your upbringing makes you more skilled with it.";
 			case 2:
-				return "You have a personnel detector and a set of cad' tags.@nThese will allow you to confirm kills for bounty missions.";
+				return "You have a personnel detector which tracks who is in the surrounding area.";
 			case 3:
 				return "Your family worked in the science labs before the incident.@nYou have a rare sensor suite that can detect people through walls and scanner to gather scientific data.";
 			case 4:
@@ -171,12 +125,6 @@ public class CharacterCreateMenu extends Crowd{
 		return "";
 	}
 
-	/**
-	 * Startgame.
-	 *
-	 * @param startType the start type
-	 * @param name the name
-	 */
 	private void startgame(int startType, String name){
 		Squad squad = new Squad();
 		squad.setAdvance(START_ADVANCE);
@@ -190,7 +138,6 @@ public class CharacterCreateMenu extends Crowd{
 			break;
 			case 2:
 				squad.getSquadMember(0).addItem(UnitDetector.NAME);
-				squad.getSquadMember(0).addItem(KillTags.NAME);
 			break;
 			case 3:
 				squad.getSquadMember(0).addItem(SensorSuite.NAME);
@@ -202,17 +149,12 @@ public class CharacterCreateMenu extends Crowd{
 		}
 		
 		TechTree techTree = new TechTree();
+		squad.setTechTree(techTree);
 		StashManager stashManager = new StashManager(null);
 		Missions missions = new Missions();
-		ActivePane.getInstance().changePane(new Crowd(new GameMenuHardPane(squad, techTree, stashManager, missions)));
+		ActivePane.getInstance().changeRootCrowd(new Crowd(new GameMenuHardPane(squad, techTree, stashManager, missions)));
 	}
 	
-	/**
-	 * Special names.
-	 *
-	 * @param name the name
-	 * @return the string
-	 */
 	private String specialNames(String name) {
 		
 		switch(name){
@@ -227,22 +169,10 @@ public class CharacterCreateMenu extends Crowd{
 		return name;
 	}
 
-	/**
-	 * The Class ImageSelect.
-	 */
 	private static class ImageSelect extends ButtonMulti{
 
-		/**
-		 * The names.
-		 */
 		public String[] names = {"PlainHead","MessyHead","NazcaHead","BeardHead","Raziel","StripeHead"};
 		
-		/**
-		 * Instantiates a new image select.
-		 *
-		 * @throws FileNotFoundException the file not found exception
-		 * @throws IOException Signals that an I/O exception has occurred.
-		 */
 		public ImageSelect() throws FileNotFoundException, IOException {
 			super(new BufferedImage[]{
 					ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/heads/plainHead.png")),
@@ -254,33 +184,21 @@ public class CharacterCreateMenu extends Crowd{
 			});
 		}
 		
-		/* (non-Javadoc)
-		 * @see watoydoEngine.designObjects.display.AbstractButton#mU(java.awt.Point, java.awt.event.MouseEvent)
-		 */
 		@Override
 		public boolean mU(Point mousePosition, MouseEvent e) {
 			this.nextFrame(true);
 			return true;
 		}
 		
-		/* (non-Javadoc)
-		 * @see watoydoEngine.designObjects.display.AbstractButton#rMU(java.awt.Point, java.awt.event.MouseEvent)
-		 */
 		@Override
 		public boolean rMU(Point mousePosition, MouseEvent e) {
 			this.previousFrame(true);
 			return true;
 		}
 		
-		/**
-		 * Gets the image name.
-		 *
-		 * @return the image name
-		 */
 		public String getImageName(){
 			return this.names[this.getFrame()];
 		}
-
 	}
 
 }

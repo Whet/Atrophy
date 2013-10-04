@@ -1,73 +1,52 @@
-/*
- * 
- */
 package atrophy.combat.display.ui;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.concurrent.Semaphore;
 
 import watoydoEngine.designObjects.display.Text;
 import watoydoEngine.fonts.FontList;
-import watoydoEngine.gubbinz.LimitedArrayList;
 import watoydoEngine.workings.DisplayManager;
 import atrophy.combat.CombatUiManager;
 
-import com.sun.corba.se.impl.orbutil.concurrent.Mutex;
-
-// TODO: Auto-generated Javadoc
-/**
- * The Class InfoText.
- */
 public class InfoText extends Text {
 	
-	/**
-	 * The Constant MAX_HINTS.
-	 */
-	private static final byte MAX_HINTS = 10;
 	
-	/**
-	 * The Constant hintEditMutex.
-	 */
-//	private static final Semaphore hintEditTickets = new Semaphore(1,true);
-	private static final Mutex hintEditMutex = new Mutex();
+	private static final Semaphore hintEditMutex = new Semaphore(1);
 	
-	/**
-	 * The hints.
-	 */
-	private LimitedArrayList<InfoTextDisplayable> hints;
+	private List<InfoTextDisplayable> hints;
+	private List<String> specialHints;
 	
 	private CombatUiManager combatUiManager;
 	
-	/**
-	 * Instantiates a new info text.
-	 */
 	public InfoText(CombatUiManager combatUiManager) {
 		super(0,0,"");
-		hints = new LimitedArrayList<InfoTextDisplayable>(MAX_HINTS);
+		hints = new ArrayList<InfoTextDisplayable>();
 		this.setFont(FontList.AUD16);
 		
 		this.combatUiManager = combatUiManager;
+		
+		this.specialHints = new ArrayList<>();
 	}
 	
-	// The Void
-	/**
-	 * Draw hints.
-	 */
 	private void drawHints(){
 		
 		this.setText("");
 		
 		// Set infoText in corner, correct size to show all lines
-		this.setLocation(10.0,DisplayManager.getInstance().getResolution()[1] - combatUiManager.getActionsBar().getSize()[1] - (20 * hintLines()));
+		this.setLocation(10.0,DisplayManager.getInstance().getResolution()[1] - combatUiManager.getActionsBar().getSize()[1] - (20 * (hintLines() + specialHints.size())));
 		
 		for(InfoTextDisplayable hint : hints){
 			this.appendText(hint.getUiHint() + "@n");
 		}
+		
+		for(String hint: specialHints) {
+			this.appendText(hint + "@n");
+		}
+		
 		hintEditMutex.release();
 	}
 	
-	/**
-	 * Hint lines.
-	 *
-	 * @return the int
-	 */
 	private int hintLines(){
 		int totalLines = 0;
 		for(InfoTextDisplayable hint : this.hints){
@@ -76,9 +55,6 @@ public class InfoText extends Text {
 		return totalLines;
 	}
 	
-	/**
-	 * Update info text.
-	 */
 	public void updateInfoText(){
 		try{
 			hintEditMutex.acquire();
@@ -90,12 +66,6 @@ public class InfoText extends Text {
 		}
 	}
 	
-	// Setters
-	/**
-	 * Sets the info text.
-	 *
-	 * @param textDisplayer the new info text
-	 */
 	public void setInfoText(InfoTextDisplayable textDisplayer){
 		try{
 			if(!hints.contains(textDisplayer)){
@@ -110,11 +80,6 @@ public class InfoText extends Text {
 		}
 	}
 	
-	/**
-	 * Removes the info text.
-	 *
-	 * @param textDisplayer the text displayer
-	 */
 	public void removeInfoText(InfoTextDisplayable textDisplayer){
 		try{
 			if(hints.contains(textDisplayer)){
@@ -129,17 +94,38 @@ public class InfoText extends Text {
 		}
 	}
 	
-	/**
-	 * Update info text.
-	 *
-	 * @param textDisplayer the text displayer
-	 */
 	public void updateInfoText(InfoTextDisplayable textDisplayer){
 		try{
 			if(hints.contains(textDisplayer)){
 				hintEditMutex.acquire();
 				drawHints();
 			}
+		}
+		catch(InterruptedException ie){
+			System.err.println("Interrupted");
+			Thread.currentThread().interrupt();
+		}
+	}
+
+	public void displayInfo(String string) {
+		if(!specialHints.contains(string)) {
+			try {
+				hintEditMutex.acquire();
+				specialHints.add(string);
+				drawHints();
+			}
+			catch(InterruptedException ie){
+				System.err.println("Interrupted");
+				Thread.currentThread().interrupt();
+			}
+		}
+	}
+
+	public void removeInfo(String string) {
+		try {
+			hintEditMutex.acquire();
+			specialHints.remove(string);
+			drawHints();
 		}
 		catch(InterruptedException ie){
 			System.err.println("Interrupted");

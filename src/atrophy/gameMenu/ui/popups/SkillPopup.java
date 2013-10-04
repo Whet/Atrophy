@@ -1,6 +1,3 @@
-/*
- * 
- */
 package atrophy.gameMenu.ui.popups;
 
 import java.awt.Color;
@@ -14,30 +11,12 @@ import atrophy.gameMenu.saveFile.Squad.Squaddie;
 import atrophy.gameMenu.ui.ShopManager;
 import atrophy.gameMenu.ui.WindowManager;
 
-/**
- * The Class SkillPopup.
- */
 public class SkillPopup extends Popup {
 	
-	/**
-	 * Instantiates a new skill popup.
-	 *
-	 * @param squadMember the squad member
-	 * @param skill the skill
-	 * @param windowManager 
-	 * @param squadMenu 
-	 */
 	public SkillPopup(Squaddie squadMember, String skill, WindowManager windowManager, Squad squad) {
 		super(windowManager, new Text(0, 0, "Are you sure you want to increase " + skill + " for " + ShopManager.abilityCost(squadMember,skill) + "?"),getOptions(squad, windowManager,squadMember,skill));
 	}
 
-	/**
-	 * Gets the options.
-	 *
-	 * @param squadMember the squad member
-	 * @param skill the skill
-	 * @return the options
-	 */
 	private static TextButton[] getOptions(final Squad squad, final WindowManager windowManager, final Squaddie squadMember, final String skill) {
 		TextButton[] options = new TextButton[2];
 		
@@ -73,5 +52,11 @@ public class SkillPopup extends Popup {
 		
 		return options;
 	}
+	
+	@Override
+	public String[] getMenuInfo() {
+		return null;
+	}
+
 
 }

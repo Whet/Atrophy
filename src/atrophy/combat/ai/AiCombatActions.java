@@ -44,7 +44,7 @@ public class AiCombatActions {
 			if(invoker.getWeapon().isInRange(invoker, this.getTargetAi())){
 				// break any alliances with the faction if visible
 				if(this.getTargetAi() instanceof ThinkingAi &&
-				   combatVisualManager.isAiInSight(invoker, targetAi.getFaction())){
+				   combatVisualManager.isAiInSight(targetAi, invoker, targetAi.getFaction())){
 					
 					((ThinkingAi) this.getTargetAi()).getCommander().removeAlliance(invoker.getFaction());
 					((ThinkingAi) this.getTargetAi()).getCommander().addHatedAi(invoker);
@@ -60,11 +60,12 @@ public class AiCombatActions {
 				else if(invoker.getAction().equals(AIMING) && invoker.getWeapon().hasAmmo()){
 	
 					swing++;
-					oldTargetSwing = swing;
 					
 					if(swing > invoker.getWeapon().getMaxSwing()){
 						this.swing = invoker.getWeapon().getMaxSwing();
 					}
+					
+					oldTargetSwing = swing;
 					
 					// look at target
 					invoker.setTrueLookAngle(this.targetAi.getLocation());
@@ -113,7 +114,7 @@ public class AiCombatActions {
 			
 			invoker.setAction(AiActions.NO_ACTION);
 		}
-	}
+ 	}
 
 
 	public void shoot(Ai invoker) {
@@ -134,10 +135,10 @@ public class AiCombatActions {
 		
 		// if a hit
 		// being in the weapons range allows a re-roll
-		if(ScoringMechanics.killedTarget(invoker,this.getTargetAi())){
+		if(aiCrowd.getDirector().judge(ScoringMechanics.killedTarget(invoker,this.getTargetAi()), invoker.getTargetAi(), invoker, invoker.turnProcess.getTurnCount())){
 			
 			// kill target
-			this.getTargetAi().setDead(true);
+			this.getTargetAi().setDead(invoker, true);
 			
 			// if the killer belongs to player faction then the kill is counted
 			if(invoker.getFaction().equals(AiGenerator.PLAYER)){

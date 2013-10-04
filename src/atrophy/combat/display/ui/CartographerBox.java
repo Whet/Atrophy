@@ -6,13 +6,14 @@ package atrophy.combat.display.ui;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseEvent;
 
 import watoydoEngine.designObjects.actions.ActionRegion;
 import watoydoEngine.designObjects.display.Crowd;
 import watoydoEngine.designObjects.display.TextButton;
 import watoydoEngine.designObjects.display.TextInput;
-import watoydoEngine.gubbinz.GraphicsFunctions;
+import watoydoEngine.utils.GraphicsFunctions;
 import watoydoEngine.workings.displayActivity.ActivePane;
 import atrophy.combat.PanningManager;
 
@@ -180,6 +181,16 @@ public class CartographerBox extends Crowd{
 		drawBackdrop(drawShape);
 		super.drawMethod(drawShape);
 	}
+	
+	@Override
+	public boolean kD(KeyEvent e) {
+		for(int i = 0; i < this.addMarkerButtons.length; i++) {
+			AddMarkerText addMarkerText = this.addMarkerButtons[i];
+			if(addMarkerText.isFocused() && addMarkerText.kD(e))
+				return true;
+		}
+		return false;
+	}
 
 	/**
 	 * Draw backdrop.
@@ -280,18 +291,8 @@ public class CartographerBox extends Crowd{
 	 */
 	private class AddMarkerText extends TextInput{
 
-		/**
-		 * The marker colour.
-		 */
 		private Color markerColour;
 		
-		/**
-		 * Instantiates a new adds the marker text.
-		 *
-		 * @param tag the tag
-		 * @param x the x
-		 * @param y the y
-		 */
 		public AddMarkerText(double x, double y){
 			super(x,y,"Generate Marker: ");
 			this.markerColour = Color.red.darker();
@@ -299,9 +300,6 @@ public class CartographerBox extends Crowd{
 			this.setMinLetters("Generate Marker: ".length());
 		}
 
-		/* (non-Javadoc)
-		 * @see watoydoEngine.designObjects.display.TextInput#setFocus(boolean)
-		 */
 		@Override
 		public void setFocus(boolean focus) {
 			
@@ -318,14 +316,9 @@ public class CartographerBox extends Crowd{
 			super.setFocus(focus);
 		}
 		
-		/**
-		 * Sets the marker colour.
-		 *
-		 * @param markerColour the new marker colour
-		 */
 		public void setMarkerColour(Color markerColour) {
 			this.markerColour = markerColour;
-			this.setColour(markerColour);
+			this.setOffColour(markerColour);
 		}
 		
 	}

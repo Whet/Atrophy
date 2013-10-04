@@ -1,6 +1,3 @@
-/*
- * 
- */
 package atrophy.combat.ai;
 
 import java.util.ArrayList;
@@ -20,6 +17,7 @@ import atrophy.combat.level.LevelBlock;
 import atrophy.combat.level.LevelManager;
 import atrophy.combat.level.Portal;
 import atrophy.combat.mechanics.TurnProcess;
+import atrophy.gameMenu.saveFile.Squad;
 
 public class TeamsCommander {
 	
@@ -30,7 +28,10 @@ public class TeamsCommander {
 	private Set<ThinkingAi> teamAi;
 	private Set<String> alliances;
 	private Set<Ai> hatedAi;
+	private Set<Ai> friends;
 	private Set<Ai> lootedAi;
+	private Set<Ai> investigatedAi;
+	private Map<Ai, Integer> suspectedAi;
 	
 	private Map<Ai, AiJob> jobAssignments;
 	private Map<LevelBlock, DefenceHeuristic> defenceHeuristics;
@@ -46,9 +47,11 @@ public class TeamsCommander {
 
 	private TurnProcess turnProcess;
 	private LevelManager levelManager;
+	private Squad squad;
 
-	public TeamsCommander(TurnProcess turnProcess, String faction, LevelManager levelManager){
+	public TeamsCommander(Squad squad, TurnProcess turnProcess, String faction, LevelManager levelManager){
 
+		this.squad = squad;
 		this.faction = faction;
 		this.levelManager = levelManager;
 		this.turnProcess = turnProcess;
@@ -58,8 +61,11 @@ public class TeamsCommander {
 		lootedAi = new HashSet<Ai>();
 		alliances = new HashSet<String>();
 		hatedAi = new HashSet<Ai>();
+		friends = new HashSet<Ai>();
+		investigatedAi = new HashSet<Ai>();
 		jobAssignments = new HashMap<>();
-		defenceHeuristics = new HashMap<>();	
+		defenceHeuristics = new HashMap<>();
+		suspectedAi = new HashMap<>();
 		
 		specialistNeeded = false;
 		
@@ -157,6 +163,16 @@ public class TeamsCommander {
 		
 		this.turnsToNextUpdate --;
 		
+		Iterator<Entry<Ai, Integer>> iterator = this.suspectedAi.entrySet().iterator();
+		
+		while(iterator.hasNext()) {
+			Entry<Ai, Integer> entry = iterator.next();
+			entry.setValue(entry.getValue() - 1);
+			
+			if(entry.getValue() == 0)
+				iterator.remove();
+		}
+		
 		if(this.turnsToNextUpdate <= 0){
 			
 			removeDeadJobs();
@@ -243,12 +259,11 @@ public class TeamsCommander {
 		
 		Set<LevelBlock> assignedRooms = new HashSet<>();
 		
-		for(Entry<LevelBlock, DefenceHeuristic> entry : this.defenceHeuristics.entrySet()){
-			
+ 		for(Entry<LevelBlock, DefenceHeuristic> entry : this.defenceHeuristics.entrySet()){
 			jobExists = false;
 			
-			for(AiJob job : this.jobAssignments.values()){
-				if(job.getJobBlock() == entry.getKey()){
+			for(AiJob job : this.jobs){
+				if(job.getJobBlock().getCode() == entry.getKey().getCode()){
 					jobExists = true;
 					
 					// Update job to new heuristics
@@ -295,8 +310,13 @@ public class TeamsCommander {
 			
 		}
 //		for (AiJob job : this.jobs) {
-//			System.out.println(this.getFaction() + ": " + job.getType().toString() + "  Population: " + job.getTargetEmployeeCount());
+//			System.out.println(this.getFaction() + ": " + job.getType().toString() + "  Population: " + job.getTargetEmployeeCount() + "  Room: " + job.getJobBlock().getCode());
 //		}
+		
+		// After jobs have been made set danger to 0 so that old dangers get removed if nothing happens
+		for(DefenceHeuristic dh : this.defenceHeuristics.values()) {
+			dh.dangerH = 0;
+		}
 		
 	}
 
@@ -308,8 +328,10 @@ public class TeamsCommander {
 	
 	public AiJob getJob(ThinkingAi ai){
 		
-		if(this.jobAssignments.get(ai) != null && (!this.isSpecialist(ai) || (this.isSpecialist(ai) && !this.specialistNeeded)))
+		if(this.jobAssignments.get(ai) != null && (!this.isSpecialist(ai) || (this.isSpecialist(ai) && !this.specialistNeeded))) {
+//			System.out.println(ai.getName() + " is doing job: " + this.jobAssignments.get(ai).getType());
 			return this.jobAssignments.get(ai);
+		}
 		
 		return bestJob(ai);
 	}
@@ -335,6 +357,8 @@ public class TeamsCommander {
 		this.jobs.remove();
 		this.jobs.add(bestJob);
 		
+//		System.out.println(ai.getName() + " is doing job: " + this.jobAssignments.get(ai).getType());
+		
 		return bestJob;
 	}
 	
@@ -342,6 +366,7 @@ public class TeamsCommander {
 		LevelBlock room = null;
 		do{
 			room = levelManager.randomRoom();
+			checkForNullHeuristic(room);
 		}
 		while(levelManager.isRoomBanned(this.getFaction(), room));
 		
@@ -379,7 +404,7 @@ public class TeamsCommander {
 		return false;
 	}
 
-	public boolean canPursue(ThinkingAi ai) {
+	public boolean canPursue(@SuppressWarnings("unused") ThinkingAi ai) {
 		return true;
 	}
 
@@ -444,6 +469,9 @@ public class TeamsCommander {
 	
 	public void addHatedAi(Ai hatedAi){
 		this.hatedAi.add(hatedAi);
+		
+		if(hatedAi.getFaction().equals(AiGenerator.PLAYER))
+			squad.incrementFactionRelation(this.getFaction(), -1.8);
 	}
 	
 	public boolean isAiHated(Ai ai){
@@ -486,6 +514,95 @@ public class TeamsCommander {
 			
 		
 		return bestEntry.getKey();
+	}
+	
+	public void addInvestigatedAi(Ai ai) {
+		this.investigatedAi.add(ai);
+	}
+	
+	public boolean isInvestigated(Ai ai) {
+		return this.investigatedAi.contains(ai);
+	}
+
+	public void addFriend(Ai ai) {
+		this.friends.add(ai);
+	}
+	
+	public void removeFriend(Ai ai) {
+		this.friends.remove(ai);
+	}
+	
+	public boolean isAiFriend(Ai ai) {
+		return this.friends.contains(ai);
+	}
+
+	public boolean hasAi(LonerAi ai) {
+		return this.teamAi.contains(ai);
+	}
+	
+	public boolean hasAi(DaemonAi ai) {
+		return this.teamAi.contains(ai);
+	}
+
+	public void addSuspectedAi(Ai killer, Ai killed) {
+		if(!this.isAlliedWith(killed.getFaction()) && !killed.getFaction().equals(this.getFaction())) {
+			return;
+		}
+//		System.out.println(killer.getName() + " is wanted!");
+		this.suspectedAi.put(killer, 30);
+		
+		if(killer.getFaction().equals(AiGenerator.PLAYER))
+			squad.incrementFactionRelation(this.getFaction(), -0.2);
+	}
+	
+	public boolean isSuspected(Ai suspect) {
+		return this.suspectedAi.containsKey(suspect);
+	}
+
+	public void removeSuspected(Ai ai) {
+		this.suspectedAi.remove(ai);
+		
+		if(ai.getFaction().equals(AiGenerator.PLAYER))
+			squad.incrementFactionRelation(this.getFaction(), 0.2);
+	}
+
+	public void removeHatedAi(Ai speaker) {
+		this.hatedAi.remove(speaker);
+	}
+
+	
+	// Debug
+	
+	public Set<String> getAlliances() {
+		return alliances;
+	}
+
+	public Set<Ai> getHatedAi() {
+		return hatedAi;
+	}
+
+	public Set<Ai> getFriends() {
+		return friends;
+	}
+
+	public Set<Ai> getInvestigatedAi() {
+		return investigatedAi;
+	}
+
+	public Map<Ai, Integer> getSuspectedAi() {
+		return suspectedAi;
+	}
+
+	public Map<Ai, AiJob> getJobAssignments() {
+		return jobAssignments;
+	}
+
+	public Map<LevelBlock, DefenceHeuristic> getDefenceHeuristics() {
+		return defenceHeuristics;
+	}
+
+	public PriorityQueue<AiJob> getJobs() {
+		return jobs;
 	}
 
 }

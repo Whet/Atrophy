@@ -1,6 +1,3 @@
-/*
- * 
- */
 package atrophy.combat.actions;
 
 import java.awt.event.KeyEvent;
@@ -15,6 +12,7 @@ import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.ai.AiGenerator;
+import atrophy.combat.combatEffects.PowerManager;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.AiManagementSuite;
 import atrophy.combat.display.ui.CartographerBox;
@@ -23,16 +21,14 @@ import atrophy.combat.display.ui.MessageBox;
 import atrophy.combat.display.ui.UiUpdaterSuite;
 import atrophy.combat.display.ui.loot.LootBox;
 import atrophy.combat.level.LevelManager;
+import atrophy.combat.level.MissionManager;
 import atrophy.combat.mechanics.TurnProcess;
 import atrophy.gameMenu.saveFile.Missions;
+import atrophy.gameMenu.saveFile.Squad;
 import atrophy.gameMenu.saveFile.TechTree;
 import atrophy.gameMenu.ui.StashManager;
 import atrophy.hardPanes.GameMenuHardPane;
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class CombatKeyboardHandler.
- */
 public class CombatKeyboardHandler extends KeyboardHandler {
 	
 	private PanningManager panningManager;
@@ -49,8 +45,10 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 	private TechTree techTree;
 	private StashManager stashManager;
 	private Missions missions;
+	private PowerManager powerManager;
+	private MissionManager missionManager;
 	
-	public CombatKeyboardHandler(LevelManager levelManager, MouseAbilityHandler mouseAbilityHandler, TurnProcess turnProcess, AiManagementSuite aiManagementSuite, UiUpdaterSuite uiUpdaterSuite, TechTree techTree, StashManager stashManager, Missions missions){
+	public CombatKeyboardHandler(LevelManager levelManager, MouseAbilityHandler mouseAbilityHandler, TurnProcess turnProcess, AiManagementSuite aiManagementSuite, UiUpdaterSuite uiUpdaterSuite, TechTree techTree, StashManager stashManager, Missions missions, MissionManager missionManager){
 		
 		this.aiCrowd = aiManagementSuite.getAiCrowd();
 		this.combatMembersManager = aiManagementSuite.getCombatMembersManager();
@@ -70,16 +68,16 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 		this.techTree = techTree;
 		this.stashManager = stashManager;
 		
+		this.missionManager = missionManager;
+		this.setActionZ(1);
 	}
 	
-	/**
-	 * The SHIF t_ down.
-	 */
+	public void setPowerManager(PowerManager powerManager) {
+		this.powerManager = powerManager;
+	}
+
 	public static boolean SHIFT_DOWN = false;
 	
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.actions.KeyboardHandler#kD(java.awt.event.KeyEvent)
-	 */
 	@Override
 	public boolean kD(KeyEvent e) {
 		switch(e.getKeyCode()){
@@ -112,12 +110,8 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 		return true;
 	}
 	
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.actions.KeyboardHandler#kU(java.awt.event.KeyEvent)
-	 */
 	@Override
 	public boolean kU(KeyEvent e) {
-	//	System.out.println(e.getKeyCode());
 		switch(e.getKeyCode()){
 			
 			//[
@@ -153,13 +147,12 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 			//esc
 			case 27:
 				
-				
 				boolean teamInSaferoom = false;
 				
 				for(int i = 0; i < aiCrowd.getActorCount(); i++){
 					if(aiCrowd.getActor(i).getFaction().equals(AiGenerator.PLAYER) &&
 					   !aiCrowd.getActor(i).isDead() &&
-					   levelManager.isInSaferoom(aiCrowd.getActor(i).getLevelBlock())){
+					   missionManager.isInSaferoom(aiCrowd.getActor(i).getLevelBlock())){
 						teamInSaferoom = true;
 					}
 				}
@@ -169,26 +162,35 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 					LargeEventText.flashTimer.cancel();
 					LargeEventText.flashTimer.purge();
 					
-					ActivePane.getInstance().changePane(new Crowd(new GameMenuHardPane(aiCrowd.saveToSquad(), techTree, stashManager, missions)));
+					missions.checkDeadSpecialCharacters(aiCrowd);
+					
+					Squad saveToSquad = aiCrowd.saveToSquad();
+					
+					// saveToSquad calculates mission kills, must be called first
+					missions.setPlayerMissionKills(aiCrowd.getBanditKillCount(), aiCrowd.getLonerKillCount(), aiCrowd.getWhiteVistaKillCount());
+					missions.setTotalMissionDeaths(aiCrowd.getDirector().getTotalBanditDeaths(), aiCrowd.getDirector().getTotalLonerDeaths(), aiCrowd.getDirector().getTotalWVDeaths());
+					missions.setLivingMembers(aiCrowd.getLivingActors(AiGenerator.BANDITS), aiCrowd.getLivingActors(AiGenerator.LONER), aiCrowd.getLivingActors(AiGenerator.WHITE_VISTA));
+					
+					ActivePane.getInstance().changeRootCrowd(new Crowd(new GameMenuHardPane(saveToSquad, techTree, stashManager, missions)));
 				}
 				
 			break;
 		
-			// t
+			// T
 			case 84:
 				if(combatMembersManager.getCurrentAi() != null){
 					combatMembersManager.getCurrentAi().tradeWithClosestAlly();
 				}
 			break;
 			
-			// u
+			// U
 			case 85:
 				cartographerBox.setVisible(!cartographerBox.isVisible());
 				lootBox.closeLootUi(lootBox.isVisible());
 				messageBox.setVisible(false);
 			break;
 		
-			// i
+			// I
 			case 73:
 				if(combatMembersManager.getCurrentAi() != null && 
 				   !combatMembersManager.getCurrentAi().equals("Looting")){
@@ -215,7 +217,7 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 			
 			// F
 			case 70:
-				if(combatMembersManager.getCurrentAi() != null){
+				if(combatMembersManager.getCurrentAi() != null && !combatMembersManager.getCurrentAi().isDead()){
 					combatMembersManager.getCurrentAi().setSkippingTurns(!combatMembersManager.getCurrentAi().isSkippingTurns());
 					combatUiManager.getAllyRoster().updateMasks();
 				}
@@ -223,9 +225,30 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 			
 			// k DEBUG
 			case 75:
-				combatMembersManager.getCurrentAi().setDead(true);
+//				combatMembersManager.getCurrentAi().setDead(true);
 //				mouseAbilityHandler.setAbility("Hack");
 //				mouseAbilityHandler.setAbility("DebugKill");
+				mouseAbilityHandler.setAbility("DebugAi");
+			break;
+			
+			// Z
+			case 90:
+				mouseAbilityHandler.setAbility("PowerKill");
+			break;
+			
+			// X
+			case 88:
+				mouseAbilityHandler.setAbility("PowerProtect");
+			break;
+			
+			// C
+			case 67:
+				mouseAbilityHandler.setAbility("PowerHelp");
+			break;
+			
+			// V
+			case 86:
+				powerManager.clearBuffer();
 			break;
 			
 			// X panning
@@ -243,7 +266,7 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 				panningManager.panY(0);
 			break;
 		
-			// backspace clears all actions
+			// backspace
 			case 8:
 				if(combatMembersManager.getCurrentAi() != null){
 					combatMembersManager.getCurrentAi().removeOrders(mouseAbilityHandler);
@@ -251,9 +274,10 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 				}
 			break;
 			
-			// Space bar ends turn
+			// Space bar
 			case 32:
-				turnProcess.endTurn();
+				if(!messageBox.isVisible())
+					turnProcess.endTurn();
 			break;
 			
 			// 1
@@ -261,6 +285,9 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 				combatMembersManager.changeCurrentAi(0);
 				panningManager.panToPlayer();
 				SoundBoard.getInstance().playEffect("tick");
+				
+				if(messageBox.isVisible())
+					combatUiManager.getActionsBar().setVisible(false);
 			break;
 			
 			// 2
@@ -268,6 +295,9 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 				combatMembersManager.changeCurrentAi(1);
 				panningManager.panToPlayer();
 				SoundBoard.getInstance().playEffect("tick");
+				
+				if(messageBox.isVisible())
+					combatUiManager.getActionsBar().setVisible(false);
 			break;
 			
 			// 3
@@ -275,6 +305,9 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 				combatMembersManager.changeCurrentAi(2);
 				panningManager.panToPlayer();
 				SoundBoard.getInstance().playEffect("tick");
+				
+				if(messageBox.isVisible())
+					combatUiManager.getActionsBar().setVisible(false);
 			break;
 			
 			// 4
@@ -282,6 +315,9 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 				combatMembersManager.changeCurrentAi(3);
 				panningManager.panToPlayer();
 				SoundBoard.getInstance().playEffect("tick");
+				
+				if(messageBox.isVisible())
+					combatUiManager.getActionsBar().setVisible(false);
 			break;
 			
 			// 5
@@ -289,6 +325,9 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 				combatMembersManager.changeCurrentAi(4);
 				panningManager.panToPlayer();
 				SoundBoard.getInstance().playEffect("tick");
+				
+				if(messageBox.isVisible())
+					combatUiManager.getActionsBar().setVisible(false);
 			break;
 			
 			// 6
@@ -296,6 +335,9 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 				combatMembersManager.changeCurrentAi(5);
 				panningManager.panToPlayer();
 				SoundBoard.getInstance().playEffect("tick");
+				
+				if(messageBox.isVisible())
+					combatUiManager.getActionsBar().setVisible(false);
 			break;
 			
 			// 7
@@ -303,6 +345,9 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 				combatMembersManager.changeCurrentAi(6);
 				panningManager.panToPlayer();
 				SoundBoard.getInstance().playEffect("tick");
+				
+				if(messageBox.isVisible())
+					combatUiManager.getActionsBar().setVisible(false);
 			break;
 			
 			// 8
@@ -310,6 +355,9 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 				combatMembersManager.changeCurrentAi(7);
 				panningManager.panToPlayer();
 				SoundBoard.getInstance().playEffect("tick");
+				
+				if(messageBox.isVisible())
+					combatUiManager.getActionsBar().setVisible(false);
 			break;
 			
 			// 9
@@ -317,6 +365,9 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 				combatMembersManager.changeCurrentAi(8);
 				panningManager.panToPlayer();
 				SoundBoard.getInstance().playEffect("tick");
+				
+				if(messageBox.isVisible())
+					combatUiManager.getActionsBar().setVisible(false);
 			break;
 			
 			// Num 7
@@ -379,12 +430,15 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 			// Num +
 			case 107:
 				combatVisualManager.revealAll();
-				combatVisualManager.updateVisibleAi();
 			break;
 			
 			// shift
 			case 16:
 				SHIFT_DOWN = false;
+			break;
+			
+			default:
+				System.out.println(e.getKeyCode());
 			break;
 		}
 		return true;

@@ -11,12 +11,12 @@ import atrophy.combat.display.ui.VisualEffect;
 /**
  * The Class Weapon.
  */
-public abstract class Weapon extends Item{
+public abstract class Weapon extends Item {
 	
 	/**
 	 * The Constant SWING_BONUS.
 	 */
-	public static final int SWING_BONUS = 25;
+	public static final int SWING_BONUS = 20;
 	
 	/**
 	 * The ammo left.

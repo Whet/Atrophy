@@ -1,6 +1,3 @@
-/*
- * 
- */
 package atrophy.combat.display.ui.loot;
 
 import java.awt.Color;
@@ -19,9 +16,9 @@ import javax.imageio.ImageIO;
 import watoydoEngine.designObjects.actions.ActionRegion;
 import watoydoEngine.designObjects.display.Crowd;
 import watoydoEngine.designObjects.display.Text;
-import watoydoEngine.gubbinz.GraphicsFunctions;
 import watoydoEngine.io.ReadWriter;
 import watoydoEngine.sounds.SoundBoard;
+import watoydoEngine.utils.GraphicsFunctions;
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.ai.Ai;
 import atrophy.combat.display.ui.CartographerBox;
@@ -29,13 +26,10 @@ import atrophy.combat.display.ui.MessageBox;
 import atrophy.combat.items.ArmourPlates1;
 import atrophy.combat.items.ArmourPlates2;
 import atrophy.combat.items.EngineeringSupply;
-import atrophy.combat.items.GrenadeItem;
-import atrophy.combat.items.HackTool;
 import atrophy.combat.items.Harpoon1;
 import atrophy.combat.items.Harpoon2;
 import atrophy.combat.items.Inventory;
 import atrophy.combat.items.Item;
-import atrophy.combat.items.KillTags;
 import atrophy.combat.items.LightStealthField;
 import atrophy.combat.items.MedicalSupply;
 import atrophy.combat.items.MediumStealthField;
@@ -53,100 +47,35 @@ import atrophy.combat.items.ScienceSupply;
 import atrophy.combat.items.SensorSuite;
 import atrophy.combat.items.Shotgun1;
 import atrophy.combat.items.SpeedBooster;
-import atrophy.combat.items.StunGrenadeItem;
 import atrophy.combat.items.UnarmedWeapon;
 import atrophy.combat.items.UnitDetector;
 import atrophy.combat.items.Weapon;
 import atrophy.combat.items.WeaponSupply;
 import atrophy.combat.items.WeldingTorch;
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class LootBox.
- */
 public class LootBox extends Crowd{
 	
-	/**
-	 * The Constant LOOT_BUTTON_SPACING.
-	 */
 	private static final int LOOT_BUTTON_SPACING = 35;
-	
-	/**
-	 * The Constant LOOTER_X.
-	 */
 	private static final int LOOTER_X = 10;
-	
-	/**
-	 * The Constant LOOTER_Y.
-	 */
 	private static final int LOOTER_Y = 10;
-	
-	/**
-	 * The Constant LOOTED_X.
-	 */
 	private static final int LOOTED_X = 320;
-	
-	/**
-	 * The Constant LOOTED_Y.
-	 */
 	private static final int LOOTED_Y = 10;
 	
-	/**
-	 * The looter buttons.
-	 */
 	private ArrayList<LootButton> looterButtons;
-	
-	/**
-	 * The looted buttons.
-	 */
 	private ArrayList<LootButton> lootedButtons;
-	
-	/**
-	 * The weapon loot buttons.
-	 */
 	private LootButton[] weaponLootButtons;
-	
-	/**
-	 * The loot link.
-	 */
 	private Lootable[] lootLink;
-	
-	/**
-	 * The loot text.
-	 */
 	private Text[] lootText; 
-	
-	/**
-	 * The skill text.
-	 */
 	private Text skillText;
-	
-	/**
-	 * The size.
-	 */
 	private final int [] size= {360,360};
-	
-	/**
-	 * The drag location.
-	 */
 	private int[] dragLocation;
-	
 	private Map<String, BufferedImage> images;
 	
-	/**
-	 * The mouse drag region.
-	 */
 	private ActionRegion mouseDragRegion;
-
 	private CombatUiManager combatUiManager;
-
 	private MessageBox messageBox;
-
 	private CartographerBox cartographerBox;
 	
-	/**
-	 * Instantiates a new loot box.
-	 */
 	public LootBox(CombatUiManager combatUiManager, MessageBox messageBox, CartographerBox cartographerBox){
 		super(true);
 		
@@ -214,15 +143,11 @@ public class LootBox extends Crowd{
 							  "images/atrophy/combat/ui/sensorSuite.png",
 							  "images/atrophy/combat/ui/sensorSuite.png",
 							  "images/atrophy/combat/ui/sensorSuite.png",
-							  "images/atrophy/combat/ui/sensorSuite.png",
 							  "images/atrophy/combat/ui/stealthModule.png",
 							  "images/atrophy/combat/ui/stealthModule.png",
-							  "images/atrophy/combat/ui/throwGrenade.png",
-							  "images/atrophy/combat/ui/throwStunGrenade.png",
 							  "images/atrophy/combat/ui/speedBooster.png",
 							  "images/atrophy/combat/ui/armour1.png",
 							  "images/atrophy/combat/ui/armour2.png",
-							  "images/atrophy/combat/ui/hackTool.png",
 							  "images/atrophy/combat/ui/engineeringSupply.png",
 							  "images/atrophy/combat/ui/scienceSupply.png",
 							  "images/atrophy/combat/ui/medicalSupply.png",
@@ -243,12 +168,10 @@ public class LootBox extends Crowd{
 			BufferedImage img;
 			
 			String[] names = {WeldingTorch.getInstance().getName(),ScienceScanner.getInstance().getName(),UnitDetector.getInstance().getName(),
-							  SensorSuite.getInstance().getName(), KillTags.getInstance().getName(),
+							  SensorSuite.getInstance().getName(),
 							  LightStealthField.getInstance().getName(),MediumStealthField.getInstance().getName(),
-							  GrenadeItem.getInstance().getName(), StunGrenadeItem.getInstance().getName(),
 							  SpeedBooster.getInstance().getName(),
 							  ArmourPlates1.getInstance().getName(), ArmourPlates2.getInstance().getName(),
-							  HackTool.getInstance().getName(),
 							  EngineeringSupply.NAME, ScienceSupply.NAME, MedicalSupply.NAME, WeaponSupply.NAME,
 							  Harpoon1.NAME, Harpoon2.NAME,
 							  Pistol1.NAME, Pistol2.NAME, Pistol3.NAME, Pistol4.NAME,
@@ -324,9 +247,6 @@ public class LootBox extends Crowd{
 		this.updateLocations();
 	}
 	
-	/**
-	 * Update locations.
-	 */
 	private void updateLocations() {
 		for(int i = 0; i < looterButtons.size(); i++){
 			looterButtons.get(i).setLocation(this.getLocation()[0] + LOOTER_X, this.getLocation()[1] + LOOTER_Y + i * LOOT_BUTTON_SPACING);
@@ -355,20 +275,12 @@ public class LootBox extends Crowd{
 		}
 	}
 	
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Crowd#drawMethod(java.awt.Graphics2D)
-	 */
 	@Override
 	public void drawMethod(Graphics2D drawShape) {
 		drawBackdrop(drawShape);
 		super.drawMethod(drawShape);
 	}
 	
-	/**
-	 * Draw backdrop.
-	 *
-	 * @param drawShape the draw shape
-	 */
 	private void drawBackdrop(Graphics2D drawShape) {
 		drawShape.setColor(Color.black);
 		drawShape.setComposite(GraphicsFunctions.makeComposite(0.8f));
@@ -389,13 +301,6 @@ public class LootBox extends Crowd{
 						   size[0] - 12,
 						   size[1] - 12);
 	}
-	
-	/**
-	 * Load loot display.
-	 *
-	 * @param looter the looter
-	 * @param looted the looted
-	 */
 	
 	public void loadLootDisplay(Lootable looter, Lootable looted){
 		loadLootDisplay(looter, looted, true);
@@ -447,9 +352,6 @@ public class LootBox extends Crowd{
 		
 	}
 	
-	/**
-	 * Load skill text.
-	 */
 	private void loadSkillText() {
 		this.skillText.setVisible(true);
 		
@@ -463,12 +365,6 @@ public class LootBox extends Crowd{
 		}
 	}
 
-	/**
-	 * Load inventory display.
-	 *
-	 * @param looter the looter
-	 * @param allowModification the allow modification
-	 */
 	public void loadInventoryDisplay(Lootable looter, boolean allowModification){
 		
 		this.closeLootUi(false);
@@ -503,27 +399,19 @@ public class LootBox extends Crowd{
 		SoundBoard.getInstance().playEffect("invOpen");
 	}
 	
-	/**
-	 * Toggle inventory display.
-	 *
-	 * @param looter the looter
-	 */
 	public void toggleInventoryDisplay(Lootable looter){
 		// menu open, so close
 		if(this.lootLink[0] == looter){
 			// update abilities
 			combatUiManager.updateUi();
 			
-			this.closeLootUi();
+			this.closeLootUi(true);
 		}
 		else{
 			this.loadInventoryDisplay(looter, true);
 		}
 	}
 	
-	/**
-	 * Reload loot display.
-	 */
 	private void reloadLootDisplay(){
 		
 		this.weaponLootButtons[0].setImage(images.get(this.lootLink[0].getWeapon().getName()));
@@ -559,9 +447,6 @@ public class LootBox extends Crowd{
 
 	}
 	
-	/**
-	 * Reload inventory display.
-	 */
 	private void reloadInventoryDisplay(){
 		
 		this.weaponLootButtons[0].setImage(images.get(this.lootLink[0].getWeapon().getName()));
@@ -585,21 +470,14 @@ public class LootBox extends Crowd{
 		this.weaponLootButtons[0].setVisible(true);
 	}
 	
-	
-	/**
-	 * Hide non loot ui.
-	 */
 	private void hideNonLootUi(){
 		combatUiManager.getActionsBar().setVisible(false);
 		messageBox.setVisible(false);
 		cartographerBox.setVisible(false);
 	}
 	
-	/**
-	 * Close loot ui.
-	 */
 	public void closeLootUi(){
-		closeLootUi(true);
+		closeLootUi(false);
 	}
 	
 	public void closeLootUi(boolean playSound){
@@ -628,12 +506,7 @@ public class LootBox extends Crowd{
 		this.setVisible(false);
 		
 	}
-	
-	/**
-	 * Loot interaction.
-	 *
-	 * @param code the code
-	 */
+
 	public void lootInteraction(int code){
 		
 		synchronized(this){
@@ -683,12 +556,6 @@ public class LootBox extends Crowd{
 		}
 	}
 	
-	/**
-	 * Gets the item at.
-	 *
-	 * @param code the code
-	 * @return the item at
-	 */
 	protected Item getItemAt(int code){
 		
 		synchronized(this){
@@ -707,57 +574,22 @@ public class LootBox extends Crowd{
 		}
 	}
 
-	/**
-	 * The Interface Lootable.
-	 */
 	public static interface Lootable{
 		
-		/**
-		 * Gets the weapon.
-		 *
-		 * @return the weapon
-		 */
 		public Weapon getWeapon();
-		
-		/**
-		 * Sets the weapon.
-		 *
-		 * @param weapon the new weapon
-		 */
 		public void setWeapon(Weapon weapon);
-		
-		/**
-		 * Gets the inventory.
-		 *
-		 * @return the inventory
-		 */
 		public Inventory getInventory();
-		
-		/**
-		 * Assign abilities.
-		 */
 		public void assignAbilities();
-		
-		/**
-		 * Adds the item.
-		 *
-		 * @param item the item
-		 */
 		public void addItem(Item item);
-		
-		/**
-		 * Gets the name.
-		 *
-		 * @return the name
-		 */
 		public String getName();
 	}
 
-	/**
-	 * Toggle lock.
-	 */
 	public void toggleLock() {
 		this.mouseDragRegion.setActive(!this.mouseDragRegion.isActive());
+	}
+
+	public boolean isLocked() {
+		return this.mouseDragRegion.isActive();
 	}
 	
 }

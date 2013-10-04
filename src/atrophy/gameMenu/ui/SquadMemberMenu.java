@@ -15,8 +15,8 @@ import java.util.Map;
 import watoydoEngine.designObjects.display.Text;
 import watoydoEngine.designObjects.display.TextButton;
 import watoydoEngine.fonts.FontList;
-import watoydoEngine.gubbinz.GraphicsFunctions;
 import watoydoEngine.sounds.SoundBoard;
+import watoydoEngine.utils.GraphicsFunctions;
 import atrophy.gameMenu.saveFile.Squad;
 import atrophy.gameMenu.saveFile.Squad.Squaddie;
 import atrophy.gameMenu.ui.popups.SkillPopup;
@@ -56,7 +56,7 @@ public class SquadMemberMenu extends Menu {
 	 * @param index the index
 	 */
 	public SquadMemberMenu(WindowManager windowManager, Squad squad, StashManager stashManager, int index){
-		super(windowManager, new double[]{375,240});
+		super(windowManager, new double[]{420,240});
 		
 		this.index = index;
 		this.squadMember = squad.getSquadMember(index);
@@ -92,7 +92,7 @@ public class SquadMemberMenu extends Menu {
 			
 			final String skillF = skillIt.next();
 			final int ind = i;
-			TextButton tb = new TextButton(Color.yellow, Color.red) {
+			TextButton tb = new TextButton(TextButton.DEFAULT_ON_COLOUR,TextButton.DEFAULT_OFF_COLOUR) {
 				
 				{
 					this.setLocation((int)this.getLocation()[0] + 160, (int)this.getLocation()[1] + 68 + 20 * ind);
@@ -127,7 +127,7 @@ public class SquadMemberMenu extends Menu {
 		
 		for(int i = 0; i < 5; i++){
 			final int ind = i;
-			TextButton tb = new TextButton(Color.yellow, Color.red) {
+			TextButton tb = new TextButton(TextButton.DEFAULT_ON_COLOUR,TextButton.DEFAULT_OFF_COLOUR) {
 				
 				private int index;
 				
@@ -145,9 +145,9 @@ public class SquadMemberMenu extends Menu {
 						stashManager.addItem(item);
 						squadMember.removeItem(ind);
 						SoundBoard.getInstance().playEffect("invExchange");
-						updateInformation();
 					}
 					this.setText("Empty");
+					updateInformation();
 					return true;
 				}
 			};
@@ -160,7 +160,7 @@ public class SquadMemberMenu extends Menu {
 		Text weaponTag = new Text((int)this.getLocation()[0] + 21, (int)this.getLocation()[1] + 201,"Weapon");
 		this.addDisplayItem(weaponTag);
 		
-		TextButton tb = new TextButton(Color.yellow, Color.red) {
+		TextButton tb = new TextButton(TextButton.DEFAULT_ON_COLOUR,TextButton.DEFAULT_OFF_COLOUR) {
 			
 			{
 				this.setLocation((int)this.getLocation()[0] + 21, (int)this.getLocation()[1] + 220);
@@ -187,7 +187,8 @@ public class SquadMemberMenu extends Menu {
 			updateInformation();
 			return true;
 		}
-			return super.mD(mousePosition, e);
+		
+		return super.mD(mousePosition, e);
 	}
 	
 	/* (non-Javadoc)
@@ -241,9 +242,6 @@ public class SquadMemberMenu extends Menu {
 		drawShape.drawString(squadMember.getName(), (int)this.getLocation()[0] + 20, (int)this.getLocation()[1] + 21);
 	}
 	
-	/* (non-Javadoc)
-	 * @see atrophy.gameMenu.ui.Menu#updateInformation()
-	 */
 	@Override
 	public void updateInformation() {
 		if(squad.getSquad().size() < this.index + 1){
@@ -251,6 +249,11 @@ public class SquadMemberMenu extends Menu {
 		}
 		this.squadMember = squad.getSquadMember(index);
 		updateText();
+	}
+	
+	@Override
+	public String[] getMenuInfo() {
+		return new String[]{"SquadMemberMenu",Integer.toString(this.index)};
 	}
 
 }

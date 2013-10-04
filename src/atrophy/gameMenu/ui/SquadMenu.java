@@ -1,6 +1,3 @@
-/*
- * 
- */
 package atrophy.gameMenu.ui;
 
 import java.awt.Color;
@@ -11,38 +8,27 @@ import java.awt.event.MouseEvent;
 import watoydoEngine.designObjects.display.Text;
 import watoydoEngine.designObjects.display.TextButton;
 import watoydoEngine.fonts.FontList;
-import watoydoEngine.gubbinz.GraphicsFunctions;
 import watoydoEngine.sounds.SoundBoard;
+import watoydoEngine.utils.GraphicsFunctions;
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.ai.MuleAi;
 import atrophy.combat.items.MeleeWeapon1;
 import atrophy.combat.items.UnarmedWeapon;
 import atrophy.gameMenu.saveFile.Squad;
-import atrophy.gameMenu.saveFile.TechTree;
 import atrophy.gameMenu.saveFile.Squad.Squaddie;
+import atrophy.gameMenu.saveFile.TechTree;
 
-/**
- * The Class SquadMenu.
- */
 public class SquadMenu extends Menu{
 
 	protected static final int MAX_SQUAD_COUNT = 3;
 	
-	/**
-	 * The squad.
-	 */
 	private Squad squad;
 	private ShopManager shopManager;
 	private StashManager stashManager;
 	private TechTree techTree;
 	
-	/**
-	 * Instantiates a new squad menu.
-	 * @param squad 
-	 * @param shopManager 
-	 */
 	public SquadMenu(WindowManager windowManager, ShopManager shopManager, StashManager stashManager, Squad squad, TechTree techTree){
-		super(windowManager, new double[]{300,460});
+		super(windowManager, new double[]{300,240});
 		
 		this.squad = squad;
 		this.shopManager = shopManager;
@@ -53,14 +39,11 @@ public class SquadMenu extends Menu{
 		updateInformation();
 	}
 
-	/**
-	 * Creates the squad components.
-	 */
 	private void createSquadComponents(final ShopManager shopManager, final StashManager stashManager) {
 		final int[] windowLocation = new int[]{(int) (this.getLocation()[0]),(int) (this.getLocation()[1])};
 		final int spacing = 20;
 		
-		TextButton stashOpen = new TextButton(Color.yellow, Color.red) {
+		TextButton stashOpen = new TextButton(TextButton.DEFAULT_ON_COLOUR,TextButton.DEFAULT_OFF_COLOUR) {
 			{
 				this.setText("Open Stash");
 				this.setLocation(windowLocation[0] + 21, windowLocation[1] + 40);
@@ -69,7 +52,7 @@ public class SquadMenu extends Menu{
 			@Override
 			public boolean mD(Point mousePosition, MouseEvent e) {
 				StashMenu menu = new StashMenu(windowManager, stashManager);
-				windowManager.addWindow(menu);
+				windowManager.addWindow(SquadMenu.this, menu);
 				SoundBoard.getInstance().playEffect("invOpen");
 				return true;
 			}
@@ -77,7 +60,7 @@ public class SquadMenu extends Menu{
 		this.addDisplayItem(stashOpen);
 		this.addMouseActionItem(stashOpen);
 		
-		TextButton openShop = new TextButton(Color.yellow, Color.red) {
+		TextButton openShop = new TextButton(TextButton.DEFAULT_ON_COLOUR,TextButton.DEFAULT_OFF_COLOUR) {
 			{
 				this.setText("Open Shop");
 				this.setLocation(windowLocation[0] + 21, windowLocation[1] + 60);
@@ -86,7 +69,7 @@ public class SquadMenu extends Menu{
 			@Override
 			public boolean mD(Point mousePosition, MouseEvent e) {
 				ShopMenu menu = new ShopMenu(windowManager, shopManager, stashManager);
-				windowManager.addWindow(menu);
+				windowManager.addWindow(SquadMenu.this, menu);
 				SoundBoard.getInstance().playEffect("invOpen");
 				return true;
 			}
@@ -94,7 +77,7 @@ public class SquadMenu extends Menu{
 		this.addDisplayItem(openShop);
 		this.addMouseActionItem(openShop);
 		
-		TextButton buySquaddie = new TextButton(Color.yellow, Color.red) {
+		TextButton buySquaddie = new TextButton(TextButton.DEFAULT_ON_COLOUR,TextButton.DEFAULT_OFF_COLOUR) {
 			{
 				int BUY_MEMBER_COST = 1400;
 				this.setText(FontList.digitString(5, squad.getAdvance()) + " *" + FontList.digitString(5, BUY_MEMBER_COST) + "   " + "Hire Squaddie");
@@ -114,9 +97,9 @@ public class SquadMenu extends Menu{
 		this.addDisplayItem(buySquaddie);
 		this.addMouseActionItem(buySquaddie);
 		
-		if(techTree.isResearched(TechTree.MULE)){
+		if(techTree.isResearched(TechTree.MULE, AiGenerator.LONER)){
 		
-			TextButton buyMule = new TextButton(Color.yellow, Color.red) {
+			TextButton buyMule = new TextButton(TextButton.DEFAULT_ON_COLOUR,TextButton.DEFAULT_OFF_COLOUR) {
 				{
 					int BUY_MEMBER_COST = 800;
 					this.setText(FontList.digitString(5, squad.getAdvance()) + " *" + FontList.digitString(5, BUY_MEMBER_COST) + "   " + "Buy Mule");
@@ -138,7 +121,7 @@ public class SquadMenu extends Menu{
 		
 		}
 		
-		Text squadListTag = new Text(windowLocation[0] + 21, windowLocation[1] + 121, "Squad Members");
+		Text squadListTag = new Text(windowLocation[0] + 21, windowLocation[1] + 121, "Squad Members (" + squad.getSquadCount() + "/" + MAX_SQUAD_COUNT + ")");
 		this.addDisplayItem(squadListTag);
 		
 		for(int i = 0; i < squad.getSquad().size(); i++){
@@ -161,7 +144,7 @@ public class SquadMenu extends Menu{
 //					};
 //				}
 //				else{
-					squaddieName = new TextButton(Color.yellow, Color.red) {
+					squaddieName = new TextButton(TextButton.DEFAULT_ON_COLOUR,TextButton.DEFAULT_OFF_COLOUR) {
 						
 						private int squadIndex = index;
 						
@@ -174,7 +157,7 @@ public class SquadMenu extends Menu{
 						@Override
 						public boolean mD(Point mousePosition, MouseEvent e) {
 							SquadMemberMenu menu = new SquadMemberMenu(windowManager, squad, stashManager, index);
-							windowManager.addWindow(menu);
+							windowManager.addWindow(SquadMenu.this, menu);
 							SoundBoard.getInstance().playEffect("invOpen");
 							return true;
 						}
@@ -200,15 +183,17 @@ public class SquadMenu extends Menu{
 		drawShape.drawString("Squad Menu", (int)this.getLocation()[0] + 20, (int)this.getLocation()[1] + 21);
 	}
 	
-	/* (non-Javadoc)
-	 * @see atrophy.gameMenu.ui.Menu#updateInformation()
-	 */
 	@Override
 	public void updateInformation() {
 		this.getDisplayList().clear();
 		this.getMouseActionList().clear();
 		
 		this.createSquadComponents(shopManager, stashManager);
+	}
+	
+	@Override
+	public String[] getMenuInfo() {
+		return new String[]{"SquadMenu"};
 	}
 	
 }

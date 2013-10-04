@@ -1,6 +1,3 @@
-/*
- * 
- */
 package atrophy.gameMenu.saveFile;
 
 import java.io.File;
@@ -13,90 +10,41 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Set;
 
+import atrophy.combat.ai.AiGenerator;
 import atrophy.gameMenu.saveFile.MapManager.Sector;
 import atrophy.gameMenu.ui.ShopManager;
 import atrophy.gameMenu.ui.StashManager;
 import atrophy.gameMenu.ui.WindowManager;
 
-/**
- * The Class SaveFile.
- */
 public class SaveFile implements Serializable{
 
 	public static String saveLocation = "";
-	
-	/**
-	 * The Constant serialVersionUID.
-	 */
-	private static final long serialVersionUID = -9063488604100773309L;
-	
-	/**
-	 * The squad.
-	 */
 	public Squad squad;
-	
-	/**
-	 * The sectors.
-	 */
 	public ArrayList<Sector> sectors;
-	
-	/**
-	 * The stash.
-	 */
 	public ArrayList<String> stash;
-	
-	/**
-	 * The quests.
-	 */
-	public ArrayList<MissionGiver> quests;
-	
-	/**
-	 * The economy effects.
-	 */
-	public ArrayList<String> economyEffects;
-	
-	/**
-	 * The advance.
-	 */
 	public Integer advance;
-	
-	/**
-	 * The shop item level.
-	 */
-	public TechTree techTree;
-	
+	public Double whiteVistaRelation, banditRelation;
 	public Set<String> spawnCodes;
-	
 	public String saveURL;
+	public FactionMissionPlanner wvResearchAi, banditsResearchAi;
 	
-	/**
-	 * Instantiates a new save file.
-	 *
-	 * @param squad the squad
-	 * @param sectors the sectors
-	 * @param stash the stash
-	 */
-	public SaveFile(Squad squad, Missions missions, ArrayList<Sector> sectors, ArrayList<String> stash, TechTree techTree, Set<String> spawnCodes) {
+	public SaveFile(Squad squad, Missions missions, ArrayList<Sector> sectors, ArrayList<String> stash, TechTree techTree, Set<String> spawnCodes, WindowManager windowManager) {
 		this.advance = squad.getAdvance();
 		this.squad = squad;
 		this.sectors = sectors;
 		this.stash = stash;
-		this.economyEffects = missions.getEconomyEffects();
-		this.techTree = techTree;
 		this.spawnCodes = spawnCodes;
+		this.whiteVistaRelation = 1.0;
+		this.banditRelation = -1.0;
+		this.wvResearchAi = missions.getPlanner(AiGenerator.WHITE_VISTA);
+		this.banditsResearchAi = missions.getPlanner(AiGenerator.BANDITS);
+		squad.createWindowLayout(windowManager);
 	}
-
-	/**
-	 * Save game.
-	 *
-	 * @param file the file
-	 * @param squad the squad
-	 * @param sectors the sectors
-	 * @param stash the stash
-	 */
-	public static void saveGame(File file, Squad squad, Missions missions, ArrayList<Sector> sectors, ArrayList<String> stash, TechTree techTree, Set<String> spawnCodes){
-		SaveFile save = new SaveFile(squad,missions,sectors,stash,techTree,spawnCodes);
-		
+	
+	public static void saveGame(File file, Squad squad, Missions missions, ArrayList<Sector> sectors, ArrayList<String> stash, TechTree techTree, Set<String> spawnCodes, WindowManager windowManager){
+		SaveFile save = new SaveFile(squad,missions,sectors,stash,techTree,spawnCodes, windowManager);
+		save.whiteVistaRelation = squad.getFactionRelation(AiGenerator.WHITE_VISTA);
+		save.banditRelation = squad.getFactionRelation(AiGenerator.BANDITS);
 		save.saveURL = file.getAbsolutePath();
 		
 		ObjectOutputStream stream = null;
@@ -119,19 +67,7 @@ public class SaveFile implements Serializable{
 		}	
 	}
 	
-	/**
-	 * Load game.
-	 *
-	 * @param file the file
-	 * @param stashManager 
-	 * @param mapWar 
-	 * @param squadMenu 
-	 * @param shopManager 
-	 * @param missions 
-	 * @param windowManager 
-	 * @return 
-	 */
-	public static Squad loadGame(File file, StashManager stashManager, MapManager mapWar, ShopManager shopManager, Missions missions, WindowManager windowManager) {
+	public static Squad loadGame(File file, StashManager stashManager, MapManager mapWar, ShopManager shopManager, Missions missions, WindowManager windowManager, ItemMarket itemMarket) {
 		
 		SaveFile save = null;
 		
@@ -156,20 +92,22 @@ public class SaveFile implements Serializable{
 		if(save != null){
 			
 			//Delete save file
-			file.delete();
+//			file.delete();
 			
 			stashManager.setItems(save.stash);
 			mapWar.setSectors(save.sectors);
+			itemMarket.lazyLoad(save.squad.getTechTree());
 			shopManager.randomItems();
-			missions.setEconomyEffects(save.economyEffects);
-//			TechTree.setInstance(save.techTree);
-			windowManager.updateWindows();
+			save.banditsResearchAi.loadFromSerialized(windowManager);
+			save.wvResearchAi.loadFromSerialized(windowManager);
+			missions.setResearchAi(save.banditsResearchAi, save.wvResearchAi);
 			missions.setMemCodes(save.spawnCodes);
 			
 			// set advance to true value
 			save.squad.setAdvance(save.advance);
-			
+			save.squad.setFactionRelations(save.whiteVistaRelation, save.banditRelation);
 			SaveFile.saveLocation = save.saveURL;
+			windowManager.updateWindows();
 		}
 		
 		return save.squad;

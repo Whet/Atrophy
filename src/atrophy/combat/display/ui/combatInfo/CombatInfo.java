@@ -9,6 +9,7 @@ import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
+import watoydoEngine.designObjects.display.AbstractButton;
 import watoydoEngine.designObjects.display.ButtonMulti;
 import watoydoEngine.designObjects.display.Crowd;
 import watoydoEngine.designObjects.display.ImageSingle;
@@ -16,11 +17,13 @@ import watoydoEngine.designObjects.display.Text;
 import watoydoEngine.fonts.FontList;
 import watoydoEngine.io.ReadWriter;
 import watoydoEngine.workings.DisplayManager;
+import watoydoEngine.workings.displayActivity.ActivePane;
 import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.display.ui.FloatingIcons;
 import atrophy.combat.items.Weapon;
+import atrophy.combat.mechanics.TurnProcess;
 
 
 // TODO: Auto-generated Javadoc
@@ -50,6 +53,8 @@ public class CombatInfo extends Crowd {
 	private ButtonMulti combatButtons[];
 
 	private CombatMembersManager combatMembersManager;
+
+	private EndTurnButton endTurnButton;
 	
 	
 	// handles counter at bottom right fo screen with target info
@@ -59,8 +64,9 @@ public class CombatInfo extends Crowd {
 	 * @param combatUiManager 
 	 * @param floatingIcons 
 	 * @param combatVisualManager 
+	 * @param turnProcess 
 	 */
-	public CombatInfo(CombatMembersManager combatMembersManager, CombatUiManager combatUiManager, FloatingIcons floatingIcons, CombatVisualManager combatVisualManager){
+	public CombatInfo(CombatMembersManager combatMembersManager, CombatUiManager combatUiManager, FloatingIcons floatingIcons, CombatVisualManager combatVisualManager, TurnProcess turnProcess){
 		super(true);
 		
 		this.combatMembersManager = combatMembersManager;
@@ -69,7 +75,7 @@ public class CombatInfo extends Crowd {
 		ImageSingle combatBack = null;
 		
 		try{
-			combatBack = new ImageSingle("CombatInfoBackground",ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/combatInfo.png")));
+			combatBack = new ImageSingle(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/combatInfo.png")));
 			this.addDisplayItem(combatBack);
 			
 			// add swing counter and ammo counter text
@@ -101,50 +107,56 @@ public class CombatInfo extends Crowd {
 			
 			combatButtons[0] = new IndividualLOSToggle(combatVisualManager, combatUiManager, radioSilenceIcons);
 			
-			combatButtons[0].setLocation(DisplayManager.getInstance().getResolution()[0] - 40,
-								 		 DisplayManager.getInstance().getResolution()[1] - 170);
+			combatButtons[0].setLocation(DisplayManager.getInstance().getResolution()[0] - 40, 240);
 			
 			this.addButton(combatButtons[0]);
 			
-			BufferedImage[] drawFovIcons = {ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/fovEnabled.png")),
-					 						ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/fovDisabled.png"))};
-
-			combatButtons[1] = new DrawFovToggle(combatVisualManager, combatUiManager, drawFovIcons);
-			
-			combatButtons[1].setLocation(DisplayManager.getInstance().getResolution()[0] - 40,
-				 		 				 DisplayManager.getInstance().getResolution()[1] - 210);
-			
-			this.addButton(combatButtons[1]);
-			
-			BufferedImage[] drawObjLines = {ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/objLineDisabled.png")),
-					                        ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/objLineEnabled.png"))};
-
-			combatButtons[2] = new DrawObjLineToggle(combatVisualManager, combatUiManager, drawObjLines);
-			
-			combatButtons[2].setLocation(DisplayManager.getInstance().getResolution()[0] - 40,
-				 		 				 DisplayManager.getInstance().getResolution()[1] - 250);
-			
-			this.addButton(combatButtons[2]);
-			
-			BufferedImage[] drawDoors = {ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/doorsEnabled.png")),
-										 ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/doorsDisabled.png"))};
-
-			combatButtons[3] = new DrawDoorToggle(floatingIcons, combatUiManager, drawDoors);
-			
-			combatButtons[3].setLocation(DisplayManager.getInstance().getResolution()[0] - 40,
-										 DisplayManager.getInstance().getResolution()[1] - 290);
-			
-			this.addButton(combatButtons[3]);
+//			BufferedImage[] drawFovIcons = {ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/fovEnabled.png")),
+//					 						ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/fovDisabled.png"))};
+//
+//			combatButtons[1] = new DrawFovToggle(combatVisualManager, combatUiManager, drawFovIcons);
+//			
+//			combatButtons[1].setLocation(DisplayManager.getInstance().getResolution()[0] - 40,
+//				 		 				 DisplayManager.getInstance().getResolution()[1] - 210);
+//			
+//			this.addButton(combatButtons[1]);
+//			
+//			BufferedImage[] drawObjLines = {ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/objLineDisabled.png")),
+//					                        ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/objLineEnabled.png"))};
+//
+//			combatButtons[2] = new DrawObjLineToggle(combatVisualManager, combatUiManager, drawObjLines);
+//			
+//			combatButtons[2].setLocation(DisplayManager.getInstance().getResolution()[0] - 40,
+//				 		 				 DisplayManager.getInstance().getResolution()[1] - 250);
+//			
+//			this.addButton(combatButtons[2]);
+//			
+//			BufferedImage[] drawDoors = {ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/doorsEnabled.png")),
+//										 ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/doorsDisabled.png"))};
+//
+//			combatButtons[3] = new DrawDoorToggle(floatingIcons, combatUiManager, drawDoors);
+//			
+//			combatButtons[3].setLocation(DisplayManager.getInstance().getResolution()[0] - 40,
+//										 DisplayManager.getInstance().getResolution()[1] - 290);
+//			
+//			this.addButton(combatButtons[3]);
 			
 			BufferedImage[] drawMiniMap = {ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/miniMapEnabled.png")),
                     					   ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/miniMapDisabled.png"))};
 
 			combatButtons[4] = new MiniMapVisibleToggle(combatUiManager, drawMiniMap);
 			
-			combatButtons[4].setLocation(DisplayManager.getInstance().getResolution()[0] - 40,
-										 DisplayManager.getInstance().getResolution()[1] - 330);
+			combatButtons[4].setLocation(DisplayManager.getInstance().getResolution()[0] - 40, 200);
 			
 			this.addButton(combatButtons[4]);
+			
+			BufferedImage[] endTurnImages = {ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/endTurnButton.png")),
+											 ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/endTurnButtonOn.png"))};
+
+			
+			endTurnButton = new EndTurnButton(endTurnImages, turnProcess);
+			endTurnButton.setLocation(DisplayManager.getInstance().getResolution()[0] / 2 - endTurnButton.getSize()[0] / 2, ActivePane.getInstance().getInsets().top);
+			this.addButton(endTurnButton);
 		}
 		catch(IOException ioExcept){
 			System.err.println("Could not load combatinfo image. Terminating.");
@@ -223,6 +235,10 @@ public class CombatInfo extends Crowd {
 	 */
 	public Text getSwingText(){
 		return this.swingText;
+	}
+
+	public AbstractButton getTurnButton() {
+		return this.endTurnButton;
 	}
 	
 }

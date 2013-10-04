@@ -1,48 +1,19 @@
-/*
- * 
- */
 package atrophy.combat.items;
 
-/**
- * The Class Item.
- */
 public abstract class Item {
 	
-	/**
-	 * The name.
-	 */
 	private String name;
-	
-	/**
-	 * The description.
-	 */
 	private String description;
 	
-	/**
-	 * Instantiates a new item.
-	 *
-	 * @param name the name
-	 * @param description the description
-	 */
 	protected Item(String name, String description){
 		this.name= name;
 		this.description = description;
 	}
 	
-	/**
-	 * Gets the name.
-	 *
-	 * @return the name
-	 */
 	public String getName(){
 		return this.name;
 	}
 	
-	/**
-	 * Gets the description.
-	 *
-	 * @return the description
-	 */
 	public String getDescription(){
 		return this.description;
 	}
@@ -53,8 +24,6 @@ public abstract class Item {
 				return ArmourPlates1.getInstance();
 			case ArmourPlates2.NAME:
 				return ArmourPlates2.getInstance();
-			case GrenadeItem.NAME:
-				return GrenadeItem.getInstance();
 			case LightStealthField.NAME:
 				return LightStealthField.getInstance();
 			case MediumStealthField.NAME:
@@ -65,14 +34,10 @@ public abstract class Item {
 				return SensorSuite.getInstance();
 			case SpeedBooster.NAME:
 				return SpeedBooster.getInstance();
-			case StunGrenadeItem.NAME:
-				return StunGrenadeItem.getInstance();
 			case UnitDetector.NAME:
 				return UnitDetector.getInstance();
 			case WeldingTorch.NAME:
 				return WeldingTorch.getInstance();
-			case KillTags.NAME:
-				return KillTags.getInstance();
 			case WeaponSupply.NAME:
 				return WeaponSupply.getInstance();
 			case EngineeringSupply.NAME:
@@ -83,6 +48,25 @@ public abstract class Item {
 				return ScienceSupply.getInstance();
 		}
 		return null;
+	}
+
+	public static boolean isItem(String item){
+		if(item.equals(ArmourPlates1.NAME) ||
+			item.equals(ArmourPlates2.NAME) ||
+			item.equals(LightStealthField.NAME) ||
+			item.equals(MediumStealthField.NAME) ||
+			item.equals(ScienceScanner.NAME) ||
+			item.equals(SensorSuite.NAME) ||
+			item.equals(SpeedBooster.NAME) ||
+			item.equals(UnitDetector.NAME) ||
+			item.equals(WeldingTorch.NAME) ||
+			item.equals(WeaponSupply.NAME) ||
+			item.equals(EngineeringSupply.NAME) ||
+			item.equals(MedicalSupply.NAME) ||
+			item.equals(ScienceSupply.NAME)) {
+			return true;
+		}
+		return false;
 	}
 	
 }

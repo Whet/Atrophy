@@ -10,6 +10,7 @@ import java.util.Map;
 import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.ai.Ai;
+import atrophy.combat.ai.TalkNode;
 import atrophy.combat.ai.ThinkingAi;
 import atrophy.combat.ai.ThinkingAiEmotion;
 import atrophy.combat.ai.conversation.ChatterBox;
@@ -17,6 +18,7 @@ import atrophy.combat.ai.conversation.Dialogue;
 import atrophy.combat.ai.conversation.Topic;
 import atrophy.combat.display.ui.MessageBox.SpeechOption;
 import atrophy.combat.level.LevelBlock;
+import atrophy.combat.mechanics.Abilities;
 import atrophy.combat.mechanics.ScoringMechanics;
 
 public class MessageManager{
@@ -30,26 +32,16 @@ public class MessageManager{
 	public static final String TOPIC_STEAL = "Steal";
 	public static final String TOPIC_JOIN = "Recruit";
 	
+	public static final String INV_KILLER = "Identify Killer";
+	public static final String INV_WEAPON = "Cause of Death";
+	public static final String INV_ROOM = "Identify Location";
+	public static final String INV_TOD = "Time of Death";
+	
 	private Map<String, Topic> nameToTopic = new HashMap<>();;
 	
-	/**
-	 * The topics.
-	 */
 	private ArrayList<String> topics;
-	
-	/**
-	 * The tone.
-	 */
 	private int tone;
-	
-	/**
-	 * The intimidated.
-	 */
 	private boolean intimidated;
-	
-	/**
-	 * The thinking ai initiated.
-	 */
 	private boolean thinkingAiInitiated;
 
 	private MessageBox messageBox;
@@ -57,9 +49,6 @@ public class MessageManager{
 	private Cartographer cartographer;
 	private CombatVisualManager combatVisualManager;
 	
-	/**
-	 * Instantiates a new message manager.
-	 */
 	public MessageManager(MessageBox messageBox, CombatMembersManager combatMembersManager, CombatVisualManager combatVisualManager, Cartographer cartographer){
 		this.messageBox = messageBox;
 		this.combatMembersManager = combatMembersManager;
@@ -86,11 +75,6 @@ public class MessageManager{
 		nameToTopic.put("Give Items", Topic.GIVE_ITEMS);
 	}
 
-	/**
-	 * Trigger topic.
-	 *
-	 * @param topicNumber the topic number
-	 */
 	public void triggerTopic(int topicNumber) {
 		String topicString = topics.get(topicNumber);
 		Topic topic = nameToTopic.get(topicString);
@@ -101,18 +85,18 @@ public class MessageManager{
 			this.topicAction(topic);
 	}
 
-	/**
-	 * Load topics.
-	 *
-	 * @param ai1 the ai1
-	 * @param ai2 the ai2
-	 */
 	public void loadTopics(Ai ai1, Ai ai2) {
 		resetTopics();
 		
+		if(ai2.isDead()) {
+			setInvestigationButtons();
+			thinkingAiInitiated = false;
+			return;
+		}
+		
 		greetingTopic();
 		
-		intimidated = false;
+		intimidated = ai2.getStunnedTurns() > 0;
 		
 		if(ai1.getFaction().equals(ai2.getFaction())){
 			tone = -2;
@@ -135,25 +119,76 @@ public class MessageManager{
 		thinkingAiInitiated = false;
 	}
 	
-	/**
-	 * Load dialogue.
-	 *
-	 * @param dialogue the dialogue
-	 */
+	private void setInvestigationButtons() {
+		this.topics.add(INV_KILLER);
+		this.topics.add(INV_ROOM);
+		this.topics.add(INV_TOD);
+		this.topics.add(INV_WEAPON);
+		this.topics.add(TOPIC_EXIT);
+		setTopicButtons();
+	}
+	
+	private void investigationReply(String topic) {
+		switch(topic) {
+			case INV_KILLER:
+				messageBox.addMessage(messageBox.getConversers()[1].getDeathReport().getKillerInformation(messageBox.getConversers()[0].getSkillLevel(Abilities.INVESTIGATE)));
+			break;
+			case INV_ROOM:
+				messageBox.addMessage(messageBox.getConversers()[1].getDeathReport().getRoomInformation(messageBox.getConversers()[0].getSkillLevel(Abilities.INVESTIGATE)));
+			break;
+			case INV_TOD:
+				messageBox.addMessage(messageBox.getConversers()[1].getDeathReport().getTODInformation(messageBox.getConversers()[0].getSkillLevel(Abilities.INVESTIGATE)));
+			break;
+			case INV_WEAPON:
+				messageBox.addMessage(messageBox.getConversers()[1].getDeathReport().getWeaponInformation(messageBox.getConversers()[0].getSkillLevel(Abilities.INVESTIGATE)));
+			break;
+		}
+	}
+
+	public void loadTalkNode(TalkNode talkNode) {
+		this.resetTopics();
+		
+		List<Dialogue> dialogues = talkNode.getDialogues();
+		
+		Dialogue initiatorDialogue = talkNode.getInitiatorDialogue();
+		
+		if(initiatorDialogue != null)
+			messageBox.addMessage(talkNode.getName() + ": " + initiatorDialogue.openingLine);
+		
+		for(Dialogue dialogue: dialogues) {
+		
+			// Add long speech setters
+			Iterator<String> speechIt = dialogue.longSpeeches.keySet().iterator();
+			while(speechIt.hasNext()){
+				String next = speechIt.next();
+				
+				if(dialogue.requirementsMet(dialogue.longSpeeches.get(next)[1], messageBox.getConversers()[0]))
+					this.topics.add(next);
+			}
+			for(int i = 0; i < dialogue.options.length; i++){
+				this.topics.add(dialogue.options[i]);
+			}
+		}
+		
+		this.setTopicButtons();
+		
+	}
+	
 	public void loadDialogue(Dialogue dialogue) {
 		resetTopics();
 		
 		intimidated = false;
 		this.tone = 0;
 		
-		messageBox.addMessage(messageBox.getConversers()[1].getName() + ": " +dialogue.openingLine);
+		messageBox.addMessage(messageBox.getConversers()[1].getName() + ": " + dialogue.openingLine);
 
 		// Add long speech setters
 		Iterator<String> speechIt = dialogue.longSpeeches.keySet().iterator();
 		while(speechIt.hasNext()){
 			String next = speechIt.next();
 			
-			this.topics.add(next);
+			if(dialogue.requirementsMet(dialogue.longSpeeches.get(next)[1], messageBox.getConversers()[0]))
+				this.topics.add(next);
 		}
 		
 		for(int i = 0; i < dialogue.options.length; i++){
@@ -164,18 +199,12 @@ public class MessageManager{
 		thinkingAiInitiated = true;
 	}
 
-	/**
-	 * Sets the topic buttons.
-	 */
 	private void setTopicButtons() {
 		for(String topic : this.topics){
 			messageBox.addTextOption(topic);
 		}
 	}
 	
-	/**
-	 * Reset topics.
-	 */
 	public void resetTopics(){
 		this.topics.clear();
 		for(SpeechOption text : messageBox.textOptions){
@@ -184,17 +213,20 @@ public class MessageManager{
 		}
 	}
 
-	/**
-	 * Greeting topic.
-	 */
 	private void greetingTopic() {
 		this.topics.add(TOPIC_HELLO);
 		this.topics.add(TOPIC_EXIT);
 	}
 
 	private void topicAction(String topic){
-		if(thinkingAiInitiated){
+		if(messageBox.getTalkNode() != null) {
+			talkNodeAction(topic);
+		}
+		else if(thinkingAiInitiated){
 			playerResponseAction(topic);
+		}
+		else if(messageBox.getConversers()[1].isDead()) {
+			investigationReply(topic);
 		}
 		else{	
 			longSpeechAction(topic);
@@ -202,6 +234,74 @@ public class MessageManager{
 		}
 	}
 	
+	private void talkNodeAction(String topic) {
+
+		resetTopics();
+		
+		List<Dialogue> dialogues = messageBox.getTalkNode().getDialogues();
+
+		String speech;
+		
+		boolean noDia = true;
+
+		for(Dialogue dialogue: dialogues) {
+		
+			Iterator<String> speechIt = dialogue.longSpeeches.keySet().iterator();
+	
+			while(speechIt.hasNext()){
+				String next = speechIt.next();
+	
+				if(next.equals(topic)){
+	
+					dialogue.setLongSpeech(next);
+					speech = dialogue.nextSpeechDialogue();
+	
+					// if the next speech text is a trigger then skip to next speech segment until text is reached
+					while(dialogue.checkTriggers(dialogue, speech, messageBox)){
+						speech = dialogue.nextSpeechDialogue();
+					}
+					
+					// Update dialogue in case stage changes
+					if(!messageBox.getTalkNode().getDialogues().contains(dialogue)) {
+						// Reset longspeechpoints if dialogue changes
+						dialogue.longSpeechPoint = 0;
+						for(Dialogue updDialogue: messageBox.getTalkNode().getDialogues()) {
+							updDialogue.longSpeechPoint = 0;
+						}
+					}
+					
+					messageBox.addMessage(messageBox.getTalkNode().getName() + ": " + speech);
+					noDia = false;
+					break;
+				}
+				
+			}
+			
+//			If the player talks on another dialogue this will reset the longpoint of the first dialogue
+			if(noDia)
+				dialogue.longSpeechPoint = 0;
+		}
+		
+		dialogues = messageBox.getTalkNode().getDialogues();
+		
+		for (Dialogue dialogue : dialogues) {
+
+			Iterator<String> speechIt = dialogue.longSpeeches.keySet().iterator();
+			
+			while(speechIt.hasNext()){
+				String next = speechIt.next();
+				if(dialogue.requirementsMet(dialogue.longSpeeches.get(next)[1], messageBox.getConversers()[0]))
+					this.topics.add(next);
+			
+			}
+			for(String textOption : dialogue.options){
+				this.topics.add(textOption);
+			}
+		}
+		
+		setTopicButtons();
+	}
+
 	private void playerResponseAction(String topic){
 		resetTopics();
 		
@@ -219,7 +319,7 @@ public class MessageManager{
 				speech = dialogue.nextSpeechDialogue();
 
 				// if the next speech text is a trigger then skip to next speech segment until text is reached
-				while(dialogue.checkTriggers(speech, messageBox)){
+				while(dialogue.checkTriggers(dialogue, speech, messageBox)){
 					speech = dialogue.nextSpeechDialogue();
 				}
 
@@ -228,6 +328,15 @@ public class MessageManager{
 				break;
 			}
 		}
+		
+		// Update dialogue in case stage changes
+		if(dialogue != ((ThinkingAi) messageBox.getConversers()[1]).getAiNode().getInitiatorDialogue()) {
+			// Reset longspeechpoints if dialogue changes
+			dialogue.longSpeechPoint = 0;
+			((ThinkingAi) messageBox.getConversers()[1]).getAiNode().getInitiatorDialogue().longSpeechPoint = 0;
+		}
+		
+		dialogue = ((ThinkingAi) messageBox.getConversers()[1]).getAiNode().getInitiatorDialogue();
 		
 		// Add long speech setters and dialogue topics
 		speechIt = dialogue.longSpeeches.keySet().iterator();
@@ -249,11 +358,13 @@ public class MessageManager{
 
 		resetTopics();
 		
-		List<Dialogue> dialogues = ((ThinkingAi) messageBox.getConversers()[1]).getAiNode().getTopics();
+		List<Dialogue> dialogues = ((ThinkingAi) messageBox.getConversers()[1]).getAiNode().getTopic();
 
 		String speech;
 
-		for(Dialogue dialogue : dialogues){
+		boolean noDia = true;
+		
+		for(Dialogue dialogue: dialogues) {
 		
 			Iterator<String> speechIt = dialogue.longSpeeches.keySet().iterator();
 	
@@ -265,23 +376,32 @@ public class MessageManager{
 					speech = dialogue.nextSpeechDialogue();
 	
 					// if the next speech text is a trigger then skip to next speech segment until text is reached
-					while(dialogue.checkTriggers(speech, messageBox)){
+					while(dialogue.checkTriggers(dialogue, speech, messageBox)){
 						speech = dialogue.nextSpeechDialogue();
 					}
-	
+					
+					// Update dialogue in case stage changes
+					if(!((ThinkingAi) messageBox.getConversers()[1]).getAiNode().getTopic().contains(dialogue)) {
+						// Reset longspeechpoints if dialogue changes
+						dialogue.longSpeechPoint = 0;
+						for(Dialogue updDialogue: ((ThinkingAi) messageBox.getConversers()[1]).getAiNode().getTopic()) {
+							updDialogue.longSpeechPoint = 0;
+						}
+					}
+					
 					messageBox.addMessage(messageBox.getConversers()[1].getName() + ": " + speech);
-	
-					return;
+					noDia = false;
+					break;
 				}
+				
 			}
+			
+			// If the player talks on another dialogue this will reset the longpoint of the first dialogue
+			if(noDia)
+				dialogue.longSpeechPoint = 0;
 		}
 	}
 	
-	/**
-	 * Topic action.
-	 *
-	 * @param topic the topic
-	 */
 	private void topicAction(Topic topic) {
 		resetTopics();
 		
@@ -289,13 +409,9 @@ public class MessageManager{
 		
 		if(!topicReaction(topic)){
 			
-			if(messageBox.getConversers()[1] != null && ((ThinkingAi) messageBox.getConversers()[1]).getAiNode() != null &&
-			  ((ThinkingAi) messageBox.getConversers()[1]).getAiNode().hasDialogue())
-//				((ThinkingAi) messageBox.getConversers()[1]).getAiNode().getDialogue().longSpeechPoint = 0;
-			
 			// If ai started the convo then state their turn is ended
 			if(thinkingAiInitiated && messageBox.getConversers()[1] != null){
-				((ThinkingAi) messageBox.getConversers()[1]).getAiNode().finish(((ThinkingAi) messageBox.getConversers()[1]));
+				((ThinkingAi) messageBox.getConversers()[1]).finish();
 			}
 			
 			return;
@@ -329,7 +445,8 @@ public class MessageManager{
 
 			String next = speechIt.next();
 
-			this.topics.add(next);
+			if(dialogue.requirementsMet(dialogue.longSpeeches.get(next)[1], messageBox.getConversers()[0]))
+				this.topics.add(next);
 		}
 
 		for(int i = 0; i < dialogue.options.length; i++){
@@ -339,12 +456,6 @@ public class MessageManager{
 		setTopicButtons();
 	}
 	
-	/**
-	 * Topic reaction.
-	 *
-	 * @param topic the topic
-	 * @return true, if successful
-	 */
 	private boolean topicReaction(Topic topic) {
 		switch(topic){
 			case SHOW_ENEMIES:
@@ -384,9 +495,9 @@ public class MessageManager{
 				// if the initiator isn't visible and a minor check
 				// if visible and a big check
 				if(((ThinkingAi) messageBox.getConversers()[1]).getAggression() < ThinkingAiEmotion.MINDLESS_TERROR && (
-				   (!combatVisualManager.isAiInSight(messageBox.getConversers()[0], messageBox.getConversers()[1].getFaction()) && 
+				   (!combatVisualManager.isAiInSight(messageBox.getConversers()[1], messageBox.getConversers()[0], messageBox.getConversers()[1].getFaction()) && 
 				   ScoringMechanics.weakIntimidateCheck(messageBox.getConversers()[0], messageBox.getConversers()[1], combatMembersManager)) ||
-				   (combatVisualManager.isAiInSight(messageBox.getConversers()[0], messageBox.getConversers()[1].getFaction()) &&
+				   (combatVisualManager.isAiInSight(messageBox.getConversers()[1], messageBox.getConversers()[0], messageBox.getConversers()[1].getFaction()) &&
 				   ScoringMechanics.strongIntimidateCheck(messageBox.getConversers()[0], messageBox.getConversers()[1], combatMembersManager) ))){
 					
 					messageBox.addMessage(ChatterBox.message(messageBox.getConversers()[1].getName(), Topic.INCAP_REACTION, -1));
@@ -411,9 +522,9 @@ public class MessageManager{
 				// if visible and a big check
 				if(((ThinkingAi) messageBox.getConversers()[1]).getAggression() < ThinkingAiEmotion.MINDLESS_TERROR &&
 				    (intimidated || messageBox.getConversers()[1].getIncapTurns() > 0 ||
-				    (!combatVisualManager.isAiInSight(messageBox.getConversers()[0], messageBox.getConversers()[1].getFaction()) && 
+				    (!combatVisualManager.isAiInSight(messageBox.getConversers()[1], messageBox.getConversers()[0], messageBox.getConversers()[1].getFaction()) && 
 				    ScoringMechanics.weakIntimidateCheck(messageBox.getConversers()[0], messageBox.getConversers()[1], combatMembersManager)) ||
-				    (combatVisualManager.isAiInSight(messageBox.getConversers()[0], messageBox.getConversers()[1].getFaction()) &&
+				    (combatVisualManager.isAiInSight(messageBox.getConversers()[1], messageBox.getConversers()[0], messageBox.getConversers()[1].getFaction()) &&
 				    ScoringMechanics.strongIntimidateCheck(messageBox.getConversers()[0], messageBox.getConversers()[1], combatMembersManager) ))){
 					
 					messageBox.addMessage(ChatterBox.message(messageBox.getConversers()[1].getName(), Topic.INCAP_REACTION, -1));
@@ -492,26 +603,21 @@ public class MessageManager{
 		return true;
 	}
 
-	/**
-	 * Base topics.
-	 */
 	private void baseTopics() {
 		// node topics
 		if(((ThinkingAi) messageBox.getConversers()[1]).getAiNode() != null &&
 		   ((ThinkingAi) messageBox.getConversers()[1]).getAiNode().hasTopics()){
 			
-			List<Dialogue> topics = ((ThinkingAi) messageBox.getConversers()[1]).getAiNode().getTopics();
+			List<Dialogue> dialogues = ((ThinkingAi) messageBox.getConversers()[1]).getAiNode().getTopic();
 			
-			if(topics.size() > 0 && topics.get(0) != null){
-				for(Dialogue dialogue : topics) {
-					// Add long speech setters
-					Iterator<String> speechIt = dialogue.longSpeeches.keySet().iterator();
-					while(speechIt.hasNext()){
-						String next = speechIt.next();
-						
-						if(dialogue.requirementsMet(dialogue.longSpeeches.get(next)[1], messageBox.getConversers()[0]))
-							this.topics.add(next);
-					}
+			for(Dialogue dialogue: dialogues) {
+				// Add long speech setters
+				Iterator<String> speechIt = dialogue.longSpeeches.keySet().iterator();
+				while(speechIt.hasNext()){
+					String next = speechIt.next();
+					
+					if(dialogue.requirementsMet(dialogue.longSpeeches.get(next)[1], messageBox.getConversers()[0]))
+						this.topics.add(next);
 				}
 			}
 		}
@@ -549,4 +655,5 @@ public class MessageManager{
 		}
 		
 	}
+	
 }

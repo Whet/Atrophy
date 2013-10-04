@@ -5,7 +5,7 @@ package atrophy.combat.items;
 
 import java.awt.Color;
 
-import watoydoEngine.gubbinz.Maths;
+import watoydoEngine.utils.Maths;
 import atrophy.combat.PanningManager;
 import atrophy.combat.ai.Ai;
 import atrophy.combat.display.ui.VisualEffect;
@@ -25,12 +25,12 @@ public class MeleeWeapon1 extends Weapon {
 	/**
 	 * The Constant RANGE.
 	 */
-	public static final int RANGE = 60;
+	public static final int RANGE = 40;
 	
 	/**
 	 * The Constant ACCURACY.
 	 */
-	public static final int ACCURACY = 10;
+	public static final int ACCURACY = 20;
 	
 	/**
 	 * The Constant TURNS_TO_RELOAD.
@@ -166,6 +166,11 @@ public class MeleeWeapon1 extends Weapon {
 	 */
 	@Override
 	public boolean isMelee() {
+		return true;
+	}
+	
+	@Override
+	public boolean ignoresCover() {
 		return true;
 	}
 }

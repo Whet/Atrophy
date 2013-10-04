@@ -6,7 +6,7 @@ package atrophy.combat.display.ui;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
-import watoydoEngine.gubbinz.Maths;
+import watoydoEngine.utils.Maths;
 import atrophy.combat.PanningManager;
 
 /**

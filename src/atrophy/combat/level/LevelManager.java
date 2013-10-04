@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Random;
 import java.util.Set;
 
-import watoydoEngine.gubbinz.Maths;
+import watoydoEngine.utils.Maths;
 import atrophy.combat.ai.PathFinder;
 import atrophy.combat.ai.PathNotFoundException;
 
@@ -64,8 +64,10 @@ public class LevelManager {
 	}
 	
 	public double[] randomInPosition(LevelBlock room){
-		
-		Random rand = new Random();
+		return randomInPosition(room, new Random());
+	}
+	
+	public double[] randomInPosition(LevelBlock room, Random rand){
 		
 		double[] vertex;
 		
@@ -97,14 +99,13 @@ public class LevelManager {
 			else{
 				vertex[1] = vertex[1] + ((CORNER_INDENT_RATIO + constRatioAddition) * dy);
 			}
-		}while(this.getBlock(vertex) == null);
+		}while(this.getBlock(vertex) != room || (this.getBlock(vertex).getLevelBlockGrid() != null && this.getBlock(vertex).getLevelBlockGrid().getNearestGridBlock(vertex) == null));
 		
 		return vertex;
 	}
 	
 	public LevelBlock randomRoom(){
-		Random rand = new Random();
-		return getBlock(rand.nextInt(this.currentLevel.getBlockCount()));
+		return getBlock(new Random().nextInt(this.currentLevel.getBlockCount()));
 	}
 	
 	public LevelBlock randomStartingRoom(LevelBlock avoidRoom){
@@ -163,8 +164,4 @@ public class LevelManager {
 		return this.currentLevel.isBanned(block, faction);
 	}
 
-	public boolean isInSaferoom(LevelBlock levelBlock) {
-		return this.currentLevel.isInSaferoom(levelBlock);
-	}
-	
 }
