@@ -450,7 +450,7 @@ public class PathFinder {
 				if (current.nonDiagNeighbours.contains(neighbour))
 					newG = current.g + 10;
 				else
-					newG = current.g + 18;
+					newG = current.g + 100;
 
 				if (!openSet.contains(neighbour) || newG < neighbour.g) {
 					cameFrom.put(neighbour, current);
