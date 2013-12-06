@@ -450,11 +450,6 @@ public class Crowd implements Displayable, MouseRespondable, KeyboardRespondable
 	public void move(double x, double y){
 		this.location[0] += x;
 		this.location[1] += y;
-		if(useLocalCord){
-			for(int i = 0; i < displayList.size(); i++){
-				displayList.get(i).move(x,y);
-			}
-		}
 	}
 	
 	public void setLocal(boolean useLocal){

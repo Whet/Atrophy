@@ -35,8 +35,8 @@ public class SoundBoard {
 		musicCollection[1] = "watoydoEngine/mods/sounds/music/Neo Western.ogg";
 		musicCollection[2] = "watoydoEngine/mods/sounds/music/Simplex.ogg";
 		
-		musicVolume = 0.0f;
-		effectVolume = 0.0f;
+		musicVolume = 1.0f;
+		effectVolume = 1.0f;
 		
 	}
 	

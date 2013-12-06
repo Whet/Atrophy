@@ -13,6 +13,8 @@ import watoydoEngine.workings.displayActivity.ActivePane;
 
 public abstract class Menu extends Crowd{
 
+	protected static int MIN_X = 100;
+	
 	public static int windowZ = 0;
 	
 	private final int DEFAULT_WINDOW_Z;
@@ -79,6 +81,10 @@ public abstract class Menu extends Crowd{
 		super.mI(mousePosition);
 		if(mouseDown){
 			double[] move = {mousePosition.x - this.getLocation()[0] - dragLocation[0], mousePosition.y - this.getLocation()[1] - dragLocation[1]};
+			
+			if(this.getLocation()[0] + move[0] < MIN_X)
+				move[0] = MIN_X - this.getLocation()[0];
+			
 			for(int i = 0; i < this.getDisplayList().size(); i++){
 				this.getDisplayList().get(i).move(move[0], move[1]);
 			}

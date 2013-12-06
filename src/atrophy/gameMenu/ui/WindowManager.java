@@ -43,8 +43,11 @@ public class WindowManager extends Crowd{
 		this.addMouseActionItem(menu);
 		menu.setVisible(true);
 		
-		if(parent != null)
+		if(parent != null) {
 			menu.moveAll(parent.getLocation()[0] + 20, parent.getLocation()[1] + 5);
+			if(menu.getLocation()[0] < Menu.MIN_X)
+				menu.moveAll(Menu.MIN_X - menu.getLocation()[0], 0);
+		}
 		
 		this.releaseWindowKey();
 		this.requestWindowKey(menu);
