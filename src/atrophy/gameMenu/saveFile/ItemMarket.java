@@ -191,13 +191,13 @@ public class ItemMarket {
 		
 		Set<Set<String>> weaponSets = new HashSet<Set<String>>(3);
 		
-		itemSets.add(this.weaponsInMarket);
+		weaponSets.add(this.weaponsInMarket);
 		
 		if(wvRelation >= 1.5)
-			itemSets.add(wvWeapons);
+			weaponSets.add(wvWeapons);
 		
 		if(banditRelation >= 1.5)
-			itemSets.add(banditWeapons);
+			weaponSets.add(banditWeapons);
 		
 		if(this.itemsInMarket.size() > 1 && new Random().nextBoolean())
 			return getRandomItem(itemSets);
