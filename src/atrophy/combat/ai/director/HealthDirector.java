@@ -128,10 +128,10 @@ public class HealthDirector {
 		   (getFactionInRoom(killedAi) > 3) || getFactionInRoom(killedAi) == 1)) &&
 			clf.get(killer).getType().equals(DirectorArchetype.PLAYER)) {
 			
-			if(Math.random() > 0.8) {
-				changeClassification(killedAi, DirectorArchetype.COD);
-				return false;
-			}
+//			if(Math.random() > 0.8) {
+//				changeClassification(killedAi, DirectorArchetype.COD);
+//				return false;
+//			}
 			
 			return addKill(killer, killedAi, true);
 		}
@@ -191,12 +191,12 @@ public class HealthDirector {
 			
 			return true;
 		}
-		else if(killer.getWeapon().isMelee() && !combatVisualManager.isAiInSight(killedAi, killer, killedAi.getFaction()) && getFactionInRoom(killedAi) == 1) {
-			
-			changeClassification(killedAi, DirectorArchetype.COD);
-			
-			return false;
-		}
+//		else if(killer.getWeapon().isMelee() && !combatVisualManager.isAiInSight(killedAi, killer, killedAi.getFaction()) && getFactionInRoom(killedAi) == 1) {
+//			
+//			changeClassification(killedAi, DirectorArchetype.COD);
+//			
+//			return false;
+//		}
 		
 		return false;
 	}
