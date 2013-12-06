@@ -11,9 +11,9 @@ import watoydoEngine.sounds.SoundBoard;
 import watoydoEngine.utils.GraphicsFunctions;
 import watoydoEngine.workings.displayActivity.ActivePane;
 
-public abstract class Menu extends Crowd{
+public abstract class Menu extends Crowd {
 
-	protected static int MIN_X = 100;
+	protected static int MIN_X = 140;
 	
 	public static int windowZ = 0;
 	
@@ -79,6 +79,12 @@ public abstract class Menu extends Crowd{
 	@Override
 	public void mI(Point mousePosition) {
 		super.mI(mousePosition);
+		
+		if(!ActivePane.L_MOUSE_DOWN) {
+			mouseDown = false;
+			windowManager.releaseWindowKey(this);
+		}
+		
 		if(mouseDown){
 			double[] move = {mousePosition.x - this.getLocation()[0] - dragLocation[0], mousePosition.y - this.getLocation()[1] - dragLocation[1]};
 			
@@ -97,7 +103,7 @@ public abstract class Menu extends Crowd{
 	@Override
 	public void mO(Point mousePosition) {
 		if(mouseDown){
-			mouseDown = false;
+			mI(mousePosition);
 		}
 		setPriorityMode(false);
 	}
