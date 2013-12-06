@@ -1,6 +1,3 @@
-/*
- * 
- */
 package atrophy.gameMenu.saveFile;
 
 import java.io.Serializable;

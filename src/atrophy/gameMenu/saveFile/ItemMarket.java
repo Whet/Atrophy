@@ -177,13 +177,59 @@ public class ItemMarket {
 	}
 
 
-	public String getRandomMarketItem() {
+	public String getRandomMarketItem(Double wvRelation, Double banditRelation) {
+		
+		Set<Set<String>> itemSets = new HashSet<Set<String>>(3);
+		
+		itemSets.add(this.itemsInMarket);
+		
+		if(wvRelation >= 1.5)
+			itemSets.add(wvItems);
+		
+		if(banditRelation >= 1.5)
+			itemSets.add(banditItems);
+		
+		Set<Set<String>> weaponSets = new HashSet<Set<String>>(3);
+		
+		itemSets.add(this.weaponsInMarket);
+		
+		if(wvRelation >= 1.5)
+			itemSets.add(wvWeapons);
+		
+		if(banditRelation >= 1.5)
+			itemSets.add(banditWeapons);
 		
 		if(this.itemsInMarket.size() > 1 && new Random().nextBoolean())
-			return getRandomItem();
+			return getRandomItem(itemSets);
 		
-		return getRandomWeapon();
+		return getRandomWeapon(weaponSets);
 		
+	}
+
+	private String getRandomWeapon(Set<Set<String>> weaponSets) {
+		
+		ArrayList<String> weapons = new ArrayList<>();
+		
+		for(Set<String> set:weaponSets) {
+			for(String weapon:set) {
+				weapons.add(weapon);
+			}
+		}
+		
+		return weapons.get(new Random().nextInt(weapons.size()));
+	}
+
+	private String getRandomItem(Set<Set<String>> itemSets) {
+		
+		ArrayList<String> items = new ArrayList<>();
+		
+		for(Set<String> set:itemSets) {
+			for(String item:set) {
+				items.add(item);
+			}
+		}
+		
+		return items.get(new Random().nextInt(items.size()));
 	}
 
 	public String getRandomItem() {

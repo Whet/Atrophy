@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import watoydoEngine.fonts.FontList;
+import atrophy.combat.ai.AiGenerator;
 import atrophy.gameMenu.saveFile.ItemMarket;
 import atrophy.gameMenu.saveFile.Squad;
 import atrophy.gameMenu.saveFile.Squad.Squaddie;
@@ -21,7 +22,7 @@ public class ShopManager{
 	/**
 	 * The Constant SELL_WEAKNESS.
 	 */
-	private static final double SELL_WEAKNESS = 0.25;
+	private static final double SELL_WEAKNESS = 0.6;
 	
 	/**
 	 * The items.
@@ -130,7 +131,7 @@ public class ShopManager{
 		int count = new Random().nextInt(20);
 		for(int i = 0; i < count; i++){
 			
-			this.items.add((String) itemMarket.getRandomMarketItem());
+			this.items.add((String) itemMarket.getRandomMarketItem(this.squad.getFactionRelation(AiGenerator.WHITE_VISTA), this.squad.getFactionRelation(AiGenerator.BANDITS)));
 		}
 	}
 
