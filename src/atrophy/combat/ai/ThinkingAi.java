@@ -679,16 +679,23 @@ public class ThinkingAi extends Ai{
 		else if(this.aiMode.equals(AiMode.CAMPING)){
 			Random rand = new Random();
 			
-			if(rand.nextBoolean()){
-				// look at random portal
-				this.setTrueLookAngle(this.getLevelBlock().getPortal(rand.nextInt(this.getLevelBlock().getPortalCount())).getLocation());
+			// have a chance at looking at a completely new area, otherwise just look around about the same point
+			// allows players to sneak past enemies easier
+			if(rand.nextInt(10) < 2 || Maths.getDistance(this.getLocation(), this.getMoveLocation()) > 5) {
+				if(rand.nextBoolean()){
+					// look at random portal
+					this.setTrueLookAngle(this.getLevelBlock().getPortal(rand.nextInt(this.getLevelBlock().getPortalCount())).getLocation());
+				}
+				else{
+					//look at corner
+					this.setTrueLookAngle(this.getLevelBlock().getHitBox().xpoints[rand.nextInt(this.getLevelBlock().getHitBox().npoints)],
+										  this.getLevelBlock().getHitBox().ypoints[rand.nextInt(this.getLevelBlock().getHitBox().npoints)]);
+				}
 			}
-			else{
-				//look at corner
-				this.setTrueLookAngle(this.getLevelBlock().getHitBox().xpoints[rand.nextInt(this.getLevelBlock().getHitBox().npoints)],
-									  this.getLevelBlock().getHitBox().ypoints[rand.nextInt(this.getLevelBlock().getHitBox().npoints)]);
+			else {
+				this.setTrueLookAngle(this.getLookAngle() + (rand.nextDouble() - 0.5) * 60);
 			}
-	}
+		}
 		else if(this.getTargetAi() != null && this.aiMode.equals(AiMode.LOOT)){
 			this.setTrueLookAngle(Maths.getDegrees(this.getLocation(), this.getTargetAi().getLocation()));
 		}
