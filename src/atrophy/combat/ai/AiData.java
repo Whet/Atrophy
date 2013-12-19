@@ -44,8 +44,6 @@ public class AiData {
 	
 	private int armour;
 	
-	private int accuracyBoost;
-	
 	private int defaultArmour;
 	
 	private int defaultFov;
@@ -64,8 +62,6 @@ public class AiData {
 		
 		this.defaultArmour = 15;
 		this.armour = 15;
-		this.accuracyBoost = 0;
-		
 		
 		this.fov = DEFAULT_FOV;
 		this.defaultFov = fov;
@@ -287,10 +283,6 @@ public class AiData {
 		this.fov = fov;
 	}
 	
-	public int getAccuracyBoost() {
-		return accuracyBoost;
-	}
-
 	public int getDefaultArmour() {
 		return defaultArmour;
 	}

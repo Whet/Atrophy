@@ -50,11 +50,11 @@ public class ScoringMechanics {
 				return true;
 			
 			// Uncovered roll
-			return new Random().nextInt(100) <= (ai.getWeapon().getAccuracy() + ai.getAccuracyBoost()) + ai.getSwing() * Weapon.SWING_BONUS;
+			return new Random().nextInt(100) <= ai.getWeapon().getAccuracy() + ai.getSwing() * Weapon.SWING_BONUS;
 		}
 		
 		// Cover roll
-		return new Random().nextInt(200) <= (ai.getWeapon().getAccuracy() + ai.getAccuracyBoost()) + ai.getSwing() * Weapon.SWING_BONUS;
+		return new Random().nextInt(200) <= ai.getWeapon().getAccuracy() + ai.getSwing() * Weapon.SWING_BONUS;
 	}
 	
 	public static boolean weakIntimidateCheck(Ai intimidator, Ai intimidated, CombatMembersManager combatMembersManager){

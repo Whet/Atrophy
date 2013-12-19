@@ -802,10 +802,6 @@ public class Ai implements Lootable{
 		this.aiData.clearSkills();
 	}
 
-	public int getAccuracyBoost() {
-		return this.aiData.getAccuracyBoost();
-	}
-
 	public Color getTeamColour() {
 		Color returnColour = null;
 		switch(this.getFaction()){
