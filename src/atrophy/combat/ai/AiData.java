@@ -16,6 +16,10 @@ import atrophy.combat.items.LightStealthField;
 import atrophy.combat.items.MediumStealthField;
 import atrophy.combat.items.MeleeWeapon1;
 import atrophy.combat.items.MeleeWeapon2;
+import atrophy.combat.items.Pistol1;
+import atrophy.combat.items.Pistol2;
+import atrophy.combat.items.Pistol3;
+import atrophy.combat.items.Pistol4;
 import atrophy.combat.items.ScienceScanner;
 import atrophy.combat.items.SensorSuite;
 import atrophy.combat.items.SpeedBooster;
@@ -134,6 +138,14 @@ public class AiData {
 			this.abilities.add(Abilities.STUN_MELEE);
 		}
 		
+		// Range
+		if(this.getWeapon().getName().equals(Pistol1.NAME) ||
+		   this.getWeapon().getName().equals(Pistol2.NAME) ||
+		   this.getWeapon().getName().equals(Pistol3.NAME) ||
+		   this.getWeapon().getName().equals(Pistol4.NAME)) {
+			this.abilities.add(Abilities.RAPID_FIRE);
+		}
+		
 		// Armour
 		if(this.inventory.hasItem(ArmourPlates2.getInstance())){
 			this.setArmour(ArmourPlates2.ARMOUR_VALUE);
@@ -143,11 +155,6 @@ public class AiData {
 		}
 		else{
 			this.setArmour(this.getDefaultArmour());
-		}
-		
-		// Accuracy Mods
-		if(true) {
-			this.accuracyBoost = 0;
 		}
 		
 		if(invoker.getLevelBlock() == null){

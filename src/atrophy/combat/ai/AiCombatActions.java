@@ -2,8 +2,10 @@ package atrophy.combat.ai;
 
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.actions.MouseAbilityHandler;
+import atrophy.combat.combatEffects.RapidFireEffect;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.AiImage;
+import atrophy.combat.display.ui.abilities.RapidFire;
 import atrophy.combat.mechanics.ScoringMechanics;
 
 public class AiCombatActions {
@@ -53,7 +55,7 @@ public class AiCombatActions {
 				
 				// if fire action and if bullets left to fire and a target to shoot at
 				// or if melee, can't charge up swing so just attack
-				if(invoker.getWeapon().isMelee() || (invoker.getAction().equals(SHOOTING) && invoker.getWeapon().hasAmmo())){			
+				if(invoker.getWeapon().isMelee() || (invoker.hasActiveEffect(RapidFireEffect.NAME) && invoker.getWeapon().hasAmmo()) || (invoker.getAction().equals(SHOOTING) && invoker.getWeapon().hasAmmo())){			
 					shoot(invoker);
 				}
 				// if target and ammo, then increase swing
@@ -130,30 +132,42 @@ public class AiCombatActions {
 		// look at target
 		invoker.setTrueLookAngle(this.getTargetAi().getLocation());
 		
-		// increase shot count
-		invoker.getWeapon().reduceAmmoByOne();
+		int shotsFired = 1;
 		
-		// if a hit
-		// being in the weapons range allows a re-roll
-		if(aiCrowd.getDirector().judge(ScoringMechanics.killedTarget(invoker,this.getTargetAi()), invoker.getTargetAi(), invoker, invoker.turnProcess.getTurnCount())){
-			
-			// kill target
-			this.getTargetAi().setDead(invoker, true);
-			
-			// if the killer belongs to player faction then the kill is counted
-			if(invoker.getFaction().equals(AiGenerator.PLAYER)){
-				this.getTargetAi().bodyFound(true);
-			}
-			
-			// Cancel aim
-			this.setTargetAi(null);
-			
-			invoker.setAction(AiActions.NO_ACTION);
-			
+		// Rapid fire empties ammo
+		if(invoker.hasActiveEffect(RapidFireEffect.NAME)) {
+			shotsFired = invoker.getWeapon().getAmmoLeft();
+			invoker.getWeapon().reduceAmmoByAll();
 		}
-		// if target still alive then go back to aiming
-		else{
-			invoker.setAction(AIMING);
+		else {
+			invoker.getWeapon().reduceAmmoByOne();
+		}
+		
+		for(int i = 0; i < shotsFired; i++) {
+		
+			// if a hit
+			if(aiCrowd.getDirector().judge(ScoringMechanics.killedTarget(invoker,this.getTargetAi()), invoker.getTargetAi(), invoker, invoker.turnProcess.getTurnCount())){
+				
+				// kill target
+				this.getTargetAi().setDead(invoker, true);
+				
+				// if the killer belongs to player faction then the kill is counted
+				if(invoker.getFaction().equals(AiGenerator.PLAYER)){
+					this.getTargetAi().bodyFound(true);
+				}
+				
+				// Cancel aim
+				this.setTargetAi(null);
+				
+				invoker.setAction(AiActions.NO_ACTION);
+				break;
+				
+			}
+			// if target still alive then go back to aiming
+			else{
+				invoker.setAction(AIMING);
+			}
+		
 		}
 		
 		// reset swing counter

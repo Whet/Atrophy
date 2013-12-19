@@ -1,114 +1,43 @@
-/*
- * 
- */
 package atrophy.combat.items;
 
 import atrophy.combat.PanningManager;
 import atrophy.combat.ai.Ai;
 import atrophy.combat.display.ui.VisualEffect;
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class Weapon.
- */
 public abstract class Weapon extends Item {
 	
-	/**
-	 * The Constant SWING_BONUS.
-	 */
 	public static final int SWING_BONUS = 20;
 	
-	/**
-	 * The ammo left.
-	 */
 	private int ammoLeft;
 	
-	/**
-	 * The turns spent reloading.
-	 */
 	private int turnsSpentReloading;
 	
-	/**
-	 * Instantiates a new weapon.
-	 *
-	 * @param name the name
-	 * @param description the description
-	 * @param magSize the mag size
-	 */
 	protected Weapon(String name, String description, int magSize){
 		super(name,description);
 		ammoLeft = magSize;
 		turnsSpentReloading = 0;
 	}
 	
-	/**
-	 * Gets the range.
-	 *
-	 * @return the range
-	 */
 	public abstract int getRange();
 	
-	/**
-	 * Checks if is in range.
-	 *
-	 * @param ai the ai
-	 * @param targetAi the target ai
-	 * @return true, if is in range
-	 */
 	public abstract boolean isInRange(Ai ai, Ai targetAi);
 	
-	/**
-	 * Gets the accuracy.
-	 *
-	 * @return the accuracy
-	 */
 	public abstract int getAccuracy();
 	
-	/**
-	 * Gets the reload turns.
-	 *
-	 * @return the reload turns
-	 */
 	public abstract int getReloadTurns();
 	
-	/**
-	 * Gets the magsize.
-	 *
-	 * @return the magsize
-	 */
 	public abstract int getMagsize();
 	
-	/**
-	 * Gets the max swing.
-	 *
-	 * @return the max swing
-	 */
 	public abstract int getMaxSwing();
 	
-	/**
-	 * Gets the damage.
-	 *
-	 * @return the damage
-	 */
 	public abstract int getDamage();
 	
-	/* (non-Javadoc)
-	 * @see atrophy.combat.items.Item#getName()
-	 */
 	public abstract String getName();
 	
-	/**
-	 * Gets the ammo left.
-	 *
-	 * @return the ammo left
-	 */
 	public int getAmmoLeft(){
 		return this.ammoLeft;
 	}
 	
-	/**
-	 * Reduce ammo by one.
-	 */
 	public void reduceAmmoByOne(){
 		if(this.ammoLeft > 0){
 			this.ammoLeft -= 1;
@@ -118,11 +47,11 @@ public abstract class Weapon extends Item {
 		this.turnsSpentReloading = 0;
 	}
 	
-	/**
-	 * Checks for ammo.
-	 *
-	 * @return true, if successful
-	 */
+	public void reduceAmmoByAll() {
+		this.ammoLeft = 0;
+		this.turnsSpentReloading = 0;
+	}
+	
 	public boolean hasAmmo(){
 		if(this.ammoLeft > 0){
 			return true;
@@ -130,11 +59,6 @@ public abstract class Weapon extends Item {
 		return false;
 	}
 	
-	/**
-	 * Checks for full ammo.
-	 *
-	 * @return true, if successful
-	 */
 	public boolean hasFullAmmo(){
 		if(this.ammoLeft == this.getMagsize()){
 			return true;
@@ -142,9 +66,6 @@ public abstract class Weapon extends Item {
 		return false;
 	}
 	
-	/**
-	 * Reload.
-	 */
 	public void reload(){
 		
 		this.turnsSpentReloading++;
@@ -155,61 +76,26 @@ public abstract class Weapon extends Item {
 		}
 	}
 	
-	/**
-	 * Gets the turns spent reloading.
-	 *
-	 * @return the turns spent reloading
-	 */
 	public int getTurnsSpentReloading(){
 		return this.turnsSpentReloading;
 	}
 	
-	/**
-	 * Gets the combat score.
-	 *
-	 * @return the combat score
-	 */
 	public int getCombatScore(){
 		return ( this.ammoLeft * this.getAccuracy() ) + this.getDamage();
 	}
 	
-	/**
-	 * Checks if is melee.
-	 *
-	 * @return true, if is melee
-	 */
 	public abstract boolean isMelee();
 	
-	/**
-	 * Ignores los.
-	 *
-	 * @return true, if successful
-	 */
 	public boolean ignoresLOS(){
 		return false;
 	}
 	
-	/**
-	 * Ignores cover.
-	 *
-	 * @return true, if successful
-	 */
 	public boolean ignoresCover() {
 		return false;
 	}
 	
-	/* (non-Javadoc)
-	 * @see atrophy.combat.items.Item#getDescription()
-	 */
 	public abstract String getDescription();
 	
-	/**
-	 * Gets the fire effect.
-	 *
-	 * @param location the location
-	 * @param targetLocation the target location
-	 * @return the fire effect
-	 */
 	public abstract VisualEffect getFireEffect(PanningManager panningManagers, double[] location, double[] targetLocation);
 	
 	public boolean canAttack(){
@@ -217,12 +103,6 @@ public abstract class Weapon extends Item {
 	}
 
 	// Just to keep things light, all strings can check if they are a weapon with this method
-	/**
-	 * Checks if is weapon.
-	 *
-	 * @param item the item
-	 * @return true, if is weapon
-	 */
 	public static boolean isWeapon(String item){
 		if(item.equals(MeleeWeapon1.NAME) ||
 		   item.equals(MeleeWeapon2.NAME) ||

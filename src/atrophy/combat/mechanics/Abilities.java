@@ -70,6 +70,8 @@ public class Abilities{
 
 	public static final String GRAPPLE = "Grapple";
 	
+	public static final String RAPID_FIRE = "Rapid Fire";
+	
 	public static int turnsToDo(String ability, int skillLevel){
 		int turns = 0;
 		

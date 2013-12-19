@@ -14,6 +14,7 @@ import atrophy.combat.ai.TalkNode;
 import atrophy.combat.ai.ThinkingAi;
 import atrophy.combat.combatEffects.Power;
 import atrophy.combat.combatEffects.PowerManager;
+import atrophy.combat.combatEffects.RapidFireEffect;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.AiImage;
 import atrophy.combat.display.AiManagementSuite;
@@ -102,6 +103,13 @@ public class MouseAbilityHandler {
 				Ai targetAi = getClosestAiToMouse(mousePoint, AI_CLICK_RADIUS);
 				if(targetAi != null && !targetAi.getFaction().equals(AiGenerator.PLAYER)){
 					combatMembersManager.getCurrentAi().setStunTarget(targetAi);
+				}
+			break;
+			case Abilities.RAPID_FIRE:
+				targetAi = getClosestAiToMouse(mousePoint, AI_CLICK_RADIUS);
+				if(targetAi != null && !targetAi.getFaction().equals(AiGenerator.PLAYER)){
+					combatMembersManager.getCurrentAi().addEffect(new RapidFireEffect());
+					combatMembersManager.getCurrentAi().setTargetAi(targetAi);
 				}
 			break;
 			case Abilities.GRAPPLE:
