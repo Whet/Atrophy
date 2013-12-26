@@ -534,8 +534,8 @@ public class ThinkingAi extends Ai{
 	protected void emotionEngageReaction(int enemyCount, Ai target) {
 		
 		// friendly count is mainly made up of what the individual's strength is
-		// if combat is initiated the team may easily win but each ai wants to live
-		int friendlyCount = (int)((combatMembersManager.getFactionStrength(this.getFaction(), this.getLevelBlock()) - this.getCombatScore()) / (float)1.5) + this.getCombatScore();
+		// if combat is initiated the team may easily win but each ai wants to live so the team value is reduced
+		int friendlyCount = (int)((combatMembersManager.getFactionStrength(this.getFaction(), this.getLevelBlock()) - this.getCombatScore()) / (float)3) + this.getCombatScore();
 		
 		emotionManager.reactToCloseEnemy(target);
 		
@@ -568,7 +568,7 @@ public class ThinkingAi extends Ai{
 		// if being aimed at then engage
 		if(this.isBeingTargeted() || this.getCommander().isAiHated(target) && emotionManager.getAggression() > ThinkingAiEmotion.PASSIVE){
 			// if fight is possible then engage
-			if(friendlyCount >= enemyCount || target.getStunnedTurns() > 0 || target.getIncapTurns() > 0){
+			if(friendlyCount >= enemyCount){
 				this.aiMode = AiMode.ENGAGING;
 				this.aim(target);
 				emotionManager.modifyAggression(ThinkingAiEmotion.AIMING_AGGRESSION);
@@ -615,7 +615,7 @@ public class ThinkingAi extends Ai{
 		}
 		
 		// if fight is possible then engage
-		if(friendlyCount >= enemyCount || emotionManager.getAggression() >= ThinkingAiEmotion.MINDLESS_TERROR || target.getStunnedTurns() > 0 || target.getIncapTurns() > 0){
+		if(friendlyCount >= enemyCount || emotionManager.getAggression() >= ThinkingAiEmotion.MINDLESS_TERROR){
 			this.aiMode = AiMode.ENGAGING;
 			this.aim(target);
 		}
@@ -625,10 +625,34 @@ public class ThinkingAi extends Ai{
 			this.aim(target);
 		}
 		// low chance of winning
-		// engage if being targeted
+		// engage if being targeted and can fight back
 		else if(this.isBeingTargeted()){
-			this.aiMode = AiMode.ENGAGING;
-			this.aim(target);
+			if((this.getWeapon().isMelee() && this.getWeapon().isInRange(this, target)) || (!this.getWeapon().isMelee() && this.getWeapon().hasAmmo())) {
+				this.aiMode = AiMode.ENGAGING;
+				this.aim(target);
+			}
+			else {
+				// go invisible then flee
+				if(this.hasAbility(Abilities.STEALTH2) &&
+				   !this.hasEffect(MobileInvisibility.NAME)){
+					this.addEffect(new MobileInvisibility(this.getSkillLevel(Abilities.STEALTH2)));
+					return;
+				}
+				// go fast then flee
+				else if(this.hasAbility(Abilities.SPEED_BOOSTER) &&
+					    !this.hasEffect(SpeedBoost.NAME)){
+					this.addEffect(new SpeedBoost(this.getSkillLevel(Abilities.SPEED_BOOSTER)));
+					return;
+				}
+				try {
+					this.fleeCheckForEnemy();
+				} 
+				catch (PathNotFoundException pnfe) {
+					// Act as normal
+				}
+				// Become more passive
+				emotionManager.modifyAggression(-0.1);
+			}
 		}
 		else{
 			// Become more passive
