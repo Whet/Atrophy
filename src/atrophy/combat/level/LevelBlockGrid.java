@@ -10,7 +10,7 @@ import watoydoEngine.utils.Maths;
 
 public class LevelBlockGrid {
     
-    private static final float GRID_BLOCK_SIZE = 8f;
+    private static final float GRID_BLOCK_SIZE = 3f;
     
     private List<List<GridBlock>> blocks;
 

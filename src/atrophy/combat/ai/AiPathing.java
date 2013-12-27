@@ -280,8 +280,7 @@ public class AiPathing {
 			this.location[0] += this.moveUnits * Math.cos(angle);
 			this.location[1] += this.moveUnits * Math.sin(angle);
 
-			// set moveUnits to 0 since it has all been expended
-			this.moveUnits = 0;
+			this.moveUnits -= Maths.getDistance(this.location, moveLocation);
 		}
 		// Teleport to target since it's in range
 		else{

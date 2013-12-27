@@ -450,7 +450,7 @@ public class PathFinder {
 				if (current.nonDiagNeighbours.contains(neighbour))
 					newG = current.g + 10;
 				else
-					newG = current.g + 100;
+					newG = current.g + 12;
 
 				if (!openSet.contains(neighbour) || newG < neighbour.g) {
 					cameFrom.put(neighbour, current);
@@ -490,13 +490,13 @@ public class PathFinder {
 		while (current != start) {
 			current.picked = true;
 
-			if (path.size() == 0
-					|| !CombatVisualManager.isInSight(
-							path.get(path.size() - 1)[0],
-							path.get(path.size() - 1)[1],
-							current.getPathLocation()[0],
-							current.getPathLocation()[1], room))
-				path.add(current.getPathLocation());
+//			if (path.size() == 0
+//					|| !CombatVisualManager.isInSight(
+//							path.get(path.size() - 1)[0],
+//							path.get(path.size() - 1)[1],
+//							current.getPathLocation()[0],
+//							current.getPathLocation()[1], room))
+			path.add(current.getPathLocation());
 
 			current = cameFrom.get(current);
 		}
