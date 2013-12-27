@@ -80,6 +80,7 @@ public class AiPathing {
 					int movedIntoPortal = targetPortal.enter(invoker);
 					
 					// try to enter portal
+					
 					if(movedIntoPortal == 0){
 						// if entry of portal successful then remove it from the portal pathway
 						this.portalPathway.pop();
@@ -91,6 +92,7 @@ public class AiPathing {
 						if(this.portalPathway.size() == 0){
 							this.portalPathway = null;
 						}
+						
 					}
 					else if(movedIntoPortal == 1){
 						// try to recalculate path
@@ -249,13 +251,14 @@ public class AiPathing {
 		}
 		// cannot find what actually throws this, nothing shows when stepped through
 		catch(NullPointerException npe){}
-		
-//		System.out.println("Path Time Millis: " + (System.currentTimeMillis() - time));
-		
-		// Fix for being outside level
-		if(levelManager.getBlock(this.getLocation()) == null) {
-			GridBlock navBlock = this.getLevelBlock().getLevelBlockGrid().getNearestGridBlock(this.getLocation());
-			this.setLocation(navBlock.getPathLocation()[0], navBlock.getPathLocation()[1]);
+		finally{
+	//		System.out.println("Path Time Millis: " + (System.currentTimeMillis() - time));
+			
+			// Fix for being outside level
+			while(levelManager.getBlock(this.getLocation()) == null || !this.residentBlock.getHitBox().contains(this.location[0], this.location[1])) {
+				GridBlock navBlock = this.getLevelBlock().getLevelBlockGrid().getNearestGridBlock(this.getLocation());
+				this.setLocation(navBlock.getPathLocation()[0], navBlock.getPathLocation()[1]);
+			}
 		}
 	}
 	 
@@ -435,6 +438,10 @@ public class AiPathing {
 
 	public Stack<Portal> getPortalPathway() {
 		return this.portalPathway;
+	}
+	
+	public Stack<double[]> getRoomPathway() {
+		return this.roomPathway;
 	}
 
 	public double[] getMoveLocation() {

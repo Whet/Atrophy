@@ -244,6 +244,22 @@ public class LineDrawer implements Displayable{
 								            Color.white,
 									        1.0f);
 		}
+//		if(ai.getRoomPathway() != null){
+//			drawShape.setColor(Color.red);
+//			// draw lines between portals
+//			for(int i = 0; i < ai.getRoomPathway().size(); i++){
+///*				GraphicsFunctions.drawArrowLine(drawShape,
+//											    ai.getRoomPathway().get(i)[0] + panningManager.getOffset()[0],  
+//									            ai.getRoomPathway().get(i)[1] + panningManager.getOffset()[1],
+//									            ai.getRoomPathway().get(i - 1)[0] + panningManager.getOffset()[0],  
+//									            ai.getRoomPathway().get(i - 1)[1] + panningManager.getOffset()[1],
+//									            Color.white,
+//									            1.0f);*/
+//				
+//				drawShape.fillOval((int)(ai.getRoomPathway().get(i)[0] + panningManager.getOffset()[0] - 3),
+//								   (int)(ai.getRoomPathway().get(i)[1] + panningManager.getOffset()[1] - 3), 6, 6);
+//			}
+//		}
 			
 	}
 

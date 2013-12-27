@@ -459,6 +459,10 @@ public class Ai implements Lootable{
 		return this.aiPathing.getPortalPathway();
 	}
 	
+	public Stack<double[]> getRoomPathway() {
+		return this.aiPathing.getRoomPathway();
+	}
+	
 	public double getMoveAngle(){
 		return Maths.getDegrees(this.aiPathing.getLocation(), this.aiPathing.getMoveLocation());
 	}
