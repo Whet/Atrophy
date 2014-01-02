@@ -7,6 +7,7 @@ import java.util.Random;
 
 import watoydoEngine.designObjects.display.Crowd;
 import watoydoEngine.hardPanes.HardPaneDefineable;
+import atrophy.combat.ai.AiGenerator;
 import atrophy.gameMenu.saveFile.ItemMarket;
 import atrophy.gameMenu.saveFile.MapManager;
 import atrophy.gameMenu.saveFile.Missions;
@@ -46,7 +47,11 @@ public class GameMenuHardPane implements HardPaneDefineable{
 		crowd.addDisplayItem(new Wallpaper(new Random().nextLong()));
 		MenuBar menuBar = new MenuBar();
 		WindowManager windowManager = new WindowManager(menuBar);
+		
+		missions.getPlanner(AiGenerator.WHITE_VISTA).setWindowManager(windowManager);
+		missions.getPlanner(AiGenerator.WHITE_VISTA).setWindowManager(windowManager);
 		stashManager.setWindowManager(windowManager);
+		
 		ItemMarket itemMarket = new ItemMarket();
 		MapManager mapManager = new MapManager(missions);
 		ShopManager shopManager = new ShopManager(windowManager, stashManager, itemMarket);

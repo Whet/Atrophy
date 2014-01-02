@@ -354,6 +354,10 @@ public class FactionMissionPlanner implements Serializable{
 	public int getResearchCount() {
 		return researchCount;
 	}
+
+	public void setWindowManager(WindowManager windowManager) {
+		this.windowManager = windowManager;
+	}
 	
 }
 	

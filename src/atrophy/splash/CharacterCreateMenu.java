@@ -16,6 +16,7 @@ import watoydoEngine.designObjects.display.TextButton;
 import watoydoEngine.designObjects.display.TextInput;
 import watoydoEngine.io.ReadWriter;
 import watoydoEngine.workings.displayActivity.ActivePane;
+import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.items.MeleeWeapon2;
 import atrophy.combat.items.Pistol1;
 import atrophy.combat.items.ScienceScanner;
