@@ -49,7 +49,7 @@ public class GameMenuHardPane implements HardPaneDefineable{
 		WindowManager windowManager = new WindowManager(menuBar);
 		
 		missions.getPlanner(AiGenerator.WHITE_VISTA).setWindowManager(windowManager);
-		missions.getPlanner(AiGenerator.WHITE_VISTA).setWindowManager(windowManager);
+		missions.getPlanner(AiGenerator.BANDITS).setWindowManager(windowManager);
 		stashManager.setWindowManager(windowManager);
 		
 		ItemMarket itemMarket = new ItemMarket();
