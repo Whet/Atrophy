@@ -90,6 +90,13 @@ public abstract class Menu extends Crowd {
 			
 			if(this.getLocation()[0] + move[0] < MIN_X)
 				move[0] = MIN_X - this.getLocation()[0];
+			else if(this.getLocation()[0] + move[0] + this.size[0] > ActivePane.getInstance().getSize().width)
+				move[0] = ActivePane.getInstance().getSize().width - this.getLocation()[0] - this.size[0];
+			
+			if(this.getLocation()[1] + move[1] - 14 < 0)
+				move[1] = 0 - this.getLocation()[1] + 14;
+			else if(this.getLocation()[1] + move[1] + this.size[1] > ActivePane.getInstance().getSize().height)
+				move[1] = ActivePane.getInstance().getSize().height - this.getLocation()[1] - this.size[1];
 			
 			for(int i = 0; i < this.getDisplayList().size(); i++){
 				this.getDisplayList().get(i).move(move[0], move[1]);
