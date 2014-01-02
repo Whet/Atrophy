@@ -97,7 +97,7 @@ public class SaveFile implements Serializable{
 			stashManager.setItems(save.stash);
 			mapWar.setSectors(save.sectors);
 			itemMarket.lazyLoad(save.squad.getTechTree());
-			shopManager.randomItems();
+//			shopManager.randomItems();
 			save.banditsResearchAi.loadFromSerialized(windowManager);
 			save.wvResearchAi.loadFromSerialized(windowManager);
 			missions.setResearchAi(save.banditsResearchAi, save.wvResearchAi);
