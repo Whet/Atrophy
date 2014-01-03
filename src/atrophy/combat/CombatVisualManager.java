@@ -18,7 +18,7 @@ import atrophy.combat.mechanics.TurnProcess;
 
 public class CombatVisualManager {
 	
-	public static final double RING_SIZE = 0.3;
+	public static final double RING_SIZE = 0.15;
 	private static final int RING_GAP = 60;
 	private static final double MAX_TRACE_RESOLUTION = 0.01;
 	private static final double MIN_TRACE_RESOLUTION = 10;
@@ -94,13 +94,13 @@ public class CombatVisualManager {
 			this.aiVisibilityCache.put(looker, new HashMap<Ai, double[]>());
 		}
 		
-		if(this.aiVisibilityCache.get(looker).containsKey(lookedAt)) {
-			double[] ds = this.aiVisibilityCache.get(looker).get(lookedAt);
-			//looker[x,y,angle]
-			//lookedat[x,y]
-//			if(looker.getLocation()[0] == ds[0] && lookedAt.getLocation()[0] == ds[2] &&  looker.getLocation()[1] == ds[1] && lookedAt.getLocation()[1] == ds[3] && spotStealth(looker, lookedAt) && (!looker.getWeapon().ignoresLOS() || (looker.getWeapon().ignoresLOS() && looker.getTargetAi() == lookedAt)))
-//				return true;
-		}
+//		if(this.aiVisibilityCache.get(looker).containsKey(lookedAt)) {
+//			double[] ds = this.aiVisibilityCache.get(looker).get(lookedAt);
+//			//looker[x,y,angle]
+//			//lookedat[x,y]
+////			if(looker.getLocation()[0] == ds[0] && lookedAt.getLocation()[0] == ds[2] &&  looker.getLocation()[1] == ds[1] && lookedAt.getLocation()[1] == ds[3] && spotStealth(looker, lookedAt) && (!looker.getWeapon().ignoresLOS() || (looker.getWeapon().ignoresLOS() && looker.getTargetAi() == lookedAt)))
+////				return true;
+//		}
 		
 		// in fov && in same room as target
 		// in a radius && in same room
