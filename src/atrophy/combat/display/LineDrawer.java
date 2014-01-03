@@ -237,30 +237,30 @@ public class LineDrawer implements Displayable{
 								            Color.white,
 									        1.0f);
 		}
-		if(ai.getRoomPathway() != null){
-			
-//			drawShape.setColor(Color.orange.darker());
-//			for(List<GridBlock> blocks:ai.getLevelBlock().getLevelBlockGrid().getBlocks()) {
-//				for(GridBlock block:blocks) {
-//					drawShape.fillOval((int)(block.getPathLocation()[0] + panningManager.getOffset()[0] - 10), (int)(block.getPathLocation()[1] + panningManager.getOffset()[1] - 10), 20, 20);
-//				}
+//		if(ai.getRoomPathway() != null){
+//			
+////			drawShape.setColor(Color.orange.darker());
+////			for(List<GridBlock> blocks:ai.getLevelBlock().getLevelBlockGrid().getBlocks()) {
+////				for(GridBlock block:blocks) {
+////					drawShape.fillOval((int)(block.getPathLocation()[0] + panningManager.getOffset()[0] - 10), (int)(block.getPathLocation()[1] + panningManager.getOffset()[1] - 10), 20, 20);
+////				}
+////			}
+////			drawShape.setColor(Color.red);
+////			for(List<GridBlock> blocks:ai.getLevelBlock().getLevelBlockGrid().getBlocks()) {
+////				for(GridBlock block:blocks) {
+////					for(GridBlock blockn:block.neighbours) {
+////						drawShape.drawLine((int)(block.getPathLocation()[0] + panningManager.getOffset()[0]), (int)(block.getPathLocation()[1] + panningManager.getOffset()[1]),
+////										   (int)(blockn.getPathLocation()[0] + panningManager.getOffset()[0]), (int)(blockn.getPathLocation()[1] + panningManager.getOffset()[1]));
+////					}
+////				}
+////			}
+//			
+//			drawShape.setColor(Color.white);
+//			for(int i = 0; i < ai.getRoomPathway().size(); i++){
+//				drawShape.fillOval((int)(ai.getRoomPathway().get(i)[0] + panningManager.getOffset()[0] - 3),
+//								   (int)(ai.getRoomPathway().get(i)[1] + panningManager.getOffset()[1] - 3), 6, 6);
 //			}
-//			drawShape.setColor(Color.red);
-//			for(List<GridBlock> blocks:ai.getLevelBlock().getLevelBlockGrid().getBlocks()) {
-//				for(GridBlock block:blocks) {
-//					for(GridBlock blockn:block.neighbours) {
-//						drawShape.drawLine((int)(block.getPathLocation()[0] + panningManager.getOffset()[0]), (int)(block.getPathLocation()[1] + panningManager.getOffset()[1]),
-//										   (int)(blockn.getPathLocation()[0] + panningManager.getOffset()[0]), (int)(blockn.getPathLocation()[1] + panningManager.getOffset()[1]));
-//					}
-//				}
-//			}
-			
-			drawShape.setColor(Color.white);
-			for(int i = 0; i < ai.getRoomPathway().size(); i++){
-				drawShape.fillOval((int)(ai.getRoomPathway().get(i)[0] + panningManager.getOffset()[0] - 3),
-								   (int)(ai.getRoomPathway().get(i)[1] + panningManager.getOffset()[1] - 3), 6, 6);
-			}
-		}
+//		}
 			
 	}
 
