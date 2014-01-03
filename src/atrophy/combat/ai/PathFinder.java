@@ -402,9 +402,7 @@ public class PathFinder {
 		return findAStarPath(mover, moveLocation, moveDistance);
 	}
 
-	public static ArrayList<double[]> findAStarPath(Ai mover,
-			double[] moveLocation, double moveDistance)
-			throws PathNotFoundException {
+	public static ArrayList<double[]> findAStarPath(Ai mover, double[] moveLocation, double moveDistance) throws PathNotFoundException {
 
 		LevelBlockGrid navGrid = mover.getLevelBlock().getLevelBlockGrid();
 
@@ -420,8 +418,7 @@ public class PathFinder {
 		}
 		openSet.add(startBlock);
 		startBlock.g = 0;
-		startBlock.h = Maths.getDistance(startBlock.getPathLocation(),
-				moveLocation);
+		startBlock.h = Maths.getDistance(startBlock.getPathLocation(), moveLocation);
 		startBlock.f = startBlock.g + startBlock.h;
 
 		Map<GridBlock, GridBlock> cameFrom = new HashMap<>();
@@ -432,11 +429,8 @@ public class PathFinder {
 
 			GridBlock current = lowestF(openSet);
 
-			if (current == goal
-					|| (goal == null && Maths.getDistance(
-							current.getPathLocation(), moveLocation) <= moveDistance))
-				return createAStarPath(cameFrom, current, startBlock, mover
-						.getLevelBlock().getHitBox());
+			if (current == goal || (goal == null && Maths.getDistance(current.getPathLocation(), moveLocation) <= moveDistance))
+				return createAStarPath(cameFrom, current, startBlock, mover.getLevelBlock().getHitBox());
 
 			openSet.remove(current);
 			closedSet.add(current);
@@ -450,13 +444,12 @@ public class PathFinder {
 				if (current.nonDiagNeighbours.contains(neighbour))
 					newG = current.g + 10;
 				else
-					newG = current.g + 12;
+					newG = current.g + 15;
 
 				if (!openSet.contains(neighbour) || newG < neighbour.g) {
 					cameFrom.put(neighbour, current);
 					neighbour.g = newG;
-					neighbour.h = Maths.getDistance(
-							startBlock.getPathLocation(), moveLocation);
+					neighbour.h = Maths.getDistance(startBlock.getPathLocation(), moveLocation);
 					neighbour.f = neighbour.g + neighbour.h;
 
 					openSet.add(neighbour);
@@ -479,9 +472,7 @@ public class PathFinder {
 		return returnBlock;
 	}
 
-	private static ArrayList<double[]> createAStarPath(
-			Map<GridBlock, GridBlock> cameFrom, GridBlock goal,
-			GridBlock start, Polygon room) {
+	private static ArrayList<double[]> createAStarPath(Map<GridBlock, GridBlock> cameFrom, GridBlock goal, GridBlock start, Polygon room) {
 
 		GridBlock current = goal;
 
@@ -490,12 +481,7 @@ public class PathFinder {
 		while (current != start) {
 			current.picked = true;
 
-//			if (path.size() == 0
-//					|| !CombatVisualManager.isInSight(
-//							path.get(path.size() - 1)[0],
-//							path.get(path.size() - 1)[1],
-//							current.getPathLocation()[0],
-//							current.getPathLocation()[1], room))
+			if (path.size() == 0 || !CombatVisualManager.isInSight( path.get(path.size() - 1)[0], path.get(path.size() - 1)[1], current.getPathLocation()[0], current.getPathLocation()[1], room))
 			path.add(current.getPathLocation());
 
 			current = cameFrom.get(current);

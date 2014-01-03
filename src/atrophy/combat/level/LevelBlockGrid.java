@@ -10,7 +10,7 @@ import watoydoEngine.utils.Maths;
 
 public class LevelBlockGrid {
     
-    private static final float GRID_BLOCK_SIZE = 3f;
+    private static final float GRID_BLOCK_SIZE = 4;
     
     private List<List<GridBlock>> blocks;
 
@@ -56,6 +56,10 @@ public class LevelBlockGrid {
         }
         
         return null;
+    }
+    
+    public GridBlock getNearestGridBlock(double x, double y) {
+    	return getGridBlock(new double[]{x, y});
     }
     
     public GridBlock getNearestGridBlock(double[] location) {
@@ -104,13 +108,13 @@ public class LevelBlockGrid {
             for(int j = 0; j < height; j ++){
                 // Check all corners are in the polygon
                 if(hitbox.contains(startX + (i * GRID_BLOCK_SIZE),
-                                   startY + (j * GRID_BLOCK_SIZE)) ||
+                                   startY + (j * GRID_BLOCK_SIZE)) &&
                         
                    hitbox.contains(startX + (i * GRID_BLOCK_SIZE),
-                                   startY + (j * GRID_BLOCK_SIZE) + GRID_BLOCK_SIZE) ||
+                                   startY + (j * GRID_BLOCK_SIZE) + GRID_BLOCK_SIZE) &&
                    
                    hitbox.contains(startX + (i * GRID_BLOCK_SIZE) + GRID_BLOCK_SIZE,
-                                   startY + (j * GRID_BLOCK_SIZE)) ||
+                                   startY + (j * GRID_BLOCK_SIZE)) &&
                    
                    hitbox.contains(startX + (i * GRID_BLOCK_SIZE) + GRID_BLOCK_SIZE,
                                    startY + (j * GRID_BLOCK_SIZE) + GRID_BLOCK_SIZE)){
@@ -162,19 +166,18 @@ public class LevelBlockGrid {
 			   hitbox.contains(x + GRID_BLOCK_SIZE, y + GRID_BLOCK_SIZE)){
             	pathLocation = new double[]{x + width / 2, y + height / 2};
             }
-            else if(hitbox.contains(x, y)) {
-            	pathLocation = new double[]{x, y};
-            }
-            else if(hitbox.contains(x, y + GRID_BLOCK_SIZE)){
-            	pathLocation = new double[]{x, y + GRID_BLOCK_SIZE};
+            else if(hitbox.contains(x + GRID_BLOCK_SIZE, y + GRID_BLOCK_SIZE)) {
+            	pathLocation = new double[]{x + GRID_BLOCK_SIZE, y + GRID_BLOCK_SIZE};
             }
             else if(hitbox.contains(x + GRID_BLOCK_SIZE, y)) {
             	pathLocation = new double[]{x + GRID_BLOCK_SIZE, y};
             }
-            else if(hitbox.contains(x + GRID_BLOCK_SIZE, y + GRID_BLOCK_SIZE)) {
-            	pathLocation = new double[]{x + GRID_BLOCK_SIZE, y + GRID_BLOCK_SIZE};
+            else if(hitbox.contains(x, y + GRID_BLOCK_SIZE)){
+            	pathLocation = new double[]{x, y + GRID_BLOCK_SIZE};
             }
-            
+            else if(hitbox.contains(x, y)) {
+            	pathLocation = new double[]{x, y};
+            }
         }
         
         public void calculateNeighbours(LevelBlockGrid grid) {
@@ -197,7 +200,7 @@ public class LevelBlockGrid {
                 bottom.nonDiagNeighbours.add(this);
             }
             
-            GridBlock topRight = grid.getGridBlock(this.x + this.width + 1, this.y - this.height - 1);
+            GridBlock topRight = grid.getGridBlock(this.x + this.width + 1, this.y - 1);
             if(topRight != null) {
                 this.neighbours.add(topRight);
                 topRight.neighbours.add(this);
@@ -212,7 +215,7 @@ public class LevelBlockGrid {
         }
 
         public boolean contains(double x2, double y2) {
-            return this.x - 1 <= x2 && this.x + width + 1 >= x2 && this.y - 1 <= y2 && this.y + height + 1 >= y2;
+            return this.x <= x2 && this.x + width >= x2 && this.y <= y2 && this.y + height >= y2;
         }
 
         public boolean contains(double[] location) {
@@ -231,6 +234,9 @@ public class LevelBlockGrid {
             List<GridBlock> blockList = blocks.get(i);
             for(int j = 0; j < blockList.size(); j++){
                 blockList.get(j).picked = false;
+                blockList.get(j).g = 0;
+                blockList.get(j).f = 0;
+                blockList.get(j).h = 0;
             }
         }    
     }
