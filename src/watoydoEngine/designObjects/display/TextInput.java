@@ -22,6 +22,7 @@ public class TextInput extends Text implements MouseRespondable,KeyboardResponda
 	private boolean drawBox;
 	private Color onColour;
 	private Color offColour;
+	private boolean updateHitbox;
 
 	public void setDrawBox(boolean drawBox) {
 		this.drawBox = drawBox;
@@ -39,6 +40,7 @@ public class TextInput extends Text implements MouseRespondable,KeyboardResponda
 		this.onColour = TextButton.DEFAULT_ON_COLOUR;
 		this.offColour = TextButton.DEFAULT_OFF_COLOUR;
 		this.setColour(offColour);
+		updateHitbox = false;
 	}
 
 	public final void drawMethod(Graphics2D drawShape){
@@ -53,9 +55,18 @@ public class TextInput extends Text implements MouseRespondable,KeyboardResponda
 		updateText();
 		
 		
-		if(this.getText().length() > 0){
-			FontMetrics metric = drawShape.getFontMetrics(this.getFont());
-			this.boundBox = metric.getStringBounds(this.getText(), drawShape);
+		if(updateHitbox){
+			if(this.getText().isEmpty()) {
+				FontMetrics metric = drawShape.getFontMetrics(this.getFont());
+				this.boundBox = metric.getStringBounds(" ", drawShape);
+			}
+			else {
+				FontMetrics metric = drawShape.getFontMetrics(this.getFont());
+				this.boundBox = metric.getStringBounds(this.getText(), drawShape);
+			}
+			
+			
+			updateHitbox = false;
 		}
 		
 		super.drawMethod(drawShape);
@@ -72,6 +83,7 @@ public class TextInput extends Text implements MouseRespondable,KeyboardResponda
 	public boolean kU(KeyEvent e){
 		if((e.getKeyCode() == 32 || Character.isAlphabetic(e.getKeyChar()) || Character.isDigit(e.getKeyChar())) && (maxLetters == 0 || maxLetters > this.getText().length())){
 			this.appendText(e.getKeyChar());
+			updateHitbox = true;
 		}
 		return true;
 	}
@@ -125,6 +137,7 @@ public class TextInput extends Text implements MouseRespondable,KeyboardResponda
 	public void mO(Point mousePosition) {
 		this.setFocus(false);
 		this.setColour(offColour);
+		updateHitbox = true;
 	}
 	
 	public boolean mMC(Point mousePosition, MouseEvent e) {return false;}
