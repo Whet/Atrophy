@@ -184,7 +184,7 @@ public class ThinkingAi extends Ai{
 		
 		// start to reset aggression if no change occurred
 		if(!this.emotionManager.isAggressionModified()){
-			emotionManager.resetAggression(ThinkingAiEmotion.AGGRESSION_RESTORE_RATE);
+			emotionManager.resetAggression(emotionManager.getAggressionRestoreRate());
 		}
 		
 		if(this.emotionManager.getAggression() < ThinkingAiEmotion.MINDLESS_TERROR){
@@ -627,7 +627,7 @@ public class ThinkingAi extends Ai{
 		// low chance of winning
 		// engage if being targeted and can fight back
 		else if(this.isBeingTargeted()){
-			if((this.getWeapon().isMelee() && this.getWeapon().isInRange(this, target)) || (!this.getWeapon().isMelee() && this.getWeapon().hasAmmo())) {
+			if(this.getWeapon().isMelee() && this.getWeapon().isInRange(this, target)) {
 				this.aiMode = AiMode.ENGAGING;
 				this.aim(target);
 			}

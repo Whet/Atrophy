@@ -8,26 +8,24 @@ public class ThinkingAiEmotion {
 	// Aggression profiles
 	public static final int PASSIVE = -2;
 	public static final int PASSIVE_RESPOND = -1;	
-	public static final int PASSIVE_COMBATSCORE_DIFFERENCE = 80;
 	public static final int AGGRESSIVE_FIGHTER = 1; 
 	public static final int MINDLESS_TERROR = 2;	
 	
-	public static final int AGGRESSIVE_FIGHTER_COMBATSCORE_DIFFERENCE = 120;
+	public static final int PASSIVE_COMBATSCORE_DIFFERENCE = 120;
+	public static final int AGGRESSIVE_FIGHTER_COMBATSCORE_DIFFERENCE = 80;
 	public static final int MINDLESS_TERROR_COMBATSCORE_DIFFERENCE = 80;
 	
-	public static final double AGGRESSION_RESTORE_RATE = 0.005;
-	
-	public static final double TEAM_MEMBER_KILLED = +1.5;
 	public static final double SHOT_AT = +0.8;
 	public static final double AIMING_AGGRESSION = +0.3;
-	public static final double FAILED_INTIMIDATION = +0.2;
+	public static final double FAILED_INTIMIDATION = +0.1;
 	public static final double SUCCESSFUL_INTIMIDATION = -0.3;
-	public static final double HIGHWAYMAN_FIGHT = + 0.4;
 
 	
 	private int baseAggression;
 	private double aggression;
 	private boolean aggressionModified;
+	
+	private float aggressionRestoreRate;
 	
 	private ThinkingAi ai;
 	
@@ -37,6 +35,11 @@ public class ThinkingAiEmotion {
 		aggressionModified = false;
 		
 		this.ai = ai;
+		this.aggressionRestoreRate = 0.05f;
+	}
+	
+	public float getAggressionRestoreRate() {
+		return aggressionRestoreRate;
 	}
 
 	public boolean isAggressionModified() {
@@ -62,11 +65,12 @@ public class ThinkingAiEmotion {
 	
 	public void modifyAggression(double aggression){
 		this.aggression += aggression;
-		if(this.aggression < this.baseAggression - 1.5){
-			this.aggression = this.baseAggression -1.5;
+		if(this.aggression < this.baseAggression - 2){
+			this.aggression = this.baseAggression - 2;
 		}
-		else if(this.aggression > this.baseAggression + 1.5){
-			this.aggression = this.baseAggression + 1.5;
+		else if(this.aggression > this.baseAggression + 2){
+			this.aggression = this.baseAggression + 2;
+			aggressionRestoreRate = 0.005f;
 		}
 		aggressionModified = true;
 	}
@@ -76,12 +80,14 @@ public class ThinkingAiEmotion {
 			this.aggression -= normal;
 			if(aggression < this.baseAggression){
 				this.aggression = this.baseAggression;
+				aggressionRestoreRate = 0.05f;
 			}
 		}
 		else if(this.aggression < this.baseAggression){
 			this.aggression += normal;
 			if(aggression > this.baseAggression){
 				this.aggression = this.baseAggression;
+				aggressionRestoreRate = 0.05f;
 			}
 		}
 	}
@@ -131,10 +137,10 @@ public class ThinkingAiEmotion {
 	}
 
 	public boolean hasAccuracyForAggressionLevel(ThinkingAi thinkingAi){
-		if(Math.abs(getAggression()) > 1 && thinkingAi.getSwing() * Weapon.SWING_BONUS + thinkingAi.getWeapon().getAccuracy() > 60 * getAggression()){
+		if(Math.abs(getAggression()) > 1 && thinkingAi.getSwing() * Weapon.SWING_BONUS + thinkingAi.getWeapon().getAccuracy() > 40){
 			return true;
 		}
-		else if(thinkingAi.getSwing() * Weapon.SWING_BONUS + thinkingAi.getWeapon().getAccuracy() > 50){
+		else if(thinkingAi.getSwing() * Weapon.SWING_BONUS + thinkingAi.getWeapon().getAccuracy() > 60){
 			return true;
 		}
 		return false;

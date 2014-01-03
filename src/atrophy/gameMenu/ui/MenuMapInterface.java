@@ -81,12 +81,12 @@ public class MenuMapInterface {
 //			return;
 //		}
 		
-		int banditTeamSpawn = levelManager.getBlocks().length / 4 + 1;
+		int banditTeamSpawn = levelManager.getBlocks().length / 5 + 1;
 		
 		if(banditTeamSpawn > 5)
 			banditTeamSpawn = 5;
 		
-		int whiteVistaTeamSpawn = levelManager.getBlocks().length / 4 + 1;
+		int whiteVistaTeamSpawn = levelManager.getBlocks().length / 5 + 1;
 		
 		if(whiteVistaTeamSpawn > 5)
 			whiteVistaTeamSpawn = 5;
@@ -109,8 +109,9 @@ public class MenuMapInterface {
 			if(new Random().nextInt(10) < 1)
 				specialCharacter = SpecialCharacterGenerator.specialCharacters(missions, itemMarket.getBanditsAllowedItems(), itemMarket.getBanditsAllowedWeapons(), AiGenerator.BANDITS, sector);
 			
+			// There may be no available special characters
 			if(specialCharacter == null)
-				generationCommands.add(new GenerateCommand(2, 3, itemMarket.getBanditsAllowedItems(), itemMarket.getBanditsAllowedWeapons(), AiGenerator.BANDITS));
+				generationCommands.add(new GenerateCommand(1, 2, itemMarket.getBanditsAllowedItems(), itemMarket.getBanditsAllowedWeapons(), AiGenerator.BANDITS));
 			else
 				generationCommands.add(specialCharacter);
 			
@@ -121,8 +122,9 @@ public class MenuMapInterface {
 			if(new Random().nextInt(10) < 1)
 				specialCharacter = SpecialCharacterGenerator.specialCharacters(missions, itemMarket.getWhiteVistaAllowedItems(), itemMarket.getWhiteVistaAllowedWeapons(), AiGenerator.WHITE_VISTA, sector);
 			
+			// There may be no available special characters
 			if(specialCharacter == null)
-				generationCommands.add(new GenerateCommand(2, 3, itemMarket.getWhiteVistaAllowedItems(), itemMarket.getWhiteVistaAllowedWeapons(), AiGenerator.WHITE_VISTA));
+				generationCommands.add(new GenerateCommand(1, 2, itemMarket.getWhiteVistaAllowedItems(), itemMarket.getWhiteVistaAllowedWeapons(), AiGenerator.WHITE_VISTA));
 			else
 				generationCommands.add(specialCharacter);
 		}
@@ -132,8 +134,9 @@ public class MenuMapInterface {
 			if(new Random().nextInt(10) < 1)
 				specialCharacter = SpecialCharacterGenerator.specialCharacters(missions, itemMarket.getLonerAllowedItems(), itemMarket.getLonerAllowedWeapons(), AiGenerator.LONER, sector);
 			
+			// There may be no available special characters
 			if(specialCharacter == null)
-				generationCommands.add(new GenerateCommand(2, 3, itemMarket.getLonerAllowedItems(), itemMarket.getLonerAllowedWeapons(), AiGenerator.LONER));
+				generationCommands.add(new GenerateCommand(1, 2, itemMarket.getLonerAllowedItems(), itemMarket.getLonerAllowedWeapons(), AiGenerator.LONER));
 			else
 				generationCommands.add(specialCharacter);
 		}
