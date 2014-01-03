@@ -423,7 +423,7 @@ public class PathFinder {
 
 		Map<GridBlock, GridBlock> cameFrom = new HashMap<>();
 
-		GridBlock goal = navGrid.getGridBlock(moveLocation);
+		GridBlock goal = navGrid.getNearestGridBlock(moveLocation);
 
 		while (!openSet.isEmpty()) {
 
@@ -442,9 +442,9 @@ public class PathFinder {
 					continue;
 
 				if (current.nonDiagNeighbours.contains(neighbour))
-					newG = current.g + 10;
+					newG = current.g + 1;
 				else
-					newG = current.g + 15;
+					newG = current.g + 1.5;
 
 				if (!openSet.contains(neighbour) || newG < neighbour.g) {
 					cameFrom.put(neighbour, current);
@@ -465,7 +465,8 @@ public class PathFinder {
 		GridBlock returnBlock = null;
 
 		for (GridBlock block : openSet) {
-			if (returnBlock == null || block.f < returnBlock.f)
+			// Tie break by choosing highest g value
+			if (returnBlock == null || block.f < returnBlock.f || (block.f == returnBlock.f && block.g > returnBlock.g))
 				returnBlock = block;
 		}
 
