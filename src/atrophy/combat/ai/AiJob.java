@@ -124,6 +124,11 @@ public class AiJob {
 			return door;
 		}
 		
+		@Override
+		public boolean isExpired() {
+			return door.canUse();
+		}
+		
 	}
 
 }

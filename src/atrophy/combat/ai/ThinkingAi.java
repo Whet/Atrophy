@@ -242,8 +242,9 @@ public class ThinkingAi extends Ai{
 		if(this.getAbilities().contains(Abilities.WELDING) && this.getPortalPathway() != null && this.getPortalPathway().size() > 0 && !this.getPortalPathway().peek().canUse()){
 			this.setWeldingOpen(this.getPortalPathway().peek());
 		}
-		else {
+		else if(this.getPortalPathway() != null && this.getPortalPathway().size() > 0 && !this.getPortalPathway().peek().canUse()) {
 			// Flag commander to open door
+			this.getCommander().requestDoorOpen(this.getPortalPathway().peek());
 		}
 	}
 
@@ -271,6 +272,7 @@ public class ThinkingAi extends Ai{
 		else if(Maths.getDistance(this.getLocation(), this.getMoveLocation()) == 0 && this.turnCounter == 0){
 		
 			this.aiMode = AiMode.CAMPING;
+		
 			Random random = new Random();
 			boolean openDoor = false;
 			
@@ -281,7 +283,11 @@ public class ThinkingAi extends Ai{
 			}
 			
 			// if can weld then weld instead of camping
-			if(openDoor && this.getAbilities().contains(Abilities.WELDING)){
+			if(this.doingJob && this.job instanceof AiJob.OpenDoorJob) {
+				this.setWeldingOpen(((AiJob.OpenDoorJob) this.job).getDoor());
+				return;
+			}
+			else if(openDoor && this.getAbilities().contains(Abilities.WELDING)){
 				
 				for(Portal door : this.getLevelBlock().getPortals()) {
 					if(door.canUse()) {
@@ -560,13 +566,13 @@ public class ThinkingAi extends Ai{
 
 	protected void passiveEngageReaction(int friendlyCount, int enemyCount, Ai target) {
 		
-		if(this.getWeapon().isMelee() && this.getWeapon().isInRange(this, target) && !this.hasEffect(Parrying.NAME) && new Random().nextInt(4) > 1){
+		if(target.getTargetAi() == this && this.getWeapon().isMelee() && this.getWeapon().isInRange(this, target) && !this.hasEffect(Parrying.NAME) && new Random().nextInt(4) > 1){
 			this.addEffect(new Parrying());
 			return;
 		}
 		
 		// if being aimed at then engage
-		if(this.isBeingTargeted() || this.getCommander().isAiHated(target) && emotionManager.getAggression() > ThinkingAiEmotion.PASSIVE){
+		if((this.isBeingTargeted() || this.getCommander().isAiHated(target)) && emotionManager.getAggression() > ThinkingAiEmotion.PASSIVE){
 			// if fight is possible then engage
 			if(friendlyCount >= enemyCount){
 				this.aiMode = AiMode.ENGAGING;
@@ -609,7 +615,7 @@ public class ThinkingAi extends Ai{
 	
 	protected void aggressiveEngageReaction(int friendlyCount, int enemyCount, Ai target) {
 		
-		if(this.getWeapon().isMelee() && this.getWeapon().isInRange(this, target) && !this.hasEffect(Parrying.NAME) && new Random().nextInt(4) > 1){
+		if(target.getTargetAi() == this && this.getWeapon().isMelee() && this.getWeapon().isInRange(this, target) && !this.hasEffect(Parrying.NAME) && new Random().nextInt(4) > 1){
 			this.addEffect(new Parrying());
 			return;
 		}

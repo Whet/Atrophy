@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Random;
 import java.util.Map.Entry;
 import java.util.PriorityQueue;
 import java.util.Set;
@@ -21,7 +22,7 @@ import atrophy.gameMenu.saveFile.Squad;
 
 public class TeamsCommander {
 	
-	private static final int UPDATE_GAP = 20;
+	private static final int UPDATE_GAP = 5;
 
 	private static final int ASSIGNMENT_MODIFIER = 10;
 
@@ -341,12 +342,17 @@ public class TeamsCommander {
 		// Assign specialist job
 		if(this.hasItem(WeldingTorch.NAME)) {
 			for(AiJob job : this.jobs) {
-				if(job.getType().equals(JobType.OPEN_DOOR) && !job.isJobFilled()) {
+				if(job.getType().equals(JobType.OPEN_DOOR) &&
+				   !job.isJobFilled()) {
 					this.takeJob(ai, job);
 					return job;
 				}
 			}
 		}
+		
+		// Check for job if specialist
+		if(this.jobAssignments.get(ai) != null)
+			return this.jobAssignments.get(ai);
 		
 		// Make a random scout job so the ai stays busy
 		if(allJobsFull())
@@ -370,7 +376,7 @@ public class TeamsCommander {
 		}
 		while(levelManager.isRoomBanned(this.getFaction(), room));
 		
-		AiJob job = new AiJob(1, room, JobType.SCOUT, turnsToNextUpdate + 15);
+		AiJob job = new AiJob(1, room, JobType.SCOUT, 8 + new Random().nextInt(5));
 		jobs.add(job);
 		this.checkForNullHeuristic(room);
 		
@@ -395,6 +401,12 @@ public class TeamsCommander {
 	
 	public boolean requestDoorOpen(Portal door){
 		if(this.hasItem(WeldingTorch.NAME)) {
+			
+			for(AiJob job:this.jobs) {
+				if(job instanceof AiJob.OpenDoorJob && ((AiJob.OpenDoorJob) job).getDoor() == door)
+					return false;
+			}
+			
 			AiJob job = new AiJob.OpenDoorJob(door);
 			jobs.add(job);
 			this.checkForNullHeuristic(door.getLinkedBlocks()[0]);
