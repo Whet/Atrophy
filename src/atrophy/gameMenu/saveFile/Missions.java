@@ -215,7 +215,6 @@ public class Missions{
 		private TechTree techTree;
 		public String sectorName;
 		private boolean missionTaken;
-		public boolean isChecked;
 		private WindowManager windowManager;
 
 		public AttackMission(Missions missions, StashManager stashManager, String faction, Squad squad, Object rewardForAttack, String mapName, String mapOwner, Integer eChance, Integer mChance, Integer wChance, Integer sChance, ItemMarket itemMarket, TechTree techTree, String sectorName, WindowManager windowManager) {
@@ -230,7 +229,6 @@ public class Missions{
 			this.techTree = techTree;
 			this.sectorName = sectorName;
 			this.missionTaken = false;
-			this.isChecked = false;
 			this.timeToLive = 1;
 			this.windowManager = windowManager;
 		}
@@ -263,7 +261,7 @@ public class Missions{
 		
 		@Override
 		public boolean isExpired() {
-			return (super.isExpired() && !missionTaken) || isChecked || missions.getMapOwner(this.mapName, this.sectorName).equals(this.faction);
+			return (super.isExpired() && !missionTaken) || missions.getMapOwner(this.mapName, this.sectorName).equals(this.faction);
 		}
 		
 		public boolean isTaken() {

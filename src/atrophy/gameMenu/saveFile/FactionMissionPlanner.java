@@ -161,7 +161,7 @@ public class FactionMissionPlanner implements Serializable{
 			next.tickTimeToLive();
 			
 			// See if faction took location
-			if(next instanceof AttackMission && ((AttackMission) next).isChecked) {
+			if(next instanceof AttackMission) {
 				
 				AttackMission atkMission = (AttackMission) next;
 				
@@ -180,12 +180,6 @@ public class FactionMissionPlanner implements Serializable{
 					
 					squad.setAdvance(squad.getAdvance() + ((Integer) next.reward));
 				}
-			}
-			
-			// If attack mission taken wait to see results next call of updateMissions
-			if(next instanceof AttackMission && ((AttackMission) next).isTaken() && !((AttackMission) next).isChecked) {
-				((AttackMission) next).isChecked = true;
-				continue;
 			}
 
 			if(next.isExpired())
