@@ -23,7 +23,7 @@ public class DialoguePool {
 	}
 
 	private Dialogue createMurderAccusation() {
-		return new Dialogue(missionManager, cartographer, "Wait a second, you're that murderer! Time to face justice", new String[]{"Attack", "Give Items"}, true);
+		return new Dialogue(missionManager, cartographer, "Wait a second, you're that murderer! Time to face justice", new String[]{"Attack", "Give Items", "Intimidate"}, true);
 	}
 
 	public MessageBox getMessageBox() {

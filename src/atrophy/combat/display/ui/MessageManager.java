@@ -574,6 +574,10 @@ public class MessageManager{
 				((ThinkingAi) messageBox.getConversers()[1]).respondToMessage(Topic.GIVE_ITEMS,messageBox.getConversers()[0]);
 			return false;
 			
+			case INTIMIDATE_AI_INIT:
+				((ThinkingAi) messageBox.getConversers()[1]).respondToMessage(Topic.INTIMIDATE_AI_INIT,messageBox.getConversers()[0]);
+			return false;
+			
 			case ATTACK:
 				((ThinkingAi) messageBox.getConversers()[1]).respondToMessage(Topic.ATTACK,messageBox.getConversers()[0]);
 			return false;

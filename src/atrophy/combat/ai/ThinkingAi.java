@@ -34,6 +34,7 @@ import atrophy.combat.level.LevelManager;
 import atrophy.combat.level.MissionManager;
 import atrophy.combat.level.Portal;
 import atrophy.combat.mechanics.Abilities;
+import atrophy.combat.mechanics.ScoringMechanics;
 import atrophy.combat.mechanics.TurnProcess;
 
 public class ThinkingAi extends Ai{
@@ -349,6 +350,7 @@ public class ThinkingAi extends Ai{
 			this.setMoveLocation(this.chaseAi.getLocation().clone());
 			this.chaseAi = null;
 		}
+		this.doingJob = false;
 	}
 
 	public void moveTowardsNearestRegion(List<Polygon> regions) throws PathNotFoundException{
@@ -971,6 +973,18 @@ public class ThinkingAi extends Ai{
 					this.aiNode.freeThinkTurns = stunTurns + 1;
 				
 				this.getCommander().removeHatedAi(speaker);
+			break;
+			// Check for intimidation
+			case INTIMIDATE:
+				
+				if(!ScoringMechanics.weakIntimidateCheck(speaker, this, combatMembersManager)) {
+					this.aiMode = AiMode.ENGAGING;
+					this.aim(speaker);
+					if(this.aiNode != null)
+						this.aiNode.freeThinkTurns = 6;
+				}
+					
+				
 			break;
 			// Open trade with ai
 			case TRADE:
