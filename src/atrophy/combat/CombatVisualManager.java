@@ -105,8 +105,7 @@ public class CombatVisualManager {
 		// in fov && in same room as target
 		// in a radius && in same room
 		// or dead and kill counted
-		if(( (lookedAt.isDead() && lookedAt.isKillCounted()) || 
-		  
+		if(
 		  (!looker.isDead() && looker.getStunnedTurns() == 0 &&
 		  (
 		  (looker.getLevelBlock() == lookedAt.getLevelBlock() && spotStealth(looker,lookedAt) && spotFov(looker,lookedAt,looker.isIgnoringLOS())) ||
@@ -119,12 +118,7 @@ public class CombatVisualManager {
 				   							   lookedAt.getLocation()[1],
 				   							   lookedAt.getLevelBlock()) ))
 		  )
-		  ))){
-			
-			// if the corpse is in sight but not counted then count it
-			if(lookedAt.isDead() && looker.getFaction().equals("Player")){
-				lookedAt.bodyFound(true);
-			}
+		  )){
 			
 			// Update cache
 			this.aiVisibilityCache.get(looker).put(lookedAt, new double[]{looker.getLocation()[0], looker.getLocation()[1], lookedAt.getLocation()[0], lookedAt.getLocation()[1]});
