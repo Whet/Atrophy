@@ -595,6 +595,9 @@ public class AiActions {
 				invoker.aiActions.incrementActionTurns();
 			break;
 			case LOOT:
+				if(invoker.getTargetAi() == null)
+					return;
+				
 				invoker.setTrueLookAngle(invoker.getTargetAi().getLocation());
 				invoker.lootTurnAction();
 			break;
