@@ -117,25 +117,19 @@ public class MenuBar extends Crowd{
 			@Override
 			public boolean mD(Point mousePosition, MouseEvent e) {
 				
-				if(!SaveFile.saveLocation.isEmpty()) {
-					SaveFile.saveGame(new File(SaveFile.saveLocation), squad, missions, mapWar.getSectors(), stashManager.getItems(), techTree, missions.getMemCodes(), windowManager);
+				ActivePane.getInstance().setVisible(false);
+				
+				JFileChooser chooser = new JFileChooser(new File(ReadWriter.HOME_LOCATION + "/GameData/Saves"));
+				
+				int returnValue = chooser.showSaveDialog(new JFrame());
+				
+				if(returnValue == JFileChooser.APPROVE_OPTION){
+					SaveFile.saveGame(chooser.getSelectedFile(), squad, missions, mapWar.getSectors(), stashManager.getItems(), techTree, missions.getMemCodes(), windowManager);
 					ActivePane.getInstance().setVisible(true);
 				}
-				else {
-					ActivePane.getInstance().setVisible(false);
-					
-					JFileChooser chooser = new JFileChooser(new File(ReadWriter.HOME_LOCATION + "/GameData/Saves"));
-					
-					int returnValue = chooser.showSaveDialog(new JFrame());
-					
-					if(returnValue == JFileChooser.APPROVE_OPTION){
-						SaveFile.saveGame(chooser.getSelectedFile(), squad, missions, mapWar.getSectors(), stashManager.getItems(), techTree, missions.getMemCodes(), windowManager);
-						ActivePane.getInstance().setVisible(true);
-					}
-					else{
-						ActivePane.getInstance().setVisible(true);
-						return true;
-					}
+				else{
+					ActivePane.getInstance().setVisible(true);
+					return true;
 				}
 				
 				return true;

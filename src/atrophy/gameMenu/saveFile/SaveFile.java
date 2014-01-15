@@ -18,7 +18,6 @@ import atrophy.gameMenu.ui.WindowManager;
 
 public class SaveFile implements Serializable{
 
-	public static String saveLocation = "";
 	public Squad squad;
 	public ArrayList<Sector> sectors;
 	public ArrayList<String> stash;
@@ -106,7 +105,6 @@ public class SaveFile implements Serializable{
 			// set advance to true value
 			save.squad.setAdvance(save.advance);
 			save.squad.setFactionRelations(save.whiteVistaRelation, save.banditRelation);
-			SaveFile.saveLocation = save.saveURL;
 			windowManager.updateWindows();
 		}
 		
