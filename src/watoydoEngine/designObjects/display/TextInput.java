@@ -62,7 +62,9 @@ public class TextInput extends Text implements MouseRespondable,KeyboardResponda
 			}
 			else {
 				FontMetrics metric = drawShape.getFontMetrics(this.getFont());
-				this.boundBox = metric.getStringBounds(this.getText(), drawShape);
+				
+				if(!this.isFocused() || metric.getStringBounds(this.getText(), drawShape).getWidth() > this.boundBox.getWidth())
+					this.boundBox = metric.getStringBounds(this.getText(), drawShape);
 			}
 			
 			
