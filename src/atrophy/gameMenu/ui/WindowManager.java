@@ -163,6 +163,11 @@ public class WindowManager extends Crowd{
 	}
 	
 	public void createWindowsFromLayout(List<WindowInfo> windows, Missions missions, Squad squad, ItemMarket itemMarket, TechTree techTree, StashManager stashManager, MapManager mapManager, ShopManager shopManager) {
+		
+		this.getDisplayList().clear();
+		this.getMouseActionList().clear();
+		this.getKeyboardActionList().clear();
+		
 		for(WindowInfo window:windows) {
 			
 			switch(window.info[0]) {

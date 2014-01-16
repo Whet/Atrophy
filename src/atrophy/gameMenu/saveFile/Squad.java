@@ -46,6 +46,7 @@ public class Squad implements Serializable {
 	}
 	
 	public void createWindowLayout(WindowManager windowManager) {
+		this.windowLayout.clear();
 		for(Displayable window: windowManager.getDisplayList()) {
 			
 			Menu menu = (Menu) window;
