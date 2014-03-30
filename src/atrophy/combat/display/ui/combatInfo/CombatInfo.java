@@ -1,6 +1,3 @@
-/*
- * 
- */
 package atrophy.combat.display.ui.combatInfo;
 
 import java.awt.Color;
@@ -25,47 +22,19 @@ import atrophy.combat.display.ui.FloatingIcons;
 import atrophy.combat.items.Weapon;
 import atrophy.combat.mechanics.TurnProcess;
 
-
-// TODO: Auto-generated Javadoc
-/**
- * The Class CombatInfo.
- */
 public class CombatInfo extends Crowd {
 	
-	/**
-	 * The ammo text.
-	 */
 	private Text ammoText;
-	
-	/**
-	 * The reload text.
-	 */
 	private Text reloadText;
-	
-	/**
-	 * The swing text.
-	 */
 	private Text swingText;
-	
-	/**
-	 * The combat buttons.
-	 */
 	private ButtonMulti combatButtons[];
 
 	private CombatMembersManager combatMembersManager;
 
 	private EndTurnButton endTurnButton;
 	
-	
-	// handles counter at bottom right fo screen with target info
+	// handles counter at bottom right of screen with target info
 	// also handles various other combat variables as buttons above the target info
-	/**
-	 * Instantiates a new combat info.
-	 * @param combatUiManager 
-	 * @param floatingIcons 
-	 * @param combatVisualManager 
-	 * @param turnProcess 
-	 */
 	public CombatInfo(CombatMembersManager combatMembersManager, CombatUiManager combatUiManager, FloatingIcons floatingIcons, CombatVisualManager combatVisualManager, TurnProcess turnProcess){
 		super(true);
 		
@@ -111,36 +80,6 @@ public class CombatInfo extends Crowd {
 			
 			this.addButton(combatButtons[0]);
 			
-//			BufferedImage[] drawFovIcons = {ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/fovEnabled.png")),
-//					 						ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/fovDisabled.png"))};
-//
-//			combatButtons[1] = new DrawFovToggle(combatVisualManager, combatUiManager, drawFovIcons);
-//			
-//			combatButtons[1].setLocation(DisplayManager.getInstance().getResolution()[0] - 40,
-//				 		 				 DisplayManager.getInstance().getResolution()[1] - 210);
-//			
-//			this.addButton(combatButtons[1]);
-//			
-//			BufferedImage[] drawObjLines = {ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/objLineDisabled.png")),
-//					                        ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/objLineEnabled.png"))};
-//
-//			combatButtons[2] = new DrawObjLineToggle(combatVisualManager, combatUiManager, drawObjLines);
-//			
-//			combatButtons[2].setLocation(DisplayManager.getInstance().getResolution()[0] - 40,
-//				 		 				 DisplayManager.getInstance().getResolution()[1] - 250);
-//			
-//			this.addButton(combatButtons[2]);
-//			
-//			BufferedImage[] drawDoors = {ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/doorsEnabled.png")),
-//										 ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/doorsDisabled.png"))};
-//
-//			combatButtons[3] = new DrawDoorToggle(floatingIcons, combatUiManager, drawDoors);
-//			
-//			combatButtons[3].setLocation(DisplayManager.getInstance().getResolution()[0] - 40,
-//										 DisplayManager.getInstance().getResolution()[1] - 290);
-//			
-//			this.addButton(combatButtons[3]);
-			
 			BufferedImage[] drawMiniMap = {ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/miniMapEnabled.png")),
                     					   ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/miniMapDisabled.png"))};
 
@@ -168,11 +107,7 @@ public class CombatInfo extends Crowd {
 							   DisplayManager.getInstance().getResolution()[1] - combatBack.getSize()[1]);
 		
 	}
-	
-	// The Void
-	/**
-	 * Update text.
-	 */
+
 	public void updateText(){
 		if(combatMembersManager.getCurrentAi() != null){
 			
@@ -218,21 +153,10 @@ public class CombatInfo extends Crowd {
 		}
 	}
 	
-	// Getters
-	/**
-	 * Gets the ammo text.
-	 *
-	 * @return the ammo text
-	 */
 	public Text getAmmoText(){
 		return this.ammoText;
 	}
 	
-	/**
-	 * Gets the swing text.
-	 *
-	 * @return the swing text
-	 */
 	public Text getSwingText(){
 		return this.swingText;
 	}

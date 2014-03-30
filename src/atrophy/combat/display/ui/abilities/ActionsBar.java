@@ -1,5 +1,6 @@
 package atrophy.combat.display.ui.abilities;
 
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.io.IOException;
@@ -23,6 +24,7 @@ import atrophy.combat.actions.MouseAbilityHandler;
 import atrophy.combat.combatEffects.PowerManager;
 import atrophy.combat.display.ui.InfoTextDisplayable;
 import atrophy.combat.mechanics.Abilities;
+import atrophy.gameMenu.saveFile.Squad;
 
 public class ActionsBar extends Crowd{
 	
@@ -35,7 +37,8 @@ public class ActionsBar extends Crowd{
 	private CombatMembersManager combatMembersManager;
 	private Map<String, AbilityButton> actionButtonMap;
 	private ImageSingle abilityBack;
-	private PowerMouseRegion powerMouseRegion; 
+	private PowerMouseRegion powerMouseRegion;
+	private ImageSingle stabilityMarker; 
 	
 	public ActionsBar(CombatMembersManager combatMembersManager) {
 		super(true);
@@ -47,8 +50,10 @@ public class ActionsBar extends Crowd{
 		try{
 			
 			abilityBack = new ImageSingle(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/abilityGrid.png")));
-			
 			this.addDisplayItem(abilityBack);
+			
+			stabilityMarker = new ImageSingle(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/selectedUnitMarker.png")));
+			this.addDisplayItem(stabilityMarker);
 			
 			BlockDoorAction blockDoor = new BlockDoorAction(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/blockDoor.png")));
 			actionButtonMap.put("blockDoor", blockDoor);
@@ -124,6 +129,7 @@ public class ActionsBar extends Crowd{
 		// move abilities background to bottom left corner
 		abilityBack.setLocation(0, DisplayManager.getInstance().getResolution()[1] - abilityBack.getSize()[1]);
 		abilityBack.setVisible(true);
+		stabilityMarker.setVisible(true);
 		
 		powerMouseRegion = new PowerMouseRegion(0, DisplayManager.getInstance().getResolution()[1] - abilityBack.getSize()[1], abilityBack.getSize()[0], 50);
 		this.addMouseActionItem(powerMouseRegion);
@@ -221,6 +227,7 @@ public class ActionsBar extends Crowd{
 		}
 		
 		abilityBack.setVisible(true);
+		stabilityMarker.setVisible(true);
 		
 		placeButtons();
 	}
@@ -378,6 +385,19 @@ public class ActionsBar extends Crowd{
 			combatUiManager.getInfoText().removeInfoText(this);
 		}
 		
+	}
+	
+	@Override
+	public void drawMethod(Graphics2D drawShape) {
+		
+		// 0 <-> 132
+		int markerShift = (int)(132 / (Squad.MAX_STABILITY / (float)powerMouseRegion.powerManager.getStability()));
+		
+		// Update stability marker position
+		stabilityMarker.setLocation(-14 + markerShift,
+				                    DisplayManager.getInstance().getResolution()[1] - abilityBack.getSize()[1] + 29);
+		
+		super.drawMethod(drawShape);
 	}
 	
 }

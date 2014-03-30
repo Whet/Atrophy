@@ -89,8 +89,8 @@ public class CombatUiManager{
 		if(combatMembersManager.getCurrentAi() != null &&
 		   combatMembersManager.getCurrentAi().getAction().equals("Looting")){
 			lootBox.loadLootDisplay(combatMembersManager.getCurrentAi(), 
-					                              combatMembersManager.getCurrentAi().getTargetAi(),
-					                              true);
+					                combatMembersManager.getCurrentAi().getTargetAi(),
+					                true);
 		}
 		else{
 			lootBox.closeLootUi(false);
