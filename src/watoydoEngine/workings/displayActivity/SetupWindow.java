@@ -36,7 +36,7 @@ public class SetupWindow extends JFrame{
 	private JComboBox<String> resolution;
 	private boolean windowedMode;
 	private int[] resolutionMode;
-	private final int[] DIMENSIONS = {340,150};
+	private final int[] DIMENSIONS = {405,248};
 
 	private SetupWindow(){
 		
@@ -58,16 +58,20 @@ public class SetupWindow extends JFrame{
 		this.setTitle("Atrophy Setup");
 		
 		Image watLogo = null;
+		Image setupImage = null;
 		ImageIcon atrophyIcon = null;
 		
 		try{
 			watLogo = ImageIO.read(ReadWriter.getResourceAsInputStream("images/watoydo/watoydoLogo.jpg"));
+			setupImage = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/setupImage.png"));
 		}
 		catch(IOException ioexcept){
 			System.err.println("watoydo window logo not found mods folder likely out of place, terminating");
 			System.exit(-1);
 		}
 		this.setIconImage(watLogo);
+		
+		JLabel setupImageLabel = new JLabel(new ImageIcon(setupImage));
 		
 		// Init buttons
 		windowed = new JButton("Windowed: True");
@@ -86,13 +90,13 @@ public class SetupWindow extends JFrame{
 		
 		JPanel buttonsContainer = new JPanel();
 		
-		content.add(buttonsContainer, BorderLayout.WEST);
+		content.add(buttonsContainer, BorderLayout.SOUTH);
 		
 		content.add(new JLabel(atrophyIcon));
 		
 		content.setBackground(Color.white);
 		
-		GridLayout buttonsLayout = new GridLayout(4,1);
+		GridLayout buttonsLayout = new GridLayout(1,4);
 		
 		buttonsContainer.setLayout(buttonsLayout);
 		
@@ -101,6 +105,8 @@ public class SetupWindow extends JFrame{
 		buttonsContainer.add(resolution);
 		
 		buttonsContainer.add(start);
+		
+		this.add(setupImageLabel, BorderLayout.CENTER);
 		
 		resolution.addItem("1280 720");
 		resolution.addItem("1280 800");
