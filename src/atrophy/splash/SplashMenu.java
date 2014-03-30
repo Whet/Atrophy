@@ -1,6 +1,3 @@
-/*
- * 
- */
 package atrophy.splash;
 
 import java.awt.Point;
@@ -29,23 +26,14 @@ import atrophy.gameMenu.ui.WindowManager;
 import atrophy.hardPanes.CharacterCreatePane;
 import atrophy.hardPanes.GameMenuHardPane;
 
-/**
- * The Class SplashMenu.
- */
 public class SplashMenu extends Crowd {
 
-	/**
-	 * Instantiates a new splash menu.
-	 */
 	public SplashMenu() {
 		super(true);
 		this.addDisplayItem(new Wallpaper(new Random().nextLong()));
 		addButtons();
 	}
 
-	/**
-	 * Adds the buttons.
-	 */
 	private void addButtons() {
 		
 		TextButton newGame = new TextButton(TextButton.DEFAULT_ON_COLOUR,TextButton.DEFAULT_OFF_COLOUR) {
@@ -103,7 +91,6 @@ public class SplashMenu extends Crowd {
 				}
 				
 				ActivePane.getInstance().setVisible(true);
-//				windowManager.updateWindows();
 				return true;
 			}
 		};

@@ -1,6 +1,3 @@
-/*
- * 
- */
 package atrophy.gameMenu.ui.popups;
 
 import java.awt.Color;
@@ -11,16 +8,8 @@ import watoydoEngine.designObjects.display.Text;
 import watoydoEngine.designObjects.display.TextButton;
 import atrophy.gameMenu.ui.WindowManager;
 
-/**
- * The Class ErrorPopup.
- */
 public class ErrorPopup extends Popup {
 
-	/**
-	 * Instantiates a new error popup.
-	 *
-	 * @param message the message
-	 */
 	public ErrorPopup(final WindowManager windowManager, String message) {
 		super(windowManager, new Text(0,0,message), new TextButton[]{
 				new TextButton(Color.green,Color.green.darker()) {
