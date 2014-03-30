@@ -1,5 +1,6 @@
 package atrophy.splash;
 
+import java.awt.Color;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
@@ -50,7 +51,7 @@ public class CharacterCreateMenu extends Crowd{
 		
 		try {
 			image = new ImageSelect();
-			image.setLocation(this.getLocation()[0] + 66, this.getLocation()[1] + 60);
+			image.setLocation(this.getLocation()[0] + 85, this.getLocation()[1] + 70);
 		} 
 		catch (IOException e1) {
 			System.err.println("Couldn't load heads");
@@ -61,10 +62,16 @@ public class CharacterCreateMenu extends Crowd{
 		Text nameTag = new Text(this.getLocation()[0] + 30, this.getLocation()[1] + 50, "Name: ");
 		this.addDisplayItem(nameTag);
 		
-		name = new TextInput(this.getLocation()[0] + 66, this.getLocation()[1] + 50,"Julian");
+		Text headTag = new Text(this.getLocation()[0] + 30, this.getLocation()[1] + 90, "Avatar: ");
+		this.addDisplayItem(headTag);
+		
+		name = new TextInput(this.getLocation()[0] + 78, this.getLocation()[1] + 50,"Julian");
 		name.setMaxLetters(20);
 		this.addInputText(name);
 		
+		
+		Text backstoryTag = new Text(this.getLocation()[0] + 30, this.getLocation()[1] + 160, "Backstory (Choose one to start the game)", Color.gray);
+		this.addDisplayItem(backstoryTag);
 		
 		for(int i = 0; i < 5; i++){
 			
@@ -85,11 +92,11 @@ public class CharacterCreateMenu extends Crowd{
 				}
 			};
 			
-			newGame.setLocation(this.getLocation()[0] + 30, this.getLocation()[1] + 150 + 80 * i);
+			newGame.setLocation(this.getLocation()[0] + 30, this.getLocation()[1] + 190 + 80 * i);
 			this.addMouseActionItem(newGame);
 			this.addDisplayItem(newGame);
 			
-			Text startDescription = new Text(this.getLocation()[0] + 30, this.getLocation()[1] + 178 + 80 * i, getDescription(ind));
+			Text startDescription = new Text(this.getLocation()[0] + 30, this.getLocation()[1] + 218 + 80 * i, getDescription(ind));
 			this.addDisplayItem(startDescription);
 		}
 	}
@@ -113,11 +120,11 @@ public class CharacterCreateMenu extends Crowd{
 	private String getDescription(int ind) {
 		switch(ind){
 			case 0:
-				return "You survived the incident but nothing more.@nYou will stuggle at first, armed with nothing but your suit and a knife.";
+				return "You survived the incident but nothing more.@nYou will stuggle at first, armed with nothing but a knife.";
 			case 1:
-				return "Your upbringing made you handy with tools.@nYou have a welding torch and your upbringing makes you more skilled with it.";
+				return "You helped with construction efforts and have become handy with tools.@nYou have a welding torch and your upbringing makes you more skilled with it.";
 			case 2:
-				return "You have a personnel detector which tracks who is in the surrounding area.";
+				return "You were given a gift to keep you safe from the bandits in the wreckage.@nYou have a personnel detector which tracks who is in the surrounding area.";
 			case 3:
 				return "Your family worked in the science labs before the incident.@nYou have a rare sensor suite that can detect people through walls and scanner to gather scientific data.";
 			case 4:
