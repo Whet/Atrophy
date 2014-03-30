@@ -32,11 +32,11 @@ public class SetupWindow extends JFrame{
 		return instance;
 	}
 	
-	private JButton windowed, start;
+	private JButton windowed, start, exit;
 	private JComboBox<String> resolution;
 	private boolean windowedMode;
 	private int[] resolutionMode;
-	private final int[] DIMENSIONS = {405,248};
+	private final int[] DIMENSIONS = {560,248};
 
 	private SetupWindow(){
 		
@@ -44,6 +44,8 @@ public class SetupWindow extends JFrame{
 		resolutionMode = new int[2];
 		resolutionMode[0] = 1280;
 		resolutionMode[1] = 720;
+		
+		this.setUndecorated(true);
 		
 		// sets up window properties
 		this.setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -76,7 +78,16 @@ public class SetupWindow extends JFrame{
 		// Init buttons
 		windowed = new JButton("Windowed: True");
 		resolution = new JComboBox<>();
-		start = new JButton("Start Atrophy");
+		start = new JButton("Start");
+		exit = new JButton("Exit");
+		
+		exit.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				System.exit(0);
+			}
+		});
 		
 		// Init default settings on activePane
 		ActivePane.getInstance().setMode(resolutionMode,windowedMode);
@@ -96,7 +107,7 @@ public class SetupWindow extends JFrame{
 		
 		content.setBackground(Color.white);
 		
-		GridLayout buttonsLayout = new GridLayout(1,4);
+		GridLayout buttonsLayout = new GridLayout(1,5);
 		
 		buttonsContainer.setLayout(buttonsLayout);
 		
@@ -105,6 +116,7 @@ public class SetupWindow extends JFrame{
 		buttonsContainer.add(resolution);
 		
 		buttonsContainer.add(start);
+		buttonsContainer.add(exit);
 		
 		this.add(setupImageLabel, BorderLayout.CENTER);
 		
