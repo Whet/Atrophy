@@ -33,26 +33,29 @@ public class DisplayManager{
 	}
 	
 	// Sets up active pane to be fullscreen/windowed at correct resolution
-	public void setFrameToScreen(ActivePane window,boolean windowed, int[] resolution){
+	public void setFrameToScreen(ActivePane window, int windowed, int[] resolution){
 		
 		this.resolution[0] = resolution[0];
 		this.resolution[1] = resolution[1];
 		
 		dm = new DisplayMode(this.resolution[0],this.resolution[1],32,DisplayMode.REFRESH_RATE_UNKNOWN);
 		
-		if(!windowed && mainDevice.isFullScreenSupported()){
+		if(windowed == 2 && mainDevice.isFullScreenSupported()){
 				mainDevice.setFullScreenWindow(window);
 				// Try and change settings
 				if(mainDevice.isDisplayChangeSupported()){
 					mainDevice.setDisplayMode(dm);
 				}
 				else{
-					window.setMode(resolution,true);
+					window.setMode(resolution, windowed);
 				}
 		}
 		else{
 			
-			window.setMode(resolution,true);
+			if(windowed == 2)
+				window.setMode(resolution, 0);
+			else
+				window.setMode(resolution, windowed);
 			
 			window.setPreferredSize(new Dimension(resolution[0],resolution[1]));
 			window.pack();

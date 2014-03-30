@@ -34,13 +34,13 @@ public class SetupWindow extends JFrame{
 	
 	private JButton windowed, start, exit;
 	private JComboBox<String> resolution;
-	private boolean windowedMode;
+	private int windowedMode;
 	private int[] resolutionMode;
-	private final int[] DIMENSIONS = {560,248};
+	private final int[] DIMENSIONS = {590,248};
 
 	private SetupWindow(){
 		
-		windowedMode = true;
+		windowedMode = 0;
 		resolutionMode = new int[2];
 		resolutionMode[0] = 1280;
 		resolutionMode[1] = 720;
@@ -76,7 +76,7 @@ public class SetupWindow extends JFrame{
 		JLabel setupImageLabel = new JLabel(new ImageIcon(setupImage));
 		
 		// Init buttons
-		windowed = new JButton("Windowed: True");
+		windowed = new JButton("Windowed");
 		resolution = new JComboBox<>();
 		start = new JButton("Start");
 		exit = new JButton("Exit");
@@ -141,13 +141,19 @@ public class SetupWindow extends JFrame{
 		
 		public void actionPerformed(ActionEvent e){
 			
-			windowedMode = !windowedMode;
+			windowedMode++;
 			
-			if(windowedMode){
-				windowed.setText("Windowed: True ");
+			if(windowedMode > 2)
+				windowedMode = 0;
+			
+			if(windowedMode == 0){
+				windowed.setText("Windowed");
+			}
+			else if(windowedMode == 1) {
+				windowed.setText("Borderless Window");
 			}
 			else{
-				windowed.setText("Windowed: False");
+				windowed.setText("Fullscreen");
 			}
 			ActivePane.getInstance().setMode(resolutionMode,windowedMode);
 		}

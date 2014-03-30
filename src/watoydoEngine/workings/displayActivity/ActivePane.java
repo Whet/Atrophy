@@ -47,7 +47,7 @@ public class ActivePane extends JFrame implements MouseListener, KeyListener, Wi
 
 	private Crowd rootCrowd;
 	
-	private boolean windowed;
+	private int windowed;
 	private int[] resolution;
 	
 	private boolean rootCrowdLoaded;
@@ -67,7 +67,7 @@ public class ActivePane extends JFrame implements MouseListener, KeyListener, Wi
 		resolution = new int[2];
 		resolution[0] = 1280;
 		resolution[1] = 720;
-		windowed = false;
+		windowed = 0;
 
 		
 		// Although the program can run windowed we position buttons by resolution sometimes
@@ -91,14 +91,17 @@ public class ActivePane extends JFrame implements MouseListener, KeyListener, Wi
 	}
 	
 	
-	public void setMode(int[] resolution, boolean windowed){
+	public void setMode(int[] resolution, int windowed){
 		
 		this.resolution[0] = resolution[0];
 		this.resolution[1] = resolution[1];
 		
 		this.windowed = windowed;
-		// If windowed then leave decorations on
-		this.setUndecorated(!windowed);
+		
+		if(windowed != 1)
+			this.setUndecorated(false);
+		else
+			this.setUndecorated(true);
 	}
 	
 	// Set display up when config menu closes, run once
@@ -129,7 +132,7 @@ public class ActivePane extends JFrame implements MouseListener, KeyListener, Wi
 		Cursor customCursor = toolkit.createCustomCursor(cursorImage, cursorHotSpot, "Cursor");
 		this.setCursor(customCursor);
 		
-		DisplayManager.getInstance().setFrameToScreen(this,windowed,this.resolution);
+		DisplayManager.getInstance().setFrameToScreen(this, this.windowed,this.resolution);
 		
 		this.setLocation((int)(GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint().x - resolution[0] * 0.5)
 						,(int)(GraphicsEnvironment.getLocalGraphicsEnvironment().getCenterPoint().y - resolution[1] * 0.5));
@@ -389,7 +392,7 @@ public class ActivePane extends JFrame implements MouseListener, KeyListener, Wi
 	}
 	
 	public boolean isWindowed(){
-		return windowed;
+		return windowed < 2;
 	}
 	
 	public Crowd getRootCrowd(){
