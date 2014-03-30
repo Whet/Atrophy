@@ -86,7 +86,7 @@ public class PowerManager {
 	}
 	
 	public int getRankedStability() {
-		if(squad.getStability() > 80)
+		if(squad.getStability() >= Squad.MAX_STABILITY)
 			return 2;
 		else if(squad.getStability() > 20)
 			return 1;

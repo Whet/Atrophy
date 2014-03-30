@@ -243,7 +243,8 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 			
 			// C
 			case 67:
-				mouseAbilityHandler.setAbility("PowerHelp");
+//				mouseAbilityHandler.setAbility("PowerHelp");
+				missionManager.changeStability(+10);
 			break;
 			
 			// V
