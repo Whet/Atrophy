@@ -111,9 +111,9 @@ public class TurnProcess {
 			combatUiManager.getActionsBar().setVisible(false);
 			aiCrowd.setActive(false);
 				
-			if(turnCount > 0 && turnCount%20 == 0){
-				combatUiManager.getLargeEventText().flashText("Turn " + turnCount, Color.white);
-			}
+//			if(turnCount > 0 && turnCount%20 == 0){
+//				combatUiManager.getLargeEventText().flashText("Turn " + turnCount, Color.white);
+//			}
 			
 			turnCount++;
 			
