@@ -110,6 +110,25 @@ public class SplashMenu extends Crowd {
 		loadGame.setLocation(this.getLocation()[0] + 30, this.getLocation()[1] + 70);
 		this.addMouseActionItem(loadGame);
 		this.addDisplayItem(loadGame);
+		
+		TextButton exitGame = new TextButton(TextButton.DEFAULT_ON_COLOUR,TextButton.DEFAULT_OFF_COLOUR) {
+			
+			{
+				this.setText("Exit");
+				this.setVisible(true);
+			}
+			
+			@Override
+			public boolean mD(Point mousePosition, MouseEvent e) {
+				System.exit(0);
+				return true;
+			}
+		};
+		
+		exitGame.setLocation(this.getLocation()[0] + 30, this.getLocation()[1] + 90);
+		this.addMouseActionItem(exitGame);
+		this.addDisplayItem(exitGame);
+		
 	}
 	
 	

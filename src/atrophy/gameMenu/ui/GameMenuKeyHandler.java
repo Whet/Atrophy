@@ -39,7 +39,7 @@ public class GameMenuKeyHandler implements KeyboardRespondable{
 		switch(e.getKeyCode()){
 			// Esc
 			case 27:
-				ActivePane.getInstance().closeWindow();
+//				ActivePane.getInstance().closeWindow();
 			break;
 		}
 		return true;
