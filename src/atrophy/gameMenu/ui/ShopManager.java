@@ -1,6 +1,3 @@
-/*
- * 
- */
 package atrophy.gameMenu.ui;
 
 import java.util.ArrayList;
@@ -12,21 +9,10 @@ import atrophy.gameMenu.saveFile.ItemMarket;
 import atrophy.gameMenu.saveFile.Squad;
 import atrophy.gameMenu.saveFile.Squad.Squaddie;
 
-
-
-/**
- * The Class ShopManager.
- */
 public class ShopManager{
 
-	/**
-	 * The Constant SELL_WEAKNESS.
-	 */
 	private static final double SELL_WEAKNESS = 0.6;
 	
-	/**
-	 * The items.
-	 */
 	private ArrayList<String> items;
 	
 	private Squad squad;
@@ -34,10 +20,6 @@ public class ShopManager{
 	private StashManager stashManager;
 	private ItemMarket itemMarket;
 	
-	/**
-	 * Instantiates a new shop manager.
-	 * @param itemMarket 
-	 */
 	public ShopManager(WindowManager windowManager, StashManager stashManager, ItemMarket itemMarket){
 		items = new ArrayList<String>();
 		
@@ -50,23 +32,11 @@ public class ShopManager{
 		this.squad = squad;
 	}
 
-	/**
-	 * Sell item.
-	 *
-	 * @param selectedItem the selected item
-	 */
 	public void sellItem(String selectedItem) {
 		squad.payAdvance(-sellCost(selectedItem));
 		windowManager.updateWindows();
 	}
 	
-
-	/**
-	 * Sell cost.
-	 *
-	 * @param selectedItem the selected item
-	 * @return the int
-	 */
 	public int sellCost(String selectedItem){
 		return (int)(itemMarket.getItemCost(selectedItem) * SELL_WEAKNESS);
 	}
@@ -74,12 +44,11 @@ public class ShopManager{
 	public int buyCost(String selectedItem){
 		return itemMarket.getItemCost(selectedItem);
 	}
+	
+	public boolean canAfford(String item) {
+		return this.buyCost(item) <= squad.getAdvance();
+	}
 
-	/**
-	 * Buy item.
-	 *
-	 * @param i the i
-	 */
 	public void buyItem(int i) {
 		if(squad.payAdvance(this.buyCost(this.items.get(i)))){
 			stashManager.addItem(this.items.get(i));
@@ -88,26 +57,20 @@ public class ShopManager{
 		windowManager.updateWindows();
 	}
 
-	/**
-	 * Gets the item.
-	 *
-	 * @param i the i
-	 * @return the item
-	 */
 	public String getItem(int i) {
 		if(i >= 0 && i < this.items.size())
 			return FontList.digitString(5, squad.getAdvance()) + " *" + FontList.digitString(5, this.buyCost(this.items.get(i))) + "   " + this.items.get(i);
 		
 		return "Empty";
 	}
+	
+	public String getItemName(int i) {
+		if(i >= 0 && i < this.items.size())
+			return this.items.get(i);
+		
+		return "Empty";
+	}
 
-	/**
-	 * Ability cost.
-	 *
-	 * @param squadMember the squad member
-	 * @param skill the skill
-	 * @return the int
-	 */
 	public static int abilityCost(Squaddie squadMember, String skill) {
 		switch(squadMember.getSkillLevel(skill) + 1){
 			case 1:
@@ -122,9 +85,6 @@ public class ShopManager{
 		return 99999;
 	}
 
-	/**
-	 * Random items.
-	 */
 	public void randomItems() {
 		this.items.clear();
 		
@@ -135,22 +95,12 @@ public class ShopManager{
 		}
 	}
 
-	/**
-	 * Gets the item count.
-	 *
-	 * @return the item count
-	 */
 	public int getItemCount() {
 		return this.items.size();
 	}
 
-
-	/**
-	 * Default shop levels.
-	 */
 	public void randomShopItems() {
 		this.randomItems();
 	}
-
 	
 }

@@ -1,6 +1,3 @@
-/*
- * 
- */
 package atrophy.gameMenu.ui;
 
 import java.awt.Color;
@@ -12,33 +9,19 @@ import java.util.ArrayList;
 import watoydoEngine.designObjects.display.TextButton;
 import watoydoEngine.sounds.SoundBoard;
 import watoydoEngine.utils.GraphicsFunctions;
+import atrophy.gameMenu.ui.popups.ShopBuyPopup;
 
-/**
- * The Class ShopMenu.
- */
 public class ShopMenu extends Menu{
 
-	/**
-	 * The Constant MAX_ITEMS.
-	 */
 	private static final int MAX_ITEMS = 10;
 	
-	/**
-	 * The page.
-	 */
 	private int page;
 	
-	/**
-	 * The buttons.
-	 */
 	private ArrayList<TextButton> buttons;
 	
 	private ShopManager shopManager;
 	private StashManager stashManager;
 	
-	/**
-	 * Instantiates a new shop menu.
-	 */
 	public ShopMenu(WindowManager windowManager, ShopManager shopManager, StashManager stashManager){
 		super(windowManager, new double[]{280,270});
 		page = 0;
@@ -48,9 +31,6 @@ public class ShopMenu extends Menu{
 		updateText();
 	}
 	
-	/**
-	 * Adds the components.
-	 */
 	private void addComponents() {
 		buttons = new ArrayList<TextButton>(MAX_ITEMS);
 		for(int i = 0; i < MAX_ITEMS; i++){
@@ -67,8 +47,10 @@ public class ShopMenu extends Menu{
 				
 				@Override
 				public boolean mD(Point mousePosition, MouseEvent e) {
-					if(!this.getText().equals("Empty"))
-						shopManager.buyItem(page * MAX_ITEMS + index);
+					if(!this.getText().equals("Empty")) {
+						windowManager.addPopup(null, new ShopBuyPopup(windowManager, shopManager, shopManager.getItemName(page * MAX_ITEMS + index), page * MAX_ITEMS + index));
+//						shopManager.buyItem(page * MAX_ITEMS + index);
+					}
 					ShopMenu.this.updateText();
 					return true;
 				}
@@ -114,11 +96,6 @@ public class ShopMenu extends Menu{
 		this.addMouseActionItem(next);
 	}
 	
-	/**
-	 * Change page.
-	 *
-	 * @param change the change
-	 */
 	private void changePage(int change){
 		if(change == -1 && page == 0){
 			page = (int)Math.ceil(shopManager.getItemCount() / MAX_ITEMS);
@@ -133,9 +110,6 @@ public class ShopMenu extends Menu{
 	}
 
 
-	/* (non-Javadoc)
-	 * @see atrophy.gameMenu.ui.Menu#drawMethod(java.awt.Graphics2D)
-	 */
 	@Override
 	public void drawMethod(Graphics2D drawShape) {
 		super.drawMethod(drawShape);
@@ -143,20 +117,12 @@ public class ShopMenu extends Menu{
 		drawTitle(drawShape);
 	}
 	
-	/**
-	 * Draw title.
-	 *
-	 * @param drawShape the draw shape
-	 */
 	private void drawTitle(Graphics2D drawShape) {
 		drawShape.setComposite(GraphicsFunctions.makeComposite(1.0f));
 		drawShape.setColor(Color.white);
 		drawShape.drawString("Shop   Page " + page, (int)this.getLocation()[0] + 20, (int)this.getLocation()[1] + 21);
 	}
 	
-	/* (non-Javadoc)
-	 * @see atrophy.gameMenu.ui.Menu#mD(java.awt.Point, java.awt.event.MouseEvent)
-	 */
 	@Override
 	public boolean mD(Point mousePosition, MouseEvent e){
 		if(stashManager.transferItem(this)){
@@ -166,27 +132,18 @@ public class ShopMenu extends Menu{
 		return super.mD(mousePosition, e);
 	}
 	
-	/* (non-Javadoc)
-	 * @see atrophy.gameMenu.ui.Menu#mI(java.awt.Point)
-	 */
 	@Override
 	public void mI(Point mousePosition) {
 		super.mI(mousePosition);
 //		updateText();
 	}
 	
-	/* (non-Javadoc)
-	 * @see atrophy.gameMenu.ui.Menu#mO(java.awt.Point)
-	 */
 	@Override
 	public void mO(Point mousePosition) {
 		updateText();
 		super.mO(mousePosition);
 	}
 	
-	/**
-	 * Update text.
-	 */
 	private void updateText() {
 		for(int i = 0; i < buttons.size(); i++){
 			buttons.get(i).setText(shopManager.getItem(i + (page * MAX_ITEMS)));

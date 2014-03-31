@@ -82,11 +82,11 @@ public class WindowManager extends Crowd{
 		return popupOpen;
 	}
 	
-	public void openPopup(Menu popup){
-		this.addDisplayItem(popup);
-		this.addMouseActionItem(popup);
-		this.popup = popup;
-	}
+//	public void openPopup(Menu popup){
+//		this.addDisplayItem(popup);
+//		this.addMouseActionItem(popup);
+//		this.popup = popup;
+//	}
 	
 	public void setPopupOpen(boolean open){
 		this.popupOpen = open;
