@@ -7,6 +7,8 @@ import java.util.Random;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import watoydoEngine.designObjects.display.Crowd;
 import watoydoEngine.designObjects.display.TextButton;
@@ -67,6 +69,9 @@ public class SplashMenu extends Crowd {
 				ActivePane.getInstance().setVisible(false);
 				
 				JFileChooser chooser = new JFileChooser(new File(ReadWriter.HOME_LOCATION + "/GameData/Saves"));
+				FileFilter filter = new FileNameExtensionFilter("Atrophy save files", SaveFile.FILE_EXT);
+				chooser.setFileFilter(filter);
+				
 				int returnValue = chooser.showOpenDialog(new JFrame());
 				
 				if(returnValue == JFileChooser.APPROVE_OPTION){

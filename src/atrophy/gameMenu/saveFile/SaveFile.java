@@ -18,6 +18,8 @@ import atrophy.gameMenu.ui.WindowManager;
 
 public class SaveFile implements Serializable{
 
+	public static final String FILE_EXT = "ATROPHY";
+	
 	public Squad squad;
 	public ArrayList<Sector> sectors;
 	public ArrayList<String> stash;
@@ -41,15 +43,23 @@ public class SaveFile implements Serializable{
 	}
 	
 	public static void saveGame(File file, Squad squad, Missions missions, ArrayList<Sector> sectors, ArrayList<String> stash, TechTree techTree, Set<String> spawnCodes, WindowManager windowManager){
+		
+		File fileToBeSaved = file;
+
+		
+		if(!fileToBeSaved.getAbsolutePath().endsWith(FILE_EXT)){
+		    fileToBeSaved = new File(fileToBeSaved + "." + FILE_EXT);
+		}
+		
 		SaveFile save = new SaveFile(squad,missions,sectors,stash,techTree,spawnCodes, windowManager);
 		save.whiteVistaRelation = squad.getFactionRelation(AiGenerator.WHITE_VISTA);
 		save.banditRelation = squad.getFactionRelation(AiGenerator.BANDITS);
-		save.saveURL = file.getAbsolutePath();
+		save.saveURL = fileToBeSaved.getAbsolutePath();
 		
 		ObjectOutputStream stream = null;
 		
 		try {
-			stream = new ObjectOutputStream(new FileOutputStream(file));   
+			stream = new ObjectOutputStream(new FileOutputStream(fileToBeSaved));   
 		
 			stream.writeObject(save);
 		} 

@@ -6,6 +6,8 @@ import java.io.File;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileNameExtensionFilter;
 
 import watoydoEngine.designObjects.display.Crowd;
 import watoydoEngine.designObjects.display.TextButton;
@@ -121,6 +123,8 @@ public class MenuBar extends Crowd{
 				ActivePane.getInstance().setVisible(false);
 				
 				JFileChooser chooser = new JFileChooser(new File(ReadWriter.HOME_LOCATION + "/GameData/Saves"));
+				FileFilter filter = new FileNameExtensionFilter("Atrophy save files", "atrophy");
+				chooser.setFileFilter(filter);
 				
 				int returnValue = chooser.showSaveDialog(new JFrame());
 				
