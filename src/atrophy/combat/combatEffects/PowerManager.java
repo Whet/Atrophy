@@ -34,7 +34,7 @@ public class PowerManager {
 	
 	public void usePower(Power power, Object target) {
 		
-		if(target == null)
+		if(target == null || powerExists(target, power))
 			return;
 		
 		// Must have stability greater than 0
@@ -57,6 +57,16 @@ public class PowerManager {
 		}
 	}
 	
+	private boolean powerExists(Object target, Power power) {
+		
+		for(PowerEffect powerEffect:this.powerBuffer) {
+			if(powerEffect.getTarget().equals(target) && powerEffect.getType().equals(power))
+				return true;
+		}
+		
+		return false;
+	}
+
 	public void clearBuffer() {
 		this.powerBuffer.clear();
 	}
