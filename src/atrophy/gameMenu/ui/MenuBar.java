@@ -21,6 +21,7 @@ import atrophy.gameMenu.saveFile.SaveFile;
 import atrophy.gameMenu.saveFile.Squad;
 import atrophy.gameMenu.saveFile.TechTree;
 import atrophy.gameMenu.ui.popups.ExitPopup;
+import atrophy.gameMenu.ui.popups.MainMenuPopup;
 
 public class MenuBar extends Crowd{
 	
@@ -144,6 +145,23 @@ public class MenuBar extends Crowd{
 		this.addMouseActionItem(saveGame);
 		this.addDisplayItem(saveGame);
 		
+		TextButton mainMenuButton = new TextButton(TextButton.DEFAULT_ON_COLOUR,TextButton.DEFAULT_OFF_COLOUR) {
+			
+			{
+				this.setText("Main Menu");
+				this.setVisible(true);
+			}
+			
+			@Override
+			public boolean mD(Point mousePosition, MouseEvent e) {
+				windowManager.addPopup(null, new MainMenuPopup(windowManager));
+				return true;
+			}
+		};
+		mainMenuButton.setLocation(this.getLocation()[0] + 4, this.getLocation()[1] + 115);
+		this.addMouseActionItem(mainMenuButton);
+		this.addDisplayItem(mainMenuButton);
+		
 		TextButton exitGame = new TextButton(TextButton.DEFAULT_ON_COLOUR,TextButton.DEFAULT_OFF_COLOUR) {
 			
 			{
@@ -153,13 +171,11 @@ public class MenuBar extends Crowd{
 			
 			@Override
 			public boolean mD(Point mousePosition, MouseEvent e) {
-				
 				windowManager.addPopup(null, new ExitPopup(windowManager));
-				
 				return true;
 			}
 		};
-		exitGame.setLocation(this.getLocation()[0] + 4, this.getLocation()[1] + 115);
+		exitGame.setLocation(this.getLocation()[0] + 4, this.getLocation()[1] + 135);
 		this.addMouseActionItem(exitGame);
 		this.addDisplayItem(exitGame);
 		
