@@ -121,18 +121,18 @@ public class FactionMissionPlanner implements Serializable{
 		}
 		
 		// Create attack missions
-		for(int i = 0; i < actionPoints; i++) {
-			
-			if(possibleAttackLocations.size() == 0)
-				break;
-			
-			AttackLocation attackLocation = possibleAttackLocations.poll();
-			
-			this.activeMissions.add(new Missions.AttackMission(missions, stashManager, faction, squad, ATTACK_REWARD * attackLocation.getValue(),
-									attackLocation.mapName, mapManager.getSector(attackLocation.sector).getOwner(missions, attackLocation.mapName),
-									attackLocation.eChance, attackLocation.mChance, attackLocation.wChance, attackLocation.sChance,
-									itemMarket, techTree, attackLocation.sector, windowManager));
-		}
+//		for(int i = 0; i < actionPoints; i++) {
+//			
+//			if(possibleAttackLocations.size() == 0)
+//				break;
+//			
+//			AttackLocation attackLocation = possibleAttackLocations.poll();
+//			
+//			this.activeMissions.add(new Missions.AttackMission(missions, stashManager, faction, squad, ATTACK_REWARD * attackLocation.getValue(),
+//									attackLocation.mapName, mapManager.getSector(attackLocation.sector).getOwner(missions, attackLocation.mapName),
+//									attackLocation.eChance, attackLocation.mChance, attackLocation.wChance, attackLocation.sChance,
+//									itemMarket, techTree, attackLocation.sector, windowManager));
+//		}
 	}
 	
 	private static class AttackLocation {
