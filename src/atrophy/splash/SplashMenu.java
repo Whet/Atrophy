@@ -59,7 +59,7 @@ public class SplashMenu extends Crowd {
 		TextButton loadGame = new TextButton(TextButton.DEFAULT_ON_COLOUR,TextButton.DEFAULT_OFF_COLOUR) {
 			
 			{
-				this.setText("Load");
+				this.setText("Load Game");
 				this.setVisible(true);
 			}
 			
