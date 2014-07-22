@@ -1,29 +1,11 @@
-/*
- * 
- */
 package atrophy.combat.items;
 
-
-/**
- * The Class ObjectiveScanner.
- */
 public class ScienceScanner extends Item {
-	
-	/**
-	 * The Constant NAME.
-	 */
+
 	public static final String NAME = "Scientific Scanner";
 	
-	/**
-	 * The instance.
-	 */
 	private static ScienceScanner instance;
 	
-	/**
-	 * Gets the single instance of ObjectiveScanner.
-	 *
-	 * @return single instance of ObjectiveScanner
-	 */
 	public static ScienceScanner getInstance(){
 		
 		if(instance == null){
@@ -33,9 +15,6 @@ public class ScienceScanner extends Item {
 		return instance;
 	}
 	
-	/**
-	 * Instantiates a new objective scanner.
-	 */
 	private ScienceScanner(){
 		super(NAME, "- Allows user to take scientific readings for the room they're in.");
 	}
