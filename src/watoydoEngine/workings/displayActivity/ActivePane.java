@@ -33,7 +33,6 @@ import watoydoEngine.io.ReadWriter;
 import watoydoEngine.workings.DisplayManager;
 import atrophy.hardPanes.SplashPane;
 
-@SuppressWarnings("serial")
 public class ActivePane extends JFrame implements MouseListener, KeyListener, WindowListener{
 	
 	private static ActivePane instance;
@@ -120,10 +119,8 @@ public class ActivePane extends JFrame implements MouseListener, KeyListener, Wi
 			watLogo = ImageIO.read(ReadWriter.getResourceAsInputStream("images/watoydo/watoydoLogo.jpg"));
 			cursorImage = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/icons/mouseWV.png"));
 		}
-		catch(FileNotFoundException fnfe){
-			System.err.println("watoydo window logo not found");
-		}
 		catch(IOException ioexcept){
+			ioexcept.printStackTrace();
 			System.err.println("watoydo window logo not found");
 		}
 		
