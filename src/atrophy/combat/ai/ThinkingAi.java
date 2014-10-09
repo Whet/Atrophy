@@ -15,6 +15,7 @@ import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.actions.MouseAbilityHandler;
+import atrophy.combat.ai.AiJob.JobType;
 import atrophy.combat.ai.conversation.Dialogue;
 import atrophy.combat.ai.conversation.DialoguePool;
 import atrophy.combat.ai.conversation.Topic;
@@ -27,8 +28,12 @@ import atrophy.combat.display.ui.FloatingIcons;
 import atrophy.combat.display.ui.MessageBox;
 import atrophy.combat.display.ui.loot.LootBox;
 import atrophy.combat.display.ui.loot.LootBox.Lootable;
+import atrophy.combat.items.EngineeringSupply;
 import atrophy.combat.items.Item;
+import atrophy.combat.items.MedicalSupply;
+import atrophy.combat.items.ScienceSupply;
 import atrophy.combat.items.Weapon;
+import atrophy.combat.items.WeaponSupply;
 import atrophy.combat.level.LevelBlock;
 import atrophy.combat.level.LevelManager;
 import atrophy.combat.level.MissionManager;
@@ -114,13 +119,44 @@ public class ThinkingAi extends Ai{
 		}
 		else if(doingJob) {
 			this.job = this.getCommander().getJob(this);
-			if(this.getLevelBlock() == this.job.getJobBlock())
+			
+			if(this.getLevelBlock() == this.job.getJobBlock()) {
 				this.job.tickJob();
+				
+				try {
+					jobSpecificActions();
+				} catch (PathNotFoundException e) {
+				}
+			}
+			
 		}
 		
 		this.gatherEnvironmentData();
 	}
 	
+	private void jobSpecificActions() throws PathNotFoundException {
+		if(this.job.getType().equals(JobType.STASH_ITEM)) {
+			if(!this.getLevelBlock().isInStealth(this.getLocation())) {
+				this.getLevelBlock().moveTowardsNearestRegion(this, this.getLevelBlock().getStealthRegion(), false);
+			}
+			else if(this.getInventory().hasItem(EngineeringSupply.getInstance())) {
+				
+				int rand = new Random().nextInt(12);
+				
+				if(rand < 3) 
+					this.getLevelBlock().getStash(this.getLocation()).addItem(EngineeringSupply.getInstance());
+				else if(rand < 6) 
+					this.getLevelBlock().getStash(this.getLocation()).addItem(WeaponSupply.getInstance());
+				else if(rand < 9) 
+					this.getLevelBlock().getStash(this.getLocation()).addItem(ScienceSupply.getInstance());
+				else if(rand < 12) 
+					this.getLevelBlock().getStash(this.getLocation()).addItem(MedicalSupply.getInstance());
+				
+				this.getJob().expire();
+			}
+		}
+	}
+
 	private void commitThoughts(){
 		resetStates();
 		

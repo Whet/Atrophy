@@ -7,12 +7,14 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.Random;
 import java.util.Map.Entry;
 import java.util.PriorityQueue;
+import java.util.Random;
 import java.util.Set;
 
 import atrophy.combat.ai.AiJob.JobType;
+import atrophy.combat.display.ui.loot.LootBox.Lootable;
+import atrophy.combat.items.EngineeringSupply;
 import atrophy.combat.items.WeldingTorch;
 import atrophy.combat.level.LevelBlock;
 import atrophy.combat.level.LevelManager;
@@ -113,6 +115,13 @@ public class TeamsCommander {
 						compareInt = 1;
 					break;
 					case SCOUT:
+						// Low priority
+						if(job2.getType() != JobType.DEFEND && job2.getType() != JobType.SECURE)
+							compareInt = -1;
+						else
+							compareInt = 1;
+					break;
+					case STASH_ITEM:
 						// Low priority
 						if(job2.getType() != JobType.DEFEND && job2.getType() != JobType.SECURE)
 							compareInt = -1;
@@ -356,7 +365,10 @@ public class TeamsCommander {
 		
 		// Make a random scout job so the ai stays busy
 		if(allJobsFull())
-			return takeJob(ai, createScoutJob());
+			if(Math.random() < 0.2 && !ai.getInventory().isFull())
+				return takeJob(ai, createStashJob(ai));
+			else
+				return takeJob(ai, createScoutJob());
 		
 		AiJob bestJob = takeJob(ai, this.jobs.peek());
 		// Force re-ordering of jobs
@@ -376,7 +388,43 @@ public class TeamsCommander {
 		}
 		while(levelManager.isRoomBanned(this.getFaction(), room));
 		
-		AiJob job = new AiJob(1, room, JobType.SCOUT, 8 + new Random().nextInt(5));
+		AiJob job = new AiJob.ScoutJob(1, room, JobType.SCOUT, 8 + new Random().nextInt(5));
+		jobs.add(job);
+		this.checkForNullHeuristic(room);
+		
+		return job;
+	}
+	
+	private AiJob createStashJob(ThinkingAi ai) {
+		LevelBlock room = null;
+		Lootable stash = null;
+		
+		int attempts = 0;
+		
+		do{
+			room = levelManager.randomRoom();
+			checkForNullHeuristic(room);
+			
+			if(room.getStashLootAbles().size() != 0) {
+				do {
+					
+					stash = room.getStashLootAbles().get(new Random().nextInt(room.getStashLootAbles().size()));
+					
+					attempts++;
+					if(attempts > 20)
+						return createScoutJob();
+					
+				}while(stash.getInventory().isFull());
+			}
+			
+			attempts++;
+			if(attempts > 20)
+				return createScoutJob();
+			
+		}
+		while(levelManager.isRoomBanned(this.getFaction(), room) || room.getStashLootAbles().size() == 0);
+		
+		AiJob job = new AiJob.StashItemJob(1, room, JobType.STASH_ITEM, 0);
 		jobs.add(job);
 		this.checkForNullHeuristic(room);
 		

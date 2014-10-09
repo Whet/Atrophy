@@ -6,7 +6,7 @@ import java.util.List;
 import atrophy.combat.level.LevelBlock;
 import atrophy.combat.level.Portal;
 
-public class AiJob {
+public abstract class AiJob {
 
 	protected JobType type;
 	
@@ -69,10 +69,30 @@ public class AiJob {
 		return targetEmployeeCount;
 	}
 
+	public abstract void expire();
 
 
 	public static enum JobType {
-		SCOUT, DEFEND, OPEN_DOOR, SECURE
+		SCOUT, DEFEND, OPEN_DOOR, SECURE, STASH_ITEM
+	}
+	
+	public static class StashItemJob extends AiJob{
+
+		private boolean itemGiven = false;
+		
+		public StashItemJob(int targetEmployeeCount, LevelBlock levelBlock, JobType type, int duration) {
+			super(targetEmployeeCount, levelBlock, type, duration);
+		}
+		
+		@Override
+		public boolean isExpired() {
+			return itemGiven;
+		}
+
+		@Override
+		public void expire() {
+			this.itemGiven = true;
+		}
 	}
 	
 	public static class DefendJob extends AiJob{
@@ -82,6 +102,22 @@ public class AiJob {
 
 		public boolean isExpired(){
 			return false;
+		}
+
+		@Override
+		public void expire() {
+			this.duration = 0;
+		}
+	}
+	
+	public static class ScoutJob extends AiJob{
+		public ScoutJob(int targetEmployeeCount, LevelBlock levelBlock, JobType type, int duration) {
+			super(targetEmployeeCount, levelBlock, type, duration);
+		}
+
+		@Override
+		public void expire() {
+			this.duration = 0;
 		}
 	}
 
@@ -108,6 +144,11 @@ public class AiJob {
 		public boolean isOverFilled() {
 			return false;
 		}
+
+		@Override
+		public void expire() {
+			this.duration = 0;
+		}
 		
 	}
 	
@@ -127,6 +168,11 @@ public class AiJob {
 		@Override
 		public boolean isExpired() {
 			return door.canUse();
+		}
+
+		@Override
+		public void expire() {
+			this.duration = 0;
 		}
 		
 	}
