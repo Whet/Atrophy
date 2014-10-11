@@ -36,7 +36,7 @@ public class EventsLog extends Crowd {
 		messages = new LinkedList<Message>();
 		
 		this.size = new double[2];
-		this.size[0] = 300;
+		this.size[0] = 500;
 		this.size[1] = 110;
 		
 		this.alphaFade = 0;
