@@ -891,7 +891,7 @@ public class ThinkingAi extends Ai{
 //					System.out.println(this.getName() + " suspects " + deathReport.killer.getName() + " of murder");
 					
 					if(this.getCommander().addSuspectedAi(deathReport.killer, deathReport.killed))
-						combatUiManager.getEventsLog().addMessage(this.getFaction() + " finds " + deathReport.killer + " suspicious");
+						combatUiManager.getEventsLog().addMessage(this.getFaction() + " finds " + deathReport.killer.getName() + " suspicious");
 				}
 			}
 		}
