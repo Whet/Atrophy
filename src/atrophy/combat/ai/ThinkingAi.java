@@ -516,6 +516,8 @@ public class ThinkingAi extends Ai{
 
 					this.getCommander().addHatedAi(ai);
 					this.getCommander().removeFriend(ai);
+					
+					combatUiManager.getEventsLog().addMessage(this.getCommander().getFaction() + " wants " + ai.getName() + " dead!");
 				}
 				else {
 					
@@ -525,6 +527,8 @@ public class ThinkingAi extends Ai{
 					this.getCommander().addHatedAi(ai);
 					this.getCommander().removeFriend(ai);
 					this.getCommander().removeSuspected(ai);
+					
+					combatUiManager.getEventsLog().addMessage(this.getCommander().getFaction() + " wants " + ai.getName() + " dead!");
 					
 					this.dialoguePool.getMessageBox().setConversation(ai, this, this.dialoguePool.getMurderAccusation());
 					this.dialoguePool.getMessageBox().setVisible(true);
@@ -882,12 +886,12 @@ public class ThinkingAi extends Ai{
 				if(deathReport == null || deathReport.killer == null || (deathReport.killer.getFaction().equals(this.getFaction()) && (!this.getFaction().equals(AiGenerator.LONER) || deathReport.killer == this)))
 					return;
 				
-				if(turnProcess.getTurnCount() - deathReport.timeOfDeath < 20 && deathReport.weapon.getName().equals(deathReport.killer.getWeapon().getName()) &&
-				  (combatVisualManager.isAiInSight(this, deathReport.killer) || new Random().nextInt(10) < 7)) {
+				if(turnProcess.getTurnCount() - deathReport.timeOfDeath < 20 && deathReport.weapon.getName().equals(deathReport.killer.getWeapon().getName()) && combatVisualManager.isAiInSight(this, deathReport.killer)) {
 					
 //					System.out.println(this.getName() + " suspects " + deathReport.killer.getName() + " of murder");
 					
-					this.getCommander().addSuspectedAi(deathReport.killer, deathReport.killed);
+					if(this.getCommander().addSuspectedAi(deathReport.killer, deathReport.killed))
+						combatUiManager.getEventsLog().addMessage(this.getFaction() + " finds " + deathReport.killer + " suspicious");
 				}
 			}
 		}

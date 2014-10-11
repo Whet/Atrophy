@@ -604,15 +604,17 @@ public class TeamsCommander {
 		return this.teamAi.contains(ai);
 	}
 
-	public void addSuspectedAi(Ai killer, Ai killed) {
+	public boolean addSuspectedAi(Ai killer, Ai killed) {
 		if(!this.isAlliedWith(killed.getFaction()) && !killed.getFaction().equals(this.getFaction())) {
-			return;
+			return false;
 		}
 //		System.out.println(killer.getName() + " is wanted!");
 		this.suspectedAi.put(killer, 30);
 		
 		if(killer.getFaction().equals(AiGenerator.PLAYER))
 			squad.incrementFactionRelation(this.getFaction(), -0.2);
+		
+		return true;
 	}
 	
 	public boolean isSuspected(Ai suspect) {

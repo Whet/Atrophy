@@ -423,9 +423,9 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 			
 			// L
 			case 76:
-				messageBox.toggleLock();
-				cartographerBox.toggleLock();
-				lootBox.toggleLock();
+//				messageBox.toggleLock();
+//				cartographerBox.toggleLock();
+//				lootBox.toggleLock();
 			break;
 			
 			// Num +

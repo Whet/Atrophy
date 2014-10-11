@@ -13,6 +13,7 @@ import atrophy.combat.display.TorchDrawer;
 import atrophy.combat.display.ui.ActionTextBox;
 import atrophy.combat.display.ui.AllyRoster;
 import atrophy.combat.display.ui.Cartographer;
+import atrophy.combat.display.ui.EventsLog;
 import atrophy.combat.display.ui.FloatingIcons;
 import atrophy.combat.display.ui.InfoText;
 import atrophy.combat.display.ui.LargeEventText;
@@ -40,6 +41,7 @@ public class CombatUiManager{
 	private TorchDrawer torchDrawer;
 	private CombatMembersManager combatMembersManager;
 	private LootBox lootBox;
+	private EventsLog eventsLog;
 
 	public CombatUiManager(Cartographer cartographer, CombatMembersManager combatMembersManager, PanningManager panningManager, AiCrowd aiCrowd, TurnProcess turnProcess, LevelManager levelManager){
 		
@@ -54,6 +56,8 @@ public class CombatUiManager{
 		miniMap = new MiniMap(cartographer, aiCrowd, panningManager, levelManager);
 		
 		largeEventText = new LargeEventText();
+		
+		eventsLog = new EventsLog(turnProcess);
 		
 		try{
 			moveFlag = new MoveFlag(panningManager, this, combatMembersManager, ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/icons/moveMarker.png")), false);
@@ -95,6 +99,8 @@ public class CombatUiManager{
 		else{
 			lootBox.closeLootUi(false);
 		}
+		
+		eventsLog.updateMessages();
 	}
 	
 	public ActionTextBox getActionText(){
@@ -145,6 +151,10 @@ public class CombatUiManager{
 		return torchDrawer;
 	}
 	
+	public EventsLog getEventsLog() {
+		return eventsLog;
+	}
+
 	public boolean isUiLocked() {
 		return this.lootBox.isLocked();
 	}

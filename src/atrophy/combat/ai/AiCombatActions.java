@@ -51,6 +51,8 @@ public class AiCombatActions {
 					((ThinkingAi) this.getTargetAi()).getCommander().removeAlliance(invoker.getFaction());
 					((ThinkingAi) this.getTargetAi()).getCommander().addHatedAi(invoker);
 					
+					invoker.combatUiManager.getEventsLog().addMessage(((ThinkingAi) this.getTargetAi()).getCommander().getFaction() + " wants " + invoker.getName() + " dead!");
+					
 				}
 				
 				// if fire action and if bullets left to fire and a target to shoot at
@@ -166,6 +168,9 @@ public class AiCombatActions {
 			// if target still alive then go back to aiming
 			else{
 				invoker.setAction(AIMING);
+				
+				if(this.getTargetAi().getFaction().equals(AiGenerator.PLAYER))
+					invoker.combatUiManager.getEventsLog().addMessage("An attack has missed " + this.getTargetAi().getName());
 			}
 		
 		}

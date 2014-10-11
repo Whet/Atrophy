@@ -553,6 +553,8 @@ public class AiActions {
 			commander.removeAlliance(invoker.getFaction());
 			commander.addHatedAi(invoker);
 			
+			combatUiManager.getEventsLog().addMessage(commander.getFaction() + " wants " + invoker.getName() + " dead!");
+			
 		}
 	}
 	
