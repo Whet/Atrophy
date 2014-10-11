@@ -3,6 +3,7 @@
  */
 package atrophy.combat.display;
 
+import java.awt.Graphics2D;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.awt.geom.AffineTransform;
@@ -36,6 +37,9 @@ import atrophy.combat.items.Railgun;
 import atrophy.combat.items.Shotgun1;
 
 public class AiImage extends AiImageRoster implements InfoTextDisplayable{
+	
+	private float alphaFade;
+	private boolean fadeVisible;
 	
 	private static final Map<Animation, double[]> ANIMATION_OFFSETS = new HashMap<>();
 	protected int attackFrame = 5;
@@ -90,6 +94,23 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 		this.frame = 0;
 		this.maxFrame = 1;
 		this.imageChanged = false;
+		
+		this.alphaFade = 0;
+		this.fadeVisible = false;
+		
+		this.setVisible(false);
+	}
+	
+	@Override
+	public void drawMethod(Graphics2D drawShape) {
+		this.setAlpha(this.alphaFade);
+		super.drawMethod(drawShape);
+		
+		if(this.fadeVisible)
+			this.fadeIn();
+		else
+			this.fadeOut();
+		
 	}
 	
 	@Override
@@ -253,6 +274,37 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 	public void setVisible(boolean visible){
 		super.setVisible(visible);
 		combatUiManager.getInfoText().removeInfoText(this);
+	}
+	
+	public void setFadingIn(boolean fade) {
+		this.fadeVisible = fade;
+		
+		if(fade)
+			this.setVisible(true);
+		
+		if(fade && this.alphaFade == 0)
+			this.alphaFade = 0.01f;
+	}
+	
+	private void fadeIn() {
+		
+		if(this.alphaFade >= 0.9)
+			this.alphaFade = 1;
+		
+		else if(this.alphaFade < 0.9)
+			this.alphaFade += 0.05;
+		
+	}
+	
+	private void fadeOut() {
+		
+		if(this.alphaFade <= 0.1) {
+			this.alphaFade = 0;
+			this.setVisible(false);
+		}
+		
+		else if(this.alphaFade > 0.1)
+			this.alphaFade -= 0.05;
 	}
 	
 	@Override

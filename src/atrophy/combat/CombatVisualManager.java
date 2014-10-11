@@ -67,10 +67,10 @@ public class CombatVisualManager {
 				if(aiCrowd.getActor(i) == combatMembersManager.getCurrentAi() || allRevealed ||
 				   aiCrowd.getActor(i).isBroadcastingLocation() ||
 				   isAiInSight(combatMembersManager.getCurrentAi(),aiCrowd.getActor(i))){
-					aiCrowd.getActorMask(aiCrowd.getActor(i)).setVisible(true);
+					aiCrowd.getActorMask(aiCrowd.getActor(i)).setFadingIn(true);
 				}
 				else{
-					aiCrowd.getActorMask(aiCrowd.getActor(i)).setVisible(false);
+					aiCrowd.getActorMask(aiCrowd.getActor(i)).setFadingIn(false);
 				}
 			}
 			else{
@@ -78,11 +78,11 @@ public class CombatVisualManager {
 				if(aiCrowd.getActor(i).isBroadcastingLocation() || allRevealed || ((aiCrowd.getActor(i).getFaction().equals("Player") && !aiCrowd.getActor(i).isDead())||
 				   isAiInSight(null, aiCrowd.getActor(i), "Player"))){
 					
-					aiCrowd.getActorMask(aiCrowd.getActor(i)).setVisible(true);
+					aiCrowd.getActorMask(aiCrowd.getActor(i)).setFadingIn(true);
 				}
 				else{
 					// set true to always have ai vis
-					aiCrowd.getActorMask(aiCrowd.getActor(i)).setVisible(false);
+					aiCrowd.getActorMask(aiCrowd.getActor(i)).setFadingIn(false);
 				}
 			}
 		}
