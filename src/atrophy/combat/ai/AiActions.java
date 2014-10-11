@@ -459,15 +459,12 @@ public class AiActions {
 			// break any alliances with the faction if visible
 			breakAlliance(invoker);
 			
-			makeHatedWithTarget(invoker);
-			
 			if(new Random().nextInt(5) < 2)
 				invoker.getTargetAi().setStunnedTurns(3);
 			
 			invoker.setTargetAi(null);
 			this.setAction(NO_ACTION);
 			invoker.setMoveLocationToSelf();
-			
 			
 		}
 		else {
@@ -489,7 +486,6 @@ public class AiActions {
 			breakAlliance(invoker);
 			
 			invoker.getTargetAi().setStunnedTurns(2);
-			makeHatedWithTarget(invoker);
 			
 			invoker.setTargetAi(null);
 			this.setAction(NO_ACTION);

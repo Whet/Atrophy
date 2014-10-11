@@ -44,21 +44,22 @@ public class AiCombatActions {
 					   																										       this.targetAi.getLocation()[1], invoker.getLevelBlock()))){
 			
 			if(invoker.getWeapon().isInRange(invoker, this.getTargetAi())){
-				// break any alliances with the faction if visible
-				if(this.getTargetAi() instanceof ThinkingAi &&
-				   combatVisualManager.isAiInSight(targetAi, invoker, targetAi.getFaction())){
-					
-					((ThinkingAi) this.getTargetAi()).getCommander().removeAlliance(invoker.getFaction());
-					((ThinkingAi) this.getTargetAi()).getCommander().addHatedAi(invoker);
-					
-					invoker.combatUiManager.getEventsLog().addMessage(((ThinkingAi) this.getTargetAi()).getCommander().getFaction() + " wants " + invoker.getName() + " dead!");
-					
-				}
 				
 				// if fire action and if bullets left to fire and a target to shoot at
 				// or if melee, can't charge up swing so just attack
 				if(invoker.getWeapon().isMelee() || (invoker.hasActiveEffect(RapidFireEffect.NAME) && invoker.getWeapon().hasAmmo()) || (invoker.getAction().equals(SHOOTING) && invoker.getWeapon().hasAmmo())){			
 					shoot(invoker);
+					
+					// break any alliances with the faction if visible
+					if(this.getTargetAi() instanceof ThinkingAi &&
+					   combatVisualManager.isAiInSight(targetAi, invoker, targetAi.getFaction())){
+						
+						((ThinkingAi) this.getTargetAi()).getCommander().removeAlliance(invoker.getFaction());
+						((ThinkingAi) this.getTargetAi()).getCommander().addHatedAi(invoker);
+						
+						invoker.combatUiManager.getEventsLog().addMessage(((ThinkingAi) this.getTargetAi()).getCommander().getFaction() + " wants " + invoker.getName() + " dead!");
+						
+					}
 				}
 				// if target and ammo, then increase swing
 				else if(invoker.getAction().equals(AIMING) && invoker.getWeapon().hasAmmo()){
