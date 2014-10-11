@@ -64,6 +64,7 @@ public class LevelBlockGrid {
     
     public GridBlock getNearestGridBlock(double[] location) {
     	
+    	try {
     	 int startIndex = (int) ((location[0] - startX) / GRID_BLOCK_SIZE);
  		
          if(startIndex < 0)
@@ -92,6 +93,11 @@ public class LevelBlockGrid {
          }
 //         return null;
          return blocks.get(startIndex).get(index);
+    	}
+    	catch(IndexOutOfBoundsException e) {
+    		e.printStackTrace();
+    		return null;
+    	}
 	}
     
     private void convertPolygonToBlocks(Polygon hitbox) {

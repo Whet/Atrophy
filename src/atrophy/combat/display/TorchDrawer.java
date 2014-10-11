@@ -168,7 +168,6 @@ public class TorchDrawer implements Displayable {
 		}
 		
 //		System.out.println("Lightpoly points: " + lightPolygon.npoints);
-
 	}
 	
 	@Override
@@ -209,7 +208,7 @@ public class TorchDrawer implements Displayable {
 		drawShape.fillPolygon(lightPolygon);
 		drawShape.setPaint(null);
 		
-		
+		/*
 //		radius = 500;
 //	    dist = new float[]{0.0f, 0.9f};
 //	    colors = new Color[]{new Color(20,20,90), new Color(90,90,160)};
@@ -220,7 +219,7 @@ public class TorchDrawer implements Displayable {
 //		drawShape.setPaint(gp);
 		drawShape.setColor(Color.cyan);
 		drawShape.drawPolygon(lightPolygon);
-		
+		*/
 		transform.setToTranslation(0, 0);
 		drawShape.setTransform(transform);
 	}
@@ -289,6 +288,14 @@ public class TorchDrawer implements Displayable {
 
 	@Override
 	public void setTween(TweenDefinable tween) {
+	}
+
+	public Polygon getShadowPolygon() {
+		return shadowPolygon;
+	}
+
+	public Polygon getLightPolygon() {
+		return lightPolygon;
 	}
 	
 }

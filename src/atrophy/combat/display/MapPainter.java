@@ -43,14 +43,14 @@ public class MapPainter {
                             						  texture.getRGB(i, j) != 0x00000000){
 
 						Color textureColour = new Color(texture.getRGB(i, j));
-						Color roomColour = new Color(drawBlock.getImage().getRGB((int)(i + location[0] - (texture.getWidth() * 0.5) - drawBlock.getHitbox().getBounds2D().getMinX()),
+						Color roomColour = new Color(drawBlock.getColourImage().getRGB((int)(i + location[0] - (texture.getWidth() * 0.5) - drawBlock.getHitbox().getBounds2D().getMinX()),
 																				 (int)(j + location[1] - (texture.getHeight() * 0.5) - drawBlock.getHitbox().getBounds2D().getMinY())));
 						
 						Color moddedColour = new Color((int)((textureColour.getRed() * alpha) + (roomColour.getRed() * (1 - alpha))),
 												       (int)((textureColour.getGreen() * alpha) + (roomColour.getGreen() * (1 - alpha))),
 													   (int)((textureColour.getBlue() * alpha) + (roomColour.getBlue() * (1 - alpha))));
 						
-						drawBlock.getImage().setRGB((int)(i + location[0] - (texture.getWidth() * 0.5) - drawBlock.getHitbox().getBounds2D().getMinX()), 
+						drawBlock.getColourImage().setRGB((int)(i + location[0] - (texture.getWidth() * 0.5) - drawBlock.getHitbox().getBounds2D().getMinX()), 
 													(int)(j + location[1] - (texture.getHeight() * 0.5) - drawBlock.getHitbox().getBounds2D().getMinY()),
 													moddedColour.getRGB());
 					
@@ -72,14 +72,14 @@ public class MapPainter {
 					                                  texture.getRGB(i, j) != 0x00000000){
 					
 						Color textureColour = new Color(texture.getRGB(i, j));
-						Color roomColour = new Color(drawBlock.getImage().getRGB((int)(i + location[0] - (texture.getWidth() * 0.5) - drawBlock.getHitbox().getBounds2D().getMinX()),
+						Color roomColour = new Color(drawBlock.getColourImage().getRGB((int)(i + location[0] - (texture.getWidth() * 0.5) - drawBlock.getHitbox().getBounds2D().getMinX()),
 																				 (int)(j + location[1] - (texture.getHeight() * 0.5) - drawBlock.getHitbox().getBounds2D().getMinY())));
 						
 						Color pixel = new Color(texture.getRGB(i, j), true);
 						
 						Color moddedColour = alphaColours(textureColour, roomColour, pixel.getAlpha() / (double)255);
 						
-						drawBlock.getImage().setRGB((int)(i + location[0] - (texture.getWidth() * 0.5) - drawBlock.getHitbox().getBounds2D().getMinX()), 
+						drawBlock.getColourImage().setRGB((int)(i + location[0] - (texture.getWidth() * 0.5) - drawBlock.getHitbox().getBounds2D().getMinX()), 
 													(int)(j + location[1] - (texture.getHeight() * 0.5) - drawBlock.getHitbox().getBounds2D().getMinY()),
 													moddedColour.getRGB());
 						

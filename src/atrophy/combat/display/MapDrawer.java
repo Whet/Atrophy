@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
 import java.awt.geom.AffineTransform;
+import java.awt.geom.Ellipse2D;
 import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -19,6 +20,7 @@ import watoydoEngine.display.tweens.TweenDefinable;
 import watoydoEngine.io.ReadWriter;
 import watoydoEngine.utils.GraphicsFunctions;
 import watoydoEngine.workings.DisplayManager;
+import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.ai.Ai;
@@ -46,12 +48,14 @@ public class MapDrawer implements Displayable {
 	private CombatVisualManager combatVisualManager;
 	private LevelManager levelManager;
 	private PanningManager panningManager;
+	private CombatUiManager combatUiManager;
 	
-	public MapDrawer(LevelManager levelManager, PanningManager panningManager, AiCrowd aiCrowd, CombatVisualManager combatVisualManager) {
+	public MapDrawer(LevelManager levelManager, PanningManager panningManager, AiCrowd aiCrowd, CombatVisualManager combatVisualManager, CombatUiManager combatUiManager) {
 		this.levelManager = levelManager;
 		this.panningManager = panningManager;
 		this.aiCrowd = aiCrowd;
 		this.combatVisualManager = combatVisualManager;
+		this.combatUiManager = combatUiManager;
 		this.visible = true;
 		this.z = 0;
 		
@@ -106,7 +110,8 @@ public class MapDrawer implements Displayable {
 			
 			if(!levelBlock.getTexture().equals(MapTextures.SPACE)) {
 			
-				MapPainter.applyMapTexture(floorTextures, floorTextInfo, levelBlock, map[mapNumber].getImage());
+				MapPainter.applyMapTexture(floorTextures, floorTextInfo, levelBlock, map[mapNumber].getColourImage());
+				MapPainter.applyMapTexture(floorTextures, floorTextInfo, levelBlock, map[mapNumber].getGreyImage());
 				
 	//			// Draw random debris
 				double debrisArea = levelBlock.getHitBox().getBounds2D().getWidth() * levelBlock.getHitBox().getBounds2D().getHeight();
@@ -157,7 +162,8 @@ public class MapDrawer implements Displayable {
 		}
 
 		private Polygon hitbox;
-		private BufferedImage image;
+		private BufferedImage colourImage;
+		private BufferedImage greyImage;
 		private double[] location;
 		private float alpha;
 		private final List<Polygon> cover;
@@ -167,7 +173,9 @@ public class MapDrawer implements Displayable {
 		private MapTextures texture;
 
 		public MapDrawBlock(PanningManager panningManager, BufferedImage bufferedImage, LevelBlock levelBlock, MapTextures texture) {
-			this.image = bufferedImage;
+			this.colourImage = bufferedImage;
+			this.greyImage = new BufferedImage(colourImage.getWidth(), colourImage.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
+			
 			this.hitbox = levelBlock.getHitBox();
 			this.location = levelBlock.getLocation().clone();
 			this.alpha = 1.0f;
@@ -185,8 +193,8 @@ public class MapDrawer implements Displayable {
 			if(alpha == 0 ||
 			   (this.location[0] + panningManager.getOffset()[0] > DisplayManager.getInstance().getResolution()[0] ||
 			    this.location[1] + panningManager.getOffset()[1] > DisplayManager.getInstance().getResolution()[1]) ||
-			   (this.location[0] + image.getWidth() + panningManager.getOffset()[0] < 0 ||
-			    this.location[1] + image.getHeight()+  panningManager.getOffset()[1] < 0)){
+			   (this.location[0] + colourImage.getWidth() + panningManager.getOffset()[0] < 0 ||
+			    this.location[1] + colourImage.getHeight()+  panningManager.getOffset()[1] < 0)){
 				return false;
 			}
 			return true;
@@ -222,7 +230,7 @@ public class MapDrawer implements Displayable {
 				
 				for(int k = 0; k < coverRegions.length; k++) {
 					MapPainter.applyImage(COVER[coverRegions[k]],
-										  this.getImage(), block.getCover().get(i),
+										  this.getColourImage(), block.getCover().get(i),
 										  new int[] {COVER[coverRegions[k]].getWidth() / (k + 1), k});
 				}
 			}
@@ -265,8 +273,12 @@ public class MapDrawer implements Displayable {
 			this.hitbox = hitbox;
 		}
 
-		public BufferedImage getImage() {
-			return image;
+		public BufferedImage getColourImage() {
+			return colourImage;
+		}
+		
+		public BufferedImage getGreyImage() {
+			return greyImage;
 		}
 
 		public double[] getLocation() {
@@ -279,7 +291,7 @@ public class MapDrawer implements Displayable {
 		}
 
 		public void setImage(BufferedImage image) {
-			this.image = image;
+			this.colourImage = image;
 		}
 
 		public void setLocation(double[] location) {
@@ -287,7 +299,7 @@ public class MapDrawer implements Displayable {
 		}
 		
 		public void flush(){
-			this.image.flush();
+			this.colourImage.flush();
 		}
 		
 		public List<Polygon> getCover() {
@@ -344,8 +356,31 @@ public class MapDrawer implements Displayable {
 		AffineTransform panTransform = new AffineTransform();
 		
 		for(MapDrawBlock mapDraw : map){
-			
 			if(mapDraw.isVisible()){
+				drawShape.setComposite(GraphicsFunctions.makeComposite(mapDraw.getAlpha()));
+				
+				panTransform.setToTranslation((int)panningManager.getOffset()[0] + mapDraw.getLocation()[0], 
+						                      (int)panningManager.getOffset()[1] + mapDraw.getLocation()[1]);
+				
+				drawShape.setTransform(panTransform);
+				
+				if(!mapDraw.getTexture().equals(MapTextures.SPACE)) {
+					drawShape.drawImage(mapDraw.getGreyImage(), null, null);
+				}
+			}
+		}
+		
+		panTransform.setToTranslation(0, 0);
+		drawShape.setTransform(panTransform);
+		
+		Polygon lightPolygon = combatUiManager.getTorchDrawer().getLightPolygon();
+		Polygon trueSightPolygon = new Polygon(lightPolygon.xpoints, lightPolygon.ypoints, lightPolygon.npoints);
+		trueSightPolygon.translate((int)panningManager.getOffset()[0], (int)panningManager.getOffset()[1]);
+		drawShape.setClip(trueSightPolygon);
+		
+		for(MapDrawBlock mapDraw : map){
+			if(mapDraw.isVisible()){
+				
 				drawShape.setComposite(GraphicsFunctions.makeComposite(mapDraw.getAlpha()));
 				
 				panTransform.setToTranslation((int)panningManager.getOffset()[0] + mapDraw.getLocation()[0], 
@@ -358,7 +393,7 @@ public class MapDrawer implements Displayable {
 					radiationEffect(drawShape, mapDraw);
 				}
 				else {
-					drawShape.drawImage(mapDraw.getImage(), null, null);
+					drawShape.drawImage(mapDraw.getColourImage(), null, null);
 				}
 				
 				if(mapDraw.getTexture().equals(MapTextures.RAD_METAL)) {
@@ -401,6 +436,7 @@ public class MapDrawer implements Displayable {
 		}
 		
 		drawShape.setTransform(new AffineTransform());
+		drawShape.setClip(null);
 	}
 	
 	private void radiationEffect(Graphics2D drawShape, MapDrawBlock mapDraw) {
