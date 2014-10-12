@@ -1,11 +1,11 @@
 package atrophy.combat.display;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Polygon;
-import java.awt.RadialGradientPaint;
+import java.awt.Stroke;
 import java.awt.geom.AffineTransform;
-import java.awt.geom.Point2D;
 
 import watoydoEngine.designObjects.display.Displayable;
 import watoydoEngine.display.tweens.TweenDefinable;
@@ -182,20 +182,20 @@ public class TorchDrawer implements Displayable {
 		transform.setToTranslation(panningManager.getOffset()[0], panningManager.getOffset()[1]);
 		drawShape.setTransform(transform);
 		
-		drawShape.setComposite(GraphicsFunctions.makeComposite(0.3f));
+//		drawShape.setComposite(GraphicsFunctions.makeComposite(0.3f));
 		
-		Point2D center = new Point2D.Float((int)(ai.getLocation()[0]), (int)(ai.getLocation()[1]));
-		float radius = 50;
-		float[] dist = {0.0f, 0.5f, 0.8f};
-		Color[] colors = {new Color(80, 80, 80), new Color(50, 50, 50), new Color(0, 0, 0)};
+//		Point2D center = new Point2D.Float((int)(ai.getLocation()[0]), (int)(ai.getLocation()[1]));
+//		float radius = 50;
+//		float[] dist = {0.0f, 0.5f, 0.8f};
+//		Color[] colors = {new Color(80, 80, 80), new Color(50, 50, 50), new Color(0, 0, 0)};
 		
-		RadialGradientPaint gp = new RadialGradientPaint(center, radius, dist, colors);
+		//RadialGradientPaint gp = new RadialGradientPaint(center, radius, dist, colors);
 		
-		drawShape.setPaint(gp);
+		//drawShape.setPaint(gp);
 		
-		drawShape.fillPolygon(shadowPolygon);
+		//drawShape.fillPolygon(shadowPolygon);
 		
-		
+		/*
 	    radius = 420;
 	    dist = new float[]{0.0f, 0.9f};
 	    colors = new Color[]{Color.WHITE, new Color(20,20,90)};
@@ -206,22 +206,29 @@ public class TorchDrawer implements Displayable {
 		
 		drawShape.setComposite(GraphicsFunctions.makeComposite(0.18f));
 		drawShape.fillPolygon(lightPolygon);
-		drawShape.setPaint(null);
+		drawShape.setPaint(null);*/
 		
-		/*
+		
 //		radius = 500;
 //	    dist = new float[]{0.0f, 0.9f};
 //	    colors = new Color[]{new Color(20,20,90), new Color(90,90,160)};
 //		
 //		gp = new RadialGradientPaint(center, radius, dist, colors);
 		
+		Stroke stroke = drawShape.getStroke();
+		
+		drawShape.setStroke(new BasicStroke(4));
+		
 		drawShape.setComposite(GraphicsFunctions.makeComposite(0.1f));
 //		drawShape.setPaint(gp);
 		drawShape.setColor(Color.cyan);
 		drawShape.drawPolygon(lightPolygon);
-		*/
+		
 		transform.setToTranslation(0, 0);
 		drawShape.setTransform(transform);
+		
+		drawShape.setStroke(stroke);
+		
 	}
 
 	@Override
