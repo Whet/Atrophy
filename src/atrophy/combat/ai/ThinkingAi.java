@@ -153,6 +153,10 @@ public class ThinkingAi extends Ai{
 					this.getLevelBlock().getStash(this.getLocation()).addItem(MedicalSupply.getInstance());
 				
 				this.getJob().expire();
+				this.getJob().setInvalidated(true);
+			}
+			else {
+				this.getJob().setInvalidated(true);
 			}
 		}
 	}
@@ -593,7 +597,7 @@ public class ThinkingAi extends Ai{
 		
 		// friendly count is mainly made up of what the individual's strength is
 		// if combat is initiated the team may easily win but each ai wants to live so the team value is reduced
-		int friendlyCount = (int)((combatMembersManager.getFactionStrength(this.getFaction(), this.getLevelBlock()) - this.getCombatScore()) / (float)3) + this.getCombatScore();
+		int friendlyCount = (int)((combatMembersManager.getFactionStrength(this.getFaction(), this.getLevelBlock()) - this.getCombatScore()) / (float)4) + this.getCombatScore();
 		
 		emotionManager.reactToCloseEnemy(target);
 		
@@ -675,6 +679,7 @@ public class ThinkingAi extends Ai{
 				}
 			}
 		}
+		
 	}
 	
 	protected void aggressiveEngageReaction(int friendlyCount, int enemyCount, Ai target) {

@@ -202,7 +202,7 @@ public class TeamsCommander {
 		while(entryIt.hasNext()){
 			Entry<Ai, AiJob> entry = entryIt.next();
 			
-			if(entry.getValue().isExpired() || entry.getValue().isEmpty()) {
+			if(entry.getValue().isExpired() || entry.getValue().isEmpty() || entry.getValue().isInvalidated()) {
 				expiredJobs.add(entry.getValue());
 				entryIt.remove();
 			}
@@ -352,7 +352,8 @@ public class TeamsCommander {
 		if(this.hasItem(WeldingTorch.NAME)) {
 			for(AiJob job : this.jobs) {
 				if(job.getType().equals(JobType.OPEN_DOOR) &&
-				   !job.isJobFilled()) {
+				   !job.isJobFilled() &&
+				   !job.isInvalidated()) {
 					this.takeJob(ai, job);
 					return job;
 				}
@@ -365,7 +366,7 @@ public class TeamsCommander {
 		
 		// Make a random scout job so the ai stays busy
 		if(allJobsFull())
-			if(Math.random() < 0.2 && !ai.getInventory().isFull())
+			if(Math.random() < 0.1 && !ai.getInventory().isFull())
 				return takeJob(ai, createStashJob(ai));
 			else
 				return takeJob(ai, createScoutJob());
@@ -489,7 +490,7 @@ public class TeamsCommander {
 	
 	private boolean allJobsFull() {
 		for(AiJob job : this.jobs){
-			if(!job.isJobFilled())
+			if(!job.isJobFilled() && !job.isInvalidated())
 				return false;
 		}
 		return true;
