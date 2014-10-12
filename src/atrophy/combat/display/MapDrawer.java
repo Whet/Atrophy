@@ -64,13 +64,15 @@ public class MapDrawer implements Displayable {
 	
 	private void makeMap() {
 			
-		BufferedImage[] floorTextures = new BufferedImage[5];
+		BufferedImage[] floorTextures = new BufferedImage[4];
+		BufferedImage[] floorTextures1 = new BufferedImage[4];
 		// 1 - Not a complete block / Is a clipped block
 		// 2 - Complete block
 		// 3 - Door block
 		// 4 - PathBlock
 		// 5 - OutOfSight
-		int[] floorTextInfo = new int[5];
+		int[] floorTextInfo = new int[4];
+		int[] floorTextInfo1 = new int[4];
 		try{
 			floorTextures[0] = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/texture/floors/floor1.png"));
 			floorTextInfo[0] = 1;
@@ -84,8 +86,17 @@ public class MapDrawer implements Displayable {
 			floorTextures[3] = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/texture/floors/floor4.png"));
 			floorTextInfo[3] = 4;
 			
-			floorTextures[4] = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/texture/floors/unseenFloor.png"));
-			floorTextInfo[4] = 5;
+			floorTextures1[0] = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/texture/floors/floor5.png"));
+			floorTextInfo1[0] = 1;
+			
+			floorTextures1[1] = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/texture/floors/floor6.png"));
+			floorTextInfo1[1] = 2;
+			
+			floorTextures1[2] = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/texture/floors/floor7.png"));
+			floorTextInfo1[2] = 3;
+			
+			floorTextures1[3] = ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/texture/floors/floor8.png"));
+			floorTextInfo1[3] = 4;
 		}
 		catch(IOException e){
 			System.err.println("No Floor textures");
@@ -115,7 +126,7 @@ public class MapDrawer implements Displayable {
 			if(!levelBlock.getTexture().equals(MapTextures.SPACE)) {
 			
 				MapPainter.applyMapTexture(floorTextures, floorTextInfo, levelBlock, map[mapNumber].getColourImage());
-				MapPainter.applyMapTexture(new BufferedImage[]{floorTextures[4]}, new int[]{floorTextInfo[4]}, levelBlock, map[mapNumber].getGreyImage());
+				MapPainter.applyMapTexture(floorTextures1, floorTextInfo1, levelBlock, map[mapNumber].getGreyImage());
 				
 	//			// Draw random debris
 				double debrisArea = levelBlock.getHitBox().getBounds2D().getWidth() * levelBlock.getHitBox().getBounds2D().getHeight();
