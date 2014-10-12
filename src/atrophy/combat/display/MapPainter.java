@@ -94,21 +94,6 @@ public class MapPainter {
 		int green = (int)(textureColour.getGreen() * alpha + roomColour.getGreen() * (1 - alpha));
 		int blue = (int)(textureColour.getBlue() * alpha + roomColour.getBlue() * (1 - alpha));
 		
-//		if(alpha != 1)
-//			System.out.println(alpha);
-//		
-//		if(red < 0)
-//			red = 0;
-//		else if (red > 255)
-//			red = 255;
-//		if(green < 0)
-//			green = 0;
-//		else if (green > 255)
-//			green = 255;
-//		if(blue < 0)
-//			blue = 0;
-//		else if (blue > 255)
-//			blue = 255;
 		return new Color(red,green,blue);
 	}
 
@@ -163,7 +148,7 @@ public class MapPainter {
 		
 		int[] loops = new int[2];
 		loops[0] = (int)Math.ceil(levelBlock.getHitBox().getBounds2D().getWidth() / textures[0].getWidth());
-		loops[1] = (int)Math.ceil(levelBlock.getHitBox().getBounds2D().getHeight() / textures[1].getHeight());
+		loops[1] = (int)Math.ceil(levelBlock.getHitBox().getBounds2D().getHeight() / textures[0].getHeight());
 		
 		int[] loopsCount = {0,0};
 		
@@ -184,15 +169,17 @@ public class MapPainter {
 			for(int i = 0; i < texture.getWidth(); i++){
 				for(int j = 0; j < texture.getHeight(); j++){
 					
+					int rgb = texture.getRGB(i, j);
+					
 					if(i + xOffset < mapBlock.getWidth() &&
 					   j + yOffset < mapBlock.getHeight() &&
 					   levelBlock.getHitBox().contains(i + levelBlock.getHitBox().getBounds2D().getMinX() + xOffset,
 							                             j + levelBlock.getHitBox().getBounds2D().getMinY() + yOffset) &&
-					   texture.getRGB(i, j) != 0x00000000){
-					
+					   rgb != 0x00000000){
+						
 						mapBlock.setRGB((int)(i + xOffset),
 									    (int)(j + yOffset),
-										texture.getRGB(i, j));
+										rgb);
 						
 					}
 					
