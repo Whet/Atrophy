@@ -24,7 +24,7 @@ import atrophy.gameMenu.saveFile.Squad;
 
 public class TeamsCommander {
 	
-	private static final int UPDATE_GAP = 5;
+	private static final int UPDATE_GAP = 20;
 
 	private static final int ASSIGNMENT_MODIFIER = 10;
 
@@ -338,7 +338,7 @@ public class TeamsCommander {
 	
 	public AiJob getJob(ThinkingAi ai){
 		
-		if(this.jobAssignments.get(ai) != null && (!this.isSpecialist(ai) || (this.isSpecialist(ai) && !this.specialistNeeded))) {
+		if(this.jobAssignments.get(ai) != null && !this.jobAssignments.get(ai).isInvalidated() && (!this.isSpecialist(ai) || (this.isSpecialist(ai) && !this.specialistNeeded))) {
 //			System.out.println(ai.getName() + " is doing job: " + this.jobAssignments.get(ai).getType());
 			return this.jobAssignments.get(ai);
 		}
@@ -478,10 +478,10 @@ public class TeamsCommander {
 		return true;
 	}
 	
-	public List<LevelBlock> getDangerRooms(int leastDangerLevel){
-		List<LevelBlock> blocks = new ArrayList<>();
+	public Set<LevelBlock> getDangerRooms(int leastDangerLevel){
+		Set<LevelBlock> blocks = new HashSet<>();
 		for(Entry<LevelBlock, DefenceHeuristic> entry : this.defenceHeuristics.entrySet()){
-			if(entry.getValue().dangerH >= leastDangerLevel)
+			if(entry.getValue().dangerH > leastDangerLevel)
 				blocks.add(entry.getKey());
 		}
 		return blocks;

@@ -502,12 +502,20 @@ public class ThinkingAi extends Ai{
 		// Shuffle the ai so that one hated individual will not get targeted over others with groups of ai
 		ArrayList<Ai> shuffledAi = aiCrowd.getShuffledAi();
 		
+		int enemyCount = 0;
+		
 		for(int i = 0; i < shuffledAi.size(); i++){
 			
 			// determine if target is hostile and if it is visible by the team
 			Ai ai = shuffledAi.get(i);
 			
-			if(this.getCommander().isSuspected(ai) && ai.getLevelBlock() == this.getLevelBlock() && combatVisualManager.isAiInSight(this, ai, this.getFaction())) {
+			boolean aiInSight = combatVisualManager.isAiInSight(this, ai, this.getFaction());
+			
+			if(!ai.getFaction().equals(this.getFaction()) && ai.getLevelBlock() == this.getLevelBlock() && !this.getCommander().isAlliedWith(ai.getFaction()) && aiInSight) {
+				enemyCount += ai.getCombatScore();
+			}
+			
+			if(this.getCommander().isSuspected(ai) && ai.getLevelBlock() == this.getLevelBlock() && aiInSight) {
 				
 				if(ai instanceof ThinkingAi) {
 					
@@ -555,11 +563,13 @@ public class ThinkingAi extends Ai{
 			}
 		}
 		
+		// Report all dangers collectively to commander
+		this.getCommander().reportUnits(enemyCount,this.getLevelBlock());
+		
 		if(target != null){
-			int enemyCount = combatMembersManager.getFactionStrength(target.getFaction(), this.getLevelBlock());
+			// Just use combat score of the enemy we are targeting
+			enemyCount = combatMembersManager.getFactionStrength(target.getFaction(), this.getLevelBlock());
 			this.emotionEngageReaction(enemyCount, target);
-			
-			this.getCommander().reportUnits(enemyCount,this.getLevelBlock());
 		}
 		else{
 			this.interactWithDeadAi();
@@ -636,6 +646,12 @@ public class ThinkingAi extends Ai{
 					return;
 				}
 				try {
+					
+					if(this.getJob() != null && this.getJob().getJobBlock() == this.getLevelBlock()) {
+						this.getJob().setInvalidated(true);
+						System.out.println(this.getName() + " job is too dangerous!");
+					}
+					
 					this.fleeCheckForEnemy();
 				} 
 				catch (PathNotFoundException e) {
@@ -644,8 +660,14 @@ public class ThinkingAi extends Ai{
 			}
 		}
 		else{
-			if(friendlyCount * 2 < enemyCount){
+			if(friendlyCount * 1.5 < enemyCount){
 				try {
+					
+					if(this.getJob() != null && this.getJob().getJobBlock() == this.getLevelBlock()) {
+						this.getJob().setInvalidated(true);
+						System.out.println(this.getName() + " job is too dangerous!");
+					}
+					
 					this.fleeCheckForEnemy();
 				} 
 				catch (PathNotFoundException pnfe) {
@@ -693,6 +715,10 @@ public class ThinkingAi extends Ai{
 					return;
 				}
 				try {
+					if(this.getJob() != null && this.getJob().getJobBlock() == this.getLevelBlock()) {
+						this.getJob().setInvalidated(true);
+						System.out.println(this.getName() + " job is too dangerous!");
+					}
 					this.fleeCheckForEnemy();
 				} 
 				catch (PathNotFoundException pnfe) {

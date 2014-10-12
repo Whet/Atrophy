@@ -3,6 +3,8 @@ package atrophy.combat.ai;
 import java.util.Random;
 import java.util.Stack;
 
+import javax.jws.Oneway;
+
 import watoydoEngine.utils.Maths;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.display.AiCrowd;
@@ -348,7 +350,11 @@ public class AiPathing {
 		if(levelManager.getBlock(this.moveLocation) != this.residentBlock){
 			// try to create a pathway to the location
 			portalPathway = new Stack<>();
-			portalPathway.addAll(PathFinder.createPathway(this.getLocation(), moveLocation, this.residentBlock, levelManager.getBlock(this.moveLocation)));
+			
+			if(invoker instanceof ThinkingAi)
+				portalPathway.addAll(PathFinder.createPathway(this.getLocation(), moveLocation, this.residentBlock, levelManager.getBlock(this.moveLocation), false,((ThinkingAi) invoker).getCommander().getDangerRooms(invoker.getCombatScore())));
+			else
+				portalPathway.addAll(PathFinder.createPathway(this.getLocation(), moveLocation, this.residentBlock, levelManager.getBlock(this.moveLocation)));
 		}
 		// make the pathway null to avoid issues with ui drawing an old pathway
 		else{
@@ -369,7 +375,11 @@ public class AiPathing {
 		if(levelManager.getBlock(this.moveLocation) != this.residentBlock){
 			// try to create a pathway to the location
 			portalPathway = new Stack<>();
-			portalPathway.addAll(PathFinder.createPathway(this.getLocation(), moveLocation, this.residentBlock, levelManager.getBlock(this.moveLocation), false));
+			
+			if(invoker instanceof ThinkingAi)
+				portalPathway.addAll(PathFinder.createPathway(this.getLocation(), moveLocation, this.residentBlock, levelManager.getBlock(this.moveLocation), false,((ThinkingAi) invoker).getCommander().getDangerRooms(invoker.getCombatScore())));
+			else
+				portalPathway.addAll(PathFinder.createPathway(this.getLocation(), moveLocation, this.residentBlock, levelManager.getBlock(this.moveLocation), false));
 		}
 		// make the pathway null to avoid issues with ui drawing an old pathway
 		else{
@@ -419,7 +429,13 @@ public class AiPathing {
 		if(levelManager.getBlock(this.moveLocation) != this.residentBlock){
 			// try to create a pathway to the location
 			portalPathway = new Stack<>();
-			portalPathway.addAll(PathFinder.createPathway(this.getLocation(), moveLocation, this.residentBlock, levelManager.getBlock(this.moveLocation),ignoreBlockedDoors));
+			
+			if(invoker instanceof ThinkingAi)
+				portalPathway.addAll(PathFinder.createPathway(this.getLocation(), moveLocation, this.residentBlock, levelManager.getBlock(this.moveLocation),ignoreBlockedDoors,((ThinkingAi) invoker).getCommander().getDangerRooms(invoker.getCombatScore())));
+			else
+				portalPathway.addAll(PathFinder.createPathway(this.getLocation(), moveLocation, this.residentBlock, levelManager.getBlock(this.moveLocation),ignoreBlockedDoors));
+			
+			
 		}
 		// make the pathway null to avoid issues with ui drawing an old pathway
 		else{

@@ -13,13 +13,10 @@ import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.ai.Ai;
+import atrophy.combat.ai.AiGenerator;
+import atrophy.combat.ai.DefenceHeuristic;
 import atrophy.combat.level.LevelManager;
 
-// TODO: Auto-generated Javadoc
-// Draws lines between aiming ai
-/**
- * The Class LineDrawer.
- */
 public class LineDrawer implements Displayable{
 	
 	private static final int FOV_ARC_LENGTH = 100;
@@ -95,6 +92,25 @@ public class LineDrawer implements Displayable{
 		}
 		
 		drawKillRadius(drawShape);
+		// Debugging
+//		drawAiThreats(drawShape);
+	}
+
+	private void drawAiThreats(Graphics2D drawShape) {
+		for(int i = 0; i < levelManager.getBlocks().length; i++) {
+			DefenceHeuristic defenceHeuristic = combatMembersManager.getCommander(AiGenerator.WHITE_VISTA).getDefenceHeuristics().get(levelManager.getBlock(i));
+			drawShape.setColor(Color.white);
+			if(defenceHeuristic != null)
+			drawShape.drawString("WV " + defenceHeuristic.dangerH,
+								 (int)(levelManager.getBlock(i).getCentre()[0] + panningManager.getOffset()[0]), 
+								 (int)(levelManager.getBlock(i).getCentre()[1] + panningManager.getOffset()[1]));
+			drawShape.setColor(Color.red);
+			defenceHeuristic = combatMembersManager.getCommander(AiGenerator.BANDITS).getDefenceHeuristics().get(levelManager.getBlock(i));
+			if(defenceHeuristic != null)
+			drawShape.drawString("BN " + defenceHeuristic.dangerH,
+								 (int)(levelManager.getBlock(i).getCentre()[0] + panningManager.getOffset()[0]), 
+								 (int)(levelManager.getBlock(i).getCentre()[1] + panningManager.getOffset()[1] + 20));
+		}
 	}
 
 	private void drawKillRadius(Graphics2D drawShape){

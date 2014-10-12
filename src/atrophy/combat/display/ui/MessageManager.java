@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatVisualManager;
@@ -460,7 +461,7 @@ public class MessageManager{
 		switch(topic){
 			case SHOW_ENEMIES:
 				if(tone <= 0 || ((ThinkingAi) messageBox.getConversers()[1]).willJoinPlayer(messageBox.getConversers()[0])){
-					List<LevelBlock> rooms = ((ThinkingAi) messageBox.getConversers()[1]).getCommander().getDangerRooms(1);
+					Set<LevelBlock> rooms = ((ThinkingAi) messageBox.getConversers()[1]).getCommander().getDangerRooms(0);
 					
 					if(rooms.size() > 0){
 						messageBox.addMessage(ChatterBox.message(messageBox.getConversers()[1].getName(), Topic.ACKNOWLEDGE, tone));

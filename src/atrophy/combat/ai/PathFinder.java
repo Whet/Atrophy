@@ -245,7 +245,7 @@ public class PathFinder {
 	public static ArrayList<Portal> findAStarPath(double[] startLocation,
 			double[] targetLocation, LevelBlock startBlock,
 			LevelBlock targetRoom, Portal excludedPortal,
-			boolean ignoreClosedDoors) throws PathNotFoundException {
+			boolean ignoreClosedDoors, Set<LevelBlock> dangerousRooms) throws PathNotFoundException {
 
 		PathingPortalSet closedSet = new PathingPortalSet();
 		PathingPortalSet openSet = new PathingPortalSet();
@@ -268,7 +268,8 @@ public class PathFinder {
 		// Populate with portals in this room
 		for (Portal portal : startBlock.getPortals()) {
 			if (portal == excludedPortal
-					|| (!ignoreClosedDoors && !portal.canUse()))
+			    || (!ignoreClosedDoors && !portal.canUse())
+			    || (dangerousRooms.contains(portal.getLinkedBlocks()[0]) || dangerousRooms.contains(portal.getLinkedBlocks()[1])))
 				continue;
 
 			PathingPortal pathingPortal = new PathingPortal(portal);
@@ -299,7 +300,8 @@ public class PathFinder {
 			for (Portal neighbour : current.getAllNeighbours()) {
 				if (excludedPortal == neighbour
 						|| closedSet.contains(neighbour)
-						|| (!ignoreClosedDoors && !neighbour.canUse()))
+						|| (!ignoreClosedDoors && !neighbour.canUse())
+						|| (dangerousRooms.contains(neighbour.getLinkedBlocks()[0]) || dangerousRooms.contains(neighbour.getLinkedBlocks()[1])))
 					continue;
 
 				newG = current.g
@@ -353,16 +355,41 @@ public class PathFinder {
 			double[] endLocation, LevelBlock startBlock, LevelBlock targetRoom)
 			throws PathNotFoundException {
 		return findAStarPath(startLocation, endLocation, startBlock,
-				targetRoom, null, true);
+				targetRoom, null, true, new HashSet<LevelBlock>());
 	}
 
+	public static ArrayList<Portal> createPathway(double[] startLocation,
+			double[] endLocation, LevelBlock startBlock, LevelBlock targetRoom,
+			boolean ignoreClosedDoors) throws PathNotFoundException {
+		return findAStarPath(startLocation, endLocation, startBlock,
+				targetRoom, null, ignoreClosedDoors, new HashSet<LevelBlock>());
+	}
+	
+	public static ArrayList<Portal> createPathway(double[] startLocation,
+			double[] endLocation, LevelBlock startBlock, LevelBlock targetRoom,
+			boolean ignoreClosedDoors, Set<LevelBlock> dangerousRooms) throws PathNotFoundException {
+		
+		try {
+			return findAStarPath(startLocation, endLocation, startBlock,
+					targetRoom, null, ignoreClosedDoors, dangerousRooms);
+		}
+		// Try to find a path not avoiding danger
+		catch(PathNotFoundException e) {
+//			System.out.println("Can't find safe route");
+			return findAStarPath(startLocation, endLocation, startBlock,
+					targetRoom, null, ignoreClosedDoors, new HashSet<LevelBlock>());
+		}
+	}
+	
+	/*
 	public static ArrayList<Portal> createPathway(double[] startLocation,
 			double[] endLocation, LevelBlock startBlock, LevelBlock targetRoom,
 			Portal excludedPortal) throws PathNotFoundException {
 		return findAStarPath(startLocation, endLocation, startBlock,
 				targetRoom, excludedPortal, true);
-	}
+	}*/
 
+	/*
 	public static ArrayList<Portal> createPathway(double[] startLocation,
 			double[] endLocation, LevelBlock startBlock, LevelBlock targetRoom,
 			Portal excludedPortal, boolean ignoreClosedDoors)
@@ -377,14 +404,9 @@ public class PathFinder {
 		return findAStarPath(startLocation, endLocation, startBlock,
 				targetRoom, excludedPortal, ignoreClosedDoors);
 	}
-
-	public static ArrayList<Portal> createPathway(double[] startLocation,
-			double[] endLocation, LevelBlock startBlock, LevelBlock targetRoom,
-			boolean ignoreClosedDoors) throws PathNotFoundException {
-		return findAStarPath(startLocation, endLocation, startBlock,
-				targetRoom, null, ignoreClosedDoors);
-	}
-
+*/
+	
+	/*
 	private static boolean isRoomCompletelyBlocked(LevelBlock targetRoom) {
 		for (int i = 0; i < targetRoom.getPortalCount(); i++) {
 			if (targetRoom.getPortal(i).canUse()) {
@@ -392,7 +414,7 @@ public class PathFinder {
 			}
 		}
 		return true;
-	}
+	}*/
 
 	// Intra room pathfinding
 

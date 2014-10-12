@@ -17,12 +17,24 @@ public abstract class AiJob {
 	
 	protected int duration;
 	
+	// Mission too dangerous etc.
+	protected boolean invalidated;
+	
 	public AiJob(int targetEmployeeCount, LevelBlock levelBlock, JobType type, int duration){
 		this.targetEmployeeCount = targetEmployeeCount;
 		this.levelBlock = levelBlock;
 		this.employees = new ArrayList<>();
 		this.type = type;
 		this.duration = duration;
+		this.invalidated = false;
+	}
+	
+	public boolean isInvalidated() {
+		return invalidated;
+	}
+
+	public void setInvalidated(boolean invalidated) {
+		this.invalidated = invalidated;
 	}
 
 	public void tickJob(){

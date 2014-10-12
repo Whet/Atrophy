@@ -57,12 +57,12 @@ public class AiDeathReport {
 		
 		if(skillLevel > 2) {
 			if(killer instanceof ThinkingAi) {
-				if(((ThinkingAi) killer).getCommander().getDangerRooms(0).contains(room)) {
+				if(((ThinkingAi) killer).getCommander().getDangerRooms(-1).contains(room)) {
 					return "You suspect the killer was sent here to secure the room";
 				}
 			}
 			if(killed instanceof ThinkingAi) {
-				if(((ThinkingAi) killed).getCommander().getDangerRooms(0).contains(room)) {
+				if(((ThinkingAi) killed).getCommander().getDangerRooms(-1).contains(room)) {
 					return "You suspect the victim was sent here to secure the room";
 				}
 			}
