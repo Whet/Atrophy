@@ -382,6 +382,18 @@ public class MapDrawer implements Displayable {
 				if(!mapDraw.getTexture().equals(MapTextures.SPACE)) {
 					drawShape.drawImage(mapDraw.getGreyImage(), null, null);
 				}
+				
+				drawShape.setColor(COVER_COLOUR);
+				drawShape.setComposite(GraphicsFunctions.makeComposite(0.4f));
+				
+				for(int i = 0; i < mapDraw.getCover().size(); i++){
+					drawShape.drawPolygon(mapDraw.getCover().get(i));
+				}
+				
+				drawShape.setColor(STEALTH_COLOUR);
+				for(int i = 0; i < mapDraw.getStealthRegions().size(); i++){
+					drawShape.drawPolygon(mapDraw.getStealthRegions().get(i));
+				}
 			}
 		}
 		
