@@ -6,14 +6,12 @@ import watoydoEngine.designObjects.display.Crowd;
 import watoydoEngine.hardPanes.HardPaneDefineable;
 import atrophy.combat.CombatNCEManager;
 import atrophy.combat.actions.ActionSuite;
-import atrophy.combat.actions.CombatMouseHandler;
 import atrophy.combat.actions.MousePanner;
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.ai.AiGeneratorInterface;
 import atrophy.combat.ai.AiGeneratorInterface.GenerateCommand;
 import atrophy.combat.combatEffects.PowerManager;
 import atrophy.combat.display.AiCrowd;
-import atrophy.combat.display.AiImage;
 import atrophy.combat.display.AiManagementSuite;
 import atrophy.combat.display.MapPainter;
 import atrophy.combat.display.ui.Cartographer;
@@ -22,7 +20,6 @@ import atrophy.combat.display.ui.UiUpdaterSuite;
 import atrophy.combat.level.LevelManager;
 import atrophy.combat.level.MissionManager;
 import atrophy.combat.mechanics.TurnProcess;
-import atrophy.gameMenu.saveFile.ItemMarket;
 import atrophy.gameMenu.saveFile.Missions;
 
 

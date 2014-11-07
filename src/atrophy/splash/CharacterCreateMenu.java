@@ -6,7 +6,6 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.Random;
 
 import javax.imageio.ImageIO;
 
@@ -46,7 +45,7 @@ public class CharacterCreateMenu extends Crowd{
 
 	private void addComponents() {
 		
-		this.addDisplayItem(new Wallpaper(new Random().nextLong()));
+		this.addDisplayItem(new Wallpaper());
 		
 		try {
 			image = new ImageSelect();

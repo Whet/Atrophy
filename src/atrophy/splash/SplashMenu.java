@@ -3,7 +3,6 @@ package atrophy.splash;
 import java.awt.Point;
 import java.awt.event.MouseEvent;
 import java.io.File;
-import java.util.Random;
 
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
@@ -32,7 +31,7 @@ public class SplashMenu extends Crowd {
 
 	public SplashMenu() {
 		super(true);
-		this.addDisplayItem(new Wallpaper(new Random().nextLong()));
+		this.addDisplayItem(new Wallpaper());
 		addButtons();
 	}
 

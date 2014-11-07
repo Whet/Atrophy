@@ -10,6 +10,7 @@ import java.awt.image.BufferedImage;
 
 import watoydoEngine.designObjects.display.Displayable;
 import watoydoEngine.display.tweens.TweenDefinable;
+import watoydoEngine.utils.Maths;
 import watoydoEngine.workings.displayActivity.ActivePane;
 
 public class Wallpaper implements Displayable {
@@ -25,18 +26,28 @@ public class Wallpaper implements Displayable {
 
 	private boolean visible;
 	private int screenWidth, screenHeight;
-	private long seed;
 	
 	private BufferedImage image;
 	
-	public Wallpaper(long seed) {
+	private static Point lightCentre;
+	private Point targetLightCentre;
+	
+	public Wallpaper() {
 		this.location = new double[]{0,0};
 		this.z = 0;
 		this.visible = true;
 		
 		this.screenWidth = ActivePane.getInstance().getWidth();
 		this.screenHeight = ActivePane.getInstance().getHeight();
-		this.seed = seed;
+		
+		if(lightCentre == null)
+			lightCentre = new Point((int) (screenWidth * 0.75), (int) (screenHeight * 0.1));
+		
+		newPoint();
+	}
+	
+	private void newPoint() {
+		targetLightCentre = new Point((int) (screenWidth * Math.random()), (int) (screenHeight * Math.random()));
 	}
 	
 	@Override
@@ -48,25 +59,31 @@ public class Wallpaper implements Displayable {
 	@Override
 	public void kickTween() {
 		
+		double rads = Maths.getRads(lightCentre.x, lightCentre.y, targetLightCentre.x, targetLightCentre.y);
+		
+		lightCentre.x += Math.cos(rads) * 2;
+		lightCentre.y += Math.sin(rads) * 2;
+		
+		if(Maths.getDistance(lightCentre.x, lightCentre.y, targetLightCentre.x, targetLightCentre.y) < 3);
+			newPoint();
+		
 	}
 
 	@Override
 	public void drawMethod(Graphics2D drawShape) {
 
-		if(image == null)
-			makeImage();
+		makeImage();
 		
 		drawShape.drawImage(image, new AffineTransform(), null);
 
 	}
 
 	private void makeImage() {
-		Point2D center = new Point((int) (screenWidth * 0.75), (int) (screenHeight * 0.1));
 		float radius = screenWidth;
 		float[] dist = {0.0f, 0.4f, 0.9f};
 		Color[] colors = {SEED_COLOUR, new Color(20, 20, 20), new Color(0, 0, 0)};
 		
-		RadialGradientPaint gp = new RadialGradientPaint(center, radius, dist, colors);
+		RadialGradientPaint gp = new RadialGradientPaint(lightCentre, radius, dist, colors);
 		BufferedImage image = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D imageGraphics = image.createGraphics();
 		((Graphics2D) imageGraphics).setPaint(gp);

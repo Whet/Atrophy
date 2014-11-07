@@ -3,8 +3,6 @@
  */
 package atrophy.hardPanes;
 
-import java.util.Random;
-
 import watoydoEngine.designObjects.display.Crowd;
 import watoydoEngine.hardPanes.HardPaneDefineable;
 import atrophy.combat.ai.AiGenerator;
@@ -44,7 +42,7 @@ public class GameMenuHardPane implements HardPaneDefineable{
 	 */
 	public void load(Crowd crowd){
 	
-		crowd.addDisplayItem(new Wallpaper(new Random().nextLong()));
+		crowd.addDisplayItem(new Wallpaper());
 		MenuBar menuBar = new MenuBar();
 		WindowManager windowManager = new WindowManager(menuBar);
 		
