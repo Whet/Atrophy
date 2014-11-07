@@ -95,7 +95,7 @@ public class LevelBlockGrid {
          return blocks.get(startIndex).get(index);
     	}
     	catch(IndexOutOfBoundsException e) {
-    		e.printStackTrace();
+//    		e.printStackTrace();
     		return null;
     	}
 	}
