@@ -477,6 +477,22 @@ public class AiCrowd extends Crowd {
 
 	public void shuffleAi() {
 		Collections.shuffle(this.masterStack);
+		// Put a player unit on top
+		
+		Iterator<Ai> it = this.masterStack.iterator();
+		
+		List<Ai> playerAi = new ArrayList<>();
+		
+		while(it.hasNext()) {
+			Ai next = it.next();
+			
+			if(next.getFaction().equals(AiGenerator.PLAYER)) {
+				it.remove();
+				playerAi.add(next);
+			}
+		}
+		
+		this.masterStack.addAll(playerAi);
 	}
 	
 	public int getLivingActors(String faction) {
