@@ -7,6 +7,7 @@ import java.awt.RadialGradientPaint;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Point2D;
 import java.awt.image.BufferedImage;
+import java.util.Random;
 
 import watoydoEngine.designObjects.display.Displayable;
 import watoydoEngine.display.tweens.TweenDefinable;
@@ -15,8 +16,8 @@ import watoydoEngine.workings.displayActivity.ActivePane;
 
 public class Wallpaper implements Displayable {
 
-	private static final int WIDTH = 20;
-	private static final int HEIGHT = 20;
+	private static final int WIDTH = 10;
+	private static final int HEIGHT = 10;
 
 	private static final Color SEED_COLOUR = new Color(0, 90, 90);
 
@@ -29,7 +30,9 @@ public class Wallpaper implements Displayable {
 	
 	private BufferedImage image;
 	
-	private static Point lightCentre;
+	private static double[] LIGHT_CENTRE;
+	
+	private double lightSpeed;
 	private Point targetLightCentre;
 	
 	public Wallpaper() {
@@ -40,14 +43,16 @@ public class Wallpaper implements Displayable {
 		this.screenWidth = ActivePane.getInstance().getWidth();
 		this.screenHeight = ActivePane.getInstance().getHeight();
 		
-		if(lightCentre == null)
-			lightCentre = new Point((int) (screenWidth * 0.75), (int) (screenHeight * 0.1));
+		if(LIGHT_CENTRE == null)
+			LIGHT_CENTRE = new double[]{(screenWidth * 0.75), (int) (screenHeight * 0.1)};
 		
 		newPoint();
 	}
 	
 	private void newPoint() {
-		targetLightCentre = new Point((int) (screenWidth * Math.random()), (int) (screenHeight * Math.random()));
+		Random random = new Random();
+		targetLightCentre = new Point(random.nextInt(2) * random.nextInt(screenWidth) + random.nextInt(2) * random.nextInt(screenWidth), random.nextInt(2) * random.nextInt(screenHeight) + random.nextInt(2) *  random.nextInt(screenHeight));
+		lightSpeed = Math.random() * 2;
 	}
 	
 	@Override
@@ -59,12 +64,12 @@ public class Wallpaper implements Displayable {
 	@Override
 	public void kickTween() {
 		
-		double rads = Maths.getRads(lightCentre.x, lightCentre.y, targetLightCentre.x, targetLightCentre.y);
+		double rads = Maths.getRads(LIGHT_CENTRE[0], LIGHT_CENTRE[1], targetLightCentre.x, targetLightCentre.y);
 		
-		lightCentre.x += Math.cos(rads) * 2;
-		lightCentre.y += Math.sin(rads) * 2;
+		LIGHT_CENTRE[0] += Math.cos(rads) * lightSpeed;
+		LIGHT_CENTRE[1] += Math.sin(rads) * lightSpeed;
 		
-		if(Maths.getDistance(lightCentre.x, lightCentre.y, targetLightCentre.x, targetLightCentre.y) < 3);
+		if(Maths.getDistance(LIGHT_CENTRE[0], LIGHT_CENTRE[1], targetLightCentre.x, targetLightCentre.y) < 10);
 			newPoint();
 		
 	}
@@ -83,7 +88,7 @@ public class Wallpaper implements Displayable {
 		float[] dist = {0.0f, 0.4f, 0.9f};
 		Color[] colors = {SEED_COLOUR, new Color(20, 20, 20), new Color(0, 0, 0)};
 		
-		RadialGradientPaint gp = new RadialGradientPaint(lightCentre, radius, dist, colors);
+		RadialGradientPaint gp = new RadialGradientPaint(new Point((int)LIGHT_CENTRE[0], (int)LIGHT_CENTRE[1]), radius, dist, colors);
 		BufferedImage image = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D imageGraphics = image.createGraphics();
 		((Graphics2D) imageGraphics).setPaint(gp);
