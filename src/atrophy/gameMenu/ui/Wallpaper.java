@@ -16,7 +16,7 @@ import watoydoEngine.workings.displayActivity.ActivePane;
 public class Wallpaper implements Displayable {
 
 	private static final int WIDTH = 10;
-	private static final int HEIGHT = 10;
+	private static final int HEIGHT = 40;
 
 	private static final Color SEED_COLOUR = new Color(0, 90, 90);
 
@@ -50,8 +50,10 @@ public class Wallpaper implements Displayable {
 	
 	private void newPoint() {
 		Random random = new Random();
-		targetLightCentre = new Point(random.nextInt(2) * random.nextInt(screenWidth) + random.nextInt(2) * random.nextInt(screenWidth), random.nextInt(2) * random.nextInt(screenHeight) + random.nextInt(2) *  random.nextInt(screenHeight));
-		lightSpeed = Math.random() * 2;
+		do {
+			targetLightCentre = new Point(random.nextInt(screenWidth), random.nextInt(screenHeight));
+		}while(Maths.getDistance(LIGHT_CENTRE[0], LIGHT_CENTRE[1], targetLightCentre.x, targetLightCentre.y) < 100);
+		lightSpeed = Math.random() * 2 + 0.1;
 	}
 	
 	@Override
@@ -68,7 +70,7 @@ public class Wallpaper implements Displayable {
 		LIGHT_CENTRE[0] += Math.cos(rads) * lightSpeed;
 		LIGHT_CENTRE[1] += Math.sin(rads) * lightSpeed;
 		
-		if(Maths.getDistance(LIGHT_CENTRE[0], LIGHT_CENTRE[1], targetLightCentre.x, targetLightCentre.y) < 10);
+		if(Maths.getDistance(LIGHT_CENTRE[0], LIGHT_CENTRE[1], targetLightCentre.x, targetLightCentre.y) < 10)
 			newPoint();
 		
 	}
@@ -84,14 +86,22 @@ public class Wallpaper implements Displayable {
 
 	private void makeImage() {
 		float radius = screenWidth;
-		float[] dist = {0.0f, 0.4f, 0.9f};
-		Color[] colors = {SEED_COLOUR, new Color(20, 20, 20), new Color(0, 0, 0)};
+		
+		double distanceToCentre =  Maths.getDistance(LIGHT_CENTRE[0], LIGHT_CENTRE[1], screenWidth / 2, screenHeight / 2);
+		float ratioToCentre = (float) ((1 -  (distanceToCentre / (screenWidth))) * 0.8);
+		
+		float[] dist = new float[]{0.0f, 0.2f * ratioToCentre, 1.0f * ratioToCentre};
+		
+		Color[] colors = {SEED_COLOUR, new Color(0, 60, 60), new Color(0, 0, 0)};
 		
 		RadialGradientPaint gp = new RadialGradientPaint(new Point((int)LIGHT_CENTRE[0], (int)LIGHT_CENTRE[1]), radius, dist, colors);
 		BufferedImage image = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB);
 		Graphics2D imageGraphics = image.createGraphics();
 		((Graphics2D) imageGraphics).setPaint(gp);
 		imageGraphics.fillRect(0, 0, screenWidth, screenHeight);
+		
+//		imageGraphics.setColor(Color.red);
+//		imageGraphics.fillRect(targetLightCentre.x - WIDTH, targetLightCentre.y - WIDTH, WIDTH, WIDTH);
 		
 		BufferedImage pixelImage = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB); 
 		Graphics2D pixelGraphics = pixelImage.createGraphics();

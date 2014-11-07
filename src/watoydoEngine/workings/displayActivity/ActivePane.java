@@ -334,8 +334,10 @@ public class ActivePane extends JFrame implements MouseListener, KeyListener, Wi
 	   dBuffer = (Graphics2D) bufferS.getDrawGraphics();
 
 	   // Draw background
-	   dBuffer.setColor(backgroundColour);
-	   dBuffer.fillRect(0,0,resolution[0],resolution[1]);
+	   if(rootCrowdLoaded){
+		   dBuffer.setColor(backgroundColour);
+	   	dBuffer.fillRect(0,0,resolution[0],resolution[1]);
+	   }
 	   
 	   dBuffer.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
 	   dBuffer.setRenderingHint(RenderingHints.KEY_RENDERING, RenderingHints.VALUE_RENDER_QUALITY);
@@ -354,17 +356,10 @@ public class ActivePane extends JFrame implements MouseListener, KeyListener, Wi
 	   dBuffer.dispose();
    }
 	
-//   	private BufferedImage loadingImage;
-   
 	private void drawLoading() {
-		dBuffer.setColor(Color.black);
-		dBuffer.fillRect(0, 0, resolution[0], resolution[1]);
 		dBuffer.setFont(FontList.AUD24);
 		dBuffer.setColor(Color.white);
 		dBuffer.drawString("Loading", 5, resolution[1] - 10);
-//		AffineTransform transform = new AffineTransform();
-//		transform.setToTranslation(this.getWidth() - loadingImage.getWidth(), this.getHeight() - loadingImage.getHeight());
-//		dBuffer.drawImage(loadingImage,transform ,null);
 	}
 
 	public void reloadDisplay(){
