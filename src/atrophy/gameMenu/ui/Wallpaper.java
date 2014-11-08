@@ -10,14 +10,13 @@ import java.util.Random;
 
 import watoydoEngine.designObjects.display.Displayable;
 import watoydoEngine.display.tweens.TweenDefinable;
-import watoydoEngine.fonts.FontList;
 import watoydoEngine.utils.Maths;
 import watoydoEngine.workings.displayActivity.ActivePane;
 
 public class Wallpaper implements Displayable {
 
-	private static final int WIDTH = 40;
-	private static final int HEIGHT = 40;
+	private static final int WIDTH = 10;
+	private static final int HEIGHT = 10;
 
 	private static final Color SEED_COLOUR = new Color(0, 90, 90);
 
@@ -31,7 +30,6 @@ public class Wallpaper implements Displayable {
 	private BufferedImage image;
 	
 	private static double[] LIGHT_CENTRE;
-	private static double[] WORD_LOCATION;
 	
 	private double lightSpeed;
 	private Point targetLightCentre;
@@ -50,9 +48,6 @@ public class Wallpaper implements Displayable {
 		if(LIGHT_CENTRE == null)
 			LIGHT_CENTRE = new double[]{(screenWidth * 0.75), (int) (screenHeight * 0.1)};
 		
-		if(WORD_LOCATION == null)
-			WORD_LOCATION = new double[]{(screenWidth * 0.6), (int) (screenHeight * 0.8)}; 
-		
 		newLightPoint();
 		
 		rowOffsets = new double[screenHeight / HEIGHT];
@@ -60,7 +55,7 @@ public class Wallpaper implements Displayable {
 		
 		for(int i = 0; i < rowOffsets.length; i++) {
 			rowOffsets[i] = new Random().nextInt(10);
-			rowSpeeds[i] = new Random().nextInt(10);
+			rowSpeeds[i] = new Random().nextDouble() / 2;
 		}
 	}
 	
@@ -69,7 +64,7 @@ public class Wallpaper implements Displayable {
 		do {
 			targetLightCentre = new Point(random.nextInt(screenWidth), random.nextInt(screenHeight));
 		}while(Maths.getDistance(LIGHT_CENTRE[0], LIGHT_CENTRE[1], targetLightCentre.x, targetLightCentre.y) < 100);
-		lightSpeed = Math.random() * 2 + 0.1;
+		lightSpeed = Math.random() + 0.1;
 	}
 	
 	@Override
@@ -120,10 +115,6 @@ public class Wallpaper implements Displayable {
 		Graphics2D imageGraphics = image.createGraphics();
 		((Graphics2D) imageGraphics).setPaint(gp);
 		imageGraphics.fillRect(0, 0, screenWidth, screenHeight);
-		
-		((Graphics2D) imageGraphics).setPaint(Color.black);
-		imageGraphics.setFont(FontList.AUD124);
-		imageGraphics.drawString("Atrophy", (int)WORD_LOCATION[0], (int)WORD_LOCATION[1]);
 		
 		BufferedImage pixelImage = new BufferedImage(screenWidth, screenHeight, BufferedImage.TYPE_INT_ARGB); 
 		Graphics2D pixelGraphics = pixelImage.createGraphics();

@@ -16,7 +16,7 @@ public class FontList {
 	
 	public static final Font AUD24;
 	
-	public static final Font AUD124;
+	public static final Font AUD172;
 	
 	static{
 		
@@ -33,7 +33,7 @@ public class FontList {
 		AUD16 = dynamicFont.deriveFont(16f);
 		AUD18 = dynamicFont.deriveFont(18f);
 		AUD24 = dynamicFont.deriveFont(24f);
-		AUD124 = dynamicFont.deriveFont(124f);
+		AUD172 = dynamicFont.deriveFont(172f);
 	}
 	
 	public static String digitString(int digits, int number) {
