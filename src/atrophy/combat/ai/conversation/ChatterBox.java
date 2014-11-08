@@ -90,9 +90,9 @@ public class ChatterBox{
 		return messages[new Random().nextInt(messages.length)];
 	}
 	
-	private static final String[] HELLO = {"Hello","Hey"};
+	private static final String[] HELLO = {"Hello"};
 	
-	private static final String[] BYE = {"Bye","See ya","Talk to you later","Goodbye"};
+	private static final String[] BYE = {"..."};
 	
 	private static final String[] YES = {"Yeah sure","Ok","Yep sure","Alright then"};
 	
