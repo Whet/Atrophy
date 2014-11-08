@@ -1,6 +1,3 @@
-/*
- * 
- */
 package watoydoEngine.fonts;
 
 import java.awt.Font;
@@ -9,30 +6,17 @@ import java.io.IOException;
 
 import watoydoEngine.io.ReadWriter;
 
-/**
- * The Class FontList.
- */
 public class FontList {
 	
-	/**
-	 * The Constant AUD14.
-	 */
 	public static final Font AUD14;
 	
-	/**
-	 * The Constant AUD16.
-	 */
 	public static final Font AUD16;
 	
-	/**
-	 * The Constant AUD18.
-	 */
 	public static final Font AUD18;
 	
-	/**
-	 * The Constant AUD24.
-	 */
 	public static final Font AUD24;
+	
+	public static final Font AUD124;
 	
 	static{
 		
@@ -49,6 +33,7 @@ public class FontList {
 		AUD16 = dynamicFont.deriveFont(16f);
 		AUD18 = dynamicFont.deriveFont(18f);
 		AUD24 = dynamicFont.deriveFont(24f);
+		AUD124 = dynamicFont.deriveFont(124f);
 	}
 	
 	public static String digitString(int digits, int number) {
