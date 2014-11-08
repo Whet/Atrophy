@@ -175,8 +175,7 @@ public class ItemMarket {
 	public ArrayList<String> getWhiteVistaAllowedWeapons() {
 		return new ArrayList<>(this.wvWeapons);
 	}
-
-
+	
 	public String getRandomMarketItem(Double wvRelation, Double banditRelation) {
 		
 		Set<Set<String>> itemSets = new HashSet<Set<String>>(3);

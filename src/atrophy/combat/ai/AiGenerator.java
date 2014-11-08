@@ -480,7 +480,13 @@ public class AiGenerator{
 	}
 	
 	private void applyLootList(List<String> allowedItems, List<String> allowedWeapons, Ai ai) {
-		ai.setWeapon(Weapon.stringToWeapon(allowedWeapons.get(new Random().nextInt(allowedWeapons.size()))));
+		Weapon weapon = Weapon.stringToWeapon(allowedWeapons.get(new Random().nextInt(allowedWeapons.size())));
+		
+		// Re-roll is weapon is melee to prefer ranged weapons
+		if(weapon.isMelee())
+			weapon = Weapon.stringToWeapon(allowedWeapons.get(new Random().nextInt(allowedWeapons.size())));
+		
+		ai.setWeapon(weapon);
 		
 		int randomItemCount = new Random().nextInt(5);
 		if(allowedItems.size() > 0) {

@@ -57,6 +57,7 @@ public class TechTree implements Serializable{
 		
 		TechnologyNode basicArmour = new TechnologyNode(new TechnologyNode[]{base}, BASIC_ARMOUR,0,2,0,0);
 		techTree.put(BASIC_ARMOUR,basicArmour);
+		basicArmour.setResearched(true, AiGenerator.LONER);
 		
 		TechnologyNode heavyArmour = new TechnologyNode(new TechnologyNode[]{basicArmour}, HEAVY_ARMOUR,0,3,0,0);
 		techTree.put(HEAVY_ARMOUR,heavyArmour);
