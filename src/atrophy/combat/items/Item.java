@@ -68,5 +68,85 @@ public abstract class Item {
 		}
 		return false;
 	}
+
+	public static String correctBlankSpaces(String itemName) {
+		String returnName = itemName;
+		switch(itemName) {
+			case "HarpoonCannon":
+				returnName = "Harpoon Cannon";
+			break;
+			case "HarpoonCannon+":
+				returnName = "Harpoon Cannon+";
+			break;
+			case "HeavyPistol":
+				returnName = "Heavy Pistol";
+			break;
+			case "HeavyPistol+":
+				returnName = "Heavy Pistol+";
+			break;
+			case "HeavyShotgun":
+				returnName = "Heavy Shotgun";
+			break;
+			case "LightPistol":
+				returnName = "Light Pistol";
+			break;
+			case "LightPistol+":
+				returnName = "Light Pistol+";
+			break;
+			case "PlasmaRifle":
+				returnName = "Plasma Rifle";
+			break;
+			case "PlasmaRifle+":
+				returnName = "Plasma Rifle+";
+			break;
+			case "ScrapWeapon":
+				returnName = "Scrap Weapon";
+			break;
+			case "ArmourPlates":
+				returnName = "Armour Plates";
+			break;
+			case "ForgedArmourPlates":
+				returnName = "Forged Armour Plates";
+			break;
+			case "StunGrenade":
+				returnName = "Stun Grenade";
+			break;
+			case "LightStealthField":
+				returnName = "Light Stealth Field";
+			break;
+			case "MediumStealthField":
+				returnName = "Medium Stealth Field";
+			break;
+			case "ScientificScanner":
+				returnName = "Scientific Scanner";
+			break;
+			case "SensorSuite":
+				returnName = "Sensor Suite";
+			break;
+			case "SpeedBooster":
+				returnName = "Speed Booster";
+			break;
+			case "WeldingTorch":
+				returnName = "Welding Torch";
+			break;
+			case "UnitDetector":
+				returnName = "Unit Detector";
+			break;
+			case "EngineeringSupplies":
+				returnName = "Engineering Supplies";
+			break;
+			case "MedicalSupplies":
+				returnName = "Medical Supplies";
+			break;
+			case "ScientificSupplies":
+				returnName = "Scientific Supplies";
+			break;
+			case "WeaponSupplies":
+				returnName = "Weapon Supplies";
+			break;
+		}
+		
+		return returnName;
+	}
 	
 }

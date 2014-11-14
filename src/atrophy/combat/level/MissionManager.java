@@ -17,19 +17,7 @@ import atrophy.combat.ai.Faction;
 import atrophy.combat.ai.conversation.TalkMap;
 import atrophy.combat.display.ui.LargeEventText;
 import atrophy.combat.display.ui.loot.LootBox.Lootable;
-import atrophy.combat.items.ArmourPlates1;
-import atrophy.combat.items.ArmourPlates2;
-import atrophy.combat.items.EngineeringSupply;
 import atrophy.combat.items.Item;
-import atrophy.combat.items.LightStealthField;
-import atrophy.combat.items.MedicalSupply;
-import atrophy.combat.items.MediumStealthField;
-import atrophy.combat.items.ScienceScanner;
-import atrophy.combat.items.SensorSuite;
-import atrophy.combat.items.SpeedBooster;
-import atrophy.combat.items.UnitDetector;
-import atrophy.combat.items.WeaponSupply;
-import atrophy.combat.items.WeldingTorch;
 import atrophy.combat.level.AtrophyScriptReader.SpawnTalkNodeEffect;
 import atrophy.combat.level.AtrophyScriptReader.SpawnTeamEffect;
 import atrophy.combat.level.AtrophyScriptReader.StoredCommand;
@@ -174,50 +162,6 @@ public class MissionManager {
 			this.spawnOnLoot = spawnOnLoot;
 			// Remove # at start
 			this.memCode = memCode.substring(1);
-		}
-
-		public Item workOutItem(String item) {
-			switch(item){
-				case "ARMOUR1":
-				case "Armour Plates":
-					return ArmourPlates1.getInstance();
-				case "ARMOUR2":
-				case "Forged Armour Plates":
-					return ArmourPlates2.getInstance();
-				case "LSTEALTH":
-				case "Light Stealth Field":
-					return LightStealthField.getInstance();
-				case "MSTEALTH":
-				case "Medium Stealth Field":
-					return MediumStealthField.getInstance();
-				case "SCISCANNER":
-				case "Scientific Scanner":
-					return ScienceScanner.getInstance();
-				case "SENSOR":
-				case "Sensor Suite":
-					return SensorSuite.getInstance();
-				case "SPEEDBOOST":
-				case "Speed Booster":
-					return SpeedBooster.getInstance();
-				case "UNITSENSOR":
-				case  "Unit Detector":
-					return UnitDetector.getInstance();
-				case "WELDER":
-				case "Welding Torch":
-					return WeldingTorch.getInstance();
-				case "ESUPPLY":
-				case "Engineering Supplies":
-					return EngineeringSupply.getInstance();
-				case "MSUPPLY":
-				case "Medical Supplies":
-					return MedicalSupply.getInstance();
-				case "WSUPPLY":
-				case "Weapon Supplies":
-					return WeaponSupply.getInstance();
-					
-			}
-			
-			return null;
 		}
 		
 	}
