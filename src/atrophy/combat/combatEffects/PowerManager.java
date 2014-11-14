@@ -8,6 +8,7 @@ import atrophy.combat.ai.Ai;
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.ai.AiGeneratorInterface;
 import atrophy.combat.ai.AiGeneratorInterface.GenerateCommand;
+import atrophy.combat.ai.Faction;
 import atrophy.combat.ai.director.HealthDirector;
 import atrophy.combat.items.DaemonWeapon;
 import atrophy.gameMenu.saveFile.Squad;
@@ -158,7 +159,7 @@ public class PowerManager {
 			if(stability == 0) {
 				// Summon daemon
 				double[] location = this.target.getLocation();
-				GenerateCommand daemonCommand = new AiGeneratorInterface.SoloGenerateCommand(location[0], location[1], AiGenerator.LONER, true, " ", DaemonWeapon.NAME, new String[]{});
+				GenerateCommand daemonCommand = new AiGeneratorInterface.SoloGenerateCommand(location[0], location[1], Faction.LONER, true, " ", DaemonWeapon.NAME, new String[]{});
 				aiGenerator.spawnAi(daemonCommand );
 			}
 		}

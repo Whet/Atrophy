@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import watoydoEngine.designObjects.display.TextButton;
 import watoydoEngine.sounds.SoundBoard;
 import watoydoEngine.utils.GraphicsFunctions;
-import atrophy.combat.ai.AiGenerator;
+import atrophy.combat.ai.Faction;
 import atrophy.gameMenu.saveFile.Missions;
 
 public class MissionsMenu extends Menu{
@@ -119,7 +119,7 @@ public class MissionsMenu extends Menu{
 	private void drawTitle(Graphics2D drawShape) {
 		drawShape.setComposite(GraphicsFunctions.makeComposite(1.0f));
 		drawShape.setColor(Color.white);
-		drawShape.drawString("Missions   Page " + page + "   Rep: Bandits ("+ ((double)Math.round(missions.getSquad().getFactionRelation(AiGenerator.BANDITS) * 1000)/ 1000) + ") White Vista (" + ((double)Math.round(missions.getSquad().getFactionRelation(AiGenerator.WHITE_VISTA) * 1000)/ 1000)  + ")", (int)this.getLocation()[0] + 20, (int)this.getLocation()[1] + 21);
+		drawShape.drawString("Missions   Page " + page + "   Rep: Bandits ("+ ((double)Math.round(missions.getSquad().getFactionRelation(Faction.BANDITS) * 1000)/ 1000) + ") White Vista (" + ((double)Math.round(missions.getSquad().getFactionRelation(Faction.WHITE_VISTA) * 1000)/ 1000)  + ")", (int)this.getLocation()[0] + 20, (int)this.getLocation()[1] + 21);
 	}
 	
 	private void drawComponents(@SuppressWarnings("unused") Graphics2D drawShape) {

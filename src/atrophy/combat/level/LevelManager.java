@@ -8,6 +8,7 @@ import java.util.Random;
 import java.util.Set;
 
 import watoydoEngine.utils.Maths;
+import atrophy.combat.ai.Faction;
 import atrophy.combat.ai.PathFinder;
 import atrophy.combat.ai.PathNotFoundException;
 
@@ -145,7 +146,7 @@ public class LevelManager {
 		return room;
 	}
 
-	public LevelBlock randomRoom(String faction, ArrayList<LevelBlock> bannedRooms) {
+	public LevelBlock randomRoom(Faction faction, ArrayList<LevelBlock> bannedRooms) {
 		int iterations = 0;
 		LevelBlock room = null;
 		do{
@@ -160,7 +161,7 @@ public class LevelManager {
 		return room;
 	}
 
-	public boolean isRoomBanned(String faction, LevelBlock block) {
+	public boolean isRoomBanned(Faction faction, LevelBlock block) {
 		return this.currentLevel.isBanned(block, faction);
 	}
 

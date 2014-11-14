@@ -71,13 +71,13 @@ public class CombatUiManager{
 	}
 	
 	public void lazyLoad(MouseAbilityHandler mouseAbilityHandler, CombatUiManager combatUiManager, FloatingIcons floatingIcons, CombatVisualManager combatVisualManager, LootBox lootBox, LevelManager levelManager, AiCrowd aiCrowd, PanningManager panningManager, TurnProcess turnProcess) {
-		lineSurface = new LineDrawer(aiCrowd, panningManager, combatVisualManager, combatMembersManager, levelManager);
+		lineSurface = new LineDrawer(aiCrowd, panningManager, combatVisualManager, combatMembersManager);
 		actionsBar.lazyLoad(combatMembersManager, mouseAbilityHandler, combatUiManager);
 		mapDrawer = new MapDrawer(levelManager, panningManager, aiCrowd, combatVisualManager, this);
-		torchDrawer = new TorchDrawer(combatMembersManager, panningManager);
+		torchDrawer = new TorchDrawer(panningManager);
 		miniMap.init();
 		this.floatingIcons = floatingIcons;
-		combatInfo = new CombatInfo(combatMembersManager, this, floatingIcons, combatVisualManager, turnProcess);
+		combatInfo = new CombatInfo(combatMembersManager, this, combatVisualManager, turnProcess);
 		this.lootBox = lootBox;
 		this.actionsBar.lazyLoad(mouseAbilityHandler, combatUiManager);
 	}

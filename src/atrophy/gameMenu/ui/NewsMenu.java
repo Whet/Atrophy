@@ -5,7 +5,7 @@ import java.awt.Graphics2D;
 
 import watoydoEngine.designObjects.display.Text;
 import watoydoEngine.utils.GraphicsFunctions;
-import atrophy.combat.ai.AiGenerator;
+import atrophy.combat.ai.Faction;
 import atrophy.gameMenu.saveFile.Missions;
 
 public class NewsMenu extends Menu {
@@ -42,9 +42,9 @@ public class NewsMenu extends Menu {
 		
 		sb.append("WHITE VISTA@n");
 
-		sb.append(missions.getPlanner(AiGenerator.WHITE_VISTA).getNews() + "@n@nBANDITS@n");
+		sb.append(missions.getPlanner(Faction.WHITE_VISTA).getNews() + "@n@nBANDITS@n");
 		
-		sb.append(missions.getPlanner(AiGenerator.BANDITS).getNews());
+		sb.append(missions.getPlanner(Faction.BANDITS).getNews());
 		
 		newsTicker.setText(sb.toString());
 	}

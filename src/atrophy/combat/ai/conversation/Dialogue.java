@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.Map;
 
 import atrophy.combat.ai.Ai;
-import atrophy.combat.display.ui.Cartographer;
 import atrophy.combat.display.ui.MessageBox;
 import atrophy.combat.items.Item;
 import atrophy.combat.items.Weapon;
@@ -26,13 +25,11 @@ public class Dialogue{
 	public List<Ai> talkedTo;
 	
 	private MissionManager missionManager;
-	private Cartographer cartographer;
 	
-	public Dialogue(MissionManager missionManager, Cartographer cartographer, String openingLine, String[] options, boolean initiator){
+	public Dialogue(MissionManager missionManager, String openingLine, String[] options, boolean initiator){
 		this.openingLine = openingLine;
 		this.options = options;
 		this.missionManager = missionManager;
-		this.cartographer = cartographer;
 		longSpeechPoint = 0;
 		this.initiator = initiator;
 		this.longSpeeches = new LinkedHashMap<String,String[][]>(2);

@@ -5,6 +5,7 @@ import java.awt.image.BufferedImage;
 
 public interface ImageDisplayable extends Displayable{
 
+	@Override
 	public double[] getSize();
 	
 	public double getRotation();

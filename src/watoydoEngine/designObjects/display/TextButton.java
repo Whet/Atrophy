@@ -75,6 +75,7 @@ public abstract class TextButton extends Text implements MouseRespondable{
 		this.setColour(offColour);
 	}
 
+	@Override
 	public boolean mMC(Point mousePosition, MouseEvent e) {return false;}
 
 	@Override

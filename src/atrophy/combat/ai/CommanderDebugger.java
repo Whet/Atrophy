@@ -73,7 +73,7 @@ public class CommanderDebugger {
 		
 		debugText.append("Alliances: ");
 		
-		for(String alliance: commander.getAlliances()) {
+		for(Faction alliance: commander.getAlliances()) {
 			debugText.append(alliance + " ");
 		}
 		

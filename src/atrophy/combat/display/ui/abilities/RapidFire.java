@@ -34,6 +34,7 @@ public class RapidFire extends AbilityButton implements InfoTextDisplayable{
 		combatUiManager.getInfoText().removeInfoText(this);
 	}
 	
+	@Override
 	public String getUiHint(){
 		if(combatMembersManager.getCurrentAi().hasEffect(RapidFireEffect.NAME)){
 			return Abilities.RAPID_FIRE + "  Cooldown: "+ combatMembersManager.getCurrentAi().getEffect(RapidFireEffect.NAME).getCooldown();
@@ -43,6 +44,7 @@ public class RapidFire extends AbilityButton implements InfoTextDisplayable{
 		}
 	}
 	
+	@Override
 	public int getHintLines(){
 		return 1;
 	}

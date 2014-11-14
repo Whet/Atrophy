@@ -10,7 +10,7 @@ import watoydoEngine.display.tweens.TweenDefinable;
 import watoydoEngine.workings.DisplayManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.ai.Ai;
-import atrophy.combat.ai.AiGenerator;
+import atrophy.combat.ai.Faction;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.ui.Cartographer.Marker;
 import atrophy.combat.level.LevelManager;
@@ -87,25 +87,25 @@ public class MiniMap implements Displayable {
 		
 		// draw ai
 		for(int i = 0; i < aiCrowd.getActorCount(); i++){
-			if(aiCrowd.getActor(i).getFaction().equals(AiGenerator.PLAYER) || aiCrowd.getActorMask(aiCrowd.getActor(i)).isVisible()){
+			if(aiCrowd.getActor(i).getFaction().equals(Faction.PLAYER) || aiCrowd.getActorMask(aiCrowd.getActor(i)).isVisible()){
 				
 				this.drawAi.add(aiCrowd.getActor(i));
 				
 				if(!aiCrowd.getActor(i).isDead()){
 					switch(aiCrowd.getActor(i).getFaction()){
-						case "Player":
+						case PLAYER:
 							this.aiColours.put(aiCrowd.getActor(i), Color.green);
 						break;
-						case "Bandits":
+						case BANDITS:
 							this.aiColours.put(aiCrowd.getActor(i), Color.red);
 						break;
-						case "White Vista":
+						case WHITE_VISTA:
 							this.aiColours.put(aiCrowd.getActor(i), Color.white);
 						break;
-						case "Daemon":
+						case DAEMON:
 							this.aiColours.put(aiCrowd.getActor(i), Color.cyan.darker().darker());
 						break;
-						case "Loner":
+						case LONER:
 							this.aiColours.put(aiCrowd.getActor(i), Color.gray);
 						break;
 					}
@@ -228,8 +228,5 @@ public class MiniMap implements Displayable {
 	
 	@Override
 	public void setTween(TweenDefinable tween) {}
-	
-	
-	public void setAlpha(float alpha){}
 
 }

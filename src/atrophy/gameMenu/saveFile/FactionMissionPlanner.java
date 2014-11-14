@@ -15,6 +15,7 @@ import java.util.Random;
 import java.util.Set;
 
 import atrophy.combat.ai.AiGenerator;
+import atrophy.combat.ai.Faction;
 import atrophy.combat.items.EngineeringSupply;
 import atrophy.combat.items.MedicalSupply;
 import atrophy.combat.items.ScienceSupply;
@@ -32,7 +33,7 @@ public class FactionMissionPlanner implements Serializable{
 	private static final double FAILED_MISSION_REP = -2;
 	private static final int TECH_STEAL_CHANCE = 4;
 	
-	private String faction;
+	private Faction faction;
 	// sector, maps
 	private Map<String, Set<String>> mapsOwned;
 	private int weaponSupply, engineeringSupply, scienceSupply, medicalSupply;
@@ -44,7 +45,7 @@ public class FactionMissionPlanner implements Serializable{
 	private int actionPoints;
 	private transient WindowManager windowManager;
 	
-	public FactionMissionPlanner(String faction) {
+	public FactionMissionPlanner(Faction faction) {
 		this.faction = faction;
 		this.mapsOwned = new HashMap<>();
 		this.weaponSupply = 0;
@@ -165,16 +166,16 @@ public class FactionMissionPlanner implements Serializable{
 				
 				AttackMission atkMission = (AttackMission) next;
 				
-				if(this.faction.equals(AiGenerator.WHITE_VISTA) && missions.getPlayerBanditKillCount() == 0 ||
-				   this.faction.equals(AiGenerator.BANDITS) && missions.getPlayerWhiteVistaKillCount() == 0) {
+				if(this.faction.equals(Faction.WHITE_VISTA) && missions.getPlayerBanditKillCount() == 0 ||
+				   this.faction.equals(Faction.BANDITS) && missions.getPlayerWhiteVistaKillCount() == 0) {
 					// Penalise player
 					missions.getSquad().incrementFactionRelation(this.faction, FAILED_MISSION_REP);
 				}
 				if(missions.getPlayerKillCount(this.faction) > 0) {
 					missions.getSquad().incrementFactionRelation(this.faction, -4);
 				}
-				if((this.faction.equals(AiGenerator.WHITE_VISTA) && missions.getLivingBandits() == 0 && missions.getLivingWV() > 0) ||
-				   (this.faction.equals(AiGenerator.BANDITS) && missions.getLivingWV() == 0 && missions.getLivingBandits() > 0)) {
+				if((this.faction.equals(Faction.WHITE_VISTA) && missions.getLivingBandits() == 0 && missions.getLivingWV() > 0) ||
+				   (this.faction.equals(Faction.BANDITS) && missions.getLivingWV() == 0 && missions.getLivingBandits() > 0)) {
 					// take territory
 					this.addTerritory(atkMission.sectorName, atkMission.mapName);
 					

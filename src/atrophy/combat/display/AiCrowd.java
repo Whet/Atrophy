@@ -23,7 +23,7 @@ import watoydoEngine.designObjects.display.Crowd;
 import watoydoEngine.io.ReadWriter;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.ai.Ai;
-import atrophy.combat.ai.AiGenerator;
+import atrophy.combat.ai.Faction;
 import atrophy.combat.ai.TalkNode;
 import atrophy.combat.ai.ThinkingAi;
 import atrophy.combat.ai.VehicleAi;
@@ -329,7 +329,7 @@ public class AiCrowd extends Crowd {
 	public Squad saveToSquad() {
 		Squad squad = new Squad();
 		
-		squad.setFactionRelations(this.squad.getFactionRelation(AiGenerator.WHITE_VISTA), this.squad.getFactionRelation(AiGenerator.BANDITS));
+		squad.setFactionRelations(this.squad.getFactionRelation(Faction.WHITE_VISTA), this.squad.getFactionRelation(Faction.BANDITS));
 		squad.setAdvance(this.squad.getAdvance());
 		
 		ArrayList<String> lonerKills = new ArrayList<>();
@@ -354,7 +354,7 @@ public class AiCrowd extends Crowd {
 		banditKillCount = banditKills.size() - this.squad.getBanditKills().size();
 		
 		for(int i = 0; i < this.actors.size(); i++){
-			if(actors.get(i).getFaction().equals(AiGenerator.PLAYER) && !actors.get(i).isDead()){
+			if(actors.get(i).getFaction().equals(Faction.PLAYER) && !actors.get(i).isDead()){
 				Ai ai = actors.get(i);
 				
 				
@@ -486,7 +486,7 @@ public class AiCrowd extends Crowd {
 		while(it.hasNext()) {
 			Ai next = it.next();
 			
-			if(next.getFaction().equals(AiGenerator.PLAYER)) {
+			if(next.getFaction().equals(Faction.PLAYER)) {
 				it.remove();
 				playerAi.add(next);
 			}
@@ -495,7 +495,7 @@ public class AiCrowd extends Crowd {
 		this.masterStack.addAll(playerAi);
 	}
 	
-	public int getLivingActors(String faction) {
+	public int getLivingActors(Faction faction) {
 		int t = 0;
 		
 		for(Ai actor:this.actors) {

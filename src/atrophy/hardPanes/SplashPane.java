@@ -9,6 +9,7 @@ import atrophy.splash.SplashMenu;
 
 public class SplashPane implements HardPaneDefineable{
 	
+	@Override
 	public void load(Crowd crowd){
 		
 		SoundBoard.getInstance().startMusic();

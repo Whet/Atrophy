@@ -29,6 +29,7 @@ import atrophy.combat.ai.Ai;
 import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.ai.AiGeneratorInterface.GenerateCommand;
 import atrophy.combat.ai.AiGeneratorInterface.SoloGenerateCommand;
+import atrophy.combat.ai.Faction;
 import atrophy.combat.ai.TalkNode;
 import atrophy.combat.ai.ThinkingAi;
 import atrophy.combat.ai.ThinkingAi.AiNode;
@@ -58,15 +59,15 @@ public class AtrophyScriptReader {
 
 	private static int BLOCK_NUMBER = 0;
 	
-	protected static Level readScript(File file, String owner,
+	protected static Level readScript(File file, Faction owner,
 								     int engineeringChance, int medicalChance, int weaponChance, int scienceChance,
 								     PanningManager panningManager, TurnProcess turnProcess, MessageBox messageBox,
 								     AiCrowd aiCrowd, CombatMembersManager combatMembersManager, Missions missions,
-								     MissionManager missionManager, List<GenerateCommand> generationCommands, ItemMarket itemMarket, TechTree techTree, StashManager stashManager, CombatVisualManager combatVisualManager) throws RecognitionException, IOException {
+								     MissionManager missionManager, ItemMarket itemMarket, TechTree techTree, StashManager stashManager, CombatVisualManager combatVisualManager) throws RecognitionException, IOException {
 		
 		return readScript(new Level(owner), file,
 						  engineeringChance, medicalChance, weaponChance, scienceChance, panningManager, turnProcess,
-				   		  messageBox, aiCrowd, combatMembersManager, missions, missionManager, generationCommands, itemMarket, techTree, stashManager, combatVisualManager);
+				   		  messageBox, aiCrowd, combatMembersManager, missions, missionManager, itemMarket, techTree, stashManager, combatVisualManager);
 		
 	}
 	
@@ -74,7 +75,7 @@ public class AtrophyScriptReader {
 								     int engineeringChance, int medicalChance, int weaponChance, int scienceChance,
 								     PanningManager panningManager, TurnProcess turnProcess, MessageBox messageBox,
 								     AiCrowd aiCrowd, CombatMembersManager combatMembersManager, Missions missions,
-								     MissionManager missionManager, List<GenerateCommand> generationCommands, ItemMarket itemMarket, TechTree techTree, StashManager stashManager, CombatVisualManager combatVisualManager) throws RecognitionException, IOException {
+								     MissionManager missionManager, ItemMarket itemMarket, TechTree techTree, StashManager stashManager, CombatVisualManager combatVisualManager) throws RecognitionException, IOException {
 		
 		StringBuffer sb = new StringBuffer();
 		String lineString;
@@ -351,18 +352,18 @@ public class AtrophyScriptReader {
 		}
 
 		public LevelBlock toLevelBlock() {
-			LevelBlock levelBlock = new LevelBlock(number, missionManager, texture);
+			LevelBlock levelBlock = new LevelBlock(number, texture);
 			for(int i = 0; i < xList.size(); i++) {
 				levelBlock.addVertex(xList.get(i), yList.get(i));
 			}
 			
 			for(Entry<String, Integer> entry: territory.entrySet()) {
 				
-				if(entry.getKey().equals(AiGenerator.PLAYER)) {
+				if(entry.getKey().equals(Faction.PLAYER.toString())) {
 					level.addPlayerSpawn(levelBlock);
 				}
 				else if(combatMembersManager != null) {
-					combatMembersManager.getCommander(entry.getKey()).setBlockHeuristic(levelBlock, entry.getValue());
+					combatMembersManager.getCommander(Faction.getFaction(entry.getKey())).setBlockHeuristic(levelBlock, entry.getValue());
 				}
 			}
 			
@@ -398,10 +399,10 @@ public class AtrophyScriptReader {
 				missionManager.addVariableObject(name, levelBlock);
 				
 				if(this.zone != null && this.zone.size() > 0) {
-					String[] factions = new String[this.zone.size()];
+					Faction[] factions = new Faction[this.zone.size()];
 					
 					for(int i = 0; i < this.zone.size(); i++) {
-						factions[i] = this.zone.get(i);
+						factions[i] = Faction.getFaction(this.zone.get(i));
 					}
 					
 					level.addBannedBlock(factions, levelBlock);
@@ -463,13 +464,13 @@ public class AtrophyScriptReader {
 				commands.add(createCommand(tree, missionManager, missions, aiCrowd, messageBox, combatMembersManager, turnProcess, itemMarket, techTree, stashManager, combatVisualManager, level));
 			break;
 			case "TALK":
-				TalkInfo talkInfo = createTalkTopic(tree, missions, missionManager, messageBox);
+				TalkInfo talkInfo = createTalkTopic(tree, missionManager, messageBox);
 				missionManager.getTalkMap(talkInfo.parent).addDialogue(talkInfo.talkStage, talkInfo.dialogue);
 			break;
 			case "MAPSPAWNS":
-				Set<String> allowedSpawns = new HashSet<>();
+				Set<Faction> allowedSpawns = new HashSet<>();
 				for(int i = 0 ; i < tree.getChildCount(); i++) {
-					allowedSpawns.add(createString(tree.getChild(i)));
+					allowedSpawns.add(Faction.getFaction(createString(tree.getChild(i))));
 				}
 				
 				level.setAllowedSpawns(allowedSpawns);
@@ -776,7 +777,7 @@ public class AtrophyScriptReader {
 	protected static class UnitInfoEffect extends TriggerEffect {
 		
 		protected List<String> possibleNames;
-		protected List<String> possibleFactions;
+		protected List<Faction> possibleFactions;
 		protected List<String> possibleItems;
 		protected List<String> possibleRooms;
 		protected List<String> possibleWeapons;
@@ -810,7 +811,7 @@ public class AtrophyScriptReader {
 					case "ISFACTION":
 						possibleFactions = new ArrayList<>();
 						for(int j = 0; j < tree.getChild(i).getChildCount(); j++) {
-							possibleFactions.add(createString(tree.getChild(i).getChild(j)));
+							possibleFactions.add(Faction.getFaction(createString(tree.getChild(i).getChild(j))));
 						}
 					break;
 					case "HASITEM":
@@ -880,7 +881,7 @@ public class AtrophyScriptReader {
 					(possibleWeapons == null || possibleWeapons.contains(ai.getWeapon().getName())) &&
 					(mustBeAlive == null || ai.isDead() == !mustBeAlive) &&
 					(possibleRooms.size() == 0 || allowedRooms.contains(ai.getLevelBlock())) &&
-					(isPlayer == null || ai.getFaction().equals(AiGenerator.PLAYER))) {
+					(isPlayer == null || ai.getFaction().equals(Faction.PLAYER))) {
 					
 					if(possibleItems != null && possibleItems.size() > 0) {
 						boolean hasItem = false;
@@ -995,7 +996,6 @@ public class AtrophyScriptReader {
 		AiNode aiNode = new AiNode(aiCrowd, messageBox, turnProcess, missionManager, 0, 0);
 		ArrayList<String> behaviours = new ArrayList<>();
 		ArrayList<String> talkMapList = new ArrayList<>();
-		
 		for(int i = 0; i < child.getChildCount(); i++) {
 			
 			switch(child.getChild(i).toString()) {
@@ -1299,7 +1299,7 @@ public class AtrophyScriptReader {
 	protected static final class LoadMapEffect extends TriggerEffect {
 		
 		private String mapName;
-		private String owner;
+		private Faction owner;
 		private int engChance, medChance, wepChance, sciChance;
 		
 		private AiCrowd aiCrowd;
@@ -1341,7 +1341,7 @@ public class AtrophyScriptReader {
 						mapName = createString(tree.getChild(i).getChild(new Random().nextInt(tree.getChild(i).getChildCount())));
 					break;
 					case "ISFACTION":
-						owner = createString(tree.getChild(i).getChild(new Random().nextInt(tree.getChild(i).getChildCount())));
+						owner = Faction.getFaction(createString(tree.getChild(i).getChild(new Random().nextInt(tree.getChild(i).getChildCount()))));
 					break;
 					case "SECTOR":
 						sector = createString(tree.getChild(i));
@@ -1911,7 +1911,7 @@ public class AtrophyScriptReader {
 		
 	}
 	
-	private static TalkInfo createTalkTopic(Tree tree, Missions missions, MissionManager missionManager, MessageBox messageBox) {
+	private static TalkInfo createTalkTopic(Tree tree, MissionManager missionManager, MessageBox messageBox) {
 
 		String parent = "";
 		Integer talkStage = null;
@@ -2158,10 +2158,10 @@ public class AtrophyScriptReader {
 			modules.clear();
 		}
 		else if(commTree.toString().equals("MAPSPAWNS")) {
-			Set<String> allowedSpawns = new HashSet<>();
+			Set<Faction> allowedSpawns = new HashSet<>();
 			
 			for(int k = 0 ; k < commTree.getChildCount(); k++) {
-				allowedSpawns.add(createString(commTree.getChild(k)));
+				allowedSpawns.add(Faction.getFaction(createString(commTree.getChild(k))));
 			}
 			
 			level.setAllowedSpawns(allowedSpawns);
@@ -2186,7 +2186,7 @@ public class AtrophyScriptReader {
 		
 		Stack<LevelBlockInfo> blockStack = new Stack<>();
 		
-		Level level = new Level("");
+		Level level = new Level(Faction.EMPTY);
 		
 		Map<String, List<Tree>> moduleTrees = new HashMap<String, List<Tree>>();
 		Map<String, List<Tree>> commandTrees = new HashMap<String, List<Tree>>();

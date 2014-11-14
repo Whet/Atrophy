@@ -57,6 +57,7 @@ public class ImageMulti extends AbstractImage{
 		this.rotation = 0;
 	}
 	
+	@Override
 	public void drawMethod(Graphics2D drawShape){
 		nextFrame();
 		drawShape.setComposite(GraphicsFunctions.makeComposite(this.getAlpha()));
@@ -73,11 +74,13 @@ public class ImageMulti extends AbstractImage{
 		}
 	}
 	
+	@Override
 	public double[] getLocationCentre(){
 		double editedLocation[] = {this.getLocation()[0] + this.getSize()[0] * 0.5, this.getLocation()[1] + this.getSize()[1] * 0.5};
 		return editedLocation;
 	}
 	
+	@Override
 	public double[] getSize(){
 		double[] size = new double[2];
 		if(image != null){
@@ -95,6 +98,7 @@ public class ImageMulti extends AbstractImage{
 		return playing;
 	}
 	
+	@Override
 	public BufferedImage getImage(){
 		return this.image[frame];
 	}
@@ -113,10 +117,12 @@ public class ImageMulti extends AbstractImage{
 		this.playing = playing;
 	}
 	
+	@Override
 	public void setImage(BufferedImage image){
 		this.image[frame] = image;
 	}
 	
+	@Override
 	public double getRotation() {
 		return rotation;
 	}

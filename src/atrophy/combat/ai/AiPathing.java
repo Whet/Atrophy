@@ -3,16 +3,14 @@ package atrophy.combat.ai;
 import java.util.Random;
 import java.util.Stack;
 
-import javax.jws.Oneway;
-
 import watoydoEngine.utils.Maths;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.items.MeleeWeapon1;
 import atrophy.combat.level.LevelBlock;
+import atrophy.combat.level.LevelBlockGrid.GridBlock;
 import atrophy.combat.level.LevelManager;
 import atrophy.combat.level.Portal;
-import atrophy.combat.level.LevelBlockGrid.GridBlock;
 
 public class AiPathing {
 
@@ -21,23 +19,17 @@ public class AiPathing {
 	private static final int MAJOR_SLOW_MAX_MOVE = 5;
 
 	private Stack<Portal> portalPathway;
-	
 	private Stack<double[]> roomPathway;
-	
-	private int defaultMoveDistance;
-	
-	private int moveDistance;
-	
-	private int moveUnits;
-	
+
 	private LevelBlock residentBlock;
 	
+	private int defaultMoveDistance;
+	private int moveDistance;
+	private int moveUnits;
 	private double[] location;
-	
 	private double[] moveLocation;
 	
 	private LevelManager levelManager;
-	
 	private AiCrowd aiCrowd;
 	
 	public AiPathing(AiCrowd aiCrowd, LevelManager levelManager, double x, double y){
@@ -59,8 +51,6 @@ public class AiPathing {
 	}
 	
 	public void move(Ai invoker){
-		
-//		long time = System.currentTimeMillis();
 		
 		try{
 			invoker.setSwing(0);
@@ -237,13 +227,6 @@ public class AiPathing {
 					return;
 				}
 				
-				// couldn't move anywhere
-//				if(this.moveUnits == moveUnitLast){
-//					//return;
-//					invoker.setMoveLocationToSelf();
-//					invoker.setAction("");
-//					return;
-//				}
 				moveUnitLast = this.moveUnits;
 			}
 			
@@ -254,8 +237,6 @@ public class AiPathing {
 		// cannot find what actually throws this, nothing shows when stepped through
 		catch(NullPointerException npe){}
 		finally{
-	//		System.out.println("Path Time Millis: " + (System.currentTimeMillis() - time));
-			
 			// Fix for being outside level
 			while(levelManager.getBlock(this.getLocation()) == null || !this.residentBlock.getHitBox().contains(this.location[0], this.location[1])) {
 				GridBlock navBlock = this.getLevelBlock().getLevelBlockGrid().getNearestGridBlock(this.getLocation());
@@ -264,11 +245,6 @@ public class AiPathing {
 		}
 	}
 	 
-	/**
-	 * Move intra.
-	 *
-	 * @param moveLocation the move location
-	 */
 	protected void moveIntra(Ai invoker, double[] moveLocation){
 		
 		double angle;

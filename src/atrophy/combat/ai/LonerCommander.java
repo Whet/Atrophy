@@ -7,7 +7,7 @@ import atrophy.gameMenu.saveFile.Squad;
 public class LonerCommander extends TeamsCommander{
 	
 	public LonerCommander(Squad squad, TurnProcess turnProcess, LevelManager levelManager) {
-		super(squad, turnProcess, AiGenerator.LONER, levelManager);
+		super(squad, turnProcess, Faction.LONER, levelManager);
 	}
 	
 	@Override

@@ -10,9 +10,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Set;
 
-import atrophy.combat.ai.AiGenerator;
+import atrophy.combat.ai.Faction;
 import atrophy.gameMenu.saveFile.MapManager.Sector;
-import atrophy.gameMenu.ui.ShopManager;
 import atrophy.gameMenu.ui.StashManager;
 import atrophy.gameMenu.ui.WindowManager;
 
@@ -29,7 +28,7 @@ public class SaveFile implements Serializable{
 	public String saveURL;
 	public FactionMissionPlanner wvResearchAi, banditsResearchAi;
 	
-	public SaveFile(Squad squad, Missions missions, ArrayList<Sector> sectors, ArrayList<String> stash, TechTree techTree, Set<String> spawnCodes, WindowManager windowManager) {
+	public SaveFile(Squad squad, Missions missions, ArrayList<Sector> sectors, ArrayList<String> stash, Set<String> spawnCodes, WindowManager windowManager) {
 		this.advance = squad.getAdvance();
 		this.squad = squad;
 		this.sectors = sectors;
@@ -37,12 +36,12 @@ public class SaveFile implements Serializable{
 		this.spawnCodes = spawnCodes;
 		this.whiteVistaRelation = 1.0;
 		this.banditRelation = -1.0;
-		this.wvResearchAi = missions.getPlanner(AiGenerator.WHITE_VISTA);
-		this.banditsResearchAi = missions.getPlanner(AiGenerator.BANDITS);
+		this.wvResearchAi = missions.getPlanner(Faction.WHITE_VISTA);
+		this.banditsResearchAi = missions.getPlanner(Faction.BANDITS);
 		squad.createWindowLayout(windowManager);
 	}
 	
-	public static void saveGame(File file, Squad squad, Missions missions, ArrayList<Sector> sectors, ArrayList<String> stash, TechTree techTree, Set<String> spawnCodes, WindowManager windowManager){
+	public static void saveGame(File file, Squad squad, Missions missions, ArrayList<Sector> sectors, ArrayList<String> stash, Set<String> spawnCodes, WindowManager windowManager){
 		
 		File fileToBeSaved = file;
 
@@ -51,9 +50,9 @@ public class SaveFile implements Serializable{
 		    fileToBeSaved = new File(fileToBeSaved + "." + FILE_EXT);
 		}
 		
-		SaveFile save = new SaveFile(squad,missions,sectors,stash,techTree,spawnCodes, windowManager);
-		save.whiteVistaRelation = squad.getFactionRelation(AiGenerator.WHITE_VISTA);
-		save.banditRelation = squad.getFactionRelation(AiGenerator.BANDITS);
+		SaveFile save = new SaveFile(squad,missions,sectors,stash,spawnCodes, windowManager);
+		save.whiteVistaRelation = squad.getFactionRelation(Faction.WHITE_VISTA);
+		save.banditRelation = squad.getFactionRelation(Faction.BANDITS);
 		save.saveURL = fileToBeSaved.getAbsolutePath();
 		
 		ObjectOutputStream stream = null;
@@ -76,7 +75,7 @@ public class SaveFile implements Serializable{
 		}	
 	}
 	
-	public static Squad loadGame(File file, StashManager stashManager, MapManager mapWar, ShopManager shopManager, Missions missions, WindowManager windowManager, ItemMarket itemMarket) {
+	public static Squad loadGame(File file, StashManager stashManager, MapManager mapWar, Missions missions, WindowManager windowManager, ItemMarket itemMarket) {
 		
 		SaveFile save = null;
 		

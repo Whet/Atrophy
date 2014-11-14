@@ -11,6 +11,7 @@ import watoydoEngine.fonts.FontList;
 import watoydoEngine.sounds.SoundBoard;
 import watoydoEngine.utils.GraphicsFunctions;
 import atrophy.combat.ai.AiGenerator;
+import atrophy.combat.ai.Faction;
 import atrophy.combat.ai.MuleAi;
 import atrophy.combat.items.MeleeWeapon1;
 import atrophy.combat.items.UnarmedWeapon;
@@ -97,7 +98,7 @@ public class SquadMenu extends Menu{
 		this.addDisplayItem(buySquaddie);
 		this.addMouseActionItem(buySquaddie);
 		
-		if(techTree.isResearched(TechTree.MULE, AiGenerator.LONER)){
+		if(techTree.isResearched(TechTree.MULE, Faction.LONER)){
 		
 			TextButton buyMule = new TextButton(TextButton.DEFAULT_ON_COLOUR,TextButton.DEFAULT_OFF_COLOUR) {
 				{

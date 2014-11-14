@@ -9,10 +9,10 @@ import java.util.Set;
 
 import atrophy.combat.actions.MouseAbilityHandler;
 import atrophy.combat.ai.Ai;
-import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.ai.BanditCommander;
 import atrophy.combat.ai.DaemonAi;
 import atrophy.combat.ai.DaemonCommander;
+import atrophy.combat.ai.Faction;
 import atrophy.combat.ai.LonerAi;
 import atrophy.combat.ai.LonerCommander;
 import atrophy.combat.ai.TeamsCommander;
@@ -36,19 +36,17 @@ public class CombatMembersManager {
 	private TurnProcess turnProcess;
 	private UiUpdaterSuite uiUpdaterSuite;
 	private MouseAbilityHandler mouseAbilityHandler;
-	private CombatNCEManager combatInorganicManager;
 	private LevelManager levelManager;
 	private TorchDrawer torchDrawer;
 	private MapDrawer mapDrawer;
 	private Map<LevelBlock, StrengthStub> factionStrengthScores;
 	
-	public CombatMembersManager(AiCrowd aiCrowd, TurnProcess turnProcess, LevelManager levelManager, CombatNCEManager combatInorganicManager){
+	public CombatMembersManager(AiCrowd aiCrowd, TurnProcess turnProcess, LevelManager levelManager){
 		commanders = new ArrayList<TeamsCommander>(2);
 		playerTeam = new ArrayList<Ai>(1);
 		
 		this.aiCrowd = aiCrowd;
 		this.turnProcess = turnProcess;
-		this.combatInorganicManager = combatInorganicManager;
 		this.levelManager = levelManager;
 		
 	}
@@ -57,7 +55,7 @@ public class CombatMembersManager {
 		
 		private int code;
 		//Faction, [Strength, Turn]
-		private Map<String, Integer[]> strengthInfo;
+		private Map<Faction, Integer[]> strengthInfo;
 		
 		public StrengthStub(int code) {
 			
@@ -65,13 +63,13 @@ public class CombatMembersManager {
 			
 			strengthInfo = new HashMap<>();
 			
-			strengthInfo.put(AiGenerator.BANDITS, new Integer[]{0,-1});
-			strengthInfo.put(AiGenerator.WHITE_VISTA, new Integer[]{0,-1});
-			strengthInfo.put(AiGenerator.LONER, new Integer[]{0,-1});
-			strengthInfo.put(AiGenerator.PLAYER, new Integer[]{0,-1});
+			strengthInfo.put(Faction.BANDITS, new Integer[]{0,-1});
+			strengthInfo.put(Faction.WHITE_VISTA, new Integer[]{0,-1});
+			strengthInfo.put(Faction.LONER, new Integer[]{0,-1});
+			strengthInfo.put(Faction.PLAYER, new Integer[]{0,-1});
 		}
 
-		public int getStrength(String faction) {
+		public int getStrength(Faction faction) {
 			
 			if(this.strengthInfo.get(faction)[1] == turnProcess.getTurnCount())
 				return this.strengthInfo.get(faction)[0];
@@ -97,9 +95,9 @@ public class CombatMembersManager {
 		commanders.add(banditCommander);
 		
 		if(banditRep >= 1)
-			banditCommander.addAlliance(AiGenerator.PLAYER);
+			banditCommander.addAlliance(Faction.PLAYER);
 		if(wvRep >= 1)
-			whiteVistaCommander.addAlliance(AiGenerator.PLAYER);
+			whiteVistaCommander.addAlliance(Faction.PLAYER);
 	}
 	
 	public LonerCommander createLonerCommander() {
@@ -116,22 +114,22 @@ public class CombatMembersManager {
 	
 	public void addAi(Ai ai) {
 		switch(ai.getFaction()) {
-			case AiGenerator.BANDITS:
-				this.getCommander(AiGenerator.BANDITS).addAi((ThinkingAi) ai);
+			case BANDITS:
+				this.getCommander(Faction.BANDITS).addAi((ThinkingAi) ai);
 			break;
-			case AiGenerator.DAEMON:
+			case DAEMON:
 				DaemonCommander daemonCommander = this.createDaemonCommander();
 				daemonCommander.addAi((ThinkingAi) ai);
 			break;
-			case AiGenerator.LONER:
+			case LONER:
 				LonerCommander lonerCommander = this.createLonerCommander();
 				lonerCommander.addAi((ThinkingAi) ai);
 			break;
-			case AiGenerator.PLAYER:
+			case PLAYER:
 				this.playerTeam.add(ai);
 			break;
-			case AiGenerator.WHITE_VISTA:
-				this.getCommander(AiGenerator.WHITE_VISTA).addAi((ThinkingAi) ai);
+			case WHITE_VISTA:
+				this.getCommander(Faction.WHITE_VISTA).addAi((ThinkingAi) ai);
 			break;
 		}
 	}
@@ -160,7 +158,7 @@ public class CombatMembersManager {
 		return this.playerTeam.size();
 	}
 
-	public TeamsCommander getCommander(String faction) {
+	public TeamsCommander getCommander(Faction faction) {
 		
 		for(TeamsCommander commander : this.commanders){
 			if(commander.getFaction().equals(faction)){
@@ -242,18 +240,18 @@ public class CombatMembersManager {
 	
 	public void pickStartingAi(){
 		for(Ai ai : aiCrowd.getActors()){
-			if(ai.getFaction().equals(AiGenerator.PLAYER)){
+			if(ai.getFaction().equals(Faction.PLAYER)){
 				this.setCurrentAi(ai);
 				return;
 			}
 		}
 	}
 	
-	public int getFactionStrength(String faction, LevelBlock levelBlock) {
+	public int getFactionStrength(Faction faction, LevelBlock levelBlock) {
 		return this.factionStrengthScores.get(levelBlock).getStrength(faction);
 	}
 	
-	public boolean factionsAllied(String faction, String faction2) {
+	public boolean factionsAllied(Faction faction, Faction faction2) {
 		for(TeamsCommander commander : this.commanders){
 			if(commander.getFaction().equals(faction)){
 				return commander.isAlliedWith(faction2);
@@ -266,7 +264,7 @@ public class CombatMembersManager {
 	}
 	
 	public void changeThinkingAiToPlayerAi(ThinkingAi thinkingAi){
-		Ai playerAi = new Ai(thinkingAi, levelManager, combatInorganicManager);
+		Ai playerAi = new Ai(thinkingAi, levelManager);
 		
 		aiCrowd.getActorMask(thinkingAi).setAi(playerAi);
 		aiCrowd.getActors().remove(thinkingAi);
@@ -282,30 +280,26 @@ public class CombatMembersManager {
 		aiCrowd.replaceAi(thinkingAi,playerAi);
 	}
 	
-	public int getUnitCount(String string){
-		return getUnitCount(string, false);
+	public int getUnitCount(Faction faction){
+		return getUnitCount(faction, false);
 	}
 	
-	public int getUnitCount(String string, boolean onlyAlive) {
+	public int getUnitCount(Faction faction, boolean onlyAlive) {
 		int count = 0;
-		Set<String> targetFactions = new HashSet<String>(2);
+		Set<Faction> targetFactions = new HashSet<Faction>(2);
 		
-		switch(string){
-			case AiGenerator.BANDITS:
-				targetFactions.add(AiGenerator.BANDITS);
+		switch(faction){
+			case BANDITS:
+				targetFactions.add(Faction.BANDITS);
 			break;
-			case AiGenerator.WHITE_VISTA:
-				targetFactions.add(AiGenerator.WHITE_VISTA);
+			case WHITE_VISTA:
+				targetFactions.add(Faction.WHITE_VISTA);
 			break;
-			case AiGenerator.PLAYER:
-				targetFactions.add(AiGenerator.PLAYER);
+			case PLAYER:
+				targetFactions.add(Faction.PLAYER);
 			break;
-			case AiGenerator.LONER:
-				targetFactions.add(AiGenerator.LONER);
-			break;
-			case "PlayerLoner":
-				targetFactions.add(AiGenerator.PLAYER);
-				targetFactions.add(AiGenerator.LONER);
+			case LONER:
+				targetFactions.add(Faction.LONER);
 			break;
 		}
 		

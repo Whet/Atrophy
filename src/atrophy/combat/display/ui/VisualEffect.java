@@ -1,6 +1,3 @@
-/*
- * 
- */
 package atrophy.combat.display.ui;
 
 import java.awt.Color;
@@ -9,145 +6,65 @@ import java.awt.Graphics2D;
 import watoydoEngine.utils.Maths;
 import atrophy.combat.PanningManager;
 
-/**
- * The Class VisualEffect.
- */
 public abstract class VisualEffect {
 
 	protected PanningManager panningManager;
 	
-	/**
-	 * The life.
-	 */
 	private int life;
 	
-	/**
-	 * The location.
-	 */
 	private double[] location;
 	
-	/**
-	 * Instantiates a new visual effect.
-	 *
-	 * @param life the life
-	 * @param location the location
-	 */
 	public VisualEffect(PanningManager panningManager, int life, double[] location){
 		this.life = life;
 		this.location = location;
 		this.panningManager = panningManager;
 	}
 
-	/**
-	 * Gets the life.
-	 *
-	 * @return the life
-	 */
 	public int getLife() {
 		return life;
 	}
 
-	/**
-	 * Sets the life.
-	 *
-	 * @param life the new life
-	 */
 	public void setLife(int life) {
 		this.life = life;
 	}
 
-	/**
-	 * Sets the location.
-	 *
-	 * @param location the new location
-	 */
 	public void setLocation(double[] location) {
 		this.location = location;
 	}
 
-	/**
-	 * Gets the location.
-	 *
-	 * @return the location
-	 */
 	public double[] getLocation() {
 		return location;
 	}
 	
-	/**
-	 * Checks if is dead.
-	 *
-	 * @return true, if is dead
-	 */
 	public boolean isDead(){
 		return life <= 0;
 	}
 	
-	/**
-	 * Update.
-	 */
 	protected abstract void update();
 	
-	/**
-	 * Tick.
-	 */
 	public final void tick(){
 		update();
 		
 		life--;
 	}
 	
-	/**
-	 * Draw method.
-	 *
-	 * @param drawShape the draw shape
-	 */
 	public abstract void drawMethod(Graphics2D drawShape);
 	
 	
-	/**
-	 * The Class Bullet.
-	 */
 	public static class Bullet extends VisualEffect{
 
-		/**
-		 * The Constant BULLET_LIFE.
-		 */
 		private static final int BULLET_LIFE = 28;
 		
-		/**
-		 * The distance.
-		 */
 		protected double distance;
 		
-		/**
-		 * The target location.
-		 */
 		protected double[] targetLocation;
 		
-		/**
-		 * The speed.
-		 */
 		protected double speed;
 		
-		/**
-		 * The angle.
-		 */
 		private double angle;
 		
-		/**
-		 * The colour.
-		 */
 		protected Color colour;
 
-		/**
-		 * Instantiates a new bullet.
-		 *
-		 * @param location the location
-		 * @param targetLocation the target location
-		 * @param colour the colour
-		 * @param speed the speed
-		 */
 		public Bullet(PanningManager panningManager, double[] location, double[] targetLocation, Color colour, double speed){
 			
 			super(panningManager, BULLET_LIFE, location);
@@ -160,9 +77,7 @@ public abstract class VisualEffect {
 			this.targetLocation = targetLocation;
 		}
 		
-		/* (non-Javadoc)
-		 * @see atrophy.combat.display.ui.VisualEffect#drawMethod(java.awt.Graphics2D)
-		 */
+		@Override
 		public void drawMethod(Graphics2D drawShape){
 			
 			drawShape.setColor(this.colour);
@@ -174,9 +89,6 @@ public abstract class VisualEffect {
 			
 		}
 	
-		/* (non-Javadoc)
-		 * @see atrophy.combat.display.ui.VisualEffect#update()
-		 */
 		@Override
 		protected void update() {
 			double[] newLocation  = {this.getLocation()[0] + Math.cos(angle) * speed, this.getLocation()[1] + Math.sin(angle) * speed};
@@ -193,29 +105,12 @@ public abstract class VisualEffect {
 		
 	}
 	
-	/**
-	 * The Class ShotgunBullet.
-	 */
 	public static class ShotgunBullet extends Bullet {
 
-		/**
-		 * The angle.
-		 */
 		private double[] angle;
 		
-		/**
-		 * The location.
-		 */
 		private double[][] location;
 		
-		/**
-		 * Instantiates a new shotgun bullet.
-		 *
-		 * @param location the location
-		 * @param targetLocation the target location
-		 * @param colour the colour
-		 * @param speed the speed
-		 */
 		public ShotgunBullet(PanningManager panningManager, double[] location, double[] targetLocation, Color colour, double speed) {
 			super(panningManager, location, targetLocation, colour, speed);
 			
@@ -234,9 +129,6 @@ public abstract class VisualEffect {
 			this.location[4] = location.clone();
 		}
 		
-		/* (non-Javadoc)
-		 * @see atrophy.combat.display.ui.VisualEffect.Bullet#drawMethod(java.awt.Graphics2D)
-		 */
 		@Override
 		public void drawMethod(Graphics2D drawShape){
 			
@@ -251,9 +143,6 @@ public abstract class VisualEffect {
 			
 		}
 		
-		/* (non-Javadoc)
-		 * @see atrophy.combat.display.ui.VisualEffect.Bullet#update()
-		 */
 		@Override
 		protected void update() {
 			

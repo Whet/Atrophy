@@ -5,7 +5,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.PriorityQueue;
@@ -14,7 +13,6 @@ import java.util.Set;
 
 import atrophy.combat.ai.AiJob.JobType;
 import atrophy.combat.display.ui.loot.LootBox.Lootable;
-import atrophy.combat.items.EngineeringSupply;
 import atrophy.combat.items.WeldingTorch;
 import atrophy.combat.level.LevelBlock;
 import atrophy.combat.level.LevelManager;
@@ -29,7 +27,7 @@ public class TeamsCommander {
 	private static final int ASSIGNMENT_MODIFIER = 10;
 
 	private Set<ThinkingAi> teamAi;
-	private Set<String> alliances;
+	private Set<Faction> alliances;
 	private Set<Ai> hatedAi;
 	private Set<Ai> friends;
 	private Set<Ai> lootedAi;
@@ -40,10 +38,10 @@ public class TeamsCommander {
 	private Map<LevelBlock, DefenceHeuristic> defenceHeuristics;
 	
 	private PriorityQueue<AiJob> jobs;
-	
+
 	private ArrayList<Portal> blockedPortals;
 	
-	private String faction;
+	private Faction faction;
 	
 	private int turnsToNextUpdate;
 	private boolean specialistNeeded;
@@ -52,7 +50,7 @@ public class TeamsCommander {
 	private LevelManager levelManager;
 	private Squad squad;
 
-	public TeamsCommander(Squad squad, TurnProcess turnProcess, String faction, LevelManager levelManager){
+	public TeamsCommander(Squad squad, TurnProcess turnProcess, Faction faction, LevelManager levelManager){
 
 		this.squad = squad;
 		this.faction = faction;
@@ -62,7 +60,7 @@ public class TeamsCommander {
 		teamAi = new HashSet<ThinkingAi>();
 		blockedPortals = new ArrayList<Portal>();
 		lootedAi = new HashSet<Ai>();
-		alliances = new HashSet<String>();
+		alliances = new HashSet<Faction>();
 		hatedAi = new HashSet<Ai>();
 		friends = new HashSet<Ai>();
 		investigatedAi = new HashSet<Ai>();
@@ -162,7 +160,7 @@ public class TeamsCommander {
 		this.jobs = new PriorityQueue<AiJob>(10, comparator);
 	}
 	
-	public String getFaction(){
+	public Faction getFaction(){
 		return this.faction;
 	}
 	
@@ -367,7 +365,7 @@ public class TeamsCommander {
 		// Make a random scout job so the ai stays busy
 		if(allJobsFull())
 			if(Math.random() < 0.1 && !ai.getInventory().isFull())
-				return takeJob(ai, createStashJob(ai));
+				return takeJob(ai, createStashJob());
 			else
 				return takeJob(ai, createScoutJob());
 		
@@ -396,7 +394,7 @@ public class TeamsCommander {
 		return job;
 	}
 	
-	private AiJob createStashJob(ThinkingAi ai) {
+	private AiJob createStashJob() {
 		LevelBlock room = null;
 		Lootable stash = null;
 		
@@ -516,22 +514,22 @@ public class TeamsCommander {
 		return this.lootedAi.contains(ai);
 	}
 	
-	public void removeAlliance(String faction) {
+	public void removeAlliance(Faction faction) {
 		this.alliances.remove(faction);
 	}
 
-	public void addAlliance(String faction) {
+	public void addAlliance(Faction faction) {
 		this.alliances.add(faction);
 	}
 	
-	public boolean isAlliedWith(String faction) {
+	public boolean isAlliedWith(Faction faction) {
 		return this.alliances.contains(faction);
 	}
 	
 	public void addHatedAi(Ai hatedAi){
 		this.hatedAi.add(hatedAi);
 		
-		if(hatedAi.getFaction().equals(AiGenerator.PLAYER))
+		if(hatedAi.getFaction().equals(Faction.PLAYER))
 			squad.incrementFactionRelation(this.getFaction(), -1.8);
 	}
 	
@@ -612,7 +610,7 @@ public class TeamsCommander {
 //		System.out.println(killer.getName() + " is wanted!");
 		this.suspectedAi.put(killer, 30);
 		
-		if(killer.getFaction().equals(AiGenerator.PLAYER))
+		if(killer.getFaction().equals(Faction.PLAYER))
 			squad.incrementFactionRelation(this.getFaction(), -0.2);
 		
 		return true;
@@ -625,18 +623,15 @@ public class TeamsCommander {
 	public void removeSuspected(Ai ai) {
 		this.suspectedAi.remove(ai);
 		
-		if(ai.getFaction().equals(AiGenerator.PLAYER))
+		if(ai.getFaction().equals(Faction.PLAYER))
 			squad.incrementFactionRelation(this.getFaction(), 0.2);
 	}
 
 	public void removeHatedAi(Ai speaker) {
 		this.hatedAi.remove(speaker);
 	}
-
 	
-	// Debug
-	
-	public Set<String> getAlliances() {
+	public Set<Faction> getAlliances() {
 		return alliances;
 	}
 

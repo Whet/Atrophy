@@ -2,7 +2,6 @@ package atrophy.gameMenu.saveFile;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -16,6 +15,7 @@ import org.json.JSONObject;
 import org.json.JSONTokener;
 
 import watoydoEngine.io.ReadWriter;
+import atrophy.combat.ai.Faction;
 import atrophy.combat.level.LevelIO;
 
 public class MapManager {
@@ -30,23 +30,17 @@ public class MapManager {
 		
 		createSectors();
 		
-		try {
-			loadMaps();
-		}
-		catch (IOException e) {
-			e.printStackTrace();
-			System.err.println("Problem making or loading maps");
-			System.exit(-1);
-		}
+		loadMaps();
 	}
 	
-	public void loadMaps() throws FileNotFoundException, IOException{
+	public void loadMaps(){
 		
 		try {
 			String fileLocation = ReadWriter.HOME_LOCATION + LevelIO.SUB_FOLDER + "/Sectors.json";
 			JSONTokener tokener = new JSONTokener(new FileInputStream(fileLocation));
 			JSONObject root = new JSONObject(tokener);
 			
+			@SuppressWarnings("unchecked")
 			Iterator<String> sectors = root.keys();
 
 			while(sectors.hasNext()) {
@@ -59,6 +53,7 @@ public class MapManager {
 				Sector sectorObject = new Sector(sectorName, 0, 0, 0, 0);
 				this.sectors.add(sectorObject);
 				
+				@SuppressWarnings("unchecked")
 				Iterator<String> sectorChildren = sector.keys();
 				
 				while(sectorChildren.hasNext()) {
@@ -69,6 +64,7 @@ public class MapManager {
 					
 					if(sectorChildName.equals("spawnChances")) {
 						
+						@SuppressWarnings("unchecked")
 						Iterator<String> spawnInfo = sectorChild.keys();
 						
 						while(spawnInfo.hasNext()) {
@@ -97,6 +93,7 @@ public class MapManager {
 					}
 					else if(sectorChildName.equals("maps")) {
 						
+						@SuppressWarnings("unchecked")
 						Iterator<String> mapNames = sectorChild.keys();
 						
 						while(mapNames.hasNext()) {
@@ -109,13 +106,14 @@ public class MapManager {
 							
 							Map mapObject = sectorObject.getMapObject(mapName);
 							
+							@SuppressWarnings("unchecked")
 							Iterator<String> mapProperties = map.keys();
 							
 							while(mapProperties.hasNext()) {
 								
 								String propertyName = mapProperties.next();
 								
-					if(propertyName.equals("req")) {
+								if(propertyName.equals("req")) {
 									
 									JSONArray property = map.getJSONArray(propertyName);
 									
@@ -281,15 +279,15 @@ public class MapManager {
 			}
 		}
 		
-		public String getOwner(Missions missions, int mapIndex){
+		public Faction getOwner(Missions missions, int mapIndex){
 			
 			if(this.getMap(mapIndex).isEmpty())
-				return "";
+				return Faction.EMPTY;
 			
 			return missions.getMapOwner(this.getMap(mapIndex), this.name);
 		}
 		
-		public String getOwner(Missions missions, String mapName){
+		public Faction getOwner(Missions missions, String mapName){
 			return missions.getMapOwner(mapName, this.name);
 		}
 

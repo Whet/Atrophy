@@ -4,13 +4,13 @@ import java.awt.Color;
 import java.awt.Polygon;
 import java.util.ArrayList;
 import java.util.Map;
+import java.util.Random;
 import java.util.Stack;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import watoydoEngine.utils.Maths;
 import atrophy.combat.CombatMembersManager;
-import atrophy.combat.CombatNCEManager;
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
@@ -31,7 +31,7 @@ import atrophy.combat.level.Portal;
 import atrophy.combat.mechanics.Abilities;
 import atrophy.combat.mechanics.TurnProcess;
 
-public class Ai implements Lootable{
+public class Ai implements Lootable {
 
 	protected AiData aiData;
 	protected AiPathing aiPathing;
@@ -64,7 +64,7 @@ public class Ai implements Lootable{
 
 	public Ai(FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler,
 			  String name, double x, double y,
-			  CombatNCEManager combatInorganicManager, LevelManager levelManager, LootBox lootBox,
+			  LevelManager levelManager, LootBox lootBox,
 			  CombatMembersManager combatMembersManager, CombatUiManager combatUiManager, CombatVisualManager combatVisualManager,
 			  AiCrowd aiCrowd, PanningManager panningManager, TurnProcess turnProcess){
 		
@@ -75,7 +75,7 @@ public class Ai implements Lootable{
 
 		killCounted = false;
 		
-		lookAngle = 180;
+		lookAngle = new Random().nextInt(360);
 		editLookAngle = lookAngle;
 		
 		stunnedTurns = 0;
@@ -94,7 +94,7 @@ public class Ai implements Lootable{
 		this.lootBox = lootBox;
 		this.panningManager = panningManager;
 		
-		aiActions = new AiActions(aiCrowd, combatVisualManager, combatUiManager, combatMembersManager, combatInorganicManager, floatingIcons, mouseAbilityHandler, lootBox, levelManager);
+		aiActions = new AiActions(aiCrowd, combatVisualManager, combatUiManager, combatMembersManager, mouseAbilityHandler, lootBox);
 		aiPathing = new AiPathing(aiCrowd, levelManager, x,y);
 		aiData = new AiData(mouseAbilityHandler, this, new MeleeWeapon1());
 		
@@ -104,7 +104,7 @@ public class Ai implements Lootable{
 		
 	}
 	
-	public Ai(ThinkingAi thinkingAi, LevelManager levelManager, CombatNCEManager combatInorganicManager) {
+	public Ai(ThinkingAi thinkingAi, LevelManager levelManager) {
 		this.name = thinkingAi.getName();
 		image = thinkingAi.getImage();
 		
@@ -125,7 +125,7 @@ public class Ai implements Lootable{
 		ignoreLOS = false;
 
 		skippingTurns = false;
-		aiActions = new AiActions(thinkingAi.aiCrowd, thinkingAi.combatVisualManager, thinkingAi.combatUiManager, thinkingAi.combatMembersManager, combatInorganicManager, floatingIcons, mouseAbilityHandler, thinkingAi.lootBox, levelManager);
+		aiActions = new AiActions(thinkingAi.aiCrowd, thinkingAi.combatVisualManager, thinkingAi.combatUiManager, thinkingAi.combatMembersManager, mouseAbilityHandler, thinkingAi.lootBox);
 		aiPathing = new AiPathing(aiCrowd, levelManager, thinkingAi.getLocation()[0], thinkingAi.getLocation()[1]);
 		aiData = new AiData(mouseAbilityHandler, thinkingAi, thinkingAi.getWeapon());
 		
@@ -374,6 +374,7 @@ public class Ai implements Lootable{
 		return this.aiPathing.didMove();
 	}
 	
+	@Override
 	public String getName() {
 		return name;
 	}
@@ -398,6 +399,7 @@ public class Ai implements Lootable{
 		return this.aiPathing.getMoveLocation();
 	}
 	
+	@Override
 	public Weapon getWeapon() {
 		return this.aiData.getWeapon();
 	}
@@ -422,13 +424,13 @@ public class Ai implements Lootable{
 		return this.aiActions.getTargetAi();
 	}
 	
-	public String getFaction(){
+	public Faction getFaction(){
 		Pattern numberPattern = Pattern.compile("[0-9]+");
 		Matcher numberMatcher;
 		numberMatcher = numberPattern.matcher(team);
 		numberMatcher.find();
 		String faction = team.substring(numberMatcher.group().length());
-		return faction;
+		return Faction.getFaction(faction);
 	}
 	
 	public String getTeam(){
@@ -503,6 +505,7 @@ public class Ai implements Lootable{
 		return stunnedTurns;
 	}
 	
+	@Override
 	public Inventory getInventory(){
 		return this.aiData.getInventory();
 	}
@@ -586,6 +589,7 @@ public class Ai implements Lootable{
 		this.aiActions.aim(this,targetAi);
 	}
 	
+	@Override
 	public void setWeapon(Weapon weapon) {
 		this.aiData.setWeapon(weapon);
 	}
@@ -710,6 +714,7 @@ public class Ai implements Lootable{
 		this.aiData.setArmour(armour);
 	}
 	
+	@Override
 	public void addItem(Item item){
 		this.aiData.addItem(item);
 		this.assignAbilities();
@@ -809,16 +814,16 @@ public class Ai implements Lootable{
 	public Color getTeamColour() {
 		Color returnColour = null;
 		switch(this.getFaction()){
-			case AiGenerator.BANDITS:
+			case BANDITS:
 				returnColour = Color.red;
 			break;
-			case AiGenerator.WHITE_VISTA:
+			case WHITE_VISTA:
 				returnColour = Color.white;
 			break;
-			case AiGenerator.LONER:
+			case LONER:
 				returnColour = Color.gray;
 			break;
-			case AiGenerator.PLAYER:
+			case PLAYER:
 				returnColour = Color.green;
 			break;
 		}

@@ -139,6 +139,7 @@ public class SetupWindow extends JFrame{
 	
 	private class ChangeWindowed implements ActionListener{
 		
+		@Override
 		public void actionPerformed(ActionEvent e){
 			
 			windowedMode++;
@@ -188,6 +189,7 @@ public class SetupWindow extends JFrame{
 	// Happens when start is pressed, applies the graphical settings where needed
 	private class StartGame implements ActionListener{
 		
+		@Override
 		public void actionPerformed(ActionEvent e){
 			ActivePane.getInstance().setDisplay();
 			ActivePane.getInstance().setup();

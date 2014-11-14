@@ -93,6 +93,7 @@ public class UnarmedWeapon extends Weapon {
 		return true;
 	}
 	
+	@Override
 	public boolean canAttack(){
 		return false;
 	}

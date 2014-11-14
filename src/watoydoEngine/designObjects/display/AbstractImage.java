@@ -70,6 +70,7 @@ public abstract class AbstractImage implements ImageDisplayable{
 		alpha = 1;
 	}
 	
+	@Override
 	public void kickTween(){
 		if(this.tween != null){
 			double[] movePos = this.tween.getCord(this.location);
@@ -80,6 +81,7 @@ public abstract class AbstractImage implements ImageDisplayable{
 		}
 	}
 
+	@Override
 	public boolean isVisible(){
 		if(this.alpha == 0){
 			return false;
@@ -87,14 +89,17 @@ public abstract class AbstractImage implements ImageDisplayable{
 		return this.visible;
 	}
 	
+	@Override
 	public double getScale(){
 		return this.scale;
 	}
 	
+	@Override
 	public AffineTransform getTransformation(){
 		return this.transformation;
 	}
 	
+	@Override
 	public AffineTransform getTransformationForDrawing(){
 		this.transformation.setToTranslation(location[0], location[1]);
 		this.transformation.scale(scale,scale);
@@ -102,14 +107,17 @@ public abstract class AbstractImage implements ImageDisplayable{
 		return this.transformation;
 	}
 	
+	@Override
 	public double[] getLocation(){
 		return this.location;
 	}
 	
+	@Override
 	public int getZ(){
 		return this.z;
 	}
 	
+	@Override
 	public int compareTo(Displayable otherDisplay){
 		if(otherDisplay.getZ() > this.getZ()){
 			 return -1;
@@ -124,28 +132,34 @@ public abstract class AbstractImage implements ImageDisplayable{
 		return this.alpha;
 	}
 	
+	@Override
 	public void setVisible(boolean visible){
 		this.visible = visible;
 	}
 	
+	@Override
 	public void setScale(double scale){
 		this.scale = scale;
 	}
 	
+	@Override
 	public void setLocation(double x, double y){
 		this.location[0] = x;
 		this.location[1] = y;
 	}
 	
+	@Override
 	public void move(double x, double y){
 		this.location[0] += x;
 		this.location[1] += y;
 	}
 	
+	@Override
 	public void setTween(TweenDefinable tween){
 		this.tween = tween;
 	}
 	
+	@Override
 	public void setZ(int z){
 		this.z = z;
 	}

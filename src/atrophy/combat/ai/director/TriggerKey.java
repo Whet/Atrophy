@@ -13,7 +13,9 @@ public abstract class TriggerKey {
 	
 	private static class WeaponKey extends TriggerKey {
 
+		@SuppressWarnings("unused")
 		private Ai target;
+		@SuppressWarnings("unused")
 		private Weapon weapon;
 		
 		public WeaponKey(Weapon weapon, Ai target) {

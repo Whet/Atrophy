@@ -31,7 +31,6 @@ import atrophy.combat.ai.conversation.Dialogue;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.level.MissionManager;
 import atrophy.combat.mechanics.TurnProcess;
-import atrophy.gameMenu.saveFile.Missions;
 
 public class MessageBox extends Crowd{
 	
@@ -62,7 +61,6 @@ public class MessageBox extends Crowd{
 	private ActionRegion mouseDragRegion;
 	private CombatUiManager combatUiManager;
 	private TurnProcess turnProcess;
-	private Cartographer cartographer;
 
 	private CartographerBox cartographerBox;
 
@@ -75,7 +73,6 @@ public class MessageBox extends Crowd{
 		
 		this.combatUiManager = combatUiManager;
 		this.turnProcess = turnProcess;
-		this.cartographer = cartographer;
 		this.cartographerBox = cartographerBox;
 		this.aiCrowd = aiCrowd;
 		
@@ -448,7 +445,7 @@ public class MessageBox extends Crowd{
 				message = message.replaceAll("playername", conversers[0].getName());
 			if(conversers[1] != null) {
 				message = message.replaceAll("ainame", conversers[1].getName());
-				message = message.replaceAll("aifaction", conversers[1].getFaction());
+				message = message.replaceAll("aifaction", conversers[1].getFaction().toString());
 			}
 			else if(talkNode != null) {
 				message = message.replaceAll("ainame", talkNode.getName());
@@ -531,7 +528,7 @@ public class MessageBox extends Crowd{
 	}
 	
 	public Dialogue createDialogue(MissionManager missionsManager, String openingLine, String[] options, boolean initiator) {
-		return new Dialogue(missionsManager, cartographer, openingLine, options, initiator);
+		return new Dialogue(missionsManager, openingLine, options, initiator);
 	}
 
 	public TalkNode getTalkNode() {

@@ -7,7 +7,7 @@ import atrophy.gameMenu.saveFile.Squad;
 public class BanditCommander extends TeamsCommander{
 
 	public BanditCommander(Squad squad, TurnProcess turnProcess, LevelManager levelManager) {
-		super(squad, turnProcess, "Bandits", levelManager);
+		super(squad, turnProcess, Faction.BANDITS, levelManager);
 	}
 	
 }

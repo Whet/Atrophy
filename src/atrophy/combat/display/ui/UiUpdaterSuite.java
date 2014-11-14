@@ -1,6 +1,5 @@
 package atrophy.combat.display.ui;
 
-import atrophy.combat.CombatNCEManager;
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
@@ -26,7 +25,7 @@ public class UiUpdaterSuite {
 	private Cartographer cartographer;
 	private FloatingIcons floatingIcons;
 	
-	public UiUpdaterSuite(AiManagementSuite aiManagementSuite, TurnProcess turnProcess, LevelManager levelManager, CombatNCEManager combatInorganicManager){
+	public UiUpdaterSuite(AiManagementSuite aiManagementSuite, TurnProcess turnProcess, LevelManager levelManager){
 		
 		this.panningManager = new PanningManager(aiManagementSuite.getAiCrowd(), aiManagementSuite.getCombatMembersManager());
 		this.cartographer = new Cartographer();
@@ -35,7 +34,7 @@ public class UiUpdaterSuite {
 		this.cartographerBox = new CartographerBox(panningManager, cartographer);
 		this.messageBox = new MessageBox(combatUiManager, turnProcess, aiManagementSuite.getCombatMembersManager(), combatVisualManager, cartographer, cartographerBox, aiManagementSuite.getAiCrowd());
 		this.lootBox = new LootBox(combatUiManager, messageBox, cartographerBox);
-		this.floatingIcons = new FloatingIcons(aiManagementSuite.getCombatMembersManager(), panningManager, aiManagementSuite.getAiCrowd(), combatVisualManager, combatInorganicManager, levelManager);
+		this.floatingIcons = new FloatingIcons(aiManagementSuite.getCombatMembersManager(), panningManager, aiManagementSuite.getAiCrowd(), combatVisualManager);
 		
 	}
 

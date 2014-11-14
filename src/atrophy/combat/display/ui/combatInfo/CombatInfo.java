@@ -18,7 +18,6 @@ import watoydoEngine.workings.displayActivity.ActivePane;
 import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
-import atrophy.combat.display.ui.FloatingIcons;
 import atrophy.combat.items.Weapon;
 import atrophy.combat.mechanics.TurnProcess;
 
@@ -35,7 +34,7 @@ public class CombatInfo extends Crowd {
 	
 	// handles counter at bottom right of screen with target info
 	// also handles various other combat variables as buttons above the target info
-	public CombatInfo(CombatMembersManager combatMembersManager, CombatUiManager combatUiManager, FloatingIcons floatingIcons, CombatVisualManager combatVisualManager, TurnProcess turnProcess){
+	public CombatInfo(CombatMembersManager combatMembersManager, CombatUiManager combatUiManager, CombatVisualManager combatVisualManager, TurnProcess turnProcess){
 		super(true);
 		
 		this.combatMembersManager = combatMembersManager;

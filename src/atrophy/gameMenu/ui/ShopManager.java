@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 import watoydoEngine.fonts.FontList;
-import atrophy.combat.ai.AiGenerator;
+import atrophy.combat.ai.Faction;
 import atrophy.gameMenu.saveFile.ItemMarket;
 import atrophy.gameMenu.saveFile.Squad;
 import atrophy.gameMenu.saveFile.Squad.Squaddie;
@@ -91,7 +91,7 @@ public class ShopManager{
 		int count = new Random().nextInt(20);
 		for(int i = 0; i < count; i++){
 			
-			this.items.add((String) itemMarket.getRandomMarketItem(this.squad.getFactionRelation(AiGenerator.WHITE_VISTA), this.squad.getFactionRelation(AiGenerator.BANDITS)));
+			this.items.add((String) itemMarket.getRandomMarketItem(this.squad.getFactionRelation(Faction.WHITE_VISTA), this.squad.getFactionRelation(Faction.BANDITS)));
 		}
 	}
 

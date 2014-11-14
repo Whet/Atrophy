@@ -11,7 +11,7 @@ import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
-import atrophy.combat.ai.AiGenerator;
+import atrophy.combat.ai.Faction;
 import atrophy.combat.combatEffects.PowerManager;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.AiManagementSuite;
@@ -20,7 +20,6 @@ import atrophy.combat.display.ui.LargeEventText;
 import atrophy.combat.display.ui.MessageBox;
 import atrophy.combat.display.ui.UiUpdaterSuite;
 import atrophy.combat.display.ui.loot.LootBox;
-import atrophy.combat.level.LevelManager;
 import atrophy.combat.level.MissionManager;
 import atrophy.combat.mechanics.TurnProcess;
 import atrophy.gameMenu.saveFile.Missions;
@@ -41,14 +40,13 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 	private TurnProcess turnProcess;
 	private MouseAbilityHandler mouseAbilityHandler;
 	private CombatVisualManager combatVisualManager;
-	private LevelManager levelManager;
 	private TechTree techTree;
 	private StashManager stashManager;
 	private Missions missions;
 	private PowerManager powerManager;
 	private MissionManager missionManager;
 	
-	public CombatKeyboardHandler(LevelManager levelManager, MouseAbilityHandler mouseAbilityHandler, TurnProcess turnProcess, AiManagementSuite aiManagementSuite, UiUpdaterSuite uiUpdaterSuite, TechTree techTree, StashManager stashManager, Missions missions, MissionManager missionManager){
+	public CombatKeyboardHandler(MouseAbilityHandler mouseAbilityHandler, TurnProcess turnProcess, AiManagementSuite aiManagementSuite, UiUpdaterSuite uiUpdaterSuite, TechTree techTree, StashManager stashManager, Missions missions, MissionManager missionManager){
 		
 		this.aiCrowd = aiManagementSuite.getAiCrowd();
 		this.combatMembersManager = aiManagementSuite.getCombatMembersManager();
@@ -59,7 +57,6 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 		this.lootBox = uiUpdaterSuite.getLootBox();
 		this.combatVisualManager = uiUpdaterSuite.getCombatVisualManager();
 		this.panningManager = uiUpdaterSuite.getPanningManager();
-		this.levelManager = levelManager;
 		this.missions = missions;
 		
 		this.turnProcess = turnProcess;
@@ -150,7 +147,7 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 				boolean teamInSaferoom = false;
 				
 				for(int i = 0; i < aiCrowd.getActorCount(); i++){
-					if(aiCrowd.getActor(i).getFaction().equals(AiGenerator.PLAYER) &&
+					if(aiCrowd.getActor(i).getFaction().equals(Faction.PLAYER) &&
 					   !aiCrowd.getActor(i).isDead() &&
 					   missionManager.isInSaferoom(aiCrowd.getActor(i).getLevelBlock())){
 						teamInSaferoom = true;
@@ -169,7 +166,7 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 					// saveToSquad calculates mission kills, must be called first
 					missions.setPlayerMissionKills(aiCrowd.getBanditKillCount(), aiCrowd.getLonerKillCount(), aiCrowd.getWhiteVistaKillCount());
 					missions.setTotalMissionDeaths(aiCrowd.getDirector().getTotalBanditDeaths(), aiCrowd.getDirector().getTotalLonerDeaths(), aiCrowd.getDirector().getTotalWVDeaths());
-					missions.setLivingMembers(aiCrowd.getLivingActors(AiGenerator.BANDITS), aiCrowd.getLivingActors(AiGenerator.LONER), aiCrowd.getLivingActors(AiGenerator.WHITE_VISTA));
+					missions.setLivingMembers(aiCrowd.getLivingActors(Faction.BANDITS), aiCrowd.getLivingActors(Faction.LONER), aiCrowd.getLivingActors(Faction.WHITE_VISTA));
 					
 					ActivePane.getInstance().changeRootCrowd(new Crowd(new GameMenuHardPane(saveToSquad, techTree, stashManager, missions)));
 				}

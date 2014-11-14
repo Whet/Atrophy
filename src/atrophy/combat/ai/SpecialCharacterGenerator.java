@@ -20,7 +20,7 @@ import atrophy.gameMenu.saveFile.Missions;
 
 public class SpecialCharacterGenerator {
 
-	public static SoloGenerateCommand specialCharacters(Missions missions, ArrayList<String> allowedItems, ArrayList<String> allowedWeapons, String faction, String sector) {
+	public static SoloGenerateCommand specialCharacters(Missions missions, Faction faction, String sector) {
 	
 		SoloGenerateCommand specialCharacter = null;
 		
@@ -29,7 +29,7 @@ public class SpecialCharacterGenerator {
 			JSONTokener tokener = new JSONTokener(new FileInputStream(fileLocation));
 			JSONObject root = new JSONObject(tokener);
 			
-			JSONObject factionRoot = (JSONObject) root.get(faction);
+			JSONObject factionRoot = (JSONObject) root.get(faction.toString());
 			
 			Iterator<?> keys = factionRoot.keys();
 
@@ -69,13 +69,13 @@ public class SpecialCharacterGenerator {
 	
 	private static class CharacterInfo {
 		
-		public String faction;
+		public Faction faction;
 		public String name;
 		public String weapon;
 		public String[] items;
 		public DirectorArchetype classification;
 		
-		public CharacterInfo(String faction, String name, String weapon, JSONArray items) throws JSONException {
+		public CharacterInfo(Faction faction, String name, String weapon, JSONArray items) throws JSONException {
 			this.faction = faction;
 			this.name = name;
 			this.weapon = weapon;
@@ -88,7 +88,7 @@ public class SpecialCharacterGenerator {
 			this.classification = DirectorArchetype.UNDECIDED;
 		}
 		
-		public CharacterInfo(String faction, String name, String weapon, JSONArray items, String classification) throws JSONException {
+		public CharacterInfo(Faction faction, String name, String weapon, JSONArray items, String classification) throws JSONException {
 			this.faction = faction;
 			this.name = name;
 			this.weapon = weapon;

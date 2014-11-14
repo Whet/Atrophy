@@ -44,7 +44,7 @@ public class AiDeathReport {
 
 	public String getKillerInformation(int skillLevel) {
 		
-		if(killer != null && killer.getFaction().equals(AiGenerator.PLAYER))
+		if(killer != null && killer.getFaction().equals(Faction.PLAYER))
 			return killer.getName() + " killed this person";
 		
 		if(killer == null || skillLevel < 3 || !hasID)

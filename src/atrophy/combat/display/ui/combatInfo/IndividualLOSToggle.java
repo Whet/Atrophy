@@ -1,6 +1,3 @@
-/*
- * 
- */
 package atrophy.combat.display.ui.combatInfo;
 
 import java.awt.Point;
@@ -12,29 +9,17 @@ import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.display.ui.InfoTextDisplayable;
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class RadioSilenceToggle.
- */
 public class IndividualLOSToggle extends ButtonMulti implements InfoTextDisplayable{
 
 	private CombatUiManager combatUiManager;
 	private CombatVisualManager combatVisualManager;
 
-	/**
-	 * Instantiates a new radio silence toggle.
-	 *
-	 * @param image the image
-	 */
 	public IndividualLOSToggle(CombatVisualManager combatVisualManager, CombatUiManager combatUiManagers, BufferedImage[] image) {
 		super(image);
 		this.combatVisualManager = combatVisualManager;
 		this.combatUiManager = combatUiManagers;
 	}
 	
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.AbstractButton#mU(java.awt.Point, java.awt.event.MouseEvent)
-	 */
 	@Override
 	public boolean mC(Point mousePosition, MouseEvent e){
 		this.nextFrame(true);
@@ -45,25 +30,17 @@ public class IndividualLOSToggle extends ButtonMulti implements InfoTextDisplaya
 		return true;
 	}
 	
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.AbstractButton#mI(java.awt.Point)
-	 */
 	@Override
 	public void mI(Point mousePosition){
 		combatUiManager.getInfoText().setInfoText(this);
 	}
 	
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.AbstractButton#mO(java.awt.Point)
-	 */
 	@Override
 	public void mO(Point mousePosition){
 		combatUiManager.getInfoText().removeInfoText(this);
 	}
 	
-	/* (non-Javadoc)
-	 * @see atrophy.combat.display.ui.InfoTextDisplayable#getUiHint()
-	 */
+	@Override
 	public String getUiHint(){
 		// Show if radio silence engaged
 		if(!combatVisualManager.isDrawingIndividualSight()){
@@ -72,9 +49,7 @@ public class IndividualLOSToggle extends ButtonMulti implements InfoTextDisplaya
 		return "Draw Game Sight";
 	}
 	
-	/* (non-Javadoc)
-	 * @see atrophy.combat.display.ui.InfoTextDisplayable#getHintLines()
-	 */
+	@Override
 	public int getHintLines(){
 		return 1;
 	}

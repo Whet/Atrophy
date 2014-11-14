@@ -13,6 +13,7 @@ import java.util.Stack;
 
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.ai.AiGenerator;
+import atrophy.combat.ai.Faction;
 import atrophy.combat.ai.conversation.TalkMap;
 import atrophy.combat.display.ui.LargeEventText;
 import atrophy.combat.display.ui.loot.LootBox.Lootable;
@@ -49,7 +50,6 @@ public class MissionManager {
 	private Set<String> memCodes;
 	
 	private Missions missions;
-	private AiGenerator aiGenerator;
 	private LargeEventText largeEventText;
 
 	private Map<String, Object> vars;
@@ -70,8 +70,6 @@ public class MissionManager {
 	}
 	
 	public void lazyLoad(AiGenerator aiGenerator, CombatUiManager combatUiManager) {
-		this.aiGenerator = aiGenerator;
-		
 		for(StoredCommand command : this.commands.values()) {
 			for(TriggerEffect effect : command.effects) {
 				if(effect instanceof SpawnTeamEffect)
@@ -157,6 +155,7 @@ public class MissionManager {
 		}
 	}
 	
+	@SuppressWarnings("unused")
 	private class SpawnInfo{
 		
 		public String memCode;
@@ -277,7 +276,7 @@ public class MissionManager {
 	}
 
 	public void unlockTech(String tech) {
-		missions.getSquad().getTechTree().research(tech, AiGenerator.LONER);
+		missions.getSquad().getTechTree().research(tech, Faction.LONER);
 	}
 
 	public void changeStability(int stabilityMod) {

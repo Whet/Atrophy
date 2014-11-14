@@ -112,6 +112,7 @@ public abstract class AiJob {
 			super(targetEmployeeCount, levelBlock, JobType.DEFEND, 0);
 		}
 
+		@Override
 		public boolean isExpired(){
 			return false;
 		}
@@ -139,6 +140,7 @@ public abstract class AiJob {
 			super(targetCombatScore, levelBlock, JobType.SECURE, duration);
 		}
 		
+		@Override
 		public boolean isJobFilled(){
 			return this.getCombatScore() >= this.targetEmployeeCount;
 		}
@@ -153,6 +155,7 @@ public abstract class AiJob {
 			return combatScore;
 		}
 
+		@Override
 		public boolean isOverFilled() {
 			return false;
 		}

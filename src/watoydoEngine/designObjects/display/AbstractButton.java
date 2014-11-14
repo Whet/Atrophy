@@ -121,24 +121,34 @@ public abstract class AbstractButton implements Displayable, MouseRespondable{
 		alpha = 1;
 	}
 	
+	@Override
 	public boolean mD(Point mousePosition, MouseEvent e){return false;};
 	
+	@Override
 	public boolean mU(Point mousePosition, MouseEvent e){return false;};
 	
+	@Override
 	public boolean mC(Point mousePosition, MouseEvent e){return false;};
 
+	@Override
 	public void mI(Point mousePosition){};
 	
+	@Override
 	public void mO(Point mousePosition){};
 	
+	@Override
 	public boolean rMD(Point mousePosition, MouseEvent e){return false;};
 
+	@Override
 	public boolean rMU(Point mousePosition, MouseEvent e){return false;};
 	
+	@Override
 	public boolean rMC(Point mousePosition, MouseEvent e){return false;};
 	
+	@Override
 	public boolean mMC(Point mousePosition, MouseEvent e) {return false;}
 	
+	@Override
 	public void kickTween(){
 		if(this.tween != null){
 			double[] movePos = this.tween.getCord(this.location);
@@ -153,10 +163,12 @@ public abstract class AbstractButton implements Displayable, MouseRespondable{
 		return tween;
 	}
 
+	@Override
 	public boolean isVisible(){
 		return this.visible;
 	}
 	
+	@Override
 	public double getScale(){
 		return this.scale;
 	}
@@ -176,18 +188,22 @@ public abstract class AbstractButton implements Displayable, MouseRespondable{
 		this.active = active;
 	}
 	
+	@Override
 	public boolean isActive(){
 		return this.active;
 	}
 	
+	@Override
 	public double[] getLocation(){
 		return this.location;
 	}
 	
+	@Override
 	public int getZ(){
 		return this.z;
 	}
 	
+	@Override
 	public int compareTo(Displayable otherDisplay){
 		if(otherDisplay.getZ() > this.getZ()){
 			 return -1;
@@ -202,33 +218,40 @@ public abstract class AbstractButton implements Displayable, MouseRespondable{
 		return this.alpha;
 	}
 	
+	@Override
 	public void setVisible(boolean visible){
 		this.visible = visible;
 		this.active = visible;
 	}
 	
+	@Override
 	public void setScale(double scale){
 		this.scale = scale;
 	}
 	
+	@Override
 	public void setLocation(double x, double y){
 		this.location[0] = x;
 		this.location[1] = y;
 	}
 	
+	@Override
 	public void move(double x, double y){
 		this.location[0] += x;
 		this.location[1] += y;
 	}
 	
+	@Override
 	public void setTween(TweenDefinable tween){
 		this.tween = tween;
 	}
 	
+	@Override
 	public void setZ(int z){
 		this.z = z;
 	}
 	
+	@Override
 	public void setActive(boolean active){
 		this.active = active;
 	}
@@ -242,6 +265,7 @@ public abstract class AbstractButton implements Displayable, MouseRespondable{
 		return actionZ;
 	}
 
+	@Override
 	public void setActionZ(int actionZ) {
 		this.actionZ = actionZ;
 	}

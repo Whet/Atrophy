@@ -7,7 +7,7 @@ import atrophy.gameMenu.saveFile.Squad;
 public class DaemonCommander extends TeamsCommander{
 	
 	public DaemonCommander(Squad squad, TurnProcess turnProcess, LevelManager levelManager) {
-		super(squad, turnProcess, AiGenerator.DAEMON, levelManager);
+		super(squad, turnProcess, Faction.DAEMON, levelManager);
 	}
 	
 	@Override

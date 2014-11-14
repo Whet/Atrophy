@@ -22,6 +22,7 @@ public interface Displayable extends Comparable<Displayable>{
 	
 	public double[] getSize();
 	
+	@Override
 	public int compareTo(Displayable otherDisplay);
 	
 	public void setVisible(boolean visible);

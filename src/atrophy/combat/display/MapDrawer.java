@@ -23,7 +23,7 @@ import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.ai.Ai;
-import atrophy.combat.ai.AiGenerator;
+import atrophy.combat.ai.Faction;
 import atrophy.combat.level.LevelBlock;
 import atrophy.combat.level.LevelBlockGrid;
 import atrophy.combat.level.LevelBlockGrid.GridBlock;
@@ -337,7 +337,7 @@ public class MapDrawer implements Displayable {
 		for(Ai ai : aiCrowd.getActors()){
 			if(combatVisualManager.isAllRevealed() ||
 			   (aiCrowd.getActorMask(ai).isVisible() && !ai.isDead() &&
-			   ai.getFaction().equals(AiGenerator.PLAYER))){
+			   ai.getFaction().equals(Faction.PLAYER))){
 				
 				occupiedRooms.add(ai.getLevelBlock());
 				
@@ -365,6 +365,7 @@ public class MapDrawer implements Displayable {
 		}
 	}
 	
+	@Override
 	public void drawMethod(Graphics2D drawShape) {
 		
 		AffineTransform panTransform = new AffineTransform();
@@ -486,6 +487,7 @@ public class MapDrawer implements Displayable {
 		}
 	}
 
+	@SuppressWarnings("unused")
 	private void drawPathGrid(Graphics2D drawShape, LevelBlockGrid levelBlockGrid, double x, double y) {
 		drawShape.setColor(Color.white);
 	    for(int i = 0; i < levelBlockGrid.getBlocks().size(); i++){

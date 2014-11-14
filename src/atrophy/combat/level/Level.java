@@ -10,7 +10,7 @@ import java.util.Random;
 import java.util.Set;
 import java.util.Stack;
 
-import atrophy.combat.ai.AiGenerator;
+import atrophy.combat.ai.Faction;
 import atrophy.combat.display.ui.loot.LootBox.Lootable;
 import atrophy.combat.items.EngineeringSupply;
 import atrophy.combat.items.MedicalSupply;
@@ -29,22 +29,22 @@ public class Level {
 	
 	private LevelBlock[] levelBlocks;
 	private int[] size;
-	private HashMap<LevelBlock, Set<String>> bannedBlocks;
-	private String mapOwner;
-	private Set<String> allowedSpawns;
+	private HashMap<LevelBlock, Set<Faction>> bannedBlocks;
+	private Faction mapOwner;
+	private Set<Faction> allowedSpawns;
 	private LevelBlock playerSpawn;
 	
-	public Level(String mapOwner){
+	public Level(Faction mapOwner){
 		
-		bannedBlocks = new HashMap<LevelBlock, Set<String>>();
+		bannedBlocks = new HashMap<LevelBlock, Set<Faction>>();
 		
 		this.mapOwner = mapOwner;
 		
 		allowedSpawns = new HashSet<>();
 		
-		allowedSpawns.add(AiGenerator.BANDITS);
-		allowedSpawns.add(AiGenerator.WHITE_VISTA);
-		allowedSpawns.add(AiGenerator.LONER);
+		allowedSpawns.add(Faction.BANDITS);
+		allowedSpawns.add(Faction.WHITE_VISTA);
+		allowedSpawns.add(Faction.LONER);
 		
 	}
 	
@@ -156,13 +156,13 @@ public class Level {
 		bannedBlocks = null;
 	}
 
-	public void addBannedBlock(String[] factions, LevelBlock levelBlock){
-		this.bannedBlocks.put(levelBlock, new HashSet<String>(Arrays.asList(factions)));
+	public void addBannedBlock(Faction[] factions, LevelBlock levelBlock){
+		this.bannedBlocks.put(levelBlock, new HashSet<Faction>(Arrays.asList(factions)));
 	}
 	
-	public boolean isBanned(LevelBlock block, String faction){
+	public boolean isBanned(LevelBlock block, Faction faction){
 		
-		Set<String> factions = this.bannedBlocks.get(block);
+		Set<Faction> factions = this.bannedBlocks.get(block);
 		
 		if(factions == null)
 			return false;
@@ -170,15 +170,15 @@ public class Level {
 		return factions.contains(faction);
 	}
 
-	public String getMapOwner() {
+	public Faction getMapOwner() {
 		return this.mapOwner;
 	}
 
-	public void setAllowedSpawns(Set<String> allowedSpawns) {
+	public void setAllowedSpawns(Set<Faction> allowedSpawns) {
 		this.allowedSpawns = allowedSpawns;
 	}
 
-	public boolean allowedSpawn(String faction) {
+	public boolean allowedSpawn(Faction faction) {
 		return this.allowedSpawns.contains(faction);
 	}
 	

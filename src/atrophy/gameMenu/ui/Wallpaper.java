@@ -15,8 +15,8 @@ import watoydoEngine.workings.displayActivity.ActivePane;
 
 public class Wallpaper implements Displayable {
 
-	private static final int WIDTH = 10;
-	private static final int HEIGHT = 10;
+	private static final int WIDTH = 45;
+	private static final int HEIGHT = 45;
 
 	private static final Color SEED_COLOUR = new Color(0, 90, 90);
 

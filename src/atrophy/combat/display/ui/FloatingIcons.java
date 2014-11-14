@@ -17,7 +17,6 @@ import watoydoEngine.io.ReadWriter;
 import watoydoEngine.utils.GraphicsFunctions;
 import watoydoEngine.utils.Maths;
 import atrophy.combat.CombatMembersManager;
-import atrophy.combat.CombatNCEManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.ai.Ai;
@@ -30,8 +29,6 @@ import atrophy.combat.display.AiImage;
 import atrophy.combat.display.MapDrawer;
 import atrophy.combat.display.MapPainter;
 import atrophy.combat.level.LevelBlock;
-import atrophy.combat.level.LevelManager;
-import atrophy.combat.levelAssets.NonCharacterEntity;
 
 public class FloatingIcons extends Crowd{
 	
@@ -45,8 +42,6 @@ public class FloatingIcons extends Crowd{
 	private AiCrowd aiCrowd;
 	private CombatVisualManager combatVisualManager;
 	private MapDrawer mapDrawer;
-	private LevelManager levelManager;
-	private CombatNCEManager combatInorganicManager;
 	
 	private BufferedImage imageBlockedDoor;
 	private BufferedImage imageOpenDoor;
@@ -54,15 +49,13 @@ public class FloatingIcons extends Crowd{
 	private Map<String, BufferedImage> images;
 	private PowerManager powerManager;
 	
-	public FloatingIcons(CombatMembersManager combatMembersManager, PanningManager panningManager, AiCrowd aiCrowd, CombatVisualManager combatVisualManager, CombatNCEManager combatInorganicManager, LevelManager levelManager) {
+	public FloatingIcons(CombatMembersManager combatMembersManager, PanningManager panningManager, AiCrowd aiCrowd, CombatVisualManager combatVisualManager) {
 		super(true);
 		
 		this.combatMembersManager = combatMembersManager;
 		this.panningManager = panningManager;
 		this.aiCrowd = aiCrowd;
 		this.combatVisualManager = combatVisualManager;
-		this.combatInorganicManager = combatInorganicManager;
-		this.levelManager = levelManager;
 		this.images = new HashMap<>();
 		
 		try{
@@ -93,7 +86,6 @@ public class FloatingIcons extends Crowd{
 	@Override
 	public void drawMethod(Graphics2D drawShape){
 		drawDoors(drawShape);
-		drawAssets(drawShape);
 		drawStackedmarkers(drawShape);
 		drawEffects(drawShape);
 		drawAiEffects(drawShape);
@@ -175,39 +167,6 @@ public class FloatingIcons extends Crowd{
 
 						drawShape.drawImage(this.imageOpenDoor,this.getTransformationForDrawing(),null);
 					}
-				}
-			}
-		}
-	}
-	
-	
-	private void drawAssets(Graphics2D drawShape){
-		
-		NonCharacterEntity asset = null;
-		
-		for(int i = 0; i < combatInorganicManager.getLevelAssets().size(); i++){
-			
-			asset = combatInorganicManager.getLevelAsset(i);
-			
-			for(int j = 0; j < combatMembersManager.getAllyCount(); j++){
-				// only draw if in same room as a player
-				if(combatMembersManager.getAlly(j) == null ||
-				   levelManager.getBlock(asset.getLocation()) == combatMembersManager.getAlly(j).getLevelBlock()){
-
-					double[] location = {asset.getLocation()[0] +
-										 panningManager.getOffset()[0] - asset.getImage().getWidth() * 0.5,
-										 asset.getLocation()[1] +
-										 panningManager.getOffset()[1] - asset.getImage().getWidth() * 0.5};
-					
-					this.setLocation(location[0],location[1]);
-		
-					drawShape.drawImage(asset.getImage(),this.getTransformationForDrawing(),null);
-					
-					drawShape.setFont(FontList.AUD14);
-					drawShape.setColor(Color.yellow);
-					drawShape.drawString(Integer.toString(asset.getLife()),(int)location[0],(int)location[1]);
-					
-					break;
 				}
 			}
 		}

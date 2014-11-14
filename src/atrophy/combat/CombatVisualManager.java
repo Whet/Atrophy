@@ -7,7 +7,7 @@ import java.util.Map;
 
 import watoydoEngine.utils.Maths;
 import atrophy.combat.ai.Ai;
-import atrophy.combat.ai.AiGenerator;
+import atrophy.combat.ai.Faction;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.AiImage;
 import atrophy.combat.level.LevelBlock;
@@ -38,7 +38,7 @@ public class CombatVisualManager {
 
 	private boolean drawingIndividualSight;
 	
-	private Map<String, Map<Ai, Integer>> factionVisibleAi;
+	private Map<Faction, Map<Ai, Integer>> factionVisibleAi;
 	private Map<Ai, Map<Ai, double[]>> aiVisibilityCache;
 	
 	public CombatVisualManager(AiCrowd aiCrowd, CombatUiManager combatUiManager, CombatMembersManager combatMembersManager, LevelManager levelManager, TurnProcess turnProcess){
@@ -50,9 +50,9 @@ public class CombatVisualManager {
 		drawingIndividualSight = true;
 		factionVisibleAi = new HashMap<>();
 		
-		factionVisibleAi.put(AiGenerator.WHITE_VISTA, new HashMap<Ai, Integer>());
-		factionVisibleAi.put(AiGenerator.BANDITS, new HashMap<Ai, Integer>());
-		factionVisibleAi.put(AiGenerator.PLAYER, new HashMap<Ai, Integer>());
+		factionVisibleAi.put(Faction.WHITE_VISTA, new HashMap<Ai, Integer>());
+		factionVisibleAi.put(Faction.BANDITS, new HashMap<Ai, Integer>());
+		factionVisibleAi.put(Faction.PLAYER, new HashMap<Ai, Integer>());
 		
 		aiVisibilityCache = new HashMap<>();
 		
@@ -75,8 +75,8 @@ public class CombatVisualManager {
 			}
 			else{
 				// if a member of the team can see it, all the team can see it
-				if(aiCrowd.getActor(i).isBroadcastingLocation() || allRevealed || ((aiCrowd.getActor(i).getFaction().equals("Player") && !aiCrowd.getActor(i).isDead())||
-				   isAiInSight(null, aiCrowd.getActor(i), "Player"))){
+				if(aiCrowd.getActor(i).isBroadcastingLocation() || allRevealed || ((aiCrowd.getActor(i).getFaction().equals(Faction.PLAYER) && !aiCrowd.getActor(i).isDead())||
+				   isAiInSight(null, aiCrowd.getActor(i), Faction.PLAYER))){
 					
 					aiCrowd.getActorMask(aiCrowd.getActor(i)).setFadingIn(true);
 				}
@@ -172,9 +172,9 @@ public class CombatVisualManager {
 		return false;
 	}
 	
-	public boolean isAiInSight(Ai looker, Ai lookedAt, String faction){
+	public boolean isAiInSight(Ai looker, Ai lookedAt, Faction faction){
 
-		if(faction.equals(AiGenerator.LONER))
+		if(faction.equals(Faction.LONER))
 			return isAiInSight(looker, lookedAt);
 		
 		Integer integer = this.factionVisibleAi.get(faction).get(lookedAt);

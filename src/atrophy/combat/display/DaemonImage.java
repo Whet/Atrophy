@@ -32,6 +32,7 @@ public class DaemonImage extends AiImage {
 		attackFrame = 6;
 	}
 	
+	@Override
 	public void setAnimation(Animation animation, int maxFrame) {
 		this.frame = 0;
 		this.maxFrame = maxFrame;
@@ -51,6 +52,7 @@ public class DaemonImage extends AiImage {
 		this.yOffset = animationOffset[1];
 	}
 	
+	@Override
 	public void setAttackingAnimation(Ai targetAi) {
 		
 		this.attackTarget = targetAi;
@@ -60,6 +62,7 @@ public class DaemonImage extends AiImage {
 		this.setAnimation(Animation.ATTACK_MELEE, maxFrame);
 	}
 	
+	@Override
 	public void updateAnimation() {
 
 		if(!this.getAi().isDead())

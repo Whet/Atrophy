@@ -14,7 +14,6 @@ import watoydoEngine.utils.Maths;
 import watoydoEngine.workings.DisplayManager;
 import watoydoEngine.workings.displayActivity.ActivePane;
 import atrophy.combat.CombatMembersManager;
-import atrophy.combat.CombatNCEManager;
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
@@ -24,7 +23,7 @@ import atrophy.combat.actions.CombatMouseHandler;
 import atrophy.combat.actions.MouseAbilityHandler;
 import atrophy.combat.ai.Ai;
 import atrophy.combat.ai.AiCombatActions;
-import atrophy.combat.ai.AiGenerator;
+import atrophy.combat.ai.Faction;
 import atrophy.combat.ai.ThinkingAi;
 import atrophy.combat.combatEffects.PowerManager;
 import atrophy.combat.display.AiCrowd;
@@ -32,7 +31,6 @@ import atrophy.combat.display.AiManagementSuite;
 import atrophy.combat.display.MapDrawer;
 import atrophy.combat.display.ui.CartographerBox;
 import atrophy.combat.display.ui.FloatingIcons;
-import atrophy.combat.display.ui.InfoTextDisplayable;
 import atrophy.combat.display.ui.MessageBox;
 import atrophy.combat.display.ui.UiUpdaterSuite;
 import atrophy.combat.display.ui.loot.LootBox;
@@ -58,7 +56,6 @@ public class TurnProcess {
 	private MouseAbilityHandler mouseAbilityHandler;
 	private CombatVisualManager combatVisualManager;
 	private CombatMembersManager combatMembersManager;
-	private CombatNCEManager combatInorganicManager;
 	private MapDrawer mapDrawer;
 	private PanningManager panningManager;
 	private PowerManager powerManager;
@@ -70,13 +67,12 @@ public class TurnProcess {
 		turnInProgress = false;
 	}
 	
-	public void lazyLoad(MissionManager missionManager, AiManagementSuite aiManagementSuite, UiUpdaterSuite uiUpdaterSuite, CombatNCEManager combatInorganicManager, ActionSuite actionSuite){
+	public void lazyLoad(MissionManager missionManager, AiManagementSuite aiManagementSuite, UiUpdaterSuite uiUpdaterSuite, ActionSuite actionSuite){
 		
 		this.panningManager = uiUpdaterSuite.getPanningManager();
 		
 		this.aiCrowd = aiManagementSuite.getAiCrowd();
 		this.combatMembersManager = aiManagementSuite.getCombatMembersManager();
-		this.combatInorganicManager = combatInorganicManager;
 		this.mapDrawer = uiUpdaterSuite.getCombatUiManager().getMapDrawer();
 		
 		this.combatVisualManager = uiUpdaterSuite.getCombatVisualManager();
@@ -133,7 +129,7 @@ public class TurnProcess {
 	
 	public void updateTriggers() {
 		for(Ai ai : this.aiCrowd.getActors()) {
-			if(ai.getFaction().equals(AiGenerator.PLAYER) && !ai.isDead()) {
+			if(ai.getFaction().equals(Faction.PLAYER) && !ai.isDead()) {
 				missionManager.triggerStoryMessage(ai.getLevelBlock());
 			}
 		}
@@ -144,7 +140,7 @@ public class TurnProcess {
 		boolean teamInSaferoom = false;
 		
 		for(int i = 0; i < aiCrowd.getActorCount(); i++){
-			if(aiCrowd.getActor(i).getFaction().equals(AiGenerator.PLAYER) &&
+			if(aiCrowd.getActor(i).getFaction().equals(Faction.PLAYER) &&
 			   !aiCrowd.getActor(i).isDead() &&
 			   missionManager.isInSaferoom(aiCrowd.getActor(i).getLevelBlock())){
 				teamInSaferoom = true;
@@ -180,7 +176,6 @@ public class TurnProcess {
 		
 		if(shuffledAi.size() == 0) {
 			shuffledAi = aiCrowd.getShuffledStack();
-			combatInorganicManager.updateAssets();
 			powerManager.tickPowers();
 			
 			if(checkGameOver()){
@@ -231,7 +226,6 @@ public class TurnProcess {
 			
 			if(shuffledAi.size() == 0) {
 				shuffledAi = aiCrowd.getShuffledStack();
-				combatInorganicManager.updateAssets();
 				powerManager.tickPowers();
 				
 				if(checkGameOver()){
@@ -251,7 +245,7 @@ public class TurnProcess {
 
 	private boolean allPlayersWaiting() {
 		for(int i = 0; i < aiCrowd.getActorCount(); i++){
-			if(aiCrowd.getActor(i).getFaction().equals(AiGenerator.PLAYER) && !aiCrowd.getActor(i).isSkippingTurns() && !aiCrowd.getActor(i).isDead()){
+			if(aiCrowd.getActor(i).getFaction().equals(Faction.PLAYER) && !aiCrowd.getActor(i).isSkippingTurns() && !aiCrowd.getActor(i).isDead()){
 				return false;
 			}
 		}
@@ -262,7 +256,7 @@ public class TurnProcess {
 		
 		boolean playDeathSound = false;
 		for(int i = 0; i < deadAliveAi.length; i++) {
-			if(deadAliveAi[i] != aiCrowd.getActor(i).isDead() && combatVisualManager.isAiInSight(null, aiCrowd.getActor(i), AiGenerator.PLAYER)) {
+			if(deadAliveAi[i] != aiCrowd.getActor(i).isDead() && combatVisualManager.isAiInSight(null, aiCrowd.getActor(i), Faction.PLAYER)) {
 				playDeathSound = true;
 				break;
 			}
@@ -270,7 +264,6 @@ public class TurnProcess {
 		
 		if(shuffledAi.size() == 0){
 			shuffledAi = aiCrowd.getShuffledStack();
-			combatInorganicManager.updateAssets();
 			powerManager.tickPowers();
 		}
 		
@@ -320,7 +313,7 @@ public class TurnProcess {
 	private void updateUi(){
 		
 		// Set control to topAi
-		if(getTopAi().getFaction().equals(AiGenerator.PLAYER))
+		if(getTopAi().getFaction().equals(Faction.PLAYER))
 			combatMembersManager.setCurrentAi(getTopAi());
 		
 		// Update any graphics or settings since all actors have done their actions
@@ -364,7 +357,7 @@ public class TurnProcess {
 	private boolean checkGameOver(){
 		for(int i = 0; i < aiCrowd.getActorCount(); i++){
 			if(!aiCrowd.getActor(i).isDead() &&
-			   aiCrowd.getActor(i).getFaction().equals("Player")){
+			   aiCrowd.getActor(i).getFaction().equals(Faction.PLAYER)){
 				return false;
 			}
 		}

@@ -43,6 +43,7 @@ public class TextInput extends Text implements MouseRespondable,KeyboardResponda
 		updateHitbox = false;
 	}
 
+	@Override
 	public final void drawMethod(Graphics2D drawShape){
 		
 		if(drawBox && this.boundBox != null) {
@@ -78,10 +79,12 @@ public class TextInput extends Text implements MouseRespondable,KeyboardResponda
 	// so a user doesn't have to call setText every time they update the variable
 	protected void updateText(){};
 
+	@Override
 	public boolean kD(KeyEvent e){
 		return true;
 	}
 
+	@Override
 	public boolean kU(KeyEvent e){
 		if((e.getKeyCode() == 32 || Character.isAlphabetic(e.getKeyChar()) || Character.isDigit(e.getKeyChar())) && (maxLetters == 0 || maxLetters > this.getText().length())){
 			this.appendText(e.getKeyChar());
@@ -90,6 +93,7 @@ public class TextInput extends Text implements MouseRespondable,KeyboardResponda
 		return true;
 	}
 
+	@Override
 	public boolean kP(KeyEvent e){
 		// if backspace, delete last letter
 		// doesn't work with getKeyCode
@@ -100,20 +104,24 @@ public class TextInput extends Text implements MouseRespondable,KeyboardResponda
 		return true;
 	}
 
+	@Override
 	public boolean mD(Point mousePosition, MouseEvent e){
 		this.setFocus(true);
 		return true;
 	}
 
+	@Override
 	public boolean mU(Point mousePosition, MouseEvent e){
 		this.setFocus(true);
 		return true;
 	}
 
+	@Override
 	public boolean rMD(Point mousePosition, MouseEvent e){
 		return false;
 	}
 
+	@Override
 	public boolean rMU(Point mousePosition, MouseEvent e){
 		return false;
 	}
@@ -142,16 +150,20 @@ public class TextInput extends Text implements MouseRespondable,KeyboardResponda
 		updateHitbox = true;
 	}
 	
+	@Override
 	public boolean mMC(Point mousePosition, MouseEvent e) {return false;}
 	
+	@Override
 	public boolean isActive(){
 		return active;
 	}
 
+	@Override
 	public boolean isFocused(){
 		return focus;
 	}
 
+	@Override
 	public boolean isInBounds(double x, double y){
 		if(this.boundBox == null){
 			return false;
@@ -163,6 +175,7 @@ public class TextInput extends Text implements MouseRespondable,KeyboardResponda
 		return this.maxLetters;
 	}
 
+	@Override
 	public void setActive(boolean active){
 		this.active = active;
 	}

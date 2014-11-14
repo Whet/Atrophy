@@ -1,6 +1,3 @@
-/*
- * 
- */
 package atrophy.combat.display.ui;
 
 import java.awt.Color;
@@ -17,16 +14,8 @@ import atrophy.combat.ai.AiCombatActions;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.mechanics.Abilities;
 
-// TODO: Auto-generated Javadoc
-// Displays text on a background showing the player's current action
-/**
- * The Class ActionTextBox.
- */
 public class ActionTextBox extends Text{
 	
-	/**
-	 * The Constant BOX_MARGIN.
-	 */
 	private static final int BOX_MARGIN = 10;
 
 	private static final Color MOVE_COLOUR = 		new Color(11, 119, 195);
@@ -38,18 +27,12 @@ public class ActionTextBox extends Text{
 	private static final Color STUNNED_COLOUR = 	new Color(109, 112, 106);
 	private static final Color TEXT_COLOUR = 		Color.white;
 	
-	/**
-	 * The metrics.
-	 */
 	private FontMetrics metrics;
 	
 	private PanningManager panningManager;
 	private AiCrowd aiCrowd;
 	private CombatMembersManager combatMembersManager;
 	
-	/**
-	 * Instantiates a new action text box.
-	 */
 	public ActionTextBox(PanningManager panningManager, AiCrowd aiCrowd, CombatMembersManager combatMembersManager) {
 		this.setFont(FontList.AUD14);
 		this.panningManager = panningManager;
@@ -57,9 +40,7 @@ public class ActionTextBox extends Text{
 		this.combatMembersManager = combatMembersManager;
 	}
 	
-	/* (non-Javadoc)
-	 * @see watoydoEngine.designObjects.display.Text#drawMethod(java.awt.Graphics2D)
-	 */
+	@Override
 	public void drawMethod(Graphics2D drawShape){
 		drawShape.setComposite(GraphicsFunctions.makeComposite(0.6f));
 		
@@ -101,11 +82,6 @@ public class ActionTextBox extends Text{
 		}
 	}
 	
-	/**
-	 * Sets the mode.
-	 *
-	 * @param action the new mode
-	 */
 	public void setMode(String action){
 		if(combatMembersManager.getCurrentAi() != null){
 			this.setVisible(true);
@@ -242,9 +218,6 @@ public class ActionTextBox extends Text{
 		}
 	}
 	
-	/**
-	 * Update mode.
-	 */
 	public void updateMode(){
 		if(combatMembersManager.getCurrentAi() != null){
 			this.setMode(combatMembersManager.getCurrentAi().getAction());

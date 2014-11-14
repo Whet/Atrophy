@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Random;
 import java.util.Set;
-import java.util.Stack;
 
 import watoydoEngine.utils.Maths;
 import atrophy.combat.CombatVisualManager;
@@ -28,11 +27,10 @@ public class LevelBlock {
 	private LevelBlockGrid grid;
 	private int code;
 	private boolean containsScience;
-	private MissionManager missionManager;
 	private boolean discovered;
 	private MapTextures texture;
 	
-	public LevelBlock(int code, MissionManager missionManager, MapTextures texture){
+	public LevelBlock(int code, MapTextures texture){
 		
 		portals = new ArrayList<Portal>(1);
 		hitbox = new Polygon();
@@ -43,7 +41,6 @@ public class LevelBlock {
 		this.nodes = new ArrayList<AiNode>(1);
 		this.code = code;
 		this.containsScience = false;
-		this.missionManager = missionManager;
 		this.discovered = false;
 		this.texture = texture;
 		

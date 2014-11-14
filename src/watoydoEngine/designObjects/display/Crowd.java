@@ -134,6 +134,7 @@ public class Crowd implements Displayable, MouseRespondable, KeyboardRespondable
 		computeZOrder();
 	}
 	
+	@Override
 	public void drawMethod(Graphics2D drawShape){
 		ActivePane.getInstance().drawCrowd(this);
 	}
@@ -181,7 +182,8 @@ public class Crowd implements Displayable, MouseRespondable, KeyboardRespondable
 		});
     }
 
-    public void kickTween(){
+    @Override
+	public void kickTween(){
 		if(this.tween != null){
 			double[] movePos = this.tween.getCord(this.location);
 			this.move(movePos[0],movePos[1]);
@@ -191,6 +193,7 @@ public class Crowd implements Displayable, MouseRespondable, KeyboardRespondable
 		}
 	}
     
+	@Override
 	public boolean kU(KeyEvent e) {
 		if(this.focus){
 			for(int i = 0; i < keyboardActionList.size(); i++){
@@ -203,6 +206,7 @@ public class Crowd implements Displayable, MouseRespondable, KeyboardRespondable
 		return false;
 	}
 	
+	@Override
 	public boolean kP(KeyEvent e) {
 		if(this.focus){
 			for(int i = 0; i < keyboardActionList.size(); i++){
@@ -220,6 +224,7 @@ public class Crowd implements Displayable, MouseRespondable, KeyboardRespondable
 		return false;
 	}
 	
+	@Override
 	public boolean mD(Point mousePosition, MouseEvent e) {
 		if(this.active){
 			for(int i = 0; i < mouseActionList.size(); i++){
@@ -233,6 +238,7 @@ public class Crowd implements Displayable, MouseRespondable, KeyboardRespondable
 		return false;
 	}
 
+	@Override
 	public boolean mU(Point mousePosition, MouseEvent e) {
 		if(this.active){
 			for(int i = 0; i < mouseActionList.size(); i++){
@@ -246,6 +252,7 @@ public class Crowd implements Displayable, MouseRespondable, KeyboardRespondable
 		return mC(mousePosition, e);
 	}
 	
+	@Override
 	public boolean mC(Point mousePosition, MouseEvent e) {
 		if(this.active){
 			for(int i = 0; i < mouseActionList.size(); i++){
@@ -259,6 +266,7 @@ public class Crowd implements Displayable, MouseRespondable, KeyboardRespondable
 		return false;
 	}
 	
+	@Override
 	public boolean rMD(Point mousePosition, MouseEvent e) {
 		if(this.active){
 			for(int i = 0; i < mouseActionList.size(); i++){
@@ -272,6 +280,7 @@ public class Crowd implements Displayable, MouseRespondable, KeyboardRespondable
 		return false;
 	}
 	
+	@Override
 	public boolean rMU(Point mousePosition, MouseEvent e) {
 		if(this.active){
 			for(int i = 0; i < mouseActionList.size(); i++){
@@ -285,6 +294,7 @@ public class Crowd implements Displayable, MouseRespondable, KeyboardRespondable
 		return rMC(mousePosition, e);
 	}
 	
+	@Override
 	public boolean rMC(Point mousePosition, MouseEvent e) {
 		if(this.active){
 			for(int i = 0; i < mouseActionList.size(); i++){
@@ -298,6 +308,7 @@ public class Crowd implements Displayable, MouseRespondable, KeyboardRespondable
 		return false;
 	}
 	
+	@Override
 	public boolean mMC(Point mousePosition, MouseEvent e) {
 		if(this.active){
 			for(int i = 0; i < mouseActionList.size(); i++){
@@ -311,6 +322,7 @@ public class Crowd implements Displayable, MouseRespondable, KeyboardRespondable
 		return false;
 	}
 	
+	@Override
 	public void mI(Point mousePosition) {
 		if(this.active){
 			for(int i = 0; i < mouseActionList.size(); i++){
@@ -326,6 +338,7 @@ public class Crowd implements Displayable, MouseRespondable, KeyboardRespondable
 		}
 	}
 	
+	@Override
 	public void mO(Point mousePosition) {}
 	
 	
@@ -358,14 +371,17 @@ public class Crowd implements Displayable, MouseRespondable, KeyboardRespondable
  		keyboardActionList.add(item);
  	}
 	
+	@Override
 	public boolean isVisible(){
 		return this.visible;
 	}
 	
+	@Override
 	public double getScale(){
 		return this.scale;
 	}
 	
+	@Override
 	public double[] getSize(){
 		double[] returnInt = new double[2];
 		return returnInt;
@@ -377,6 +393,7 @@ public class Crowd implements Displayable, MouseRespondable, KeyboardRespondable
 		return this.transformation;
 	}
 	
+	@Override
 	public double[] getLocation(){
 		return this.location;
 	}
@@ -397,22 +414,27 @@ public class Crowd implements Displayable, MouseRespondable, KeyboardRespondable
 		return this.useLocalCord;
 	}
 	
-	public int getZ(){
+	@Override
+	public int getZ() {
 		return this.z;
 	}
 	
+	@Override
 	public boolean isFocused() {
 		return this.focus;
 	}
 
+	@Override
 	public boolean isInBounds(double x, double y) {
 		return true;
 	}
 	
+	@Override
 	public boolean isActive() {
 		return this.active;
 	}
 	
+	@Override
 	public int compareTo(Displayable otherDisplayable){
 		if(otherDisplayable.getZ() > this.getZ()){
 			 return -1;
@@ -433,20 +455,24 @@ public class Crowd implements Displayable, MouseRespondable, KeyboardRespondable
 		return this.transformation;
 	}
 	
+	@Override
 	public void setVisible(boolean visible){
 		this.visible = visible;
 		this.active = visible;
 	}
 	
+	@Override
 	public void setScale(double scale){
 		this.scale = scale;
 	}
 	
+	@Override
 	public void setLocation(double x, double y){
 		this.location[0] = x;
 		this.location[1] = y;
 	}
 	
+	@Override
 	public void move(double x, double y){
 		this.location[0] += x;
 		this.location[1] += y;
@@ -464,18 +490,22 @@ public class Crowd implements Displayable, MouseRespondable, KeyboardRespondable
 		}
 	}
 	
+	@Override
 	public void setZ(int z){
 		this.z = z;
 	}
 	
+	@Override
 	public void setTween(TweenDefinable tween){
 		this.tween = tween;
 	}
 	
+	@Override
 	public void setFocus(boolean active) {
 		this.focus = active;
 	}
 	
+	@Override
 	public void setActive(boolean active) {
 		this.active = active;
 	}
@@ -485,6 +515,7 @@ public class Crowd implements Displayable, MouseRespondable, KeyboardRespondable
 		return actionZ;
 	}
 
+	@Override
 	public void setActionZ(int actionZ) {
 		this.actionZ = actionZ;
 	}

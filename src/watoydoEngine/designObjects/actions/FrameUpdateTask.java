@@ -1,6 +1,3 @@
-/*
- * 
- */
 package watoydoEngine.designObjects.actions;
 
 import java.util.TimerTask;
@@ -9,37 +6,18 @@ import org.newdawn.slick.Music;
 
 import watoydoEngine.workings.displayActivity.ActivePane;
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class FrameUpdateTask.
- */
 public class FrameUpdateTask extends TimerTask{
 	
-	/**
-	 * The tween timer.
-	 */
 	private double tweenTimer;
-	
-	/**
-	 * The frame time.
-	 */
 	private double frameTime;
-	
-	/**
-	 * Instantiates a new frame update task.
-	 *
-	 * @param frameTime the frame time
-	 */
+
 	public FrameUpdateTask(double frameTime){
 		tweenTimer = 0;
 		
 		this.frameTime = frameTime;
 	}
 	
-	// The Void
-	/* (non-Javadoc)
-	 * @see java.util.TimerTask#run()
-	 */
+	@Override
 	public void run(){
 		
 		tweenTimer += frameTime;
@@ -55,12 +33,6 @@ public class FrameUpdateTask extends TimerTask{
 		Music.poll(0);
 	}
 	
-	// Getters
-	/**
-	 * Gets the time.
-	 *
-	 * @return the time
-	 */
 	public double getTime(){
 		return tweenTimer;
 	}

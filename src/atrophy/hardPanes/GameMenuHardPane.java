@@ -1,11 +1,8 @@
-/*
- * 
- */
 package atrophy.hardPanes;
 
 import watoydoEngine.designObjects.display.Crowd;
 import watoydoEngine.hardPanes.HardPaneDefineable;
-import atrophy.combat.ai.AiGenerator;
+import atrophy.combat.ai.Faction;
 import atrophy.gameMenu.saveFile.ItemMarket;
 import atrophy.gameMenu.saveFile.MapManager;
 import atrophy.gameMenu.saveFile.Missions;
@@ -19,10 +16,6 @@ import atrophy.gameMenu.ui.Wallpaper;
 import atrophy.gameMenu.ui.WindowManager;
 
 
-// TODO: Auto-generated Javadoc
-/**
- * The Class GameMenuHardPane.
- */
 public class GameMenuHardPane implements HardPaneDefineable{
 	
 	private Squad squad;
@@ -37,17 +30,15 @@ public class GameMenuHardPane implements HardPaneDefineable{
 		this.missions = missions;
 	}
 	
-	/* (non-Javadoc)
-	 * @see watoydoEngine.hardPanes.ModdableHardPane#load(java.lang.String, watoydoEngine.designObjects.display.Crowd)
-	 */
+	@Override
 	public void load(Crowd crowd){
 	
 		crowd.addDisplayItem(new Wallpaper());
 		MenuBar menuBar = new MenuBar();
 		WindowManager windowManager = new WindowManager(menuBar);
 		
-		missions.getPlanner(AiGenerator.WHITE_VISTA).setWindowManager(windowManager);
-		missions.getPlanner(AiGenerator.BANDITS).setWindowManager(windowManager);
+		missions.getPlanner(Faction.WHITE_VISTA).setWindowManager(windowManager);
+		missions.getPlanner(Faction.BANDITS).setWindowManager(windowManager);
 		stashManager.setWindowManager(windowManager);
 		
 		ItemMarket itemMarket = new ItemMarket();

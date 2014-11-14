@@ -4,17 +4,14 @@ import java.util.Random;
 
 import watoydoEngine.utils.Maths;
 import atrophy.combat.CombatMembersManager;
-import atrophy.combat.CombatNCEManager;
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.actions.MouseAbilityHandler;
 import atrophy.combat.display.AiCrowd;
-import atrophy.combat.display.ui.FloatingIcons;
 import atrophy.combat.display.ui.loot.LootBox;
 import atrophy.combat.display.ui.loot.LootBox.Lootable;
 import atrophy.combat.items.MeleeWeapon1;
 import atrophy.combat.items.ScienceSupply;
-import atrophy.combat.level.LevelManager;
 import atrophy.combat.level.Portal;
 import atrophy.combat.mechanics.Abilities;
 
@@ -53,22 +50,13 @@ public class AiActions {
 	private double[] actionLocation;
 	
 	private AiCombatActions aiCombatActions;
-
 	private MouseAbilityHandler mouseAbilityHandler;
-
-	private FloatingIcons floatingIcons;
-
-	private AiCrowd aiCrowd;
-
 	private LootBox lootBox;
-
 	private CombatMembersManager combatMembersManager;
 	private CombatVisualManager combatVisualManager;
 	private CombatUiManager combatUiManager;
-	private CombatNCEManager combatInorganicManager;
-	private LevelManager levelManager;
 	
-	public AiActions(AiCrowd aiCrowd, CombatVisualManager combatVisualManager, CombatUiManager combatUiManager, CombatMembersManager combatMembersManager, CombatNCEManager combatInorganicManager, FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, LootBox lootBox, LevelManager levelManager){
+	public AiActions(AiCrowd aiCrowd, CombatVisualManager combatVisualManager, CombatUiManager combatUiManager, CombatMembersManager combatMembersManager, MouseAbilityHandler mouseAbilityHandler, LootBox lootBox){
 		actionTurns = 0;
 		oldActionTurns = 0;
 		oldAction = NO_ACTION;
@@ -76,15 +64,11 @@ public class AiActions {
 		actionLocation = new double[]{0,0};
 		
 		this.mouseAbilityHandler = mouseAbilityHandler;
-		this.aiCrowd = aiCrowd;
-		this.floatingIcons = floatingIcons;
 		this.lootBox = lootBox;
 		this.combatMembersManager = combatMembersManager;
 		this.combatVisualManager = combatVisualManager;
 		this.aiCombatActions = new AiCombatActions(combatVisualManager, mouseAbilityHandler, aiCrowd);
 		this.combatUiManager = combatUiManager;
-		this.combatInorganicManager = combatInorganicManager;
-		this.levelManager = levelManager;
 	}
 
 	public int getActionTurns() {

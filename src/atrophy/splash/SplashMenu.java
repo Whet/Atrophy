@@ -82,7 +82,7 @@ public class SplashMenu extends Crowd {
 					MapManager mapManager = new MapManager(missions);
 					ItemMarket itemMarket = new ItemMarket();
 					ShopManager shopManager = new ShopManager(windowManager, stashManager, itemMarket);
-					Squad squad = SaveFile.loadGame(chooser.getSelectedFile(), stashManager, mapManager, shopManager, missions, windowManager, itemMarket);
+					Squad squad = SaveFile.loadGame(chooser.getSelectedFile(), stashManager, mapManager, missions, windowManager, itemMarket);
 					
 					TechTree techTree = squad.getTechTree();
 					

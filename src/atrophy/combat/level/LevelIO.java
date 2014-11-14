@@ -1,18 +1,14 @@
-/*
- * 
- */
 package atrophy.combat.level;
 
 import java.io.File;
 import java.io.IOException;
-import java.util.List;
 
 import org.antlr.runtime.RecognitionException;
 
 import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
-import atrophy.combat.ai.AiGeneratorInterface.GenerateCommand;
+import atrophy.combat.ai.Faction;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.ui.MessageBox;
 import atrophy.combat.mechanics.TurnProcess;
@@ -35,8 +31,8 @@ public class LevelIO {
 		return level;
 	}
 	
-	public static Level loadLevel(File file, String owner, int engineeringChance, int medicalChance, int weaponChance, int scienceChance, PanningManager panningManager, TurnProcess turnProcess, MessageBox messageBox, AiCrowd aiCrowd, CombatMembersManager combatMembersManager, Missions missions, MissionManager missionsManager, List<GenerateCommand> generationCommands, ItemMarket itemMarket, TechTree techTree, StashManager stashManager, CombatVisualManager combatVisualManager) throws IOException, RecognitionException{
-		return AtrophyScriptReader.readScript(file, owner, engineeringChance, medicalChance, weaponChance, scienceChance, panningManager, turnProcess, messageBox, aiCrowd, combatMembersManager, missions, missionsManager, generationCommands, itemMarket, techTree, stashManager, combatVisualManager);
+	public static Level loadLevel(File file, Faction owner, int engineeringChance, int medicalChance, int weaponChance, int scienceChance, PanningManager panningManager, TurnProcess turnProcess, MessageBox messageBox, AiCrowd aiCrowd, CombatMembersManager combatMembersManager, Missions missions, MissionManager missionsManager, ItemMarket itemMarket, TechTree techTree, StashManager stashManager, CombatVisualManager combatVisualManager) throws IOException, RecognitionException{
+		return AtrophyScriptReader.readScript(file, owner, engineeringChance, medicalChance, weaponChance, scienceChance, panningManager, turnProcess, messageBox, aiCrowd, combatMembersManager, missions, missionsManager, itemMarket, techTree, stashManager, combatVisualManager);
 	}
 
 

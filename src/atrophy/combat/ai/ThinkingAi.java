@@ -10,7 +10,6 @@ import java.util.Set;
 
 import watoydoEngine.utils.Maths;
 import atrophy.combat.CombatMembersManager;
-import atrophy.combat.CombatNCEManager;
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
@@ -62,12 +61,11 @@ public class ThinkingAi extends Ai{
 	private boolean blockPlayerConvo;
 	
 	private ThinkingAiEmotion emotionManager;
-	private CombatNCEManager combatInorganicManager;
 	private LevelManager levelManager;
 	private DialoguePool dialoguePool;
 
-	public ThinkingAi(DialoguePool dialoguePool, PanningManager panningManager, CombatVisualManager combatVisualManager, TurnProcess turnProcess, FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, AiCrowd aiCrowd, CombatMembersManager combatMembersManager, String name, double x, double y, LevelManager levelManager, CombatNCEManager combatInorganicManager, CombatUiManager combatUiManager, LootBox lootBox){
-		super(floatingIcons, mouseAbilityHandler, name,x,y, combatInorganicManager, levelManager, lootBox, combatMembersManager, combatUiManager, combatVisualManager, aiCrowd, panningManager, turnProcess);
+	public ThinkingAi(DialoguePool dialoguePool, PanningManager panningManager, CombatVisualManager combatVisualManager, TurnProcess turnProcess, FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, AiCrowd aiCrowd, CombatMembersManager combatMembersManager, String name, double x, double y, LevelManager levelManager, CombatUiManager combatUiManager, LootBox lootBox){
+		super(floatingIcons, mouseAbilityHandler, name,x,y, levelManager, lootBox, combatMembersManager, combatUiManager, combatVisualManager, aiCrowd, panningManager, turnProcess);
 		aiMode = AiMode.EMPTY;
 		turnCounter = 0;
 		chaseAi = null;
@@ -77,7 +75,6 @@ public class ThinkingAi extends Ai{
 		this.turnProcess = turnProcess;
 		this.aiCrowd = aiCrowd;
 		this.combatVisualManager = combatVisualManager;
-		this.combatInorganicManager = combatInorganicManager;
 		this.levelManager = levelManager;
 		this.emotionManager = new ThinkingAiEmotion(this);
 		this.dialoguePool = dialoguePool;
@@ -523,7 +520,7 @@ public class ThinkingAi extends Ai{
 				
 				if(ai instanceof ThinkingAi) {
 					
-					if(!ai.getFaction().equals(AiGenerator.LONER))
+					if(!ai.getFaction().equals(Faction.LONER))
 						this.getCommander().removeAlliance(ai.getFaction());
 
 					this.getCommander().addHatedAi(ai);
@@ -533,7 +530,7 @@ public class ThinkingAi extends Ai{
 				}
 				else {
 					
-					if(!ai.getFaction().equals(AiGenerator.LONER))
+					if(!ai.getFaction().equals(Faction.LONER))
 						this.getCommander().removeAlliance(ai.getFaction());
 
 					this.getCommander().addHatedAi(ai);
@@ -749,6 +746,7 @@ public class ThinkingAi extends Ai{
 		}
 	}
 	
+	@Override
 	public void aim(Ai ai){
 		
 		this.setSwing(0);
@@ -914,7 +912,7 @@ public class ThinkingAi extends Ai{
 				AiDeathReport deathReport = ai.getDeathReport();
 				
 				// Don't investigate deaths we caused
-				if(deathReport == null || deathReport.killer == null || (deathReport.killer.getFaction().equals(this.getFaction()) && (!this.getFaction().equals(AiGenerator.LONER) || deathReport.killer == this)))
+				if(deathReport == null || deathReport.killer == null || (deathReport.killer.getFaction().equals(this.getFaction()) && (!this.getFaction().equals(Faction.LONER) || deathReport.killer == this)))
 					return;
 				
 				if(turnProcess.getTurnCount() - deathReport.timeOfDeath < 20 && deathReport.weapon.getName().equals(deathReport.killer.getWeapon().getName()) && combatVisualManager.isAiInSight(this, deathReport.killer)) {
@@ -1100,7 +1098,7 @@ public class ThinkingAi extends Ai{
 		
 		private double[] location;
 		private double angle;
-		private Set<String> useableFactions;
+		private Set<Faction> useableFactions;
 		private String[] disabler;
 		
 		// Whether this node describes a behaviour that requires the ai to be at the location
@@ -1132,7 +1130,7 @@ public class ThinkingAi extends Ai{
 			
 			angle = 361;
 			
-			useableFactions = new HashSet<String>();
+			useableFactions = new HashSet<Faction>();
 			
 			disabler = new String[0];
 			
@@ -1261,7 +1259,7 @@ public class ThinkingAi extends Ai{
 				
 				// find a player unit in sight
 				for(Ai actor : aiCrowd.getActors()){
-					if(actor.getFaction().equals(AiGenerator.PLAYER) && !actor.isDead() && !(actor instanceof VehicleAi) && dialogue.canTalkTo(actor) && ai.combatVisualManager.isAiInSight(ai, actor)){
+					if(actor.getFaction().equals(Faction.PLAYER) && !actor.isDead() && !(actor instanceof VehicleAi) && dialogue.canTalkTo(actor) && ai.combatVisualManager.isAiInSight(ai, actor)){
 						talkTarget = actor;
 						break;
 					}
@@ -1295,56 +1293,28 @@ public class ThinkingAi extends Ai{
 				
 				switch(disabler){
 					case "WHITE_VISTA_PRESENT":
-						if(checkForFactionInBlock(ai.getLevelBlock(), AiGenerator.WHITE_VISTA) && inverse){
-							
-//							if(ai.doingJob) {
-//								ai.job = ai.getCommander().getJob(ai);
-//								if(ai.getLevelBlock() == ai.job.getJobBlock())
-//									ai.job.tickJob();
-//							}
-							
+						if(checkForFactionInBlock(ai.getLevelBlock(), Faction.WHITE_VISTA) && inverse){
 							ai.gatherEnvironmentData();
 							return true;
 						}
 						break;
 							
 					case "BANDITS_PRESENT":
-						if(checkForFactionInBlock(ai.getLevelBlock(), AiGenerator.BANDITS) && inverse){
-							
-//							if(ai.doingJob) {
-//								ai.job = ai.getCommander().getJob(ai);
-//								if(ai.getLevelBlock() == ai.job.getJobBlock())
-//									ai.job.tickJob();
-//							}
-							
+						if(checkForFactionInBlock(ai.getLevelBlock(), Faction.BANDITS) && inverse){
 							ai.gatherEnvironmentData();
 							return true;
 						}
 						break;
 							
 					case "PLAYER_PRESENT":
-						if(checkForFactionInBlock(ai.getLevelBlock(), AiGenerator.PLAYER) && inverse){
-							
-//							if(ai.doingJob) {
-//								ai.job = ai.getCommander().getJob(ai);
-//								if(ai.getLevelBlock() == ai.job.getJobBlock())
-//									ai.job.tickJob();
-//							}
-							
+						if(checkForFactionInBlock(ai.getLevelBlock(), Faction.PLAYER) && inverse){
 							ai.gatherEnvironmentData();
 							return true;
 						}
 						break;
 							
 					case "LONER_PRESENT":
-						if(checkForFactionInBlock(ai.getLevelBlock(), AiGenerator.LONER) && inverse){
-							
-//							if(ai.doingJob) {
-//								ai.job = ai.getCommander().getJob(ai);
-//								if(ai.getLevelBlock() == ai.job.getJobBlock())
-//									ai.job.tickJob();
-//							}
-							
+						if(checkForFactionInBlock(ai.getLevelBlock(), Faction.LONER) && inverse){
 							ai.gatherEnvironmentData();
 							return true;
 						}
@@ -1356,7 +1326,7 @@ public class ThinkingAi extends Ai{
 			return false;
 		}
 
-		private boolean checkForFactionInBlock(LevelBlock levelBlock, String faction) {
+		private boolean checkForFactionInBlock(LevelBlock levelBlock, Faction faction) {
 			for(int i = 0; i < aiCrowd.getActorCount(); i++){
 				Ai ai = aiCrowd.getActor(i);
 				if(!ai.isDead() && ai.getFaction().equals(faction) && ai.getLevelBlock() == levelBlock){
@@ -1386,30 +1356,30 @@ public class ThinkingAi extends Ai{
 			this.angle = angle;
 		}
 
-		public void addUsableFaction(String faction, String mapOwner){
+		public void addUsableFaction(Faction faction, Faction mapOwner){
 			
 			// When loner is map owner: loner/white vista/bandits work
-			if(mapOwner.equals(AiGenerator.LONER)){
+			if(mapOwner.equals(Faction.LONER)){
 				
 				if(faction.equals("INVADER") || faction.equals("OWNER")){
-					faction = "";
+					faction = Faction.EMPTY;
 				}
 				
 			}
 			// When wv/bandits are owner: owner/invader/loner work
 			else{
 				
-				if(faction.equals(AiGenerator.WHITE_VISTA) || faction.equals(AiGenerator.BANDITS)){
-					faction = "";
+				if(faction.equals(Faction.WHITE_VISTA) || faction.equals(Faction.BANDITS)){
+					faction = Faction.EMPTY;
 				}
 				else if(faction.equals("OWNER")){
 					faction = mapOwner;
 				}
-				else if(faction.equals("INVADER") && mapOwner.equals(AiGenerator.BANDITS)){
-					faction = AiGenerator.WHITE_VISTA;
+				else if(faction.equals("INVADER") && mapOwner.equals(Faction.BANDITS)){
+					faction = Faction.WHITE_VISTA;
 				}
-				else if(faction.equals("INVADER") && mapOwner.equals(AiGenerator.WHITE_VISTA)){
-					faction = AiGenerator.BANDITS;
+				else if(faction.equals("INVADER") && mapOwner.equals(Faction.WHITE_VISTA)){
+					faction = Faction.BANDITS;
 				}
 				
 			}

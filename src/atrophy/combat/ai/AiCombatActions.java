@@ -5,7 +5,6 @@ import atrophy.combat.actions.MouseAbilityHandler;
 import atrophy.combat.combatEffects.RapidFireEffect;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.AiImage;
-import atrophy.combat.display.ui.abilities.RapidFire;
 import atrophy.combat.mechanics.ScoringMechanics;
 
 public class AiCombatActions {
@@ -155,7 +154,7 @@ public class AiCombatActions {
 				this.getTargetAi().setDead(invoker, true);
 				
 				// if the killer belongs to player faction then the kill is counted
-				if(invoker.getFaction().equals(AiGenerator.PLAYER)){
+				if(invoker.getFaction().equals(Faction.PLAYER)){
 					this.getTargetAi().bodyFound(true);
 				}
 				
@@ -170,7 +169,7 @@ public class AiCombatActions {
 			else{
 				invoker.setAction(AIMING);
 				
-				if(this.getTargetAi().getFaction().equals(AiGenerator.PLAYER))
+				if(this.getTargetAi().getFaction().equals(Faction.PLAYER))
 					invoker.combatUiManager.getEventsLog().addMessage("An attack has missed " + this.getTargetAi().getName());
 			}
 		

@@ -13,7 +13,7 @@ import org.antlr.runtime.RecognitionException;
 
 import watoydoEngine.io.ReadWriter;
 import atrophy.combat.ai.Ai;
-import atrophy.combat.ai.AiGenerator;
+import atrophy.combat.ai.Faction;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.items.EngineeringSupply;
 import atrophy.combat.items.MedicalSupply;
@@ -56,8 +56,8 @@ public class Missions{
 		characterCodes = new HashSet<>();
 		tempCharacterCodes = new HashMap<>();
 		memCodes.add(DEFAULT_MEM_CODE);
-		this.wvResearchAi = new FactionMissionPlanner(AiGenerator.WHITE_VISTA);
-		this.banditsResearchAi = new FactionMissionPlanner(AiGenerator.BANDITS);
+		this.wvResearchAi = new FactionMissionPlanner(Faction.WHITE_VISTA);
+		this.banditsResearchAi = new FactionMissionPlanner(Faction.BANDITS);
 	}
 	
 	public void lazyLoad(Squad squad, StashManager stashManager, ItemMarket itemMarket, TechTree techTree, MapManager mapWar) {
@@ -141,9 +141,9 @@ public class Missions{
 		protected Squad squad;
 		protected StashManager stashManager;
 		protected Integer timeToLive;
-		protected String faction;
+		protected Faction faction;
 		
-		public Mission(Missions missions, StashManager stashManager, String faction, String name, String description, boolean isRewardItem, Object reward, Squad squad){
+		public Mission(Missions missions, StashManager stashManager, Faction faction, String name, String description, boolean isRewardItem, Object reward, Squad squad){
 			this.rewardItem = isRewardItem;
 			this.reward = reward;
 			this.name = name;
@@ -206,7 +206,7 @@ public class Missions{
 	public static class AttackMission extends Mission {
 
 		public String mapName;
-		public String mapOwner;
+		public Faction mapOwner;
 		private Integer eChance;
 		private Integer mChance;
 		private Integer wChance;
@@ -217,7 +217,7 @@ public class Missions{
 		private boolean missionTaken;
 		private WindowManager windowManager;
 
-		public AttackMission(Missions missions, StashManager stashManager, String faction, Squad squad, Object rewardForAttack, String mapName, String mapOwner, Integer eChance, Integer mChance, Integer wChance, Integer sChance, ItemMarket itemMarket, TechTree techTree, String sectorName, WindowManager windowManager) {
+		public AttackMission(Missions missions, StashManager stashManager, Faction faction, Squad squad, Object rewardForAttack, String mapName, Faction mapOwner, Integer eChance, Integer mChance, Integer wChance, Integer sChance, ItemMarket itemMarket, TechTree techTree, String sectorName, WindowManager windowManager) {
 			super(missions, stashManager, faction, "Secure " + mapName.substring(0, mapName.length() - 4) + " for "+faction, "Kill all enemies in the area for a reward of " + rewardForAttack, false, rewardForAttack, squad);
 			this.mapName = mapName;
 			this.mapOwner = mapOwner;
@@ -237,10 +237,10 @@ public class Missions{
 		public boolean interact() {
 			
 			missions.squad.incrementFactionRelation(this.faction, 2);
-			if(this.faction.equals(AiGenerator.WHITE_VISTA))
-				missions.squad.incrementFactionRelation(AiGenerator.BANDITS, -2);
+			if(this.faction.equals(Faction.WHITE_VISTA))
+				missions.squad.incrementFactionRelation(Faction.BANDITS, -2);
 			else
-				missions.squad.incrementFactionRelation(AiGenerator.WHITE_VISTA, -2);
+				missions.squad.incrementFactionRelation(Faction.WHITE_VISTA, -2);
 			
 			this.missionTaken = true;
 			
@@ -276,7 +276,7 @@ public class Missions{
 		private int[] requirements;
 		private Object rewardPerItem;
 		
-		public ShoppingListMission(Missions missions, Squad squad, StashManager stashManager, int[] requirements, Object rewardPerItem, String faction) {
+		public ShoppingListMission(Missions missions, Squad squad, StashManager stashManager, int[] requirements, Object rewardPerItem, Faction faction) {
 			super(missions, stashManager, faction,
 				  "Gather Supplies for "+faction,
 				  "Obj: The following are required:@nSci. "+ requirements[0] + " Eng. " + requirements[1] + " Wep. " + requirements[2] + " Med. " + requirements[3]
@@ -407,27 +407,27 @@ public class Missions{
 		this.banditsResearchAi = banditsResearchAi;
 	}
 
-	public FactionMissionPlanner getPlanner(String faction) {
+	public FactionMissionPlanner getPlanner(Faction faction) {
 		
 		switch(faction) {
-			case AiGenerator.WHITE_VISTA:
+			case WHITE_VISTA:
 				return this.wvResearchAi;
-			case AiGenerator.BANDITS:
+			case BANDITS:
 				return this.banditsResearchAi;
 		}
 		
 		return null;
 	}
 
-	public String getMapOwner(String mapName, String sectorName) {
+	public Faction getMapOwner(String mapName, String sectorName) {
 		
 		if(this.wvResearchAi.ownsMap(mapName, sectorName))
-			return AiGenerator.WHITE_VISTA;
+			return Faction.WHITE_VISTA;
 		
 		if(this.banditsResearchAi.ownsMap(mapName, sectorName))
-			return AiGenerator.BANDITS;
+			return Faction.BANDITS;
 		
-		return "Unclaimed";
+		return Faction.UNCLAIMED;
 	}
 
 	public void setPlayerMissionKills(int banditKillCount, int lonerKillCount, int whiteVistaKillCount) {
@@ -484,14 +484,14 @@ public class Missions{
 		return livingWV;
 	}
 
-	public int getPlayerKillCount(String faction) {
+	public int getPlayerKillCount(Faction faction) {
 		
 		switch(faction) {
-			case AiGenerator.LONER:
+			case LONER:
 			return this.playerLonerKillCount;
-			case AiGenerator.WHITE_VISTA:
+			case WHITE_VISTA:
 			return this.playerWhiteVistaKillCount;
-			case AiGenerator.BANDITS:
+			case BANDITS:
 			return this.playerBanditKillCount;
 		}
 		

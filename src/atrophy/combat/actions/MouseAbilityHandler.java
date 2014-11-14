@@ -9,7 +9,7 @@ import atrophy.combat.CombatUiManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.ai.Ai;
 import atrophy.combat.ai.AiDebugger;
-import atrophy.combat.ai.AiGenerator;
+import atrophy.combat.ai.Faction;
 import atrophy.combat.ai.TalkNode;
 import atrophy.combat.ai.ThinkingAi;
 import atrophy.combat.combatEffects.Power;
@@ -23,7 +23,6 @@ import atrophy.combat.display.ui.UiUpdaterSuite;
 import atrophy.combat.display.ui.loot.LootBox;
 import atrophy.combat.level.LevelManager;
 import atrophy.combat.mechanics.Abilities;
-import atrophy.gameMenu.saveFile.Squad;
 
 public class MouseAbilityHandler {
 		
@@ -37,10 +36,9 @@ public class MouseAbilityHandler {
 	private LootBox lootBox;
 	private AiCrowd aiCrowd;
 	private LevelManager levelManager;
-	private Squad squad;
 	private PowerManager powerManager;
 	
-	public MouseAbilityHandler(Squad squad, AiManagementSuite aiManagementSuite, UiUpdaterSuite uiUpdaterSuite, LevelManager levelManager){
+	public MouseAbilityHandler(AiManagementSuite aiManagementSuite, UiUpdaterSuite uiUpdaterSuite, LevelManager levelManager){
 		abilityApplied = "";
 		settingAbility = false;
 		
@@ -52,8 +50,6 @@ public class MouseAbilityHandler {
 		this.messageBox = uiUpdaterSuite.getMessageBox();
 		this.lootBox = uiUpdaterSuite.getLootBox();
 		this.levelManager = levelManager;
-		
-		this.squad = squad;
 	}
 	
 	public void setPowerManager(PowerManager powerManager) {
@@ -82,7 +78,7 @@ public class MouseAbilityHandler {
 			case Abilities.SPEECH:
 				Ai speechAi = getClosestAiToMouse(mousePoint, AI_CLICK_RADIUS);
 				if(speechAi != null && speechAi.getLevelBlock() == combatMembersManager.getCurrentAi().getLevelBlock() &&
-				   !speechAi.getFaction().equals(AiGenerator.PLAYER) && ( !(speechAi instanceof ThinkingAi) || !((ThinkingAi)speechAi).isBlockPlayerConvo())){
+				   !speechAi.getFaction().equals(Faction.PLAYER) && ( !(speechAi instanceof ThinkingAi) || !((ThinkingAi)speechAi).isBlockPlayerConvo())){
 					
 					messageBox.setConversation(combatMembersManager.getCurrentAi(), speechAi);
 					lootBox.closeLootUi(lootBox.isVisible());
@@ -101,26 +97,26 @@ public class MouseAbilityHandler {
 			break;
 			case Abilities.STUN_MELEE:
 				Ai targetAi = getClosestAiToMouse(mousePoint, AI_CLICK_RADIUS);
-				if(targetAi != null && !targetAi.getFaction().equals(AiGenerator.PLAYER)){
+				if(targetAi != null && !targetAi.getFaction().equals(Faction.PLAYER)){
 					combatMembersManager.getCurrentAi().setStunTarget(targetAi);
 				}
 			break;
 			case Abilities.RAPID_FIRE:
 				targetAi = getClosestAiToMouse(mousePoint, AI_CLICK_RADIUS);
-				if(targetAi != null && !targetAi.getFaction().equals(AiGenerator.PLAYER)){
+				if(targetAi != null && !targetAi.getFaction().equals(Faction.PLAYER)){
 					combatMembersManager.getCurrentAi().addEffect(new RapidFireEffect());
 					combatMembersManager.getCurrentAi().setTargetAi(targetAi);
 				}
 			break;
 			case Abilities.GRAPPLE:
 				targetAi = getClosestAiToMouse(mousePoint, AI_CLICK_RADIUS);
-				if(targetAi != null && !targetAi.getFaction().equals(AiGenerator.PLAYER)){
+				if(targetAi != null && !targetAi.getFaction().equals(Faction.PLAYER)){
 					combatMembersManager.getCurrentAi().setGrappleTarget(targetAi);
 				}
 			break;
 			case Abilities.SLIT_MELEE:
 				targetAi = getClosestAiToMouse(mousePoint, AI_CLICK_RADIUS);
-				if(targetAi != null && !targetAi.getFaction().equals(AiGenerator.PLAYER)){
+				if(targetAi != null && !targetAi.getFaction().equals(Faction.PLAYER)){
 					combatMembersManager.getCurrentAi().setBackstabTarget(targetAi);
 				}
 			break;
@@ -145,6 +141,7 @@ public class MouseAbilityHandler {
 			break;
 			case "DebugAi":
 				targetAi = getClosestAiToMouse(mousePoint, AI_CLICK_RADIUS, true);
+				@SuppressWarnings("unused")
 				AiDebugger d = new AiDebugger(mousePoint.x, mousePoint.y, targetAi);
 			break;
 			case Abilities.INVESTIGATE:

@@ -6,7 +6,7 @@ import java.util.Map;
 
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.ai.Ai;
-import atrophy.combat.ai.AiGenerator;
+import atrophy.combat.ai.Faction;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.mechanics.ScoringMechanics;
 
@@ -48,19 +48,19 @@ public class HealthDirector {
 			return dead;
 		
 		switch(killedAi.getFaction()) {
-			case AiGenerator.LONER:
+			case LONER:
 				totalLonerDeaths++;
-				if(killer.getFaction().equals(AiGenerator.PLAYER))
+				if(killer.getFaction().equals(Faction.PLAYER))
 					lonerKills.add(killedAi.getName());
 			break;
-			case AiGenerator.WHITE_VISTA:
+			case WHITE_VISTA:
 				totalWVDeaths++;
-				if(killer.getFaction().equals(AiGenerator.PLAYER))
+				if(killer.getFaction().equals(Faction.PLAYER))
 					wvKills.add(killedAi.getName());
 			break;
-			case AiGenerator.BANDITS:
+			case BANDITS:
 				totalBanditDeaths++;
-				if(killer.getFaction().equals(AiGenerator.PLAYER))
+				if(killer.getFaction().equals(Faction.PLAYER))
 					banditKills.add(killedAi.getName());
 			break;
 		}

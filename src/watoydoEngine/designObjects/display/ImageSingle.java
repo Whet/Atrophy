@@ -44,17 +44,20 @@ public class ImageSingle extends AbstractImage implements ImageDisplayable{
 		this.rotation = 0;
 	}
 	
+	@Override
 	public void drawMethod(Graphics2D drawShape){
 		drawShape.setComposite(GraphicsFunctions.makeComposite(this.getAlpha()));
 		drawShape.drawImage(this.image,this.getTransformationForDrawing(),null);
 		drawShape.setComposite(GraphicsFunctions.makeComposite(1));
 	}
 	
+	@Override
 	public double[] getLocationCentre(){
 		double editedLocation[] = {this.getLocation()[0] + this.getSize()[0] * 0.5, this.getLocation()[1] + this.getSize()[1] * 0.5};
 		return editedLocation;
 	}
 	
+	@Override
 	public double[] getSize(){
 		double[] size = new double[2];
 		if(image != null){
@@ -68,14 +71,17 @@ public class ImageSingle extends AbstractImage implements ImageDisplayable{
 		return size;
 	}
 	
+	@Override
 	public BufferedImage getImage(){
 		return this.image;
 	}
 	
+	@Override
 	public void setImage(BufferedImage newImage){
 		this.image = newImage;
 	}
 
+	@Override
 	public double getRotation() {
 		return rotation;
 	}

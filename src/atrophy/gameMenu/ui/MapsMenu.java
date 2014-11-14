@@ -1,6 +1,3 @@
-/*
- * 
- */
 package atrophy.gameMenu.ui;
 
 import java.awt.Color;
@@ -17,7 +14,7 @@ import watoydoEngine.designObjects.display.Text;
 import watoydoEngine.designObjects.display.TextButton;
 import watoydoEngine.io.ReadWriter;
 import watoydoEngine.utils.GraphicsFunctions;
-import atrophy.combat.ai.AiGenerator;
+import atrophy.combat.ai.Faction;
 import atrophy.combat.display.ui.MiniMapLines;
 import atrophy.combat.level.Level;
 import atrophy.combat.level.LevelIO;
@@ -28,9 +25,6 @@ import atrophy.gameMenu.saveFile.Squad;
 import atrophy.gameMenu.saveFile.TechTree;
 import atrophy.gameMenu.ui.popups.ErrorPopup;
 
-/**
- * The Class MapsMenu.
- */
 public class MapsMenu extends Menu {
 
 	private static final int MAX_ITEMS = 10;
@@ -228,12 +222,12 @@ public class MapsMenu extends Menu {
 			else
 				buttons.get(i).setText("");
 			
-			mapOwners.get(i).setText(sector.getOwner(missions, i + (page * MAX_ITEMS)));
+			mapOwners.get(i).setText(sector.getOwner(missions, i + (page * MAX_ITEMS)).toString());
 			
-			if(sector.getOwner(missions, i + (page * MAX_ITEMS)).equals(AiGenerator.BANDITS)){
+			if(sector.getOwner(missions, i + (page * MAX_ITEMS)).equals(Faction.BANDITS)){
 				mapOwners.get(i).setColour(Color.red.darker());
 			}
-			else if(sector.getOwner(missions, i + (page * MAX_ITEMS)).equals(AiGenerator.WHITE_VISTA)){
+			else if(sector.getOwner(missions, i + (page * MAX_ITEMS)).equals(Faction.WHITE_VISTA)){
 				mapOwners.get(i).setColour(Color.white);
 			}
 			else{

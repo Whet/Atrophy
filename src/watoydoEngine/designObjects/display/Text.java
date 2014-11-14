@@ -65,6 +65,7 @@ public class Text implements Displayable {
 		font = FontList.AUD14;
 	}
 
+	@Override
 	public void drawMethod(Graphics2D drawShape) {
 		pointInText = 0;
 		lineY = location[1];
@@ -95,14 +96,17 @@ public class Text implements Displayable {
 		return sb.toString();
 	}
 
+	@Override
 	public boolean isVisible() {
 		return this.visible;
 	}
 
+	@Override
 	public double getScale() {
 		return this.scale;
 	}
 
+	@Override
 	public double[] getSize() {
 		double[] size = new double[2];
 		size[0] = this.getText().length() * 8;
@@ -113,10 +117,12 @@ public class Text implements Displayable {
 		return size;
 	}
 
+	@Override
 	public double[] getLocation() {
 		return this.location;
 	}
 
+	@Override
 	public void kickTween() {
 		if (this.tween != null) {
 			double[] movePos = this.tween.getCord(this.location);
@@ -127,6 +133,7 @@ public class Text implements Displayable {
 		}
 	}
 
+	@Override
 	public int getZ() {
 		return this.z;
 	}
@@ -139,6 +146,7 @@ public class Text implements Displayable {
 		return this.colour;
 	}
 
+	@Override
 	public int compareTo(Displayable otherDisplayable) {
 		if (otherDisplayable.getZ() > this.getZ()) {
 			return -1;
@@ -156,14 +164,17 @@ public class Text implements Displayable {
 		return this.font;
 	}
 
+	@Override
 	public void setVisible(boolean visible) {
 		this.visible = visible;
 	}
 
+	@Override
 	public void setScale(double scale) {
 		this.scale = scale;
 	}
 
+	@Override
 	public void setLocation(double x, double y) {
 		this.location[0] = x;
 		this.location[1] = y;
@@ -190,15 +201,18 @@ public class Text implements Displayable {
 		this.colour = colour;
 	}
 
+	@Override
 	public void move(double x, double y) {
 		this.location[0] += x;
 		this.location[1] += y;
 	}
 
+	@Override
 	public void setTween(TweenDefinable tween) {
 		this.tween = tween;
 	}
 
+	@Override
 	public void setZ(int z) {
 		this.z = z;
 	}

@@ -1,6 +1,3 @@
-/*
- * 
- */
 package atrophy.combat.display;
 
 import java.awt.Color;
@@ -13,9 +10,6 @@ import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.ai.Ai;
-import atrophy.combat.ai.AiGenerator;
-import atrophy.combat.ai.DefenceHeuristic;
-import atrophy.combat.level.LevelManager;
 
 public class LineDrawer implements Displayable{
 	
@@ -28,15 +22,13 @@ public class LineDrawer implements Displayable{
 	private PanningManager panningManager;
 	private CombatVisualManager combatVisualManager;
 	private CombatMembersManager combatMembersManager;
-	private LevelManager levelManager;
 	
-	public LineDrawer(AiCrowd aiCrowd, PanningManager panningManager, CombatVisualManager combatVisualManager, CombatMembersManager combatMembersManager, LevelManager levelManager){
+	public LineDrawer(AiCrowd aiCrowd, PanningManager panningManager, CombatVisualManager combatVisualManager, CombatMembersManager combatMembersManager){
 		visible = true;
 		this.aiCrowd = aiCrowd;
 		this.panningManager = panningManager;
 		this.combatVisualManager = combatVisualManager;
 		this.combatMembersManager = combatMembersManager;
-		this.levelManager = levelManager;
 	}
 	
 	@Override
@@ -54,8 +46,7 @@ public class LineDrawer implements Displayable{
 					
 					// draw friendly ai pathways if in sight
 					if(aiCrowd.getMask(i).getAi().getFaction().equals("Player")){
-					// let us see all ai paths
-				//	if(aiCrowd.getMask(i).getAi().getPortalPathway() != null){
+						// let us see all ai paths
 						drawAiPath(drawShape,aiCrowd.getMask(i).getAi());
 					}
 				}
@@ -67,22 +58,7 @@ public class LineDrawer implements Displayable{
 				}
 				
 				if(aiCrowd.getMask(i).getAi().getFov() > 0 && !aiCrowd.getMask(i).getAi().isDead()){
-					
-//					if(combatVisualManager.isTabled() &&
-//					   aiCrowd.getMask(i).getAi() == combatVisualManager.getLastDraggableAi()){
-//						drawFov(drawShape, aiCrowd.getMask(i).getAi());
-//						drawFovLight(drawShape, aiCrowd.getMask(i).getAi());
-//					}
-//					else{
-						
-						if(combatVisualManager.isDrawingFov() && 
-						   aiCrowd.getMask(i).getAi() == combatMembersManager.getCurrentAi()){
-							//drawFovLight(drawShape, aiCrowd.getMask(i).getAi());
-							drawOldFov(drawShape, aiCrowd.getMask(i).getAi());
-						}
-						
-						drawFov(drawShape, aiCrowd.getMask(i).getAi());
-//					}
+					drawFov(drawShape, aiCrowd.getMask(i).getAi());
 				}
 				
 				if(combatMembersManager.isSelected(aiCrowd.getMask(i).getAi())){
@@ -96,22 +72,22 @@ public class LineDrawer implements Displayable{
 //		drawAiThreats(drawShape);
 	}
 
-	private void drawAiThreats(Graphics2D drawShape) {
-		for(int i = 0; i < levelManager.getBlocks().length; i++) {
-			DefenceHeuristic defenceHeuristic = combatMembersManager.getCommander(AiGenerator.WHITE_VISTA).getDefenceHeuristics().get(levelManager.getBlock(i));
-			drawShape.setColor(Color.white);
-			if(defenceHeuristic != null)
-			drawShape.drawString("WV " + defenceHeuristic.dangerH,
-								 (int)(levelManager.getBlock(i).getCentre()[0] + panningManager.getOffset()[0]), 
-								 (int)(levelManager.getBlock(i).getCentre()[1] + panningManager.getOffset()[1]));
-			drawShape.setColor(Color.red);
-			defenceHeuristic = combatMembersManager.getCommander(AiGenerator.BANDITS).getDefenceHeuristics().get(levelManager.getBlock(i));
-			if(defenceHeuristic != null)
-			drawShape.drawString("BN " + defenceHeuristic.dangerH,
-								 (int)(levelManager.getBlock(i).getCentre()[0] + panningManager.getOffset()[0]), 
-								 (int)(levelManager.getBlock(i).getCentre()[1] + panningManager.getOffset()[1] + 20));
-		}
-	}
+//	private void drawAiThreats(Graphics2D drawShape) {
+//		for(int i = 0; i < levelManager.getBlocks().length; i++) {
+//			DefenceHeuristic defenceHeuristic = combatMembersManager.getCommander(AiGenerator.WHITE_VISTA).getDefenceHeuristics().get(levelManager.getBlock(i));
+//			drawShape.setColor(Color.white);
+//			if(defenceHeuristic != null)
+//			drawShape.drawString("WV " + defenceHeuristic.dangerH,
+//								 (int)(levelManager.getBlock(i).getCentre()[0] + panningManager.getOffset()[0]), 
+//								 (int)(levelManager.getBlock(i).getCentre()[1] + panningManager.getOffset()[1]));
+//			drawShape.setColor(Color.red);
+//			defenceHeuristic = combatMembersManager.getCommander(AiGenerator.BANDITS).getDefenceHeuristics().get(levelManager.getBlock(i));
+//			if(defenceHeuristic != null)
+//			drawShape.drawString("BN " + defenceHeuristic.dangerH,
+//								 (int)(levelManager.getBlock(i).getCentre()[0] + panningManager.getOffset()[0]), 
+//								 (int)(levelManager.getBlock(i).getCentre()[1] + panningManager.getOffset()[1] + 20));
+//		}
+//	}
 
 	private void drawKillRadius(Graphics2D drawShape){
 		if(combatMembersManager.getCurrentAi() != null){
@@ -156,10 +132,6 @@ public class LineDrawer implements Displayable{
 	
 	private void drawFov(Graphics2D drawShape, Ai ai){
 		drawFov(drawShape, ai, ai.getEditLookAngle(), Color.white);
-	}
-	
-	private void drawOldFov(Graphics2D drawShape, Ai ai){
-//		drawFov(drawShape, ai, ai.getLookAngle(), Color.orange);
 	}
 	
 	private void drawFov(Graphics2D drawShape, Ai ai, double angle, Color lineColour){

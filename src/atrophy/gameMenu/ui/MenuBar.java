@@ -130,7 +130,7 @@ public class MenuBar extends Crowd{
 				int returnValue = chooser.showSaveDialog(new JFrame());
 				
 				if(returnValue == JFileChooser.APPROVE_OPTION){
-					SaveFile.saveGame(chooser.getSelectedFile(), squad, missions, mapWar.getSectors(), stashManager.getItems(), techTree, missions.getMemCodes(), windowManager);
+					SaveFile.saveGame(chooser.getSelectedFile(), squad, missions, mapWar.getSectors(), stashManager.getItems(), missions.getMemCodes(), windowManager);
 					ActivePane.getInstance().setVisible(true);
 				}
 				else{

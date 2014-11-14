@@ -1,6 +1,3 @@
-/*
- * 
- */
 package atrophy.combat.display;
 
 import java.awt.Graphics2D;
@@ -132,6 +129,7 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 		this.setLocation(this.getAi().getLocation()[0], this.getAi().getLocation()[1]);
 	}
 	
+	@Override
 	public void updateMask(){
 		if(this.getAi().isDead()){
 			this.setLocation(this.getAi().getLocation()[0], this.getAi().getLocation()[1]);
@@ -180,6 +178,7 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 		}
 	}
 	
+	@Override
 	public boolean mD(Point mousePosition, MouseEvent e){
 		if(combatVisualManager.isTabled() && CombatKeyboardHandler.SHIFT_DOWN && combatVisualManager.getDraggableAi() == null){
 			dragging = true;
@@ -189,6 +188,7 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 		return false;
 	}
 
+	@Override
 	public boolean mU(Point mousePosition, MouseEvent e){
 		if(combatVisualManager.isTabled() && combatVisualManager.getDraggableAi() == this.getAi()){
 			dragging = false;
@@ -206,6 +206,7 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 		return false;	
 	}
 	
+	@Override
 	public boolean mC(Point mousePosition, MouseEvent e){
 		if(!mouseAbilityHandler.isSettingAbility()){
 			
@@ -262,10 +263,12 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 		return editedLocation;
 	}
 	
+	@Override
 	public String getUiHint(){
 		return this.getAi().getFaction() + ": " + this.getAi().getName();
 	}
 	
+	@Override
 	public int getHintLines(){
 		return 1;
 	}

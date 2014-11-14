@@ -16,7 +16,6 @@ import java.awt.event.MouseListener;
 import java.awt.event.WindowEvent;
 import java.awt.event.WindowListener;
 import java.awt.image.BufferStrategy;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.concurrent.Semaphore;
@@ -151,6 +150,7 @@ public class ActivePane extends JFrame implements MouseListener, KeyListener, Wi
 		rootCrowdLoaded = false;
 		
 		Thread loadFrame = new Thread(){
+			@Override
 			public void run() {
 				// Load the first frame
 				Crowd initialRootCrowd  = new Crowd(new SplashPane());
@@ -179,6 +179,7 @@ public class ActivePane extends JFrame implements MouseListener, KeyListener, Wi
 		this.repaint();
 		SwingUtilities.invokeLater(
 		new Thread() {
+			@Override
 			public void run() {
 				try {
 					loadedMutex.acquire();
@@ -203,6 +204,7 @@ public class ActivePane extends JFrame implements MouseListener, KeyListener, Wi
 		this.repaint();		
 	}
 	
+	@Override
 	public void mousePressed(MouseEvent e){
 		
 		requestFocus();
@@ -243,7 +245,8 @@ public class ActivePane extends JFrame implements MouseListener, KeyListener, Wi
 		}
     }
 	
-    public void mouseReleased(MouseEvent e){
+    @Override
+	public void mouseReleased(MouseEvent e){
     	
     	Point mousePosition = new Point(MouseInfo.getPointerInfo().getLocation());
 		SwingUtilities.convertPointFromScreen(mousePosition, this);
@@ -271,11 +274,14 @@ public class ActivePane extends JFrame implements MouseListener, KeyListener, Wi
 		}
     }
     
-    public void mouseEntered(MouseEvent e){}
+    @Override
+	public void mouseEntered(MouseEvent e){}
 
-    public void mouseExited(MouseEvent e){}
+    @Override
+	public void mouseExited(MouseEvent e){}
 
-    public void mouseClicked(MouseEvent e){}
+    @Override
+	public void mouseClicked(MouseEvent e){}
     
     public void mouseEntered(){
     	try {
@@ -302,7 +308,8 @@ public class ActivePane extends JFrame implements MouseListener, KeyListener, Wi
     	}
     }
     
-    public void keyReleased(KeyEvent e){
+    @Override
+	public void keyReleased(KeyEvent e){
     	for(int i = 0; i < rootCrowd.getKeyboardActionList().size(); i++){
     		if(rootCrowd.getKeyboardActionList().get(i).isFocused()){
     			if(rootCrowd.getKeyboardActionList().get(i).kU(e))
@@ -311,7 +318,8 @@ public class ActivePane extends JFrame implements MouseListener, KeyListener, Wi
     	}
     }
 
-    public void keyPressed(KeyEvent e){
+    @Override
+	public void keyPressed(KeyEvent e){
     	for(int i = 0; i < rootCrowd.getKeyboardActionList().size(); i++){
     		if(rootCrowd.getKeyboardActionList().get(i).isFocused()){
     			if(rootCrowd.getKeyboardActionList().get(i).kD(e))
@@ -320,6 +328,7 @@ public class ActivePane extends JFrame implements MouseListener, KeyListener, Wi
     	}
     }
 
+	@Override
 	public void keyTyped(KeyEvent e){
 		for(int i = 0; i < rootCrowd.getKeyboardActionList().size(); i++){
 			if(rootCrowd.getKeyboardActionList().get(i).isFocused()){
@@ -329,6 +338,7 @@ public class ActivePane extends JFrame implements MouseListener, KeyListener, Wi
     	}
 	}
     
+   @Override
    public void paint(Graphics g){
 
 	   dBuffer = (Graphics2D) bufferS.getDrawGraphics();

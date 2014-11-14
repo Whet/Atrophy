@@ -26,7 +26,7 @@ public class AiGeneratorInterface {
 		
 		protected Double x,y;
 		
-		private String faction;
+		private Faction faction;
 		
 		private int maxTeamSize;
 		
@@ -38,7 +38,7 @@ public class AiGeneratorInterface {
 
 		private List<String> allowedItems;
 		
-		public GenerateCommand(int minTeamSize, int maxTeamSize, List<String> allowedItems, List<String> allowedWeapons, String faction){
+		public GenerateCommand(int minTeamSize, int maxTeamSize, List<String> allowedItems, List<String> allowedWeapons, Faction faction){
 			this.minTeamSize = minTeamSize;
 			this.maxTeamSize = maxTeamSize;
 			this.faction = faction;
@@ -47,13 +47,13 @@ public class AiGeneratorInterface {
 			this.directorClass = DirectorArchetype.UNDECIDED;
 		}
 
-		public GenerateCommand(ArrayList<Squaddie> squad, String faction) {
+		public GenerateCommand(ArrayList<Squaddie> squad, Faction faction) {
 			this.squad = squad;
 			this.faction = faction;
 		}
 
 
-		public String getFaction() {
+		public Faction getFaction() {
 			return faction;
 		}
 
@@ -73,7 +73,7 @@ public class AiGeneratorInterface {
 			this.minTeamSize = minTeamSize;
 		}
 
-		public void setFaction(String faction) {
+		public void setFaction(Faction faction) {
 			this.faction = faction;
 		}
 
@@ -109,7 +109,7 @@ public class AiGeneratorInterface {
 	public static class TurretGenerateCommand extends GenerateCommand{
 		
 		public TurretGenerateCommand(double x, double y){
-			super(1, 1, null, null, AiGenerator.TURRET);
+			super(1, 1, null, null, Faction.TURRET);
 			this.x = x;
 			this.y = y;
 		}
@@ -118,11 +118,12 @@ public class AiGeneratorInterface {
 	public static class SoloGenerateCommand extends GenerateCommand{
 		
 		private String name, weapon;
-		private String[] items, alliances;
+		private String[] items;
+		private Faction[] alliances;
 		private AiNode aiNode;
 		private boolean isDaemon;
 		
-		public SoloGenerateCommand(double x, double y, String faction, boolean isDaemon, String name, String weapon, String[] items){
+		public SoloGenerateCommand(double x, double y, Faction faction, boolean isDaemon, String name, String weapon, String[] items){
 			super(1, 1, null, null, faction);
 			this.x = x;
 			this.y = y;
@@ -133,7 +134,7 @@ public class AiGeneratorInterface {
 			this.items = items;
 		}
 		
-		public SoloGenerateCommand(String faction, boolean isDaemon, String name, String weapon, String[] items){
+		public SoloGenerateCommand(Faction faction, boolean isDaemon, String name, String weapon, String[] items){
 			super(1, 1, null, null, faction);
 			
 			this.isDaemon = isDaemon;
@@ -142,7 +143,7 @@ public class AiGeneratorInterface {
 			this.items = items;
 		}
 		
-		public SoloGenerateCommand(String faction, DirectorArchetype directorClass, boolean isDaemon, String name, String weapon, String[] items){
+		public SoloGenerateCommand(Faction faction, DirectorArchetype directorClass, boolean isDaemon, String name, String weapon, String[] items){
 			super(1, 1, null, null, faction);
 			
 			this.isDaemon = isDaemon;
@@ -176,11 +177,11 @@ public class AiGeneratorInterface {
 			return aiNode;
 		}
 
-		public void setAlliances(String[] alliances) {
+		public void setAlliances(Faction[] alliances) {
 			this.alliances = alliances;
 		}
 
-		public String[] getAlliances() {
+		public Faction[] getAlliances() {
 			return alliances;
 		}
 		
@@ -190,8 +191,8 @@ public class AiGeneratorInterface {
 
 		public static final String AXE = "Axe";
 		
-		public DaemonRandomSpawn(String daemonType) {
-			super(1, 1, null, null, AiGenerator.DAEMON);
+		public DaemonRandomSpawn(@SuppressWarnings("unused") String daemonType) {
+			super(1, 1, null, null, Faction.DAEMON);
 		}
 		
 	}

@@ -3,7 +3,6 @@ package atrophy.combat.ai;
 import java.util.ArrayList;
 
 import watoydoEngine.utils.Maths;
-import atrophy.combat.CombatNCEManager;
 import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatUiManager;
 import atrophy.combat.CombatVisualManager;
@@ -21,8 +20,8 @@ public class LonerAi extends ThinkingAi{
 	private AiCrowd aiCrowd;
 	private CombatMembersManager combatMembersManager;
 	
-	public LonerAi(PanningManager panningManager, AiCrowd aiCrowd,CombatVisualManager combatVisualManager, TurnProcess turnProcess, FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, CombatMembersManager combatMembersManager, String randomName, double x, double y, LevelManager levelManager, CombatNCEManager combatInorganicManager, CombatUiManager combatUiManager, LootBox lootBox, DialoguePool dialoguePool) {
-		super(dialoguePool, panningManager, combatVisualManager, turnProcess, floatingIcons, mouseAbilityHandler, aiCrowd, combatMembersManager, randomName,x,y, levelManager, combatInorganicManager, combatUiManager, lootBox);
+	public LonerAi(PanningManager panningManager, AiCrowd aiCrowd,CombatVisualManager combatVisualManager, TurnProcess turnProcess, FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, CombatMembersManager combatMembersManager, String randomName, double x, double y, LevelManager levelManager, CombatUiManager combatUiManager, LootBox lootBox, DialoguePool dialoguePool) {
+		super(dialoguePool, panningManager, combatVisualManager, turnProcess, floatingIcons, mouseAbilityHandler, aiCrowd, combatMembersManager, randomName,x,y, levelManager, combatUiManager, lootBox);
 		this.aiCrowd = aiCrowd;
 		this.combatMembersManager = combatMembersManager;
 	}
@@ -52,6 +51,7 @@ public class LonerAi extends ThinkingAi{
 		return false;
 	}
 	
+	@Override
 	protected void engageWithHostiles(){
 
 		int enemyCount = 0;

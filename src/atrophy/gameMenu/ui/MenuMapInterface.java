@@ -12,13 +12,12 @@ import org.antlr.runtime.RecognitionException;
 
 import watoydoEngine.designObjects.display.Crowd;
 import watoydoEngine.workings.displayActivity.ActivePane;
-import atrophy.combat.CombatNCEManager;
 import atrophy.combat.actions.ActionSuite;
-import atrophy.combat.ai.AiGenerator;
 import atrophy.combat.ai.AiGeneratorInterface;
-import atrophy.combat.ai.AiGeneratorInterface.SoloGenerateCommand;
-import atrophy.combat.ai.SpecialCharacterGenerator;
 import atrophy.combat.ai.AiGeneratorInterface.GenerateCommand;
+import atrophy.combat.ai.AiGeneratorInterface.SoloGenerateCommand;
+import atrophy.combat.ai.Faction;
+import atrophy.combat.ai.SpecialCharacterGenerator;
 import atrophy.combat.display.AiManagementSuite;
 import atrophy.combat.display.ui.UiUpdaterSuite;
 import atrophy.combat.level.Level;
@@ -34,9 +33,7 @@ import atrophy.hardPanes.CombatHardPane;
 
 public class MenuMapInterface {
 	
-//	private static final int DAEMON_SPAWN_CHANCE = 2;
-
-	public static void loadLevel(final File chosenLevel, final String owner, final Squad squad, final int engineeringChance, final int medicalChance, final int weaponChance, final int scienceChance, final Missions missions, final ItemMarket itemMarket, final TechTree techTree, final StashManager stashManager, final String sector) throws IOException, RecognitionException {
+	public static void loadLevel(final File chosenLevel, final Faction owner, final Squad squad, final int engineeringChance, final int medicalChance, final int weaponChance, final int scienceChance, final Missions missions, final ItemMarket itemMarket, final TechTree techTree, final StashManager stashManager, final String sector) throws IOException, RecognitionException {
 
 		ActivePane.getInstance().showLoading();
 		
@@ -44,12 +41,11 @@ public class MenuMapInterface {
 		
 		final TurnProcess turnProcess = new TurnProcess();
 		final LevelManager levelManager = new LevelManager();
-		final CombatNCEManager combatInorganicManager = new CombatNCEManager(levelManager);
-		final AiManagementSuite aiManagementSuite = new AiManagementSuite(turnProcess, combatInorganicManager, levelManager, squad);
-		final UiUpdaterSuite uiUpdaterSuite = new UiUpdaterSuite(aiManagementSuite, turnProcess, levelManager, combatInorganicManager);
+		final AiManagementSuite aiManagementSuite = new AiManagementSuite(turnProcess, levelManager, squad);
+		final UiUpdaterSuite uiUpdaterSuite = new UiUpdaterSuite(aiManagementSuite, turnProcess, levelManager);
 		final MissionManager missionManager = new MissionManager(missions, uiUpdaterSuite.getCombatUiManager().getLargeEventText());
-		final ActionSuite actionSuite = new ActionSuite(aiManagementSuite, uiUpdaterSuite, turnProcess, levelManager, squad, techTree, stashManager, missions, missionManager);
-		final Level level = LevelIO.loadLevel(chosenLevel, owner, engineeringChance, medicalChance, weaponChance, scienceChance, uiUpdaterSuite.getPanningManager(), turnProcess, uiUpdaterSuite.getMessageBox(), aiManagementSuite.getAiCrowd(), aiManagementSuite.getCombatMembersManager(), missions, missionManager, generationCommands, itemMarket, techTree, stashManager, uiUpdaterSuite.getCombatVisualManager());
+		final ActionSuite actionSuite = new ActionSuite(aiManagementSuite, uiUpdaterSuite, turnProcess, levelManager, techTree, stashManager, missions, missionManager);
+		final Level level = LevelIO.loadLevel(chosenLevel, owner, engineeringChance, medicalChance, weaponChance, scienceChance, uiUpdaterSuite.getPanningManager(), turnProcess, uiUpdaterSuite.getMessageBox(), aiManagementSuite.getAiCrowd(), aiManagementSuite.getCombatMembersManager(), missions, missionManager, itemMarket, techTree, stashManager, uiUpdaterSuite.getCombatVisualManager());
 
 		SwingUtilities.invokeLater(new Runnable() {
 			
@@ -63,23 +59,16 @@ public class MenuMapInterface {
 				uiUpdaterSuite.lazyLoad(actionSuite.getMouseAbilityHandler(), aiManagementSuite.getAiCrowd(), levelManager, actionSuite.getCombatMouseHandler(), turnProcess);
 				// Moved from A. without checking		
 				aiManagementSuite.lazyLoad(uiUpdaterSuite, actionSuite.getMouseAbilityHandler());
-				setSpawns(owner, levelManager, squad, itemMarket, generationCommands, missions, sector);
-				turnProcess.lazyLoad(missionManager, aiManagementSuite, uiUpdaterSuite, combatInorganicManager, actionSuite);
+				setSpawns(levelManager, squad, itemMarket, generationCommands, missions, sector);
+				turnProcess.lazyLoad(missionManager, aiManagementSuite, uiUpdaterSuite, actionSuite);
 				
-				ActivePane.getInstance().changeRootCrowd(new Crowd(new CombatHardPane(turnProcess, aiManagementSuite, uiUpdaterSuite, actionSuite, levelManager, aiManagementSuite.getAiCrowd(), combatInorganicManager, generationCommands, missionManager, missions, uiUpdaterSuite.getCartographer(), uiUpdaterSuite.getMessageBox())));
+				ActivePane.getInstance().changeRootCrowd(new Crowd(new CombatHardPane(turnProcess, aiManagementSuite, uiUpdaterSuite, actionSuite, levelManager, aiManagementSuite.getAiCrowd(), generationCommands, missionManager, uiUpdaterSuite.getMessageBox())));
 			}
 		});
 		
 	}
 
-	private static void setSpawns(String owner, LevelManager levelManager, Squad squad, ItemMarket itemMarket, List<AiGeneratorInterface.GenerateCommand> generationCommands, Missions missions, String sector) {
-		
-//		if(new Random().nextInt(10) < DAEMON_SPAWN_CHANCE && levelManager.getCurrentLevel().allowedSpawn(AiGenerator.DAEMON)) {
-//			// Spawn daemon only map
-//			generationCommands.add(new AiGeneratorInterface.DaemonRandomSpawn(AiGeneratorInterface.DaemonRandomSpawn.AXE));
-//			generationCommands.add(new GenerateCommand(squad.getSquad(), AiGenerator.PLAYER));
-//			return;
-//		}
+	private static void setSpawns(LevelManager levelManager, Squad squad, ItemMarket itemMarket, List<AiGeneratorInterface.GenerateCommand> generationCommands, Missions missions, String sector) {
 		
 		int banditTeamSpawn = levelManager.getBlocks().length / 5 + 1;
 		
@@ -94,24 +83,24 @@ public class MenuMapInterface {
 		int lonerTeamSpawn = new Random().nextInt(4);
 		
 		// Cancel spawns if not specified
-		if(!levelManager.getCurrentLevel().allowedSpawn(AiGenerator.BANDITS))
+		if(!levelManager.getCurrentLevel().allowedSpawn(Faction.BANDITS))
 			banditTeamSpawn = 0;
 		
-		if(!levelManager.getCurrentLevel().allowedSpawn(AiGenerator.WHITE_VISTA))
+		if(!levelManager.getCurrentLevel().allowedSpawn(Faction.WHITE_VISTA))
 			whiteVistaTeamSpawn = 0;
 		
-		if(!levelManager.getCurrentLevel().allowedSpawn(AiGenerator.LONER))
+		if(!levelManager.getCurrentLevel().allowedSpawn(Faction.LONER))
 			lonerTeamSpawn = 0;
 		
 		for(int i = 0; i < banditTeamSpawn; i++){
 			SoloGenerateCommand specialCharacter = null;
 			
 			if(new Random().nextInt(10) < 1)
-				specialCharacter = SpecialCharacterGenerator.specialCharacters(missions, itemMarket.getBanditsAllowedItems(), itemMarket.getBanditsAllowedWeapons(), AiGenerator.BANDITS, sector);
+				specialCharacter = SpecialCharacterGenerator.specialCharacters(missions, Faction.BANDITS, sector);
 			
 			// There may be no available special characters
 			if(specialCharacter == null)
-				generationCommands.add(new GenerateCommand(1, 2, itemMarket.getBanditsAllowedItems(), itemMarket.getBanditsAllowedWeapons(), AiGenerator.BANDITS));
+				generationCommands.add(new GenerateCommand(1, 2, itemMarket.getBanditsAllowedItems(), itemMarket.getBanditsAllowedWeapons(), Faction.BANDITS));
 			else
 				generationCommands.add(specialCharacter);
 			
@@ -120,11 +109,11 @@ public class MenuMapInterface {
 			SoloGenerateCommand specialCharacter = null;
 			
 			if(new Random().nextInt(10) < 1)
-				specialCharacter = SpecialCharacterGenerator.specialCharacters(missions, itemMarket.getWhiteVistaAllowedItems(), itemMarket.getWhiteVistaAllowedWeapons(), AiGenerator.WHITE_VISTA, sector);
+				specialCharacter = SpecialCharacterGenerator.specialCharacters(missions, Faction.WHITE_VISTA, sector);
 			
 			// There may be no available special characters
 			if(specialCharacter == null)
-				generationCommands.add(new GenerateCommand(1, 2, itemMarket.getWhiteVistaAllowedItems(), itemMarket.getWhiteVistaAllowedWeapons(), AiGenerator.WHITE_VISTA));
+				generationCommands.add(new GenerateCommand(1, 2, itemMarket.getWhiteVistaAllowedItems(), itemMarket.getWhiteVistaAllowedWeapons(), Faction.WHITE_VISTA));
 			else
 				generationCommands.add(specialCharacter);
 		}
@@ -132,16 +121,16 @@ public class MenuMapInterface {
 			SoloGenerateCommand specialCharacter = null;
 			
 			if(new Random().nextInt(10) < 1)
-				specialCharacter = SpecialCharacterGenerator.specialCharacters(missions, itemMarket.getLonerAllowedItems(), itemMarket.getLonerAllowedWeapons(), AiGenerator.LONER, sector);
+				specialCharacter = SpecialCharacterGenerator.specialCharacters(missions, Faction.LONER, sector);
 			
 			// There may be no available special characters
 			if(specialCharacter == null)
-				generationCommands.add(new GenerateCommand(1, 2, itemMarket.getLonerAllowedItems(), itemMarket.getLonerAllowedWeapons(), AiGenerator.LONER));
+				generationCommands.add(new GenerateCommand(1, 2, itemMarket.getLonerAllowedItems(), itemMarket.getLonerAllowedWeapons(), Faction.LONER));
 			else
 				generationCommands.add(specialCharacter);
 		}
 
-		generationCommands.add(new GenerateCommand(squad.getSquad(), AiGenerator.PLAYER));
+		generationCommands.add(new GenerateCommand(squad.getSquad(), Faction.PLAYER));
 		
 		
 	}

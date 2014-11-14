@@ -32,6 +32,7 @@ public abstract class Weapon extends Item {
 	
 	public abstract int getDamage();
 	
+	@Override
 	public abstract String getName();
 	
 	public int getAmmoLeft(){
@@ -94,6 +95,7 @@ public abstract class Weapon extends Item {
 		return false;
 	}
 	
+	@Override
 	public abstract String getDescription();
 	
 	public abstract VisualEffect getFireEffect(PanningManager panningManagers, double[] location, double[] targetLocation);

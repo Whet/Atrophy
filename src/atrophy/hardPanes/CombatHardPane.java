@@ -4,7 +4,6 @@ import java.util.List;
 
 import watoydoEngine.designObjects.display.Crowd;
 import watoydoEngine.hardPanes.HardPaneDefineable;
-import atrophy.combat.CombatNCEManager;
 import atrophy.combat.actions.ActionSuite;
 import atrophy.combat.actions.MousePanner;
 import atrophy.combat.ai.AiGenerator;
@@ -14,13 +13,11 @@ import atrophy.combat.combatEffects.PowerManager;
 import atrophy.combat.display.AiCrowd;
 import atrophy.combat.display.AiManagementSuite;
 import atrophy.combat.display.MapPainter;
-import atrophy.combat.display.ui.Cartographer;
 import atrophy.combat.display.ui.MessageBox;
 import atrophy.combat.display.ui.UiUpdaterSuite;
 import atrophy.combat.level.LevelManager;
 import atrophy.combat.level.MissionManager;
 import atrophy.combat.mechanics.TurnProcess;
-import atrophy.gameMenu.saveFile.Missions;
 
 
 public class CombatHardPane implements HardPaneDefineable {
@@ -31,34 +28,29 @@ public class CombatHardPane implements HardPaneDefineable {
 	private ActionSuite actionSuite;
 	private LevelManager levelManager;
 	private AiCrowd aiCrowd;
-	private CombatNCEManager combatInorganicManager;
 	private List<AiGeneratorInterface.GenerateCommand> generationCommands;
 	private MissionManager missionManager;
-	private Missions missions;
-	private Cartographer cartographer;
 	private MessageBox messageBox;
 	
-	public CombatHardPane(TurnProcess turnProcess, AiManagementSuite aiManagementSuite, UiUpdaterSuite uiUpdaterSuite, ActionSuite actionSuite, LevelManager levelManager, AiCrowd aiCrowd, CombatNCEManager combatInorganicManager, List<GenerateCommand> generationCommands, MissionManager missionManager, Missions missions, Cartographer cartographer, MessageBox messageBox) {
+	public CombatHardPane(TurnProcess turnProcess, AiManagementSuite aiManagementSuite, UiUpdaterSuite uiUpdaterSuite, ActionSuite actionSuite, LevelManager levelManager, AiCrowd aiCrowd, List<GenerateCommand> generationCommands, MissionManager missionManager, MessageBox messageBox) {
 		this.turnProcess = turnProcess;
 		this.aiManagementSuite = aiManagementSuite;
 		this.uiUpdaterSuite = uiUpdaterSuite;
 		this.actionSuite = actionSuite;
 		this.levelManager = levelManager;
 		this.aiCrowd = aiCrowd;
-		this.combatInorganicManager = combatInorganicManager;
 		this.generationCommands = generationCommands;
 		this.missionManager = missionManager;
-		this.missions = missions;
-		this.cartographer = cartographer;
 		this.messageBox = messageBox;
 	}
 	
+	@Override
 	public void load(Crowd crowd){
 		
 		//Load images
 		MapPainter.loadTextures();
 		
-		AiGenerator aiGenerator = new AiGenerator(aiManagementSuite.getAiCrowd(), aiManagementSuite.getCombatMembersManager(), uiUpdaterSuite.getCombatUiManager(), uiUpdaterSuite.getCombatVisualManager(), levelManager, uiUpdaterSuite.getPanningManager(), actionSuite.getMouseAbilityHandler(), turnProcess, uiUpdaterSuite.getFloatingIcons(), combatInorganicManager, uiUpdaterSuite.getLootBox(), missions, missionManager, cartographer, messageBox, uiUpdaterSuite.getMapDrawer());
+		AiGenerator aiGenerator = new AiGenerator(aiManagementSuite.getAiCrowd(), aiManagementSuite.getCombatMembersManager(), uiUpdaterSuite.getCombatUiManager(), uiUpdaterSuite.getCombatVisualManager(), levelManager, uiUpdaterSuite.getPanningManager(), actionSuite.getMouseAbilityHandler(), turnProcess, uiUpdaterSuite.getFloatingIcons(), uiUpdaterSuite.getLootBox(), missionManager, messageBox, uiUpdaterSuite.getMapDrawer());
 		aiGenerator.generateAi(generationCommands);
 		aiCrowd.getShuffledStack();
 		

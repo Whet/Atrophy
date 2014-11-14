@@ -11,7 +11,9 @@ public abstract class Judgement {
 	
 	private static class KillJudgement extends Judgement {
 		
+		@SuppressWarnings("unused")
 		private Ai target;
+		@SuppressWarnings("unused")
 		private Weapon weapon;
 		
 		public KillJudgement(Weapon weapon, Ai target) {

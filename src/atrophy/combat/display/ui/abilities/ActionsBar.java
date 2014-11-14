@@ -67,10 +67,6 @@ public class ActionsBar extends Crowd{
 			actionButtonMap.put("unitDetector", unitDetector);
 			this.addButton(unitDetector);
 			
-			KillTagAction killTag = new KillTagAction(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/scanRoom.png")));
-			actionButtonMap.put("killTag", killTag);
-			this.addButton(killTag);
-			
 			ScienceScanRoom scanObjectiveRoom = new ScienceScanRoom(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/scanRoom.png")));
 			actionButtonMap.put("scanObjectiveRoom", scanObjectiveRoom);
 			this.addButton(scanObjectiveRoom);
@@ -315,10 +311,12 @@ public class ActionsBar extends Crowd{
 			combatUiManager.getInfoText().removeInfoText(this);
 		}
 		
+		@Override
 		public String getUiHint(){
 			return "Stability: " + powerManager.getStability() + " (" + powerManager.getRankedStability() + ")";
 		}
 		
+		@Override
 		public int getHintLines(){
 			return 1;
 		}

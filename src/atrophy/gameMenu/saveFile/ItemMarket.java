@@ -8,7 +8,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.Set;
 
-import atrophy.combat.ai.AiGenerator;
+import atrophy.combat.ai.Faction;
 import atrophy.combat.items.ArmourPlates1;
 import atrophy.combat.items.ArmourPlates2;
 import atrophy.combat.items.EngineeringSupply;
@@ -92,19 +92,19 @@ public class ItemMarket {
 		while(itemIt.hasNext()){
 			String next = itemIt.next();
 			
-			if(itemData.get(next).isUnlocked(AiGenerator.LONER))
+			if(itemData.get(next).isUnlocked(Faction.LONER))
 				if(itemData.get(next).isWeapon)
 					weaponsInMarket.add(next);
 				else
 					itemsInMarket.add(next);
 			
-			if(itemData.get(next).isUnlocked(AiGenerator.BANDITS))
+			if(itemData.get(next).isUnlocked(Faction.BANDITS))
 				if(itemData.get(next).isWeapon)
 					banditWeapons.add(next);
 				else
 					banditItems.add(next);
 			
-			if(itemData.get(next).isUnlocked(AiGenerator.WHITE_VISTA))
+			if(itemData.get(next).isUnlocked(Faction.WHITE_VISTA))
 				if(itemData.get(next).isWeapon)
 					wvWeapons.add(next);
 				else
@@ -146,7 +146,7 @@ public class ItemMarket {
 			this.isWeapon = isWeapon;
 		}
 		
-		public boolean isUnlocked(String faction){
+		public boolean isUnlocked(Faction faction){
 			return techTree.isResearched(requiredTechnology, faction);
 		}
 	}

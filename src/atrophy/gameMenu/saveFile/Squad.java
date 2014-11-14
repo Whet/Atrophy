@@ -7,7 +7,7 @@ import java.util.Iterator;
 import java.util.List;
 
 import watoydoEngine.designObjects.display.Displayable;
-import atrophy.combat.ai.AiGenerator;
+import atrophy.combat.ai.Faction;
 import atrophy.combat.ai.MuleAi;
 import atrophy.combat.mechanics.Abilities;
 import atrophy.gameMenu.ui.Menu;
@@ -266,16 +266,16 @@ public class Squad implements Serializable {
 		this.banditRelation = banditRelation;
 	}
 
-	public void incrementFactionRelation(String faction, double increment) {
+	public void incrementFactionRelation(Faction faction, double increment) {
 		switch(faction) {
-			case AiGenerator.WHITE_VISTA:
+			case WHITE_VISTA:
 				this.whiteVistaRelation += increment;
 				if(whiteVistaRelation > 2)
 					whiteVistaRelation = 2.0;
 				else if(whiteVistaRelation < -2)
 					whiteVistaRelation = -2.0;
 			break;
-			case AiGenerator.BANDITS:
+			case BANDITS:
 				this.banditRelation += increment;
 				if(banditRelation > 2)
 					banditRelation = 2.0;
@@ -285,11 +285,11 @@ public class Squad implements Serializable {
 		}
 	}
 
-	public Double getFactionRelation(String faction) {
+	public Double getFactionRelation(Faction faction) {
 		switch(faction) {
-			case AiGenerator.WHITE_VISTA:
+			case WHITE_VISTA:
 			return this.whiteVistaRelation;
-			case AiGenerator.BANDITS:
+			case BANDITS:
 			return this.banditRelation;
 		}
 		return 0.0;

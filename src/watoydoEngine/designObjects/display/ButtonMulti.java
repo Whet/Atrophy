@@ -40,6 +40,7 @@ public abstract class ButtonMulti extends AbstractButton implements ImageDisplay
 		this.image = image;
 	}
 	
+	@Override
 	public void drawMethod(Graphics2D drawShape){
 		nextFrame();
 		drawShape.setComposite(GraphicsFunctions.makeComposite(this.getAlpha()));
@@ -85,6 +86,7 @@ public abstract class ButtonMulti extends AbstractButton implements ImageDisplay
 	}
 
 
+	@Override
 	public boolean isInBounds(double x, double y){
 		if(x >= (this.getLocation()[0]) && x <= (this.getLocation()[0] + (image[frame].getWidth() * this.getScale())) && y >= (this.getLocation()[1]) && y <= (this.getLocation()[1] + (image[frame].getHeight() * this.getScale()))){
 			return true;
@@ -92,11 +94,13 @@ public abstract class ButtonMulti extends AbstractButton implements ImageDisplay
 		return false;
 	}
 	
+	@Override
 	public double[] getLocationCentre(){
 		double editedLocation[] = {this.getLocation()[0] + this.getSize()[0] * 0.5, this.getLocation()[1] + this.getSize()[1] * 0.5};
 		return editedLocation;
 	}
 	
+	@Override
 	public double[] getSize(){
 		double[] size = new double[2];
 		if(image != null){
@@ -114,6 +118,7 @@ public abstract class ButtonMulti extends AbstractButton implements ImageDisplay
 		return playing;
 	}
 	
+	@Override
 	public BufferedImage getImage(){
 		return this.image[frame];
 	}
@@ -126,6 +131,7 @@ public abstract class ButtonMulti extends AbstractButton implements ImageDisplay
 		this.image = image;
 	}
 	
+	@Override
 	public void setImage(BufferedImage image){
 		this.image[0] = image;
 	}
