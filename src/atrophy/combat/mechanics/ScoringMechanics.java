@@ -38,7 +38,7 @@ public class ScoringMechanics {
 	}
 	
 	private static boolean damagedtarget(int damage, int armour) {
-		return damage > armour * Math.random();
+		return damage - armour >= new Random().nextInt(100);
 	}
 
 	private static boolean hitTarget(Ai ai, Ai targetAi){

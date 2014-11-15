@@ -18,7 +18,7 @@ public class ArmourPlates2 extends Item {
 	}
 	
 	private ArmourPlates2(){
-		super(NAME,"- Reduces chance of a hit being fatal by " + ARMOUR_VALUE + "%");
+		super(NAME,"- Dramatically reduce chance of a hit being fatal");
 	}
 	
 }

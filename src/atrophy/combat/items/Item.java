@@ -99,6 +99,9 @@ public abstract class Item {
 			case "PlasmaRifle+":
 				returnName = "Plasma Rifle+";
 			break;
+			case "Railgun":
+				returnName = "Railgun";
+			break;
 			case "ScrapWeapon":
 				returnName = "Scrap Weapon";
 			break;

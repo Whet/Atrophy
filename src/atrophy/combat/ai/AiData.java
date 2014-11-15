@@ -60,8 +60,8 @@ public class AiData {
 	
 	public AiData(MouseAbilityHandler mouseAbilityHandler, Ai invoker, Weapon weapon){
 		
-		this.defaultArmour = 15;
-		this.armour = 15;
+		this.defaultArmour = 0;
+		this.armour = 0;
 		
 		this.fov = DEFAULT_FOV;
 		this.defaultFov = fov;
