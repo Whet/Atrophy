@@ -13,9 +13,7 @@ import atrophy.combat.level.LevelBlock;
 import atrophy.combat.level.LevelManager;
 import atrophy.combat.mechanics.TurnProcess;
 
-public class DaemonAi extends ThinkingAi {
-
-	private LevelManager levelManager;
+public abstract class DaemonAi extends ThinkingAi {
 
 	public DaemonAi(PanningManager panningManager,
 			CombatVisualManager combatVisualManager, TurnProcess turnProcess,
@@ -27,22 +25,6 @@ public class DaemonAi extends ThinkingAi {
 		super(dialoguePool, panningManager, combatVisualManager, turnProcess, floatingIcons,
 				mouseAbilityHandler, aiCrowd, combatMembersManager, name, x, y,
 				levelManager, combatUiManager, lootBox);
-		this.levelManager = levelManager;
-	}
-	
-	@Override
-	public void setDead(Ai killer, boolean dead) {
-		if(dead) {
-			LevelBlock randomRoom;
-			do {
-				randomRoom = levelManager.randomRoom();
-			}
-			while(randomRoom == this.getLevelBlock());
-				
-			this.setLocation(levelManager.randomInPosition(randomRoom));
-			this.setLevelBlock(randomRoom);
-			this.setMoveLocationToSelf();
-		}
 	}
 	
 	@Override

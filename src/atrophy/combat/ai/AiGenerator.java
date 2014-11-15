@@ -225,16 +225,9 @@ public class AiGenerator{
 		
 		switch(command.getFaction()){
 			case LONER:
-				if(command.isDaemon()) {
-					ai = new DaemonAi(panningManager, combatVisualManager, turnProcess, floatingIcons, mouseAbilityHandler, aiCrowd, combatMembersManager, command.getName(),location[0],location[1], levelManager, combatUiManager, lootbox, dialoguePool);
-					ai.setBaseAggression(ThinkingAiEmotion.MINDLESS_TERROR);
-					aiImg = new DaemonImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager,location[0],location[1], mouseAbilityHandler, floatingIcons);
-				}
-				else {
-					ai = new LonerAi(panningManager, aiCrowd, combatVisualManager, turnProcess, floatingIcons, mouseAbilityHandler, combatMembersManager, command.getName(),location[0],location[1], levelManager, combatUiManager, lootbox, dialoguePool);
-					ai.setBaseAggression(ThinkingAiEmotion.PASSIVE_RESPOND);
-					ai.setImage(randomImage());
-				}
+				ai = new LonerAi(panningManager, aiCrowd, combatVisualManager, turnProcess, floatingIcons, mouseAbilityHandler, combatMembersManager, command.getName(),location[0],location[1], levelManager, combatUiManager, lootbox, dialoguePool);
+				ai.setBaseAggression(ThinkingAiEmotion.PASSIVE_RESPOND);
+				ai.setImage(randomImage());
 				ai.setTeam(team+Faction.LONER.toString());
 			break;
 			case WHITE_VISTA:
@@ -289,30 +282,30 @@ public class AiGenerator{
 	}
 	
 	private void generateDaemonAi(DaemonRandomSpawn command, int squadCount) {
-		double[] location = levelManager.randomPosition();
-		
-		AiImage aiImg = new AiImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, 0,0, mouseAbilityHandler, floatingIcons);
-		ThinkingAi ai = null;
-		
-		DialoguePool dialoguePool = new DialoguePool(missionManager, messageBox);
-		
-		ai = new DaemonAi(panningManager, combatVisualManager, turnProcess, floatingIcons, mouseAbilityHandler, aiCrowd, combatMembersManager, randomDaemonName(),location[0],location[1], levelManager, combatUiManager, lootbox, dialoguePool);
-		ai.setBaseAggression(ThinkingAiEmotion.MINDLESS_TERROR);
-		aiImg = new DaemonImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager,location[0],location[1], mouseAbilityHandler, floatingIcons);
-		ai.setTeam(squadCount+Faction.DAEMON.toString());
-		
-		ai.setWeapon(new DaemonWeapon());
-		
-		ai.assignAbilities();
-		aiImg.setAi(ai);
-		
-		aiCrowd.addDisplayItem(aiImg);
-		aiCrowd.addMouseActionItem(aiImg);
-		
-		aiCrowd.addActor(ai, new DirectorClassification(DirectorArchetype.UNDECIDED));
-		aiCrowd.addMask(aiImg);
-		
-		combatMembersManager.addAi(ai);
+//		double[] location = levelManager.randomPosition();
+//		
+//		AiImage aiImg = new AiImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, 0,0, mouseAbilityHandler, floatingIcons);
+//		ThinkingAi ai = null;
+//		
+//		DialoguePool dialoguePool = new DialoguePool(missionManager, messageBox);
+//		
+//		ai = new DaemonAi(panningManager, combatVisualManager, turnProcess, floatingIcons, mouseAbilityHandler, aiCrowd, combatMembersManager, randomDaemonName(),location[0],location[1], levelManager, combatUiManager, lootbox, dialoguePool);
+//		ai.setBaseAggression(ThinkingAiEmotion.MINDLESS_TERROR);
+//		aiImg = new DaemonImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager,location[0],location[1], mouseAbilityHandler, floatingIcons);
+//		ai.setTeam(squadCount+Faction.DAEMON.toString());
+//		
+//		ai.setWeapon(new DaemonWeapon());
+//		
+//		ai.assignAbilities();
+//		aiImg.setAi(ai);
+//		
+//		aiCrowd.addDisplayItem(aiImg);
+//		aiCrowd.addMouseActionItem(aiImg);
+//		
+//		aiCrowd.addActor(ai, new DirectorClassification(DirectorArchetype.UNDECIDED));
+//		aiCrowd.addMask(aiImg);
+//		
+//		combatMembersManager.addAi(ai);
 	}
 
 	private void generatePlayerTeam(ArrayList<Squaddie> squad, LevelBlock levelBlock) {
