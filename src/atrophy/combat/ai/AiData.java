@@ -32,7 +32,7 @@ public class AiData {
 
 	public static final int INTERACTION_RANGE = 60;
 
-	private static final int DEFAULT_FOV = 120;
+	private static final int DEFAULT_FOV = 140;
 	
 	private Weapon weapon;
 	
