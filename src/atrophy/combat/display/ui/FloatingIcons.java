@@ -20,6 +20,7 @@ import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.ai.Ai;
+import atrophy.combat.ai.Faction;
 import atrophy.combat.combatEffects.Power;
 import atrophy.combat.combatEffects.PowerManager;
 import atrophy.combat.combatEffects.PowerManager.PowerEffect;
@@ -106,7 +107,7 @@ public class FloatingIcons extends Crowd{
 		while(pendingIt.hasNext()){
 			PendingPaint pender = pendingIt.next();
 			// if player can spot effect then apply it
-			if(combatVisualManager.isPointInSight(pender.location, "Player")){
+			if(combatVisualManager.isPointInSight(pender.location, Faction.PLAYER)){
 				MapPainter.applyImage(pender.getImage(), pender.getLocation(), pender.getAlpha(), mapDrawer);
 				pendingIt.remove();
 			}
