@@ -288,7 +288,7 @@ public class CombatVisualManager {
 		drawObjLines = drawLines;
 	}
 
-	public boolean isPointInSight(double[] location, String faction) {
+	public boolean isPointInSight(double[] location, Faction faction) {
 		// if any ai can spot the point return true
 		for(Ai ai : aiCrowd.getActors()){
 			if(!ai.isDead() && ai.getLevelBlock() == levelManager.getBlock(location) && ai.getFaction().equals(faction) && spotFov(ai, location)){

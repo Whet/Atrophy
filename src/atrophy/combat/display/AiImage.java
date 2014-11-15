@@ -17,6 +17,7 @@ import atrophy.combat.PanningManager;
 import atrophy.combat.actions.CombatKeyboardHandler;
 import atrophy.combat.actions.MouseAbilityHandler;
 import atrophy.combat.ai.Ai;
+import atrophy.combat.ai.Faction;
 import atrophy.combat.display.ui.FloatingIcons;
 import atrophy.combat.display.ui.InfoTextDisplayable;
 import atrophy.combat.items.DaemonWeapon;
@@ -211,7 +212,7 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 		if(!mouseAbilityHandler.isSettingAbility()){
 			
 			// Not dead and not ally and in the same room, aim weapon at this ai
-			if(!this.getAi().isDead() && !this.getAi().getFaction().equals("Player")){
+			if(!this.getAi().isDead() && !this.getAi().getFaction().equals(Faction.PLAYER)){
 				
 				if(this.getAi().getLevelBlock() == combatMembersManager.getCurrentAi().getLevelBlock() &&
 				   (combatMembersManager.getCurrentAi().getWeapon().ignoresLOS() || CombatVisualManager.isInFiringSight(combatMembersManager.getCurrentAi().getLocation()[0], combatMembersManager.getCurrentAi().getLocation()[1], this.getAi().getLocation()[0], this.getAi().getLocation()[1], this.getAi().getLevelBlock()))){
@@ -220,7 +221,7 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 				
 			}
 			// if not dead and ally then select them as current ai
-			else if(!this.getAi().isDead() && this.getAi().getFaction().equals("Player")){
+			else if(!this.getAi().isDead() && this.getAi().getFaction().equals(Faction.PLAYER)){
 				combatMembersManager.changeCurrentAi(this.getAi());
 				
 				// Update ui to show info for the selected ai

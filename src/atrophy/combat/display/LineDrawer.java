@@ -10,6 +10,7 @@ import atrophy.combat.CombatMembersManager;
 import atrophy.combat.CombatVisualManager;
 import atrophy.combat.PanningManager;
 import atrophy.combat.ai.Ai;
+import atrophy.combat.ai.Faction;
 
 public class LineDrawer implements Displayable{
 	
@@ -45,7 +46,7 @@ public class LineDrawer implements Displayable{
 					drawShootingLines(drawShape, aiCrowd.getMask(i).getAi());
 					
 					// draw friendly ai pathways if in sight
-					if(aiCrowd.getMask(i).getAi().getFaction().equals("Player")){
+					if(aiCrowd.getMask(i).getAi().getFaction().equals(Faction.PLAYER)){
 						// let us see all ai paths
 						drawAiPath(drawShape,aiCrowd.getMask(i).getAi());
 					}
