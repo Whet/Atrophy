@@ -288,7 +288,7 @@ public class AiGenerator{
 			}
 	}
 	
-	private void generateDaemonAi(@SuppressWarnings("unused") DaemonRandomSpawn command, int squadCount) {
+	private void generateDaemonAi(DaemonRandomSpawn command, int squadCount) {
 		double[] location = levelManager.randomPosition();
 		
 		AiImage aiImg = new AiImage(aiCrowd, combatMembersManager, combatUiManager, combatVisualManager, panningManager, 0,0, mouseAbilityHandler, floatingIcons);

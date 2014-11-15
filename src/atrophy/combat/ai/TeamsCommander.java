@@ -463,7 +463,7 @@ public class TeamsCommander {
 		return false;
 	}
 
-	public boolean canPursue(@SuppressWarnings("unused") ThinkingAi ai) {
+	public boolean canPursue(ThinkingAi ai) {
 		return true;
 	}
 

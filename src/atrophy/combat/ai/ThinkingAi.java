@@ -1063,7 +1063,7 @@ public class ThinkingAi extends Ai{
 		}
 	}
 	
-	public boolean willJoinPlayer(@SuppressWarnings("unused") Ai player){
+	public boolean willJoinPlayer(Ai player){
 		return false;
 	}
 

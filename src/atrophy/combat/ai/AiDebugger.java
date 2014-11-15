@@ -17,6 +17,7 @@ public class AiDebugger {
 	private JTextArea debugText;
 	private JButton updateButton;
 	
+	@SuppressWarnings("serial")
 	public AiDebugger(final int x, final int y, final Ai ai) {
 		
 		this.ai = ai;

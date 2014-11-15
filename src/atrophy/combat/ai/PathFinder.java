@@ -557,6 +557,7 @@ public class PathFinder {
 
 	}
 
+	@SuppressWarnings("serial")
 	private static class PathingPortalSet extends HashSet<PathingPortal> {
 
 		@Override

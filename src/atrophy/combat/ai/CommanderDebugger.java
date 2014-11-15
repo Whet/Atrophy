@@ -23,6 +23,7 @@ public class CommanderDebugger {
 	private JButton updateButton;
 	private JFrame frame;
 	
+	@SuppressWarnings("serial")
 	public CommanderDebugger(final TeamsCommander commander, final int x, final int y) {
 		this.commander = commander;
 		

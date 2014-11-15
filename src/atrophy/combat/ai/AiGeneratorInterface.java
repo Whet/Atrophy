@@ -191,7 +191,7 @@ public class AiGeneratorInterface {
 
 		public static final String AXE = "Axe";
 		
-		public DaemonRandomSpawn(@SuppressWarnings("unused") String daemonType) {
+		public DaemonRandomSpawn(String daemonType) {
 			super(1, 1, null, null, Faction.DAEMON);
 		}
 		
