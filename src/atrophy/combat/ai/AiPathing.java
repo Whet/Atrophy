@@ -58,7 +58,7 @@ public class AiPathing {
 			
 			Portal targetPortal = null;
 			
-			if(this.portalPathway != null){
+			if(this.portalPathway != null && this.portalPathway.size() > 0){
 				targetPortal = portalPathway.peek();
 			}
 			
@@ -153,7 +153,7 @@ public class AiPathing {
 					}
 				}
 				// find a way to another block to get to the target
-				else if(portalPathway != null){
+				else if(portalPathway != null && portalPathway.size() > 0){
 					
 					// If room pathway still exists move to next point
 					if(this.roomPathway != null && this.roomPathway.size() > 0){
@@ -186,7 +186,7 @@ public class AiPathing {
 							}
 						}
 					}
-					else{
+					else {
 						
 						targetPortal = portalPathway.peek();
 						
@@ -328,7 +328,7 @@ public class AiPathing {
 			portalPathway = new Stack<>();
 			
 			if(invoker instanceof ThinkingAi)
-				portalPathway.addAll(PathFinder.createPathway(this.getLocation(), moveLocation, this.residentBlock, levelManager.getBlock(this.moveLocation), false,((ThinkingAi) invoker).getCommander().getDangerRooms(invoker.getCombatScore())));
+				portalPathway.addAll(PathFinder.createPathway(this.getLocation(), moveLocation, this.residentBlock, levelManager.getBlock(this.moveLocation), true,((ThinkingAi) invoker).getCommander().getDangerRooms(invoker.getCombatScore())));
 			else
 				portalPathway.addAll(PathFinder.createPathway(this.getLocation(), moveLocation, this.residentBlock, levelManager.getBlock(this.moveLocation)));
 		}
