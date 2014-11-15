@@ -409,9 +409,9 @@ public class TurnProcess {
 		return this.shuffledAi.peek();
 	}
 
-	public void replaceAi(ThinkingAi thinkingAi, Ai playerAi) {
+	public void replaceAi(Ai ai, Ai playerAi) {
 		for(int i = 0; i < shuffledAi.size(); i++){
-			if(shuffledAi.get(i) == thinkingAi){
+			if(shuffledAi.get(i) == ai){
 				shuffledAi.set(i, playerAi);
 			}
 		}

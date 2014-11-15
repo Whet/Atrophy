@@ -39,8 +39,8 @@ public class Ai implements Lootable {
 
 	private AiDeathReport deathReport;
 	private String name;
-	private String image;
-	private String team;
+	protected String image;
+	private Faction faction;
 	protected boolean dead;
 	private boolean killCounted;
 	private double lookAngle;
@@ -120,7 +120,7 @@ public class Ai implements Lootable {
 		
 		broadcastingLocation = false;
 		
-		this.team = "1Player";
+		this.faction = Faction.PLAYER;
 		
 		ignoreLOS = false;
 
@@ -425,16 +425,7 @@ public class Ai implements Lootable {
 	}
 	
 	public Faction getFaction(){
-		Pattern numberPattern = Pattern.compile("[0-9]+");
-		Matcher numberMatcher;
-		numberMatcher = numberPattern.matcher(team);
-		numberMatcher.find();
-		String faction = team.substring(numberMatcher.group().length());
-		return Faction.getFaction(faction);
-	}
-	
-	public String getTeam(){
-		return this.team;
+		return this.faction;
 	}
 	
 	public String getAction(){
@@ -639,9 +630,9 @@ public class Ai implements Lootable {
 	public AiDeathReport getDeathReport() {
 		return this.deathReport;
 	}
-	
-	public void setTeam(String team){
-		this.team = team;
+
+	public void setFaction(Faction faction) {
+		this.faction = faction;
 	}
 	
 	public void setTargetAi(Ai targetAi){

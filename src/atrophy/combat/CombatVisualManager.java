@@ -174,7 +174,7 @@ public class CombatVisualManager {
 	
 	public boolean isAiInSight(Ai looker, Ai lookedAt, Faction faction){
 
-		if(faction.equals(Faction.LONER))
+		if(faction.equals(Faction.LONER) || faction.equals(Faction.DAEMON))
 			return isAiInSight(looker, lookedAt);
 		
 		Integer integer = this.factionVisibleAi.get(faction).get(lookedAt);

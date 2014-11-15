@@ -331,6 +331,8 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 	@Override
 	public void setAi(Ai aiObject) {
 		super.setAi(aiObject);
+		this.deathFrame = 0;
+		this.frame = 0;
 		updateAnimation();
 	}
 	

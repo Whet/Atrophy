@@ -14,7 +14,7 @@ public class DaemonWeapon extends Weapon {
 	
 	public static final int RANGE = 60;
 	
-	public static final int ACCURACY = 20;
+	public static final int ACCURACY = 50;
 	
 	public static final int TURNS_TO_RELOAD = 0;
 	
@@ -22,7 +22,7 @@ public class DaemonWeapon extends Weapon {
 	
 	public static final int MAX_SWING = 1;
 	
-	public static final int DAMAGE = 30;
+	public static final int DAMAGE = 50;
 	
 	public static final String DESCRIPTION = "Accuracy: "+ACCURACY+" Damage: "+DAMAGE;
 	

@@ -94,6 +94,13 @@ public class HealthDirector {
 
 	public boolean judge(boolean dead, Ai killedAi, Ai killer, int turn) {
 		
+		// If someone isn't classified, add them
+		if(this.clf.get(killer) == null)
+			this.addAi(killer, new DirectorClassification(DirectorArchetype.UNDECIDED));
+		
+		if(this.clf.get(killedAi) == null)
+			this.addAi(killedAi, new DirectorClassification(DirectorArchetype.UNDECIDED));
+		
 		// Handle attackers that shouldn't be able to attack
 		if(killer.getStunnedTurns() > 0 || killer.getIncapTurns() > 0) {
 			return addKill(killer, killedAi, false);

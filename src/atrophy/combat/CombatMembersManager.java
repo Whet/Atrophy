@@ -67,6 +67,7 @@ public class CombatMembersManager {
 			strengthInfo.put(Faction.WHITE_VISTA, new Integer[]{0,-1});
 			strengthInfo.put(Faction.LONER, new Integer[]{0,-1});
 			strengthInfo.put(Faction.PLAYER, new Integer[]{0,-1});
+			strengthInfo.put(Faction.DAEMON, new Integer[]{0,-1});
 		}
 
 		public int getStrength(Faction faction) {
@@ -266,9 +267,10 @@ public class CombatMembersManager {
 	public void changeThinkingAiToPlayerAi(ThinkingAi thinkingAi){
 		Ai playerAi = new Ai(thinkingAi, levelManager);
 		
-		aiCrowd.getActorMask(thinkingAi).setAi(playerAi);
+		aiCrowd.changeActorMask(thinkingAi, playerAi);
 		aiCrowd.getActors().remove(thinkingAi);
 		aiCrowd.getActors().add(playerAi);
+		
 		
 		this.playerTeam.add(playerAi);
 		
@@ -278,6 +280,17 @@ public class CombatMembersManager {
 		// if the thinking ai is in the turn stack it needs to be replaced by this ai
 		turnProcess.replaceAi(thinkingAi,playerAi);
 		aiCrowd.replaceAi(thinkingAi,playerAi);
+	}
+	
+	public void changeAiToAi(Ai thinkingAi, Ai newAi) {
+		
+		aiCrowd.changeActorMask(thinkingAi, newAi);
+		aiCrowd.getActors().remove(thinkingAi);
+		aiCrowd.getActors().add(newAi);
+		
+		// if the thinking ai is in the turn stack it needs to be replaced by this ai
+		turnProcess.replaceAi(thinkingAi,newAi);
+		aiCrowd.replaceAi(thinkingAi,newAi);
 	}
 	
 	public int getUnitCount(Faction faction){

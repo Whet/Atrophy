@@ -61,8 +61,8 @@ public class ThinkingAi extends Ai{
 	private boolean blockPlayerConvo;
 	
 	private ThinkingAiEmotion emotionManager;
-	private LevelManager levelManager;
-	private DialoguePool dialoguePool;
+	protected LevelManager levelManager;
+	protected DialoguePool dialoguePool;
 
 	public ThinkingAi(DialoguePool dialoguePool, PanningManager panningManager, CombatVisualManager combatVisualManager, TurnProcess turnProcess, FloatingIcons floatingIcons, MouseAbilityHandler mouseAbilityHandler, AiCrowd aiCrowd, CombatMembersManager combatMembersManager, String name, double x, double y, LevelManager levelManager, CombatUiManager combatUiManager, LootBox lootBox){
 		super(floatingIcons, mouseAbilityHandler, name,x,y, levelManager, lootBox, combatMembersManager, combatUiManager, combatVisualManager, aiCrowd, panningManager, turnProcess);

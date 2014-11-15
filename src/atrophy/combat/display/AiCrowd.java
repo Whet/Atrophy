@@ -25,7 +25,6 @@ import atrophy.combat.CombatVisualManager;
 import atrophy.combat.ai.Ai;
 import atrophy.combat.ai.Faction;
 import atrophy.combat.ai.TalkNode;
-import atrophy.combat.ai.ThinkingAi;
 import atrophy.combat.ai.VehicleAi;
 import atrophy.combat.ai.director.DirectorClassification;
 import atrophy.combat.ai.director.HealthDirector;
@@ -397,9 +396,9 @@ public class AiCrowd extends Crowd {
 		return lonerKillCount;
 	}
 
-	public void replaceAi(ThinkingAi thinkingAi, Ai playerAi) {
+	public void replaceAi(Ai ai, Ai playerAi) {
 		for(int i = 0; i < masterStack.size(); i++){
-			if(masterStack.get(i) == thinkingAi){
+			if(masterStack.get(i) == ai){
 				masterStack.set(i, playerAi);
 			}
 		}
@@ -508,6 +507,12 @@ public class AiCrowd extends Crowd {
 
 	public Collection<TalkNode> getNodes() {
 		return this.talkNodes.values();
+	}
+
+	public void changeActorMask(Ai oldAi, Ai newAi) {
+		AiImage aiImage = this.actorToMask.get(oldAi);
+		aiImage.setAi(newAi);
+		this.actorToMask.put(newAi, aiImage);
 	}
 	
 }
