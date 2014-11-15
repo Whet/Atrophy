@@ -60,7 +60,6 @@ public class AiGenerator{
 	private MessageBox messageBox;
 	private MapDrawer mapDrawer;
 	
-	private int squadCount;
 	static {
 
 		nameHashMap.put(0,"Mighty");			nameHashMap.put(11,"Wardog");			nameHashMap.put(22, "Young");		nameHashMap.put(33, "Inglorious");
@@ -143,10 +142,7 @@ public class AiGenerator{
 							      levelManager.randomRoom());
 				break;
 			}
-			squadCount++;
 		}
-		
-		generateDaemonAi();
 		
 		combatMembersManager.pickStartingAi();
 		generateRosters();
@@ -181,7 +177,6 @@ public class AiGenerator{
 			case LONER:
 			break;
 		}
-		squadCount++;
 		combatVisualManager.updateVisibleAi();
 	}
 	
