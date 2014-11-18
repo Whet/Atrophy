@@ -1,0 +1,252 @@
+package atrophy.combat.display.ui.abilities;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+
+import javax.imageio.ImageIO;
+
+import watoydoEngine.designObjects.actions.MouseRespondable;
+import watoydoEngine.designObjects.display.ButtonSingle;
+import watoydoEngine.designObjects.display.Crowd;
+import watoydoEngine.designObjects.display.Displayable;
+import watoydoEngine.designObjects.display.ImageSingle;
+import watoydoEngine.io.ReadWriter;
+import watoydoEngine.workings.DisplayManager;
+import atrophy.combat.CombatMembersManager;
+import atrophy.combat.CombatUiManager;
+import atrophy.combat.actions.MouseAbilityHandler;
+import atrophy.combat.mechanics.Abilities;
+
+public class ActionsBar extends Crowd{
+	
+	private static final int BUTTON_SPACING_Y = 40;
+	private static final int BUTTON_SPACING_X = 50;
+	private static final int BUTTON_X = 13;
+	private static final int BUTTON_Y_START = 118;
+	
+	private ArrayList<ButtonSingle> visibleButtons;
+	private CombatMembersManager combatMembersManager;
+	private Map<String, AbilityButton> actionButtonMap;
+	private ImageSingle abilityBack;
+	private ImageSingle stabilityMarker; 
+	
+	public ActionsBar(CombatMembersManager combatMembersManager) {
+		super(true);
+		
+		actionButtonMap = new HashMap<>();
+		
+		this.combatMembersManager = combatMembersManager;
+		
+		try{
+			
+			abilityBack = new ImageSingle(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/abilityGrid.png")));
+			this.addDisplayItem(abilityBack);
+			
+			stabilityMarker = new ImageSingle(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/selectedUnitMarker.png")));
+			this.addDisplayItem(stabilityMarker);
+			
+			BlockDoorAction blockDoor = new BlockDoorAction(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/blockDoor.png")));
+			actionButtonMap.put("blockDoor", blockDoor);
+			this.addButton(blockDoor);
+			
+			ScanRoomAction scanRoom = new ScanRoomAction(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/scanRoom.png")));
+			actionButtonMap.put("scanRoom", scanRoom);
+			this.addButton(scanRoom);
+			
+			UnitDetectorAction unitDetector = new UnitDetectorAction(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/scanRoom.png")));
+			actionButtonMap.put("unitDetector", unitDetector);
+			this.addButton(unitDetector);
+			
+			ScienceScanRoom scanObjectiveRoom = new ScienceScanRoom(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/scanRoom.png")));
+			actionButtonMap.put("scanObjectiveRoom", scanObjectiveRoom);
+			this.addButton(scanObjectiveRoom);
+			
+			LightStealthAction stealth1 = new LightStealthAction(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/stealthed.png")));
+			actionButtonMap.put("stealth1", stealth1);
+			this.addButton(stealth1);
+			
+			MediumStealthAction stealth2 = new MediumStealthAction(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/stealthed.png")));
+			actionButtonMap.put("stealth2", stealth2);
+			this.addButton(stealth2);
+			
+			SpeedBoosterAction speedBoost = new SpeedBoosterAction(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/speedBoost.png")));
+			actionButtonMap.put("speedBoost", speedBoost);
+			this.addButton(speedBoost);
+			
+			SpeechAction speech = new SpeechAction(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/speechIcon.png")));
+			actionButtonMap.put("speech", speech);
+			this.addButton(speech);
+			
+			StashSearchAction stashSearch = new StashSearchAction(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/stashSearch.png")));
+			actionButtonMap.put("stashSearch", stashSearch);
+			this.addButton(stashSearch);
+			
+			StunAction stunMelee = new StunAction(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/stun.png")));
+			actionButtonMap.put("stunMelee", stunMelee);
+			this.addButton(stunMelee);
+			
+			BackstabAction backstab = new BackstabAction(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/backstab.png")));
+			actionButtonMap.put("backstab", backstab);
+			this.addButton(backstab);
+			
+			HackAction hack = new HackAction(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/hackTool.png")));
+			actionButtonMap.put("hack", hack);
+			this.addButton(hack);
+			
+			ParryAction parry = new ParryAction(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/stun.png")));
+			actionButtonMap.put("parry", parry);
+			this.addButton(parry);
+			
+			InvestigateAction investigate = new InvestigateAction(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/investigate.png")));
+			actionButtonMap.put("investigate", investigate);
+			this.addButton(investigate);
+			
+			RapidFire rapidFire = new RapidFire(ImageIO.read(ReadWriter.getResourceAsInputStream("images/atrophy/combat/ui/stun.png")));
+			actionButtonMap.put("rapidFire", rapidFire);
+			this.addButton(rapidFire);
+		}
+		catch(IOException ioExcept){
+			System.err.println("Could not load ActionsBar image. Terminating.");
+			System.exit(-1);
+		}
+		
+		visibleButtons = new ArrayList<ButtonSingle>(9);
+		
+		// move abilities background to bottom left corner
+		abilityBack.setLocation(0, DisplayManager.getInstance().getResolution()[1] - abilityBack.getSize()[1]);
+		abilityBack.setVisible(true);
+		stabilityMarker.setVisible(true);
+		
+	}
+	
+	public void updateVisibleButtons(){
+		this.visibleButtons.clear();
+		
+		if(combatMembersManager.getCurrentAi() != null){
+			for(int i = 0; i < combatMembersManager.getCurrentAi().getAbilities().size(); i++){
+				switch(combatMembersManager.getCurrentAi().getAbilities().get(i)){
+					case Abilities.SCAN_SCIENCE:
+						this.visibleButtons.add(actionButtonMap.get("scanObjectiveRoom"));
+					break;
+					case Abilities.WELDING:
+						this.visibleButtons.add(actionButtonMap.get("blockDoor"));
+					break;
+					case Abilities.XRAY_SCAN:
+						this.visibleButtons.add(actionButtonMap.get("scanRoom"));
+					break;
+					case Abilities.STEALTH1:
+						this.visibleButtons.add(actionButtonMap.get("stealth1"));
+					break;
+					case Abilities.STEALTH2:
+						this.visibleButtons.add(actionButtonMap.get("stealth2"));
+					break;
+					case Abilities.SPEED_BOOSTER:
+						this.visibleButtons.add(actionButtonMap.get("speedBoost"));
+					break;
+					case Abilities.UNIT_DETECTOR:
+						this.visibleButtons.add(actionButtonMap.get("unitDetector"));
+					break;
+					case Abilities.KILL_TAGS:
+						this.visibleButtons.add(actionButtonMap.get("killTag"));
+					break;
+					case Abilities.STASH_SEARCH:
+						this.visibleButtons.add(actionButtonMap.get("stashSearch"));
+					break;
+					case Abilities.SLIT_MELEE:
+						this.visibleButtons.add(actionButtonMap.get("backstab"));
+					break;
+					case Abilities.STUN_MELEE:
+						this.visibleButtons.add(actionButtonMap.get("stunMelee"));
+					break;
+					case Abilities.HACK:
+						this.visibleButtons.add(actionButtonMap.get("hack"));
+					break;
+					case Abilities.SPEECH:
+						this.visibleButtons.add(actionButtonMap.get("speech"));
+					break;
+					case Abilities.PARRY:
+						this.visibleButtons.add(actionButtonMap.get("parry"));
+					break;
+					case Abilities.INVESTIGATE:
+						this.visibleButtons.add(actionButtonMap.get("investigate"));
+					break;
+					case Abilities.RAPID_FIRE:
+						this.visibleButtons.add(actionButtonMap.get("rapidFire"));
+					break;
+				}
+			}
+			
+		}
+		
+		for(int i = 0; i < this.getDisplayList().size(); i++){
+			if(!this.visibleButtons.contains(this.getDisplayList().get(i))){
+				this.getDisplayList().get(i).setVisible(false);
+			}
+			else{
+				this.getDisplayList().get(i).setVisible(true);
+			}
+		}
+		
+		abilityBack.setVisible(true);
+		stabilityMarker.setVisible(true);
+		
+		placeButtons();
+	}
+	
+	private void placeButtons(){
+		int xCounter = 0;
+		int yCounter = 0;
+		for(int i = 0; i < this.visibleButtons.size(); i++){
+			
+			if(i > 0 && i%3 == 0){
+				xCounter = 0;
+				yCounter++;
+			}
+			
+			if(this.visibleButtons.get(i) != null)
+				this.visibleButtons.get(i).setLocation(BUTTON_X + (xCounter * BUTTON_SPACING_X), 
+						                               DisplayManager.getInstance().getResolution()[1] - BUTTON_Y_START + BUTTON_SPACING_Y * yCounter);
+			
+			xCounter++;
+		}
+	}
+	
+	public void activateButton(int button){
+		if(button < this.visibleButtons.size()){
+			this.visibleButtons.get(button).mC(null,null);
+		}
+	}
+	
+	@Override
+	public void setVisible(boolean visible){
+		super.setVisible(visible);
+		
+		if(visible){
+			updateVisibleButtons();
+		}
+		else{
+			// set all children to same visibility to handle events correctly
+			for(Displayable item: this.getDisplayList()){
+				item.setVisible(visible);
+			}
+		}
+	}
+
+	public void lazyLoad(CombatMembersManager combatMembersManager, MouseAbilityHandler mouseAbilityHandler, CombatUiManager combatUiManager) {
+		for(MouseRespondable button : this.getMouseActionList()){
+			if(button instanceof AbilityButton){
+				((AbilityButton) button).setMouseAbilityHandler(mouseAbilityHandler);
+				((AbilityButton) button).setCombatMembersManager(combatMembersManager);
+				((AbilityButton) button).setCombatUiManager(combatUiManager);
+			}
+		}
+	}
+	
+	@Override
+	public double[] getSize() {
+		return new double[]{0,this.abilityBack.getSize()[1]};
+	}
+	
+}
