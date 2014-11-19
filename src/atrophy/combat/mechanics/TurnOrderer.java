@@ -89,22 +89,20 @@ public class TurnOrderer {
 		currentTurn = turnQueue.peek();
 	}
 
-	private void updateWaitTime(TurnOrder currentTurn) {
-//		System.out.println(currentTurn.getAi().getName() + "  " + currentTurn.getAi().getAction());
-		
-		switch(currentTurn.getAi().getAction()) {
+	private void updateWaitTime(TurnOrder turn) {
+		switch(turn.getAi().getAction()) {
 			case AiCombatActions.AIMING:
-				currentTurn.setWaitTime(1);
+				turn.setWaitTime(2);
 			break;
 			case AiCombatActions.SHOOTING:
-				currentTurn.setWaitTime(2);
+				turn.setWaitTime(3);
 			break;
 			default:
-				currentTurn.setWaitTime(1);
+				turn.setWaitTime(1);
 			break;
 		}
 		
-		currentTurn.timeIncreased = true;
+		turn.timeIncreased = true;
 	}
 	
 	public void turnOver() {
@@ -120,6 +118,7 @@ public class TurnOrderer {
 		orderAi();
 		for(TurnOrder order:this.turnQueue) {
 			order.timeIncreased = false;
+			System.out.println(order.getAi().getName() + " waits for " + order.getWaitTime());
 		}
 		
 		// If it doesn't get invoked later errors don't show
@@ -233,6 +232,11 @@ public class TurnOrderer {
 
 	public int getTime() {
 		return this.gameTime;
+	}
+
+	public void cleanup() {
+		this.turnTimer.cancel();
+		this.turnTimer.purge();
 	}
 
 }

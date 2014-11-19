@@ -102,6 +102,7 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 	@Override
 	public void drawMethod(Graphics2D drawShape) {
 		this.setAlpha(this.alphaFade);
+		
 		super.drawMethod(drawShape);
 		
 		if(this.fadeVisible)
@@ -292,10 +293,16 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 	
 	private void fadeIn() {
 		
-		if(this.alphaFade >= 0.9)
-			this.alphaFade = 1;
+		if(this.alphaFade >= 0.9) {
+			if(this.getAi().isStealthed() && !this.getAi().isDead()){
+				this.alphaFade = 0.5f;
+			}
+			else {
+				this.alphaFade = 1.f;
+			}
+		}
 		
-		else if(this.alphaFade < 0.9)
+		else if(!(this.alphaFade == 0.5f && this.getAi().isStealthed() && !this.getAi().isDead()) && this.alphaFade < 0.9)
 			this.alphaFade += 0.05;
 		
 	}
@@ -320,12 +327,6 @@ public class AiImage extends AiImageRoster implements InfoTextDisplayable{
 	}
 	
 	private void applyEffects(){
-		if(this.getAi().isStealthed() && !this.getAi().isDead()){
-			this.setAlpha(0.5f);
-		}
-		else{
-			this.setAlpha(1.0f);
-		}
 	}
 	
 	@Override

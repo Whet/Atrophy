@@ -152,6 +152,7 @@ public class CombatKeyboardHandler extends KeyboardHandler {
 					// Cleanup timer thread
 					LargeEventText.flashTimer.cancel();
 					LargeEventText.flashTimer.purge();
+					turnProcess.cleanup();
 					
 					missions.checkDeadSpecialCharacters(aiCrowd);
 					

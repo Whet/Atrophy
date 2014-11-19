@@ -326,4 +326,8 @@ public class TurnProcess {
 		combatUiManager.getLargeEventText().flashText("Game Paused", Color.white.darker(), 1400);
 	}
 	
+	public void cleanup() {
+		this.turnOrderer.cleanup();
+	}
+	
 }
