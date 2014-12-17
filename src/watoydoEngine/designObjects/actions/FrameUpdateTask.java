@@ -2,8 +2,6 @@ package watoydoEngine.designObjects.actions;
 
 import java.util.TimerTask;
 
-import org.newdawn.slick.Music;
-
 import watoydoEngine.workings.displayActivity.ActivePane;
 
 public class FrameUpdateTask extends TimerTask{
@@ -30,7 +28,6 @@ public class FrameUpdateTask extends TimerTask{
 		// check for mouse location dependent events and repaint the screen
 		ActivePane.getInstance().mouseEntered();
 		ActivePane.getInstance().reloadDisplay();
-		Music.poll(0);
 	}
 	
 	public double getTime(){
